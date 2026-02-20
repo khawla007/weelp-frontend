@@ -2,8 +2,8 @@
 
 import { redirect } from 'next/navigation';
 
-const LoginRestrictPage = () => {
+async function LoginRestrictPage() {
   redirect('/user/login'); // restrict page
-};
+}
 
 export default LoginRestrictPage;

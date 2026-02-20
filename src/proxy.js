@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from './lib/auth/auth';
 
-export async function middleware(req) {
+export async function proxy(req) {
   const session = await auth();
 
   // Redirect unauthenticated users to login
@@ -30,6 +30,6 @@ export async function middleware(req) {
   return NextResponse.next();
 }
 
-export const config = {
+export const proxyConfig = {
   matcher: ['/dashboard/:path*'], // Match all dashboard routes
 };

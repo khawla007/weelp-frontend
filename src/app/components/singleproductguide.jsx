@@ -31,7 +31,7 @@ export const BlogCard = ({ imageSrc = '', blogTitle = '', created_at = '', slug 
   return (
     <div className='"max-w-full sm:max-w-sm w-full flex flex-col'>
       <Link href={`/blogs/${slug}`}>
-        <Image alt="blog_logo" src={imageSrc ? imageSrc : FALLBACK_IMAGE.src} className="w-full rounded-lg h-60" width={100} height={100} objectFit="cover" />
+        <Image alt="blog_logo" src={imageSrc ? imageSrc : FALLBACK_IMAGE.src} className="w-full rounded-lg h-60" width={100} height={100} style={{ objectFit: 'cover' }} />
         <div className="text-white py-4 rounded-md">
           <h2 className="text-[20px] font-semibold text-black">{blogTitle ? blogTitle : "Spend the night on the set of SEVENTEEN's latest music video"}</h2>
           {created_at && <span className="text-sm uppercase tracking-widest text-blackish">{format(created_at, 'MMM dd yyyy')}</span>}

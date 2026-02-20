@@ -29,12 +29,11 @@ const nextConfig = {
       },
     ],
   },
+  // Next.js 16: serverActions still under experimental for compatibility
   experimental: {
     serverActions: {
       bodySizeLimit: '3mb',
     },
-    globalNotFound: true,
-    mdxRs: true,
   },
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 };
