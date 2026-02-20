@@ -1,0 +1,6 @@
+.banner_single_blog {
+  background: rgb(250, 250, 250);
+  background: -moz-linear-gradient(90deg, rgba(250, 250, 250, 1) 38%, rgba(208, 236, 203, 1) 87%);
+  background: -webkit-linear-gradient(90deg, rgba(250, 250, 250, 1) 38%, rgba(208, 236, 203, 1) 87%);
+  background: linear-gradient(90deg, rgba(250, 250, 250, 1) 38%, rgba(208, 236, 203, 1) 87%);
+}

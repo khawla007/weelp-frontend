@@ -1,0 +1,11 @@
+.shop_banner_icon {
+  transform: skew(160deg, 0deg);
+}
+
+.shop_banner form > div:first-child {
+  @apply bg-[#679e89];
+}
+
+.shop_banner form > div:first-child label {
+  @apply text-white text-sm;
+}

@@ -1,0 +1,397 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: var(--background);
+  background: var(--foreground);
+  font-family: var(--font-interTight) 'sans-serif ';
+}
+
+@font-face {
+  font-family: 'degular_demo';
+  src: url('/assets/fonts/degular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+}
+
+/* Slider Section */
+.productSlider,
+.productDestination,
+.reviewSlider,
+.singleproduct_reviewslider {
+  @apply relative;
+}
+
+.productSlider > h2,
+.productDestination > h2,
+.reviewSlider h2,
+.singleproduct_reviewslider > h2 {
+  @apply absolute;
+}
+
+.productSlider .swiper,
+.productDestination .swiper,
+.reviewSlider .swiper,
+.singleproduct_reviewslider .swiper {
+  @apply pt-14;
+}
+
+@layer components {
+  .productSlider .swiper-button-prev,
+  .productDestination .swiper-button-prev,
+  .reviewSlider .swiper-button-prev,
+  .singleproduct_reviewslider .swiper-button-prev {
+    @apply bg-white absolute top-[5%] shadow-xl rounded-[10px] size-10 border-[2px];
+
+    @media (max-width: 639px) {
+      left: 70%;
+    }
+
+    @media (min-width: 640px) {
+      left: calc(70% + 10vw);
+    }
+
+    /* Larger screens */
+    @media (min-width: 768px) {
+      left: calc(88% - 5vw);
+    }
+
+    @media (min-width: 1024px) {
+      left: calc(90% - 3vw);
+    }
+
+    @media (min-width: 1280px) {
+      left: calc(94% - 1vw);
+    }
+  }
+}
+
+.productSlider .swiper-button-next,
+.productDestination .swiper-button-next,
+.reviewSlider .swiper-button-next,
+.singleproduct_reviewslider .swiper-button-next {
+  @apply bg-white absolute top-[5%] shadow-xl rounded-[10px] size-10 border-[2px];
+}
+
+.productSlider .swiper-button-prev::after,
+.productSlider .swiper-button-next::after,
+.productDestination .swiper-button-prev::after,
+.productDestination .swiper-button-next::after,
+.reviewSlider .swiper-button-prev::after,
+.reviewSlider .swiper-button-next::after,
+.singleproduct_reviewslider .swiper-button-prev::after,
+.singleproduct_reviewslider .swiper-button-next::after,
+.gallery_slider .swiper-button-next::after,
+.gallery_slider .swiper-button-prev::after {
+  @apply text-blackish text-[10px] font-extrabold rounded-md;
+}
+
+/* Responsive Sliders */
+@screen md {
+  .reviewSlider .swiper-button-prev {
+    @apply left-[90%];
+  }
+
+  .singleproduct_reviewslider .swiper-button-prev {
+    @apply left-[86%];
+  }
+}
+
+/* Form CSS*/
+/* day picker  Latest Version 8.0+ */
+.bannerForm .rdp-day_selected,
+.singleProducform .rdp-day_selected {
+  @apply bg-secondaryLight2 text-inherit;
+}
+.bannerForm .rdp-day_selected:hover,
+.singleProducform .rdp-day_selected:hover {
+  @apply bg-secondarylight text-black;
+}
+
+.bannerForm .rdp-day_range_start,
+.bannerForm .rdp-day_range_end,
+.singleProducform .rdp-day_range_start,
+.singleProducform .rdp-day_range_end {
+  @apply bg-[#51927a] border-none rounded-lg text-white;
+}
+
+.bannerForm .rdp-nav_button_previous,
+.bannerForm .rdp-nav_button_next,
+.singleProducform .rdp-nav_button_previous,
+.singleProducform .rdp-nav_button_next {
+  @apply bg-secondaryDark text-white rounded-lg mx-1;
+}
+
+.bannerForm .rdp-nav_button_previous:hover,
+.bannerForm .rdp-nav_button_next:hover,
+.singleProducform .rdp-nav_button_previous:hover,
+.singleProducform .rdp-nav_button_next:hover {
+  background-color: #56947d !important;
+  color: white !important;
+}
+
+/* Day Picker 9.0+ Version Latest*/
+.bannerForm .rdp-range_start .rdp-day_button,
+.bannerForm .rdp-range_end .rdp-day_button,
+.singleProducform .rdp-range_start .rdp-day_button,
+.singleProducform .rdp-range_end .rdp-day_button {
+  @apply bg-[#51927a] border-none rounded-lg;
+}
+
+.bannerForm .rdp-day_button,
+.bannerForm .rdp-range_middle .rdp-day_button .singleProducform .rdp-day_button,
+.singleProducform .rdp-range_middle .rdp-day_button {
+  @apply text-base font-normal;
+}
+
+.bannerForm .rdp-range_middle .rdp-day_button,
+.singleProducform .rdp-range_middle .rdp-day_button {
+  @apply bg-secondaryLight2;
+}
+
+.bannerForm .rdp-button_next,
+.bannerForm .rdp-button_previous,
+.singleProducform .rdp-button_next,
+.singleProducform .rdp-button_previous {
+  @apply text-sm rounded-md mx-1 scale-90;
+  border: 1px solid #cccccc;
+  background-color: white;
+}
+
+.bannerForm .rdp-chevron,
+.singleProducform .rdp-chevron {
+  @apply fill-grayDark size-4 stroke-none;
+}
+
+/* Slider */
+@layer components {
+  .reviewSlider .swiper-button-next,
+  .reviewSlider .swiper-button-prev,
+  .singleproduct_reviewslider .swiper-button-next,
+  .singleproduct_reviewslider .swiper-button-prev {
+    top: 9% !important;
+  }
+}
+
+/* Custom Config Gallery Slider For City and SingleProduct Page*/
+@layer components {
+  .gallery_slider .swiper-button-prev,
+  .gallery_slider .swiper-button-next {
+    @apply bg-white border rounded-lg size-10 mx-2;
+  }
+
+  /* page_destination_banner (Single Product Page Banner Navigation) */
+  .page_destination_banner .gallery_slider .swiper-button-prev {
+    @apply absolute left-[60%] sm:left-[70%] md:left-[80%] lg:left-[85%] xl:left-[92%];
+  }
+
+  .page_destination_banner .gallery_slider .swiper-button-prev,
+  .page_destination_banner .gallery_slider .swiper-button-next {
+    @apply absolute top-[90%];
+  }
+
+  .page_destination_banner .gallery_slider button.gallery_slider_toggle_btn {
+    @apply block left-[5%] md:left-[3%] lg:left-[1%] w-fit mb-2 text-xs sm:text-sm;
+  }
+}
+
+/* Shop Filter */
+.shop_filter div > input[type='checkbox'] {
+  border: 2px solid !important;
+  padding: 4px;
+}
+
+/** Global Scroll Style*/
+.tfc_scroll::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+.tfc_scroll::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-gray-400;
+}
+
+.tfc_scroll::-webkit-scrollbar-track {
+  @apply rounded-full bg-white;
+}
+
+/* Loading Page */
+.loader {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: block;
+  margin: 15px auto;
+  position: relative;
+  background: #fff;
+  box-shadow:
+    -24px 0 #fff,
+    24px 0 #fff;
+  box-sizing: border-box;
+  animation: shadowPulse 2s linear infinite;
+}
+
+@keyframes shadowPulse {
+  33% {
+    background: #fff;
+    box-shadow:
+      -24px 0 #588e78,
+      24px 0 #fff;
+  }
+
+  66% {
+    background: #588e78;
+    box-shadow:
+      -24px 0 #fff,
+      24px 0 #fff;
+  }
+
+  100% {
+    background: #fff;
+    box-shadow:
+      -24px 0 #fff,
+      24px 0 #588e78;
+  }
+}
+
+/* Dark Mode Testing */
+
+/* div,
+section,
+header,
+footer,
+main,
+* {
+  @apply dark:bg-black;
+} */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+div,
+li,
+button {
+  @apply dark:text-white dark:bg-black hover:dark:bg-black hover:dark:text-secondaryDark;
+}
+
+p,
+span {
+  @apply dark:text-slate-50;
+}
+
+/* Additional custmization */
+.tfc_adminSetting_nav nav div:first-child {
+  width: 100%;
+  height: 100%;
+}
+
+/* Customize Range Slider */
+.range-slider__thumb {
+  background-color: #56947d !important;
+}
+.range-slider__range {
+  background-color: rgb(229 231 235) !important;
+}
+.tfc_admin_activitiesmultiselect .optionContainer > li.highlightOption {
+  background-color: inherit;
+  color: black;
+}
+
+.tfc_admin_activitiesmultiselect .optionContainer > li:hover {
+  background-color: #000;
+  color: #fafafa;
+}
+.tfc_admin_activitiesmultiselect .optionContainer > li input:checked {
+  background-color: #56947d;
+}
+
+/* Calendar */
+.tfc_calendar .rdp-day_range_start,
+.tfc_calendar .rdp-day_range_start:focus,
+.tfc_calendar .day-range-end,
+.tfc_calendar .day-range-end:focus {
+  @apply bg-secondaryDark text-white;
+}
