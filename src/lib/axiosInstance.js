@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+// Log the baseURL for debugging
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+console.log('[axiosInstance] Creating publicApi with baseURL:', baseURL);
+
 export const publicApi = axios.create({
-  baseURL: `${process.env.API_BASE_URL}`,
+  baseURL: baseURL,
 });
 
 /**
@@ -9,7 +13,7 @@ export const publicApi = axios.create({
  * Automatically detects environment and uses appropriate auth method
  */
 export const authApi = axios.create({
-  baseURL: `${process.env.API_BASE_URL}`,
+  baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}`,
 });
 
 // Client-side interceptor - only attaches token in browser
@@ -68,7 +72,7 @@ export async function createAuthenticatedServerApi() {
   const session = await auth();
 
   return axios.create({
-    baseURL: `${process.env.API_BASE_URL}`,
+    baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}`,
     headers: session?.access_token
       ? { Authorization: `Bearer ${session.access_token}` }
       : {},

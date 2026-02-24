@@ -9,12 +9,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 const ReviewSlider = () => {
-  const [initialize, setInitialize] = useState(null);
-  useEffect(() => {
-    setInitialize(true);
-  }, []);
-  if (initialize) {
-    return (
+  return (
       <Swiper
         modules={[Navigation, Autoplay]}
         spaceBetween={20}
@@ -44,9 +39,7 @@ const ReviewSlider = () => {
         ))}
       </Swiper>
     );
-  }
-  return <ReviewCardCarouselAnimation />;
-};
+  };
 
 export default ReviewSlider;
 

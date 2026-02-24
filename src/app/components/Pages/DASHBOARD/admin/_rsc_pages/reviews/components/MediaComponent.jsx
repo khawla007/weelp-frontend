@@ -9,8 +9,6 @@ import { Medialibrary } from '../../media/MediaLibrary';
 
 // Media Tab
 const MediaComponent = () => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [activityImages, setActivityImages] = useState([]); // all images intialize
   const { selectedMedia, resetMedia } = useMediaStore(); // Retrive images From Media
 
   const {
@@ -23,12 +21,9 @@ const MediaComponent = () => {
     name: 'media_gallery',
   });
 
-  //  Hydarte First if there is already media exist
-  useEffect(() => {
-    if (media_gallery?.length > 0) {
-      setActivityImages(media_gallery); // Sync from form to local state
-    }
-  }, []);
+  // Initialize with existing media from form (lazy initialization)
+  const [activityImages, setActivityImages] = useState(() => media_gallery || []);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   // sideeffect for getting image from gallery popup
   useEffect(() => {

@@ -17,15 +17,14 @@ export const FilterCountries = () => {
 
   const [debouncedQuery, setDebouncedQuery] = useState(query);
 
-  // debounce using lodash.debounce
-  const debouncedSetQuery = useCallback(
-    debounce((val) => setDebouncedQuery(val), 500), // set delay time
-    [],
-  );
-
+  // Debounce query updates - handle in useEffect with cleanup
   useEffect(() => {
-    debouncedSetQuery(query);
-  }, [query, debouncedSetQuery]);
+    const handler = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [query]);
 
   const { data, error, isValidating } = useSWR(`/api/admin/destinations/countries?name=${debouncedQuery}&page=${page}`, fetcher);
 

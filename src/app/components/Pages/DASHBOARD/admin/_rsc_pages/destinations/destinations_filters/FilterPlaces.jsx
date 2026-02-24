@@ -17,17 +17,14 @@ const FilterPlaces = () => {
 
   const [debouncedQuery, setDebouncedQuery] = useState(query);
 
-  // debounce using lodash.debounce
-  const debouncedSetQuery = useCallback(
-    debounce((val) => setDebouncedQuery(val), 500), // set delay time
-    [],
-  );
-
+  // Debounce query updates - handle in useEffect with cleanup
   useEffect(() => {
-    debouncedSetQuery(query);
+    const handler = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 500);
 
-    return debouncedSetQuery.cancel();
-  }, [query, debouncedSetQuery]);
+    return () => clearTimeout(handler);
+  }, [query]);
 
   const { data, error, isValidating } = useSWR(`/api/admin/destinations/places?name=${debouncedQuery}&page=${page}`, fetcher); // city
 

@@ -7,25 +7,19 @@ const RegionList = dynamic(() => import('./MegaMenuComponents').then((module) =>
 const MegaMenuContent = dynamic(() => import('./MegaMenuComponents').then((module) => module.MegaMenuContent), { ssr: false });
 
 const MegaMenu = () => {
-  const [selectedContinent, setSelectedContinent] = useState({
-    name: '',
-    cities: [],
-  });
-
   const { data: menuData, isLoading, isValidating, error } = useNavigationMenu(); // menu list
-
   const navItems = menuData?.data || []; // navigationItems
 
-  // Side Effects For Initial value
-  useEffect(() => {
-    if (navItems.length > 0 && !selectedContinent.name) {
-      setSelectedContinent((prev) => ({
-        ...prev,
+  // Derive initial selected continent from navItems (no state sync needed)
+  const [selectedContinent, setSelectedContinent] = useState(() => {
+    if (navItems.length > 0) {
+      return {
         name: navItems[0].region,
-        cities: navItems[0]?.cities,
-      }));
+        cities: navItems[0]?.cities || [],
+      };
     }
-  }, [navItems]);
+    return { name: '', cities: [] };
+  });
 
   // Handle continent selection
   const handleContinent = (name, cities) => {

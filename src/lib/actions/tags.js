@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -12,7 +12,8 @@ import { delay, log } from '../utils';
 export const createTag = async (data) => {
   try {
     await delay(500);
-    const res = await authApi.post('/api/admin/tags/', data);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/tags/', data);
 
     // revalidate  path
     revalidatePath('/dashboard/admin/taxonomies/tags');
@@ -64,7 +65,8 @@ export const createTag = async (data) => {
 export const editTag = async (id, data) => {
   try {
     await delay(500);
-    const res = await authApi.put(`/api/admin/tags/${id}`, data);
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/tags/${id}`, data);
 
     // revalidate  path
     revalidatePath(`/dashboard/admin/taxonomies/tags/${id}`); // Tag id to update
@@ -115,7 +117,8 @@ export const editTag = async (id, data) => {
 export const deleteTag = async (id) => {
   try {
     await delay(500);
-    const res = await authApi.delete(`/api/admin/tags/${id}`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/tags/${id}`);
 
     // revalidate  path
     revalidatePath(`/dashboard/admin/taxonomies/tags`); // update tags

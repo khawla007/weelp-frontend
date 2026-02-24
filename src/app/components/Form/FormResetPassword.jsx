@@ -38,12 +38,11 @@ const schema = z
   });
 
 export const FormResetPassword = () => {
-  const [intialize, setInitialize] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const { toast } = useToast();
-  const [error, setError] = useState('');
   const token = searchParams.get('token');
+  const [initialize] = useState(() => true);  // Lazy initialization - no useEffect needed
 
   //Create Form
   const {
@@ -61,9 +60,6 @@ export const FormResetPassword = () => {
     if (!token) {
       router.push('/user/forgot-password'); // Redirect to the forgot password page
     }
-
-    // intialize form
-    setInitialize(true);
   }, [token, router]);
 
   // handle if token available
@@ -114,7 +110,7 @@ export const FormResetPassword = () => {
       });
     }
   };
-  if (intialize) {
+  if (initialize) {
     return (
       <div className={`space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8 ${isSubmitting && 'cursor-wait'}`}>
         <div className="bg-white rounded-t-xl border-b py-4 px-8">

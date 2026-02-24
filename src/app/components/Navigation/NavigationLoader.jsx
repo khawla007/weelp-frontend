@@ -13,11 +13,16 @@ export default function NavigationLoader() {
   const [showLoader, setShowLoader] = useState(false);
   const navigationStartTime = useRef(null);
   const minDelayTimerRef = useRef(null);
+  const wasNavigatingRef = useRef(false);
 
   useEffect(() => {
     console.log('[NavigationLoader] isNavigating:', isNavigating, 'showLoader:', showLoader, 'isClient:', isClient);
 
-    if (isNavigating) {
+    // Track when navigation state changes from false to true (started)
+    const navigationJustStarted = isNavigating && !wasNavigatingRef.current;
+    wasNavigatingRef.current = isNavigating;
+
+    if (navigationJustStarted) {
       // Navigation started - show loader immediately and record start time
       navigationStartTime.current = Date.now();
       setShowLoader(true);
@@ -27,25 +32,23 @@ export default function NavigationLoader() {
         clearTimeout(minDelayTimerRef.current);
         minDelayTimerRef.current = null;
       }
-    } else {
+    } else if (!isNavigating && navigationStartTime.current !== null) {
       // Navigation ended - check if minimum time has elapsed
-      if (navigationStartTime.current !== null) {
-        const elapsedTime = Date.now() - navigationStartTime.current;
-        const remainingTime = MIN_DISPLAY_TIME - elapsedTime;
+      const elapsedTime = Date.now() - navigationStartTime.current;
+      const remainingTime = MIN_DISPLAY_TIME - elapsedTime;
 
-        if (remainingTime > 0) {
-          // Wait for remaining time before hiding loader
-          console.log(`[NavigationLoader] Waiting ${remainingTime}ms before hiding`);
-          minDelayTimerRef.current = setTimeout(() => {
-            setShowLoader(false);
-            navigationStartTime.current = null;
-            minDelayTimerRef.current = null;
-          }, remainingTime);
-        } else {
-          // Minimum time already elapsed, hide immediately
+      if (remainingTime > 0) {
+        // Wait for remaining time before hiding loader
+        console.log(`[NavigationLoader] Waiting ${remainingTime}ms before hiding`);
+        minDelayTimerRef.current = setTimeout(() => {
           setShowLoader(false);
           navigationStartTime.current = null;
-        }
+          minDelayTimerRef.current = null;
+        }, remainingTime);
+      } else {
+        // Minimum time already elapsed, hide immediately
+        setShowLoader(false);
+        navigationStartTime.current = null;
       }
     }
 

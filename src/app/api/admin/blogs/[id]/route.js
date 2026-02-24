@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { getSingleBlogAdmin } from '@/lib/services/blogs';
 
 export async function GET(req, { params }) {
-  const { id } = await params;
+  const { id } = params;
   try {
     // Fetch blog data from service
     const blogData = await getSingleBlogAdmin(id);

@@ -5,7 +5,7 @@ import { getSingleAttributeAdmin } from '@/lib/services/attributes';
 import { EditAttributePageForm } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/taxonomies/attributes/editattribute';
 
 const EditAttribute = async ({ params }) => {
-  const { id } = await params;
+  const { id } = params;
 
   const data = await getSingleAttributeAdmin(id); // get category
 

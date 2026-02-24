@@ -15,8 +15,6 @@ import { ImageTrashCard } from './Pages/DASHBOARD/admin/_rsc_pages/media/ImageTr
  * @returns {React.Component} React Component to Display Selected Image Compnent
  */
 export const MediaTab = ({ galleryThumbnail = false, buttonTitle = 'Upload Media' }) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [activityImages, setActivityImages] = useState([]); // all images intialize
   const { selectedMedia, resetMedia } = useMediaStore(); // Retrive images From Media
 
   const {
@@ -29,12 +27,9 @@ export const MediaTab = ({ galleryThumbnail = false, buttonTitle = 'Upload Media
     name: 'media_gallery',
   });
 
-  //  Hydarte First if there is already media exist
-  useEffect(() => {
-    if (media_gallery?.length > 0) {
-      setActivityImages(media_gallery); // Sync from form to local state
-    }
-  }, []);
+  // Initialize with existing media from form (lazy initialization)
+  const [activityImages, setActivityImages] = useState(() => media_gallery || []);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   // sideeffect for getting image from gallery popup
   useEffect(() => {

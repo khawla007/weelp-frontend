@@ -1,4 +1,4 @@
-import { authApi } from '../axiosInstance';
+import { authApi, createAuthenticatedServerApi } from '../axiosInstance';
 import { log } from '../utils';
 
 /**
@@ -38,6 +38,27 @@ export async function getAllPlacesAdmin(search = '') {
       headers: { Accept: 'application/json' },
     });
     return response?.data;
+  } catch (error) {
+    return {};
+  }
+}
+
+/**
+ * Get Single Place on Admin side
+ * @param {Number} id
+ * @returns {Promise<object>} - Place data or empty object if not found
+ */
+export async function getSinglePlaceAdmin(id) {
+  try {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get(`/api/admin/places/${id}`, {
+      headers: { Accept: 'application/json' },
+    });
+    if (response.status === 200) {
+      return response.data;
+    }
+
+    return {};
   } catch (error) {
     return {};
   }

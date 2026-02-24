@@ -22,7 +22,7 @@ const EditItinerary = async ({ params }) => {
   const { data: categories = [] } = categoriesData; // categories
   const { data: attributes = [] } = attributesData; // for attributes
 
-  const { id } = await params;
+  const { id } = params;
   const itinerarydata = await getSingleItineraryAdmin(id); //dyanmic id
 
   // check if not found

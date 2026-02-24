@@ -8,15 +8,9 @@ import 'swiper/css/navigation';
 import { BlogCard } from '../singleproductguide';
 
 const BlogSlider = ({ data }) => {
-  const [intialize, setInitialize] = useState('');
-  useEffect(() => {
-    setInitialize(true);
-  }, []);
-
-  if (intialize) {
-    return (
-      <div className="">
-        <Swiper
+  return (
+    <div className="">
+      <Swiper
           modules={[Navigation]}
           spaceBetween={20}
           navigation={true}
@@ -46,10 +40,9 @@ const BlogSlider = ({ data }) => {
               <BlogCard imageSrc={val?.media_gallery?.[0]?.url} blogTitle={val?.name} {...val} />
             </SwiperSlide>
           ))}
-        </Swiper>
-      </div>
-    );
-  }
+      </Swiper>
+    </div>
+  );
 };
 
 export default BlogSlider;

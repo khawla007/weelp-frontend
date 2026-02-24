@@ -31,7 +31,7 @@ const bookingSchema = z.object({
 
 // activity
 export default function SingleProductForm({ productId, productData }) {
-  const [initform, setInitForm] = useState(false);
+  const [initform] = useState(() => true);
   const [showCalendar, setShowCalendar] = useState(false); // date & howmany
   const [showHowMany, setShowHowMany] = useState(false); // date & howmany
   const [showResponse, setShowResponse] = useState(false);
@@ -58,10 +58,6 @@ export default function SingleProductForm({ productId, productData }) {
       howMany: { adults: 1, children: 0, infants: 0 },
     },
   });
-
-  useEffect(() => {
-    setInitForm(true);
-  }, []);
 
   const [howMany, setHowMany] = useState({
     adults: 1,

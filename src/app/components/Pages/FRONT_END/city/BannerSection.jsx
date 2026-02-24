@@ -10,10 +10,8 @@ import { log } from '@/lib/utils';
 
 // banner section city
 const BannerSection = () => {
-  const [initialize, setInitialize] = useState(false);
   const { city } = useParams();
-
-  const [cityDetails, setcityDetails] = useState({});
+  const [cityDetails, setcityDetails] = useState(null);
 
   // fetch dynamic city
   useEffect(() => {
@@ -23,19 +21,22 @@ const BannerSection = () => {
         setcityDetails(response?.data);
       } catch (error) {
         console.log('Error fetching city details:', error);
-        return [];
+        setcityDetails({ data: { name: '', description: '' } }); // Set default on error
       }
     };
 
     if (city) fetchcityDetails();
-    setInitialize(true);
   }, [city]);
 
-  if (initialize) {
-    // get details
-    const { data = [] } = cityDetails;
-    const { name, description } = data;
-    return (
+  // Show loading state or render when data is ready
+  if (!cityDetails) {
+    return null; // or return a loading spinner
+  }
+
+  // get details
+  const { data = [] } = cityDetails;
+  const { name, description } = data;
+  return (
       <section className="flex lg:h-[60vh] py-12 relative page_city_banner" style={{ background: 'linear-gradient(to bottom, #FFFFFF, #EAF1EE)' }}>
         <div className="flex flex-col lg:flex-row container mx-auto gap-4 p-6">
           <div className="relative flex-1 w-full lg:w-1/3 py-4 ">
@@ -55,7 +56,6 @@ const BannerSection = () => {
         <Icons.Vector2 className={'hidden lg:block absolute bottom-16 left-4 rotate-45 scale-[.2]'} />
       </section>
     );
-  }
-};
+  };
 
 export default BannerSection;

@@ -4,7 +4,7 @@ import { delay, log } from '@/lib/utils';
 import { getSchedulesByVendorIdAdmin } from '@/lib/services/vendors';
 
 export async function GET(req, { params }) {
-  const { vendorId } = await params;
+  const { vendorId } = params;
 
   const query = req.nextUrl.search;
 

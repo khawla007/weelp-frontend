@@ -51,16 +51,19 @@ export function QuickActionsSkeleton() {
  * Displays placeholder chart while loading
  */
 export function OverviewSkeleton() {
+  // Predefined heights for variety (avoid Math.random in render)
+  const heights = [45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 55];
+
   return (
     <div className="w-full h-[350px] flex items-end justify-between gap-2 px-4">
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
         <div key={i} className="flex-1 flex flex-col items-center gap-2">
-          <Skeleton 
-            className="w-full rounded-t-sm" 
-            style={{ 
-              height: `${Math.floor(Math.random() * 60 + 40)}%`,
+          <Skeleton
+            className="w-full rounded-t-sm"
+            style={{
+              height: `${heights[i % heights.length]}%`,
               minHeight: '60px'
-            }} 
+            }}
           />
           <Skeleton className="h-3 w-6" />
         </div>

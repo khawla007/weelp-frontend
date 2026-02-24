@@ -1,4 +1,3 @@
-'use server';
 import { createAuthenticatedServerApi, publicApi } from '../axiosInstance';
 import { log } from '../utils';
 
@@ -89,7 +88,10 @@ export async function getPackageDataByCity(city) {
 
     return { success: false, message: 'Not Found' };
   } catch (error) {
-    console.error(`Error fetching Packages of City: ${city}`, error);
+    // Only log unexpected errors, not 404s (which are expected for cities with no packages)
+    if (error.response?.status !== 404) {
+      console.error(`Unexpected error fetching Packages of City: ${city}`, error);
+    }
 
     return { success: false, message: 'Something Went Wrong' };
   }

@@ -58,7 +58,7 @@ export async function getAllItinerariesAdmin(search = '') {
  */
 export async function getItineraryDataByCity(city) {
   try {
-    const response = await publicApi.get(`/api/${city}/itineraries `, {
+    const response = await publicApi.get(`/api/${city}/itineraries`, {
       headers: { Accept: 'application/json' },
     });
 
@@ -68,7 +68,10 @@ export async function getItineraryDataByCity(city) {
 
     return { success: false, message: 'Not Found' };
   } catch (error) {
-    console.error(`Error fetching itineraries of City: ${city}`, error);
+    // Only log unexpected errors, not 404s (which are expected for cities with no itineraries)
+    if (error.response?.status !== 404) {
+      console.error(`Unexpected error fetching itineraries of City: ${city}`, error);
+    }
 
     return { success: false, message: 'Something Went Wrong' };
   }

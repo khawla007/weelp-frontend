@@ -6,7 +6,7 @@ import { getSingleStateAdmin } from '@/lib/services/state';
 import CreateStateForm from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/destinations/destinations_forms/CreateStateForm';
 
 const EditCountryPage = async ({ params }) => {
-  const { id } = await params;
+  const { id } = params;
 
   const stateData = await getSingleStateAdmin(id); //dyanmic id
 

@@ -5,7 +5,7 @@ import { getSingleCityAdmin } from '@/lib/services/cities';
 import CreateCityForm from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/destinations/destinations_forms/CreateCityForm';
 
 const EditCitiesPage = async ({ params }) => {
-  const { id } = await params;
+  const { id } = params;
 
   const cityData = await getSingleCityAdmin(id); //dyanmic id
 

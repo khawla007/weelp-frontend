@@ -9,7 +9,7 @@ import { log } from '@/lib/utils';
  * @returns {Promise<NextResponse>}
  */
 export async function GET(req, { params }) {
-  const { itemType } = await params;
+  const { itemType } = params;
 
   const data = await getAllItemsByTypeOptions(itemType);
   return NextResponse.json({ ...data });

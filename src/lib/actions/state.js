@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -62,7 +62,8 @@ export const createState = async (data = {}) => {
     await delay(500);
     // log(data);
 
-    const res = await authApi.post('/api/admin/states', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/states', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -111,7 +112,8 @@ export const editState = async (stateId, data = {}) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/states/${stateId}`, data, {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/states/${stateId}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -164,7 +166,8 @@ export const editState = async (stateId, data = {}) => {
  */
 export async function deleteState(stateId) {
   try {
-    const res = await authApi.delete(`/api/admin/states/${stateId}/`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/states/${stateId}/`);
 
     revalidatePath('/dashboard/admin/destinations/states/'); //revalidating path
     return { success: true, message: res.data?.message };

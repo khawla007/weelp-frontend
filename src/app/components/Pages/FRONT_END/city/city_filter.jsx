@@ -11,7 +11,7 @@ import { Star } from 'lucide-react';
 import { LoadingPage } from '@/app/components/Animation/Cards';
 import { log } from '@/lib/utils';
 
-export const CityFilter = () => {
+export const CityFilter = ({ hasAnyData = true }) => {
   const { city } = useParams();
 
   const [products, setProducts] = useState([]);
@@ -75,6 +75,14 @@ export const CityFilter = () => {
     };
   }, [debouncedFetchProducts]);
 
+  // Add aria-label to slider thumbs for accessibility
+  useEffect(() => {
+    const sliders = document.querySelectorAll('.range-slider__thumb');
+    sliders.forEach((slider, index) => {
+      slider.setAttribute('aria-label', index === 0 ? `Minimum price: $${priceRange[0]}` : `Maximum price: $${priceRange[1]}`);
+    });
+  }, [priceRange]);
+
   // Category selection handler
   const handleCheckboxChange = useCallback((category) => {
     setSelectedCategories((prevSelected) => (category === 'all' ? [] : prevSelected.includes(category) ? prevSelected.filter((item) => item !== category) : [...prevSelected, category]));
@@ -99,29 +107,42 @@ export const CityFilter = () => {
   const categoryList = useMemo(
     () =>
       categories.map((category, index) => (
-        <label key={index} className="flex items-center space-x-2 cursor-pointer text-md font-medium text-grayDark ">
+        <label key={index} className={`flex items-center space-x-2 text-md font-medium text-grayDark ${!hasAnyData ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
           <input
             type="checkbox"
+            id={`category-${index}`}
+            name="category"
             value={category?.name}
             checked={selectedCategories.includes(category?.name)}
             onChange={() => handleCheckboxChange(category?.name)}
-            className={`w-4 h-4 transition-all border-2 rounded cursor-pointer ${selectedCategories.includes(category?.name) && 'accent-secondaryDark'}`}
+            disabled={!hasAnyData}
+            className={`w-4 h-4 transition-all border-2 rounded ${!hasAnyData ? 'cursor-not-allowed' : 'cursor-pointer'} ${selectedCategories.includes(category?.name) && 'accent-secondaryDark'}`}
           />
           <span>{category?.name}</span>
         </label>
       )),
-    [categories, selectedCategories, handleCheckboxChange],
+    [categories, selectedCategories, handleCheckboxChange, hasAnyData],
   );
 
   // Star rating filter component
   const StarRatingFilter = () => (
     <div className="mt-6">
       <h2 className="text-lg font-medium text-[#143042] my-4">Ratings</h2>
-      <div className="flex w-fit flex-col gap-4">
+      <div className={`flex w-fit flex-col gap-4 ${!hasAnyData ? 'opacity-50 pointer-events-none' : ''}`}>
         {[3, 4, 5].map((rating) => (
-          <label key={rating} className="flex cursor-pointer items-center space-x-1 py-1 rounded">
-            <input type="radio" name="rating" value={rating} checked={ratingFilter === rating} onChange={() => handleRatingChange(rating)} className="size-5 checked:accent-secondaryDark" />
-            <div className="flex">
+          <label key={rating} className={`flex items-center space-x-1 py-1 rounded ${!hasAnyData ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+            <input
+              type="radio"
+              id={`rating-${rating}`}
+              name="rating"
+              value={rating}
+              aria-label={`${rating} stars`}
+              checked={ratingFilter === rating}
+              onChange={() => handleRatingChange(rating)}
+              disabled={!hasAnyData}
+              className={`size-5 ${!hasAnyData ? 'cursor-not-allowed' : 'cursor-pointer'} checked:accent-secondaryDark`}
+            />
+            <div className="flex" aria-hidden="true">
               {Array.from({ length: rating }).map((_, i) => (
                 <Star key={i} size={20} className="stroke-none fill-yellow-500" />
               ))}
@@ -138,14 +159,16 @@ export const CityFilter = () => {
       <div className="w-full flex-2 p-4 px-8 sm:my-12 sm:max-w-xs bg-white h-fit shadow-md rounded-lg">
         <h2 className="text-lg font-medium text-[#143042] my-4">Category</h2>
         <div className="flex flex-col space-y-2 h-48 overflow-x-hidden overflow-auto">
-          <label className="flex items-center space-x-2 cursor-pointer text-md font-medium text-grayDark">
+          <label className={`flex items-center space-x-2 text-md font-medium text-grayDark ${!hasAnyData ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
             <input
               type="checkbox"
+              id="category-all"
               name="category"
               value="all"
               checked={selectedCategories.length === 0}
               onChange={() => handleCheckboxChange('all')}
-              className="size-5 transition-all border-2 rounded cursor-pointer checked:accent-secondaryDark"
+              disabled={!hasAnyData}
+              className={`size-5 transition-all border-2 rounded ${!hasAnyData ? 'cursor-not-allowed' : 'cursor-pointer'} checked:accent-secondaryDark`}
             />
             <span>All Category</span>
           </label>
@@ -155,9 +178,20 @@ export const CityFilter = () => {
         {/* Price Range Slider */}
         <div className="mt-6">
           <h2 className="text-lg font-medium text-[#143042] mt-6 mb-4">Price Range</h2>
-          <div className="px-2 py-4">
-            <ReactRangeSliderInput min={100} max={5000} step={10} value={priceRange} onInput={handlePriceRangeChange} className="w-full" />
-          </div>
+          <label className={`block ${!hasAnyData ? 'opacity-50 pointer-events-none' : ''}`}>
+            <span className="sr-only">Price Range</span>
+            <div className="px-2 py-4">
+              <ReactRangeSliderInput
+                min={100}
+                max={5000}
+                step={10}
+                value={priceRange}
+                onInput={handlePriceRangeChange}
+                className="w-full"
+                disabled={!hasAnyData}
+              />
+            </div>
+          </label>
           <div className="flex justify-between text-sm text-gray-600 mt-2">
             <span className="text-md font-medium text-grayDark">${priceRange[0]}</span>
             <span className="text-md font-medium text-grayDark">${priceRange[1]}</span>
@@ -183,7 +217,9 @@ export const CityFilter = () => {
               />
             ))
           ) : (
-            <span>Sorry No Item Found</span>
+            <div className="w-full flex items-center justify-center min-h-[300px]">
+              <span className="text-lg text-gray-600">Sorry No Item Found</span>
+            </div>
           )}
         </div>
 

@@ -9,14 +9,8 @@ import ReviewCard from '../ReviewCard';
 import { ReviewCardCarouselAnimation } from '../Animation/ProductAnimation';
 
 const ReviewSlider = () => {
-  const [initialize, setInitialize] = useState(null);
-  useEffect(() => {
-    setInitialize(true);
-  }, []);
-  if (initialize) {
-    return (
-      // <div>
-      <Swiper
+  return (
+    <Swiper
         modules={[Navigation, Autoplay]}
         spaceBetween={20}
         navigation={true}
@@ -46,11 +40,9 @@ const ReviewSlider = () => {
             <ReviewCard title={'Markus_K'} rating={4} comment={'Very well and good organized trip to the Desert West Quads, Falcon Show, Camelriding and Delicious Barbecue.'} />
           </SwiperSlide>
         ))}
-      </Swiper>
-      // </div>
-    );
-  }
-  return <ReviewCardCarouselAnimation />;
+    </Swiper>
+    // </div>
+  );
 };
 
 export default ReviewSlider;

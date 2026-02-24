@@ -2,7 +2,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '@/lib/axiosInstance';
+import { getAuthApi } from '@/lib/axiosInstance';
 import { delay, log } from '@/lib/utils';
 import { ApiError } from '@/dto/Error';
 import { ApiResponse } from '@/dto/Success';
@@ -38,7 +38,8 @@ export const createReviewByCustomer = async (data) => {
     // Optional: simulate network delay for better UX testing
     await delay(500);
 
-    const response = await authApi.post('/api/customer/review', formData, {
+    const api = await getAuthApi();
+    const response = await api.post('/api/customer/review', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -118,7 +119,8 @@ export const editReviewByCustomer = async (data, id) => {
     // Optional: simulate network delay
     await delay(500);
 
-    const res = await authApi.post(`/api/customer/review/${id}`, formData, {
+    const api = await getAuthApi();
+    const res = await api.post(`/api/customer/review/${id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -185,7 +187,8 @@ export const deleteReviewCustomer = async (reviewId) => {
     }
 
     // Call API
-    const res = await authApi.delete(`/api/customer/review/${reviewId}/`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/customer/review/${reviewId}/`);
 
     // Revalidate the dashboard reviews page
     revalidatePath('/dashboard/customer/reviews');

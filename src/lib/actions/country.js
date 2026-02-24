@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -60,7 +60,8 @@ export const createCountry = async (data = {}) => {
     await delay(500);
     // log(data);
 
-    const res = await authApi.post('/api/admin/countries', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/countries', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -108,7 +109,8 @@ export const editCountry = async (countryId, data = {}) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/countries/${countryId}`, data, {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/countries/${countryId}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -161,7 +163,8 @@ export const editCountry = async (countryId, data = {}) => {
  */
 export async function deleteCountry(countryId) {
   try {
-    const res = await authApi.delete(`/api/admin/countries/${countryId}/`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/countries/${countryId}/`);
 
     revalidatePath('/dashboard/admin/destinations/countries/'); //revalidating path
     return { success: true, message: res.data?.message };

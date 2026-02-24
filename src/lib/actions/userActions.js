@@ -1,14 +1,15 @@
 'use server';
 
 import { delay, log } from '@/lib/utils';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { revalidatePath } from 'next/cache';
 
 //  For Creating Users
 export const createUserAction = async (formData) => {
   try {
     await delay(2000);
-    const response = await authApi.post('/api/users/create', formData);
+    const api = await getAuthApi();
+    const response = await api.post('/api/admin/users/create', formData);
     return { success: true, data: response.data };
   } catch (error) {
     if (error?.response?.status === 422) {
@@ -28,7 +29,8 @@ export const createUserAction = async (formData) => {
 // Edit UserProfile {** PUT}
 export const editUserProfileAction = async (formData) => {
   try {
-    const response = await authApi.put('/api/customer/profile', formData, {
+    const api = await getAuthApi();
+    const response = await api.put('/api/customer/profile', formData, {
       headers: { 'Content-Type': 'application/json' },
     });
 
@@ -54,7 +56,8 @@ export const editUserAdmin = async (userId, data = {}) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/users/${userId}`, data, {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/users/${userId}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },

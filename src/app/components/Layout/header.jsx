@@ -10,14 +10,7 @@ const Header = () => {
   const isClient = useIsClient(); // hydration
   const { stickyHeader, setStickyHeader } = useUIStore();
 
-  useEffect(() => {
-    window.addEventListener('scroll', isSticky);
-    return () => {
-      window.removeEventListener('scroll', isSticky);
-    };
-  }, []);
-
-  // sticky header
+  // sticky header function - declared before useEffect
   const isSticky = () => {
     if (window.scrollY > 50) {
       setStickyHeader(true);
@@ -25,6 +18,13 @@ const Header = () => {
       setStickyHeader(false);
     }
   };
+
+  useEffect(() => {
+    window.addEventListener('scroll', isSticky);
+    return () => {
+      window.removeEventListener('scroll', isSticky);
+    };
+  }, []);
 
   if (isClient) {
     return (

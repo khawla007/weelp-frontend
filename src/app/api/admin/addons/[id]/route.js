@@ -5,7 +5,7 @@ import { log } from '@/lib/utils';
 
 export async function GET(req, { params }) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const response = await getSingleAddOnAdmin(id);
 
     return NextResponse.json(response, { status: 200 });

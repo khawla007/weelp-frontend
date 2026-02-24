@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 import { ApiError } from '@/dto/Error';
 
@@ -14,7 +14,8 @@ export const createAddOn = async (data) => {
   try {
     await delay(500);
 
-    const res = await authApi.post('/api/admin/addons/', data);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/addons/', data);
 
     revalidatePath('/dashboard/admin/addon'); // create add ons
 
@@ -52,7 +53,8 @@ export const editAddOn = async (id, data) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/addons/${id}`, data);
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/addons/${id}`, data);
 
     revalidatePath('/dashboard/admin/addon'); // create add ons
 
@@ -89,7 +91,8 @@ export const deleteAddon = async (id) => {
   try {
     await delay(500);
 
-    const res = await authApi.delete(`/api/admin/addons/${id}`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/addons/${id}`);
 
     revalidatePath('/dashboard/admin/addon'); // create add ons
 

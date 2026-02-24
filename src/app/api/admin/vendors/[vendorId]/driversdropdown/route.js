@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { getDriversByVendorIdOptions } from '@/lib/services/vendors'; // get drivers by vendor id
 
 export async function GET(req, { params }) {
-  const { vendorId } = await params;
+  const { vendorId } = params;
 
   const data = await getDriversByVendorIdOptions(vendorId);
 

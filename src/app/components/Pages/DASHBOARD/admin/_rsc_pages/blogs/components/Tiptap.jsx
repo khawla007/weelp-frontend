@@ -48,7 +48,8 @@ const Tiptap = ({ content = '', onChange }) => {
     return <div className="min-h-[200px] w-full border rounded-md p-4">Loading editor...</div>;
   }
 
-  const MenuBar = () => {
+  // Memoize MenuBar to avoid creating component during render
+  const MenuBar = React.useMemo(() => {
     if (!editor) {
       return null;
     }
@@ -137,7 +138,8 @@ const Tiptap = ({ content = '', onChange }) => {
         </button>
       </div>
     );
-  };
+  }, [editor]);
+
   return (
     <div className="w-full border rounded-md overflow-hidden">
       <MenuBar />

@@ -9,14 +9,8 @@ import Singleproductguide from '../singleproductguide';
 import { DestinationCarouselAnimation } from '../Animation/ProductAnimation';
 
 const PostSlider = ({ data }) => {
-  const [intialize, setInitialize] = useState('');
-  useEffect(() => {
-    setInitialize(true);
-  }, []);
-
-  if (intialize) {
-    return (
-      <div className="">
+  return (
+    <div className="">
         <Swiper
           modules={[Navigation]}
           spaceBetween={20}
@@ -47,11 +41,9 @@ const PostSlider = ({ data }) => {
               <Singleproductguide postTitle={val?.name} imageSrc={val?.image} subtitle={val?.description} />
             </SwiperSlide>
           ))}
-        </Swiper>
-      </div>
-    );
-  }
-  return <DestinationCarouselAnimation />;
+      </Swiper>
+    </div>
+  );
 };
 
 export default PostSlider;

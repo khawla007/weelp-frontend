@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -61,7 +61,8 @@ export const createCity = async (data = {}) => {
   try {
     await delay(500);
 
-    const res = await authApi.post('/api/admin/cities', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/cities', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -114,7 +115,8 @@ export const editCity = async (cityId, data = {}) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/cities/${cityId}`, data, {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/cities/${cityId}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -167,7 +169,8 @@ export const editCity = async (cityId, data = {}) => {
  */
 export async function deleteCity(cityId) {
   try {
-    const res = await authApi.delete(`/api/admin/cities/${cityId}/`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/cities/${cityId}/`);
 
     revalidatePath('/dashboard/admin/destinations/cities/'); //revalidating path
     return { success: true, message: res.data?.message };

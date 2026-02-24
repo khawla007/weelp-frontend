@@ -1,6 +1,6 @@
 'use server';
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay } from '../utils';
 import { log } from '../utils';
 
@@ -22,7 +22,8 @@ export async function uploadMedia(formData) {
 
     // Use axios to post FormData
     await delay(500);
-    const res = await authApi.post('api/admin/media/store', formData, {
+    const api = await getAuthApi();
+    const res = await api.post('api/admin/media/store', formData, {
       headers: {
         'Content-Type': 'multipart/form-data', // Ensure this header is set for file uploads
       },
@@ -54,7 +55,8 @@ export async function updateMediaImage(formData) {
 
     // Use axios to post FormData
     if (id) {
-      const res = await authApi.put(`api/admin/media/update/${id}`, formData, {
+      const api = await getAuthApi();
+      const res = await api.put(`api/admin/media/update/${id}`, formData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -90,7 +92,8 @@ export async function deleteMediaImageById(imageId) {
 
     // Use axios to post FormData
     if (imageId) {
-      const res = await authApi.delete(`api/admin/media/delete/${imageId}`);
+      const api = await getAuthApi();
+      const res = await api.delete(`api/admin/media/delete/${imageId}`);
 
       // path refresh
       revalidatePath('/dashboard/admin/media');

@@ -12,7 +12,7 @@ import { useParams } from 'next/navigation';
 import { omit } from 'lodash';
 import { useIsClient } from '@/hooks/useIsClient';
 import { FORM_PLACE_VALUES_DEFAULT } from '@/constants/forms/country';
-import { editCity } from '@/lib/actions/cities'; // action for mutation
+import { editPlace } from '@/lib/actions/places'; // action for mutation
 import { createPlace } from '@/lib/actions/places';
 
 // Lazy Load Client Components
@@ -139,7 +139,7 @@ const CreatePlaceForm = ({ apiFormData = {} }) => {
     try {
       let res;
       if (id) {
-        res = await editCity(id, mergedData); // edit action
+        res = await editPlace(id, mergedData); // edit action
       } else {
         res = await createPlace(mergedData); // create action
       }

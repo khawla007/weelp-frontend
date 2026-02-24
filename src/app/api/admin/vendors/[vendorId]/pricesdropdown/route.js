@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { getPriceByVendorIdOptions } from '@/lib/services/vendors';
 
 export async function GET(req, { params }) {
-  const { vendorId } = await params;
+  const { vendorId } = params;
 
   const data = await getPriceByVendorIdOptions(vendorId);
   return NextResponse.json({ ...data });

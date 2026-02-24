@@ -10,18 +10,10 @@ import DestinationCard from '../DestinationCard';
 import { DestinationCarouselAnimation } from '../Animation/ProductAnimation';
 
 const DestinationSlider = ({ data }) => {
-  const [initialize, setInitialize] = useState(null);
-  // const [postData, setPostData] = useState()
-
   const postData = useMemo(() => data || [], [data]);
 
-  useEffect(() => {
-    // setPostData(data)
-    setInitialize(true);
-  }, [data]);
-  if (initialize) {
-    return (
-      <div>
+  return (
+    <div>
         {/* <h2 className='text-[28px] font-medium text-Nileblue'>Top Activities</h2> */}
         <Swiper
           modules={[Navigation]}
@@ -58,11 +50,9 @@ const DestinationSlider = ({ data }) => {
                 <DestinationCard imgUrl={val?.image} url={val?.slug} title={val?.name} description={String(val?.description).slice(0, 25)} />
               </SwiperSlide>
             ))}
-        </Swiper>
-      </div>
-    );
-  }
-  return <DestinationCarouselAnimation />;
+      </Swiper>
+    </div>
+  );
 };
 
 export default DestinationSlider;

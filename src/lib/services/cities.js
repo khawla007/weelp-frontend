@@ -79,9 +79,9 @@ export async function getAllCitiesOptionsAdmin() {
     if (response.status === 200) {
       return response?.data?.data || []; // extract List
     }
-    return {};
+    return [];
   } catch (error) {
-    return {};
+    return [];
   }
 }
 

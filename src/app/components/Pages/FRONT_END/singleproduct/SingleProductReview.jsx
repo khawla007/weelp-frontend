@@ -36,13 +36,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 const ReviewSlider = () => {
-  const [initialize, setInitialize] = useState(null);
-  useEffect(() => {
-    setInitialize(true);
-  }, []);
-  if (initialize) {
-    return (
-      <Swiper
+  return (
+    <Swiper
         modules={[Navigation, Autoplay]}
         spaceBetween={20}
         navigation={true}
@@ -71,9 +66,7 @@ const ReviewSlider = () => {
         ))}
       </Swiper>
     );
-  }
-  return <ReviewCardCarouselAnimation />;
-};
+  };
 
 // Single Prouct Review
 import TabButton from '@/app/components/TabButton';

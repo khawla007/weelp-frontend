@@ -85,8 +85,11 @@ export async function getActivitisDataByCity(city) {
 
     return { success: false, message: 'Not Found' };
   } catch (error) {
-    console.error(`Error fetching Activities of City: ${city}`, error);
+    // Only log unexpected errors, not 404s (which are expected for cities with no activities)
+    if (error.response?.status !== 404) {
+      console.error(`Unexpected error fetching Activities of City: ${city}`, error);
+    }
 
-    return { success: false, message: 'Something Went Wrong' };
+    return { success: false, message: 'Something Went Wrong', error: error.message };
   }
 }

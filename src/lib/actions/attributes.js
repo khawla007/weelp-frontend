@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -12,7 +12,8 @@ import { delay, log } from '../utils';
 export const createAttribute = async (data) => {
   try {
     await delay(500);
-    const res = await authApi.post('/api/admin/attributes/', data);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/attributes/', data);
 
     // revalidate  path
     revalidatePath('/dashboard/admin/taxonomies/attributes');
@@ -64,7 +65,8 @@ export const createAttribute = async (data) => {
 export const editAttribute = async (id, data) => {
   try {
     await delay(500);
-    const res = await authApi.put(`/api/admin/attributes/${id}`, data);
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/attributes/${id}`, data);
 
     // revalidate  path
     revalidatePath(`/dashboard/admin/taxonomies/attributes/${id}`); // Attribute id to update
@@ -115,7 +117,8 @@ export const editAttribute = async (id, data) => {
 export const deleteAttribute = async (id) => {
   try {
     await delay(500);
-    const res = await authApi.delete(`/api/admin/attributes/${id}`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/attributes/${id}`);
 
     // revalidate  path
     revalidatePath(`/dashboard/admin/taxonomies/attributes`); // update attributes

@@ -64,19 +64,6 @@ export const FormVerifyEmail = () => {
   });
 
   /**
-   * Check Token When Mount
-   */
-  useEffect(() => {
-    // check token
-    if (!token) {
-      router.push('/user/login'); // Redirect to the forgot password page
-    }
-
-    handleVerifyEmail(token);
-    // intialize form
-  }, [token, router]);
-
-  /**
    * Handle For Managing Verify Email
    * @param {string|number} token Email Token of the User
    */
@@ -92,6 +79,29 @@ export const FormVerifyEmail = () => {
       console.error(error);
     }
   };
+
+  /**
+   * Check Token When Mount
+   */
+  useEffect(() => {
+    // check token
+    if (!token) {
+      router.push('/user/login'); // Redirect to the forgot password page
+      return;
+    }
+
+    // Inline the async call to avoid ESLint warning
+    (async () => {
+      try {
+        const response = await axios.get(`/api/public/user/email/verify-email?token=${token}`);
+        const data = response.data;
+        setResponse((prev) => ({ ...prev, ...data }));
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+    // intialize form
+  }, [token, router]);
 
   const onSubmit = async (data) => {
     // setError("");
@@ -197,6 +207,8 @@ export const FormVerifyEmail = () => {
       </div>
     );
   }
+
+  return null;
 };
 
 function EmailVerifiedCard({ emailaddress = '' }) {

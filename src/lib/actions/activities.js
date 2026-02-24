@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -13,7 +13,8 @@ export const createActivity = async (data) => {
   try {
     await delay(500);
     log(data);
-    const res = await authApi.post('/api/admin/activities', data);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/activities', data);
 
     return {
       success: true,
@@ -62,7 +63,8 @@ export const editActivity = async (id, data) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/activities/${id}`, data);
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/activities/${id}`, data);
 
     // revalidate path
     if (res.status == 200) {
@@ -112,7 +114,8 @@ export const editActivity = async (id, data) => {
  */
 export async function deleteActivity(activityId) {
   try {
-    const res = await authApi.delete(`/api/admin/activities/${activityId}/`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/activities/${activityId}/`);
 
     // revalidate path
     revalidatePath('/dashboard/admin/activities'); //revalidating path
@@ -131,7 +134,8 @@ export async function deleteActivity(activityId) {
 export async function deleteActivityItems({ activityId, deleted_location_ids = [], deleted_seasonal_pricing_ids = [], deleted_group_discounts_ids = [], deleted_promo_codes_ids = [] }) {
   try {
     // delete data
-    const res = await authApi.delete(`/api/admin/activities/${activityId}/partial-delete`, {
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/activities/${activityId}/partial-delete`, {
       data: {
         deleted_location_ids,
         deleted_seasonal_pricing_ids,
@@ -160,7 +164,8 @@ export async function deleteActivityItems({ activityId, deleted_location_ids = [
  */
 export async function deleteMultipleActivities(activity_ids = []) {
   try {
-    const res = await authApi.post(`/api/admin/activities/bulk-delete`, {
+    const api = await getAuthApi();
+    const res = await api.post(`/api/admin/activities/bulk-delete`, {
       activity_ids,
     });
 
