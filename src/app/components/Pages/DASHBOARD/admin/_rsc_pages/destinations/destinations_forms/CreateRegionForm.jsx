@@ -15,7 +15,6 @@ import { createRegion, editRegion } from '@/lib/actions/regionActions';
 import useSWR from 'swr';
 import { fetcher } from '@/lib/fetchers';
 import { Checkbox } from '@/components/ui/checkbox';
-import { NavigationDestinations } from '../components/NavigationDestinations';
 
 const FORM_REGION_VALUES_DEFAULT = {
   name: '',
@@ -100,10 +99,10 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
 
   return (
     <div className="min-h-screen w-full bg-gray-50 py-4 sm:px-6 lg:px-8">
-      <NavigationDestinations
-        title={id ? 'Edit Region' : 'New Region'}
-        description={`${id ? 'Edit' : 'Create a new'} region with detailed information`}
-      />
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">{id ? 'Edit Region' : 'New Region'}</h1>
+        <p className="text-sm text-gray-600 mt-1">{`${id ? 'Edit' : 'Create a new'} region with detailed information`}</p>
+      </div>
 
       <Card className="max-w-3xl mx-auto">
         <CardHeader>
