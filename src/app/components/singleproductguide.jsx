@@ -9,12 +9,12 @@ import { FALLBACK_IMAGE } from '@/constants/image';
 const Singleproductguide = ({ imageSrc, postTitle, subtitle }) => {
   const modifiedSubtitle = String(subtitle).slice(0, 30);
   return (
-    <div className="max-w-full sm:max-w-sm  flex flex-col">
+    <div className="max-w-full sm:max-w-sm flex flex-col bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50 mb-4">
       <Link href={'/blogs/blog'}>
-        <img src={imageSrc || '/assets/images/8597548-ai 1.jpg'} alt={'China'} className="object-cover w-full rounded-lg h-60" />
-        <div className="text-white bg-white p-4 rounded-md">
-          <h2 className="text-[16px] font-medium text-blackish">{postTitle || 'Solo'}</h2>
-          <p className="text-[20px] font-medium text-[#142A38]">{modifiedSubtitle || 'Best Places for Solo Travel'}</p>
+        <img src={imageSrc || '/assets/images/8597548-ai 1.jpg'} alt={'China'} className="object-cover w-full h-52 sm:h-60" />
+        <div className="p-4 sm:p-5">
+          <h2 className="text-xs sm:text-sm font-medium text-secondaryDark mb-1 uppercase tracking-wider">{postTitle || 'Solo'}</h2>
+          <p className="text-base sm:text-xl font-semibold text-Nileblue line-clamp-2">{modifiedSubtitle || 'Best Places for Solo Travel'}</p>
         </div>
       </Link>
     </div>
@@ -29,12 +29,12 @@ export default Singleproductguide;
  */
 export const BlogCard = ({ imageSrc = '', blogTitle = '', created_at = '', slug = '' }) => {
   return (
-    <div className='"max-w-full sm:max-w-sm w-full flex flex-col'>
+    <div className='max-w-full sm:max-w-sm w-full flex flex-col bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50 mb-4'>
       <Link href={`/blogs/${slug}`}>
-        <Image alt="blog_logo" src={imageSrc ? imageSrc : FALLBACK_IMAGE.src} className="w-full rounded-lg h-60" width={100} height={100} style={{ objectFit: 'cover' }} />
-        <div className="text-white py-4 rounded-md">
-          <h2 className="text-[20px] font-semibold text-black">{blogTitle ? blogTitle : "Spend the night on the set of SEVENTEEN's latest music video"}</h2>
-          {created_at && <span className="text-sm uppercase tracking-widest text-blackish">{format(created_at, 'MMM dd yyyy')}</span>}
+        <Image alt="blog_logo" src={imageSrc ? imageSrc : FALLBACK_IMAGE.src} className="w-full h-52 sm:h-60" width={400} height={250} style={{ objectFit: 'cover' }} />
+        <div className="p-4 sm:p-5">
+          <h2 className="text-base sm:text-xl font-semibold text-Nileblue mb-3 line-clamp-2">{blogTitle ? blogTitle : "Spend the night on the set of SEVENTEEN's latest music video"}</h2>
+          {created_at && <span className="text-xs sm:text-sm uppercase tracking-widest text-[#5A5A5A]">{format(created_at, 'MMM dd yyyy')}</span>}
         </div>
       </Link>
     </div>
@@ -47,10 +47,10 @@ export const BlogCard = ({ imageSrc = '', blogTitle = '', created_at = '', slug 
 export const BlogCard2 = ({ imageSrc = '', created_at = '', slug = '' }) => {
   const modifiedSubtitle = String(subtitle).slice(0, 30);
   return (
-    <div className="max-w-full sm:max-w-sm  flex flex-col">
+    <div className="max-w-full sm:max-w-sm flex flex-col bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50">
       <Link href={'/blogs/blog'}>
-        <img src={imageSrc || '/assets/images/8597548-ai 1.jpg'} alt={'China'} className="object-cover w-full rounded-lg h-60" />
-        <div className="text-white bg-white p-4 rounded-md">
+        <img src={imageSrc || '/assets/images/8597548-ai 1.jpg'} alt={'China'} className="object-cover w-full h-60" />
+        <div className="p-4">
           <h2 className="text-[16px] font-medium text-blackish">{postTitle || 'Solo'}</h2>
           <p className="text-[20px] font-medium text-[#142A38]">{modifiedSubtitle || 'Best Places for Solo Travel'}</p>
         </div>

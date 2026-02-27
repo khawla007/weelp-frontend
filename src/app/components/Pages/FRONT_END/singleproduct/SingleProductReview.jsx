@@ -1,9 +1,16 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { ReviewCard2 } from '@/app/components/ReviewCard';
+import { ReviewCard2, SingleProductReviewCard } from '@/app/components/ReviewCard';
 import TotalReviews from '@/app/components/TotalReviews';
 import { SingleProductPhotoGallery } from '@/app/components/SingleProductPhotoGallery';
 import { allReviews } from '@/app/Data/ShopData';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Autoplay } from 'swiper/modules';
+import { ReviewCardCarouselAnimation } from '@/app/components/Animation/ProductAnimation';
+import TabButton from '@/app/components/TabButton';
+import { ListFilter } from 'lucide-react';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 export const SingleProductReview = () => {
   return (
@@ -27,50 +34,40 @@ const SingleProductReviewSlider = () => {
   );
 };
 
-// For Review Panel
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
-import { SingleProductReviewCard } from '@/app/components/ReviewCard';
-import { ReviewCardCarouselAnimation } from '@/app/components/Animation/ProductAnimation';
-import 'swiper/css';
-import 'swiper/css/navigation';
 
 const ReviewSlider = () => {
   return (
     <Swiper
-        modules={[Navigation, Autoplay]}
-        spaceBetween={20}
-        navigation={true}
-        loop={true}
-        autoplay={{
-          delay: 2000,
-        }}
-        breakpoints={{
-          450: {
-            slidesPerView: 1,
-            spaceBetween: 10,
-          },
-          640: {
-            slidesPerView: 2,
-          },
-          768: {
-            slidesPerView: 2,
-          },
-        }}
-        className="w-full py-8 "
-      >
-        {[...Array(6)].map((_, index) => (
-          <SwiperSlide key={index}>
-            <SingleProductReviewCard title={'Markus_K'} rating={4} comment={'Very well and good organized trip to the Desert West Quads, Falcon Show, Camelriding and Delicious Barbecue.'} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    );
-  };
+      modules={[Navigation, Autoplay]}
+      spaceBetween={20}
+      navigation={true}
+      loop={true}
+      autoplay={{
+        delay: 2000,
+      }}
+      breakpoints={{
+        450: {
+          slidesPerView: 1,
+          spaceBetween: 10,
+        },
+        640: {
+          slidesPerView: 2,
+        },
+        768: {
+          slidesPerView: 2,
+        },
+      }}
+      className="w-full py-8 "
+    >
+      {[...Array(6)].map((_, index) => (
+        <SwiperSlide key={index}>
+          <SingleProductReviewCard title={'Markus_K'} rating={4} comment={'Very well and good organized trip to the Desert West Quads, Falcon Show, Camelriding and Delicious Barbecue.'} />
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  );
+};
 
-// Single Prouct Review
-import TabButton from '@/app/components/TabButton';
-import { ListFilter } from 'lucide-react';
 
 const SingleProductAllReview = () => {
   const [showsort, setShowSort] = useState(null);

@@ -9,6 +9,7 @@ export const useUIStore = create(
       theme: 'light',
       font: 'Inter',
       stickyHeader: false, // sticky header global state
+      pageLoading: false, // page loading state
 
       // Actions
       setTheme: (newTheme) => {
@@ -23,10 +24,19 @@ export const useUIStore = create(
       setStickyHeader: (value) => {
         set((state) => ({ stickyHeader: value }));
       },
+
+      setPageLoading: (value) => {
+        set({ pageLoading: value });
+      },
     }),
     {
       name: 'ui-settings', // Key in localStorage
       getStorage: () => localStorage, // Correct way to use localStorage
+      partialize: (state) => ({
+        theme: state.theme,
+        font: state.font,
+        stickyHeader: state.stickyHeader,
+      }), // Only persist these fields
     },
   ),
 );

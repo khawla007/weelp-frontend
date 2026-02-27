@@ -11,35 +11,35 @@ const BlogSlider = ({ data }) => {
   return (
     <div className="">
       <Swiper
-          modules={[Navigation]}
-          spaceBetween={20}
-          navigation={true}
-          loop={true}
-          breakpoints={{
-            450: {
-              slidesPerView: 1,
-              spaceBetween: 10,
-            },
-            640: {
-              slidesPerView: 2,
-              spaceBetween: 15,
-            },
-            768: {
-              slidesPerView: 3,
-              spaceBetween: 15,
-            },
-            1024: {
-              slidesPerView: 4,
-              spaceBetween: 20,
-            },
-          }}
-          className=""
-        >
-          {data.map((val, index) => (
-            <SwiperSlide key={index}>
-              <BlogCard imageSrc={val?.media_gallery?.[0]?.url} blogTitle={val?.name} {...val} />
-            </SwiperSlide>
-          ))}
+        modules={[Navigation]}
+        spaceBetween={20}
+        navigation={true}
+        loop={true}
+        breakpoints={{
+          450: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+          },
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 15,
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 15,
+          },
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 20,
+          },
+        }}
+        className=""
+      >
+        {data.map((val, index) => (
+          <SwiperSlide key={index}>
+            <BlogCard imageSrc={val?.media_gallery?.[0]?.url} blogTitle={val?.name} {...val} />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );

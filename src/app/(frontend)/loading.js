@@ -1,5 +1,5 @@
-import UniversalLoader from '@/app/components/Loading/UniversalLoader';
+import { PageLoader } from '@/app/components/Loading/PageLoader';
 
 export default function Loading() {
-  return <UniversalLoader />;
+  return <PageLoader />;
 }

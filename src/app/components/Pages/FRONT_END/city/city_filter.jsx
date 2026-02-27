@@ -154,7 +154,7 @@ export const CityFilter = ({ hasAnyData = true }) => {
   );
 
   return (
-    <div className="flex flex-col sm:flex-row sm:gap-4 lg:gap-8 p-4">
+    <div className="container mx-auto flex flex-col sm:flex-row sm:gap-4 lg:gap-8 p-4">
       {/* Sidebar Filter */}
       <div className="w-full flex-2 p-4 px-8 sm:my-12 sm:max-w-xs bg-white h-fit shadow-md rounded-lg">
         <h2 className="text-lg font-medium text-[#143042] my-4">Category</h2>
@@ -205,7 +205,7 @@ export const CityFilter = ({ hasAnyData = true }) => {
       {/* Product List */}
       <div className="w-full lg:flex-[4]">
         {isLoading && <LoadingPage />}
-        <div className={`flex flex-col sm:flex-row sm:flex-wrap gap-y-4 gap-4 py-4 sm:py-12 ${isLoading ? 'opacity-50' : ''}`}>
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 py-4 sm:py-12 ${isLoading ? 'opacity-50' : ''}`}>
           {!isLoading && products?.length > 0 ? (
             products.map((product, index) => (
               <GlobalCard
@@ -213,7 +213,9 @@ export const CityFilter = ({ hasAnyData = true }) => {
                 productTitle={product?.name}
                 productSlug={product?.slug}
                 item_type={product?.item_type}
-                productPrice={product?.base_pricing?.variations[0]?.regular_price ?? product?.pricing?.regular_price}
+                productPrice={product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price}
+                imgsrc={product?.media_gallery?.[0]?.url || product?.image}
+                productRating={product?.rating}
               />
             ))
           ) : (
