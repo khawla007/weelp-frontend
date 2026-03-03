@@ -105,16 +105,16 @@ body {
 .productSlider>h2,
 .productDestination>h2,
 .singleproduct_reviewslider>h2 {
-  @apply absolute;
+  @apply pb-8;
 }
 
-.productSlider .swiper,
+/* .productSlider .swiper,
 .productDestination .swiper,
 .blog_slider_section .swiper,
 .reviewSlider .swiper,
 .singleproduct_reviewslider .swiper {
   @apply !py-12 !px-0 !important;
-}
+} */
 
 /* Fix Swiper Navigation Glitch and Brand Color */
 :root {

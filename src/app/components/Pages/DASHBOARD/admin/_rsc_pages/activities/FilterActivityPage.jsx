@@ -111,17 +111,35 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
     [],
   );
 
-  // side effect for if fiilter change
+  // side effect for if filter change
   useEffect(() => {
-    debouncedUpdate(filters);
+    const { page, ...otherFilters } = filters;
+    debouncedUpdate(otherFilters);
     return () => debouncedUpdate.cancel();
-  }, [filters, debouncedUpdate]);
+  }, [
+    filters.name,
+    filters.category,
+    filters.difficulty_level,
+    filters.duration,
+    filters.seasons?.join(','),
+    filters.sort_by,
+    filters.price?.[0],
+    filters.price?.[1],
+    debouncedUpdate,
+  ]);
+
+  // Reset page to 1 when any filter other than page changes
+  useEffect(() => {
+    if (filters.page !== 1) {
+      setValue('page', 1);
+    }
+  }, [debouncedFilters, setValue]);
 
   // Memoized query string
   const queryParams = useMemo(() => {
     const params = new URLSearchParams();
 
-    if (debouncedFilters.name) params.append('name', debouncedFilters.name);
+    if (debouncedFilters.name) params.append('search', debouncedFilters.name);
     if (debouncedFilters.category) params.append('category', debouncedFilters.category);
     if (debouncedFilters.difficulty_level) params.append('difficulty_level', debouncedFilters.difficulty_level);
     if (debouncedFilters.duration) params.append('duration', debouncedFilters.duration);
@@ -131,10 +149,10 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
     if (debouncedFilters.sort_by) params.append('sort_by', debouncedFilters.sort_by);
     if (debouncedFilters.price?.[0]) params.append('min_price', debouncedFilters.price[0]);
     if (debouncedFilters.price?.[1]) params.append('max_price', debouncedFilters.price[1]);
-    if (debouncedFilters.page) params.append('page', debouncedFilters.page);
+    if (filters.page) params.append('page', filters.page);
 
     return params.toString();
-  }, [debouncedFilters]);
+  }, [debouncedFilters, filters.page]);
 
   // SWR fetch
   const { data, error, isValidating, mutate } = useSWR(`/api/admin/activities?${queryParams}`, fetcher, { revalidateOnFocus: true });
@@ -395,10 +413,10 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
                 {items.map(({ id: itemId, name, media_gallery = [], tags = [], attributes = [] }, index) => (
                   <Card
                     key={index}
-                    className={`group hover:shadow-md ease duration-300 rounded-lg w-full lg:w-fit border relative ${selectedItems?.includes(itemId) && 'p-3 border border-secondaryDark'}`}
+                    className="group hover:shadow-md rounded-lg w-full lg:w-fit border relative overflow-hidden"
                   >
                     <img
-                      className="w-full lg:w-[326px] h-[183px] rounded-lg aspect-square"
+                      className="w-full lg:w-[326px] h-[183px] rounded-t-lg rounded-b-none"
                       src={`${media_gallery?.[0]?.url ? media_gallery?.[0]?.url : 'https://picsum.photos/350/300?random'}`}
                       alt="activity_image"
                     />
@@ -508,13 +526,13 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
                     <div className="absolute top-[5%] left-[5%] w-fit">
                       <Checkbox
                         checked={selectedItems.includes(itemId)}
-                        className="data-[state=checked]:bg-secondaryDark"
-                        onClick={(e) => {
+                        className="h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
+                        onCheckedChange={(checked) => {
                           setSelectedItems(
                             (prev) =>
-                              prev.includes(itemId)
-                                ? prev.filter((id) => id !== itemId) //
-                                : [...prev, itemId], //
+                              checked
+                                ? [...prev, itemId]
+                                : prev.filter((id) => id !== itemId),
                           );
                         }}
                       />

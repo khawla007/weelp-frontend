@@ -1,4 +1,4 @@
-import { publicApi, authApi } from '../axiosInstance';
+import { publicApi, authApi, createAuthenticatedServerApi } from '../axiosInstance';
 import { log } from '../utils';
 
 /**
@@ -56,7 +56,8 @@ export async function getSingleCityAdmin(id) {
  */
 export async function getAllCitiesAdminV2(search = '') {
   try {
-    const response = await authApi.get(`/api/admin/cities/${search}`, {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get(`/api/admin/cities/${search}`, {
       headers: { Accept: 'application/json' },
     });
     return response?.data;

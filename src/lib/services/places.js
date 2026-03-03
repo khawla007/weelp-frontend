@@ -34,7 +34,8 @@ export async function getPlacesByAdminOptions() {
  */
 export async function getAllPlacesAdmin(search = '') {
   try {
-    const response = await authApi.get(`/api/admin/places/${search}`, {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get(`/api/admin/places/${search}`, {
       headers: { Accept: 'application/json' },
     });
     return response?.data;

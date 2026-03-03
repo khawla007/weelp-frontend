@@ -100,7 +100,7 @@ export const createCountry = async (data = {}) => {
 
     return {
       success: false,
-      message: 'Something went wrong while creating country',
+      message: err.response?.data?.message || err.response?.data?.error || 'Something went wrong while creating country',
     };
   }
 };
@@ -127,6 +127,12 @@ export const editCountry = async (countryId, data = {}) => {
   } catch (err) {
     const status = err?.response?.status;
 
+    console.error(`[editCountry] Error updating country ${countryId}:`, {
+      message: err.message,
+      status: err.response?.status,
+      data: err.response?.data,
+    });
+
     if (status === 400) {
       return {
         success: false,
@@ -145,13 +151,13 @@ export const editCountry = async (countryId, data = {}) => {
     if (status === 422) {
       return {
         success: false,
-        message: 'Country already exists',
+        message: err.response?.data?.message || 'Country already exists or validation failed',
       };
     }
 
     return {
       success: false,
-      message: 'Something went wrong while creating country',
+      message: err.response?.data?.message || err.response?.data?.error || 'Something went wrong while updating country',
     };
   }
 };

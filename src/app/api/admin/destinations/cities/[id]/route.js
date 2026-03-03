@@ -1,4 +1,4 @@
-// app/api/admin/destinations/countries/[id]/route.js
+// app/api/admin/destinations/cities/[id]/route.js
 import { auth } from '@/lib/auth/auth';
 import axios from 'axios';
 
@@ -14,7 +14,7 @@ export async function GET(req, { params }) {
   });
 
   try {
-    const response = await api.get(`/api/admin/countries/${id}`, {
+    const response = await api.get(`/api/admin/cities/${id}`, {
       headers: { Accept: 'application/json' },
     });
 

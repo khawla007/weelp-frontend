@@ -13,7 +13,7 @@ const CurateSection = () => {
   return (
     <section style={{ backgroundImage: `url(${'/assets/images/greenimage.png'})` }} className="w-full h-96 bg-center">
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center mt-10 min-h-[300px] px-4">
+      <div className="relative z-10 flex flex-col items-center py-12 min-h-[300px] px-4">
         {/* Profile pictures row */}
         <div className="flex -space-x mb-4">
           {profiles.map((profile) => (

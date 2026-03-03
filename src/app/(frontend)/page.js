@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 import HereSection from '../components/Pages/FRONT_END/home/HeroSection';
 import ProductSliderSection from '../components/Pages/FRONT_END/Global/ProductSliderSection';
-import DestinationSliderSection from '../components/Pages/FRONT_END/Global/DestinationSection';
+import DestinationGridSection from '../components/Pages/FRONT_END/Global/DestinationGridSection';
 import { fakeData } from '../Data/ShopData';
 
 // ReusableComponents
@@ -36,8 +36,8 @@ const HomePage = async () => {
           <SliderLayout data={featuredActivities} item={() => <span>item </span>}></SliderLayout>
         </SectionLayout>
       )} */}
+      {featuredCities?.length > 0 && <DestinationGridSection sliderTitle={'Top Destination'} data={featuredCities} />}
       {featuredActivities?.length > 0 && <ProductSliderSection destinations={featuredActivities} />}
-      {featuredCities?.length > 0 && <DestinationSliderSection sliderTitle={'Top Destination'} data={featuredCities} />}
       <TestimonialSection />
       <CurateSection />
       <AiSection />

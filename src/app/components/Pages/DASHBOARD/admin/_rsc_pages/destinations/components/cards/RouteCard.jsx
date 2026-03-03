@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useToast } from '@/hooks/use-toast';
 import { Ellipsis, Pencil, Star, Trash2 } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useSWRConfig } from 'swr';
 
 // actions to delete
@@ -20,17 +21,16 @@ import { deletePlace } from '@/lib/actions/places';
  * @param {{label:string, icon:string, items:number ,description:string, url:string}} props label,icons,items,description,url
  * @returns {JSX.Element}
  */
-export const RouteCard = ({ id, type, name, code, description, featured_destination, media_gallery = [] }) => {
+export const RouteCard = ({ id, type, name, code, description, featured_destination, feature_image, media_gallery = [] }) => {
   const router = useRouter(); // intialize route
   const pathname = usePathname(); // intialize pathname
-  const { url = '', alt_text = '' } = media_gallery.at(0) || {}; // extract first image
+
+  // Use featured image if available, otherwise fall back to first image from gallery
+  const displayImage = feature_image || media_gallery.find(m => m.is_featured)?.url || media_gallery.at(0)?.url || '';
+  const altText = media_gallery.find(m => m.is_featured)?.alt_text || media_gallery.at(0)?.alt_text || name;
+
   const { mutate } = useSWRConfig(); // mutate
   const { toast } = useToast(); // intialize toaster
-
-  // Handling Route
-  const handleRoute = (pageId) => {
-    router.push(pathname + `/${pageId}`);
-  };
 
   // Handle Delete
   const handleDelete = async (itemId, type) => {
@@ -87,9 +87,7 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
     <Card className="sm:max-w-xs overflow-hidden rounded-lg border">
       {/*  Image wrapper must be relative + have height */}
       <div className="relative w-full h-40">
-        {/* {url && */}
-        <SafeImage src={url} alt={alt_text} />
-        {/* } */}
+        <SafeImage src={displayImage} alt={altText} />
 
         {/* Featrued Destination */}
         {featured_destination && (
@@ -116,17 +114,20 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent side="bottom" align="end" sideOffset={10}>
-                <DropdownMenuItem className="cursor-pointer" onClick={() => handleRoute(id)}>
+                <Link
+                  href={`${pathname}/${id}`}
+                  className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-sm hover:bg-neutral-100 cursor-pointer focus:bg-neutral-100 outline-none"
+                >
                   <Pencil size={14} /> Edit
-                </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem
-                  onClick={() => {
+                  textValue="delete"
+                  onSelect={() => {
                     handleDelete(id, type); // delete item via id and type
                   }}
                   className="cursor-pointer text-red-400"
                 >
-                  <Trash2 size={14} />
-                  Delete
+                  <Trash2 size={14} /> Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -17,6 +17,11 @@ export const FilterCities = () => {
 
   const [debouncedQuery, setDebouncedQuery] = useState(query);
 
+  // Reset page to 1 when query changes
+  useEffect(() => {
+    setValue('page', 1);
+  }, [query, setValue]);
+
   // Debounce query updates - handle in useEffect with cleanup
   useEffect(() => {
     const handler = setTimeout(() => {

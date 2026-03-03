@@ -50,11 +50,34 @@ const CreateCountryForm = ({ apiFormData = {} }) => {
       seasons: [...FORM_COUNTRY_VALUES_DEFAULT.seasons, ...(cleanCountryData?.seasons || []).map((season) => omit(season, ['created_at', 'updated_at']))],
       events: [...FORM_COUNTRY_VALUES_DEFAULT.events, ...(cleanCountryData?.events || []).map((event) => omit(event, ['created_at', 'updated_at']))],
       additional_info: [...FORM_COUNTRY_VALUES_DEFAULT.additional_info, ...(cleanCountryData?.additional_info || []).map((info) => omit(info, ['created_at', 'updated_at']))],
+      media_gallery: cleanCountryData?.media_gallery || [],
     },
   });
 
   // console.log(methods.getValues());
   const router = useRouter(); // Initialize Router
+
+  // Reset form when apiFormData changes (e.g., when editing different country)
+  React.useEffect(() => {
+    if (Object.keys(cleanCountryData).length > 0) {
+      methods.reset({
+        ...FORM_COUNTRY_VALUES_DEFAULT,
+        ...cleanCountryData,
+        location_details: {
+          ...FORM_COUNTRY_VALUES_DEFAULT.location_details,
+          ...omit(cleanCountryData?.location_details, ['created_at', 'updated_at']),
+        },
+        travel_info: {
+          ...FORM_COUNTRY_VALUES_DEFAULT.travel_info,
+          ...omit(cleanCountryData?.travel_info, ['created_at', 'updated_at']),
+        },
+        seasons: [...FORM_COUNTRY_VALUES_DEFAULT.seasons, ...(cleanCountryData?.seasons || []).map((season) => omit(season, ['created_at', 'updated_at']))],
+        events: [...FORM_COUNTRY_VALUES_DEFAULT.events, ...(cleanCountryData?.events || []).map((event) => omit(event, ['created_at', 'updated_at']))],
+        additional_info: [...FORM_COUNTRY_VALUES_DEFAULT.additional_info, ...(cleanCountryData?.additional_info || []).map((info) => omit(info, ['created_at', 'updated_at']))],
+        media_gallery: cleanCountryData?.media_gallery || [],
+      });
+    }
+  }, [apiFormData]); // Only depend on apiFormData, not methods.reset
 
   // destructure form
   const {
@@ -124,16 +147,16 @@ const CreateCountryForm = ({ apiFormData = {} }) => {
     }
   };
 
-  // inside onSubmit
+  // Handle Next button click (steps 1-7) - no validation
+  const handleNext = () => {
+    const currentData = methods.getValues();
+    setFormData({ ...formData, ...currentData });
+    setCurrentStep((prev) => prev + 1);
+  };
 
+  // Handle final form submission (step 8) - with validation
   const onSubmit = async (data) => {
     const mergedData = { ...formData, ...data };
-
-    if (currentStep < 8) {
-      setFormData(mergedData);
-      setCurrentStep((prev) => prev + 1);
-      return;
-    }
 
     // console.log(mergedData)
     try {
@@ -179,7 +202,7 @@ const CreateCountryForm = ({ apiFormData = {} }) => {
                   steps.map((step) => (
                     <li
                       key={step.id}
-                      // onClick={() => {setCurrentStep(step?.id)}}
+                      onClick={() => setCurrentStep(step?.id)}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'}`}
                     >
                       <div
@@ -194,7 +217,7 @@ const CreateCountryForm = ({ apiFormData = {} }) => {
             </div>
 
             {/* Dynamic Tabs */}
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <form onSubmit={currentStep === 8 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
               <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-4 md:px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
                 {renderStep()}
                 <div className="flex justify-between pt-4">
@@ -224,7 +247,7 @@ const CreateCountryForm = ({ apiFormData = {} }) => {
                   {/* Prevent Button On Schedules */}
                   <div className="flex gap-4">
                     <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
-                      {isSubmitting ? (currentStep === 8 ? 'Submitting...' : 'Submit') : currentStep === 8 ? 'Submit' : 'Next'}
+                      {isSubmitting ? (currentStep === 8 ? 'Submitting...' : 'Next') : currentStep === 8 ? 'Submit' : 'Next'}
                     </Button>
                   </div>
                   {/* )} */}
