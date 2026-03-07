@@ -137,7 +137,7 @@ export const ImagePreviewForm = ({ isDialogOpen, setIsDialogOpen, selectedImage 
 
       {/* Edit Form */}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <fieldset className={isSubmitting ? 'cursor-wait' : 'cursor-pointer'} disabled={isSubmitting}>
             <FormField
               control={form.control}
