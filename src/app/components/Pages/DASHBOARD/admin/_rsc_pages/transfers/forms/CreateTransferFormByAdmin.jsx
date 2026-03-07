@@ -1,7 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import _ from 'lodash';
+import { isEmpty } from 'lodash';
 import { Button } from '@/components/ui/button';
+import { Star } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
@@ -23,6 +26,7 @@ const ScheduleTabAdmin = dynamic(() => import('../tabs/ScheduleTabAdmin'), {
 }); // schedule tab
 const MediaTab = dynamic(() => import('../tabs/MediaTab'), { ssr: false });
 const SeoTab = dynamic(() => import('../tabs/SeoTab'), { ssr: false });
+const SharedAddOnMultiSelect = dynamic(() => import('../../shared_tabs/addon/SharedAddOnTransfer'), { ssr: false });
 
 export const CreateTransferFormByAdmin = ({}) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -35,15 +39,32 @@ export const CreateTransferFormByAdmin = ({}) => {
     defaultValues: {
       is_vendor: false,
       media_gallery: [],
-      availability_type: '',
+      availability_type: 'always_available',
       available_days: [],
       time_slots: [],
       blackout_dates: [],
+      addons: [],
+      seo: {
+        meta_title: '',
+        meta_description: '',
+        keywords: '',
+        og_image_url: '',
+        canonical_url: '',
+        schema_type: 'Product',
+        schema_data: {},
+      },
     },
   });
 
   // Handle Global State
   const { errors, isValid, isSubmitting } = methods?.formState;
+
+  // Handle Next button for steps 1-4 (no validation)
+  const handleNext = () => {
+    const currentData = methods.getValues();
+    setFormData({ ...formData, ...currentData });
+    setCurrentStep((prev) => prev + 1);
+  };
 
   //  Main Steps
   const steps = [
@@ -61,10 +82,14 @@ export const CreateTransferFormByAdmin = ({}) => {
     },
     {
       id: 4,
-      title: 'Media',
+      title: 'AddOn',
     },
     {
       id: 5,
+      title: 'Media',
+    },
+    {
+      id: 6,
       title: 'Seo',
     },
   ];
@@ -82,8 +107,10 @@ export const CreateTransferFormByAdmin = ({}) => {
       case 3:
         return <ScheduleTabAdmin />;
       case 4:
-        return <MediaTab />;
+        return <SharedAddOnMultiSelect />;
       case 5:
+        return <MediaTab />;
+      case 6:
         return <SeoTab />;
       default:
         return null;
@@ -94,20 +121,22 @@ export const CreateTransferFormByAdmin = ({}) => {
   const onSubmit = async (data) => {
     const mergedData = { ...formData, ...data };
 
-    if (currentStep < 5) {
+    if (currentStep < 6) {
       setFormData(mergedData);
       setCurrentStep((prev) => prev + 1);
       return;
     }
 
-    const { media_gallery = [] } = data; // destructure media
+    const { media_gallery = [] } = mergedData; // destructure media
 
     // change media data
     const finalData = {
-      ...data,
+      ...mergedData,
       media_gallery: media_gallery.map((val) => ({
         media_id: val.media_id,
+        is_featured: val.is_featured ?? false,
       })),
+      seo: mergedData.seo || {},
     };
 
     // submit full data
@@ -147,7 +176,7 @@ export const CreateTransferFormByAdmin = ({}) => {
                   steps.map((step) => (
                     <li
                       key={step.id}
-                      // onClick={() => {setCurrentStep(step?.id)}}
+                      onClick={() => setCurrentStep(step?.id)}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${
                         currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'
                       }`}
@@ -165,7 +194,7 @@ export const CreateTransferFormByAdmin = ({}) => {
               <Separator className="" />
             </div>
           </div>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={currentStep === 6 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
             <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               {renderStep()}
               <div className="flex justify-between pt-4">
@@ -194,7 +223,7 @@ export const CreateTransferFormByAdmin = ({}) => {
 
                 {/* Prevent Button On Schedules */}
                 <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
-                  {currentStep === 5 ? 'Submit' : 'Next'}
+                  {currentStep === 6 ? 'Submit' : 'Next'}
                 </Button>
               </div>
             </fieldset>
