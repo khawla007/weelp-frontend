@@ -114,7 +114,7 @@ export const ImagePreviewForm = ({ isDialogOpen, setIsDialogOpen, selectedImage 
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Image Preview */}
       <div className="relative rounded-lg overflow-hidden border">
         <img
