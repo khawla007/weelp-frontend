@@ -4,7 +4,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Search, Upload, Check, Edit } from 'lucide-react';
+import { Search, Upload, Check, Edit, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Card } from '@/components/ui/card';
 import { usePathname } from 'next/navigation';
@@ -14,6 +14,7 @@ import { ImagePreviewForm } from './ImagePreviewForm';
 import { isEmpty } from 'lodash';
 import { useAllMediaAdmin } from '@/hooks/api/admin/media';
 import { useIsClient } from '@/hooks/useIsClient';
+import { useToast } from '@/hooks/use-toast';
 
 export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelectionChange }) {
   const isClient = useIsClient(); // hydration
@@ -25,6 +26,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
   const [currentPage, setCurrentPage] = useState(1); // Current pagination page
   const [isAllSelected, setIsAllSelected] = useState(false); // Track Select All toggle state
   const pathname = usePathname();
+  const { toast } = useToast();
   const { addMedia, removeMedia, selectedMedia } = useMediaStore();
   const isMediaPage = pathname === '/dashboard/admin/media';
   const { media: data = [], pagination, isLoading: loading, isValidating, error, mutate: mutateMedia } = useAllMediaAdmin(currentPage);
@@ -119,14 +121,63 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
             <h2 className="text-3xl font-bold tracking-tight">Media</h2>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              onClick={() => {
-                setUploadImagePopUp(!uploadImagePop);
-              }}
-            >
-              <Upload className="h-4 w-4 mr-2" />
-              Upload
-            </Button>
+            {selectedItems.length > 0 ? (
+              <>
+                {/* Select All / Unselect All Button */}
+                <Button
+                  onClick={() => {
+                    if (isAllSelected) {
+                      setSelectedItems([]);
+                    } else {
+                      setSelectedItems(images.map(img => img.id));
+                    }
+                    setIsAllSelected(!isAllSelected);
+                  }}
+                  variant="outline"
+                  className="bg-secondaryDark text-black hover:bg-secondaryDark/90"
+                >
+                  {isAllSelected ? 'Unselect All' : `Select All (${images.length})`}
+                </Button>
+
+                {/* Delete Button */}
+                <Button
+                  variant="destructive"
+                  onClick={async () => {
+                    const { deleteMultipleMedia } = await import('@/lib/actions/media');
+                    const result = await deleteMultipleMedia(selectedItems);
+
+                    if (result.success) {
+                      toast({
+                        title: `${selectedItems.length} media deleted`,
+                        variant: 'success',
+                      });
+                      mutateMedia();
+                      setSelectedItems([]);
+                      setIsAllSelected(false);
+                    } else {
+                      toast({
+                        title: 'Delete failed',
+                        description: result.error,
+                        variant: 'destructive',
+                      });
+                    }
+                  }}
+                >
+                  <Trash2 size={16} className="mr-2" />
+                  Delete ({selectedItems.length})
+                </Button>
+              </>
+            ) : (
+              /* Upload Button - shown when no selection */
+              <Button
+                onClick={() => {
+                  setUploadImagePopUp(!uploadImagePop);
+                }}
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                Upload
+              </Button>
+            )}
           </div>
         </div>
 
