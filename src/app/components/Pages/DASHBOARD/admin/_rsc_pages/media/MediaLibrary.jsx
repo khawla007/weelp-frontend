@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, Upload } from 'lucide-react';
+import { Search, Upload, Check, Edit } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Card } from '@/components/ui/card';
 import { usePathname } from 'next/navigation';
@@ -14,21 +14,62 @@ import { isEmpty } from 'lodash';
 import { useAllMediaAdmin } from '@/hooks/api/admin/media';
 import { useIsClient } from '@/hooks/useIsClient';
 
-export function Medialibrary() {
+export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelectionChange }) {
   const isClient = useIsClient(); // hydration
   const [selectedImage, setSelectedImage] = useState({}); // Media Page View Popup
   const [selectedImages, setSelectedImages] = useState([]); // Selecting list of Images for store
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [uploadImagePop, setUploadImagePopUp] = useState(false); // For Uploading Image Popup
+  const [selectedItems, setSelectedItems] = useState([]); // Selected media IDs for bulk delete
+  const [currentPage, setCurrentPage] = useState(1); // Current pagination page
+  const [isAllSelected, setIsAllSelected] = useState(false); // Track Select All toggle state
   const pathname = usePathname();
-  const { addMedia, selectedMedia } = useMediaStore();
+  const { addMedia, removeMedia, selectedMedia } = useMediaStore();
   const isMediaPage = pathname === '/dashboard/admin/media';
-  const { media: data = [], isLoading: loading, isValidating, error, mutate: mutateMedia } = useAllMediaAdmin(); // fetch media by swr
+  const { media: data = [], pagination, isLoading: loading, isValidating, error, mutate: mutateMedia } = useAllMediaAdmin(currentPage);
   const images = Array.isArray(data) ? data : []; // safe fallback
+  const { currentPage: apiPage, perPage, total } = pagination;
 
-  // Select image Store Functionality
+  // Track if we've initialized with alreadySelectedImages (prevent re-initialization on re-renders)
+  const initializedRef = useRef(false);
+  const prevAlreadySelectedRef = useRef([]);
+
+  // Create set of already-selected image IDs for O(1) lookup
+  // alreadySelectedImages have media_id, but media library uses id
+  const alreadySelectedIds = useMemo(
+    () => new Set(alreadySelectedImages.map((img) => img.media_id || img.id).filter(Boolean)),
+    [alreadySelectedImages]
+  );
+
+  // Initialize selectedImages with alreadySelectedImages on first render or when it changes
+  // Note: We intentionally sync state with props here. This is a valid use case for showing
+  // already-selected images in the media library dialog.
+  useEffect(() => {
+    // Only re-initialize if the alreadySelectedImages actually changed
+    // Check by length first to avoid unnecessary updates for empty arrays
+    const prevLength = prevAlreadySelectedRef.current.length;
+    const currLength = alreadySelectedImages.length;
+
+    if (prevLength !== currLength || (currLength > 0 && alreadySelectedImages !== prevAlreadySelectedRef.current)) {
+      prevAlreadySelectedRef.current = alreadySelectedImages;
+
+      // Transform alreadySelectedImages to match media library structure (id instead of media_id)
+      const transformed = alreadySelectedImages.map((img) => ({
+        ...img,
+        id: img.media_id || img.id,
+      }));
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional sync with props
+      setSelectedImages(transformed);
+    }
+  }, [alreadySelectedImages]);
+
+  // Select image Store Functionality - normal toggle for all images
   const handleSelect = (image) => {
-    setSelectedImages((prev) => (prev.some((img) => img.id === image.id) ? prev.filter((img) => img.id !== image.id) : [...prev, image])); //not match with previous
+    setSelectedImages((prev) =>
+      prev.some((img) => img.id === image.id)
+        ? prev.filter((img) => img.id !== image.id)
+        : [...prev, image]
+    );
   };
 
   // Select image Dialog Functionality
@@ -39,8 +80,34 @@ export function Medialibrary() {
 
   // Handle Store Images
   const selectedImagesHandleStore = () => {
-    // Add Media Images to Store
-    addMedia(selectedImages);
+    // Find newly selected images (not in alreadySelectedImages)
+    const alreadySelectedIdsArray = Array.from(alreadySelectedIds);
+    const newlySelected = selectedImages.filter((img) => !alreadySelectedIdsArray.includes(img.id));
+
+    // Find unselected images (were in alreadySelectedImages but not in final selection)
+    const finalSelectedIds = new Set(selectedImages.map((img) => img.id));
+    const unselected = alreadySelectedImages.filter((img) => {
+      const imgId = img.media_id || img.id;
+      return !finalSelectedIds.has(imgId);
+    });
+
+    // Add newly selected images to store
+    if (newlySelected.length > 0) {
+      addMedia(newlySelected);
+    }
+
+    // Notify parent about selection changes (for handling removal)
+    if (onSelectionChange) {
+      onSelectionChange({
+        added: newlySelected,
+        removed: unselected,
+      });
+    }
+
+    // Close parent dialog if callback provided
+    if (closeDialog) {
+      closeDialog();
+    }
   };
 
   if (isClient) {
@@ -83,13 +150,44 @@ export function Medialibrary() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {images.map((image, index) => {
                 const isSelected = selectedImages?.some((img) => img.id === image.id);
+                const wasAlreadySelected = alreadySelectedIds.has(image.id);
+
                 return (
                   <Card
                     key={index}
-                    className={`group relative aspect-square overflow-hidden rounded-lg bg-muted cursor-pointer  ${isMediaPage ? '' : selectedImages.some((img) => img.id === image.id) && 'border p-4 border-secondaryDark'} `}
-                    onClick={() => (isMediaPage ? handleSelectMedia(image) : handleSelect(image))}
+                    className={`group relative aspect-square overflow-hidden rounded-lg bg-muted cursor-pointer transition-all
+                      ${isSelected ? 'border-4 border-[#568f7c]' : 'border border-gray-200'}
+                    `}
+                    onClick={() => {
+                      if (isMediaPage) {
+                        handleSelectMedia(image);
+                      } else {
+                        handleSelect(image);
+                      }
+                    }}
                   >
                     <img src={image?.url} alt={image?.alt_text} className="object-cover transition-all hover:scale-105 w-full h-full" />
+
+                    {/* Dark overlay on hover */}
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none" />
+
+                    {/* Edit pencil icon - shown on hover */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent Card click
+                        handleSelectMedia(image);
+                      }}
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 pointer-events-auto"
+                    >
+                      <Edit size={20} className="text-gray-700" />
+                    </button>
+
+                    {/* Checkmark badge for selected images */}
+                    {isSelected && (
+                      <div className="absolute top-2 left-2 bg-[#568f7c] text-white rounded-full p-1 shadow-md">
+                        <Check size={16} strokeWidth={3} />
+                      </div>
+                    )}
                   </Card>
                 );
               })}
