@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { useForm, FormProvider, Controller, useFieldArray, useWatch, useFormContext } from 'react-hook-form';
 import { useState } from 'react';
-import { CalendarIcon, Tag, Trash2, Users, X } from 'lucide-react';
+import { CalendarIcon, Star, Tag, Trash2, Users, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
@@ -23,12 +23,13 @@ import { useToast } from '@/hooks/use-toast';
 import { createActivity } from '@/lib/actions/activities';
 import { useRouter } from 'next/navigation';
 import { NavigationActivity } from './activity_shared';
+import _ from 'lodash';
 import { useMediaStore } from '@/lib/store/useMediaStore'; // For Handling Media Store
 import { Medialibrary } from '../media/MediaLibrary'; // Handling Media Library
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import dynamic from 'next/dynamic';
 
-const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOn'), { ssr: false });
+const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnActivity'), { ssr: false });
 
 export const CreateActivityForm = ({ categories, attributes, tags, locations = [] }) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -469,6 +470,9 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
       name: 'media_gallery',
     });
 
+    // Derive featured image ID from media_gallery
+    const featuredImageId = media_gallery?.find((img) => img.is_featured)?.media_id ?? null;
+
     //  Hydarte First if there is already media exist
     useEffect(() => {
       if (media_gallery?.length > 0) {
@@ -480,7 +484,10 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
     useEffect(() => {
       if (selectedMedia.length > 0) {
         // 1. Transform selectedMedia (id → media_id) before adding
-        const transformedMedia = selectedMedia.map((obj) => _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))); // update key to media id
+        const transformedMedia = selectedMedia.map((obj) => {
+          const mapped = _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
+          return { ...mapped, is_featured: false };
+        });
 
         // 2. Push transformed data to local state
         setActivityImages((prev) => [...prev, ...transformedMedia]);
@@ -498,10 +505,35 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
     const handleDeleteImage = (image) => {
       setActivityImages((prev) => {
         const updatedImages = prev.filter((img) => img.url !== image.url);
-        // setActivityImages(updatedImages);
-        setTimeout(() => setValue('media_gallery', updatedImages), 0); //
+        setTimeout(() => setValue('media_gallery', updatedImages), 0);
         return updatedImages;
       });
+    };
+
+    // handleSetFeatured
+    const handleSetFeatured = (mediaId) => {
+      // Toggle: if clicking same image, deselect; otherwise, select new
+      const isCurrentlyFeatured = featuredImageId === mediaId;
+      const updatedGallery = activityImages.map((img) => ({
+        ...img,
+        is_featured: img.media_id === mediaId ? !isCurrentlyFeatured : false,
+      }));
+
+      setActivityImages(updatedGallery);
+      setValue('media_gallery', updatedGallery, { shouldDirty: true, shouldValidate: true });
+    };
+
+    // Handle selection changes from MediaLibrary (for unselection)
+    const handleSelectionChange = ({ removed }) => {
+      if (removed && removed.length > 0) {
+        // Remove unselected images from activityImages
+        setActivityImages((prev) => {
+          const removedIds = new Set(removed.map((img) => img.media_id || img.id));
+          const updatedImages = prev.filter((img) => !removedIds.has(img.media_id || img.id));
+          setValue('media_gallery', updatedImages, { shouldDirty: true, shouldValidate: true });
+          return updatedImages;
+        });
+      }
     };
 
     return (
@@ -519,27 +551,48 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
         </div>
 
         {/**Uploaded Media As Dialog */}
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button variant="outline" className="w-fit self-end">
-              Upload Media
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-screen-xl">
-            <DialogTitle className="sr-only">Edit profile</DialogTitle>
-            <DialogDescription className="invisible">Upload Media For Activity</DialogDescription>
-            <Medialibrary />
-          </DialogContent>
-        </Dialog>
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-gray-500">Click the star icon to mark an image as featured</p>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="w-fit">
+                Upload Media
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-screen-xl">
+              <DialogTitle className="sr-only">Edit profile</DialogTitle>
+              <DialogDescription className="invisible">Upload Media For Activity</DialogDescription>
+              <Medialibrary
+                closeDialog={() => setDialogOpen(false)}
+                alreadySelectedImages={activityImages}
+                onSelectionChange={handleSelectionChange}
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
 
         {/**Selected Media From Store */}
         {activityImages.length > 0 ? (
           <div className="w-full flex flex-wrap gap-4 ">
             {activityImages.map((image, index) => {
+              const isFeatured = image.media_id == featuredImageId;
               return (
                 <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-black">
                   <img className="size-72 rounded-md border" src={image?.url} alt="activity_image" />
-                  <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-8 right-8 size-0 group-hover/item:size-6 transition-all text-red-400 bg-white rounded-full shadow" />
+                  {/* Featured Star - Top Right */}
+                  <Star
+                    size={24}
+                    fill={isFeatured ? '#568f7c' : 'white'}
+                    strokeWidth={2}
+                    onClick={() => handleSetFeatured(image.media_id)}
+                    className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#568f7c]' : 'text-[#568f7c] hover:scale-110'}`}
+                  />
+                  {isFeatured && (
+                    <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
+                      Featured
+                    </div>
+                  )}
+                  <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-4 right-4 size-0 group-hover/item:size-6 transition-all text-red-500 bg-white rounded-full shadow p-1" />
                 </div>
               );
             })}
@@ -947,15 +1000,16 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
     }
   };
 
-  // Submit Data
+  // Handle Next button click (steps 1-5) - no validation
+  const handleNext = () => {
+    const currentData = methods.getValues();
+    setFormData({ ...formData, ...currentData });
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  // Handle final form submission (step 6) - with validation
   const onSubmit = async (data) => {
     const mergedData = { ...formData, ...data };
-
-    if (currentStep < 6) {
-      setFormData(mergedData);
-      setCurrentStep((prev) => prev + 1);
-      return;
-    }
 
     // handle api for creating activity
     try {
@@ -995,20 +1049,19 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                   steps.map((step) => (
                     <li
                       key={step.id}
-                      // onClick={() => {setCurrentStep(step?.id)}}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer self-start  group relative`}
+                      onClick={() => setCurrentStep(step?.id)}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer self-start group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && 'bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'}`}
                     >
                       <Separator className={` pt-1 rounded-full ${currentStep >= step?.id && 'bg-secondaryDark group-hover:bg-blue-600 '}`} />
 
-                      <div className={`text-sm font-medium pt-2`}>{step.title}</div>
+                      <div className={`text-sm font-medium pt-2 ${currentStep == step?.id ? 'text-secondaryDark' : 'text-grayDark'}`}>{step.title}</div>
                       <span className="text-sm text-gray-500">{step?.description}</span>
-                      {step?.id === currentStep && !isValid && <span className="absolute top-full text-sm text-red-400">Field Requireds</span>}
                     </li>
                   ))}
               </ul>
             </div>
           </div>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={currentStep === 6 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
             <fieldset className={`space-y-6 ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               {renderStep()}
               <div className="flex justify-between pt-4">
@@ -1049,7 +1102,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                     </Button>
                   )}
                   <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
-                    {isSubmitting ? (currentStep === 6 ? 'Submitting...' : 'Submit') : currentStep === 6 ? 'Submit' : 'Next'}
+                    {isSubmitting ? (currentStep === 6 ? 'Submitting...' : 'Next') : currentStep === 6 ? 'Submit' : 'Next'}
                   </Button>
                 </div>
               </div>
