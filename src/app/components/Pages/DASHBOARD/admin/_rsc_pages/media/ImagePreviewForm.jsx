@@ -143,10 +143,10 @@ export const ImagePreviewForm = ({ isDialogOpen, setIsDialogOpen, selectedImage 
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="pb-6">
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Image name" {...field} />
+                    <Input placeholder="Image name" className="focus-visible:ring-0" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -160,7 +160,7 @@ export const ImagePreviewForm = ({ isDialogOpen, setIsDialogOpen, selectedImage 
                 <FormItem>
                   <FormLabel>Alt Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Alt text for image" {...field} />
+                    <Input placeholder="Alt text for image" className="focus-visible:ring-0" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
