@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Search, Upload, Check, Edit } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Card } from '@/components/ui/card';
@@ -167,6 +168,25 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                     }}
                   >
                     <img src={image?.url} alt={image?.alt_text} className="object-cover transition-all hover:scale-105 w-full h-full" />
+
+                    {/* Selection Checkbox */}
+                    <div className="absolute top-4 left-4 w-fit z-10" onClick={(e) => e.stopPropagation()}>
+                      <Checkbox
+                        checked={selectedItems.includes(image.id)}
+                        className="h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
+                        onCheckedChange={(checked) => {
+                          setSelectedItems(prev => {
+                            const newSelection = checked
+                              ? [...prev, image.id]
+                              : prev.filter(id => id !== image.id);
+
+                            // Update isAllSelected state
+                            setIsAllSelected(newSelection.length === images.length);
+                            return newSelection;
+                          });
+                        }}
+                      />
+                    </div>
 
                     {/* Dark overlay on hover */}
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none" />
