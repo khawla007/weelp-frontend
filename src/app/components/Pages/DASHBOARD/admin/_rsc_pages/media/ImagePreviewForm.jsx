@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { deleteMediaImageById, updateMediaImage } from '@/lib/actions/media';
 import { useToast } from '@/hooks/use-toast';
 import { Trash2 } from 'lucide-react';
+import { formatFileSize } from '@/lib/utils';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -115,12 +116,23 @@ export const ImagePreviewForm = ({ isDialogOpen, setIsDialogOpen, selectedImage 
   return (
     <div className="space-y-4">
       {/* Image Preview */}
-      <div className="rounded-lg overflow-hidden border">
+      <div className="relative rounded-lg overflow-hidden border">
         <img
           src={selectedImage.url}
           alt={selectedImage.alt_text}
           className="w-full h-auto max-h-[400px] object-contain bg-muted"
         />
+        {/* Metadata Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-4 py-3">
+          <div className="flex justify-between items-center text-white text-sm">
+            <span className="font-medium">{formatFileSize(selectedImage.file_size)}</span>
+            {(selectedImage.width || selectedImage.height) && (
+              <span className="text-white/90">
+                {selectedImage.width || '?'} × {selectedImage.height || '?'} px
+              </span>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Edit Form */}
