@@ -20,7 +20,7 @@ import Link from 'next/link';
 import useSWR from 'swr'; // for states cache and ui management
 import { fetcher } from '@/lib/fetchers'; // interceptors
 import { useToast } from '@/hooks/use-toast';
-import { Checkbox } from '@/components/ui/checkbox';
+import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
 import { deleteMultiplePackages, deletePackage } from '@/lib/actions/packages';
 
 const seasons = ['spring', 'summer', 'winter', 'automn']; // static season
@@ -127,10 +127,18 @@ const FilterPackage = ({ categories = [], difficulties = [], durations = [] }) =
 
   // Reset page to 1 when any filter other than page changes
   useEffect(() => {
-    if (filters.page !== 1) {
-      setValue('page', 1);
-    }
-  }, [debouncedFilters, setValue]);
+    setValue('page', 1);
+  }, [
+    filters.name,
+    filters.category,
+    filters.difficulty_level,
+    filters.duration,
+    filters.seasons?.join(','),
+    filters.sort_by,
+    filters.price?.[0],
+    filters.price?.[1],
+    setValue,
+  ]);
 
   // Memoized query string
   const queryParams = useMemo(() => {
@@ -409,11 +417,19 @@ const FilterPackage = ({ categories = [], difficulties = [], durations = [] }) =
           {!isValidating && !error && items.length > 0 && (
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
-                {items.map(({ id: itemId, name, media_gallery = [], tags = [], attributes = [] }, index) => (
+                {items.map(({ id: itemId, name, media_gallery = [], tags = [], attributes = [], is_featured }, index) => (
                   <Card
                     key={index}
                     className="group hover:shadow-md rounded-lg w-full lg:w-fit border relative overflow-hidden"
                   >
+                    {is_featured && (
+                      <>
+                        <div className="absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
+                          Featured
+                        </div>
+                        <Star size={24} fill="#568f7c" strokeWidth={2} className="absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
+                      </>
+                    )}
                     <img
                       className="w-full lg:w-[326px] h-[183px] rounded-t-lg rounded-b-none"
                       src={`${media_gallery?.[0]?.url ? media_gallery?.[0]?.url : 'https://picsum.photos/350/300?random'}`}
@@ -421,7 +437,66 @@ const FilterPackage = ({ categories = [], difficulties = [], durations = [] }) =
                     />
 
                     <div className=" bg-white p-4 space-y-2">
-                      <h2>{name}</h2>
+                      <div className="flex justify-between items-start">
+                        <h2 className="m-0">{name}</h2>
+
+                        {/* DropDown */}
+                        <DropdownMenu
+                          open={modalState.openDropdownIndex === itemId}
+                          onOpenChange={(open) => {
+                            setModalState((prev) => ({
+                              ...prev,
+                              openDropdownIndex: open ? itemId : '',
+                            }));
+                          }}
+                        >
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <Ellipsis size={16} />
+                            </Button>
+                          </DropdownMenuTrigger>
+
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem asChild>
+                              <Link href={`/dashboard/admin/package-builder/${itemId}`} className="flex items-center gap-2 cursor-pointer">
+                                <SquarePen size={14} /> Edit
+                              </Link>
+                            </DropdownMenuItem>
+
+                            <DropdownMenuSeparator />
+
+                            <DropdownMenuItem
+                              onSelect={(e) => {
+                                e.preventDefault();
+                                handleDeleteClick(itemId);
+                              }}
+                              className="text-red-400 cursor-pointer"
+                            >
+                              <Trash2 size={14} /> Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        <AlertDialog
+                          open={modalState.openDialogIndex === itemId}
+                          onOpenChange={(open) => {
+                            if (!open) closeDialog();
+                          }}
+                        >
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                              <AlertDialogDescription>This action cannot be undone. This will permanently delete your data from our servers.</AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
+                              <AlertDialogAction className="bg-dangerSecondary" onClick={() => handleDelete(itemId)}>
+                                Continue
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
 
                       {/* attributes have duration then */}
                       {attributes.length > 0 &&
@@ -456,88 +531,18 @@ const FilterPackage = ({ categories = [], difficulties = [], durations = [] }) =
                       </div>
                     </div>
 
-                    {/*  DropDown */}
-                    <div className="absolute right-4 top-4">
-                      <DropdownMenu
-                        open={modalState.openDropdownIndex === itemId}
-                        onOpenChange={(open) => {
-                          setModalState((prev) => ({
-                            ...prev,
-                            openDropdownIndex: open ? itemId : '',
-                          }));
-                        }}
-                      >
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="outline">
-                            <Ellipsis size={16} />
-                          </Button>
-                        </DropdownMenuTrigger>
-
-                        <DropdownMenuContent className="space-y-0 -ml-20">
-                          <DropdownMenuItem className="py-0">
-                            <Button asChild variant="outline" className="w-full px-2 border-none flex justify-start text-sm font-normal">
-                              <Link href={`/dashboard/admin/package-builder/${itemId}`}>
-                                <SquarePen size={16} className="mr-2" />
-                                Edit
-                              </Link>
-                            </Button>
-                          </DropdownMenuItem>
-
-                          <DropdownMenuSeparator />
-
-                          <DropdownMenuItem
-                            className="py-0"
-                            onSelect={(e) => {
-                              e.preventDefault();
-                              handleDeleteClick(itemId);
-                            }}
-                          >
-                            <Button variant="outline" className="w-full px-2 text-red-400 border-none flex justify-start text-sm font-normal">
-                              <Trash2 size={16} className="mr-2" />
-                              Delete
-                            </Button>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-
-                      <AlertDialog
-                        open={modalState.openDialogIndex === itemId}
-                        onOpenChange={(open) => {
-                          if (!open) closeDialog();
-                        }}
-                      >
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                            <AlertDialogDescription>This action cannot be undone. This will permanently delete your data from our servers.</AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
-                            <AlertDialogAction className="bg-dangerSecondary" onClick={() => handleDelete(itemId)}>
-                              Continue
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-
                     {/* Selected Items Input Field */}
-                    <div className="absolute top-[5%] left-[5%] w-fit">
-                      <Checkbox
+                    <div className="absolute top-4 left-4 w-fit">
+                      <SelectableCardCheckbox
                         checked={selectedItems.includes(itemId)}
-                        className="h-5 w-5 rounded border-2 border-[#568f7c] bg-white
-                                   data-[state=checked]:bg-[#568f7c]
-                                   data-[state=checked]:text-white
-                                   data-[state=checked]:border-[#568f7c]
-                                   [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
-                        onCheckedChange={(checked) => {
-                          setSelectedItems(
-                            (prev) =>
-                              checked
-                                ? [...prev, itemId]
-                                : prev.filter((id) => id !== itemId)
-                          );
+                        onCheckedChange={(checked, id) => {
+                          if (checked) {
+                            setSelectedItems((prev) => [...prev, id]);
+                          } else {
+                            setSelectedItems((prev) => prev.filter((itemId) => itemId !== id));
+                          }
                         }}
+                        itemId={itemId}
                       />
                     </div>
                   </Card>
