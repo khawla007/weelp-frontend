@@ -5,7 +5,7 @@ import { useForm, Controller, useWatch } from 'react-hook-form';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Calendar, Car, Clock, Ellipsis, Plus, SquarePen, Tag, Trash2, User, Users } from 'lucide-react';
+import { Calendar, Car, Clock, Ellipsis, Plus, SquarePen, Star, Tag, Trash2, User, Users } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import debounce from 'lodash.debounce';
 import { Badge } from '@/components/ui/badge';
@@ -18,7 +18,7 @@ import { CustomPagination } from '@/app/components/Pagination';
 import Link from 'next/link';
 import useSWR from 'swr'; // for states cache and ui management
 import { useToast } from '@/hooks/use-toast'; // toast for notification
-import { Checkbox } from '@/components/ui/checkbox'; //
+import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
 import { fetcher } from '@/lib/fetchers'; // interceptors
 import { deleteMultipleTransfers, deleteTransfer } from '@/lib/actions/transfer'; // inline actions
 import { VEHICLE_TYPES } from '@/constants/transfer'; // constants
@@ -36,6 +36,7 @@ const FilterTransfer = () => {
   const { register, setValue, control } = useForm({
     //initalize form
     defaultValues: {
+      search: '',
       vehicle_type: '',
       availability_date: '',
       capacity: '',
@@ -94,31 +95,49 @@ const FilterTransfer = () => {
     [],
   );
 
+  // Memoize price array to prevent infinite re-renders
+  const priceMemoized = useMemo(() => filters.price, [filters.price?.[0], filters.price?.[1]]);
+
+  // reset page to 1 when filters change
+  useEffect(() => {
+    if (filters.page > 1) setValue('page', 1);
+  }, [filters.search, filters.vehicle_type, filters.availability_date, filters.capacity, priceMemoized, filters.sort_by, setValue]);
+
   // side effect for if fiilter change
   useEffect(() => {
-    debouncedUpdate(filters);
+    const { page, ...otherFilters } = filters;
+    debouncedUpdate(otherFilters);
     return () => debouncedUpdate.cancel();
-  }, [filters, debouncedUpdate]);
+  }, [
+    filters.search,
+    filters.vehicle_type,
+    filters.availability_date,
+    filters.capacity,
+    priceMemoized,
+    filters.sort_by,
+    debouncedUpdate,
+  ]);
 
   // Memoized query string
   const queryParams = useMemo(() => {
     const params = new URLSearchParams();
 
+    if (debouncedFilters.search) params.append('search', debouncedFilters.search);
     if (debouncedFilters.vehicle_type) params.append('vehicle_type', debouncedFilters.vehicle_type);
     if (debouncedFilters.availability_date) params.append('availability_date', debouncedFilters.availability_date);
     if (debouncedFilters.capacity) params.append('capacity', debouncedFilters.capacity);
     if (debouncedFilters.sort_by) params.append('sort_by', debouncedFilters.sort_by);
     if (debouncedFilters.price?.[0]) params.append('min_price', debouncedFilters.price[0]);
     if (debouncedFilters.price?.[1]) params.append('max_price', debouncedFilters.price[1]);
-    if (debouncedFilters.page) params.append('page', debouncedFilters.page);
+    if (debouncedFilters.page) params.append('page', filters.page); // use live page, debounced search
+    else if (filters.page) params.append('page', filters.page);
 
     return params.toString();
-  }, [debouncedFilters]);
+  }, [debouncedFilters, filters.page]);
 
   // SWR fetch
   const { data, error, isValidating, mutate } = useSWR(`/api/admin/transfers?${queryParams}`, fetcher, { revalidateOnFocus: true });
 
-  console.log(data, 'data');
   // destructure data
   const { data: items = [], current_page = '', per_page = '', total: totalItems = '' } = data?.data || {}; // destructure safely
 
@@ -162,6 +181,15 @@ const FilterTransfer = () => {
     <Card className="flex gap-4 flex-col lg:flex-row ">
       {/* Sidebar Filter */}
       <div className="lg:w-1/4  space-y-6 p-4">
+        {/* Search - Outside accordion like Activity */}
+        <div className="space-y-2">
+          <Controller
+            name="search"
+            control={control}
+            render={({ field }) => <Input type="search" placeholder="Search Transfer" className="w-full bg-white focus-visible:ring-secondaryDark" {...field} />}
+          />
+        </div>
+
         <Accordion type="single" collapsible>
           {/* Vehicle Type */}
           <AccordionItem value="vehicle_type">
@@ -312,19 +340,93 @@ const FilterTransfer = () => {
           {!isValidating && !error && items.length > 0 && (
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
-                {items.map(({ id: itemId, name, media_gallery = [], tags = [], attributes = [], vendor_routes: { is_vendor } = {} }, index) => (
+                {items.map(({ id: itemId, name, media_gallery = [], tags = [], attributes = [], vendor_routes: { is_vendor } = {}, feature_image }, index) => (
                   <Card
                     key={index}
-                    className={`group hover:shadow-md ease duration-300 rounded-lg w-full lg:w-fit border relative ${selectedItems?.includes(itemId) && 'p-3 border border-secondaryDark'}`}
+                    className="group hover:shadow-md rounded-lg w-full lg:w-fit border relative overflow-hidden"
                   >
                     <img
-                      className="w-full lg:w-[326px] h-[183px] rounded-lg aspect-square"
-                      src={`${media_gallery?.[0]?.url ? media_gallery?.[0]?.url : 'https://picsum.photos/350/300?random'}`}
-                      alt="activity_image"
+                      className="w-full lg:w-[326px] h-[183px] rounded-t-lg rounded-b-none"
+                      src={`${feature_image || media_gallery?.[0]?.url ? feature_image || media_gallery?.[0]?.url : 'https://picsum.photos/350/300?random'}`}
+                      alt="transfer_image"
                     />
 
                     <div className=" bg-white p-4 space-y-2">
-                      <h2>{name}</h2>
+                      <div className="flex justify-between items-start">
+                        <h2 className="m-0">{name}</h2>
+
+                        {/* Three-Dot Menu */}
+                        <DropdownMenu
+                          open={modalState.openDropdownIndex === itemId}
+                          onOpenChange={(open) => {
+                            setModalState((prev) => ({
+                              ...prev,
+                              openDropdownIndex: open ? itemId : '',
+                            }));
+                          }}
+                        >
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <Ellipsis size={16} />
+                            </Button>
+                          </DropdownMenuTrigger>
+
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem className="py-0">
+                              <Button asChild variant="outline" className="w-full px-2 border-none flex justify-start text-sm font-normal">
+                                {/* Edit Transfers Route Based on isVendor */}
+                                {is_vendor ? (
+                                  <Link href={`/dashboard/admin/transfers/edit/${itemId}/vendor`}>
+                                    <SquarePen size={16} className="mr-2" />
+                                    Edit
+                                  </Link>
+                                ) : (
+                                  <Link href={`/dashboard/admin/transfers/edit/${itemId}/admin`}>
+                                    <SquarePen size={16} className="mr-2" />
+                                    Edit
+                                  </Link>
+                                )}
+                              </Button>
+                            </DropdownMenuItem>
+
+                            <DropdownMenuSeparator />
+
+                            <DropdownMenuItem
+                              className="py-0"
+                              onSelect={(e) => {
+                                e.preventDefault();
+                                handleDeleteClick(itemId);
+                              }}
+                            >
+                              <Button variant="outline" className="w-full px-2 text-red-400 border-none flex justify-start text-sm font-normal">
+                                <Trash2 size={16} className="mr-2" />
+                                Delete
+                              </Button>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        {/* AlertDialog for Delete Confirmation */}
+                        <AlertDialog
+                          open={modalState.openDialogIndex === itemId}
+                          onOpenChange={(open) => {
+                            if (!open) closeDialog();
+                          }}
+                        >
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                              <AlertDialogDescription>This action cannot be undone. This will permanently delete your data from our servers.</AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
+                              <AlertDialogAction className="bg-dangerSecondary" onClick={() => handleDelete(itemId)}>
+                                Continue
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
 
                       {/* vendor routes name */}
                       <span>{`Checking is by vendor ${is_vendor}`}</span>
@@ -362,92 +464,18 @@ const FilterTransfer = () => {
                       </div>
                     </div>
 
-                    {/*  DropDown */}
-                    <div className="absolute right-4 top-4">
-                      <DropdownMenu
-                        open={modalState.openDropdownIndex === itemId}
-                        onOpenChange={(open) => {
-                          setModalState((prev) => ({
-                            ...prev,
-                            openDropdownIndex: open ? itemId : '',
-                          }));
-                        }}
-                      >
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="outline">
-                            <Ellipsis size={16} />
-                          </Button>
-                        </DropdownMenuTrigger>
-
-                        <DropdownMenuContent className="space-y-0 -ml-20">
-                          <DropdownMenuItem className="py-0">
-                            <Button asChild variant="outline" className="w-full px-2 border-none flex justify-start text-sm font-normal">
-                              {/* Edit Transfers Route Based on isVendor */}
-                              {is_vendor ? (
-                                <Link href={`/dashboard/admin/transfers/edit/${itemId}/vendor`}>
-                                  <SquarePen size={16} className="mr-2" />
-                                  Edit
-                                </Link>
-                              ) : (
-                                <Link href={`/dashboard/admin/transfers/edit/${itemId}/admin`}>
-                                  <SquarePen size={16} className="mr-2" />
-                                  Edit
-                                </Link>
-                              )}
-                            </Button>
-                          </DropdownMenuItem>
-
-                          <DropdownMenuSeparator />
-
-                          <DropdownMenuItem
-                            className="py-0"
-                            onSelect={(e) => {
-                              e.preventDefault();
-                              handleDeleteClick(itemId);
-                            }}
-                          >
-                            <Button variant="outline" className="w-full px-2 text-red-400 border-none flex justify-start text-sm font-normal">
-                              <Trash2 size={16} className="mr-2" />
-                              Delete
-                            </Button>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-
-                      <AlertDialog
-                        open={modalState.openDialogIndex === itemId}
-                        onOpenChange={(open) => {
-                          if (!open) closeDialog();
-                        }}
-                      >
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                            <AlertDialogDescription>This action cannot be undone. This will permanently delete your data from our servers.</AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
-                            <AlertDialogAction className="bg-dangerSecondary" onClick={() => handleDelete(itemId)}>
-                              Continue
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-
                     {/* Selected Items Input Field */}
-                    <div className="absolute top-[5%] left-[5%] w-fit">
-                      <Checkbox
+                    <div className="absolute top-4 left-4 w-fit">
+                      <SelectableCardCheckbox
                         checked={selectedItems.includes(itemId)}
-                        className="data-[state=checked]:bg-secondaryDark"
-                        onClick={(e) => {
-                          setSelectedItems(
-                            (prev) =>
-                              prev.includes(itemId)
-                                ? prev.filter((id) => id !== itemId) //
-                                : [...prev, itemId], //
-                          );
+                        onCheckedChange={(checked, id) => {
+                          if (checked) {
+                            setSelectedItems((prev) => [...prev, id]);
+                          } else {
+                            setSelectedItems((prev) => prev.filter((itemId) => itemId !== id));
+                          }
                         }}
+                        itemId={itemId}
                       />
                     </div>
                   </Card>
