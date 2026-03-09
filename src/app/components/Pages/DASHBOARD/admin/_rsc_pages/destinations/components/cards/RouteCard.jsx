@@ -21,7 +21,7 @@ import { deletePlace } from '@/lib/actions/places';
  * @param {{label:string, icon:string, items:number ,description:string, url:string}} props label,icons,items,description,url
  * @returns {JSX.Element}
  */
-export const RouteCard = ({ id, type, name, code, description, featured_destination, feature_image, media_gallery = [], country, region }) => {
+export const RouteCard = ({ id, type, name, code, description, featured_destination, feature_image, media_gallery = [], country, state, region, regions = [] }) => {
   const router = useRouter(); // intialize route
   const pathname = usePathname(); // intialize pathname
 
@@ -137,14 +137,33 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
       </CardContent>
       <CardFooter className="flex flex-col items-start gap-4">
         <p>{getExcerpt(description)}</p>
-        {/* Badges Data - Show Region for countries, Country for states */}
-        <div>
-          {type === 'country' && region ? (
-            <Badge className="bg-accent text-black hover:bg-accent">Region: {region}</Badge>
-          ) : type === 'state' && country ? (
-            <Badge className="bg-accent text-black hover:bg-accent">Country: {country.name}</Badge>
+        {/* Badges Data - Show Region for countries, Region + Country for states, Region + Country + State for cities */}
+        <div className="flex flex-wrap gap-2">
+          {type === 'country' && regions && regions.length > 0 ? (
+            <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Region: {regions[0].name}</Badge>
+          ) : type === 'state' ? (
+            <>
+              {regions && regions.length > 0 && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Region: {regions[0].name}</Badge>
+              )}
+              {country && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Country: {country.name}</Badge>
+              )}
+            </>
+          ) : type === 'city' ? (
+            <>
+              {regions && regions.length > 0 && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Region: {regions[0].name}</Badge>
+              )}
+              {country && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Country: {country.name}</Badge>
+              )}
+              {state && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">State: {state.name}</Badge>
+              )}
+            </>
           ) : (
-            <Badge className="bg-accent text-black hover:bg-accent">{type || 'country'}</Badge>
+            <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">{type || 'country'}</Badge>
           )}
         </div>
       </CardFooter>
