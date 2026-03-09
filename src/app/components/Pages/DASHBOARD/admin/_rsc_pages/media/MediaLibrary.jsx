@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
+import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
 import { Search, Upload, Check, Edit, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Card } from '@/components/ui/card';
@@ -15,6 +15,7 @@ import { isEmpty } from 'lodash';
 import { useAllMediaAdmin } from '@/hooks/api/admin/media';
 import { useIsClient } from '@/hooks/useIsClient';
 import { useToast } from '@/hooks/use-toast';
+import { CustomPagination } from '@/app/components/Pagination';
 
 export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelectionChange }) {
   const isClient = useIsClient(); // hydration
@@ -29,6 +30,13 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
   const { toast } = useToast();
   const { addMedia, removeMedia, selectedMedia } = useMediaStore();
   const isMediaPage = pathname === '/dashboard/admin/media';
+
+  // Handle page change - clears selections
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    setSelectedItems([]);
+    setIsAllSelected(false);
+  };
   const { media: data = [], pagination, isLoading: loading, isValidating, error, mutate: mutateMedia } = useAllMediaAdmin(currentPage);
   const images = Array.isArray(data) ? data : []; // safe fallback
   const { currentPage: apiPage, perPage, total } = pagination;
@@ -143,21 +151,29 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                 <Button
                   variant="destructive"
                   onClick={async () => {
-                    const { deleteMultipleMedia } = await import('@/lib/actions/media');
-                    const result = await deleteMultipleMedia(selectedItems);
+                    try {
+                      const { deleteMultipleMedia } = await import('@/lib/actions/media');
+                      const result = await deleteMultipleMedia(selectedItems);
 
-                    if (result.success) {
-                      toast({
-                        title: `${selectedItems.length} media deleted`,
-                        variant: 'success',
-                      });
-                      mutateMedia();
-                      setSelectedItems([]);
-                      setIsAllSelected(false);
-                    } else {
+                      if (result.success) {
+                        toast({
+                          title: `${selectedItems.length} media deleted`,
+                          variant: 'success',
+                        });
+                        mutateMedia();
+                        setSelectedItems([]);
+                        setIsAllSelected(false);
+                      } else {
+                        toast({
+                          title: 'Delete failed',
+                          description: result.error,
+                          variant: 'destructive',
+                        });
+                      }
+                    } catch (error) {
                       toast({
                         title: 'Delete failed',
-                        description: result.error,
+                        description: error.message || 'An unexpected error occurred',
                         variant: 'destructive',
                       });
                     }
@@ -222,20 +238,20 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
 
                     {/* Selection Checkbox */}
                     <div className="absolute top-4 left-4 w-fit z-10" onClick={(e) => e.stopPropagation()}>
-                      <Checkbox
+                      <SelectableCardCheckbox
                         checked={selectedItems.includes(image.id)}
-                        className="h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
-                        onCheckedChange={(checked) => {
+                        onCheckedChange={(checked, id) => {
                           setSelectedItems(prev => {
                             const newSelection = checked
-                              ? [...prev, image.id]
-                              : prev.filter(id => id !== image.id);
+                              ? [...prev, id]
+                              : prev.filter(itemId => itemId !== id);
 
                             // Update isAllSelected state
                             setIsAllSelected(newSelection.length === images.length);
                             return newSelection;
                           });
                         }}
+                        itemId={image.id}
                       />
                     </div>
 
@@ -262,6 +278,18 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                   </Card>
                 );
               })}
+            </div>
+          )}
+
+          {/* Pagination */}
+          {total > 0 && (
+            <div className="flex justify-end mt-6">
+              <CustomPagination
+                totalItems={total}
+                itemsPerPage={perPage}
+                currentPage={apiPage}
+                onPageChange={handlePageChange}
+              />
             </div>
           )}
         </div>
