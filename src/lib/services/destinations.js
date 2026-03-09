@@ -1,4 +1,4 @@
-import { authApi } from './axiosInstance';
+import { authApi } from '@/lib/axiosInstance';
 
 /**
  * Fetch counts for all destination types
