@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
-import { Ellipsis, Pencil, Star, Trash2 } from 'lucide-react';
+import { Ellipsis, Pencil, Trash2 } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useSWRConfig } from 'swr';
@@ -21,13 +21,19 @@ import { deletePlace } from '@/lib/actions/places';
  * @param {{label:string, icon:string, items:number ,description:string, url:string}} props label,icons,items,description,url
  * @returns {JSX.Element}
  */
-export const RouteCard = ({ id, type, name, code, description, featured_destination, feature_image, media_gallery = [] }) => {
+export const RouteCard = ({ id, type, name, code, description, featured_destination, feature_image, media_gallery = [], country, region }) => {
   const router = useRouter(); // intialize route
   const pathname = usePathname(); // intialize pathname
 
   // Use featured image if available, otherwise fall back to first image from gallery
   const displayImage = feature_image || media_gallery.find(m => m.is_featured)?.url || media_gallery.at(0)?.url || '';
   const altText = media_gallery.find(m => m.is_featured)?.alt_text || media_gallery.at(0)?.alt_text || name;
+
+  // Create excerpt with "..." for description
+  const getExcerpt = (text, maxLength = 100) => {
+    if (!text || text.length <= maxLength) return text || '';
+    return text.substring(0, maxLength).trim() + '...';
+  };
 
   const { mutate } = useSWRConfig(); // mutate
   const { toast } = useToast(); // intialize toaster
@@ -89,12 +95,7 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
       <div className="relative w-full h-40">
         <SafeImage src={displayImage} alt={altText} />
 
-        {/* Featrued Destination */}
-        {featured_destination && (
-          <Badge variant="outline" className="px-2 gap-1 absolute right-4 top-2 z-10 bg-white">
-            <Star size={14} /> Featured
-          </Badge>
-        )}
+        {/* Featured Badge Removed - Not needed on destination listing cards */}
       </div>
 
       {/* Content section */}
@@ -135,10 +136,16 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
         </div>
       </CardContent>
       <CardFooter className="flex flex-col items-start gap-4">
-        <p>{description}</p>
-        {/* Badges Data */}
+        <p>{getExcerpt(description)}</p>
+        {/* Badges Data - Show Region for countries, Country for states */}
         <div>
-          <Badge className="bg-accent text-black hover:bg-accent">country</Badge>
+          {type === 'country' && region ? (
+            <Badge className="bg-accent text-black hover:bg-accent">Region: {region}</Badge>
+          ) : type === 'state' && country ? (
+            <Badge className="bg-accent text-black hover:bg-accent">Country: {country.name}</Badge>
+          ) : (
+            <Badge className="bg-accent text-black hover:bg-accent">{type || 'country'}</Badge>
+          )}
         </div>
       </CardFooter>
     </Card>
