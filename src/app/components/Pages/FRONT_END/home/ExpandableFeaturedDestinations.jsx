@@ -68,10 +68,10 @@ const ExpandableFeaturedDestinations = ({ data = [], title = 'Top Destinations' 
 
         {/* Content Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-6">
-          {/* Region Name (if exists) */}
-          {city.region && (
+          {/* State/Region Name (if exists) */}
+          {city.state?.name && (
             <span className="text-xs uppercase tracking-wider text-white/70 mb-1 block">
-              {city.region}
+              {city.state.name}
             </span>
           )}
 
@@ -107,9 +107,42 @@ const ExpandableFeaturedDestinations = ({ data = [], title = 'Top Destinations' 
           </h2>
         </div>
 
-        {/* Flex container for expandable cards - will be implemented in next tasks */}
-        <div className="flex gap-2">
-          {/* Cards placeholder */}
+        {/* Flex container for expandable cards - Desktop */}
+        <div className="hidden md:flex gap-2">
+          {cities.map((city, index) => {
+            const isHovered = hoverIndex === index && activeIndex === null;
+            const isActive = activeIndex === index;
+
+            return (
+              <DestinationCard
+                key={city.id || index}
+                city={city}
+                isActive={isActive}
+                isHovered={isHovered}
+                onClick={() => {
+                  // Toggle: if clicking active, deselect; otherwise select
+                  setActiveIndex(activeIndex === index ? null : index);
+                }}
+                onMouseEnter={() => setHoverIndex(index)}
+                onMouseLeave={() => setHoverIndex(null)}
+              />
+            );
+          })}
+        </div>
+
+        {/* Grid container for mobile */}
+        <div className="grid grid-cols-2 gap-4 md:hidden">
+          {cities.map((city, index) => (
+            <DestinationCard
+              key={city.id || index}
+              city={city}
+              isActive={false}
+              isHovered={false}
+              onClick={() => setActiveIndex(activeIndex === index ? null : index)}
+              onMouseEnter={() => {}}
+              onMouseLeave={() => {}}
+            />
+          ))}
         </div>
       </div>
     </section>

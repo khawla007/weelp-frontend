@@ -1,42 +1,120 @@
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
-export const CustomPagination = ({ totalItems = 0, itemsPerPage = 0, currentPage = 0, onPageChange }) => {
-  if (!totalItems || !itemsPerPage || !currentPage) {
-    return <p className="text-red-400 animate-pulse hidden">All Props Not Passed Pagination</p>;
-  }
+export const CustomPagination = ({ totalItems = 0, itemsPerPage = 0, currentPage = 1, onPageChange }) => {
+  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+  const [inputPage, setInputPage] = useState(currentPage);
 
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  // Reset input when currentPage changes externally
+  useEffect(() => {
+    setInputPage(currentPage);
+  }, [currentPage]);
+
+  // Handle page input with Enter key
+  const handleInputSubmit = (e) => {
+    e.preventDefault();
+    const page = parseInt(inputPage);
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      onPageChange(page);
+    } else {
+      setInputPage(currentPage); // Reset to current page if invalid
+    }
+  };
+
+  // Handle input change
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    // Allow only positive numbers
+    if (value === '' || (/^\d+$/.test(value) && parseInt(value) >= 1)) {
+      setInputPage(value);
+    }
+  };
+
+  // Handle blur - validate and navigate
+  const handleInputBlur = () => {
+    const page = parseInt(inputPage);
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      onPageChange(page);
+    } else {
+      setInputPage(currentPage);
+    }
+  };
+
+  const canGoPrev = currentPage > 1;
+  const canGoNext = currentPage < totalPages;
 
   return (
-    <div className="flex gap-2 justify-between">
-      <p className="text-xs  text-gray-600 invisible">Showing 1 to 3 of 3 items</p>
-      <div className="flex gap-2">
-        {currentPage > 1 && (
-          <Button variant="outline" type="button" onClick={() => onPageChange(currentPage - 1)}>
-            Prev
-          </Button>
-        )}
+    <div className="flex items-center justify-between gap-4 w-full">
+      {/* Total items - Left aligned */}
+      <span className="text-sm text-gray-600 whitespace-nowrap">
+        Total: {totalItems} items
+      </span>
 
-        {[...Array(totalPages)].map((_, i) => (
-          <Button
-            variant="outline"
-            type="button"
-            key={i}
-            // disabled={currentPage === i + 1}
-            className={`text-black p-2 rounded-md bg-white  ${currentPage === i + 1 && 'bg-secondaryDark  text-white'} `}
-            onClick={() => {
-              if (currentPage === i + 1) {
-                return;
-              }
-              onPageChange(i + 1);
-            }}
-          >
-            {i + 1}
-          </Button>
-        ))}
+      {/* Pagination controls - Right aligned */}
+      <div className="flex items-center gap-2">
+        {/* First page button */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onPageChange(1)}
+          disabled={!canGoPrev}
+          className="h-9 px-3"
+        >
+          <ChevronsLeft className="h-4 w-4" />
+        </Button>
 
-        <Button type="button" variant="outline" disabled={currentPage === totalPages} onClick={() => onPageChange(currentPage + 1)}>
-          Next
+        {/* Previous page button */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={!canGoPrev}
+          className="h-9 px-3"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+
+        {/* Page input */}
+        <form onSubmit={handleInputSubmit} className="flex items-center gap-1">
+          <Input
+            type="text"
+            inputMode="numeric"
+            value={inputPage}
+            onChange={handleInputChange}
+            onBlur={handleInputBlur}
+            className="w-16 h-9 text-center"
+            min={1}
+            max={totalPages}
+          />
+        </form>
+
+        {/* of total pages */}
+        <span className="text-sm text-gray-600">
+          of {totalPages}
+        </span>
+
+        {/* Next page button */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={!canGoNext}
+          className="h-9 px-3"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+
+        {/* Last page button */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onPageChange(totalPages)}
+          disabled={!canGoNext}
+          className="h-9 px-3"
+        >
+          <ChevronsRight className="h-4 w-4" />
         </Button>
       </div>
     </div>

@@ -178,3 +178,22 @@ export async function deleteCountry(countryId) {
     return { success: false, error: 'Something went wrong' };
   }
 }
+
+/**
+ * Action to delete multiple countries
+ * @param {number[]} countryIds
+ * @returns {{success: boolean, data?: any, error?: string}}
+ */
+export async function deleteMultipleCountries(countryIds = []) {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/countries/bulk-delete', {
+      country_ids: countryIds,
+    });
+
+    revalidatePath('/dashboard/admin/destinations/countries');
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}

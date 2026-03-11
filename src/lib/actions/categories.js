@@ -141,3 +141,32 @@ export const deleteCategory = async (id) => {
     };
   }
 };
+
+/**
+ * Method for Bulk Delete Categories
+ * @param {Number[]} categoryIds - Array of category IDs to delete
+ * @returns {}
+ */
+export const deleteMultipleCategories = async (categoryIds = []) => {
+  try {
+    await delay(500);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/categories/bulk-delete', {
+      category_ids: categoryIds,
+    });
+
+    // revalidate  path
+    revalidatePath('/dashboard/admin/taxonomies/categories');
+
+    return {
+      success: true,
+      message: res?.data?.message || `${categoryIds.length} categories deleted successfully`,
+      data: res.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error?.response?.data?.message || error?.message || 'Something went wrong',
+    };
+  }
+};

@@ -1,4 +1,4 @@
-import { authApi, createAuthenticatedServerApi } from '../axiosInstance';
+import { createAuthenticatedServerApi } from '../axiosInstance';
 import { log } from '../utils';
 
 /**
@@ -7,7 +7,8 @@ import { log } from '../utils';
  */
 export async function getPlacesByAdminOptions() {
   try {
-    const response = await authApi.get(`/api/admin/places/list`, {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get(`/api/admin/places/list`, {
       headers: { Accept: 'application/json' },
     });
 

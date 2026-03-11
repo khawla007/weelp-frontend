@@ -1,4 +1,4 @@
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { log } from '../utils';
 
 /**
@@ -8,16 +8,18 @@ import { log } from '../utils';
  */
 export async function getAllVendorsAdmin(query = '') {
   try {
-    const response = await authApi.get(`/api/admin/vendors${query ? query : ''}`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors${query ? query : ''}`, {
       headers: { Accept: 'application/json' },
     });
 
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }
 
@@ -28,7 +30,8 @@ export async function getAllVendorsAdmin(query = '') {
  */
 export async function getRoutesByVendorIdAdmin(vendorId, query) {
   try {
-    const response = await authApi.get(`/api/admin/vendors/${vendorId}/routes${query}`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors/${vendorId}/routes${query}`, {
       headers: { Accept: 'application/json' },
     });
 
@@ -37,9 +40,10 @@ export async function getRoutesByVendorIdAdmin(vendorId, query) {
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }
 
@@ -50,7 +54,8 @@ export async function getRoutesByVendorIdAdmin(vendorId, query) {
  */
 export async function getPriceByVendorIdAdmin(vendorId, query) {
   try {
-    const response = await authApi.get(`/api/admin/vendors/${vendorId}/pricing-tiers${query}`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors/${vendorId}/pricing-tiers${query}`, {
       headers: { Accept: 'application/json' },
     });
 
@@ -59,9 +64,10 @@ export async function getPriceByVendorIdAdmin(vendorId, query) {
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }
 
@@ -72,7 +78,8 @@ export async function getPriceByVendorIdAdmin(vendorId, query) {
  */
 export async function getAvailabilityByVendorIdAdmin(vendorId, query) {
   try {
-    const response = await authApi.get(`/api/admin/vendors/${vendorId}/availability-time-slots${query}`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors/${vendorId}/availability-time-slots${query}`, {
       headers: { Accept: 'application/json' },
     });
 
@@ -81,9 +88,10 @@ export async function getAvailabilityByVendorIdAdmin(vendorId, query) {
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }
 
@@ -94,16 +102,18 @@ export async function getAvailabilityByVendorIdAdmin(vendorId, query) {
  */
 export async function getVehiclesByVendorIdAdmin(vendorId, query) {
   try {
-    const response = await authApi.get(`/api/admin/vendors/${vendorId}/vehicles${query}`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors/${vendorId}/vehicles${query}`, {
       headers: { Accept: 'application/json' },
     });
 
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }
 
@@ -114,16 +124,18 @@ export async function getVehiclesByVendorIdAdmin(vendorId, query) {
  */
 export async function getDriversByVendorIdAdmin(vendorId, query) {
   try {
-    const response = await authApi.get(`/api/admin/vendors/${vendorId}/drivers${query}`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors/${vendorId}/drivers${query}`, {
       headers: { Accept: 'application/json' },
     });
 
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }
 
@@ -134,16 +146,18 @@ export async function getDriversByVendorIdAdmin(vendorId, query) {
  */
 export async function getVendorByIdAdmin(vendorId) {
   try {
-    const response = await authApi.get(`/api/admin/vendors/${vendorId}/`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors/${vendorId}`, {
       headers: { Accept: 'application/json' },
     });
 
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }
 
@@ -155,15 +169,17 @@ export async function getVendorByIdAdmin(vendorId) {
  */
 export async function getSchedulesByVendorIdAdmin(vendorId, query) {
   try {
-    const response = await authApi.get(`/api/admin/vendors/${vendorId}/schedules${query}`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors/${vendorId}/schedules${query}`, {
       headers: { Accept: 'application/json' },
     });
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }
 
@@ -173,16 +189,18 @@ export async function getSchedulesByVendorIdAdmin(vendorId, query) {
  */
 export async function getVehiclesByVendorIdOptions(vendorId) {
   try {
-    const response = await authApi.get(`/api/admin/vendors/${vendorId}/vehiclesdropdown`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors/${vendorId}/vehiclesdropdown`, {
       headers: { Accept: 'application/json' },
     });
 
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }
 
@@ -192,16 +210,18 @@ export async function getVehiclesByVendorIdOptions(vendorId) {
  */
 export async function getDriversByVendorIdOptions(vendorId) {
   try {
-    const response = await authApi.get(`/api/admin/vendors/${vendorId}/driversforselect`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors/${vendorId}/driversforselect`, {
       headers: { Accept: 'application/json' },
     });
 
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }
 
@@ -212,16 +232,18 @@ export async function getDriversByVendorIdOptions(vendorId) {
  */
 export async function getAllVendorsOptions() {
   try {
-    const response = await authApi.get(`/api/admin/vendors/vendor-select`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors/vendor-select`, {
       headers: { Accept: 'application/json' },
     });
 
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }
 
@@ -231,16 +253,18 @@ export async function getAllVendorsOptions() {
  */
 export async function getRoutesByVendorIdOptions(vendorId) {
   try {
-    const response = await authApi.get(`/api/admin/vendors/${vendorId}/routes-select`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors/${vendorId}/routes-select`, {
       headers: { Accept: 'application/json' },
     });
 
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }
 
@@ -250,16 +274,18 @@ export async function getRoutesByVendorIdOptions(vendorId) {
  */
 export async function getPriceByVendorIdOptions(vendorId) {
   try {
-    const response = await authApi.get(`/api/admin/vendors/${vendorId}/pricing-tiers-select`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors/${vendorId}/pricing-tiers-select`, {
       headers: { Accept: 'application/json' },
     });
 
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }
 
@@ -269,15 +295,17 @@ export async function getPriceByVendorIdOptions(vendorId) {
  */
 export async function getAvailabilityByVendorIdOptions(vendorId) {
   try {
-    const response = await authApi.get(`/api/admin/vendors/${vendorId}/availability-time-slots-select`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/vendors/${vendorId}/availability-time-slots-select`, {
       headers: { Accept: 'application/json' },
     });
 
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    throw new Error(`API Error: ${response.status}`);
   } catch (error) {
-    return {};
+    log(error);
+    throw error;
   }
 }

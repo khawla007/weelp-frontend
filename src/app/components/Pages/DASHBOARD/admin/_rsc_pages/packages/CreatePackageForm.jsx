@@ -22,7 +22,7 @@ import { useForm, FormProvider, Controller, useFieldArray, useWatch, useFormCont
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
-import { Activity, CalendarIcon, Car, Clock, Cross, Hotel, MapPin, Plane, Plus, Route, RouteIcon, Settings, Trash, Trash2, X } from 'lucide-react';
+import { Activity, CalendarIcon, Car, Clock, Cross, Hotel, MapPin, Plane, Plus, Route, RouteIcon, Settings, Star, Trash, Trash2, X } from 'lucide-react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ComboboxMultiple, ComboboxMultipleAttribute } from '@/components/ui/combobox_multi';
@@ -33,11 +33,11 @@ import { useRouter } from 'next/navigation';
 import { format, parse } from 'date-fns';
 import { Medialibrary } from '../media/MediaLibrary';
 import { useMediaStore } from '@/lib/store/useMediaStore';
-import { isEmpty } from 'lodash';
+import _, { isEmpty } from 'lodash';
 import { createPackage } from '@/lib/actions/packages';
 import dynamic from 'next/dynamic';
 
-const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOn'), { ssr: false });
+const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnPackage'), { ssr: false });
 
 export const CreatePackageForm = ({ categories, attributes, tags, locations = [], allactivities, alltransfers, itineraries }) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -1269,7 +1269,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
     // Handle For Adding Fields
     const handleAddInclustionField = () => {
       addInclusionField({
-        type: '',
+        type: 'activity', // Set default type instead of empty
         title: '',
         description: '',
         included: false,
@@ -1474,6 +1474,20 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
       name: 'media_gallery',
     });
 
+    // Derive featured image ID from media_gallery
+    const featuredImageId = media_gallery?.find((img) => img.is_featured)?.media_id ?? null;
+
+    // Toggle featured status for an image
+    const handleSetFeatured = (mediaId) => {
+      const isCurrentlyFeatured = featuredImageId === mediaId;
+      const updatedGallery = activityImages.map((img) => ({
+        ...img,
+        is_featured: img.media_id === mediaId ? !isCurrentlyFeatured : false,
+      }));
+      setActivityImages(updatedGallery);
+      setValue('media_gallery', updatedGallery);
+    };
+
     //  Hydarte First if there is already media exist
     useEffect(() => {
       if (media_gallery?.length > 0) {
@@ -1485,7 +1499,10 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
     useEffect(() => {
       if (selectedMedia.length > 0) {
         // 1. Transform selectedMedia (id → media_id) before adding
-        const transformedMedia = selectedMedia.map((obj) => _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))); // update key to media id
+        const transformedMedia = selectedMedia.map((obj) => {
+          const mapped = _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
+          return { ...mapped, is_featured: false };
+        });
 
         // 2. Push transformed data to local state
         setActivityImages((prev) => [...prev, ...transformedMedia]);
@@ -1509,9 +1526,22 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
       });
     };
 
+    // Handle selection changes from MediaLibrary (for unselection)
+    const handleSelectionChange = ({ removed }) => {
+      if (removed && removed.length > 0) {
+        setActivityImages((prev) => {
+          const removedIds = new Set(removed.map((img) => img.media_id || img.id));
+          const updatedImages = prev.filter((img) => !removedIds.has(img.media_id || img.id));
+          setValue('media_gallery', updatedImages);
+          return updatedImages;
+        });
+      }
+    };
+
     // console.log(getValues())
     return (
       <div className="flex flex-col gap-4">
+        <p className="text-sm text-gray-500">Click the star icon to mark an image as featured</p>
         <div className="hidden">
           <Controller
             control={methods?.control}
@@ -1534,7 +1564,11 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
           <DialogContent className="max-w-screen-xl">
             <DialogTitle className="sr-only">Edit profile</DialogTitle>
             <DialogDescription className="invisible">Upload Media For Activity</DialogDescription>
-            <Medialibrary />
+            <Medialibrary
+              closeDialog={() => setDialogOpen(false)}
+              alreadySelectedImages={activityImages}
+              onSelectionChange={handleSelectionChange}
+            />
           </DialogContent>
         </Dialog>
 
@@ -1542,10 +1576,23 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
         {activityImages.length > 0 ? (
           <div className="w-full flex flex-wrap gap-4 ">
             {activityImages.map((image, index) => {
+              const isFeatured = image.media_id == featuredImageId;
               return (
                 <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-black">
                   <img className="size-72 rounded-md border" src={image?.url} alt="activity_image" />
-                  <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-8 right-8 size-0 group-hover/item:size-6 transition-all text-red-400 bg-white rounded-full shadow" />
+                  <Star
+                    size={24}
+                    fill={isFeatured ? '#568f7c' : 'white'}
+                    strokeWidth={2}
+                    onClick={() => handleSetFeatured(image.media_id)}
+                    className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#568f7c]' : 'text-[#568f7c] hover:scale-110'}`}
+                  />
+                  {isFeatured && (
+                    <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
+                      Featured
+                    </div>
+                  )}
+                  <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-4 right-4 size-0 group-hover/item:size-6 transition-all text-red-500 bg-white rounded-full shadow p-1" />
                 </div>
               );
             })}
@@ -2061,6 +2108,11 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
     }
   };
 
+  // Handle Next button for steps 1-10 (no validation)
+  const handleNext = () => {
+    setCurrentStep((prev) => prev + 1);
+  };
+
   return (
     <div className="min-h-screen w-full bg-gray-50 py-12 sm:px-6 lg:px-8">
       <NavigationPackage title={'Create New Package'} desciption={'Design and configure your travel package'} backurl={'/dashboard/admin/package-builder/'} />
@@ -2073,7 +2125,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
                   steps.map((step) => (
                     <li
                       key={step.id}
-                      // onClick={() => {setCurrentStep(step?.id)}}
+                      onClick={() => setCurrentStep(step?.id)}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'}`}
                     >
                       <div
@@ -2087,7 +2139,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
               <Separator className="" />
             </div>
           </div>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={currentStep === 11 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
             <fieldset className={`${currentStep === 4 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               {renderStep()}
               <div className="flex justify-between pt-4">

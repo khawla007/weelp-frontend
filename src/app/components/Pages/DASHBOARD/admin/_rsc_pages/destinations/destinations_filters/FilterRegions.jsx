@@ -8,7 +8,7 @@ import { useForm, FormProvider, useWatch } from 'react-hook-form';
 import useSWR from 'swr';
 import debounce from 'lodash.debounce';
 import { authFetcher } from '@/lib/fetchers';
-import { SearchBar } from '../components/SearchBar';
+import { DashboardSearch } from '@/app/components/DashboardShared';
 import { CustomPagination } from '@/app/components/Pagination';
 import { Ellipsis, Pencil, Trash2, Globe } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -118,9 +118,9 @@ export const FilterRegions = () => {
 
   return (
     <FormProvider {...methods}>
-      <form className="space-y-4">
+      <div className="space-y-4">
         {/* Search */}
-        <SearchBar searchText="Search Regions" />
+        <DashboardSearch control={control} placeholder="Search Regions" className="max-w-sm" />
 
         {/* RESULT Found */}
         <div className="flex flex-col gap-4 h-full">
@@ -142,12 +142,12 @@ export const FilterRegions = () => {
                 ))}
               </Card>
 
-              {/* Pagination */}
+              {/* Pagination - outside form to avoid nesting */}
               <CustomPagination totalItems={total} itemsPerPage={perPage} currentPage={currentPage} onPageChange={(newPage) => setValue('page', newPage)} />
             </div>
           )}
         </div>
-      </form>
+      </div>
     </FormProvider>
   );
 };

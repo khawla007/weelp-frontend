@@ -6,7 +6,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar, Clock, Ellipsis, Plus, SquarePen, Star, Tag, Trash2, Users } from 'lucide-react';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import debounce from 'lodash.debounce';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +20,9 @@ import useSWR from 'swr'; // for states cache and ui management
 import { fetcher } from '@/lib/fetchers'; // interceptors
 import { useToast } from '@/hooks/use-toast';
 import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
+import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
+import { AddNewButton } from '@/app/components/Button/AddNewButton';
+import { DashboardSearch } from '@/app/components/DashboardShared';
 
 import { deleteItinerary, deleteMultipleItineraries } from '@/lib/actions/itineraries';
 
@@ -41,6 +43,7 @@ const FilterItinerary = ({ categories = [], difficulties = [], durations = [] })
   const priceID = useId();
   const { toast } = useToast(); // intialize toast
   const [selectedItems, setSelectedItems] = useState([]); // selected item for multiple delete case
+  const [isAllSelected, setIsAllSelected] = useState(false); // Track Select All toggle state
   const [modalState, setModalState] = useState({
     openDropdownIndex: '', // string: index as string or "" for none
     openDialogIndex: '',
@@ -99,6 +102,18 @@ const FilterItinerary = ({ categories = [], difficulties = [], durations = [] })
   // handle page change
   const handlePageChange = (newPage) => {
     setValue('page', newPage, { shouldValidate: true, shouldDirty: true }); // through server side pagiantion
+    setSelectedItems([]);
+    setIsAllSelected(false);
+  };
+
+  // Toggle select all / unselect all
+  const handleSelectAllToggle = () => {
+    if (isAllSelected) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(items.map(item => item.id));
+    }
+    setIsAllSelected(!isAllSelected);
   };
 
   const debouncedUpdate = useMemo(
@@ -178,6 +193,7 @@ const FilterItinerary = ({ categories = [], difficulties = [], durations = [] })
 
         // flush items
         setSelectedItems([]);
+        setIsAllSelected(false);
       } else {
         toast({
           title: 'Delete failed',
@@ -190,6 +206,7 @@ const FilterItinerary = ({ categories = [], difficulties = [], durations = [] })
 
       // flush items
       setSelectedItems([]);
+      setIsAllSelected(false);
     }
   };
 
@@ -204,11 +221,7 @@ const FilterItinerary = ({ categories = [], difficulties = [], durations = [] })
       <div className="lg:w-1/4  space-y-6 p-4">
         {/* Search */}
         <div className="space-y-2">
-          <Controller
-            name="name"
-            control={control}
-            render={({ field }) => <Input type="search" placeholder="Search Itinerary" className="w-full bg-white focus-visible:ring-secondaryDark" {...field} />}
-          />
+          <DashboardSearch control={control} name="name" placeholder="Search Itinerary" />
         </div>
 
         <Accordion type="single" collapsible>
@@ -360,23 +373,18 @@ const FilterItinerary = ({ categories = [], difficulties = [], durations = [] })
           Recommended
           <div className="space-y-4 flex flex-col ">
             {selectedItems.length > 0 ? (
-              // Seleted Items Functionality
-              <p className="flex self-end gap-4">
-                {/* <Button variant="outline" className="w-fit self-end" onClick={handleMultpleExport}>
-                  <Download size={16} /> Export
-                </Button> */}
-
-                <Button variant="destructive" className="w-fit self-end" onClick={handleMultpleDelete}>
-                  <Trash2 size={16} /> Delete
-                </Button>
-              </p>
+              <BulkActionButtons
+                selectedCount={selectedItems.length}
+                totalCount={items.length}
+                isAllSelected={isAllSelected}
+                onSelectAllToggle={handleSelectAllToggle}
+                onDelete={handleMultpleDelete}
+              />
             ) : (
-              <Button asChild>
-                <Link className="w-fit self-end bg-secondaryDark text-black" href="/dashboard/admin/itineraries/new">
-                  {/** Create New itineraries */}
-                  <Plus size={16} /> Create Itinerary
-                </Link>
-              </Button>
+              <AddNewButton
+                label="Add New"
+                href="/dashboard/admin/itineraries/new"
+              />
             )}
 
             {/* Recommended */}
@@ -537,11 +545,13 @@ const FilterItinerary = ({ categories = [], difficulties = [], durations = [] })
                       <SelectableCardCheckbox
                         checked={selectedItems.includes(itemId)}
                         onCheckedChange={(checked, id) => {
-                          if (checked) {
-                            setSelectedItems((prev) => [...prev, id]);
-                          } else {
-                            setSelectedItems((prev) => prev.filter((itemId) => itemId !== id));
-                          }
+                          setSelectedItems(prev => {
+                            const newSelection = checked
+                              ? [...prev, id]
+                              : prev.filter(itemId => itemId !== id);
+                            setIsAllSelected(newSelection.length === items.length);
+                            return newSelection;
+                          });
                         }}
                         itemId={itemId}
                       />

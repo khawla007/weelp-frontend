@@ -93,3 +93,32 @@ export const editUserAdmin = async (userId, data = {}) => {
     };
   }
 };
+
+/**
+ * Method for Bulk Delete Users
+ * @param {Number[]} userIds - Array of user IDs to delete
+ * @returns {{ success: boolean, message?: string, error?: string }}
+ */
+export const deleteMultipleUsers = async (userIds = []) => {
+  try {
+    await delay(500);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/users/bulk-delete', {
+      user_ids: userIds,
+    });
+
+    // revalidate path
+    revalidatePath('/dashboard/admin/users');
+
+    return {
+      success: true,
+      message: res?.data?.message || `${userIds.length} users deleted successfully`,
+      data: res.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error?.response?.data?.message || error?.message || 'Something went wrong',
+    };
+  }
+};

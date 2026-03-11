@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash';
 import { notFound } from 'next/navigation';
 
 const EditTransferByVendorPage = async ({ params }) => {
-  const { id } = params;
+  const { id } = await params;
 
   const transferData = await getSingleTransferAdmin(id); // retrive data from dynamic data
 

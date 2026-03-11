@@ -32,6 +32,9 @@ export const EditTransferForm = ({ transferData }) => {
   const { id: transferId, name, slug, description, transfer_type, seo = {}, vendor_routes = {}, media_gallery = [], addons = [] } = transferData; // destrucutre vendor data
   const { vendor_id, route_id } = vendor_routes; // destructure vendor routes
 
+  // Transform addons to array of IDs (matching Activity pattern)
+  const initialAddons = Array.isArray(addons) ? addons.map((item) => item.addon_id) : [];
+
   // intialize methods
   const methods = useForm({
     defaultValues: {
@@ -42,7 +45,7 @@ export const EditTransferForm = ({ transferData }) => {
       vendor_id: vendor_id ?? '',
       route_id: route_id ?? '',
       media_gallery: media_gallery,
-      addons: addons || [],
+      addons: initialAddons,
       seo: {
         ...seo,
         schema_data: seo?.schema_data

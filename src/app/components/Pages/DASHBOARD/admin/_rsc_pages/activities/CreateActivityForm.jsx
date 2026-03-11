@@ -1052,7 +1052,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                       onClick={() => setCurrentStep(step?.id)}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer self-start group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && 'bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'}`}
                     >
-                      <Separator className={` pt-1 rounded-full ${currentStep >= step?.id && 'bg-secondaryDark group-hover:bg-blue-600 '}`} />
+                      <Separator className={`pt-1 rounded-full ${currentStep >= step?.id ? 'bg-[#568f7c] group-hover:bg-[#e5e5e5]' : 'bg-neutral-200 group-hover:bg-[#568f7c]'}`} />
 
                       <div className={`text-sm font-medium pt-2 ${currentStep == step?.id ? 'text-secondaryDark' : 'text-grayDark'}`}>{step.title}</div>
                       <span className="text-sm text-gray-500">{step?.description}</span>

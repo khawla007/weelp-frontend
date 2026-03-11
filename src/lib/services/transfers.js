@@ -1,4 +1,4 @@
-import { publicApi, createAuthenticatedServerApi } from '../axiosInstance';
+import { publicApi, getAuthApi } from '../axiosInstance';
 import { log } from '../utils';
 
 /**
@@ -8,8 +8,8 @@ import { log } from '../utils';
  */
 export async function getAllTransfersAdmin() {
   try {
-    const api = await createAuthenticatedServerApi();
-    const response = await api.get(`/api/admin/transfers/`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/transfers`, {
       headers: { Accept: 'application/json' },
     });
     return response?.data?.data;
@@ -31,14 +31,15 @@ export async function getAllTransfersAdmin() {
  */
 export async function getAllTransfersAdminn(search = '') {
   try {
-    const api = await createAuthenticatedServerApi();
-    const response = await api.get(`/api/admin/transfers/${search ? search : ''}`, {
+    const api = await getAuthApi();
+    const url = search ? `/api/admin/transfers${search}` : `/api/admin/transfers`;
+    const response = await api.get(url, {
       headers: { Accept: 'application/json' },
     });
 
     return response?.data;
   } catch (error) {
-    return [];
+    return { data: [] };
   }
 }
 
@@ -49,7 +50,7 @@ export async function getAllTransfersAdminn(search = '') {
  */
 export async function getSingleTransferAdmin(transferId = '') {
   try {
-    const api = await createAuthenticatedServerApi();
+    const api = await getAuthApi();
     const response = await api.get(`/api/admin/transfers/${transferId}`, {
       headers: { Accept: 'application/json' },
     });

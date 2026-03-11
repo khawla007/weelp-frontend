@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useMediaStore } from '@/lib/store/useMediaStore';
 import { Plus, X } from 'lucide-react';
+import { mapKeys } from 'lodash';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { Medialibrary } from '../../media/MediaLibrary';
@@ -29,7 +30,7 @@ const MediaComponent = () => {
   useEffect(() => {
     if (selectedMedia.length > 0) {
       // 1. Transform selectedMedia (id → media_id) before adding
-      const transformedMedia = selectedMedia.map((obj) => _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))); // update key to media id
+      const transformedMedia = selectedMedia.map((obj) => mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))); // update key to media id
 
       // 2. Push transformed data to local state
       setActivityImages((prev) => [...prev, ...transformedMedia]);
@@ -42,6 +43,17 @@ const MediaComponent = () => {
   useEffect(() => {
     setValue('media_gallery', activityImages); // sync form
   }, [activityImages, setValue]);
+
+  // Handle selection changes from MediaLibrary (for unselection)
+  const handleSelectionChange = ({ removed }) => {
+    if (removed && removed.length > 0) {
+      setActivityImages((prev) => {
+        const removedIds = new Set(removed.map((img) => img.media_id || img.id));
+        const updatedImages = prev.filter((img) => !removedIds.has(img.media_id || img.id));
+        return updatedImages;
+      });
+    }
+  };
 
   // handleDelteImage
   const handleDeleteImage = (image) => {
@@ -76,7 +88,11 @@ const MediaComponent = () => {
         <DialogContent className="max-w-screen-xl">
           <DialogTitle className="sr-only">Edit profile</DialogTitle>
           <DialogDescription className="invisible">Upload Media For Activity</DialogDescription>
-          <Medialibrary />
+          <Medialibrary
+            closeDialog={() => setDialogOpen(false)}
+            alreadySelectedImages={activityImages}
+            onSelectionChange={handleSelectionChange}
+          />
         </DialogContent>
       </Dialog>
 

@@ -150,3 +150,32 @@ export async function deleteReview(reviewId) {
     return { success: false, error: error?.message || 'Something went wrong' };
   }
 }
+
+/**
+ * Deletes multiple reviews by IDs.
+ *
+ * @param {number[]} reviewIds - Array of review IDs to delete.
+ * @returns {Promise<{ success: boolean, message?: string, data?: any, error?: string }>} Result of the bulk delete operation.
+ */
+export async function deleteMultipleReviews(reviewIds = []) {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/reviews/bulk-delete', {
+      review_ids: reviewIds,
+    });
+
+    // revalidate reviews page
+    revalidatePath('/dashboard/admin/reviews');
+
+    return {
+      success: true,
+      message: res?.data?.message || `${reviewIds.length} review(s) deleted successfully`,
+      data: res.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error?.response?.data?.message || error?.message || 'Something went wrong',
+    };
+  }
+}

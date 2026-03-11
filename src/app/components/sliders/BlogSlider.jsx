@@ -37,7 +37,11 @@ const BlogSlider = ({ data }) => {
       >
         {data.map((val, index) => (
           <SwiperSlide key={index}>
-            <BlogCard imageSrc={val?.media_gallery?.[0]?.url} blogTitle={val?.name} {...val} />
+            <BlogCard
+              imageSrc={val?.media_gallery?.find(img => img.is_featured)?.url || val?.media_gallery?.[0]?.url}
+              blogTitle={val?.name}
+              {...val}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

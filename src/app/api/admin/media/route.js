@@ -4,10 +4,13 @@ import { getAuthApi } from '@/lib/axiosInstance';
  * GET ALL MEDIA IMAGES USING CLIENT SIDE
  * @returns [{}]
  */
-export async function GET() {
+export async function GET(request) {
   try {
     const api = await getAuthApi();
-    const response = await api.get('api/admin/media');
+    const { searchParams } = new URL(request.url);
+    const queryString = searchParams.toString();
+
+    const response = await api.get(`api/admin/media${queryString ? `?${queryString}` : ''}`);
 
     // Return the fetched media data
     return new Response(JSON.stringify(response.data), {

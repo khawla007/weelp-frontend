@@ -175,3 +175,22 @@ export async function deleteState(stateId) {
     return { success: false, error: 'Something went wrong' };
   }
 }
+
+/**
+ * Action to delete multiple states
+ * @param {number[]} stateIds
+ * @returns {{success: boolean, data?: any, error?: string}}
+ */
+export async function deleteMultipleStates(stateIds = []) {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/states/bulk-delete', {
+      state_ids: stateIds,
+    });
+
+    revalidatePath('/dashboard/admin/destinations/states');
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}

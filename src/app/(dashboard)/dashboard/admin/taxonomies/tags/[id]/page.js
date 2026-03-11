@@ -5,7 +5,7 @@ import { EditTageForm } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/
 import { getSingleTagAdmin } from '@/lib/services/tags';
 
 const EditTag = async ({ params }) => {
-  const { id } = params;
+  const { id } = await params;
 
   const data = await getSingleTagAdmin(id); // get category
 

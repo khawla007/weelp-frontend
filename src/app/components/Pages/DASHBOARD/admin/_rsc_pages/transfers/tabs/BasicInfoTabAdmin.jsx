@@ -11,7 +11,7 @@ import { VEHICLE_TYPES, TRANSFER_TYPES } from '@/constants/transfer'; // constan
 
 // Basic Information
 const BasicInfoTabAdmin = () => {
-  const { data, error, isLoading } = useSWR('/api/admin/destinations/places/placesdropdown/', fetcher); // fetch places
+  const { data, error, isLoading } = useSWR('/api/admin/places/list', fetcher); // fetch places
 
   const places = data?.data || [];
 

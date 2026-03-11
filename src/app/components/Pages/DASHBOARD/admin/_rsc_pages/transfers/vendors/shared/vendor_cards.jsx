@@ -1,9 +1,8 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Calendar, Car, Clock, Globe, LucidePackage, Mail, MapPin, MoreHorizontal, Phone, Route, Settings, Tag, User, Users } from 'lucide-react';
-import { DropdownMenuItem } from '@radix-ui/react-dropdown-menu';
 import { useParams, useRouter } from 'next/navigation';
 import { stringSignRemover } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
@@ -334,7 +333,7 @@ export const CardVendorVehicle = ({ id, vendor_id, make = '', status = '', model
                 className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none"
                 onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/pricing`)}
               >
-                Schedules Maintenance
+                Pricing
               </DropdownMenuItem>
               <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none text-red-600">Deactivate</DropdownMenuItem>
             </DropdownMenuContent>
@@ -477,13 +476,13 @@ export const CardVendorDriver = ({
           <DropdownMenuContent className="w-auto" align="end" offset={10}>
             <DropdownMenuItem
               className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none"
-              onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/drivers/`)}
+              onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/drivers/${id}/view`)}
             >
               View Details
             </DropdownMenuItem>
             <DropdownMenuItem
               className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none"
-              onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/drivers/edit`)}
+              onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/drivers/${id}/edit`)}
             >
               Edit
             </DropdownMenuItem>

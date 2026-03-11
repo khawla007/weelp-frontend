@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm, FormProvider, Controller, useFieldArray, useWatch, useFormContext } from 'react-hook-form';
-import { Activity, CalendarIcon, Car, Clock, MapPin, Plus, Settings, Trash, Trash2 } from 'lucide-react';
+import { Activity, CalendarIcon, Car, Clock, MapPin, Plus, Settings, Star, Trash, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
@@ -19,7 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { ActivitySearchModal, CustomizedEditActivityForm, CustomizedEditTransferForm, NavigationItinerary, TransferSearchModal } from './itinerary_shared';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { isEmpty } from 'lodash';
+import _, { isEmpty } from 'lodash';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useMediaStore } from '@/lib/store/useMediaStore';
@@ -28,7 +28,7 @@ import { Card } from '@/components/ui/card';
 import { deleteItineraryItems, editItinerary } from '@/lib/actions/itineraries'; // server actions for handling data
 import dynamic from 'next/dynamic';
 
-const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOn'), { ssr: false });
+const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnItinerary'), { ssr: false });
 
 export const EditItineraryForm = ({ categories, attributes, tags, locations = [], allactivities, alltransfers, itineraryData }) => {
   const hasResetRef = useRef(false);
@@ -68,9 +68,9 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
   // set attributes preselected
   const initialAttributes = presetAttributes?.length
     ? presetAttributes.map(({ attribute_id, attribute_value }) => ({
-        attribute_id,
-        attribute_value,
-      }))
+      attribute_id,
+      attribute_value,
+    }))
     : [];
 
   // addons modify
@@ -173,6 +173,13 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       title: 'Taxonomy',
     },
   ];
+
+  // Handle Next for steps 1-7 (no validation)
+  const handleNext = () => {
+    if (currentStep < 8) {
+      setCurrentStep((prev) => prev + 1);
+    }
+  };
 
   // Basic Information
   const PersonalInfoTab = () => {
@@ -599,35 +606,35 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                   {/* Display Transfer in Iteration */}
                   {!isEmpty(transferss)
                     ? transferss
-                        .filter((transfer) => transfer?.day == item.day)
-                        .map((filteredTransfer, transferIndex) => (
-                          <div key={transferIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
-                            <img
-                              className="size-24"
-                              src={filteredTransfer?.media_url?.[0]?.url ?? filteredTransfer?.transferData?.media_gallery?.[0]?.url ?? 'https://picsum.photos/100/100'}
-                              alt={filteredTransfer?.media_url?.[0]?.url ?? filteredTransfer?.transferData?.media_gallery?.[0]?.url ?? 'itinerary_image'}
-                            />
+                      .filter((transfer) => transfer?.day == item.day)
+                      .map((filteredTransfer, transferIndex) => (
+                        <div key={transferIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
+                          <img
+                            className="size-24"
+                            src={filteredTransfer?.media_url?.[0]?.url ?? filteredTransfer?.transferData?.media_gallery?.[0]?.url ?? 'https://picsum.photos/100/100'}
+                            alt={filteredTransfer?.media_url?.[0]?.url ?? filteredTransfer?.transferData?.media_gallery?.[0]?.url ?? 'itinerary_image'}
+                          />
 
-                            <div className="space-y-2">
-                              <p className="font-bold text-base">{filteredTransfer?.transferData?.name ?? filteredTransfer?.transfer_name}</p>
-                              <div className="flex gap-2 flex-wrap">
-                                <Clock /> {`${filteredTransfer?.start_time} - ${filteredTransfer?.end_time}`}
-                                <Car />
-                                <b>Transfer</b>
-                                <Settings
-                                  onClick={() =>
-                                    setHandleEdit({
-                                      type: 'transfer',
-                                      isEditOn: true,
-                                      item: filteredTransfer,
-                                    })
-                                  }
-                                />
-                                <Trash onClick={() => removeTransferHandle(filteredTransfer, id)} className=" cursor-pointer " size={20} />
-                              </div>
+                          <div className="space-y-2">
+                            <p className="font-bold text-base">{filteredTransfer?.transferData?.name ?? filteredTransfer?.transfer_name}</p>
+                            <div className="flex gap-2 flex-wrap">
+                              <Clock /> {`${filteredTransfer?.start_time} - ${filteredTransfer?.end_time}`}
+                              <Car />
+                              <b>Transfer</b>
+                              <Settings
+                                onClick={() =>
+                                  setHandleEdit({
+                                    type: 'transfer',
+                                    isEditOn: true,
+                                    item: filteredTransfer,
+                                  })
+                                }
+                              />
+                              <Trash onClick={() => removeTransferHandle(filteredTransfer, id)} className=" cursor-pointer " size={20} />
                             </div>
                           </div>
-                        ))
+                        </div>
+                      ))
                     : 'No Transfer this day'}
 
                   {/* Booking Type */}
@@ -1316,6 +1323,9 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       name: 'media_gallery',
     });
 
+    // Derive featured image ID from media_gallery
+    const featuredImageId = media_gallery?.find((img) => img.is_featured)?.media_id ?? null;
+
     //  Hydarte First if there is already media exist
     useEffect(() => {
       if (media_gallery?.length > 0) {
@@ -1327,7 +1337,10 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
     useEffect(() => {
       if (selectedMedia.length > 0) {
         // 1. Transform selectedMedia (id → media_id) before adding
-        const transformedMedia = selectedMedia.map((obj) => _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))); // update key to media id
+        const transformedMedia = selectedMedia.map((obj) => {
+          const mapped = _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
+          return { ...mapped, is_featured: false };
+        });
 
         // 2. Push transformed data to local state
         setActivityImages((prev) => [...prev, ...transformedMedia]);
@@ -1349,6 +1362,29 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
         setTimeout(() => setValue('media_gallery', updatedImages), 0); //
         return updatedImages;
       });
+    };
+
+    // Handle selection changes from MediaLibrary (for unselection)
+    const handleSelectionChange = ({ removed }) => {
+      if (removed && removed.length > 0) {
+        setActivityImages((prev) => {
+          const removedIds = new Set(removed.map((img) => img.media_id || img.id));
+          const updatedImages = prev.filter((img) => !removedIds.has(img.media_id || img.id));
+          setValue('media_gallery', updatedImages);
+          return updatedImages;
+        });
+      }
+    };
+
+    // handleSetFeatured - Mark an image as featured
+    const handleSetFeatured = (mediaId) => {
+      const isCurrentlyFeatured = featuredImageId === mediaId;
+      const updatedGallery = activityImages.map((img) => ({
+        ...img,
+        is_featured: img.media_id === mediaId ? !isCurrentlyFeatured : false,
+      }));
+      setActivityImages(updatedGallery);
+      setValue('media_gallery', updatedGallery);
     };
 
     // console.log(getValues())
@@ -1376,18 +1412,36 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
           <DialogContent className="max-w-screen-xl">
             <DialogTitle className="sr-only">Edit profile</DialogTitle>
             <DialogDescription className="invisible">Upload Media For Activity</DialogDescription>
-            <Medialibrary />
+            <Medialibrary
+              closeDialog={() => setDialogOpen(false)}
+              alreadySelectedImages={activityImages}
+              onSelectionChange={handleSelectionChange}
+            />
           </DialogContent>
         </Dialog>
 
         {/**Selected Media From Store */}
         {activityImages.length > 0 ? (
           <div className="w-full flex flex-wrap gap-4 ">
+            <p className="w-full text-sm text-gray-500">Click the star icon to mark an image as featured</p>
             {activityImages.map((image, index) => {
+              const isFeatured = image?.media_id == featuredImageId;
               return (
                 <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-black">
                   <img className="size-72 rounded-md border" src={image?.url} alt="activity_image" />
-                  <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-8 right-8 size-0 group-hover/item:size-6 transition-all text-red-400 bg-white rounded-full shadow" />
+                  <Star
+                    size={24}
+                    fill={isFeatured ? '#568f7c' : 'white'}
+                    strokeWidth={2}
+                    onClick={() => handleSetFeatured(image?.media_id)}
+                    className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#568f7c]' : 'text-[#568f7c] hover:scale-110'}`}
+                  />
+                  {isFeatured && (
+                    <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
+                      Featured
+                    </div>
+                  )}
+                  <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-4 right-4 size-0 group-hover/item:size-6 transition-all text-red-500 bg-white rounded-full shadow p-1" />
                 </div>
               );
             })}
@@ -1875,15 +1929,13 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                   steps.map((step) => (
                     <li
                       key={step.id}
-                      // onClick={() => {setCurrentStep(step?.id)}}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${
-                        currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'
-                      }`}
+                      onClick={() => setCurrentStep(step?.id)}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'
+                        }`}
                     >
                       <div
-                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${
-                          currentStep == step?.id ? 'text-secondaryDark ' : 'text-grayDark'
-                        }`}
+                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${currentStep == step?.id ? 'text-secondaryDark ' : 'text-grayDark'
+                          }`}
                       >
                         {step.title}
                       </div>
@@ -1893,7 +1945,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
               <Separator className="" />
             </div>
           </div>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={currentStep === 8 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
             <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               {renderStep()}
               <div className="flex justify-between pt-4">

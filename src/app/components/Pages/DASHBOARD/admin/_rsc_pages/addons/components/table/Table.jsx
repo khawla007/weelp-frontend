@@ -8,12 +8,63 @@ import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-tabl
 import { useIsClient } from '@/hooks/useIsClient';
 import { CardDescription, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
+import { useEffect } from 'react';
 
-export function AddOnTable({ data = [], onDelete }) {
+export function AddOnTable({
+  data = [],
+  onDelete,
+  selectedItems = [],
+  onSelectionChange,
+  addOnsCount = 0,
+  onAllSelectedChange
+}) {
   const isClient = useIsClient(); // hydration errors
+
+  // Update isAllSelected when individual selections change
+  useEffect(() => {
+    if (onAllSelectedChange && data.length > 0) {
+      const allSelected = data.length > 0 && data.every(addOn => selectedItems.includes(addOn.id));
+      onAllSelectedChange(allSelected);
+    }
+  }, [selectedItems, data.length, onAllSelectedChange]);
+
+  // Handle individual checkbox change
+  const handleSelectionChange = (checked, addOnId) => {
+    if (onSelectionChange) {
+      const newSelection = checked
+        ? [...selectedItems, addOnId]
+        : selectedItems.filter(id => id !== addOnId);
+      onSelectionChange(newSelection);
+    }
+  };
 
   // Columns Structure
   const columns = [
+    {
+      id: 'select',
+      header: () => (
+        <Checkbox
+          checked={data.length > 0 && selectedItems.length === data.length}
+          onCheckedChange={(checked) => {
+            if (checked) {
+              onSelectionChange(data.map(a => a.id));
+            } else {
+              onSelectionChange([]);
+            }
+          }}
+          className="h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
+        />
+      ),
+      cell: ({ row }) => (
+        <SelectableCardCheckbox
+          checked={selectedItems.includes(row.original.id)}
+          onCheckedChange={handleSelectionChange}
+          itemId={row.original.id}
+        />
+      ),
+    },
     {
       accessorKey: 'name',
       header: 'Name',

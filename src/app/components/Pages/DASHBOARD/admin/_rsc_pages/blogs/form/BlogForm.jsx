@@ -5,20 +5,8 @@ import BlogSidebar from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/blogs
 import { BlogMain } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/blogs/BlogMain';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 import { createBlog, updateBlog } from '@/lib/actions/blogs';
-
-// const BlogFormSchema = z.object({
-//   title: z.string().nonempty({ message: 'Field Required' }).min(3, { message: 'Length Must Be Greater Then 3' }).default(''),
-//   content: z.object().optional(),
-//   media_gallery: z
-//     .array(
-//       z.object({
-//         url: z.string(),
-//         id: z.number(),
-//       }),
-//     )
-//     .min(1, { message: 'At least one media item is required' }).optional().nullable(),
-// });
 
 /**
  * Shape of Form Data
@@ -26,8 +14,9 @@ import { createBlog, updateBlog } from '@/lib/actions/blogs';
  */
 
 // create blog page
-export const BlogForm = ({ editPage = false, data: blogData }) => {
+export const BlogForm = ({ editPage = false, data: blogData, mutate }) => {
   const { toast } = useToast();
+  const router = useRouter();
 
   const predefinedCategories = blogData?.categories
     ? blogData.categories.map((cat) => ({
@@ -54,18 +43,28 @@ export const BlogForm = ({ editPage = false, data: blogData }) => {
       categories: predefinedCategories,
       tags: predefinedTags,
     },
+    mode: 'onTouched',
   });
+
+  // Get media_gallery from form state
+  const media_gallery = methods.watch('media_gallery');
 
   // form data
   const onSubmit = async (data) => {
     try {
+      console.log('Blog form data:', data);
       // prepare Data
       const finalData = {
         ...data,
-        media_gallery: data?.media_gallery?.length > 0 ? data?.media_gallery.map((media, index) => media.media_id) : [], // safely handle data
+        media_gallery: data?.media_gallery?.length > 0 ? data?.media_gallery.map((media) => ({
+          media_id: media.media_id,
+          is_featured: media.is_featured ?? false,
+        })) : [], // safely handle data with is_featured
         tags: data?.tags?.length > 0 ? data?.tags.map((tag, index) => tag.value) : [], // safely handle data
         categories: data?.categories?.length > 0 ? data?.categories.map((category, index) => category.value) : [], // safely handle data
       };
+
+      console.log('Final data to send:', finalData);
 
       let response;
       //   check is in edit page
@@ -75,6 +74,8 @@ export const BlogForm = ({ editPage = false, data: blogData }) => {
         response = await updateBlog(blogData?.id, finalData);
       }
 
+      console.log('API response:', response);
+
       // send notice
       if (!response.success) {
         toast({ title: response?.message || 'Something went wrong', variant: 'destructive' });
@@ -82,6 +83,19 @@ export const BlogForm = ({ editPage = false, data: blogData }) => {
       }
 
       toast({ title: response?.message || 'Submitting Successfully' });
+
+      // Invalidate SWR cache to ensure fresh data on next navigation
+      if (mutate) {
+        mutate();
+      }
+
+      // Redirect back to listing page after successful update (like activities)
+      if (editPage && blogData?.id) {
+        router.back();
+      } else {
+        // For new blog, redirect to listing page
+        router.push('/dashboard/admin/blogs');
+      }
     } catch (error) {
       console.error(error);
       toast({ title: 'Unexpected Error', variant: 'destructive' });

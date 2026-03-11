@@ -141,3 +141,32 @@ export const deleteTag = async (id) => {
     };
   }
 };
+
+/**
+ * Method for Bulk Delete Tags
+ * @param {Number[]} tagIds - Array of tag IDs to delete
+ * @returns {}
+ */
+export const deleteMultipleTags = async (tagIds = []) => {
+  try {
+    await delay(500);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/tags/bulk-delete', {
+      tag_ids: tagIds,
+    });
+
+    // revalidate  path
+    revalidatePath('/dashboard/admin/taxonomies/tags');
+
+    return {
+      success: true,
+      message: res?.data?.message || `${tagIds.length} tags deleted successfully`,
+      data: res.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error?.response?.data?.message || error?.message || 'Something went wrong',
+    };
+  }
+};

@@ -14,7 +14,7 @@ const ReviewsPage = async () => {
   }
 
   // for 500
-  if (!status === 200) {
+  if (status !== 200) {
     return <div className="text-red-500">{message}</div>;
   }
 

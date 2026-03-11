@@ -42,13 +42,14 @@ export const createPackage = async (data) => {
     if (status === 500) {
       return {
         success: false,
-        message: err.response.data.error || 'Server error',
+        message: err.response.data?.details || err.response.data?.error || 'Server error',
       };
     }
 
     return {
       success: false,
-      message: 'Something went wrong',
+      message: err?.message || 'Something went wrong',
+      details: err?.response?.data,
     };
   }
 };

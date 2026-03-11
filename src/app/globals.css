@@ -92,6 +92,104 @@ body {
   * {
     @apply border-border;
   }
+
+  /* Remove default browser styles from all input-like elements */
+  input,
+  textarea,
+  select,
+  button {
+    /* Remove default outline */
+    outline: none !important;
+
+    /* Remove default borders - will use Tailwind border classes */
+    border: 1px solid transparent;
+
+    /* Smooth transitions */
+    transition: all 0.2s ease-in-out;
+  }
+
+  /* Focus state - remove all focus indicators */
+  input:focus,
+  textarea:focus,
+  select:focus,
+  button:focus,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  button:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Hover state - no border change */
+  input:hover,
+  textarea:hover,
+  select:hover,
+  button:hover {
+    outline: none !important;
+  }
+
+  /* Active state - no border change */
+  input:active,
+  textarea:active,
+  select:active,
+  button:active {
+    outline: none !important;
+  }
+
+  /* Disabled state */
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    outline: none !important;
+  }
+
+  /* Remove webkit autofill background and styles */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: inherit !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  /* Dark mode autofill */
+  .dark input:-webkit-autofill,
+  .dark input:-webkit-autofill:hover,
+  .dark input:-webkit-autofill:focus,
+  .dark input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgb(0 0 0) inset !important;
+    -webkit-text-fill-color: inherit !important;
+  }
+
+  /* Remove spin buttons from number inputs */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  /* Remove date picker icon styles */
+  input[type='date']::-webkit-calendar-picker-indicator,
+  input[type='time']::-webkit-calendar-picker-indicator,
+  input[type='datetime-local']::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(0.5);
+  }
+
+  .dark input[type='date']::-webkit-calendar-picker-indicator,
+  .dark input[type='time']::-webkit-calendar-picker-indicator,
+  .dark input[type='datetime-local']::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
 }
 
 /* Slider Section */

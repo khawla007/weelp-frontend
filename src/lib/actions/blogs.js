@@ -28,13 +28,23 @@ export const createBlog = async (data = {}) => {
       message: res.data?.message,
     };
   } catch (err) {
+    console.error('Blog creation error:', err?.response?.data || err);
     const status = err?.response?.status;
 
     if (status === 400) {
+      const errors = err?.response?.data?.errors;
+      let errorMessage = 'Validation error';
+      if (errors) {
+        // Format validation errors for display
+        const errorMessages = Object.entries(errors)
+          .map(([field, messages]) => `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`)
+          .join('\n');
+        errorMessage = errorMessages || 'Validation error';
+      }
       return {
         success: false,
-        message: 'Validation error',
-        errors: err?.response?.data?.errors,
+        message: errorMessage,
+        errors,
       };
     }
 

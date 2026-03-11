@@ -4,7 +4,7 @@ import { getSingleReviewAdmin } from '@/lib/services/reviews';
 
 export async function GET(req, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const result = await getSingleReviewAdmin(id);
 
     // Just forward service response as-is

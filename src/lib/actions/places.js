@@ -176,3 +176,22 @@ export async function deletePlace(placeId) {
     return { success: false, error: 'Something went wrong' };
   }
 }
+
+/**
+ * Action to delete multiple places
+ * @param {number[]} placeIds
+ * @returns {{success: boolean, data?: any, error?: string}}
+ */
+export async function deleteMultiplePlaces(placeIds = []) {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/places/bulk-delete', {
+      place_ids: placeIds,
+    });
+
+    revalidatePath('/dashboard/admin/destinations/places');
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}

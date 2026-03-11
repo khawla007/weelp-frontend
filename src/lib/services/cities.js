@@ -95,9 +95,10 @@ export async function getAllFeaturedCities() {
     const response = await publicApi.get(`/api/featured-cities`, {
       headers: { Accept: 'application/json' },
     });
+
     return response.data;
   } catch (error) {
-    console.log('Error fetching city data:', error);
-    return [];
+    console.log('Error fetching featured cities:', error.message);
+    return { success: false, data: [] };
   }
 }

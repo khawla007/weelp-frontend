@@ -7,13 +7,64 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { usePathname, useRouter } from 'next/navigation';
+import { Checkbox } from '@/components/ui/checkbox';
+import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
+import { useEffect } from 'react';
 
-export function UserDataTable({ data }) {
+export function UserDataTable({
+  data,
+  selectedItems = [],
+  onSelectionChange,
+  usersCount = 0,
+  onAllSelectedChange,
+  onPageChange,
+}) {
   const router = useRouter();
   const pathname = usePathname();
 
+  // Update isAllSelected when individual selections change
+  useEffect(() => {
+    if (onAllSelectedChange && data.length > 0) {
+      const allSelected = data.length > 0 && data.every(user => selectedItems.includes(user.id));
+      onAllSelectedChange(allSelected);
+    }
+  }, [selectedItems, data.length, onAllSelectedChange]);
+
+  // Handle individual checkbox change
+  const handleSelectionChange = (checked, userId) => {
+    if (onSelectionChange) {
+      const newSelection = checked
+        ? [...selectedItems, userId]
+        : selectedItems.filter(id => id !== userId);
+      onSelectionChange(newSelection);
+    }
+  };
+
   // columns of users
   const columns = [
+    {
+      id: 'select',
+      header: () => (
+        <Checkbox
+          checked={data.length > 0 && selectedItems.length === data.length}
+          onCheckedChange={(checked) => {
+            if (checked) {
+              onSelectionChange(data.map(user => user.id));
+            } else {
+              onSelectionChange([]);
+            }
+          }}
+          className="h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
+        />
+      ),
+      cell: ({ row }) => (
+        <SelectableCardCheckbox
+          checked={selectedItems.includes(row.original.id)}
+          onCheckedChange={handleSelectionChange}
+          itemId={row.original.id}
+        />
+      ),
+    },
     {
       accessorKey: 'name',
       header: 'Name',
@@ -69,6 +120,17 @@ export function UserDataTable({ data }) {
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
+  // Handle pagination with selection clearing
+  const handlePreviousPage = () => {
+    table.previousPage();
+    if (onPageChange) onPageChange();
+  };
+
+  const handleNextPage = () => {
+    table.nextPage();
+    if (onPageChange) onPageChange();
+  };
 
   return (
     <div>
@@ -134,10 +196,10 @@ export function UserDataTable({ data }) {
 
       {/* Pagination */}
       <div className="flex items-center justify-end space-x-2 py-4">
-        <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+        <Button variant="outline" size="sm" onClick={handlePreviousPage} disabled={!table.getCanPreviousPage()}>
           Previous
         </Button>
-        <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+        <Button variant="outline" size="sm" onClick={handleNextPage} disabled={!table.getCanNextPage()}>
           Next
         </Button>
       </div>

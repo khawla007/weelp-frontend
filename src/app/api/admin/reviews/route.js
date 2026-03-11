@@ -1,14 +1,21 @@
 // /api/admin/reviews/route.js
 import { NextResponse } from 'next/server';
 import { getAllReviewsAdmin } from '@/lib/services/reviews';
-import { log } from '@/lib/utils';
 
 /**
  * Proxy API handler to fetch review items by type
  * @returns {Promise<NextResponse>}
  */
 export async function GET(req) {
-  const { search = '' } = req.nextUrl; // destructure search
-  const data = await getAllReviewsAdmin(search);
-  return NextResponse.json({ ...data });
+  try {
+    const query = req.nextUrl.search;
+    const data = await getAllReviewsAdmin(query);
+    return NextResponse.json({ data });
+  } catch (error) {
+    console.error('[Reviews API Error]:', error);
+    return NextResponse.json(
+      { data: { data: [], current_page: 1, per_page: 5, total: 0 } },
+      { status: error?.response?.status || 500 }
+    );
+  }
 }

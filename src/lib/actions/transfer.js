@@ -29,17 +29,17 @@ export const createTransferByAdmin = async (data = {}) => {
     log(err?.response);
     const status = err?.response?.status;
 
-    if (status === 400) {
+    if (status === 400 || status === 422) {
       return {
         success: false,
-        message: 'Validation error',
+        message: err?.response?.data?.message || 'Validation error',
         errors: err?.response?.data?.errors,
       };
     }
 
     return {
       success: false,
-      message: 'Something went wrong',
+      message: err?.response?.data?.message || 'Something went wrong',
     };
   }
 };
@@ -70,17 +70,17 @@ export const editTransferByAdmin = async (transferId, data = {}) => {
     log(err?.response);
     const status = err?.response?.status;
 
-    if (status === 400) {
+    if (status === 400 || status === 422) {
       return {
         success: false,
-        message: 'Validation error',
+        message: err?.response?.data?.message || 'Validation error',
         errors: err?.response?.data?.errors,
       };
     }
 
     return {
       success: false,
-      message: 'Something went wrong',
+      message: err?.response?.data?.message || 'Something went wrong',
     };
   }
 };

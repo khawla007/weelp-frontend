@@ -30,11 +30,11 @@ export const formSchema = z
     description: z.string().optional(),
     values: z.string().min(3, 'Each value must be at least 3 character'),
 
-    defaultValue: z.string().optional(), // optional by default
+    default_value: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     if (data.type !== 'yes/no') {
-      if (!data.defaultValue || data.defaultValue.trim().length < 1) {
+      if (!data.default_value || data.default_value.trim().length < 1) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Value is required.',
@@ -221,6 +221,7 @@ export const CreateAttributePageForm = () => {
                     <FormControl>
                       <Textarea placeholder="Enter possible values, separated by commas" {...field} />
                     </FormControl>
+                    <FormDescription>Example: value1, value2, value3</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

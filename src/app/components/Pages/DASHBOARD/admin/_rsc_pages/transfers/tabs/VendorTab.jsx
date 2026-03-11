@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -17,21 +17,36 @@ const VendorTab = () => {
     control,
   } = useFormContext(); // form context
 
-  const { data, isLoading, error } = useSWR('/api/admin/vendors/vendorsdropdown', fetcher); // get vendors first
+  const { data, isLoading, error } = useSWR('/api/admin/vendors/vendor-select', fetcher); // get vendors first
   const vendors = data?.data || [];
   const watchedVendorId = useWatch({ control: control, name: 'vendor_id' });
   const watchedRouteId = useWatch({ control: control, name: 'route_id' });
 
-  const { data: routesData } = useSWR(`/api/admin/vendors/${watchedVendorId}/routesdropdown`, fetcher); // get routes based on id
+  // Track previous vendor_id to detect actual changes
+  const prevVendorIdRef = useRef(watchedVendorId);
+
+  const { data: routesData } = useSWR(watchedVendorId ? `/api/admin/vendors/${watchedVendorId}/routes-select` : null, fetcher); // get routes based on id
 
   const routes = routesData?.data || [];
 
   const { name: selectedVendorName } = vendors.find((val) => val.id === Number(watchedVendorId)) || {}; // selected vendor name
 
-  // side effect when route changed
+  // Reset route_id only when vendor_id actually changes to a DIFFERENT value
+  // Don't reset on mount (when prevVendorIdRef is undefined)
   useEffect(() => {
-    setValue('route_id', '');
-  }, [watchedVendorId]);
+    const prevVendorId = prevVendorIdRef.current;
+
+    // Only reset route if:
+    // 1. Previous vendor_id had a value (not undefined/null)
+    // 2. Current vendor_id has a different value
+    // 3. Current vendor_id is not undefined
+    if (prevVendorId !== undefined && prevVendorId !== null && prevVendorId !== watchedVendorId && watchedVendorId !== undefined) {
+      setValue('route_id', '');
+    }
+
+    // Update ref after checking
+    prevVendorIdRef.current = watchedVendorId;
+  }, [watchedVendorId, setValue]);
 
   return (
     <Card className="border-none shadow-none">
@@ -42,20 +57,26 @@ const VendorTab = () => {
       <CardContent className="px-0 sm:p-4">
         {/* Vendor Data */}
         <div className="flex flex-col space-y-4 w-full p-2 border-none">
-          <Label htmlFor="vendor_id">PickUp Location</Label>
+          <Label htmlFor="vendor_id">Select Vendor</Label>
           <Controller
             name="vendor_id"
             control={control}
-            rules={{ required: 'Pickup location required' }}
+            rules={{ required: 'Vendor is required' }}
             render={({ field }) => (
-              <Select onValueChange={(val) => field.onChange(Number(val))} value={field.value}>
+              <Select
+                onValueChange={(val) => {
+                  // Store as number for type consistency
+                  field.onChange(Number(val));
+                }}
+                value={field.value ? String(field.value) : ''}
+              >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select vehicle type">{selectedVendorName}</SelectValue>
+                  <SelectValue placeholder="Select Vendor" />
                 </SelectTrigger>
                 <SelectContent>
                   {vendors.map((vendor, index) => {
                     return (
-                      <SelectItem key={index} value={vendor?.id}>
+                      <SelectItem key={index} value={String(vendor?.id)}>
                         {vendor?.name}
                       </SelectItem>
                     );

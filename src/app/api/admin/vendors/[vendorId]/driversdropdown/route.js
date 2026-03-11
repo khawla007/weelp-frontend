@@ -4,9 +4,16 @@ import { NextResponse } from 'next/server';
 import { getDriversByVendorIdOptions } from '@/lib/services/vendors'; // get drivers by vendor id
 
 export async function GET(req, { params }) {
-  const { vendorId } = params;
+  try {
+  const { vendorId } = await params;
+    console.log("[API Route] Fetching driversdropdown for ID: ", vendorId);
 
   const data = await getDriversByVendorIdOptions(vendorId);
 
+    console.log("[API Route] Success fetching driversdropdown");
   return NextResponse.json({ data });
+  } catch (error) {
+    console.error("[API Route Error]", error.message);
+    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+  }
 }

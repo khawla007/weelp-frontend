@@ -9,6 +9,7 @@ import { Ellipsis, Pencil, Trash2 } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useSWRConfig } from 'swr';
+import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
 
 // actions to delete
 import { deleteCountry } from '@/lib/actions/country';
@@ -21,7 +22,7 @@ import { deletePlace } from '@/lib/actions/places';
  * @param {{label:string, icon:string, items:number ,description:string, url:string}} props label,icons,items,description,url
  * @returns {JSX.Element}
  */
-export const RouteCard = ({ id, type, name, code, description, featured_destination, feature_image, media_gallery = [], country, state, region, regions = [] }) => {
+export const RouteCard = ({ id, type, name, code, description, featured_destination, feature_image, media_gallery = [], country, state, city, region, regions = [], checked = false, onCheckedChange, showCheckbox = false }) => {
   const router = useRouter(); // intialize route
   const pathname = usePathname(); // intialize pathname
 
@@ -95,7 +96,16 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
       <div className="relative w-full h-40">
         <SafeImage src={displayImage} alt={altText} />
 
-        {/* Featured Badge Removed - Not needed on destination listing cards */}
+        {/* Selection Checkbox - shown when showCheckbox is true */}
+        {showCheckbox && (
+          <div className="absolute top-2 left-2 w-fit z-10">
+            <SelectableCardCheckbox
+              checked={checked}
+              onCheckedChange={onCheckedChange}
+              itemId={id}
+            />
+          </div>
+        )}
       </div>
 
       {/* Content section */}
@@ -160,6 +170,21 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
               )}
               {state && (
                 <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">State: {state.name}</Badge>
+              )}
+            </>
+          ) : type === 'place' ? (
+            <>
+              {regions && regions.length > 0 && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Region: {regions[0].name}</Badge>
+              )}
+              {country && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Country: {country.name}</Badge>
+              )}
+              {state && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">State: {state.name}</Badge>
+              )}
+              {city && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">City: {city.name}</Badge>
               )}
             </>
           ) : (

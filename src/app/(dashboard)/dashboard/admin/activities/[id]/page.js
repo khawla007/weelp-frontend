@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 
 // RSC default
 const EditActivity = async ({ params }) => {
-  const { id } = params;
+  const { id } = await params;
   const [{ data: tagsData }, { data: locationsData = {} }, { data: attributesData = {} }, { data: categoriesData = {} }] = await Promise.all([
     getAllTagsAdmin(),
     getAllCitiesAdmin(),

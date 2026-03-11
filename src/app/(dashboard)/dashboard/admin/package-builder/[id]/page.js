@@ -22,7 +22,7 @@ const EditPackage = async ({ params }) => {
     getAllItinerariesAdmin(),
   ]);
 
-  const { id = '' } = params;
+  const { id = '' } = await params;
   const packagedata = await getSinglePackageAdmin(id); //dyanmic id
 
   const { data: categories = [] } = categoriesData; // categories

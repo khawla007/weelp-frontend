@@ -22,9 +22,9 @@ const SingleVendorPage = () => {
   const vendorData = data?.data || {}; // destructure data
   if (isLoading) return <p className="loader"></p>; // loading ui
 
-  if (error) return <p className="text-red-400">Some thing went Wrong</p>; // handle error boundaries
+  if (error) return <p className="text-red-400">Some thing went Wrong: {error.message}</p>; // handle error boundaries
 
-  if (!isLoading && isEmpty(vendorData)) return <VendorNoResultFound />; // hanlde 404 and empty object
+  if (!isLoading && data?.data && isEmpty(vendorData)) return <VendorNoResultFound />; // hanlde 404 and empty object
 
   const { name = '', description = '', status = '', routes = [], vehicles = [] } = vendorData;
 

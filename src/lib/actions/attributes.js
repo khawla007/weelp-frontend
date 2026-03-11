@@ -141,3 +141,32 @@ export const deleteAttribute = async (id) => {
     };
   }
 };
+
+/**
+ * Method for Bulk Delete Attributes
+ * @param {Number[]} attributeIds - Array of attribute IDs to delete
+ * @returns {}
+ */
+export const deleteMultipleAttributes = async (attributeIds = []) => {
+  try {
+    await delay(500);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/attributes/bulk-delete', {
+      attribute_ids: attributeIds,
+    });
+
+    // revalidate  path
+    revalidatePath('/dashboard/admin/taxonomies/attributes');
+
+    return {
+      success: true,
+      message: res?.data?.message || `${attributeIds.length} attributes deleted successfully`,
+      data: res.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error?.response?.data?.message || error?.message || 'Something went wrong',
+    };
+  }
+};

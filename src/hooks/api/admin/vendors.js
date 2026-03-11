@@ -7,7 +7,7 @@ export function useAllVendorsAdmin(query = '') {
   const { data, error, isValidating, isLoading, mutate } = useSWR(key, fetcher);
 
   return {
-    vendors: data?.data || [], // assuming API returns { data: [...] }
+    vendors: data || {}, // returning the full object which includes .data, .total, etc.
     isLoading,
     isValidating,
     error,

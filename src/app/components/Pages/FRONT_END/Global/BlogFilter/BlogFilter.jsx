@@ -85,7 +85,11 @@ const BlogFilterBar = () => {
         <ul className="grid grid-col-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-16">
           {blogs.map((blog) => (
             <li key={blog.id || blog.slug}>
-              <BlogCard {...blog} imageSrc={blog?.media_gallery?.[0]?.url || blog?.image} blogTitle={blog?.title} />
+              <BlogCard
+                {...blog}
+                imageSrc={blog?.media_gallery?.find(img => img.is_featured)?.url || blog?.media_gallery?.[0]?.url || blog?.image}
+                blogTitle={blog?.title}
+              />
             </li>
           ))}
         </ul>

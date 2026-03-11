@@ -38,6 +38,9 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
   const { base_price = '', currency = '', price_type = '', extra_luggage_charge = '', waiting_charge } = pricing_availability || {}; //pricing destructure
   const { availability_type, available_days = [], time_slots = [], blackout_dates = [], minimum_lead_time, maximum_passengers } = schedule || {}; // destructure schedule data
 
+  // Transform addons to array of IDs (matching Activity pattern)
+  const initialAddons = Array.isArray(addons) ? addons.map((item) => item.addon_id) : [];
+
   // intialize methods
   const methods = useForm({
     defaultValues: {
@@ -74,7 +77,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
           : {},
       },
       media_gallery: media_gallery,
-      addons: addons || [],
+      addons: initialAddons,
     },
   });
 

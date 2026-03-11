@@ -178,3 +178,22 @@ export async function deleteCity(cityId) {
     return { success: false, error: 'Something went wrong' };
   }
 }
+
+/**
+ * Action to delete multiple cities
+ * @param {number[]} cityIds
+ * @returns {{success: boolean, data?: any, error?: string}}
+ */
+export async function deleteMultipleCities(cityIds = []) {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/cities/bulk-delete', {
+      city_ids: cityIds,
+    });
+
+    revalidatePath('/dashboard/admin/destinations/cities');
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}

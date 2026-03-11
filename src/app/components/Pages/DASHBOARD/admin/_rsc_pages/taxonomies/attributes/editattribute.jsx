@@ -35,7 +35,7 @@ export const formSchema = z
       if (!data.default_value || data.default_value.trim().length < 1) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Default value is required.',
+          message: 'Value is required.',
           path: ['default_value'],
         });
       }
@@ -215,6 +215,7 @@ export const EditAttributePageForm = ({ attributeData }) => {
                     <FormControl>
                       <Textarea placeholder="Enter possible values, separated by commas" {...field} />
                     </FormControl>
+                    <FormDescription>Example: value1, value2, value3</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -240,7 +241,7 @@ export const EditAttributePageForm = ({ attributeData }) => {
               {/* Submit/Cancel */}
               <div className="flex gap-2">
                 <Button className="w-fit bg-secondaryDark hover:bg-secondaryDark" type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? 'Editing Attribute' : 'Edit Attribute'}
+                  {isSubmitting ? 'Updating Attribute' : 'Update Attribute'}
                 </Button>
                 <Button
                   className="w-fit bg-inherit hover:bg-inherit text-black border"
