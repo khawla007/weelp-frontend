@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 
 const ExpandableFeaturedDestinations = ({ data = [], title = 'Top Destinations' }) => {
-  // Guard clause for empty data
+  // State: track clicked (locked) and hovered card (MUST BE FIRST - React Hooks Rules)
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [hoverIndex, setHoverIndex] = useState(null);
+
+  // Guard clause for empty data (AFTER hooks)
   if (!data || data.length === 0) {
     return null;
   }
-
-  // State: track clicked (locked) and hovered card
-  const [activeIndex, setActiveIndex] = useState(null);
-  const [hoverIndex, setHoverIndex] = useState(null);
 
   // Limit to 4 cards maximum
   const cities = data.slice(0, 4);
@@ -48,7 +48,7 @@ const ExpandableFeaturedDestinations = ({ data = [], title = 'Top Destinations' 
         // Accessibility
         role="button"
         tabIndex={0}
-        aria-label={`View ${city.name} destinations`}
+        aria-label={`View ${city.name || 'destination'} destinations`}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -59,7 +59,7 @@ const ExpandableFeaturedDestinations = ({ data = [], title = 'Top Destinations' 
         {/* Background Image */}
         <img
           src={imageUrl}
-          alt={city.name}
+          alt={city.name || 'Destination'}
           className="absolute inset-0 w-full h-full object-cover"
         />
 
@@ -76,9 +76,9 @@ const ExpandableFeaturedDestinations = ({ data = [], title = 'Top Destinations' 
           )}
 
           {/* City Name */}
-          <Link href={`/city/${city.slug}`}>
+          <Link href={`/city/${city.slug || city.id}`}>
             <h3 className="text-2xl md:text-3xl font-bold text-white hover:text-secondarylight transition-colors">
-              {city.name}
+              {city.name || 'Unknown Destination'}
             </h3>
           </Link>
 
@@ -86,7 +86,7 @@ const ExpandableFeaturedDestinations = ({ data = [], title = 'Top Destinations' 
           {city.activities_count !== undefined && city.activities_count !== null && (
             <span className="flex items-center gap-1 text-white/90 mt-1">
               <span className="w-2 h-2 rounded-full bg-brand-500" />
-              {city.activities_count} Activities
+              {city.activities_count} {city.activities_count === 1 ? 'Activity' : 'Activities'}
             </span>
           )}
         </div>
