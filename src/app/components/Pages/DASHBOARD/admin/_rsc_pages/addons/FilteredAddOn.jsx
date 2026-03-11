@@ -1,7 +1,8 @@
 'use client';
 
-import { fetcher } from '@/lib/fetchers';
-import { useForm, useWatch, Controller } from 'react-hook-form';
+import { authFetcher } from '@/lib/fetchers';
+import { useForm, useWatch } from 'react-hook-form';
+import { Form } from '@/components/ui/form';
 import useSWR from 'swr';
 import { CustomPagination } from '@/app/components/Pagination';
 import { AddOnTable } from './components/table/Table';
@@ -9,12 +10,16 @@ import { useToast } from '@/hooks/use-toast';
 import { useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash';
 import { deleteAddon } from '@/lib/actions/addOn'; // delete add on action
-import InputFieldSearch from './components/Input';
-import { SelectField } from './components/Select';
 import { FORM_ADDON_ITEMTYPE, FORM_ADDON_STATUS } from '@/constants/forms/addon';
+import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
+import { AddNewButton } from '@/app/components/Button/AddNewButton';
+import { deleteMultipleAddons } from '@/lib/actions/addOn';
+import { FilterBar } from '@/app/components/DashboardShared/FilterBar';
 
 export const FilteredAddOn = () => {
   const { toast } = useToast();
+  const [selectedItems, setSelectedItems] = useState([]); // Selected addon IDs for bulk delete
+  const [isAllSelected, setIsAllSelected] = useState(false); // Track Select All toggle state
 
   // intialize form
   const form = useForm({
@@ -45,6 +50,11 @@ export const FilteredAddOn = () => {
     return () => debouncedUpdate.cancel();
   }, [filters, debouncedUpdate]);
 
+  // Reset page to 1 when any filter other than page changes
+  useEffect(() => {
+    form.setValue('page', 1);
+  }, [filters.name, filters.type, filters.status]);
+
   // Memoized query string
   const queryParams = useMemo(() => {
     const params = new URLSearchParams();
@@ -58,7 +68,7 @@ export const FilteredAddOn = () => {
   }, [debouncedFilters]);
 
   // filter
-  const { data = {}, isValidating, error, mutate } = useSWR(`/api/admin/addons/?${queryParams}`, fetcher); // get all addons
+  const { data = {}, isValidating, error, mutate } = useSWR(`/api/admin/addons/?${queryParams}`, authFetcher); // get all addons
 
   const { current_page = 0, per_page = 0, data: addOns = [], total = 0 } = data; // safely destructure
 
@@ -88,41 +98,100 @@ export const FilteredAddOn = () => {
   // handle page change
   const handlePageChange = (newPage) => {
     form.setValue('page', newPage, { shouldValidate: true, shouldDirty: true }); // through server side pagination
+    setSelectedItems([]);
+    setIsAllSelected(false);
+  };
+
+  // Toggle select all / unselect all
+  const handleSelectAllToggle = () => {
+    if (isAllSelected) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(addOns.map(addOn => addOn.id));
+    }
+    setIsAllSelected(!isAllSelected);
+  };
+
+  // Handle bulk delete
+  const handleBulkDelete = async () => {
+    try {
+      const result = await deleteMultipleAddons(selectedItems);
+
+      if (result.success) {
+        toast({
+          title: `${selectedItems.length} add-on(s) deleted`,
+          variant: 'success',
+        });
+        mutate();
+        setSelectedItems([]);
+        setIsAllSelected(false);
+      } else {
+        toast({
+          title: 'Delete failed',
+          description: result.message,
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Delete failed',
+        description: error.message || 'An unexpected error occurred',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
     <div className="space-y-8">
-      <form className="flex justify-between gap-4 flex-col sm:flex-row">
-        <div className="w-full">
-          {/* Search Field */}
-          <Controller name="name" control={form.control} render={({ field }) => <InputFieldSearch value={field.value} onChange={field.onChange} />} />
-        </div>
-
-        <div className="flex gap-4 max-w-sm w-full flex-col sm:flex-row">
-          {/* Type */}
-          <Controller
-            name="type"
-            control={form.control}
-            render={({ field }) => <SelectField value={field.value} onChange={field.onChange} data={[...FORM_ADDON_ITEMTYPE, { label: 'All Type', value: 'all' }]} />}
+      {/* Header with Search, Type, Status and AddNewButton */}
+      <div className="flex justify-between items-center gap-4">
+        <Form {...form}>
+          <FilterBar
+            form={form}
+            searchName="name"
+            searchPlaceholder="Search add-on..."
+            typeFieldName="type"
+            typePlaceholder="All Types"
+            typeOptions={[...FORM_ADDON_ITEMTYPE, { label: 'All Type', value: 'all' }]}
+            statusFieldName="status"
+            statusPlaceholder="All Status"
+            statusOptions={FORM_ADDON_STATUS}
           />
-
-          {/* Status */}
-          <Controller name="status" control={form.control} render={({ field }) => <SelectField placeholder="Select Status" value={field.value} onChange={field.onChange} data={FORM_ADDON_STATUS} />} />
-        </div>
-      </form>
+        </Form>
+        {selectedItems.length > 0 ? (
+          <BulkActionButtons
+            selectedCount={selectedItems.length}
+            totalCount={addOns.length}
+            isAllSelected={isAllSelected}
+            onSelectAllToggle={handleSelectAllToggle}
+            onDelete={handleBulkDelete}
+            deleteLabel="Delete"
+          />
+        ) : (
+          <AddNewButton
+            href="/dashboard/admin/addon/new"
+          />
+        )}
+      </div>
 
       {/* Table Data */}
       {isValidating && <span className="loader"></span>}
       {!isValidating && !error && (
         <>
           {addOns && addOns.length > 0 ? (
-            <AddOnTable data={addOns} onDelete={handleDelete} />
+            <AddOnTable
+              data={addOns}
+              onDelete={handleDelete}
+              selectedItems={selectedItems}
+              onSelectionChange={setSelectedItems}
+              addOnsCount={addOns.length}
+              onAllSelectedChange={setIsAllSelected}
+            />
           ) : (
             <div className="grid place-items-center text-gray-400">
               <span>Sorry No Item Found</span>
             </div>
           )}
-          <div></div>
           <CustomPagination totalItems={total} itemsPerPage={per_page} currentPage={current_page} onPageChange={handlePageChange} />
         </>
       )}
