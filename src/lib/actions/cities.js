@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -61,7 +61,8 @@ export const createCity = async (data = {}) => {
   try {
     await delay(500);
 
-    const res = await authApi.post('/api/admin/cities', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/cities', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -114,7 +115,8 @@ export const editCity = async (cityId, data = {}) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/cities/${cityId}`, data, {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/cities/${cityId}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -167,11 +169,31 @@ export const editCity = async (cityId, data = {}) => {
  */
 export async function deleteCity(cityId) {
   try {
-    const res = await authApi.delete(`/api/admin/cities/${cityId}/`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/cities/${cityId}/`);
 
     revalidatePath('/dashboard/admin/destinations/cities/'); //revalidating path
     return { success: true, message: res.data?.message };
   } catch (error) {
     return { success: false, error: 'Something went wrong' };
+  }
+}
+
+/**
+ * Action to delete multiple cities
+ * @param {number[]} cityIds
+ * @returns {{success: boolean, data?: any, error?: string}}
+ */
+export async function deleteMultipleCities(cityIds = []) {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/cities/bulk-delete', {
+      city_ids: cityIds,
+    });
+
+    revalidatePath('/dashboard/admin/destinations/cities');
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
 }

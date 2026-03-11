@@ -22,6 +22,10 @@ export default function SmartDropZone({ name, multiple = true }) {
     },
   });
 
+  // Get input props and remove empty-string multiple property
+  const inputProps = getInputProps();
+  const { multiple: _removedMultiple, ...cleanInputProps } = inputProps;
+
   const removeFile = (indexToRemove) => {
     onChange(value.filter((_, index) => index !== indexToRemove));
   };
@@ -29,7 +33,7 @@ export default function SmartDropZone({ name, multiple = true }) {
   return (
     <Card>
       <CardContent {...getRootProps()} className="border-2 border-dashed border-gray-400 p-4 text-center cursor-pointer">
-        <input {...getInputProps()} />
+        <input {...cleanInputProps} {...(multiple && { multiple: true })} />
         {value.length > 0 ? (
           <ul className="list-none p-0 m-0">
             {value.map((file, index) => (

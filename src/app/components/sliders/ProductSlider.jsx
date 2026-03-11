@@ -58,9 +58,9 @@ const ProductSlider = ({ data }) => {
                 productPrice={product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price}
                 currency={product?.pricing?.currency}
                 productRating={product?.rating}
-                productCity={String(product?.locations[0]?.city).toLowerCase()}
-                productRegion={String(product?.locations[0]?.region).toLowerCase()}
-                imgsrc={product?.media_gallery?.[0]?.url}
+                productCity={String(product?.locations?.[0]?.city || '').toLowerCase()}
+                productRegion={String(product?.locations?.[0]?.region || '').toLowerCase()}
+                imgsrc={product?.media_gallery?.[0]?.url || product?.image}
               />
             </SwiperSlide>
           ))}

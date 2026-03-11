@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -62,7 +62,8 @@ export const createState = async (data = {}) => {
     await delay(500);
     // log(data);
 
-    const res = await authApi.post('/api/admin/states', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/states', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -111,7 +112,8 @@ export const editState = async (stateId, data = {}) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/states/${stateId}`, data, {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/states/${stateId}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -164,11 +166,31 @@ export const editState = async (stateId, data = {}) => {
  */
 export async function deleteState(stateId) {
   try {
-    const res = await authApi.delete(`/api/admin/states/${stateId}/`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/states/${stateId}/`);
 
     revalidatePath('/dashboard/admin/destinations/states/'); //revalidating path
     return { success: true, message: res.data?.message };
   } catch (error) {
     return { success: false, error: 'Something went wrong' };
+  }
+}
+
+/**
+ * Action to delete multiple states
+ * @param {number[]} stateIds
+ * @returns {{success: boolean, data?: any, error?: string}}
+ */
+export async function deleteMultipleStates(stateIds = []) {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/states/bulk-delete', {
+      state_ids: stateIds,
+    });
+
+    revalidatePath('/dashboard/admin/destinations/states');
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
 }

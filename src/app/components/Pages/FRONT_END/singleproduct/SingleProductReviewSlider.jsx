@@ -9,43 +9,36 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 const ReviewSlider = () => {
-  const [initialize, setInitialize] = useState(null);
-  useEffect(() => {
-    setInitialize(true);
-  }, []);
-  if (initialize) {
-    return (
-      <Swiper
-        modules={[Navigation, Autoplay]}
-        spaceBetween={20}
-        navigation={true}
-        loop={true}
-        autoplay={{
-          delay: 2000,
-        }}
-        breakpoints={{
-          450: {
-            slidesPerView: 1,
-            spaceBetween: 10,
-          },
-          640: {
-            slidesPerView: 2,
-          },
-          768: {
-            slidesPerView: 2,
-          },
-        }}
-        className="w-full py-8 "
-      >
-        {[...Array(6)].map((_, index) => (
-          <SwiperSlide key={index}>
-            <SingleProductReviewCard title={'Markus_K'} rating={4} comment={'Very well and good organized trip to the Desert West Quads, Falcon Show, Camelriding and Delicious Barbecue.'} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    );
-  }
-  return <ReviewCardCarouselAnimation />;
+  return (
+    <Swiper
+      modules={[Navigation, Autoplay]}
+      spaceBetween={20}
+      navigation={true}
+      loop={true}
+      autoplay={{
+        delay: 2000,
+      }}
+      breakpoints={{
+        450: {
+          slidesPerView: 1,
+          spaceBetween: 10,
+        },
+        640: {
+          slidesPerView: 2,
+        },
+        768: {
+          slidesPerView: 2,
+        },
+      }}
+      className="w-full py-8 "
+    >
+      {[...Array(6)].map((_, index) => (
+        <SwiperSlide key={index}>
+          <SingleProductReviewCard title={'Markus_K'} rating={4} comment={'Very well and good organized trip to the Desert West Quads, Falcon Show, Camelriding and Delicious Barbecue.'} />
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  );
 };
 
 export default ReviewSlider;

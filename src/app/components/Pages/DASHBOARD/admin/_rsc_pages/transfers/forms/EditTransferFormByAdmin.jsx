@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import _ from 'lodash';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -23,6 +24,7 @@ const ScheduleTabAdmin = dynamic(() => import('../tabs/ScheduleTabAdmin'), {
 }); // schedule tab
 const MediaTab = dynamic(() => import('../tabs/MediaTab'), { ssr: false });
 const SeoTab = dynamic(() => import('../tabs/SeoTab'), { ssr: false });
+const SharedAddOnMultiSelect = dynamic(() => import('../../shared_tabs/addon/SharedAddOnTransfer'), { ssr: false });
 
 export const EditTransferFormByAdmin = ({ transferData }) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -31,10 +33,13 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
   const { toast } = useToast(); // intialize toast
 
   // destructure transfer data
-  const { id: transferId, name = '', slug = '', transfer_type = '', vendor_routes = {}, description = '', pricing_availability = {}, seo = {}, schedule = {}, media_gallery = [] } = transferData;
-  const { vehicle_type = '', dropoff_location = '', pickup_location = '', inclusion = '' } = vendor_routes; // routes destructure
-  const { base_price = '', currency = '', price_type = '', extra_luggage_charge = '', waiting_charge } = pricing_availability; //pricing destructure
-  const { availability_type, available_days = [], time_slots = [], blackout_dates = [], minimum_lead_time, maximum_passengers } = schedule; // destructure schedule data
+  const { id: transferId, name = '', slug = '', transfer_type = '', vendor_routes = {}, description = '', pricing_availability = {}, seo = {}, schedule = {}, media_gallery = [], addons = [] } = transferData;
+  const { vehicle_type = '', dropoff_location = '', pickup_location = '', inclusion = '' } = vendor_routes || {}; // routes destructure
+  const { base_price = '', currency = '', price_type = '', extra_luggage_charge = '', waiting_charge } = pricing_availability || {}; //pricing destructure
+  const { availability_type, available_days = [], time_slots = [], blackout_dates = [], minimum_lead_time, maximum_passengers } = schedule || {}; // destructure schedule data
+
+  // Transform addons to array of IDs (matching Activity pattern)
+  const initialAddons = Array.isArray(addons) ? addons.map((item) => item.addon_id) : [];
 
   // intialize methods
   const methods = useForm({
@@ -56,43 +61,44 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
 
       // schedule field data
       availability_type: availability_type,
-      available_days: available_days,
-      time_slots: time_slots,
-      blackout_dates: blackout_dates,
+      available_days: available_days ? (typeof available_days === 'string' ? available_days.split(',') : available_days) : [],
+      time_slots: time_slots ? (typeof time_slots === 'string' ? JSON.parse(time_slots) : time_slots) : [],
+      blackout_dates: blackout_dates ? (typeof blackout_dates === 'string' ? JSON.parse(blackout_dates) : blackout_dates) : [],
       minimum_lead_time: minimum_lead_time,
       maximum_passengers: maximum_passengers,
 
       // seo
-      seo: { ...seo, schema_data: JSON.parse(seo.schema_data) },
+      seo: {
+        ...seo,
+        schema_data: seo.schema_data
+          ? typeof seo.schema_data === 'string'
+            ? JSON.parse(seo.schema_data)
+            : seo.schema_data
+          : {},
+      },
       media_gallery: media_gallery,
+      addons: initialAddons,
     },
   });
 
   // Handle Global State
   const { errors, isValid, isSubmitting } = methods?.formState;
 
+  // Handle Next button for steps 1-4 (no validation)
+  const handleNext = () => {
+    const currentData = methods.getValues();
+    setFormData({ ...formData, ...currentData });
+    setCurrentStep((prev) => prev + 1);
+  };
+
   //  Main Steps
   const steps = [
-    {
-      id: 1,
-      title: 'Basic Info',
-    },
-    {
-      id: 2,
-      title: 'Pricing',
-    },
-    {
-      id: 3,
-      title: 'Schedule',
-    },
-    {
-      id: 4,
-      title: 'Media',
-    },
-    {
-      id: 5,
-      title: 'Seo',
-    },
+    { id: 1, title: 'Basic Info' },
+    { id: 2, title: 'Pricing' },
+    { id: 3, title: 'Schedule' },
+    { id: 4, title: 'AddOn' },
+    { id: 5, title: 'Media' },
+    { id: 6, title: 'Seo' },
   ];
 
   /**
@@ -108,8 +114,10 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
       case 3:
         return <ScheduleTabAdmin />;
       case 4:
-        return <MediaTab />;
+        return <SharedAddOnMultiSelect />;
       case 5:
+        return <MediaTab />;
+      case 6:
         return <SeoTab />;
       default:
         return null;
@@ -120,20 +128,23 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
   const onSubmit = async (data) => {
     const mergedData = { ...formData, ...data };
 
-    if (currentStep < 5) {
+    if (currentStep < 6) {
       setFormData(mergedData);
       setCurrentStep((prev) => prev + 1);
       return;
     }
 
-    const { media_gallery = [] } = data; // destructure media
+    const { media_gallery = [] } = mergedData; // destructure media
 
     // change media data
     const finalData = {
-      ...data,
+      ...mergedData,
       media_gallery: media_gallery.map((val) => ({
+        id: val.id ?? undefined,
         media_id: val.media_id,
+        is_featured: val.is_featured ?? false,
       })),
+      seo: mergedData.seo || {},
     };
 
     // submit full data
@@ -173,15 +184,13 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
                   steps.map((step) => (
                     <li
                       key={step.id}
-                      // onClick={() => {setCurrentStep(step?.id)}}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${
-                        currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'
-                      }`}
+                      onClick={() => setCurrentStep(step?.id)}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'
+                        }`}
                     >
                       <div
-                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${
-                          currentStep == step?.id ? 'text-secondaryDark ' : 'text-grayDark'
-                        }`}
+                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${currentStep == step?.id ? 'text-secondaryDark ' : 'text-grayDark'
+                          }`}
                       >
                         {step.title}
                       </div>
@@ -191,7 +200,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
               <Separator className="" />
             </div>
           </div>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={currentStep === 6 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
             <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               {renderStep()}
               <div className="flex justify-between pt-4">
@@ -220,7 +229,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
 
                 {/* Prevent Button On Schedules */}
                 <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
-                  {currentStep === 5 ? 'Submit' : 'Next'}
+                  {currentStep === 6 ? 'Submit' : 'Next'}
                 </Button>
               </div>
             </fieldset>

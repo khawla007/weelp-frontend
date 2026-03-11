@@ -1,4 +1,4 @@
-import { authApi } from '../axiosInstance';
+import { createAuthenticatedServerApi } from '../axiosInstance';
 
 /**
  * Get Single Tag on Admin side
@@ -7,7 +7,8 @@ import { authApi } from '../axiosInstance';
  */
 export async function getSingleTagAdmin(tagId) {
   try {
-    const response = await authApi.get(`/api/admin/tags/${tagId}`, {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get(`/api/admin/tags/${tagId}`, {
       headers: { Accept: 'application/json' },
     });
     return response.data;
@@ -22,7 +23,8 @@ export async function getSingleTagAdmin(tagId) {
  */
 export async function getAllTagsOptionsAdmin() {
   try {
-    const response = await authApi.get('/api/admin/taglist', {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get('/api/admin/taglist', {
       headers: { Accept: 'application/json' },
     });
 

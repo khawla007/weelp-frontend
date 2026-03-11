@@ -1,12 +1,10 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
-import { AtSign, Eye, EyeClosed, KeyRound, User } from 'lucide-react';
-import Link from 'next/link';
+import { AtSign, Eye, EyeClosed, KeyRound, User, X } from 'lucide-react';
 import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
@@ -34,9 +32,8 @@ const schema = z
     message: 'Passwords do not match',
   });
 
-export function RegisterForm() {
+export function RegisterForm({ onCloseDialog, onSwitchToLogin }) {
   const { visible, toggle } = useTogglePassword(); // toggle password hook
-  const router = useRouter();
   const { toast } = useToast();
 
   const {
@@ -65,20 +62,13 @@ export function RegisterForm() {
 
         toast({
           variant: 'success',
-          title: message ?? ' User Name Created Successfully',
-          action: (
-            <Button
-              onClick={() => {
-                router.push('/user/login');
-              }}
-            >
-              Click Here to Login
-            </Button>
-          ),
+          title: message ?? 'Account created successfully!',
+          description: 'You can now log in with your credentials.',
         });
 
-        // resetform
+        // reset form and switch to login view
         reset();
+        onSwitchToLogin?.();
       }
     } catch (error) {
       // Validation Erro
@@ -104,20 +94,32 @@ export function RegisterForm() {
   };
 
   return (
-    <div className="space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8">
-      <div className="bg-white rounded-t-xl border-b py-4 px-8">
+    <div className="relative space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8">
+      {/* Custom Close Button */}
+      <button
+        onClick={onCloseDialog}
+        className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10"
+        aria-label="Close"
+      >
+        <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
+      </button>
+      <div className="bg-white rounded-t-xl border-b py-4 px-8 pr-12">
         <Image src="/assets/images/SiteLogo.png" alt="Site Logo" width={122} height={42} />
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <fieldset className={`space-y-4 bg-white px-8 py-4 ${isSubmitting && 'cursor-wait'}`} disabled={isSubmitting}>
           <div>
             <h3 className="font-semibold text-xl">
-              Sign Up Back To{' '}
-              <Link href={'/user/login'} className="underline">
-                Login
-              </Link>
+              Sign Up or{' '}
+              <button
+                type="button"
+                onClick={onSwitchToLogin}
+                className="underline"
+              >
+                Back to Login
+              </button>
             </h3>
-            <sub className="text-[#5a5a5a]">Login into your account using your email.</sub>
+            <sub className="text-[#5a5a5a]">Create your account using your email.</sub>
           </div>
 
           {/* Name Input */}

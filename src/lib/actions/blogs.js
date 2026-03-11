@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 import { redirect } from 'next/navigation';
 
@@ -13,7 +13,8 @@ import { redirect } from 'next/navigation';
 export const createBlog = async (data = {}) => {
   try {
     await delay(500);
-    const res = await authApi.post('/api/admin/blogs', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/blogs', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -27,13 +28,23 @@ export const createBlog = async (data = {}) => {
       message: res.data?.message,
     };
   } catch (err) {
+    console.error('Blog creation error:', err?.response?.data || err);
     const status = err?.response?.status;
 
     if (status === 400) {
+      const errors = err?.response?.data?.errors;
+      let errorMessage = 'Validation error';
+      if (errors) {
+        // Format validation errors for display
+        const errorMessages = Object.entries(errors)
+          .map(([field, messages]) => `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`)
+          .join('\n');
+        errorMessage = errorMessages || 'Validation error';
+      }
       return {
         success: false,
-        message: 'Validation error',
-        errors: err?.response?.data?.errors,
+        message: errorMessage,
+        errors,
       };
     }
 
@@ -86,7 +97,8 @@ export const updateBlog = async (id, data) => {
 
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/blogs/${id}`, data, {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/blogs/${id}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -147,7 +159,8 @@ export async function deleteBlog(blogId) {
         message: 'Blog id not exist',
       };
     }
-    const res = await authApi.delete(`/api/admin/blogs/${blogId}/`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/blogs/${blogId}/`);
 
     log(res);
     // revalidate path
@@ -175,7 +188,8 @@ export async function deleteBlog(blogId) {
  */
 export async function deleteMultipleBlogs(blog_ids = []) {
   try {
-    const res = await authApi.post(`/api/admin/blogs/bulk-delete`, {
+    const api = await getAuthApi();
+    const res = await api.post(`/api/admin/blogs/bulk-delete`, {
       blog_ids,
     });
 

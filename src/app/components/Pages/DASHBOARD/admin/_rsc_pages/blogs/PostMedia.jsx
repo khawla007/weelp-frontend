@@ -1,16 +1,11 @@
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useMediaStore } from '@/lib/store/useMediaStore';
 import _ from 'lodash';
-import { Trash2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Trash2, Star } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { Medialibrary } from '../media/MediaLibrary';
 
 // Media Tab
-export const PostMedia = () => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [activityImages, setActivityImages] = useState([]); // all images intialize
+export const PostMedia = ({ setDialogOpen, onSelectionChange }) => {
   const { selectedMedia, resetMedia } = useMediaStore(); // Retrive images From Media
 
   const {
@@ -23,28 +18,56 @@ export const PostMedia = () => {
     name: 'media_gallery',
   });
 
-  //  Hydarte First if there is already media exist
+  // Find featured image
+  const featuredImageId = media_gallery?.find((img) => img.is_featured)?.media_id ?? null;
+
+  // Initialize with existing media from form (lazy initialization)
+  const [activityImages, setActivityImages] = useState(() => media_gallery || []);
+
+  // Track if we're updating from external source (to avoid infinite loops)
+  const isExternalUpdateRef = useRef(false);
+
+  // Sync activityImages with media_gallery when it changes externally (e.g., from handleSelectionChange)
   useEffect(() => {
-    if (media_gallery?.length > 0) {
-      setActivityImages(media_gallery); // Sync from form to local state
+    // Only sync if the change is external (not from our own setValue)
+    if (media_gallery && !isExternalUpdateRef.current) {
+      // Check if there's an actual difference to avoid unnecessary updates
+      const currentIds = new Set(activityImages.map((img) => img.media_id || img.id));
+      const galleryIds = new Set(media_gallery.map((img) => img.media_id || img.id));
+
+      // Compare sets - if different, sync
+      if (currentIds.size !== galleryIds.size || ![...currentIds].every((id) => galleryIds.has(id))) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional sync with form data
+        setActivityImages(media_gallery);
+      }
     }
-  }, []);
+    // Reset the flag after checking
+    isExternalUpdateRef.current = false;
+  }, [media_gallery]);
 
   // sideeffect for getting image from gallery popup
   useEffect(() => {
     if (selectedMedia.length > 0) {
       // 1. Transform selectedMedia (id → media_id) before adding
-      const transformedMedia = selectedMedia.map((obj) => _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))); // update key to media id
+      const transformedMedia = selectedMedia.map((obj) => {
+        const mapped = _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
+        return { ...mapped, is_featured: false }; // Explicitly set as NOT featured
+      });
 
       // 2. Push transformed data to local state
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional sync with media store
       setActivityImages((prev) => [...prev, ...transformedMedia]);
       resetMedia(); // runs immediately after set
-      setDialogOpen(false);
+      if (setDialogOpen) {
+        setDialogOpen(false);
+      }
     }
-  }, [selectedMedia]);
+  }, [selectedMedia, resetMedia, setDialogOpen]);
 
-  // sycn with form
+  // Sync with form (local state → form)
   useEffect(() => {
+    // Mark this as our own update to prevent syncing back
+    isExternalUpdateRef.current = true;
     setValue('media_gallery', activityImages); // sync form
   }, [activityImages, setValue]);
 
@@ -58,8 +81,21 @@ export const PostMedia = () => {
     });
   };
 
+  // handleSetFeatured
+  const handleSetFeatured = (mediaId) => {
+    // Toggle: if clicking same image, deselect; otherwise, select new
+    const isCurrentlyFeatured = featuredImageId === mediaId;
+    const updatedGallery = activityImages.map((img) => ({
+      ...img,
+      is_featured: img.media_id === mediaId ? !isCurrentlyFeatured : false,
+    }));
+
+    setActivityImages(updatedGallery);
+    setValue('media_gallery', updatedGallery, { shouldDirty: true, shouldValidate: true });
+  };
+
   return (
-    <div className="flex flex-col gap-4">
+    <>
       <div className="hidden">
         <Controller
           control={control}
@@ -72,28 +108,33 @@ export const PostMedia = () => {
         />
       </div>
 
-      {/**Uploaded Media As Dialog */}
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogTrigger asChild>
-          <Button variant="outline" className="w-fit self-end">
-            Upload Media
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="max-w-screen-xl">
-          <DialogTitle className="sr-only">Edit profile</DialogTitle>
-          <DialogDescription className="invisible">Upload Media For Activity</DialogDescription>
-          <Medialibrary />
-        </DialogContent>
-      </Dialog>
-
       {/**Selected Media From Store */}
       {activityImages.length > 0 ? (
         <div className="w-full flex flex-wrap gap-4 ">
           {activityImages.map((image, index) => {
+            const isFeatured = featuredImageId === image.media_id;
             return (
               <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-black">
                 <img className="size-72 rounded-md border" src={image?.url} alt="activity_image" />
-                <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-8 right-8 size-0 group-hover/item:size-6 transition-all text-red-400 bg-white rounded-full shadow" />
+
+                {/* Featured Star - Top Right */}
+                <Star
+                  size={20}
+                  fill={isFeatured ? '#568f7c' : 'white'}
+                  strokeWidth={2}
+                  onClick={() => handleSetFeatured(image.media_id)}
+                  className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#568f7c]' : 'text-[#568f7c] hover:scale-110'}`}
+                />
+
+                {/* Featured Badge - Top Left */}
+                {isFeatured && (
+                  <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
+                    Featured
+                  </div>
+                )}
+
+                {/* Trash - Bottom Right */}
+                <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-4 right-4 size-0 group-hover/item:size-6 transition-all text-red-500 bg-white rounded-full shadow p-1" />
               </div>
             );
           })}
@@ -101,6 +142,6 @@ export const PostMedia = () => {
       ) : (
         <div className="w-full">{errors?.media_gallery && <p className="text-red-500 mt-1">{errors?.media_gallery?.message}</p>}</div>
       )}
-    </div>
+    </>
   );
 };

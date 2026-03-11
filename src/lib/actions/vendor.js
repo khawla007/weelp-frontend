@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -12,7 +12,8 @@ import { delay, log } from '../utils';
 export const createVendor = async (data = {}) => {
   try {
     await delay(500);
-    const res = await authApi.post('/api/admin/vendors/store/vendor', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/vendors/store/vendor', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -65,7 +66,8 @@ export const createVendorRoute = async (data = {}) => {
   try {
     const { vendor_id } = data; // access id
     await delay(500);
-    const res = await authApi.post('/api/admin/vendors/store/route', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/vendors/store/route', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -118,7 +120,8 @@ export const createVendorPricing = async (data = {}) => {
   try {
     const { vendor_id } = data; // access id
     await delay(500);
-    const res = await authApi.post('/api/admin/vendors/store/pricing-tier', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/vendors/store/pricing-tier', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -171,7 +174,8 @@ export const createVendorAvailability = async (data = {}) => {
   try {
     const { vendor_id } = data; // access id
     await delay(500);
-    const res = await authApi.post('/api/admin/vendors/store/availability-time-slot', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/vendors/store/availability-time-slot', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -224,7 +228,8 @@ export const createVendorVehicle = async (data = {}) => {
   try {
     const { vendor_id } = data; // access id
     await delay(500);
-    const res = await authApi.post('/api/admin/vendors/store/vehicle', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/vendors/store/vehicle', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -278,7 +283,8 @@ export const createVendorDrivers = async (data = {}) => {
     const { vendor_id } = data; // access id
     await delay(500);
 
-    const res = await authApi.post('/api/admin/vendors/store/driver', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/vendors/store/driver', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -331,7 +337,8 @@ export const createVendorSchedule = async (data = {}) => {
   try {
     const { vendor_id } = data; // access id
     await delay(500);
-    const res = await authApi.post('/api/admin/vendors/store/schedule', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/vendors/store/schedule', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -386,7 +393,8 @@ export const editVendorStatusbyIdAdmin = async (vendorId, data = {}) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/vendors/update/vendor/${vendorId}`, data, {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/vendors/update/vendor/${vendorId}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },

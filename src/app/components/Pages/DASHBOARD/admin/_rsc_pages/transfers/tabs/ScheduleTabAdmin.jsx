@@ -53,7 +53,7 @@ const ScheduleTabAdmin = () => {
   const availabilityType = [
     { label: 'Always available', value: 'always_available' },
     { label: 'Specific Date', value: 'specific_date' },
-    { label: 'Custom', value: 'custom' },
+    { label: 'Custom', value: 'custom_schedule' },
   ];
 
   // Availability Days
@@ -222,21 +222,6 @@ const ScheduleTabAdmin = () => {
               </div>
             </div>
           )}
-
-          {/* Instant Confirmation & Lead Time */}
-          <div className="flex justify-between items-center py-4">
-            <div>
-              <Label>Instant Confirmation</Label>
-              <CardDescription aschild="true">
-                <p>Automatically confirm bookings without manual approval</p>
-              </CardDescription>
-            </div>
-            <Controller
-              control={control}
-              name="instant_confirmation"
-              render={({ field }) => <Switch className="data-[state=checked]:bg-secondaryDark" checked={field.value} onCheckedChange={field.onChange} />}
-            />
-          </div>
 
           <div className="flex justify-between items-center flex-col sm:flex-row gap-6 py-4 ">
             <div className="w-full space-y-2">

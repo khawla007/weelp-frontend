@@ -8,13 +8,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { z } from 'zod';
 import { SelectField } from '../components/Select';
 import { FORM_ADDON_VALUES_DEFAULT, FORM_ADDON_ITEMTYPE, FORM_ADDON_PRICE_CALCULATION_BY, ADDON_TYPES } from '@/constants/forms/addon';
+import { useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { DialogClose } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { createAddOn, editAddOn } from '@/lib/actions/addOn'; // actions
+import { cn } from '@/lib/utils';
 
 // Extract values
 const priceCalculationValues = FORM_ADDON_PRICE_CALCULATION_BY.map(({ value }) => value);
@@ -64,8 +66,69 @@ export const AddOnForm = ({ formData = {} }) => {
     formState: { isSubmitting },
   } = form;
 
+  // Watch type field for auto-populating price_calculation
+  const typeValue = form.watch('type');
+
+  // Watch price_calculation field for display label
+  const priceCalculationValue = form.watch('price_calculation');
+
+  // Watch price and sale_price for validation
+  const priceValue = form.watch('price');
+  const salePriceValue = form.watch('sale_price');
+
+  // State for sale price validation error
+  const [isSalePriceInvalid, setIsSalePriceInvalid] = useState(false);
+  const [hasShownToast, setHasShownToast] = useState(false);
+
+  // Get display label for price_calculation value
+  const priceCalculationLabel = useMemo(() => {
+    const option = FORM_ADDON_PRICE_CALCULATION_BY.find(({ value }) => value === priceCalculationValue);
+    return option?.label || '';
+  }, [priceCalculationValue]);
+
+  // Auto-populate price_calculation based on type
+  useEffect(() => {
+    if (typeValue) {
+      const priceCalculationMap = {
+        activity: 'per_activity',
+        package: 'per_package',
+        itinerary: 'per_itinerary',
+        transfer: 'per_transfer',
+      };
+      form.setValue('price_calculation', priceCalculationMap[typeValue]);
+    }
+  }, [typeValue, form]);
+
+  // Real-time validation: sale_price must be less than price
+  useEffect(() => {
+    const invalid = salePriceValue > 0 && salePriceValue >= priceValue;
+    setIsSalePriceInvalid(invalid);
+
+    // Show toast only when transitioning to invalid state (avoid spamming)
+    if (invalid && !hasShownToast) {
+      toast({
+        title: 'Invalid Sale Price',
+        description: 'Sale price must be less than regular price.',
+        variant: 'destructive',
+      });
+      setHasShownToast(true);
+    } else if (!invalid) {
+      setHasShownToast(false);
+    }
+  }, [salePriceValue, priceValue, hasShownToast, toast]);
+
   // handle submit
   const onSubmit = async (data) => {
+    // Validate sale_price before submit
+    if (data.sale_price > 0 && data.sale_price >= data.price) {
+      toast({
+        title: 'Invalid Sale Price',
+        description: 'Sale price must be less than regular price.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     try {
       let response;
       if (id) {
@@ -114,8 +177,8 @@ export const AddOnForm = ({ formData = {} }) => {
 
   return (
     <Card className="border-none">
-      <CardTitle>Create Add On</CardTitle>
-      <CardDescription>Create the add on details below.</CardDescription>
+      <CardTitle>{id ? 'Edit Add On' : 'Create Add On'}</CardTitle>
+      <CardDescription>{id ? 'Update the add on details below.' : 'Create the add on details below.'}</CardDescription>
       <CardContent className="p-0 py-8">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -190,16 +253,30 @@ export const AddOnForm = ({ formData = {} }) => {
                     <FormItem className="flex-1">
                       <FormLabel className={FORMSTYLE.formLabel}>Sale Price</FormLabel>
                       <FormControl>
-                        <Input type="number" min="0" {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
+                        <Input
+                          type="number"
+                          min="0"
+                          {...field}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          className={cn(
+                            isSalePriceInvalid && 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500'
+                          )}
+                        />
                       </FormControl>
                       <FormDescription>Leave empty if no discount is applied.</FormDescription>
                       <FormMessage />
+                      <p className={cn(
+                        "text-sm text-red-500 min-h-[20px]",
+                        !isSalePriceInvalid && 'invisible'
+                      )}>
+                        Sale price must be less than regular price.
+                      </p>
                     </FormItem>
                   )}
                 />
               </div>
 
-              {/* Price Calculation */}
+              {/* Price Calculation - Auto-filled based on Type */}
               <FormField
                 control={form.control}
                 name="price_calculation"
@@ -207,9 +284,14 @@ export const AddOnForm = ({ formData = {} }) => {
                   <FormItem>
                     <FormLabel className={FORMSTYLE.formLabel}>Price Calculation</FormLabel>
                     <FormControl>
-                      <SelectField data={FORM_ADDON_PRICE_CALCULATION_BY} onChange={field.onChange} value={field.value} />
+                      <Input
+                        {...field}
+                        value={priceCalculationLabel}
+                        disabled
+                        className="bg-muted cursor-not-allowed"
+                      />
                     </FormControl>
-                    <FormDescription>How the add-on price is calculated.</FormDescription>
+                    <FormDescription>Automatically calculated based on selected Type.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -241,11 +323,14 @@ export const AddOnForm = ({ formData = {} }) => {
               />
 
               <div className="flex gap-2 justify-end">
-                <DialogClose asChild>
-                  <Button type="button" variant="outline" className="self-end">
-                    Cancel
-                  </Button>
-                </DialogClose>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="self-end"
+                  onClick={() => router.back()}
+                >
+                  Cancel
+                </Button>
 
                 <Button type="submit" variant="secondary" className="self-end">
                   {isSubmitting ? 'Submitting' : 'Submit'}

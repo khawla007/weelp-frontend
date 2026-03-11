@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -60,7 +60,8 @@ export const createCountry = async (data = {}) => {
     await delay(500);
     // log(data);
 
-    const res = await authApi.post('/api/admin/countries', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/countries', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -99,7 +100,7 @@ export const createCountry = async (data = {}) => {
 
     return {
       success: false,
-      message: 'Something went wrong while creating country',
+      message: err.response?.data?.message || err.response?.data?.error || 'Something went wrong while creating country',
     };
   }
 };
@@ -108,7 +109,8 @@ export const editCountry = async (countryId, data = {}) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/countries/${countryId}`, data, {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/countries/${countryId}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -125,6 +127,12 @@ export const editCountry = async (countryId, data = {}) => {
   } catch (err) {
     const status = err?.response?.status;
 
+    console.error(`[editCountry] Error updating country ${countryId}:`, {
+      message: err.message,
+      status: err.response?.status,
+      data: err.response?.data,
+    });
+
     if (status === 400) {
       return {
         success: false,
@@ -143,13 +151,13 @@ export const editCountry = async (countryId, data = {}) => {
     if (status === 422) {
       return {
         success: false,
-        message: 'Country already exists',
+        message: err.response?.data?.message || 'Country already exists or validation failed',
       };
     }
 
     return {
       success: false,
-      message: 'Something went wrong while creating country',
+      message: err.response?.data?.message || err.response?.data?.error || 'Something went wrong while updating country',
     };
   }
 };
@@ -161,11 +169,31 @@ export const editCountry = async (countryId, data = {}) => {
  */
 export async function deleteCountry(countryId) {
   try {
-    const res = await authApi.delete(`/api/admin/countries/${countryId}/`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/countries/${countryId}/`);
 
     revalidatePath('/dashboard/admin/destinations/countries/'); //revalidating path
     return { success: true, message: res.data?.message };
   } catch (error) {
     return { success: false, error: 'Something went wrong' };
+  }
+}
+
+/**
+ * Action to delete multiple countries
+ * @param {number[]} countryIds
+ * @returns {{success: boolean, data?: any, error?: string}}
+ */
+export async function deleteMultipleCountries(countryIds = []) {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/countries/bulk-delete', {
+      country_ids: countryIds,
+    });
+
+    revalidatePath('/dashboard/admin/destinations/countries');
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
 }

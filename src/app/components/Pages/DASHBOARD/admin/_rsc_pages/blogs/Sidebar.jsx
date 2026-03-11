@@ -1,17 +1,30 @@
+'use client';
+
 import { MediaTab } from '@/app/components/Media';
-import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { ActionForm } from './actionform/BlogActions'; // blog action component
+import React, { useState } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { useAllCategoriesOptionsAdmin } from '@/hooks/api/admin/categories';
 import { useAlltagsOptionsAdmin } from '@/hooks/api/admin/tags';
 import { WidgetCard } from './components/WidgetCard';
 import { Textarea } from '@/components/ui/textarea';
-import Select from 'react-select';
+import dynamic from 'next/dynamic';
+
+const Select = dynamic(() => import('react-select').then(mod => mod.default), { ssr: false });
+import { PostMedia } from './PostMedia';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Medialibrary } from '../media/MediaLibrary';
 
 const BlogSidebar = () => {
-  const { control } = useFormContext(); // conext provider
-  const { categoriesList, error: isCategoryError, isLoading: isCategoryLoading, mutate: mutateCategories } = useAllCategoriesOptionsAdmin();
-  const { tagList, error: isTagError, isLoading: isTagLoading, mutate: mutateTag } = useAlltagsOptionsAdmin();
+  const { control, setValue } = useFormContext(); // conext provider
+  const { categoriesList, error: isCategoryError, isLoading: isCategoryLoading } = useAllCategoriesOptionsAdmin();
+  const { tagList, error: isTagError, isLoading: isTagLoading } = useAlltagsOptionsAdmin();
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  // Get media_gallery from form state
+  const media_gallery = useWatch({
+    name: 'media_gallery',
+  });
 
   // Options For categories
   const categoriesOptions =
@@ -31,6 +44,15 @@ const BlogSidebar = () => {
         }))
       : [];
 
+  // Handle selection changes from MediaLibrary (for unselection)
+  const handleSelectionChange = ({ removed }) => {
+    if (removed && removed.length > 0) {
+      const removedIds = new Set(removed.map((img) => img.media_id || img.id));
+      const updatedGallery = media_gallery.filter((img) => !removedIds.has(img.media_id || img.id));
+      setValue('media_gallery', updatedGallery);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Excerpt */}
@@ -38,7 +60,7 @@ const BlogSidebar = () => {
         <Controller
           name="excerpt"
           control={control}
-          rules={{ required: 'Field Required', maxLength: { value: 70, message: 'Too Much Loog' } }}
+          rules={{ required: 'Field Required', maxLength: { value: 300, message: 'Excerpt too long (max 300 characters)' } }}
           render={({ field, fieldState: { error } }) => {
             return (
               <>
@@ -50,15 +72,29 @@ const BlogSidebar = () => {
         />
       </WidgetCard>
 
-      {/* Media Tab */}
-      <WidgetCard cardTitle="Featured Image">
-        <Controller
-          name="media_gallery"
-          control={control}
-          render={({ field }) => {
-            return <MediaTab {...field} galleryThumbnail buttonTitle="Set Featured Images" />;
-          }}
-        />
+      {/* Media Gallery */}
+      <WidgetCard
+        cardTitle="Media Gallery"
+        action={
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                Upload Media
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-screen-xl">
+              <DialogTitle className="sr-only">Edit profile</DialogTitle>
+              <DialogDescription className="invisible">Upload Media For Blog</DialogDescription>
+              <Medialibrary
+                closeDialog={() => setDialogOpen(false)}
+                alreadySelectedImages={media_gallery || []}
+                onSelectionChange={handleSelectionChange}
+              />
+            </DialogContent>
+          </Dialog>
+        }
+      >
+        <PostMedia setDialogOpen={setDialogOpen} />
       </WidgetCard>
 
       {/* { categories */}
@@ -79,8 +115,6 @@ const BlogSidebar = () => {
             }}
           />
         )}
-
-        <ActionForm type={'category'} placeholder="Add a category" onSuccess={mutateCategories} />
       </WidgetCard>
 
       {/* Tags */}
@@ -102,9 +136,6 @@ const BlogSidebar = () => {
             }}
           />
         )}
-
-        {/* Actions */}
-        <ActionForm type="tag" placeholder="Add a tag" onSuccess={mutateTag} />
       </WidgetCard>
     </div>
   );

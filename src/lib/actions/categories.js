@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -12,7 +12,8 @@ import { delay, log } from '../utils';
 export const createCategory = async (data) => {
   try {
     await delay(500);
-    const res = await authApi.post('/api/admin/categories/', data);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/categories/', data);
 
     // revalidate  path
     revalidatePath('/dashboard/admin/taxonomies/categories');
@@ -64,7 +65,8 @@ export const createCategory = async (data) => {
 export const editCategory = async (id, data) => {
   try {
     await delay(500);
-    const res = await authApi.put(`/api/admin/categories/${id}`, data);
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/categories/${id}`, data);
 
     // revalidate  path
     revalidatePath(`/dashboard/admin/taxonomies/categories/${id}`); // category id to update
@@ -115,7 +117,8 @@ export const editCategory = async (id, data) => {
 export const deleteCategory = async (id) => {
   try {
     await delay(500);
-    const res = await authApi.delete(`/api/admin/categories/${id}`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/categories/${id}`);
 
     // revalidate  path
     revalidatePath(`/dashboard/admin/taxonomies/categories`); // update categories
@@ -135,6 +138,35 @@ export const deleteCategory = async (id) => {
     return {
       success: false,
       message: 'Something went wrong',
+    };
+  }
+};
+
+/**
+ * Method for Bulk Delete Categories
+ * @param {Number[]} categoryIds - Array of category IDs to delete
+ * @returns {}
+ */
+export const deleteMultipleCategories = async (categoryIds = []) => {
+  try {
+    await delay(500);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/categories/bulk-delete', {
+      category_ids: categoryIds,
+    });
+
+    // revalidate  path
+    revalidatePath('/dashboard/admin/taxonomies/categories');
+
+    return {
+      success: true,
+      message: res?.data?.message || `${categoryIds.length} categories deleted successfully`,
+      data: res.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error?.response?.data?.message || error?.message || 'Something went wrong',
     };
   }
 };

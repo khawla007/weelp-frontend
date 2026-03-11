@@ -2,14 +2,25 @@
   /* List styles */
   /* Heading styles */
   /* Code and preformatted text styles */
+  max-width: 100%;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 .tiptap :first-child {
   margin-top: 0;
+}
+.tiptap p {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 .tiptap ul,
 .tiptap ol {
   padding: 0 1rem;
   margin: 1.25rem 1rem 1.25rem 0.4rem;
+  max-width: 100%;
 }
 .tiptap ul li p,
 .tiptap ol li p {
@@ -24,6 +35,7 @@
 .tiptap h6 {
   line-height: 1.1;
   text-wrap: pretty;
+  max-width: 100%;
 }
 .tiptap h1 {
   font-size: 1.6rem;
@@ -48,12 +60,15 @@
   color: black;
   font-size: 0.85rem;
   padding: 0.25em 0.3em;
+  word-wrap: break-word;
 }
 .tiptap pre {
   background: black;
   border-radius: 0.5rem;
   color: white;
   font-family: 'JetBrainsMono', monospace;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .tiptap pre code {
@@ -66,6 +81,7 @@
   border-left: 3px solid #c7c7c7;
   margin: 1.5rem 0;
   padding-left: 1rem;
+  max-width: 100%;
 }
 
 .tiptap ul {

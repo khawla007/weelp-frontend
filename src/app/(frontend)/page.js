@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 import HereSection from '../components/Pages/FRONT_END/home/HeroSection';
 import ProductSliderSection from '../components/Pages/FRONT_END/Global/ProductSliderSection';
-import DestinationSliderSection from '../components/Pages/FRONT_END/Global/DestinationSection';
+import ExpandableFeaturedDestinations from '../components/Pages/FRONT_END/home/ExpandableFeaturedDestinations';
 import { fakeData } from '../Data/ShopData';
 
 // ReusableComponents
@@ -26,7 +26,7 @@ import { getAllFeaturedCities } from '@/lib/services/cities';
 
 const HomePage = async () => {
   const { data: featuredActivities = [], success } = await getAllFeaturedActivities(); // featured Activities
-  const { data: featuredCities } = await getAllFeaturedCities(); // featured cities
+  const featuredCities = await getAllFeaturedCities(); // featured cities
 
   return (
     <>
@@ -36,8 +36,12 @@ const HomePage = async () => {
           <SliderLayout data={featuredActivities} item={() => <span>item </span>}></SliderLayout>
         </SectionLayout>
       )} */}
+      {/* Featured Destinations Section */}
+      {featuredCities?.data && featuredCities.data.length > 0 && (
+        <ExpandableFeaturedDestinations data={featuredCities.data} title="Top Destinations" />
+      )}
+
       {featuredActivities?.length > 0 && <ProductSliderSection destinations={featuredActivities} />}
-      {featuredCities?.length > 0 && <DestinationSliderSection sliderTitle={'Top Destination'} data={featuredCities} />}
       <TestimonialSection />
       <CurateSection />
       <AiSection />

@@ -5,7 +5,7 @@ import { FilterCountries } from '../destinations_filters/FilterCountries';
 export const DestinationCountryPage = () => {
   return (
     <>
-      <NavigationDestinations title="Countries" description="Manage countries and their details for travel packages" url="/dashboard/admin/destinations/countries/new" name="Add Country" />
+      <NavigationDestinations title="Countries" description="Manage countries and their details for travel packages" />
       <FilterCountries />
     </>
   );

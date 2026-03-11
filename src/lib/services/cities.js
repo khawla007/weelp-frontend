@@ -1,4 +1,4 @@
-import { publicApi, authApi } from '../axiosInstance';
+import { publicApi, authApi, createAuthenticatedServerApi } from '../axiosInstance';
 import { log } from '../utils';
 
 /**
@@ -56,7 +56,8 @@ export async function getSingleCityAdmin(id) {
  */
 export async function getAllCitiesAdminV2(search = '') {
   try {
-    const response = await authApi.get(`/api/admin/cities/${search}`, {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get(`/api/admin/cities/${search}`, {
       headers: { Accept: 'application/json' },
     });
     return response?.data;
@@ -79,9 +80,9 @@ export async function getAllCitiesOptionsAdmin() {
     if (response.status === 200) {
       return response?.data?.data || []; // extract List
     }
-    return {};
+    return [];
   } catch (error) {
-    return {};
+    return [];
   }
 }
 
@@ -94,9 +95,10 @@ export async function getAllFeaturedCities() {
     const response = await publicApi.get(`/api/featured-cities`, {
       headers: { Accept: 'application/json' },
     });
+
     return response.data;
   } catch (error) {
-    console.log('Error fetching city data:', error);
-    return [];
+    console.log('Error fetching featured cities:', error.message);
+    return { success: false, data: [] };
   }
 }

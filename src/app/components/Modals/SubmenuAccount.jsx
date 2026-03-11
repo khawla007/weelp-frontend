@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { User, House, Heart, Settings, Tags, LogOut } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { LoginForm } from '../Form/LoginForm';
+import { AuthModal } from '../Form/AuthModal';
 
 const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
   const [open, setOpen] = useState();
@@ -61,9 +61,9 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
                   </button>
                 </DialogTrigger>
               </li>
-              <DialogContent className={'bg-transparent border-none'} aria-describedby={undefined}>
+              <DialogContent showClose={false} className={'bg-transparent border-none p-0 shadow-none'} aria-describedby={undefined}>
                 <DialogTitle className="sr-only">Are you absolutely sure?</DialogTitle>
-                <LoginForm onCloseDialog={() => setOpen(false)} customUrl={dynamicPaths || '/'} />
+                <AuthModal onCloseDialog={() => setOpen(false)} customUrl={dynamicPaths || '/'} />
               </DialogContent>
             </Dialog>
           </>

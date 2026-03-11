@@ -1,49 +1,11 @@
 'use server';
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay } from '../utils';
 import { log } from '../utils';
 
 /**
- * Handles the upload of media files using FormData and Axios.
- * @param {FormData} formData - The FormData object containing the files to upload.
- * @returns {Object} - The success status and any relevant data or error message.
- */
-
-export async function uploadMedia(formData) {
-  try {
-    // Ensure that 'formData' is not empty
-    if (!formData || formData.entries().length === 0) {
-      return {
-        success: false,
-        error: 'No files to upload',
-      };
-    }
-
-    // Use axios to post FormData
-    await delay(500);
-    const res = await authApi.post('api/admin/media/store', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data', // Ensure this header is set for file uploads
-      },
-    });
-
-    // Returning response success
-    return {
-      success: true,
-      data: res.data,
-    };
-  } catch (err) {
-    // Return error response
-    return {
-      success: false,
-      error: err?.message || 'Something went wrong during file upload.',
-    };
-  }
-}
-
-/**
- * Handles the update media image in media library files using FormData and Axios.
+ * Update media image - still a server action (works for updates)
  * @param {object} formData data of the image
  * @returns []
  */
@@ -54,7 +16,8 @@ export async function updateMediaImage(formData) {
 
     // Use axios to post FormData
     if (id) {
-      const res = await authApi.put(`api/admin/media/update/${id}`, formData, {
+      const api = await getAuthApi();
+      const res = await api.put(`api/admin/media/update/${id}`, formData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -80,7 +43,7 @@ export async function updateMediaImage(formData) {
 }
 
 /**
- * Delete Media Image By Id
+ * Delete Media Image By Id - still a server action (works for deletes)
  * @param {number} imageId Id of the image to delete
  * @returns []
  */
@@ -90,7 +53,8 @@ export async function deleteMediaImageById(imageId) {
 
     // Use axios to post FormData
     if (imageId) {
-      const res = await authApi.delete(`api/admin/media/delete/${imageId}`);
+      const api = await getAuthApi();
+      const res = await api.delete(`api/admin/media/delete/${imageId}`);
 
       // path refresh
       revalidatePath('/dashboard/admin/media');
@@ -107,5 +71,25 @@ export async function deleteMediaImageById(imageId) {
       success: false,
       error: err?.message || 'Something went wrong during file upload.',
     };
+  }
+}
+
+/**
+ * Action to delete multiple media items
+ * @param {number[]} media_ids
+ * @returns {{success: boolean, data?: any, error?: string}}
+ */
+export async function deleteMultipleMedia(media_ids = []) {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/media/bulk-delete', {
+      media_ids,
+    });
+
+    // revalidate path
+    revalidatePath('/dashboard/admin/media');
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
 }

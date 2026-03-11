@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { fetcher } from '@/lib/fetchers';
@@ -17,17 +17,33 @@ const PricingTab = () => {
   } = useFormContext();
 
   const watchedVendorId = useWatch({ control: control, name: 'vendor_id' }); // watchedVendorId
-  const { data: priceData } = useSWR(`/api/admin/vendors/${watchedVendorId}/pricesdropdown`, fetcher); // get pricing tier based on vendorId
+
+  // Track previous vendor_id to detect actual changes
+  const prevVendorIdRef = useRef(watchedVendorId);
+
+  const { data: priceData } = useSWR(watchedVendorId ? `/api/admin/vendors/${watchedVendorId}/pricing-tiers-select` : null, fetcher); // get pricing tier based on vendorId
   const prices = priceData?.data || [];
 
-  const { data: availablityData } = useSWR(`/api/admin/vendors/${watchedVendorId}/availabilitydropdown`, fetcher); // get pricing tier based on VendorId
+  const { data: availablityData } = useSWR(watchedVendorId ? `/api/admin/vendors/${watchedVendorId}/availability-time-slots-select` : null, fetcher); // get availability based on VendorId
   const availabilitys = availablityData?.data || [];
 
-  // side effect when route changed
+  // Reset pricing_tier_id and availability_id only when vendor_id actually changes to a DIFFERENT value
+  // Don't reset on mount (when prevVendorIdRef is undefined)
   useEffect(() => {
-    setValue('pricing_tier_id', '');
-    setValue('availability_id', '');
-  }, [watchedVendorId]);
+    const prevVendorId = prevVendorIdRef.current;
+
+    // Only reset pricing and availability if:
+    // 1. Previous vendor_id had a value (not undefined/null)
+    // 2. Current vendor_id has a different value
+    // 3. Current vendor_id is not undefined
+    if (prevVendorId !== undefined && prevVendorId !== null && prevVendorId !== watchedVendorId && watchedVendorId !== undefined) {
+      setValue('pricing_tier_id', '');
+      setValue('availability_id', '');
+    }
+
+    // Update ref after checking
+    prevVendorIdRef.current = watchedVendorId;
+  }, [watchedVendorId, setValue]);
 
   return (
     <Card>

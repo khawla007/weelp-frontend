@@ -1,9 +1,8 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, CirclePlus } from 'lucide-react';
-import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { AddNewButton } from '@/app/components/Button/AddNewButton';
 
 /**
  * Reusable destination navigation card.
@@ -18,8 +17,6 @@ export const NavigationDestinations = ({ title = '', description = '', url = '',
   const router = useRouter(); // intialize router
 
   if (title && description) {
-    // icon size
-    const ICON_SIZE = 16;
     return (
       <Card className="bg-inherit border-none shadow-none">
         <CardHeader className="px-0">
@@ -33,12 +30,11 @@ export const NavigationDestinations = ({ title = '', description = '', url = '',
             </div>
 
             {url && name && (
-              <Link href={url}>
-                <Button className="text-base" variant="secondary">
-                  <CirclePlus size={ICON_SIZE} />
-                  {name}
-                </Button>
-              </Link>
+              <AddNewButton
+                label={name}
+                href={url}
+                className="text-base bg-[#568f7c] text-white hover:bg-[#4a7a6a]"
+              />
             )}
           </div>
         </CardHeader>

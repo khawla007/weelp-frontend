@@ -2,21 +2,14 @@
 'use client';
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button, buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Plus } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
-export const TaxonomiesPageTitle = ({ title, description, buttoninfo: { buttonName, buttonurl } }) => {
+export const TaxonomiesPageTitle = ({ title, description }) => {
   return (
     <Card className={'flex w-full flex-col justify-between bg-inherit border-none shadow-none '}>
       <CardHeader className={'w-full flex flex-col sm:flex-row sm:items-center justify-between py-2 sm:p-0 '}>
         {title && <CardTitle className={'capitalize'}>{title}</CardTitle>}
-        {buttonName && (
-          <Link className={buttonVariants() + ' capitalize bg-secondaryDark'} href={buttonurl ?? '/dashboard/admin'}>
-            <Plus />
-            {buttonName}
-          </Link>
-        )}
       </CardHeader>
       {description && <CardContent className={'capitalize text-gray-500 sm:px-0'}>{description}</CardContent>}
     </Card>

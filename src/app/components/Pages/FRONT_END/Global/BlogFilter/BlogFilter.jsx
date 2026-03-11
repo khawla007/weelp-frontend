@@ -7,7 +7,7 @@ import { useCategories } from '@/hooks/api/public/categories';
 import { CustomPagination } from '@/app/components/Pagination';
 import { BLOGSORT_OPTIONS } from '../../../DASHBOARD/admin/_rsc_pages/blogs/FilterBlogPage';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import UniversalLoader from '@/app/components/Loading/UniversalLoader';
+
 
 const BlogFilterBar = () => {
   // Initialize form with default values
@@ -76,7 +76,7 @@ const BlogFilterBar = () => {
 
       {/* Results Grid */}
       {isLoading ? (
-        <UniversalLoader />
+        <div className="text-center py-8 text-gray-500">Loading...</div>
       ) : error ? (
         <div className="text-center py-8 text-red-500">Error loading blogs</div>
       ) : blogs.length === 0 ? (
@@ -85,7 +85,11 @@ const BlogFilterBar = () => {
         <ul className="grid grid-col-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-16">
           {blogs.map((blog) => (
             <li key={blog.id || blog.slug}>
-              <BlogCard {...blog} imageSrc={blog?.media_gallery?.[0]?.url || blog?.image} blogTitle={blog?.title} />
+              <BlogCard
+                {...blog}
+                imageSrc={blog?.media_gallery?.find(img => img.is_featured)?.url || blog?.media_gallery?.[0]?.url || blog?.image}
+                blogTitle={blog?.title}
+              />
             </li>
           ))}
         </ul>

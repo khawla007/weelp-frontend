@@ -94,7 +94,7 @@ export const DashboardAdminNav = {
     { title: 'Reviews', icon: MessageSquare, url: '/dashboard/admin/reviews' },
     { title: 'Manage Add Ons', icon: Plus, url: '/dashboard/admin/addon' },
     { title: 'Pages', icon: FileText, url: '/dashboard/admin/pages', comingSoon: true },
-    { title: 'Blogs', icon: FileText, url: '/dashboard/admin/blogs', comingSoon: true },
+    { title: 'Blogs', icon: FileText, url: '/dashboard/admin/blogs' },
     {
       title: 'Marketing',
       icon: Gift,

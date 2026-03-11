@@ -1,4 +1,4 @@
-import { authApi } from '../axiosInstance';
+import { createAuthenticatedServerApi } from '../axiosInstance';
 import { log } from '../utils';
 
 /**
@@ -8,12 +8,13 @@ import { log } from '../utils';
  */
 export async function getAllReviewsAdmin(search = '') {
   try {
-    const response = await authApi.get(`/api/admin/reviews/${search ? search : ''}`, {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get(`/api/admin/reviews/${search ? search : ''}`, {
       headers: { Accept: 'application/json' },
     });
     return response?.data;
   } catch (error) {
-    return {};
+    return { success: false, data: [], current_page: 1, per_page: 5, total: 0 };
   }
 }
 
@@ -24,7 +25,8 @@ export async function getAllReviewsAdmin(search = '') {
  */
 export async function getSingleReviewAdmin(id) {
   try {
-    const response = await authApi.get(`/api/admin/reviews/${id}`, {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get(`/api/admin/reviews/${id}`, {
       headers: { Accept: 'application/json' },
     });
 
@@ -45,15 +47,24 @@ export async function getSingleReviewAdmin(id) {
  */
 export async function getAllItemsByTypeOptions(itemType) {
   try {
-    const response = await authApi.get(`/api/admin/reviews/items/?item_type=${itemType}`, {
+    console.log('[getAllItemsByTypeOptions] Fetching items for type:', itemType);
+    const api = await createAuthenticatedServerApi();
+    const url = `/api/admin/reviews/items/?item_type=${itemType}`;
+    console.log('[getAllItemsByTypeOptions] Calling URL:', url);
+    const response = await api.get(url, {
       headers: { Accept: 'application/json' },
     });
+
+    console.log('[getAllItemsByTypeOptions] Response status:', response.status);
+    console.log('[getAllItemsByTypeOptions] Response data:', response?.data);
 
     if (response.status === 200) {
       return response?.data;
     }
-    return {};
+    return { success: false, data: [] };
   } catch (error) {
-    return {};
+    console.error('[getAllItemsByTypeOptions] Error:', error.message);
+    console.error('[getAllItemsByTypeOptions] Error response:', error.response?.data);
+    return { success: false, data: [], error: error.message };
   }
 }

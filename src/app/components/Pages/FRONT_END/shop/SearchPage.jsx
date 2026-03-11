@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
-import _ from 'lodash';
 import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { GlobalCard } from '@/app/components/SingleProductCard';
@@ -61,10 +60,14 @@ export const SearchPage = () => {
       .catch((err) => console.log('Error fetching categories:', err));
   }, []);
 
-  const fetchProducts = useCallback(
-    _.debounce(() => {
-      if (!selectedLocation || !startDate || !endDate) return;
+  const fetchProductsRef = useRef(null);
+  const fetchProducts = useCallback(() => {
+    if (!selectedLocation || !startDate || !endDate) return;
 
+    if (fetchProductsRef.current) {
+      clearTimeout(fetchProductsRef.current);
+    }
+    fetchProductsRef.current = setTimeout(() => {
       setIsLoading(true);
       const queryParams = new URLSearchParams({
         location: String(selectedLocation.name).toLowerCase(),
@@ -88,15 +91,18 @@ export const SearchPage = () => {
         })
         .catch((err) => console.log('Error fetching products:', err))
         .finally(() => setIsLoading(false));
-    }, 500),
-    [priceRange, selectedCategories, ratingFilter, selectedLocation, startDate, endDate, quantity, sortby],
-  );
+    }, 500);
+  }, [priceRange, selectedCategories, ratingFilter, selectedLocation, startDate, endDate, quantity, sortby]);
 
   useEffect(() => {
     if (selectedLocation) {
       fetchProducts();
     }
-    return () => fetchProducts.cancel();
+    return () => {
+      if (fetchProductsRef.current) {
+        clearTimeout(fetchProductsRef.current);
+      }
+    };
   }, [fetchProducts]);
 
   //sort data

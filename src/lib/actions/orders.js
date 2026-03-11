@@ -1,6 +1,6 @@
 'use server';
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -11,7 +11,8 @@ import { delay, log } from '../utils';
 export const createOrder = async (data) => {
   try {
     await delay(500);
-    const res = await authApi.post('/api/admin/orders', data);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/orders', data);
 
     revalidatePath('/dashboard/admin/orders/'); // revalidate path of orders
     return {
@@ -60,7 +61,8 @@ export const createOrder = async (data) => {
  */
 export async function deleteOrder(orderId) {
   try {
-    const res = await authApi.delete(`/api/admin/orders/${orderId}`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/orders/${orderId}`);
 
     // On successful
     if (res.data?.success) {

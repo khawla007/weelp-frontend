@@ -1,10 +1,28 @@
+'use client';
+
 import React from 'react';
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { FileUp, FileDown, Globe, MapPin, Building, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DestinationListCard } from './components/cards/DestinationCard';
+import useSWR from 'swr';
+import { getDestinationsCounts } from '@/lib/services/destinations';
 
 const DestinationsPageAdmin = () => {
+  // Fetch destination counts
+  const { data: counts, isLoading, error } = useSWR(
+    '/api/admin/destinations/counts',
+    getDestinationsCounts,
+    { refreshInterval: 300000 } // Cache for 5 minutes
+  );
+
+  // Helper function to get count with loading/error states
+  const getCount = (type) => {
+    if (isLoading) return '...';
+    if (error) return '—';
+    return counts?.data?.[type] ?? 0;
+  };
+
   // import export data
   const IMPORT_EXPORT = [
     { icon: FileUp, label: 'import' },
@@ -16,28 +34,28 @@ const DestinationsPageAdmin = () => {
     {
       label: 'Countries',
       icon: Globe,
-      items: 0,
+      items: getCount('countries'),
       description: 'Manage countries and their details',
       url: '/dashboard/admin/destinations/countries',
     },
     {
       label: 'States',
       icon: MapPin,
-      items: 0,
+      items: getCount('states'),
       description: 'Manage states and regions',
       url: '/dashboard/admin/destinations/states',
     },
     {
       label: 'Cities',
       icon: Building,
-      items: 0,
+      items: getCount('cities'),
       description: 'Manage cities and their attractions',
       url: '/dashboard/admin/destinations/cities',
     },
     {
       label: 'Places',
       icon: User,
-      items: 0,
+      items: getCount('places'),
       description: 'Manage specific places and points of interest',
       url: '/dashboard/admin/destinations/places',
     },

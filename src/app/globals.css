@@ -92,6 +92,104 @@ body {
   * {
     @apply border-border;
   }
+
+  /* Remove default browser styles from all input-like elements */
+  input,
+  textarea,
+  select,
+  button {
+    /* Remove default outline */
+    outline: none !important;
+
+    /* Remove default borders - will use Tailwind border classes */
+    border: 1px solid transparent;
+
+    /* Smooth transitions */
+    transition: all 0.2s ease-in-out;
+  }
+
+  /* Focus state - remove all focus indicators */
+  input:focus,
+  textarea:focus,
+  select:focus,
+  button:focus,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  button:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Hover state - no border change */
+  input:hover,
+  textarea:hover,
+  select:hover,
+  button:hover {
+    outline: none !important;
+  }
+
+  /* Active state - no border change */
+  input:active,
+  textarea:active,
+  select:active,
+  button:active {
+    outline: none !important;
+  }
+
+  /* Disabled state */
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    outline: none !important;
+  }
+
+  /* Remove webkit autofill background and styles */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: inherit !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  /* Dark mode autofill */
+  .dark input:-webkit-autofill,
+  .dark input:-webkit-autofill:hover,
+  .dark input:-webkit-autofill:focus,
+  .dark input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgb(0 0 0) inset !important;
+    -webkit-text-fill-color: inherit !important;
+  }
+
+  /* Remove spin buttons from number inputs */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  /* Remove date picker icon styles */
+  input[type='date']::-webkit-calendar-picker-indicator,
+  input[type='time']::-webkit-calendar-picker-indicator,
+  input[type='datetime-local']::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(0.5);
+  }
+
+  .dark input[type='date']::-webkit-calendar-picker-indicator,
+  .dark input[type='time']::-webkit-calendar-picker-indicator,
+  .dark input[type='datetime-local']::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
 }
 
 /* Slider Section */
@@ -102,78 +200,110 @@ body {
   @apply relative;
 }
 
-.productSlider > h2,
-.productDestination > h2,
-.reviewSlider h2,
-.singleproduct_reviewslider > h2 {
-  @apply absolute;
+.productSlider>h2,
+.productDestination>h2,
+.singleproduct_reviewslider>h2 {
+  @apply pb-8;
 }
 
-.productSlider .swiper,
+/* .productSlider .swiper,
 .productDestination .swiper,
+.blog_slider_section .swiper,
 .reviewSlider .swiper,
 .singleproduct_reviewslider .swiper {
-  @apply pt-14;
+  @apply !py-12 !px-0 !important;
+} */
+
+/* Fix Swiper Navigation Glitch and Brand Color */
+:root {
+  --swiper-navigation-size: 14px !important;
+  --swiper-navigation-color: #588f7a !important;
+  /* secondaryDark */
 }
 
-@layer components {
-  .productSlider .swiper-button-prev,
-  .productDestination .swiper-button-prev,
-  .reviewSlider .swiper-button-prev,
-  .singleproduct_reviewslider .swiper-button-prev {
-    @apply bg-white absolute top-[5%] shadow-xl rounded-[10px] size-10 border-[2px];
-
-    @media (max-width: 639px) {
-      left: 70%;
-    }
-
-    @media (min-width: 640px) {
-      left: calc(70% + 10vw);
-    }
-
-    /* Larger screens */
-    @media (min-width: 768px) {
-      left: calc(88% - 5vw);
-    }
-
-    @media (min-width: 1024px) {
-      left: calc(90% - 3vw);
-    }
-
-    @media (min-width: 1280px) {
-      left: calc(94% - 1vw);
-    }
-  }
+.swiper-button-prev,
+.swiper-button-next {
+  @apply bg-white rounded-[10px] size-10 border border-gray-100 flex items-center justify-center transition-all duration-300 opacity-100 !important;
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1) !important;
+  /* Stronger visibility */
+  margin-top: 0 !important;
 }
 
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  @apply bg-secondaryDark border-secondaryDark !important;
+  --swiper-navigation-color: #ffffff !important;
+  box-shadow: 4px 4px 15px rgba(88, 143, 122, 0.3) !important;
+}
+
+/* Hide navigation if not enough slides */
+.swiper-button-disabled,
+.swiper-button-lock {
+  display: none !important;
+}
+
+/* Target SVG icons specifically if they exist and force 50% size */
+.swiper-button-prev svg,
+.swiper-button-next svg {
+  display: block !important;
+  width: 20px !important;
+  height: 20px !important;
+  color: #588f7a !important;
+  /* default secondaryDark */
+  fill: currentColor !important;
+  transition: all 0.3s ease;
+}
+
+.swiper-button-prev:hover svg,
+.swiper-button-next:hover svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* Ensure centering and small size for Swiper's default font icons */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-family: swiper-icons !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  color: inherit !important;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.swiper-button-prev:hover::after,
+.swiper-button-next:hover::after {
+  color: #ffffff !important;
+}
+
+.swiper-button-prev:hover::after,
+.swiper-button-next:hover::after {
+  color: #ffffff !important;
+}
+
+.productSlider .swiper-button-prev,
 .productSlider .swiper-button-next,
+.productDestination .swiper-button-prev,
 .productDestination .swiper-button-next,
+.reviewSlider .swiper-button-prev,
 .reviewSlider .swiper-button-next,
-.singleproduct_reviewslider .swiper-button-next {
-  @apply bg-white absolute top-[5%] shadow-xl rounded-[10px] size-10 border-[2px];
-}
-
-.productSlider .swiper-button-prev::after,
-.productSlider .swiper-button-next::after,
-.productDestination .swiper-button-prev::after,
-.productDestination .swiper-button-next::after,
-.reviewSlider .swiper-button-prev::after,
-.reviewSlider .swiper-button-next::after,
-.singleproduct_reviewslider .swiper-button-prev::after,
-.singleproduct_reviewslider .swiper-button-next::after,
-.gallery_slider .swiper-button-next::after,
-.gallery_slider .swiper-button-prev::after {
-  @apply text-blackish text-[10px] font-extrabold rounded-md;
+.singleproduct_reviewslider .swiper-button-prev,
+.singleproduct_reviewslider .swiper-button-next,
+.gallery_slider .swiper-button-prev,
+.gallery_slider .swiper-button-next {
+  position: absolute;
 }
 
 /* Responsive Sliders */
 @screen md {
   .reviewSlider .swiper-button-prev {
-    @apply left-[90%];
+    left: 90% !important;
   }
 
   .singleproduct_reviewslider .swiper-button-prev {
-    @apply left-[86%];
+    left: 86% !important;
   }
 }
 
@@ -183,6 +313,7 @@ body {
 .singleProducform .rdp-day_selected {
   @apply bg-secondaryLight2 text-inherit;
 }
+
 .bannerForm .rdp-day_selected:hover,
 .singleProducform .rdp-day_selected:hover {
   @apply bg-secondarylight text-black;
@@ -245,19 +376,30 @@ body {
 
 /* Slider */
 @layer components {
+
   .reviewSlider .swiper-button-next,
   .reviewSlider .swiper-button-prev,
   .singleproduct_reviewslider .swiper-button-next,
   .singleproduct_reviewslider .swiper-button-prev {
-    top: 9% !important;
+    top: 0 !important;
   }
 }
 
 /* Custom Config Gallery Slider For City and SingleProduct Page*/
 @layer components {
+
   .gallery_slider .swiper-button-prev,
   .gallery_slider .swiper-button-next {
-    @apply bg-white border rounded-lg size-10 mx-2;
+    @apply bg-white border rounded-lg size-10;
+    margin: 0 !important;
+  }
+
+  .gallery_slider .swiper-button-prev {
+    left: 10px !important;
+  }
+
+  .gallery_slider .swiper-button-next {
+    right: 10px !important;
   }
 
   /* page_destination_banner (Single Product Page Banner Navigation) */
@@ -273,10 +415,25 @@ body {
   .page_destination_banner .gallery_slider button.gallery_slider_toggle_btn {
     @apply block left-[5%] md:left-[3%] lg:left-[1%] w-fit mb-2 text-xs sm:text-sm;
   }
+
+  /* Blog Slider Section specific navigation (centered on sides) */
+  .blog_slider_section .swiper-button-prev,
+  .blog_slider_section .swiper-button-next {
+    top: 50% !important;
+    transform: translateY(-50%);
+  }
+
+  .blog_slider_section .swiper-button-prev {
+    left: 10px !important;
+  }
+
+  .blog_slider_section .swiper-button-next {
+    right: 10px !important;
+  }
 }
 
 /* Shop Filter */
-.shop_filter div > input[type='checkbox'] {
+.shop_filter div>input[type='checkbox'] {
   border: 2px solid !important;
   padding: 4px;
 }
@@ -372,19 +529,22 @@ span {
 .range-slider__thumb {
   background-color: #56947d !important;
 }
+
 .range-slider__range {
   background-color: rgb(229 231 235) !important;
 }
-.tfc_admin_activitiesmultiselect .optionContainer > li.highlightOption {
+
+.tfc_admin_activitiesmultiselect .optionContainer>li.highlightOption {
   background-color: inherit;
   color: black;
 }
 
-.tfc_admin_activitiesmultiselect .optionContainer > li:hover {
+.tfc_admin_activitiesmultiselect .optionContainer>li:hover {
   background-color: #000;
   color: #fafafa;
 }
-.tfc_admin_activitiesmultiselect .optionContainer > li input:checked {
+
+.tfc_admin_activitiesmultiselect .optionContainer>li input:checked {
   background-color: #56947d;
 }
 

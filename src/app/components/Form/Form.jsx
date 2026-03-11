@@ -188,6 +188,8 @@ export default function BookingForm() {
                   {/* <input onChange={handleInputChange} value={watchedWhereTo || ''} placeholder="Where to" type="text" /> */}
                   <input
                     type="text"
+                    id="search-destination"
+                    name="search-destination"
                     placeholder="Where to"
                     value={inputValue} // input only tracks user typing
                     onChange={handleInputChange} // filter locations

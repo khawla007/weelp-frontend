@@ -27,11 +27,19 @@ export const ReviewSectionCity = ({ cityData }) => {
         </div>
       )}
 
-      <div className="w-full xl:w-2/3 p-6 space-y-4">
+      <div className="w-full xl:w-2/3 p-6 space-y-6">
         <TotalReviews />
-        <div className="reviewSlider">
-          <h2 className="text-lg sm:text-[28px] font-medium text-Nileblue top-4">Featured review</h2>
-          <ReviewSlider />
+        <div className="border border-gray-100 rounded-2xl p-6 sm:p-8 bg-white shadow-[8px_8px_20px_rgba(0,0,0,0.05)]">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center justify-between w-full relative min-h-[40px]">
+              <h2 className="text-lg sm:text-[28px] font-medium text-Nileblue">Featured review</h2>
+              <div className="flex gap-3 items-center">
+                <div className="review-prev swiper-button-prev !static !m-0 after:!text-[14px]"></div>
+                <div className="review-next swiper-button-next !static !m-0 after:!text-[14px]"></div>
+              </div>
+            </div>
+            <ReviewSlider />
+          </div>
         </div>
         <Accordion items={faqItems} />
       </div>
@@ -47,11 +55,19 @@ export const ReviewSectionRegion = ({ cityData }) => {
         <WhatAboutRegion destinationInfo={destinationInfo} />
       </div>
 
-      <div className="w-full xl:w-2/3 p-6 space-y-4">
+      <div className="w-full xl:w-2/3 p-6 space-y-6">
         <TotalReviews />
-        <div className="reviewSlider">
-          <h2 className="text-lg sm:text-[28px] font-medium text-Nileblue top-4">Featured review</h2>
-          <ReviewSlider />
+        <div className="border border-gray-100 rounded-2xl p-6 sm:p-8 bg-white shadow-[8px_8px_20px_rgba(0,0,0,0.05)]">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center justify-between w-full relative min-h-[40px]">
+              <h2 className="text-lg sm:text-[28px] font-medium text-Nileblue">Featured review</h2>
+              <div className="flex gap-3 items-center">
+                <div className="review-prev swiper-button-prev !static !m-0 after:!text-[14px]"></div>
+                <div className="review-next swiper-button-next !static !m-0 after:!text-[14px]"></div>
+              </div>
+            </div>
+            <ReviewSlider />
+          </div>
         </div>
         <Accordion items={faqItems} />
       </div>

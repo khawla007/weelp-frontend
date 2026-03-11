@@ -6,7 +6,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar, Clock, Ellipsis, Plus, SquarePen, Star, Tag, Trash2, Users } from 'lucide-react';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import debounce from 'lodash.debounce';
 import { Badge } from '@/components/ui/badge';
@@ -21,7 +20,10 @@ import useSWR from 'swr'; // for states cache and ui management
 import { fetcher } from '@/lib/fetchers'; // swr fetcher
 import { deleteActivity, deleteMultipleActivities } from '@/lib/actions/activities';
 import { useToast } from '@/hooks/use-toast';
-import { Checkbox } from '@/components/ui/checkbox';
+import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
+import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
+import { AddNewButton } from '@/app/components/Button/AddNewButton';
+import { DashboardSearch } from '@/app/components/DashboardShared';
 
 const seasons = ['spring', 'summer', 'winter', 'automn']; // static season
 
@@ -40,6 +42,7 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
   const priceID = useId();
   const { toast } = useToast(); // intialize toast
   const [selectedItems, setSelectedItems] = useState([]); // selected item for multiple delete case
+  const [isAllSelected, setIsAllSelected] = useState(false); // Track Select All toggle state
   const [modalState, setModalState] = useState({
     openDropdownIndex: '', // string: index as string or "" for none
     openDialogIndex: '',
@@ -101,6 +104,18 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
   // handle page change
   const handlePageChange = (newPage) => {
     setValue('page', newPage, { shouldValidate: true, shouldDirty: true }); // through server side pagination
+    setSelectedItems([]);
+    setIsAllSelected(false);
+  };
+
+  // Toggle select all / unselect all
+  const handleSelectAllToggle = () => {
+    if (isAllSelected) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(items.map(item => item.id));
+    }
+    setIsAllSelected(!isAllSelected);
   };
 
   const debouncedUpdate = useMemo(
@@ -111,17 +126,43 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
     [],
   );
 
-  // side effect for if fiilter change
+  // side effect for if filter change
   useEffect(() => {
-    debouncedUpdate(filters);
+    const { page, ...otherFilters } = filters;
+    debouncedUpdate(otherFilters);
     return () => debouncedUpdate.cancel();
-  }, [filters, debouncedUpdate]);
+  }, [
+    filters.name,
+    filters.category,
+    filters.difficulty_level,
+    filters.duration,
+    filters.seasons?.join(','),
+    filters.sort_by,
+    filters.price?.[0],
+    filters.price?.[1],
+    debouncedUpdate,
+  ]);
+
+  // Reset page to 1 when any filter other than page changes
+  useEffect(() => {
+    setValue('page', 1);
+  }, [
+    filters.name,
+    filters.category,
+    filters.difficulty_level,
+    filters.duration,
+    filters.seasons?.join(','),
+    filters.sort_by,
+    filters.price?.[0],
+    filters.price?.[1],
+    setValue,
+  ]);
 
   // Memoized query string
   const queryParams = useMemo(() => {
     const params = new URLSearchParams();
 
-    if (debouncedFilters.name) params.append('name', debouncedFilters.name);
+    if (debouncedFilters.name) params.append('search', debouncedFilters.name);
     if (debouncedFilters.category) params.append('category', debouncedFilters.category);
     if (debouncedFilters.difficulty_level) params.append('difficulty_level', debouncedFilters.difficulty_level);
     if (debouncedFilters.duration) params.append('duration', debouncedFilters.duration);
@@ -131,10 +172,10 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
     if (debouncedFilters.sort_by) params.append('sort_by', debouncedFilters.sort_by);
     if (debouncedFilters.price?.[0]) params.append('min_price', debouncedFilters.price[0]);
     if (debouncedFilters.price?.[1]) params.append('max_price', debouncedFilters.price[1]);
-    if (debouncedFilters.page) params.append('page', debouncedFilters.page);
+    if (filters.page) params.append('page', filters.page);
 
     return params.toString();
-  }, [debouncedFilters]);
+  }, [debouncedFilters, filters.page]);
 
   // SWR fetch
   const { data, error, isValidating, mutate } = useSWR(`/api/admin/activities?${queryParams}`, fetcher, { revalidateOnFocus: true });
@@ -154,6 +195,7 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
 
         // flush items
         setSelectedItems([]);
+        setIsAllSelected(false);
       } else {
         toast({
           title: 'Delete failed',
@@ -166,6 +208,7 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
 
       // flush items
       setSelectedItems([]);
+      setIsAllSelected(false);
     }
   };
 
@@ -180,11 +223,7 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
       <div className="lg:w-1/4  space-y-6 p-4">
         {/* Search */}
         <div className="space-y-2">
-          <Controller
-            name="name"
-            control={control}
-            render={({ field }) => <Input type="search" placeholder="Search Activity" className="w-full bg-white focus-visible:ring-secondaryDark" {...field} />}
-          />
+          <DashboardSearch control={control} name="name" placeholder="Search Activity" />
         </div>
 
         <Accordion type="single" collapsible>
@@ -336,23 +375,19 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
           Recommended
           <div className="space-y-4 flex flex-col ">
             {selectedItems.length > 0 ? (
-              // Seleted Items Functionality
-              <p className="flex self-end gap-4">
-                {/* <Button variant="outline" className="w-fit self-end" onClick={handleMultpleExport}>
-                  <Download size={16} /> Export
-                </Button> */}
-
-                <Button variant="destructive" className="w-fit self-end" onClick={handleMultpleDelete}>
-                  <Trash2 size={16} /> Delete
-                </Button>
-              </p>
+              <BulkActionButtons
+                selectedCount={selectedItems.length}
+                totalCount={items.length}
+                isAllSelected={isAllSelected}
+                onSelectAllToggle={handleSelectAllToggle}
+                onDelete={handleMultpleDelete}
+                deleteLabel="Delete"
+              />
             ) : (
-              <Button asChild>
-                <Link className="w-fit self-end bg-secondaryDark text-black" href="/dashboard/admin/activities/new">
-                  {/** Create New Activity */}
-                  <Plus size={16} /> Create Activity
-                </Link>
-              </Button>
+              <AddNewButton
+                label="Add New"
+                href="/dashboard/admin/activities/new"
+              />
             )}
 
             {/* Recommended */}
@@ -392,19 +427,86 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
           {!isValidating && !error && items.length > 0 && (
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
-                {items.map(({ id: itemId, name, media_gallery = [], tags = [], attributes = [] }, index) => (
+                {items.map(({ id: itemId, name, media_gallery = [], tags = [], attributes = [], is_featured }, index) => (
                   <Card
                     key={index}
-                    className={`group hover:shadow-md ease duration-300 rounded-lg w-full lg:w-fit border relative ${selectedItems?.includes(itemId) && 'p-3 border border-secondaryDark'}`}
+                    className="group hover:shadow-md rounded-lg w-full lg:w-fit border relative overflow-hidden"
                   >
+                    {is_featured && (
+                      <>
+                        <div className="absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
+                          Featured
+                        </div>
+                        <Star size={24} fill="#568f7c" strokeWidth={2} className="absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
+                      </>
+                    )}
                     <img
-                      className="w-full lg:w-[326px] h-[183px] rounded-lg aspect-square"
+                      className="w-full lg:w-[326px] h-[183px] rounded-t-lg rounded-b-none"
                       src={`${media_gallery?.[0]?.url ? media_gallery?.[0]?.url : 'https://picsum.photos/350/300?random'}`}
                       alt="activity_image"
                     />
 
                     <div className=" bg-white p-4 space-y-2">
-                      <h2>{name}</h2>
+                      <div className="flex justify-between items-start">
+                        <h2 className="m-0">{name}</h2>
+
+                        {/* DropDown */}
+                        <DropdownMenu
+                          open={modalState.openDropdownIndex === itemId}
+                          onOpenChange={(open) => {
+                            setModalState((prev) => ({
+                              ...prev,
+                              openDropdownIndex: open ? itemId : '',
+                            }));
+                          }}
+                        >
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <Ellipsis size={16} />
+                            </Button>
+                          </DropdownMenuTrigger>
+
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem asChild>
+                              <Link href={`/dashboard/admin/activities/${itemId}`} className="flex items-center gap-2 cursor-pointer">
+                                <SquarePen size={14} /> Edit
+                              </Link>
+                            </DropdownMenuItem>
+
+                            <DropdownMenuSeparator />
+
+                            <DropdownMenuItem
+                              onSelect={(e) => {
+                                e.preventDefault();
+                                handleDeleteClick(itemId);
+                              }}
+                              className="text-red-400 cursor-pointer"
+                            >
+                              <Trash2 size={14} /> Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        <AlertDialog
+                          open={modalState.openDialogIndex === itemId}
+                          onOpenChange={(open) => {
+                            if (!open) closeDialog();
+                          }}
+                        >
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                              <AlertDialogDescription>This action cannot be undone. This will permanently delete your data from our servers.</AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
+                              <AlertDialogAction className="bg-dangerSecondary" onClick={() => handleDelete(itemId)}>
+                                Continue
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
 
                       {/* attributes have duration then */}
                       {attributes.length > 0 &&
@@ -439,84 +541,21 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
                       </div>
                     </div>
 
-                    {/*  DropDown */}
-                    <div className="absolute right-4 top-4">
-                      <DropdownMenu
-                        open={modalState.openDropdownIndex === itemId}
-                        onOpenChange={(open) => {
-                          setModalState((prev) => ({
-                            ...prev,
-                            openDropdownIndex: open ? itemId : '',
-                          }));
-                        }}
-                      >
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="outline">
-                            <Ellipsis size={16} />
-                          </Button>
-                        </DropdownMenuTrigger>
-
-                        <DropdownMenuContent className="space-y-0 -ml-20">
-                          <DropdownMenuItem className="py-0">
-                            <Button asChild variant="outline" className="w-full px-2 border-none flex justify-start text-sm font-normal">
-                              <Link href={`/dashboard/admin/activities/${itemId}`}>
-                                <SquarePen size={16} className="mr-2" />
-                                Edit
-                              </Link>
-                            </Button>
-                          </DropdownMenuItem>
-
-                          <DropdownMenuSeparator />
-
-                          <DropdownMenuItem
-                            className="py-0"
-                            onSelect={(e) => {
-                              e.preventDefault();
-                              handleDeleteClick(itemId);
-                            }}
-                          >
-                            <Button variant="outline" className="w-full px-2 text-red-400 border-none flex justify-start text-sm font-normal">
-                              <Trash2 size={16} className="mr-2" />
-                              Delete
-                            </Button>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-
-                      <AlertDialog
-                        open={modalState.openDialogIndex === itemId}
-                        onOpenChange={(open) => {
-                          if (!open) closeDialog();
-                        }}
-                      >
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                            <AlertDialogDescription>This action cannot be undone. This will permanently delete your data from our servers.</AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
-                            <AlertDialogAction className="bg-dangerSecondary" onClick={() => handleDelete(itemId)}>
-                              Continue
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-
                     {/* Selected Items Input Field */}
-                    <div className="absolute top-[5%] left-[5%] w-fit">
-                      <Checkbox
+                    <div className="absolute top-4 left-4 w-fit">
+                      <SelectableCardCheckbox
                         checked={selectedItems.includes(itemId)}
-                        className="data-[state=checked]:bg-secondaryDark"
-                        onClick={(e) => {
-                          setSelectedItems(
-                            (prev) =>
-                              prev.includes(itemId)
-                                ? prev.filter((id) => id !== itemId) //
-                                : [...prev, itemId], //
-                          );
+                        onCheckedChange={(checked, id) => {
+                          setSelectedItems(prev => {
+                            const newSelection = checked
+                              ? [...prev, id]
+                              : prev.filter(itemId => itemId !== id);
+                            // Update isAllSelected state
+                            setIsAllSelected(newSelection.length === items.length);
+                            return newSelection;
+                          });
                         }}
+                        itemId={itemId}
                       />
                     </div>
                   </Card>

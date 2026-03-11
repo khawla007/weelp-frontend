@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import EditUserForm from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/users/forms/EditUser';
 
 const EditUserPage = async ({ params }) => {
-  const { id } = await params;
+  const { id } = params;
 
   const userData = await getSingleUserAdmin(id); // await async call
 

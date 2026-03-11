@@ -1,6 +1,6 @@
 'use server';
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -12,7 +12,8 @@ export const createItinerary = async (data) => {
   log(data);
   try {
     await delay(500);
-    const res = await authApi.post('/api/admin/itineraries', data);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/itineraries', data);
     return {
       success: true,
       message: res.data?.message,
@@ -63,7 +64,8 @@ export const editItinerary = async (id, data) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/itineraries/${id}`, data);
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/itineraries/${id}`, data);
 
     // revalidate path
     if (res.status == 200) {
@@ -123,7 +125,8 @@ export async function deleteItineraryItems({
   deleted_inclusion_exclusion_ids = [],
 }) {
   try {
-    const res = await authApi.delete(`/api/admin/itineraries/${itineraryId}/partial-delete/`, {
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/itineraries/${itineraryId}/partial-delete/`, {
       data: {
         deleted_schedule_ids,
         deleted_activity_ids,
@@ -150,7 +153,8 @@ export async function deleteItineraryItems({
  */
 export async function deleteItinerary(itineraryId) {
   try {
-    const res = await authApi.delete(`/api/admin/itineraries/${itineraryId}/`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/itineraries/${itineraryId}/`);
     return { success: true, data: res.data };
   } catch (error) {
     return { success: false, error: error.message };
@@ -164,7 +168,8 @@ export async function deleteItinerary(itineraryId) {
  */
 export async function deleteMultipleItineraries(itinerary_ids = []) {
   try {
-    const res = await authApi.post(`/api/admin/itineraries/bulk-delete`, {
+    const api = await getAuthApi();
+    const res = await api.post(`/api/admin/itineraries/bulk-delete`, {
       itinerary_ids,
     });
 

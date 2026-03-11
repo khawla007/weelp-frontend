@@ -8,6 +8,7 @@ import { isEmpty } from 'lodash';
 import { notFound } from 'next/navigation';
 
 const EditItinerary = async ({ params }) => {
+  const { id } = await params;
   const [{ data: tagsData }, { data: locationsData = {} }, { data: attributesData = {} }, { data: categoriesData = {} }, transfers, { data: activitiesData = [] }] = await Promise.all([
     getAllTagsAdmin(),
     getAllCitiesAdmin(),
@@ -22,7 +23,6 @@ const EditItinerary = async ({ params }) => {
   const { data: categories = [] } = categoriesData; // categories
   const { data: attributes = [] } = attributesData; // for attributes
 
-  const { id } = await params;
   const itinerarydata = await getSingleItineraryAdmin(id); //dyanmic id
 
   // check if not found

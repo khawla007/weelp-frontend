@@ -38,7 +38,7 @@ export const FORM_ADDON_VALUES_DEFAULT = {
   description: '',
   price: 0,
   sale_price: 0,
-  price_calculation: 'per_package',
+  price_calculation: '',
   active_status: false,
 };
 

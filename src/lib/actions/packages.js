@@ -1,6 +1,6 @@
 'use server';
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -11,7 +11,8 @@ import { delay, log } from '../utils';
 export const createPackage = async (data) => {
   try {
     await delay(500);
-    const res = await authApi.post('/api/admin/packages', data);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/packages', data);
     return {
       success: true,
       message: res.data?.message,
@@ -41,13 +42,14 @@ export const createPackage = async (data) => {
     if (status === 500) {
       return {
         success: false,
-        message: err.response.data.error || 'Server error',
+        message: err.response.data?.details || err.response.data?.error || 'Server error',
       };
     }
 
     return {
       success: false,
-      message: 'Something went wrong',
+      message: err?.message || 'Something went wrong',
+      details: err?.response?.data,
     };
   }
 };
@@ -62,7 +64,8 @@ export const editPackage = async (id, data) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/packages/${id}`, data);
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/packages/${id}`, data);
 
     // revalidate path
     if (res.status == 200) {
@@ -126,7 +129,8 @@ export async function deletePackageItems({
 }) {
   try {
     // delete data
-    const res = await authApi.delete(`/api/admin/packages/${packageId}/partial-delete/`, {
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/packages/${packageId}/partial-delete/`, {
       data: {
         deleted_schedule_ids,
         deleted_activity_ids,
@@ -161,7 +165,8 @@ export async function deletePackageItems({
  */
 export async function deletePackage(packageId) {
   try {
-    const res = await authApi.delete(`/api/admin/packages/${packageId}/`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/packages/${packageId}/`);
     revalidatePath('/dashboard/admin/package-builder'); //revalidating path
     return { success: true, data: res.data };
   } catch (error) {
@@ -176,7 +181,8 @@ export async function deletePackage(packageId) {
  */
 export async function deleteMultiplePackages(package_ids = []) {
   try {
-    const res = await authApi.post(`/api/admin/packages/bulk-delete`, {
+    const api = await getAuthApi();
+    const res = await api.post(`/api/admin/packages/bulk-delete`, {
       package_ids,
     });
 

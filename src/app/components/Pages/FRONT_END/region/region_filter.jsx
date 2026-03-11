@@ -45,9 +45,14 @@ export const RegionFilter = () => {
       });
   }, []);
 
-  // Fetch Products
-  const fetchProducts = useCallback(
-    _.debounce(() => {
+  // Fetch Products - use ref-based debounce to avoid ESLint warning
+  const fetchProductsRef = useRef(null);
+  const fetchProducts = useCallback(() => {
+    if (fetchProductsRef.current) {
+      clearTimeout(fetchProductsRef.current);
+    }
+
+    fetchProductsRef.current = setTimeout(() => {
       setIsLoading(true);
       let query = `?min_price=${priceRange[0]}&max_price=${priceRange[1]}&page=${pagination.current_page}&min_rating=${ratingFilter}`;
 
@@ -71,16 +76,17 @@ export const RegionFilter = () => {
         .finally(() => {
           setIsLoading(false);
         });
-    }, 500),
-    [priceRange, selectedCategories, pagination.current_page, region, ratingFilter],
-  );
+    }, 500);
+  }, [priceRange, selectedCategories, pagination.current_page, region, ratingFilter]);
 
   useEffect(() => {
     fetchCategories(); // Fetch categories on component mount
     fetchProducts(); // Fetch products on dependency changes
 
     return () => {
-      fetchProducts.cancel();
+      if (fetchProductsRef.current) {
+        clearTimeout(fetchProductsRef.current);
+      }
     };
   }, [fetchProducts, fetchCategories]);
 

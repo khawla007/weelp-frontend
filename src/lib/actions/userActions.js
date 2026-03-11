@@ -1,14 +1,15 @@
 'use server';
 
 import { delay, log } from '@/lib/utils';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { revalidatePath } from 'next/cache';
 
 //  For Creating Users
 export const createUserAction = async (formData) => {
   try {
     await delay(2000);
-    const response = await authApi.post('/api/users/create', formData);
+    const api = await getAuthApi();
+    const response = await api.post('/api/admin/users/create', formData);
     return { success: true, data: response.data };
   } catch (error) {
     if (error?.response?.status === 422) {
@@ -28,7 +29,8 @@ export const createUserAction = async (formData) => {
 // Edit UserProfile {** PUT}
 export const editUserProfileAction = async (formData) => {
   try {
-    const response = await authApi.put('/api/customer/profile', formData, {
+    const api = await getAuthApi();
+    const response = await api.put('/api/customer/profile', formData, {
       headers: { 'Content-Type': 'application/json' },
     });
 
@@ -54,7 +56,8 @@ export const editUserAdmin = async (userId, data = {}) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/users/${userId}`, data, {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/users/${userId}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -87,6 +90,35 @@ export const editUserAdmin = async (userId, data = {}) => {
     return {
       success: false,
       message: 'Something went wrong while editing Place',
+    };
+  }
+};
+
+/**
+ * Method for Bulk Delete Users
+ * @param {Number[]} userIds - Array of user IDs to delete
+ * @returns {{ success: boolean, message?: string, error?: string }}
+ */
+export const deleteMultipleUsers = async (userIds = []) => {
+  try {
+    await delay(500);
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/users/bulk-delete', {
+      user_ids: userIds,
+    });
+
+    // revalidate path
+    revalidatePath('/dashboard/admin/users');
+
+    return {
+      success: true,
+      message: res?.data?.message || `${userIds.length} users deleted successfully`,
+      data: res.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error?.response?.data?.message || error?.message || 'Something went wrong',
     };
   }
 };

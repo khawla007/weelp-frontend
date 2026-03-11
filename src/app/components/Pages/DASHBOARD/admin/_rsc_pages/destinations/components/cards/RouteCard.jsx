@@ -5,9 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
-import { Ellipsis, Pencil, Star, Trash2 } from 'lucide-react';
+import { Ellipsis, Pencil, Trash2 } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useSWRConfig } from 'swr';
+import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
 
 // actions to delete
 import { deleteCountry } from '@/lib/actions/country';
@@ -20,17 +22,22 @@ import { deletePlace } from '@/lib/actions/places';
  * @param {{label:string, icon:string, items:number ,description:string, url:string}} props label,icons,items,description,url
  * @returns {JSX.Element}
  */
-export const RouteCard = ({ id, type, name, code, description, featured_destination, media_gallery = [] }) => {
+export const RouteCard = ({ id, type, name, code, description, featured_destination, feature_image, media_gallery = [], country, state, city, region, regions = [], checked = false, onCheckedChange, showCheckbox = false }) => {
   const router = useRouter(); // intialize route
   const pathname = usePathname(); // intialize pathname
-  const { url = '', alt_text = '' } = media_gallery.at(0) || {}; // extract first image
+
+  // Use featured image if available, otherwise fall back to first image from gallery
+  const displayImage = feature_image || media_gallery.find(m => m.is_featured)?.url || media_gallery.at(0)?.url || '';
+  const altText = media_gallery.find(m => m.is_featured)?.alt_text || media_gallery.at(0)?.alt_text || name;
+
+  // Create excerpt with "..." for description
+  const getExcerpt = (text, maxLength = 100) => {
+    if (!text || text.length <= maxLength) return text || '';
+    return text.substring(0, maxLength).trim() + '...';
+  };
+
   const { mutate } = useSWRConfig(); // mutate
   const { toast } = useToast(); // intialize toaster
-
-  // Handling Route
-  const handleRoute = (pageId) => {
-    router.push(pathname + `/${pageId}`);
-  };
 
   // Handle Delete
   const handleDelete = async (itemId, type) => {
@@ -87,15 +94,17 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
     <Card className="sm:max-w-xs overflow-hidden rounded-lg border">
       {/*  Image wrapper must be relative + have height */}
       <div className="relative w-full h-40">
-        {/* {url && */}
-        <SafeImage src={url} alt={alt_text} />
-        {/* } */}
+        <SafeImage src={displayImage} alt={altText} />
 
-        {/* Featrued Destination */}
-        {featured_destination && (
-          <Badge variant="outline" className="px-2 gap-1 absolute right-4 top-2 z-10 bg-white">
-            <Star size={14} /> Featured
-          </Badge>
+        {/* Selection Checkbox - shown when showCheckbox is true */}
+        {showCheckbox && (
+          <div className="absolute top-2 left-2 w-fit z-10">
+            <SelectableCardCheckbox
+              checked={checked}
+              onCheckedChange={onCheckedChange}
+              itemId={id}
+            />
+          </div>
         )}
       </div>
 
@@ -116,17 +125,20 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent side="bottom" align="end" sideOffset={10}>
-                <DropdownMenuItem className="cursor-pointer" onClick={() => handleRoute(id)}>
+                <Link
+                  href={`${pathname}/${id}`}
+                  className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-sm hover:bg-neutral-100 cursor-pointer focus:bg-neutral-100 outline-none"
+                >
                   <Pencil size={14} /> Edit
-                </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem
-                  onClick={() => {
+                  textValue="delete"
+                  onSelect={() => {
                     handleDelete(id, type); // delete item via id and type
                   }}
                   className="cursor-pointer text-red-400"
                 >
-                  <Trash2 size={14} />
-                  Delete
+                  <Trash2 size={14} /> Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -134,10 +146,50 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
         </div>
       </CardContent>
       <CardFooter className="flex flex-col items-start gap-4">
-        <p>{description}</p>
-        {/* Badges Data */}
-        <div>
-          <Badge className="bg-accent text-black hover:bg-accent">country</Badge>
+        <p>{getExcerpt(description)}</p>
+        {/* Badges Data - Show Region for countries, Region + Country for states, Region + Country + State for cities */}
+        <div className="flex flex-wrap gap-2">
+          {type === 'country' && regions && regions.length > 0 ? (
+            <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Region: {regions[0].name}</Badge>
+          ) : type === 'state' ? (
+            <>
+              {regions && regions.length > 0 && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Region: {regions[0].name}</Badge>
+              )}
+              {country && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Country: {country.name}</Badge>
+              )}
+            </>
+          ) : type === 'city' ? (
+            <>
+              {regions && regions.length > 0 && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Region: {regions[0].name}</Badge>
+              )}
+              {country && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Country: {country.name}</Badge>
+              )}
+              {state && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">State: {state.name}</Badge>
+              )}
+            </>
+          ) : type === 'place' ? (
+            <>
+              {regions && regions.length > 0 && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Region: {regions[0].name}</Badge>
+              )}
+              {country && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Country: {country.name}</Badge>
+              )}
+              {state && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">State: {state.name}</Badge>
+              )}
+              {city && (
+                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">City: {city.name}</Badge>
+              )}
+            </>
+          ) : (
+            <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">{type || 'country'}</Badge>
+          )}
         </div>
       </CardFooter>
     </Card>

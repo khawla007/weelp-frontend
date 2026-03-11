@@ -2,6 +2,7 @@
 import { ApiResponse } from '@/dto/Success';
 import { publicApi } from '../axiosInstance';
 import { ApiError } from '@/dto/Error';
+import { createAuthenticatedServerApi } from '../axiosInstance';
 
 /**
  * Get all regions.
@@ -81,6 +82,40 @@ export const getItemsByRegion = async (region, query = '') => {
   } catch (error) {
     console.error('Error fetching city data:');
 
+    return {};
+  }
+};
+
+// ==================== Admin Functions ====================
+
+/**
+ * Get all regions for admin
+ * @param {string} search - search query
+ * @returns {Promise<{success: boolean, data?: any, message?: string}>}
+ */
+export const getAllRegionsAdmin = async (search = '') => {
+  try {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get(`/api/admin/regions/${search}`);
+    return response?.data;
+  } catch (error) {
+    console.error('Error fetching regions:', error);
+    return {};
+  }
+};
+
+/**
+ * Get single region for admin
+ * @param {number} id - region id
+ * @returns {Promise<{success: boolean, data?: any, message?: string}>}
+ */
+export const getSingleRegionAdmin = async (id) => {
+  try {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get(`/api/admin/regions/${id}`);
+    return response?.data;
+  } catch (error) {
+    console.error('Error fetching region:', error);
     return {};
   }
 };

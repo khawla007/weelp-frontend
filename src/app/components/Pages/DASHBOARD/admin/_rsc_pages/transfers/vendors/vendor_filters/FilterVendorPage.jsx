@@ -23,22 +23,30 @@ const FilterVendorPage = () => {
   const search = useWatch({ control, name: 'search' });
   const page = useWatch({ control, name: 'page' });
 
-  const [query, setQuery] = useState('?page=1');
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
 
   // debounced query update
-  const debouncedSetQuery = useMemo(
+  const debounceSearch = useMemo(
     () =>
-      debounce((search, page) => {
-        const queryString = `?search=${encodeURIComponent(search || '')}&page=${page}`;
-        setQuery(queryString);
+      debounce((val) => {
+        setDebouncedSearch(val);
       }, 500),
     [],
   );
 
   useEffect(() => {
-    debouncedSetQuery(search, page);
-    return () => debouncedSetQuery.cancel();
-  }, [search, page, debouncedSetQuery]);
+    debounceSearch(search);
+    return () => debounceSearch.cancel();
+  }, [search, debounceSearch]);
+
+  // reset page to 1 when search changes
+  useEffect(() => {
+    setValue('page', 1);
+  }, [search, setValue]);
+
+  const query = useMemo(() => {
+    return `?search=${encodeURIComponent(debouncedSearch || '')}&page=${page}`;
+  }, [debouncedSearch, page]);
 
   const { vendors = {}, isLoading, error, mutate } = useAllVendorsAdmin(query); // fetch vendor data
 
@@ -46,8 +54,7 @@ const FilterVendorPage = () => {
     setValue('page', newPage);
   };
 
-  console.log(error);
-  if (error) return <div className="text-red-400">{error}</div>;
+  if (error) return <div className="text-red-400">{error.message || 'An error occurred'}</div>;
   return (
     <Card className="bg-inherit border-none shadow-none flex flex-col gap-4">
       <Form {...form}>
@@ -69,7 +76,7 @@ const FilterVendorPage = () => {
 
       {isLoading && <p className="loader"></p>}
 
-      {!isLoading && vendors?.data?.length === 0 && <VendorNoResultFound />}
+      {!isLoading && vendors?.data && vendors.data.length === 0 && <VendorNoResultFound />}
 
       {vendors?.data?.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -13,6 +13,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useIsClient } from '@/hooks/useIsClient';
 import { useTogglePassword } from '@/hooks/useTogglePassword';
+import { X } from 'lucide-react';
 
 // Zod schema for validation
 const schema = z.object({
@@ -20,10 +21,11 @@ const schema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters').nonempty('Password is required'),
 });
 
-export function LoginForm({ customUrl, onCloseDialog }) {
+export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup }) {
   const { toast } = useToast();
   const isClient = useIsClient(); // custom hook for hydration
   const { visible, toggle } = useTogglePassword(); // toggle password hook
+  const { data: session, update: updateSession } = useSession(); // get session after login
 
   const {
     register,
@@ -56,14 +58,32 @@ export function LoginForm({ customUrl, onCloseDialog }) {
       }
 
       if (result?.ok) {
-        setTimeout(() => {
-          router.push(customUrl ?? '/dashboard');
+        // Wait for session to update, then redirect based on role
+        setTimeout(async () => {
+          await updateSession(); // Refresh session to get user data with role
+          const currentSession = await updateSession();
+
+          if (currentSession?.user?.role) {
+            const role = currentSession.user.role;
+            // Redirect based on role
+            if (role === 'super_admin' || role === 'admin') {
+              router.push('/dashboard/admin');
+            } else if (role === 'customer') {
+              router.push('/dashboard/customer');
+            } else {
+              // Default fallback
+              router.push(customUrl ?? '/dashboard');
+            }
+          } else {
+            // Fallback if no role
+            router.push(customUrl ?? '/dashboard');
+          }
         }, 100);
 
         // success toast
         if (!customUrl) {
           toast({
-            title: 'Redirecting to dashboard page',
+            title: 'Login successful! Redirecting...',
           });
         }
       }
@@ -73,8 +93,16 @@ export function LoginForm({ customUrl, onCloseDialog }) {
   };
   if (isClient) {
     return (
-      <div className={`space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8 ${isSubmitting && 'cursor-wait'}`}>
-        <div className="bg-white  rounded-t-xl border-b py-4 px-8">
+      <div className={`relative bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8 ${isSubmitting && 'cursor-wait'}`}>
+        {/* Custom Close Button */}
+        <button
+          onClick={onCloseDialog}
+          className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10"
+          aria-label="Close"
+        >
+          <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
+        </button>
+        <div className="bg-white  rounded-t-xl border-b py-4 px-8 pr-12">
           <Image width={122} height={42} alt="form_logo" src="/assets/images/SiteLogo.png" />
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className={`space-y-4 bg-white px-8 py-4 `}>
@@ -86,8 +114,7 @@ export function LoginForm({ customUrl, onCloseDialog }) {
                 type="button"
                 variant="default"
                 onClick={() => {
-                  onCloseDialog?.(); // tells parent: close dialog
-                  router.push('/user/signup'); // navigate
+                  onSwitchToSignup?.(); // switch to signup view inline
                 }}
                 className="underline"
               >

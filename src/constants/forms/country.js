@@ -32,24 +32,8 @@ const FORM_COUNTRY_VALUES_DEFAULT = {
     safety_information: '',
   },
 
-  seasons: [
-    {
-      name: '',
-      months: '',
-      weather: '',
-      activities: '',
-    },
-  ],
-
-  events: [
-    {
-      name: '',
-      type: [],
-      date: '',
-      location: '',
-      description: '',
-    },
-  ],
+  seasons: [],
+  events: [],
 
   additional_info: [],
   media_gallery: [],

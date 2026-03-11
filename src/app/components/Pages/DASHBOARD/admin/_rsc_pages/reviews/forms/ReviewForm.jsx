@@ -17,6 +17,7 @@ import { FORM_REVIEW_ITEM_TYPE, FORM_REVIEWS_VALUES_DEFAULT, REVIEW_STATUS } fro
 import { useAllUsersAdmin } from '@/hooks/api/admin/users';
 import { useRouter } from 'next/navigation';
 import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 
 const ReviewForm = ({ reviewData = {}, id = '' }) => {
   const { users, isLoading: isLoadingUsers, error: isErrorUser } = useAllUsersAdmin(); // all users
@@ -49,7 +50,8 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
 
   // watch itemType
   const watchItemType = useWatch({ control, name: 'item_type' });
-  const { data: items, isLoading: isLoadingItems, error: isErrorItems } = useSWR(`/api/admin/reviews/items/${watchItemType}`, fetcher); // all items dynamic
+  const shouldFetchItems = Boolean(watchItemType);
+  const { data: items, isLoading: isLoadingItems, error: isErrorItems } = useSWR(shouldFetchItems ? `/api/admin/reviews/items/${watchItemType}` : null, fetcher); // all items dynamic
 
   // submit form form
   const onSubmit = async (data) => {
@@ -83,9 +85,13 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <fieldset className={isSubmitting ? 'cursor-wait space-y-8' : 'cursor-auto space-y-8'}>
+    <Card className="border-none">
+      <CardTitle>{id ? 'Edit Review' : 'Create Review'}</CardTitle>
+      <CardDescription>{id ? 'Update the review details below.' : 'Create the review details below.'}</CardDescription>
+      <CardContent className="p-0 py-8">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <fieldset className={isSubmitting ? 'cursor-wait space-y-8' : 'cursor-auto space-y-8'}>
           {/* Display User */}
           {isLoadingUsers && <span className="loader"></span>}
           {!isLoadingUsers && !isErrorUser && (
@@ -206,6 +212,8 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
         </fieldset>
       </form>
     </Form>
+      </CardContent>
+    </Card>
   );
 };
 

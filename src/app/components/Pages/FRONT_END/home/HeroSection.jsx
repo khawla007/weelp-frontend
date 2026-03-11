@@ -5,7 +5,7 @@ import Form from '../../../Form/Form';
 const HereSection = () => {
   return (
     <section
-      className="banner grid place-items-center h-[60vh] mb-12 xl:mb-0"
+      className="banner grid place-items-center h-[60vh] mb-12"
       style={{
         backgroundImage: 'url(/assets/images/Frame.jpg)',
         backgroundSize: 'cover',

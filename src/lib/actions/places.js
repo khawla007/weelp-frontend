@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -61,7 +61,8 @@ export const createPlace = async (data = {}) => {
   try {
     await delay(500);
 
-    const res = await authApi.post('/api/admin/places', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/places', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -114,7 +115,8 @@ export const editPlace = async (placeId, data = {}) => {
   try {
     await delay(500);
 
-    const res = await authApi.put(`/api/admin/places/${placeId}`, data, {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/places/${placeId}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -165,11 +167,31 @@ export const editPlace = async (placeId, data = {}) => {
  */
 export async function deletePlace(placeId) {
   try {
-    const res = await authApi.delete(`/api/admin/places/${placeId}/`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/places/${placeId}/`);
 
     revalidatePath('/dashboard/admin/destinations/places/'); //revalidating path
     return { success: true, message: res.data?.message };
   } catch (error) {
     return { success: false, error: 'Something went wrong' };
+  }
+}
+
+/**
+ * Action to delete multiple places
+ * @param {number[]} placeIds
+ * @returns {{success: boolean, data?: any, error?: string}}
+ */
+export async function deleteMultiplePlaces(placeIds = []) {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/places/bulk-delete', {
+      place_ids: placeIds,
+    });
+
+    revalidatePath('/dashboard/admin/destinations/places');
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
 }

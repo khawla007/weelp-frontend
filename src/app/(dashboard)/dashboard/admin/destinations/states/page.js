@@ -5,7 +5,7 @@ import { FilterStates } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/
 const StatesPage = () => {
   return (
     <>
-      <NavigationDestinations title="States" description="Create a new state or region for travel destinations" url="/dashboard/admin/destinations/states/new" name="Add State" />
+      <NavigationDestinations title="States" description="Create a new state or region for travel destinations" />
       <FilterStates />
     </>
   );

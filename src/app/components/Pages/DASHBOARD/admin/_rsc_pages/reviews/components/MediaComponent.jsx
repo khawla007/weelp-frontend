@@ -3,14 +3,13 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useMediaStore } from '@/lib/store/useMediaStore';
 import { Plus, X } from 'lucide-react';
+import { mapKeys } from 'lodash';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { Medialibrary } from '../../media/MediaLibrary';
 
 // Media Tab
 const MediaComponent = () => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [activityImages, setActivityImages] = useState([]); // all images intialize
   const { selectedMedia, resetMedia } = useMediaStore(); // Retrive images From Media
 
   const {
@@ -23,18 +22,15 @@ const MediaComponent = () => {
     name: 'media_gallery',
   });
 
-  //  Hydarte First if there is already media exist
-  useEffect(() => {
-    if (media_gallery?.length > 0) {
-      setActivityImages(media_gallery); // Sync from form to local state
-    }
-  }, []);
+  // Initialize with existing media from form (lazy initialization)
+  const [activityImages, setActivityImages] = useState(() => media_gallery || []);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   // sideeffect for getting image from gallery popup
   useEffect(() => {
     if (selectedMedia.length > 0) {
       // 1. Transform selectedMedia (id → media_id) before adding
-      const transformedMedia = selectedMedia.map((obj) => _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))); // update key to media id
+      const transformedMedia = selectedMedia.map((obj) => mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))); // update key to media id
 
       // 2. Push transformed data to local state
       setActivityImages((prev) => [...prev, ...transformedMedia]);
@@ -47,6 +43,17 @@ const MediaComponent = () => {
   useEffect(() => {
     setValue('media_gallery', activityImages); // sync form
   }, [activityImages, setValue]);
+
+  // Handle selection changes from MediaLibrary (for unselection)
+  const handleSelectionChange = ({ removed }) => {
+    if (removed && removed.length > 0) {
+      setActivityImages((prev) => {
+        const removedIds = new Set(removed.map((img) => img.media_id || img.id));
+        const updatedImages = prev.filter((img) => !removedIds.has(img.media_id || img.id));
+        return updatedImages;
+      });
+    }
+  };
 
   // handleDelteImage
   const handleDeleteImage = (image) => {
@@ -81,7 +88,11 @@ const MediaComponent = () => {
         <DialogContent className="max-w-screen-xl">
           <DialogTitle className="sr-only">Edit profile</DialogTitle>
           <DialogDescription className="invisible">Upload Media For Activity</DialogDescription>
-          <Medialibrary />
+          <Medialibrary
+            closeDialog={() => setDialogOpen(false)}
+            alreadySelectedImages={activityImages}
+            onSelectionChange={handleSelectionChange}
+          />
         </DialogContent>
       </Dialog>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useReactTable, getCoreRowModel, getPaginationRowModel, flexRender, ColumnDef } from '@tanstack/react-table';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -11,11 +11,35 @@ import Link from 'next/link';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { deleteAttribute } from '@/lib/actions/attributes';
 import { useToast } from '@/hooks/use-toast';
+import { Checkbox } from '@/components/ui/checkbox';
+import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
 
-export function DataTableAttributes({ attributes = [], mutate }) {
+export function DataTableAttributes({ attributes = [], mutate, selectedItems = [], onSelectionChange, attributesCount, onAllSelectedChange }) {
   const [selectedId, setSelectedId] = useState(''); // selected id for deletion
   const [isDialogOpen, setIsDialogOpen] = useState(false); // modal open for delete action
   const { toast } = useToast();
+  const [isAllSelected, setIsAllSelected] = useState(false);
+
+  // Sync isAllSelected with parent state
+  useEffect(() => {
+    if (selectedItems.length === attributesCount && attributesCount > 0) {
+      setIsAllSelected(true);
+    } else {
+      setIsAllSelected(false);
+    }
+  }, [selectedItems, attributesCount]);
+
+  // Handle selection change
+  const handleSelectionChange = (checked, itemId) => {
+    if (checked) {
+      onSelectionChange([...selectedItems, itemId]);
+    } else {
+      onSelectionChange(selectedItems.filter(id => id !== itemId));
+      if (isAllSelected) {
+        onAllSelectedChange(false);
+      }
+    }
+  };
 
   // Close dialog helper
   function closeDialog() {
@@ -52,6 +76,31 @@ export function DataTableAttributes({ attributes = [], mutate }) {
   // default value of columns
   const columns = [
     {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={isAllSelected}
+          onCheckedChange={(checked) => {
+            if (checked) {
+              onSelectionChange(attributes.map(attribute => attribute.id));
+              onAllSelectedChange(true);
+            } else {
+              onSelectionChange([]);
+              onAllSelectedChange(false);
+            }
+          }}
+          className="h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
+        />
+      ),
+      cell: ({ row }) => (
+        <SelectableCardCheckbox
+          checked={selectedItems.includes(row.original.id)}
+          onCheckedChange={handleSelectionChange}
+          itemId={row.original.id}
+        />
+      ),
+    },
+    {
       accessorKey: 'name',
       header: 'Name',
     },
@@ -82,7 +131,7 @@ export function DataTableAttributes({ attributes = [], mutate }) {
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link href={`/dashboard/admin/taxonomies/attributes/${attribute.id}`} className="flex w-full">
+                <Link href={`/dashboard/admin/taxonomies/attributes/${attribute.id}`} className="flex w-full cursor-pointer">
                   <Edit className="mr-2 h-4 w-4" />
                   Edit
                 </Link>

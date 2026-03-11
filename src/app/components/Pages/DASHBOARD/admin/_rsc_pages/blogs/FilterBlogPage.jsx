@@ -6,7 +6,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Ellipsis, Plus, SquarePen, Star, Tag, Trash2 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
 import debounce from 'lodash.debounce';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -18,7 +17,10 @@ import Link from 'next/link';
 import useSWR from 'swr'; // for states cache and ui management
 import { fetcher } from '@/lib/fetchers'; // interceptors
 import { useToast } from '@/hooks/use-toast';
-import { Checkbox } from '@/components/ui/checkbox';
+import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
+import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
+import { AddNewButton } from '@/app/components/Button/AddNewButton';
+import { DashboardSearch } from '@/app/components/DashboardShared';
 import { deleteBlog, deleteMultipleBlogs } from '@/lib/actions/blogs';
 import { useAlltagsOptionsAdmin } from '@/hooks/api/admin/tags';
 import { useAllCategoriesOptionsAdmin } from '@/hooks/api/admin/categories';
@@ -35,6 +37,7 @@ export const BLOGSORT_OPTIONS = [
 
 const FilterBlog = () => {
   const [selectedItems, setSelectedItems] = useState([]); // selected item for multiple delete case
+  const [isAllSelected, setIsAllSelected] = useState(false); // Track Select All toggle state
   const { categoriesList, isLoading: isCategoriesLoading, error: categoriesOptionError } = useAllCategoriesOptionsAdmin();
   const { tagList, isLoading: isTagLoading, error: tagOptionsError } = useAlltagsOptionsAdmin();
 
@@ -49,7 +52,6 @@ const FilterBlog = () => {
     setValue,
     control,
     reset,
-    formState: { isDirty },
   } = useForm({
     //initalize form
     defaultValues: {
@@ -101,21 +103,51 @@ const FilterBlog = () => {
   // handle page change
   const handlePageChange = (newPage) => {
     setValue('page', newPage, { shouldValidate: true, shouldDirty: true }); // through server side pagiantion
+    setSelectedItems([]);
+    setIsAllSelected(false);
+  };
+
+  // Toggle select all / unselect all
+  const handleSelectAllToggle = () => {
+    if (isAllSelected) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(items.map(item => item.id));
+    }
+    setIsAllSelected(!isAllSelected);
   };
 
   const debouncedUpdate = useMemo(
     () =>
       debounce((newFilters) => {
-        setDebouncedFilters(newFilters); // update filter after debounce
+        setDebouncedFilters(newFilters);
       }, 500),
     [],
   );
 
-  // side effect for if fiilter change
+  // side effect for if filter change - exclude page from debouncing
   useEffect(() => {
-    debouncedUpdate(filters);
+    const { page, ...otherFilters } = filters;
+    debouncedUpdate(otherFilters);
     return () => debouncedUpdate.cancel();
-  }, [filters, debouncedUpdate]);
+  }, [
+    filters.search,
+    filters.category,
+    filters.tag,
+    filters.sort_by,
+    debouncedUpdate,
+  ]);
+
+  // Reset page to 1 when any filter other than page changes
+  useEffect(() => {
+    setValue('page', 1);
+  }, [
+    filters.search,
+    filters.category,
+    filters.tag,
+    filters.sort_by,
+    setValue,
+  ]);
 
   // Memoized query string
   const queryParams = useMemo(() => {
@@ -125,10 +157,10 @@ const FilterBlog = () => {
     if (debouncedFilters.category) params.append('category', debouncedFilters.category);
     if (debouncedFilters.tag) params.append('tag', debouncedFilters.tag);
     if (debouncedFilters.sort_by) params.append('sort_by', debouncedFilters.sort_by);
-    if (debouncedFilters.page) params.append('page', debouncedFilters.page);
+    if (filters.page) params.append('page', filters.page);
 
     return params.toString();
-  }, [debouncedFilters]);
+  }, [debouncedFilters, filters.page]);
 
   // SWR fetch
   const { data, error, isValidating, mutate } = useSWR(`/api/admin/blogs?${queryParams}`, fetcher, { revalidateIfStale: true });
@@ -148,6 +180,7 @@ const FilterBlog = () => {
 
         // flush items
         setSelectedItems([]);
+        setIsAllSelected(false);
       } else {
         toast({
           title: 'Delete failed',
@@ -159,6 +192,7 @@ const FilterBlog = () => {
 
       // flush items
       setSelectedItems([]);
+      setIsAllSelected(false);
     }
   };
 
@@ -173,19 +207,9 @@ const FilterBlog = () => {
       <div className="lg:w-1/4  space-y-6 p-4 sm:h-[600px]">
         {/* Search */}
         <div className="space-y-2">
-          <Controller
-            name="search"
-            control={control}
-            render={({ field }) => <Input type="search" placeholder="Search Blogs" className="w-full bg-white focus-visible:ring-secondaryDark" {...field} />}
-          />
+          <DashboardSearch control={control} placeholder="Search Blogs" />
         </div>
 
-        {/* Reset Fields */}
-        {isDirty && (
-          <Button variant="destructive" type="button" onClick={() => reset()}>
-            Reset{' '}
-          </Button>
-        )}
         <Accordion type="single" collapsible>
           {/* Category */}
 
@@ -277,19 +301,18 @@ const FilterBlog = () => {
           Recommended
           <div className="space-y-4 flex flex-col ">
             {selectedItems.length > 0 ? (
-              // Seleted Items Functionality
-              <p className="flex self-end gap-4">
-                <Button variant="destructive" className="w-fit self-end" onClick={handleMultpleDelete}>
-                  <Trash2 size={16} /> Delete
-                </Button>
-              </p>
+              <BulkActionButtons
+                selectedCount={selectedItems.length}
+                totalCount={items.length}
+                isAllSelected={isAllSelected}
+                onSelectAllToggle={handleSelectAllToggle}
+                onDelete={handleMultpleDelete}
+              />
             ) : (
-              <Button asChild>
-                <Link className="w-fit self-end bg-secondaryDark text-black" href="/dashboard/admin/blogs/new">
-                  {/** Create New itineraries */}
-                  <Plus size={16} /> Create Blog
-                </Link>
-              </Button>
+              <AddNewButton
+                label="Add New"
+                href="/dashboard/admin/blogs/new"
+              />
             )}
 
             {/* Recommended */}
@@ -331,15 +354,74 @@ const FilterBlog = () => {
           {!isValidating && !error && items.length > 0 && (
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
-                {items.map(({ id: itemId, name, media_gallery = [], tags = [], categories = [], excerpt = '', publish = false }, index) => (
+                {items.map(({ id: itemId, name, media_gallery = [], tags = [], categories = [], excerpt = '', publish = false, feature_image = null }, index) => (
                   <Card
                     key={index}
-                    className={`group hover:shadow-md ease duration-300 rounded-lg w-full lg:w-fit border relative ${selectedItems?.includes(itemId) && 'p-3 border border-secondaryDark'}`}
+                    className="group hover:shadow-md rounded-lg w-full lg:w-fit border relative overflow-hidden"
                   >
-                    <img className="w-full lg:w-[326px] h-[183px] rounded-lg aspect-square" src={media_gallery?.[0]?.url ?? FALLBACK_IMAGE.src} alt="activity_image" />
+                    <img className="w-full lg:w-[326px] h-[183px] rounded-t-lg rounded-b-none" src={feature_image ?? media_gallery?.[0]?.url ?? FALLBACK_IMAGE.src} alt="activity_image" />
 
                     <div className=" bg-white p-4 space-y-2">
-                      <h2>{name}</h2>
+                      <div className="flex justify-between items-start">
+                        <h2 className="m-0">{name}</h2>
+
+                        {/* DropDown */}
+                        <DropdownMenu
+                          open={modalState.openDropdownIndex === itemId}
+                          onOpenChange={(open) => {
+                            setModalState((prev) => ({
+                              ...prev,
+                              openDropdownIndex: open ? itemId : '',
+                            }));
+                          }}
+                        >
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <Ellipsis size={16} />
+                            </Button>
+                          </DropdownMenuTrigger>
+
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem asChild>
+                              <Link href={`/dashboard/admin/blogs/${itemId}`} className="flex items-center gap-2 cursor-pointer">
+                                <SquarePen size={14} /> Edit
+                              </Link>
+                            </DropdownMenuItem>
+
+                            <DropdownMenuSeparator />
+
+                            <DropdownMenuItem
+                              onSelect={(e) => {
+                                e.preventDefault();
+                                handleDeleteClick(itemId);
+                              }}
+                              className="text-red-400 cursor-pointer"
+                            >
+                              <Trash2 size={14} /> Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        <AlertDialog
+                          open={modalState.openDialogIndex === itemId}
+                          onOpenChange={(open) => {
+                            if (!open) closeDialog();
+                          }}
+                        >
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                              <AlertDialogDescription>This action cannot be undone. This will permanently delete your data from our servers.</AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
+                              <AlertDialogAction className="bg-dangerSecondary" onClick={() => handleDelete(itemId)}>
+                                Continue
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
 
                       {/* Categories  */}
                       {categories.length > 0 && (
@@ -370,84 +452,20 @@ const FilterBlog = () => {
                       {excerpt ? <p className=" bg-card text-foreground text-sm text-wrap">{excerpt.concat('...')}</p> : null}
                     </div>
 
-                    {/*  DropDown */}
-                    <div className="absolute right-4 top-4">
-                      <DropdownMenu
-                        open={modalState.openDropdownIndex === itemId}
-                        onOpenChange={(open) => {
-                          setModalState((prev) => ({
-                            ...prev,
-                            openDropdownIndex: open ? itemId : '',
-                          }));
-                        }}
-                      >
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="outline">
-                            <Ellipsis size={16} />
-                          </Button>
-                        </DropdownMenuTrigger>
-
-                        <DropdownMenuContent className="space-y-0 -ml-20">
-                          <DropdownMenuItem className="py-0">
-                            <Button asChild variant="outline" className="w-full px-2 border-none flex justify-start text-sm font-normal">
-                              <Link href={`/dashboard/admin/blogs/${itemId}`}>
-                                <SquarePen size={16} className="mr-2" />
-                                Edit
-                              </Link>
-                            </Button>
-                          </DropdownMenuItem>
-
-                          <DropdownMenuSeparator />
-
-                          <DropdownMenuItem
-                            className="py-0"
-                            onSelect={(e) => {
-                              e.preventDefault();
-                              handleDeleteClick(itemId);
-                            }}
-                          >
-                            <Button variant="outline" className="w-full px-2 text-red-400 border-none flex justify-start text-sm font-normal">
-                              <Trash2 size={16} className="mr-2" />
-                              Delete
-                            </Button>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-
-                      <AlertDialog
-                        open={modalState.openDialogIndex === itemId}
-                        onOpenChange={(open) => {
-                          if (!open) closeDialog();
-                        }}
-                      >
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                            <AlertDialogDescription>This action cannot be undone. This will permanently delete your data from our servers.</AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
-                            <AlertDialogAction className="bg-dangerSecondary" onClick={() => handleDelete(itemId)}>
-                              Continue
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-
                     {/* Selected Items Input Field */}
-                    <div className="absolute top-[5%] left-[5%] w-fit">
-                      <Checkbox
+                    <div className="absolute top-4 left-4 w-fit">
+                      <SelectableCardCheckbox
                         checked={selectedItems.includes(itemId)}
-                        className="data-[state=checked]:bg-secondaryDark"
-                        onClick={(e) => {
-                          setSelectedItems(
-                            (prev) =>
-                              prev.includes(itemId)
-                                ? prev.filter((id) => id !== itemId) //
-                                : [...prev, itemId], //
-                          );
+                        onCheckedChange={(checked, id) => {
+                          setSelectedItems(prev => {
+                            const newSelection = checked
+                              ? [...prev, id]
+                              : prev.filter(itemId => itemId !== id);
+                            setIsAllSelected(newSelection.length === items.length);
+                            return newSelection;
+                          });
                         }}
+                        itemId={itemId}
                       />
                     </div>
                   </Card>

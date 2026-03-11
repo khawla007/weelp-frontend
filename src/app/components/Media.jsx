@@ -15,8 +15,6 @@ import { ImageTrashCard } from './Pages/DASHBOARD/admin/_rsc_pages/media/ImageTr
  * @returns {React.Component} React Component to Display Selected Image Compnent
  */
 export const MediaTab = ({ galleryThumbnail = false, buttonTitle = 'Upload Media' }) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [activityImages, setActivityImages] = useState([]); // all images intialize
   const { selectedMedia, resetMedia } = useMediaStore(); // Retrive images From Media
 
   const {
@@ -29,12 +27,9 @@ export const MediaTab = ({ galleryThumbnail = false, buttonTitle = 'Upload Media
     name: 'media_gallery',
   });
 
-  //  Hydarte First if there is already media exist
-  useEffect(() => {
-    if (media_gallery?.length > 0) {
-      setActivityImages(media_gallery); // Sync from form to local state
-    }
-  }, []);
+  // Initialize with existing media from form (lazy initialization)
+  const [activityImages, setActivityImages] = useState(() => media_gallery || []);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   // sideeffect for getting image from gallery popup
   useEffect(() => {
@@ -42,8 +37,12 @@ export const MediaTab = ({ galleryThumbnail = false, buttonTitle = 'Upload Media
       // 1. Transform selectedMedia (id → media_id) before adding
       const transformedMedia = selectedMedia.map((obj) => _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))); // update key to media id
 
-      // 2. Push transformed data to local state
-      setActivityImages((prev) => [...prev, ...transformedMedia]);
+      // 2. Filter out duplicates before adding (defense-in-depth)
+      setActivityImages((prev) => {
+        const existingIds = new Set(prev.map((img) => img.media_id || img.id));
+        const newImages = transformedMedia.filter((img) => !existingIds.has(img.media_id));
+        return [...prev, ...newImages];
+      });
       resetMedia(); // runs immediately after set
       setDialogOpen(false);
     }
@@ -62,6 +61,18 @@ export const MediaTab = ({ galleryThumbnail = false, buttonTitle = 'Upload Media
       setTimeout(() => setValue('media_gallery', updatedImages), 0); //
       return updatedImages;
     });
+  };
+
+  // Handle selection changes from MediaLibrary (for unselection)
+  const handleSelectionChange = ({ added, removed }) => {
+    if (removed && removed.length > 0) {
+      // Remove unselected images from activityImages
+      setActivityImages((prev) => {
+        const removedIds = new Set(removed.map((img) => img.media_id || img.id));
+        const updatedImages = prev.filter((img) => !removedIds.has(img.media_id || img.id));
+        return updatedImages;
+      });
+    }
   };
 
   return (
@@ -88,7 +99,7 @@ export const MediaTab = ({ galleryThumbnail = false, buttonTitle = 'Upload Media
         <DialogContent className="max-w-screen-xl">
           <DialogTitle className="sr-only">Upload Image</DialogTitle>
           <DialogDescription className="invisible">Upload Media </DialogDescription>
-          <Medialibrary />
+          <Medialibrary alreadySelectedImages={activityImages} onSelectionChange={handleSelectionChange} />
         </DialogContent>
       </Dialog>
 

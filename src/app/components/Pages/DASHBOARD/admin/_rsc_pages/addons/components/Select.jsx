@@ -1,4 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
 
 /**
  * @param {Object} props
@@ -6,12 +7,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
  * @param {string} [props.placeholder] - Placeholder text
  * @param {string} [props.value] - Currently selected value
  * @param {(value: string) => void} [props.onChange] - Callback when value changes
+ * @param {string} [props.className] - Additional className for SelectTrigger
  */
-export const SelectField = ({ data = [], placeholder = 'Select...', value, onChange }) => {
+export const SelectField = ({ data = [], placeholder = 'Select...', value, onChange, className = '' }) => {
   return (
     <div className="flex flex-col gap-2 w-full">
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger>
+        <SelectTrigger className={cn("w-full", className)}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>

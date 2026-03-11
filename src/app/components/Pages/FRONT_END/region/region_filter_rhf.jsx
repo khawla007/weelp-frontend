@@ -3,7 +3,6 @@
 import React, { useEffect, useCallback, useRef } from 'react';
 import { useForm, FormProvider, Controller, useWatch } from 'react-hook-form';
 import { useParams } from 'next/navigation';
-import debounce from 'lodash.debounce';
 import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { Star } from 'lucide-react';
@@ -45,14 +44,23 @@ export const RegionFilterNew = () => {
   const { data: products = [], isLoading, pagination, mutate } = useRegionItems(region, filterQuery);
 
   // Debounced refetch
-  const debouncedFetch = useCallback(
-    debounce(() => mutate(), 500),
-    [],
-  );
+  const debouncedFetchRef = useRef(null);
+  const debouncedFetch = useCallback(() => {
+    if (debouncedFetchRef.current) {
+      clearTimeout(debouncedFetchRef.current);
+    }
+    debouncedFetchRef.current = setTimeout(() => {
+      mutate();
+    }, 500);
+  }, [mutate]);
 
   useEffect(() => {
     debouncedFetch();
-    return () => debouncedFetch.cancel();
+    return () => {
+      if (debouncedFetchRef.current) {
+        clearTimeout(debouncedFetchRef.current);
+      }
+    };
   }, [filters, debouncedFetch]);
 
   const handlePageChange = (page) => methods.setValue('page', page); // page handle manage

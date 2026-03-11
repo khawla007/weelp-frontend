@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { authApi } from '../axiosInstance';
+import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 
 /**
@@ -12,7 +12,8 @@ import { delay, log } from '../utils';
 export const createTransferByAdmin = async (data = {}) => {
   try {
     await delay(500);
-    const res = await authApi.post('/api/admin/transfers', data, {
+    const api = await getAuthApi();
+    const res = await api.post('/api/admin/transfers', data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -28,17 +29,17 @@ export const createTransferByAdmin = async (data = {}) => {
     log(err?.response);
     const status = err?.response?.status;
 
-    if (status === 400) {
+    if (status === 400 || status === 422) {
       return {
         success: false,
-        message: 'Validation error',
+        message: err?.response?.data?.message || 'Validation error',
         errors: err?.response?.data?.errors,
       };
     }
 
     return {
       success: false,
-      message: 'Something went wrong',
+      message: err?.response?.data?.message || 'Something went wrong',
     };
   }
 };
@@ -52,7 +53,8 @@ export const createTransferByAdmin = async (data = {}) => {
 export const editTransferByAdmin = async (transferId, data = {}) => {
   try {
     await delay(500);
-    const res = await authApi.put(`/api/admin/transfers/${transferId}`, data, {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/transfers/${transferId}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -68,17 +70,17 @@ export const editTransferByAdmin = async (transferId, data = {}) => {
     log(err?.response);
     const status = err?.response?.status;
 
-    if (status === 400) {
+    if (status === 400 || status === 422) {
       return {
         success: false,
-        message: 'Validation error',
+        message: err?.response?.data?.message || 'Validation error',
         errors: err?.response?.data?.errors,
       };
     }
 
     return {
       success: false,
-      message: 'Something went wrong',
+      message: err?.response?.data?.message || 'Something went wrong',
     };
   }
 };
@@ -90,7 +92,8 @@ export const editTransferByAdmin = async (transferId, data = {}) => {
  */
 export async function deleteTransfer(transferId) {
   try {
-    const res = await authApi.delete(`/api/admin/transfers/${transferId}/`);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/transfers/${transferId}/`);
 
     revalidatePath('/dashboard/admin/transfers'); //revalidating path
     return { success: true, message: res.data?.message };
@@ -111,7 +114,8 @@ export async function deleteTransfer(transferId) {
  */
 export async function deleteMultipleTransfers({ transferIds: ids = [] }) {
   try {
-    const res = await authApi.post(`/api/admin/transfers/bulk-delete/`, {
+    const api = await getAuthApi();
+    const res = await api.post(`/api/admin/transfers/bulk-delete/`, {
       ids,
     });
 

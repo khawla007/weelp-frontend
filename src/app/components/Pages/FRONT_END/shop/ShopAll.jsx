@@ -1,7 +1,6 @@
 'use client';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
-import _ from 'lodash';
 import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { GlobalCard } from '@/app/components/SingleProductCard';
@@ -49,8 +48,12 @@ export const ShopAllProduct = () => {
   }, []);
 
   // Fetch products with debounce
-  const fetchProducts = useCallback(
-    _.debounce(() => {
+  const fetchProductsRef = useRef(null);
+  const fetchProducts = useCallback(() => {
+    if (fetchProductsRef.current) {
+      clearTimeout(fetchProductsRef.current);
+    }
+    fetchProductsRef.current = setTimeout(() => {
       setIsLoading(true);
       let query = `?min_price=${priceRange[0]}&max_price=${priceRange[1]}&page=${currentPage}&min_rating=${ratingFilter}&sort_by=${sortby}`;
 
@@ -79,14 +82,17 @@ export const ShopAllProduct = () => {
           setPagination(null);
         })
         .finally(() => setIsLoading(false));
-    }, 500),
-    [priceRange, selectedCategories, currentPage, ratingFilter, selectedLocation, sortby],
-  );
+    }, 500);
+  }, [priceRange, selectedCategories, currentPage, ratingFilter, selectedLocation, sortby]);
 
   // on filter change
   useEffect(() => {
     fetchProducts();
-    return () => fetchProducts.cancel();
+    return () => {
+      if (fetchProductsRef.current) {
+        clearTimeout(fetchProductsRef.current);
+      }
+    };
   }, [fetchProducts]);
 
   const sortData = [

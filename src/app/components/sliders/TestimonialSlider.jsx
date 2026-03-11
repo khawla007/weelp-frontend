@@ -10,14 +10,9 @@ import Testimonial from '../Testimonial';
 import { TestimonialCarouselAnimation } from '../Animation/ProductAnimation';
 
 export const TestmonialSlider = () => {
-  const [initialize, setInitialize] = useState(null);
-  useEffect(() => {
-    setInitialize(true);
-  }, []);
-  if (initialize) {
-    return (
-      <div>
-        <Swiper
+  return (
+    <div>
+      <Swiper
           modules={[Autoplay]}
           autoplay={{
             delay: 0,
@@ -52,9 +47,7 @@ export const TestmonialSlider = () => {
               <Testimonial />
             </SwiperSlide>
           ))}
-        </Swiper>
-      </div>
-    );
-  }
-  return <TestimonialCarouselAnimation />;
+      </Swiper>
+    </div>
+  );
 };

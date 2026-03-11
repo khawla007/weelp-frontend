@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import EditOrderForm from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/EditOrderForm';
 
 const EditOrder = async ({ params }) => {
-  const { id } = await params;
+  const { id } = params;
 
   // Guard clause for missing ID
   if (!id) return notFound();

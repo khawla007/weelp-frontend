@@ -6,6 +6,11 @@ import { fetcher } from '@/lib/fetchers'; // or use `fetcher`
 import { DataTableCategory } from './data-table-category';
 import { CustomPagination } from '@/app/components/Pagination';
 import { TaxonomiesPageTitle } from '../taxonomies_shared';
+import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { deleteMultipleCategories } from '@/lib/actions/categories';
+import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
+import { AddNewButton } from '@/app/components/Button/AddNewButton';
 
 export function CategoryPageClient() {
   const { control, watch, setValue } = useForm({
@@ -18,7 +23,11 @@ export function CategoryPageClient() {
 
   const { data, error, isLoading, mutate } = useSWR(`/api/admin/taxonomies/categories?page=${page}`, fetcher); // fetch data
 
-  if (error) return <p className="text-red-400">Failed to load tags.</p>;
+  const { toast } = useToast();
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [isAllSelected, setIsAllSelected] = useState(false);
+
+  if (error) return <p className="text-red-400">Failed to load categories.</p>;
 
   const response = data?.data || {};
 
@@ -27,18 +36,79 @@ export function CategoryPageClient() {
   // Handle page change
   const handlePageChange = (newPage) => {
     setValue('page', newPage); // updates the form state and re-triggers SWR
+    setSelectedItems([]);
+    setIsAllSelected(false);
+  };
+
+  // Toggle select all / unselect all
+  const handleSelectAllToggle = () => {
+    if (isAllSelected) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(items.map(item => item.id));
+    }
+    setIsAllSelected(!isAllSelected);
+  };
+
+  // Handle bulk delete
+  const handleBulkDelete = async () => {
+    try {
+      const result = await deleteMultipleCategories(selectedItems);
+
+      if (result.success) {
+        toast({
+          title: `${selectedItems.length} categories deleted`,
+          variant: 'success',
+        });
+        mutate();
+        setSelectedItems([]);
+        setIsAllSelected(false);
+      } else {
+        toast({
+          title: 'Delete failed',
+          description: result.error,
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Delete failed',
+        description: error.message || 'An unexpected error occurred',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
     <div className="space-y-4">
-      <TaxonomiesPageTitle
-        title="Categories"
-        buttoninfo={{
-          buttonName: 'add tag',
-          buttonurl: '/dashboard/admin/taxonomies/tags/new',
-        }}
+      <div className="flex justify-between items-center">
+        <TaxonomiesPageTitle
+          title="Categories"
+        />
+        {selectedItems.length > 0 ? (
+          <BulkActionButtons
+            selectedCount={selectedItems.length}
+            totalCount={items.length}
+            isAllSelected={isAllSelected}
+            onSelectAllToggle={handleSelectAllToggle}
+            onDelete={handleBulkDelete}
+            deleteLabel="Delete"
+          />
+        ) : (
+          <AddNewButton
+            href="/dashboard/admin/taxonomies/categories/new"
+          />
+        )}
+      </div>
+      <DataTableCategory
+        categories={items}
+        isloading={isLoading}
+        mutate={mutate}
+        selectedItems={selectedItems}
+        onSelectionChange={setSelectedItems}
+        categoriesCount={items.length}
+        onAllSelectedChange={setIsAllSelected}
       />
-      <DataTableCategory categories={items} isloading={isLoading} mutate={mutate} />
       <CustomPagination totalItems={totalItems} itemsPerPage={per_page} currentPage={current_page} onPageChange={handlePageChange} />
     </div>
   );

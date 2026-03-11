@@ -73,9 +73,9 @@ const FilterVendorRoutePage = () => {
       </Form>
       {isLoading && <p className="loader"></p>}
 
-      {error && <p className="text-red-400">Something Went Wrong</p>}
+      {error && <p className="text-red-400">{error.message || "Something Went Wrong"}</p>}
 
-      {!isLoading && pricing?.length === 0 && <VendorNoResultFound />}
+      {!isLoading && data?.data && pricing.length === 0 && <VendorNoResultFound />}
 
       {pricing?.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

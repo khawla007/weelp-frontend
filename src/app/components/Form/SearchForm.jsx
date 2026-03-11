@@ -10,19 +10,16 @@ import { FALLBACK_IMAGE } from '@/constants/image';
 import Link from 'next/link';
 
 export const SearchFormCreator = () => {
-  const [initialize, setInitialize] = useState(false);
   const [response, setResponse] = useState({
     message: '',
     data: [], // Default to an empty array, not string
   });
 
-  // Initialize form once
+  // Initialize form once - setup click outside handler
   useEffect(() => {
     const handleClickOutside = () => {
       setResponse({ data: [] });
     };
-
-    setInitialize(true);
 
     document.body.addEventListener('click', handleClickOutside);
 
@@ -72,8 +69,7 @@ export const SearchFormCreator = () => {
     }
   };
 
-  if (initialize) {
-    return (
+  return (
       <div className="flex flex-col max-w-[30rem] w-full mx-auto">
         <form onKeyUp={handleSubmit(onSubmit)} className={`w-full bg-white flex items-center justify-evenly rounded shadow ${errors?.search?.message ? 'border-red-400 border' : null}`}>
           <input
@@ -117,31 +113,15 @@ export const SearchFormCreator = () => {
         </div>
       </div>
     );
-  }
-
-  return null;
 };
 
 // Search Form For Blogs
 export const SearchFormBlogs = () => {
-  const [initialize, setInitialize] = useState(false);
   const [search, setSearch] = useState('');
 
-  // Initialize form once
+  // Initialize form once - empty effect as all logic is inline
   useEffect(() => {
-    // const handleClickOutside = () => {
-    //   setResponse({ data: [] });
-    // };
-
-    // Initialize form once
-    setInitialize(true);
-
-    // document.body.addEventListener('click', handleClickOutside);
-
-    // // Cleanup the event listener when the component unmounts
-    // return () => {
-    //   document.body.removeEventListener('click', handleClickOutside);
-    // };
+    // Placeholder for any future initialization
   }, []);
 
   // Using react-hook-form
@@ -168,8 +148,7 @@ export const SearchFormBlogs = () => {
 
   const searchedBlogs = (query.size > 0 && blogs?.data) || [];
 
-  if (initialize) {
-    return (
+  return (
       <div className="flex flex-col max-w-[30rem] w-full mx-auto">
         <form
           onKeyUp={debounce(handleSubmit(onSubmit), 1000)}
@@ -223,7 +202,4 @@ export const SearchFormBlogs = () => {
         </div>
       </div>
     );
-  }
-
-  return null;
 };

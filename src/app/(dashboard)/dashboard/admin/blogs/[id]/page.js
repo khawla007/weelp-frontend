@@ -10,8 +10,12 @@ import { BlogForm } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/blog
 const EditBlogPage = () => {
   const { id } = useParams();
 
-  // Fetch blog data
-  const { data, error, isLoading } = useSWR(id ? `/api/admin/blogs/${id}` : null, fetcher);
+  // Fetch blog data - revalidate on mount to ensure fresh data (fixes stale featured badges)
+  const { data, error, isLoading, mutate } = useSWR(id ? `/api/admin/blogs/${id}` : null, fetcher, {
+    revalidateOnMount: true,
+    revalidateOnFocus: true,
+    dedupingInterval: 0, // Always fetch fresh data, no deduplication cache
+  });
 
   // Loading state
   if (isLoading) {
@@ -31,7 +35,7 @@ const EditBlogPage = () => {
   // Blog data loaded successfully
   const blog = data?.data;
 
-  return <BlogForm editPage={true} data={blog} />;
+  return <BlogForm editPage={true} data={blog} mutate={mutate} />;
 };
 
 export default EditBlogPage;

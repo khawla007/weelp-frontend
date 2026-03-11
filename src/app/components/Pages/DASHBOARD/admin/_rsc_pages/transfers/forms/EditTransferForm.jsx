@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import _ from 'lodash';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -18,6 +19,7 @@ const VendorTab = dynamic(() => import('../tabs/VendorTab'), { ssr: false });
 const PricingTab = dynamic(() => import('../tabs/PricingTab'), { ssr: false });
 const MediaTab = dynamic(() => import('../tabs/MediaTab'), { ssr: false });
 const SeoTab = dynamic(() => import('../tabs/SeoTab'), { ssr: false });
+const SharedAddOnMultiSelect = dynamic(() => import('../../shared_tabs/addon/SharedAddOnTransfer'), { ssr: false });
 
 // Create Transfer Form By Vendor
 export const EditTransferForm = ({ transferData }) => {
@@ -27,8 +29,11 @@ export const EditTransferForm = ({ transferData }) => {
   const { toast } = useToast(); // intialize toast
 
   // desturcuture formdata
-  const { id: transferId, name, slug, description, transfer_type, seo = {}, vendor_routes = {}, media_gallery = [] } = transferData; // destrucutre vendor data
+  const { id: transferId, name, slug, description, transfer_type, seo = {}, vendor_routes = {}, media_gallery = [], addons = [] } = transferData; // destrucutre vendor data
   const { vendor_id, route_id } = vendor_routes; // destructure vendor routes
+
+  // Transform addons to array of IDs (matching Activity pattern)
+  const initialAddons = Array.isArray(addons) ? addons.map((item) => item.addon_id) : [];
 
   // intialize methods
   const methods = useForm({
@@ -40,13 +45,28 @@ export const EditTransferForm = ({ transferData }) => {
       vendor_id: vendor_id ?? '',
       route_id: route_id ?? '',
       media_gallery: media_gallery,
-      seo: { ...seo, schema_data: JSON.parse(seo?.schema_data) },
+      addons: initialAddons,
+      seo: {
+        ...seo,
+        schema_data: seo?.schema_data
+          ? typeof seo.schema_data === 'string'
+            ? JSON.parse(seo.schema_data)
+            : seo.schema_data
+          : {},
+      },
     },
   });
 
   // Handle Global Level Error
   const { reset } = methods;
   const { errors, isValid, isSubmitting } = methods?.formState;
+
+  // Handle Next button for steps 1-4 (no validation)
+  const handleNext = () => {
+    const currentData = methods.getValues();
+    setFormData({ ...formData, ...currentData });
+    setCurrentStep((prev) => prev + 1);
+  };
 
   //  Main Steps
   const steps = [
@@ -64,10 +84,14 @@ export const EditTransferForm = ({ transferData }) => {
     },
     {
       id: 4,
-      title: 'Media',
+      title: 'AddOn',
     },
     {
       id: 5,
+      title: 'Media',
+    },
+    {
+      id: 6,
       title: 'Seo',
     },
   ];
@@ -85,8 +109,10 @@ export const EditTransferForm = ({ transferData }) => {
       case 3:
         return <PricingTab />;
       case 4:
-        return <MediaTab />;
+        return <SharedAddOnMultiSelect />;
       case 5:
+        return <MediaTab />;
+      case 6:
         return <SeoTab />;
       default:
         return null;
@@ -97,7 +123,7 @@ export const EditTransferForm = ({ transferData }) => {
   const onSubmit = async (data) => {
     const mergedData = { ...formData, ...data };
 
-    if (currentStep < 5) {
+    if (currentStep < 6) {
       setFormData(mergedData);
       setCurrentStep((prev) => prev + 1);
 
@@ -105,14 +131,17 @@ export const EditTransferForm = ({ transferData }) => {
     }
 
     // console.log(media);
-    const { media_gallery = [] } = formData;
+    const { media_gallery = [] } = mergedData;
 
     // change media data
     const finalData = {
-      ...data,
+      ...mergedData,
       media_gallery: media_gallery.map((val) => ({
+        id: val.id ?? undefined,
         media_id: val.media_id,
+        is_featured: val.is_featured ?? false,
       })),
+      seo: mergedData.seo || {},
     };
 
     // submit full data
@@ -153,7 +182,7 @@ export const EditTransferForm = ({ transferData }) => {
                   steps.map((step) => (
                     <li
                       key={step.id}
-                      // onClick={() => {setCurrentStep(step?.id)}}
+                      onClick={() => setCurrentStep(step?.id)}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'}`}
                     >
                       <div
@@ -167,7 +196,7 @@ export const EditTransferForm = ({ transferData }) => {
               <Separator className="" />
             </div>
           </div>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={currentStep === 6 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
             <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               {renderStep()}
               <div className="flex justify-between pt-4">
@@ -196,7 +225,7 @@ export const EditTransferForm = ({ transferData }) => {
 
                 {/* Prevent Button On Schedules */}
                 <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
-                  {currentStep === 5 ? 'Submit' : 'Next'}
+                  {currentStep === 6 ? 'Submit' : 'Next'}
                 </Button>
               </div>
             </fieldset>

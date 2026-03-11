@@ -5,7 +5,7 @@ import { FilterCountries } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pag
 const CountriesPage = () => {
   return (
     <>
-      <NavigationDestinations title="Countries" description="Manage countries and their details for travel packages" url="/dashboard/admin/destinations/countries/new" name="Add Country" />
+      <NavigationDestinations title="Countries" description="Manage countries and their details for travel packages" />
       <FilterCountries />
     </>
   );

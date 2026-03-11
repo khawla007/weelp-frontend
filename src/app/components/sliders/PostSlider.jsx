@@ -9,49 +9,41 @@ import Singleproductguide from '../singleproductguide';
 import { DestinationCarouselAnimation } from '../Animation/ProductAnimation';
 
 const PostSlider = ({ data }) => {
-  const [intialize, setInitialize] = useState('');
-  useEffect(() => {
-    setInitialize(true);
-  }, []);
-
-  if (intialize) {
-    return (
-      <div className="">
-        <Swiper
-          modules={[Navigation]}
-          spaceBetween={20}
-          navigation={true}
-          loop={true}
-          breakpoints={{
-            450: {
-              slidesPerView: 1,
-              spaceBetween: 10,
-            },
-            640: {
-              slidesPerView: 2,
-              spaceBetween: 15,
-            },
-            768: {
-              slidesPerView: 3,
-              spaceBetween: 15,
-            },
-            1024: {
-              slidesPerView: 4,
-              spaceBetween: 20,
-            },
-          }}
-          className=""
-        >
-          {data.map((val, index) => (
-            <SwiperSlide key={index}>
-              <Singleproductguide postTitle={val?.name} imageSrc={val?.image} subtitle={val?.description} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-    );
-  }
-  return <DestinationCarouselAnimation />;
+  return (
+    <div className="">
+      <Swiper
+        modules={[Navigation]}
+        spaceBetween={20}
+        navigation={true}
+        loop={true}
+        breakpoints={{
+          450: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+          },
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 15,
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 15,
+          },
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 20,
+          },
+        }}
+        className=""
+      >
+        {data.map((val, index) => (
+          <SwiperSlide key={index}>
+            <Singleproductguide postTitle={val?.name} imageSrc={val?.image} subtitle={val?.description} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
 };
 
 export default PostSlider;

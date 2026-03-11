@@ -5,14 +5,20 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { formatCurrency } from '@/lib/utils';
 
-export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productRating, productTitle, productPrice, currency }) => {
+export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productRating, productTitle, productPrice, currency, is_featured }) => {
   return (
-    <div className={`${'product_' + productId} bg-white  rounded-lg p-4 gap-3 shadow-md sm:max-w-fit max-w-full min-h-[360px] h-fit w-full sm:mx-0`}>
+    <div className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}>
+      {is_featured && (
+        <>
+          <div className="absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
+            Featured
+          </div>
+          <Star size={24} fill="#568f7c" strokeWidth={2} className="absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
+        </>
+      )}
       <Link href={`/${item_type}/${productSlug}`}>
-        {' '}
-        {/** this is static link */}
-        <img src={imgsrc ?? '/assets/Card.png'} alt="productimage" className="rounded-lg w-full sm:w-72 h-52 object-cover " />
-        <div className="flex flex-col gap-[6px] justify-evenly py-1">
+        <img src={imgsrc ?? '/assets/Card.png'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
+        <div className="flex flex-col gap-[6px] justify-evenly p-4">
           <div className="flex gap-1 text-secondaryDark text-sm pt-2">
             <Star className="fill-current" size={18} />
             {productRating || 4.5}
@@ -73,12 +79,18 @@ const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, pro
   const { region, city } = params;
 
   return (
-    <div className={`${'product_' + productId} bg-white  rounded-lg p-4 gap-3 shadow-md sm:max-w-fit max-w-full min-h-[360px] h-fit w-full sm:mx-0`}>
+    <div className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}>
+      {featured_activity && (
+        <>
+          <div className="absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
+            Featured
+          </div>
+          <Star size={24} fill="#568f7c" strokeWidth={2} className="absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
+        </>
+      )}
       <Link href={`/activity/${productSlug}`}>
-        {' '}
-        {/** this is static link */}
-        <img src={imgsrc || '/assets/Card.png'} alt="productimage" className="rounded-lg w-full sm:w-72 h-52 object-cover " />
-        <div className="flex flex-col gap-[6px] justify-evenly py-1">
+        <img src={imgsrc || '/assets/Card.png'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
+        <div className="flex flex-col gap-[6px] justify-evenly p-4">
           <div className="flex gap-1 text-secondaryDark text-sm">
             <Star className="fill-current" size={18} />
             {productRating || 4.5}
@@ -106,16 +118,22 @@ const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, pro
 export default SingleProductCard;
 
 // Itinerary card
-export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, productTitle, productPrice, discount, productSlug }) => {
+export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, productTitle, productPrice, discount, productSlug, is_featured }) => {
   const params = useParams();
   const { region, city } = params;
   return (
-    <div className={`${'product_' + productId} bg-white  rounded-lg p-4 gap-3 shadow-md sm:max-w-fit max-w-full min-h-[360px] h-fit w-full sm:mx-0`}>
+    <div className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}>
+      {is_featured && (
+        <>
+          <div className="absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
+            Featured
+          </div>
+          <Star size={24} fill="#568f7c" strokeWidth={2} className="absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
+        </>
+      )}
       <Link href={`/itinerary/${productSlug}`}>
-        {' '}
-        {/** this is static link */}
-        <img src={imgsrc || '/assets/Card.png'} alt="productimage" className="rounded-lg w-full sm:w-72 h-52 object-cover " />
-        <div className="flex flex-col gap-[6px] justify-evenly py-1">
+        <img src={imgsrc || '/assets/Card.png'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
+        <div className="flex flex-col gap-[6px] justify-evenly p-4">
           <div className="flex gap-1 text-secondaryDark text-sm">
             <Star className="fill-current" size={18} />
             {productRating || 4.5}
@@ -137,17 +155,23 @@ export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, p
 };
 
 // package card
-export const SingleProductCardPackage = ({ productId, imgsrc, productRating, productTitle, productPrice, discount, productSlug }) => {
+export const SingleProductCardPackage = ({ productId, imgsrc, productRating, productTitle, productPrice, discount, productSlug, is_featured }) => {
   const params = useParams();
   const { region, city } = params;
 
   return (
-    <div className={`${'product_' + productId} bg-white  rounded-lg p-4 gap-3 shadow-md sm:max-w-fit max-w-full min-h-[360px] h-fit w-full sm:mx-0`}>
+    <div className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}>
+      {is_featured && (
+        <>
+          <div className="absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
+            Featured
+          </div>
+          <Star size={24} fill="#568f7c" strokeWidth={2} className="absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
+        </>
+      )}
       <Link href={`/package/${productSlug}`}>
-        {' '}
-        {/** this is static link */}
-        <img src={imgsrc || '/assets/Card.png'} alt="productimage" className="rounded-lg w-full sm:w-72 h-52 object-cover " />
-        <div className="flex flex-col gap-[6px] justify-evenly py-1">
+        <img src={imgsrc || '/assets/Card.png'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
+        <div className="flex flex-col gap-[6px] justify-evenly p-4">
           <div className="flex gap-1 text-secondaryDark text-sm">
             <Star className="fill-current" size={18} />
             {productRating || 4.5}
