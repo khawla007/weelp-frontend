@@ -5,22 +5,17 @@ import { useForm, Controller, useWatch } from 'react-hook-form';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Ellipsis, Plus, SquarePen, Star, Tag, Trash2 } from 'lucide-react';
+import { Plus, Star, Tag } from 'lucide-react';
 import debounce from 'lodash.debounce';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import 'react-range-slider-input/dist/style.css';
 import { CustomPagination } from '@/app/components/Pagination';
-import Link from 'next/link';
 import useSWR from 'swr'; // for states cache and ui management
 import { fetcher } from '@/lib/fetchers'; // interceptors
 import { useToast } from '@/hooks/use-toast';
-import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
+import { DashboardSearch, ListingCard, ListingCardImage, ListingCardCheckbox, ListingCardContent, ListingCardTitle, ListingCardTags, ListingCardActions } from '@/app/components/DashboardShared';
 import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
 import { AddNewButton } from '@/app/components/Button/AddNewButton';
-import { DashboardSearch } from '@/app/components/DashboardShared';
 import { deleteBlog, deleteMultipleBlogs } from '@/lib/actions/blogs';
 import { useAlltagsOptionsAdmin } from '@/hooks/api/admin/tags';
 import { useAllCategoriesOptionsAdmin } from '@/hooks/api/admin/categories';
@@ -355,79 +350,55 @@ const FilterBlog = () => {
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
                 {items.map(({ id: itemId, name, media_gallery = [], tags = [], categories = [], excerpt = '', publish = false, feature_image = null }, index) => (
-                  <Card
-                    key={index}
-                    className="group hover:shadow-md rounded-lg w-full lg:w-fit border relative overflow-hidden"
-                  >
-                    <img className="w-full lg:w-[326px] h-[183px] rounded-t-lg rounded-b-none" src={feature_image ?? media_gallery?.[0]?.url ?? FALLBACK_IMAGE.src} alt="activity_image" />
+                  <ListingCard key={index}>
+                    <ListingCardImage
+                      src={feature_image ?? media_gallery?.[0]?.url ?? FALLBACK_IMAGE.src}
+                      alt={`${name} image`}
+                    />
 
-                    <div className=" bg-white p-4 space-y-2">
-                      <div className="flex justify-between items-start">
-                        <h2 className="m-0">{name}</h2>
+                    <ListingCardCheckbox
+                      checked={selectedItems.includes(itemId)}
+                      onCheckedChange={(checked, id) => {
+                        setSelectedItems(prev => {
+                          const newSelection = checked
+                            ? [...prev, id]
+                            : prev.filter(itemId => itemId !== id);
+                          setIsAllSelected(newSelection.length === items.length);
+                          return newSelection;
+                        });
+                      }}
+                      itemId={itemId}
+                    />
 
-                        {/* DropDown */}
-                        <DropdownMenu
-                          open={modalState.openDropdownIndex === itemId}
-                          onOpenChange={(open) => {
-                            setModalState((prev) => ({
-                              ...prev,
-                              openDropdownIndex: open ? itemId : '',
-                            }));
-                          }}
-                        >
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <Ellipsis size={16} />
-                            </Button>
-                          </DropdownMenuTrigger>
-
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem asChild>
-                              <Link href={`/dashboard/admin/blogs/${itemId}`} className="flex items-center gap-2 cursor-pointer">
-                                <SquarePen size={14} /> Edit
-                              </Link>
-                            </DropdownMenuItem>
-
-                            <DropdownMenuSeparator />
-
-                            <DropdownMenuItem
-                              onSelect={(e) => {
-                                e.preventDefault();
-                                handleDeleteClick(itemId);
-                              }}
-                              className="text-red-400 cursor-pointer"
-                            >
-                              <Trash2 size={14} /> Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-
-                        <AlertDialog
-                          open={modalState.openDialogIndex === itemId}
-                          onOpenChange={(open) => {
-                            if (!open) closeDialog();
-                          }}
-                        >
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                              <AlertDialogDescription>This action cannot be undone. This will permanently delete your data from our servers.</AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
-                              <AlertDialogAction className="bg-dangerSecondary" onClick={() => handleDelete(itemId)}>
-                                Continue
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </div>
+                    <ListingCardContent>
+                      <ListingCardTitle
+                        actions={
+                          <ListingCardActions
+                            itemId={itemId}
+                            editHref={`/dashboard/admin/blogs/${itemId}`}
+                            onDelete={handleDelete}
+                            isOpen={modalState.openDropdownIndex === itemId}
+                            onOpenChange={(open) => {
+                              setModalState((prev) => ({
+                                ...prev,
+                                openDropdownIndex: open ? itemId : '',
+                              }));
+                            }}
+                            isDialogOpen={modalState.openDialogIndex === itemId}
+                            onDialogChange={(open) => {
+                              if (!open) closeDialog();
+                            }}
+                          />
+                        }
+                      >
+                        {name}
+                      </ListingCardTitle>
 
                       {/* Categories  */}
                       {categories.length > 0 && (
                         <ul className="list-item">
-                          {categories.map(({ category_name }, index) => (
-                            <li key={index} className="text-gray-500 text-sm flex items-center gap-2">
+                          {categories.map(({ category_name }, idx) => (
+                            <li key={idx} className="text-gray-500 text-sm flex items-center gap-2">
                               {category_name}
                             </li>
                           ))}
@@ -436,39 +407,38 @@ const FilterBlog = () => {
 
                       {/* Display Tags */}
                       {tags.length > 0 && (
-                        <div className="flex gap-2 flex-wrap">
-                          {tags.map(({ tag_name }, index) => (
-                            <Badge key={index} className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${index === 0 && 'bg-gray-400'}`}>
+                        <ListingCardTags>
+                          {tags.map(({ tag_name }, idx) => (
+                            <Badge
+                              key={idx}
+                              className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${
+                                idx === 0 && 'bg-gray-400'
+                              }`}
+                            >
                               {tag_name}
                             </Badge>
                           ))}
-                        </div>
+                        </ListingCardTags>
                       )}
 
                       {/* Status */}
-                      <b>Status:</b>
-                      {publish ? <Badge className={'bg-secondaryDark'}>Published</Badge> : <Badge className={'bg-yellow-400'}>Draft</Badge>}
-                      {/* Excerpt */}
-                      {excerpt ? <p className=" bg-card text-foreground text-sm text-wrap">{excerpt.concat('...')}</p> : null}
-                    </div>
+                      <div className="flex items-center gap-2">
+                        <b>Status:</b>
+                        {publish ? (
+                          <Badge className={'bg-secondaryDark'}>Published</Badge>
+                        ) : (
+                          <Badge className={'bg-yellow-400'}>Draft</Badge>
+                        )}
+                      </div>
 
-                    {/* Selected Items Input Field */}
-                    <div className="absolute top-4 left-4 w-fit">
-                      <SelectableCardCheckbox
-                        checked={selectedItems.includes(itemId)}
-                        onCheckedChange={(checked, id) => {
-                          setSelectedItems(prev => {
-                            const newSelection = checked
-                              ? [...prev, id]
-                              : prev.filter(itemId => itemId !== id);
-                            setIsAllSelected(newSelection.length === items.length);
-                            return newSelection;
-                          });
-                        }}
-                        itemId={itemId}
-                      />
-                    </div>
-                  </Card>
+                      {/* Excerpt */}
+                      {excerpt && (
+                        <p className="bg-card text-foreground text-sm text-wrap">
+                          {excerpt.concat('...')}
+                        </p>
+                      )}
+                    </ListingCardContent>
+                  </ListingCard>
                 ))}
               </div>
 

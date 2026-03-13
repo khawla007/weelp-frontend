@@ -19,7 +19,7 @@ export const FilterStates = () => {
   const query = useWatch({ control, name: 'query' });
   const { toast } = useToast();
 
-  const [debouncedQuery, setDebouncedQuery] = useState(query);
+  const [debouncedQuery, setDebouncedQuery] = useState('');
   const [selectedItems, setSelectedItems] = useState([]); // Selected state IDs for bulk delete
   const [isAllSelected, setIsAllSelected] = useState(false); // Track Select All toggle state
 
@@ -94,7 +94,7 @@ export const FilterStates = () => {
       <div className="space-y-4">
         {/* Search and Bulk Actions */}
         <div className="flex justify-between items-center">
-          <DashboardSearch control={control} placeholder="Search states" className="max-w-sm" />
+          <DashboardSearch control={control} name="query" placeholder="Search states" className="max-w-sm" />
           {selectedItems.length > 0 ? (
             <BulkActionButtons
               selectedCount={selectedItems.length}

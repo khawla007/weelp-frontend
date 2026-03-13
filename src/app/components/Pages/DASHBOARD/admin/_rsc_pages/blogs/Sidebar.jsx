@@ -14,6 +14,7 @@ import { PostMedia } from './PostMedia';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Medialibrary } from '../media/MediaLibrary';
+import { Upload } from 'lucide-react';
 
 const BlogSidebar = () => {
   const { control, setValue } = useFormContext(); // conext provider
@@ -78,8 +79,9 @@ const BlogSidebar = () => {
         action={
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
-                Upload Media
+              <Button size="sm">
+                <Upload className="h-4 w-4 mr-2" />
+                Select Media
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-screen-xl">

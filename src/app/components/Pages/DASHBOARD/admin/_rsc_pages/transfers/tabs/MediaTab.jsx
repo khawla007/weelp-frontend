@@ -7,7 +7,7 @@ import { useMediaStore } from '@/lib/store/useMediaStore';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Trash2, Star } from 'lucide-react';
+import { Trash2, Star, Upload } from 'lucide-react';
 
 const Medialibrary = dynamic(() => import('../../media/MediaLibrary').then((mod) => mod.Medialibrary), { ssr: false }); // dynamically import model
 
@@ -109,8 +109,9 @@ const MediaTab = () => {
       {/**Uploaded Media As Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="w-fit self-end">
-            Upload Media
+          <Button className="w-fit self-end">
+            <Upload className="h-4 w-4 mr-2" />
+            Select Media
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-screen-xl">

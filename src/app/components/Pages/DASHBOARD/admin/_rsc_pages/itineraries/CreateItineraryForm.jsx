@@ -13,7 +13,7 @@ import { useForm, FormProvider, Controller, useFieldArray, useWatch, useFormCont
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
-import { Activity, CalendarIcon, Car, Clock, MapPin, Plus, Settings, Star, Trash, Trash2 } from 'lucide-react';
+import { Activity, CalendarIcon, Car, Clock, MapPin, Plus, Settings, Star, Trash, Trash2, Upload } from 'lucide-react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ComboboxMultiple, ComboboxMultipleAttribute } from '@/components/ui/combobox_multi';
@@ -1177,8 +1177,9 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
         {/**Uploaded Media As Dialog */}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline" className="w-fit self-end">
-              Upload Media
+            <Button className="w-fit self-end">
+              <Upload className="h-4 w-4 mr-2" />
+              Select Media
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-screen-xl">

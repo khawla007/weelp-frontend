@@ -5,12 +5,11 @@ import { useForm, Controller, useWatch } from 'react-hook-form';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Calendar, Car, Clock, Ellipsis, Plus, SquarePen, Star, Tag, Trash2, User, Users } from 'lucide-react';
+import { Calendar, Car, Clock, Plus, Star, Tag, User, Users } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import debounce from 'lodash.debounce';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
@@ -18,10 +17,9 @@ import { CustomPagination } from '@/app/components/Pagination';
 import Link from 'next/link';
 import useSWR from 'swr'; // for states cache and ui management
 import { useToast } from '@/hooks/use-toast'; // toast for notification
-import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
+import { DashboardSearch, ListingCard, ListingCardImage, ListingCardCheckbox, ListingCardActions, ListingCardContent, ListingCardTitle, ListingCardMeta, ListingCardTags, ListingCardStats } from '@/app/components/DashboardShared';
 import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
 import { AddNewButton } from '@/app/components/Button/AddNewButton';
-import { DashboardSearch } from '@/app/components/DashboardShared';
 import { fetcher } from '@/lib/fetchers'; // interceptors
 import { deleteMultipleTransfers, deleteTransfer } from '@/lib/actions/transfer'; // inline actions
 import { VEHICLE_TYPES } from '@/constants/transfer'; // constants
@@ -31,10 +29,7 @@ const FilterTransfer = () => {
   const { toast } = useToast(); // intialize toast
   const [selectedItems, setSelectedItems] = useState([]); // selected item for multiple delete case
   const [isAllSelected, setIsAllSelected] = useState(false); // Track Select All toggle state
-  const [modalState, setModalState] = useState({
-    openDropdownIndex: '', //
-    openDialogIndex: '',
-  });
+  const [deleteItemId, setDeleteItemId] = useState(null); // Track item pending deletion
 
   // intialize hook
   const { register, setValue, control } = useForm({
@@ -54,29 +49,26 @@ const FilterTransfer = () => {
   const [debouncedFilters, setDebouncedFilters] = useState(filters); // fitlering
 
   //  handle delete to open modal
-  const handleDeleteClick = (index) => {
-    setModalState({
-      openDropdownIndex: '',
-      openDialogIndex: index,
-    });
+  const handleDeleteClick = (itemId) => {
+    setDeleteItemId(itemId);
   };
 
-  // colose dialog
-  const closeDialog = () => {
-    setModalState((prev) => ({ ...prev, openDialogIndex: '' }));
+  // cancel delete
+  const cancelDelete = () => {
+    setDeleteItemId(null);
   };
 
-  // handle for delete transfer
-  async function handleDelete(itemId) {
+  // confirm delete
+  const confirmDelete = async () => {
+    if (!deleteItemId) return;
     try {
-      const res = await deleteTransfer(itemId); // call server action for deletion
-
+      const res = await deleteTransfer(deleteItemId);
       toast({
-        title: res.message || 'Delete Succesfully',
+        title: res.message || 'Delete Successfully',
         variant: 'success',
       });
-      mutate(); // trigger api
-      closeDialog(); // close your dialog after success
+      mutate();
+      setDeleteItemId(null);
     } catch (error) {
       console.log(error);
       toast({
@@ -84,7 +76,7 @@ const FilterTransfer = () => {
         variant: 'destructive',
       });
     }
-  }
+  };
 
   // handle page change
   const handlePageChange = (newPage) => {
@@ -350,146 +342,60 @@ const FilterTransfer = () => {
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
                 {items.map(({ id: itemId, name, media_gallery = [], tags = [], attributes = [], vendor_routes: { is_vendor } = {}, feature_image }, index) => (
-                  <Card
-                    key={index}
-                    className="group hover:shadow-md rounded-lg w-full lg:w-fit border relative overflow-hidden"
-                  >
-                    <img
-                      className="w-full lg:w-[326px] h-[183px] rounded-t-lg rounded-b-none"
-                      src={`${feature_image || media_gallery?.[0]?.url ? feature_image || media_gallery?.[0]?.url : 'https://picsum.photos/350/300?random'}`}
-                      alt="transfer_image"
+                  <ListingCard key={index}>
+                    <ListingCardImage
+                      src={feature_image || media_gallery?.[0]?.url || 'https://picsum.photos/350/300?random'}
+                      alt={`${name} image`}
                     />
-
-                    <div className=" bg-white p-4 space-y-2">
-                      <div className="flex justify-between items-start">
-                        <h2 className="m-0">{name}</h2>
-
-                        {/* Three-Dot Menu */}
-                        <DropdownMenu
-                          open={modalState.openDropdownIndex === itemId}
-                          onOpenChange={(open) => {
-                            setModalState((prev) => ({
-                              ...prev,
-                              openDropdownIndex: open ? itemId : '',
-                            }));
-                          }}
-                        >
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <Ellipsis size={16} />
-                            </Button>
-                          </DropdownMenuTrigger>
-
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem className="py-0">
-                              <Button asChild variant="outline" className="w-full px-2 border-none flex justify-start text-sm font-normal">
-                                {/* Edit Transfers Route Based on isVendor */}
-                                {is_vendor ? (
-                                  <Link href={`/dashboard/admin/transfers/edit/${itemId}/vendor`}>
-                                    <SquarePen size={16} className="mr-2" />
-                                    Edit
-                                  </Link>
-                                ) : (
-                                  <Link href={`/dashboard/admin/transfers/edit/${itemId}/admin`}>
-                                    <SquarePen size={16} className="mr-2" />
-                                    Edit
-                                  </Link>
-                                )}
-                              </Button>
-                            </DropdownMenuItem>
-
-                            <DropdownMenuSeparator />
-
-                            <DropdownMenuItem
-                              className="py-0"
-                              onSelect={(e) => {
-                                e.preventDefault();
-                                handleDeleteClick(itemId);
-                              }}
-                            >
-                              <Button variant="outline" className="w-full px-2 text-red-400 border-none flex justify-start text-sm font-normal">
-                                <Trash2 size={16} className="mr-2" />
-                                Delete
-                              </Button>
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-
-                        {/* AlertDialog for Delete Confirmation */}
-                        <AlertDialog
-                          open={modalState.openDialogIndex === itemId}
-                          onOpenChange={(open) => {
-                            if (!open) closeDialog();
-                          }}
-                        >
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                              <AlertDialogDescription>This action cannot be undone. This will permanently delete your data from our servers.</AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
-                              <AlertDialogAction className="bg-dangerSecondary" onClick={() => handleDelete(itemId)}>
-                                Continue
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </div>
-
-                      {/* vendor routes name */}
-                      <span>{`Checking is by vendor ${is_vendor}`}</span>
-
-                      {/* attributes have duration then */}
+                    <ListingCardCheckbox
+                      checked={selectedItems.includes(itemId)}
+                      onCheckedChange={(checked) => {
+                        setSelectedItems(prev => {
+                          const newSelection = checked
+                            ? [...prev, itemId]
+                            : prev.filter(id => id !== itemId);
+                          setIsAllSelected(newSelection.length === items.length);
+                          return newSelection;
+                        });
+                      }}
+                      itemId={itemId}
+                    />
+                    <ListingCardContent>
+                      <ListingCardTitle
+                        actions={
+                          <ListingCardActions
+                            itemId={itemId}
+                            editHref={is_vendor ? `/dashboard/admin/transfers/edit/${itemId}/vendor` : `/dashboard/admin/transfers/edit/${itemId}/admin`}
+                            onDelete={() => handleDeleteClick(itemId)}
+                          />
+                        }
+                      >
+                        {name}
+                      </ListingCardTitle>
+                      <span className="text-gray-500 text-sm">{is_vendor ? 'Vendor Route' : 'Admin Route'}</span>
                       {attributes.length > 0 &&
-                        attributes.map(({ attribute_name }, index) => {
-                          {
-                            return (
-                              attribute_name === 'Duration' && ( // Specific attrbutete Value Hai
-                                <span key={index} className="text-gray-500 text-sm flex items-center gap-2">
-                                  <Clock size={16} /> 3 Hours
-                                </span>
-                              )
-                            );
-                          }
-                        })}
-
-                      {/* Display Tags */}
+                        attributes.map(({ attribute_name }, index) =>
+                          attribute_name === 'Duration' && (
+                            <ListingCardMeta key={index} icon={Clock}>
+                              3 Hours
+                            </ListingCardMeta>
+                          )
+                        )}
                       {tags.length > 0 && (
-                        <div className="flex gap-2">
+                        <ListingCardTags>
                           {tags.map(({ tag_name }, index) => (
                             <Badge key={index} className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${index === 0 && 'bg-gray-400'}`}>
                               {tag_name}
                             </Badge>
                           ))}
-                        </div>
+                        </ListingCardTags>
                       )}
-
-                      <div className="flex justify-start gap-2">
-                        <Badge className="bg-secondarylight hover:bg-secondarylight text-secondaryDark ">4.8</Badge>
-                        <span className="text-gray-500 text-sm flex items-center gap-2">
-                          <Users size={16} /> 1200 Bookings
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Selected Items Input Field */}
-                    <div className="absolute top-4 left-4 w-fit">
-                      <SelectableCardCheckbox
-                        checked={selectedItems.includes(itemId)}
-                        onCheckedChange={(checked, id) => {
-                          setSelectedItems(prev => {
-                            const newSelection = checked
-                              ? [...prev, id]
-                              : prev.filter(itemId => itemId !== id);
-                            setIsAllSelected(newSelection.length === items.length);
-                            return newSelection;
-                          });
-                        }}
-                        itemId={itemId}
-                      />
-                    </div>
-                  </Card>
+                      <ListingCardStats>
+                        <Badge className="bg-secondarylight hover:bg-secondarylight text-secondaryDark">4.8</Badge>
+                        <ListingCardMeta icon={Users}>1200 Bookings</ListingCardMeta>
+                      </ListingCardStats>
+                    </ListingCardContent>
+                  </ListingCard>
                 ))}
               </div>
 
@@ -499,6 +405,24 @@ const FilterTransfer = () => {
           )}
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      {deleteItemId && (
+        <AlertDialog open={!!deleteItemId} onOpenChange={(open) => !open && cancelDelete()}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>This action cannot be undone. This will permanently delete your data from our servers.</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={cancelDelete}>Cancel</AlertDialogCancel>
+              <AlertDialogAction className="bg-dangerSecondary" onClick={confirmDelete}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </Card>
   );
 };

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
 import { Search, Upload, Check, Edit, Trash2 } from 'lucide-react';
+import { MediaSelectionBadge } from '@/app/components/dashboard/shared/MediaSelectionBadge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Card } from '@/components/ui/card';
 import { usePathname } from 'next/navigation';
@@ -51,6 +52,39 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
     () => new Set(alreadySelectedImages.map((img) => img.media_id || img.id).filter(Boolean)),
     [alreadySelectedImages]
   );
+
+  // Computed images array: In popup, show already selected images first, max 10 total
+  const displayImages = useMemo(() => {
+    if (isMediaPage) {
+      // On media page, show paginated images as-is
+      return images;
+    }
+
+    const IMAGES_PER_PAGE = 10;
+
+    // Transform already selected images
+    const alreadySelectedImageData = alreadySelectedImages
+      .map((img) => ({
+        ...img,
+        id: img.media_id || img.id,
+      }))
+      .filter((img) => img.id && alreadySelectedIds.has(img.id));
+
+    // How many slots remaining after showing already selected?
+    const remainingSlots = Math.max(0, IMAGES_PER_PAGE - alreadySelectedImageData.length);
+
+    // If already selected fills or exceeds the limit, show only those (up to 10)
+    if (remainingSlots === 0) {
+      return alreadySelectedImageData.slice(0, IMAGES_PER_PAGE);
+    }
+
+    // Filter out already selected images from paginated results and take remaining slots
+    const remainingImages = images
+      .filter((img) => !alreadySelectedIds.has(img.id))
+      .slice(0, remainingSlots);
+
+    return [...alreadySelectedImageData, ...remainingImages];
+  }, [isMediaPage, images, alreadySelectedImages, alreadySelectedIds]);
 
   // Initialize selectedImages with alreadySelectedImages on first render or when it changes
   // Note: We intentionally sync state with props here. This is a valid use case for showing
@@ -129,7 +163,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
             <h2 className="text-3xl font-bold tracking-tight">Media</h2>
           </div>
           <div className="flex items-center gap-2">
-            {selectedItems.length > 0 ? (
+            {isMediaPage && selectedItems.length > 0 ? (
               <>
                 {/* Select All / Unselect All Button */}
                 <Button
@@ -184,7 +218,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                 </Button>
               </>
             ) : (
-              /* Upload Button - shown when no selection */
+              /* Upload Button - shown when no selection (on both Media page and popup) */
               <Button
                 onClick={() => {
                   setUploadImagePopUp(!uploadImagePop);
@@ -212,11 +246,11 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
             </div>
           ) : error ? (
             <div className="flex items-center justify-center text-red-500">Failed to load media.</div>
-          ) : images.length === 0 ? (
+          ) : displayImages.length === 0 ? (
             <div className={`flex items-center justify-center ${isMediaPage ? 'h-screen' : 'h-fit'}`}>Sorry, no images.</div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {images.map((image, index) => {
+              {displayImages.map((image, index) => {
                 const isSelected = selectedImages?.some((img) => img.id === image.id);
                 const wasAlreadySelected = alreadySelectedIds.has(image.id);
 
@@ -236,7 +270,8 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                   >
                     <img src={image?.url} alt={image?.alt_text} className="object-cover transition-all hover:scale-105 w-full h-full" />
 
-                    {/* Selection Checkbox */}
+                    {/* Selection Checkbox - Only on Media Page */}
+                    {isMediaPage && (
                     <div className="absolute top-4 left-4 w-fit z-10" onClick={(e) => e.stopPropagation()}>
                       <SelectableCardCheckbox
                         checked={selectedItems.includes(image.id)}
@@ -254,6 +289,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                         itemId={image.id}
                       />
                     </div>
+                    )}
 
                     {/* Dark overlay on hover */}
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none" />
@@ -269,12 +305,8 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                       <Edit size={20} className="text-gray-700" />
                     </button>
 
-                    {/* Checkmark badge for selected images */}
-                    {isSelected && (
-                      <div className="absolute top-2 left-2 bg-[#568f7c] text-white rounded-full p-1 shadow-md">
-                        <Check size={16} strokeWidth={3} />
-                      </div>
-                    )}
+                    {/* Selection badge - shows in both selected and unselected states */}
+                    {!isMediaPage && <MediaSelectionBadge isSelected={isSelected} />}
                   </Card>
                 );
               })}

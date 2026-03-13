@@ -1,15 +1,12 @@
 'use client';
 import SafeImage from '@/app/components/Image';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
-import { Ellipsis, Pencil, Trash2 } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { useSWRConfig } from 'swr';
 import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
+// Shared card components
+import { CardBadge } from '@/app/components/DashboardShared/Card';
+import { CardActions } from '@/app/components/DashboardShared/Card';
 
 // actions to delete
 import { deleteCountry } from '@/lib/actions/country';
@@ -91,14 +88,14 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
   };
 
   return (
-    <Card className="sm:max-w-xs overflow-hidden rounded-lg border">
-      {/*  Image wrapper must be relative + have height */}
-      <div className="relative w-full h-40">
+    <div className="w-full overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm">
+      {/* Image wrapper */}
+      <div className="relative w-full h-[183px]">
         <SafeImage src={displayImage} alt={altText} />
 
-        {/* Selection Checkbox - shown when showCheckbox is true */}
+        {/* Selection Checkbox */}
         {showCheckbox && (
-          <div className="absolute top-2 left-2 w-fit z-10">
+          <div className="absolute top-4 left-4 w-fit z-20">
             <SelectableCardCheckbox
               checked={checked}
               onCheckedChange={onCheckedChange}
@@ -109,89 +106,64 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
       </div>
 
       {/* Content section */}
-      <CardContent>
-        <div className="flex justify-between pt-4">
-          <div>
-            <CardTitle>{name}</CardTitle>
-            <CardDescription>Code:{code}</CardDescription>
+      <div className="p-6 pt-4">
+        <div className="flex justify-between items-start">
+          <div className="flex-1">
+            <h3 className="font-semibold text-lg leading-none tracking-tight">{name}</h3>
+            <p className="text-sm text-muted-foreground">Code: {code}</p>
           </div>
 
-          {/* DropDown Menu */}
-          <div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost">
-                  <Ellipsis size={14} />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side="bottom" align="end" sideOffset={10}>
-                <Link
-                  href={`${pathname}/${id}`}
-                  className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-sm hover:bg-neutral-100 cursor-pointer focus:bg-neutral-100 outline-none"
-                >
-                  <Pencil size={14} /> Edit
-                </Link>
-                <DropdownMenuItem
-                  textValue="delete"
-                  onSelect={() => {
-                    handleDelete(id, type); // delete item via id and type
-                  }}
-                  className="cursor-pointer text-red-400"
-                >
-                  <Trash2 size={14} /> Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          {/* Actions - using shared CardActions with confirmation dialog */}
+          <CardActions
+            itemId={id}
+            editHref={`${pathname}/${id}`}
+            onDelete={() => handleDelete(id, type)}
+          />
         </div>
-      </CardContent>
-      <CardFooter className="flex flex-col items-start gap-4">
-        <p>{getExcerpt(description)}</p>
-        {/* Badges Data - Show Region for countries, Region + Country for states, Region + Country + State for cities */}
+      </div>
+
+      {/* Badges section */}
+      <div className="p-6 flex flex-col items-start gap-4 border-t">
+        <p className="text-sm text-muted-foreground">{getExcerpt(description)}</p>
+
+        {/* Location Badges - use shared CardBadge component */}
         <div className="flex flex-wrap gap-2">
-          {type === 'country' && regions && regions.length > 0 ? (
-            <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Region: {regions[0].name}</Badge>
-          ) : type === 'state' ? (
-            <>
-              {regions && regions.length > 0 && (
-                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Region: {regions[0].name}</Badge>
-              )}
-              {country && (
-                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Country: {country.name}</Badge>
-              )}
-            </>
-          ) : type === 'city' ? (
-            <>
-              {regions && regions.length > 0 && (
-                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Region: {regions[0].name}</Badge>
-              )}
-              {country && (
-                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Country: {country.name}</Badge>
-              )}
-              {state && (
-                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">State: {state.name}</Badge>
-              )}
-            </>
-          ) : type === 'place' ? (
-            <>
-              {regions && regions.length > 0 && (
-                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Region: {regions[0].name}</Badge>
-              )}
-              {country && (
-                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">Country: {country.name}</Badge>
-              )}
-              {state && (
-                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">State: {state.name}</Badge>
-              )}
-              {city && (
-                <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">City: {city.name}</Badge>
-              )}
-            </>
-          ) : (
-            <Badge className="bg-[#568f7c] text-white hover:bg-[#4a7a6a]">{type || 'country'}</Badge>
+          {/* Regions - show all if available */}
+          {regions && regions.length > 0 &&
+            regions.map(region => (
+              <CardBadge
+                key={region.id}
+                type="location"
+                label={`Region: ${region.name}`}
+              />
+            ))
+          }
+
+          {/* Country badge */}
+          {country && (
+            <CardBadge
+              type="location"
+              label={`Country: ${country.name}`}
+            />
+          )}
+
+          {/* State badge */}
+          {state && (
+            <CardBadge
+              type="location"
+              label={`State: ${state.name}`}
+            />
+          )}
+
+          {/* City badge */}
+          {city && (
+            <CardBadge
+              type="location"
+              label={`City: ${city.name}`}
+            />
           )}
         </div>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 };

@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm, FormProvider, useWatch } from 'react-hook-form';
 import useSWR from 'swr';
 
 import { fetcher } from '@/lib/fetchers';
@@ -24,6 +24,11 @@ export const FilterCountries = () => {
   const [selectedItems, setSelectedItems] = useState([]); // Selected country IDs for bulk delete
   const [isAllSelected, setIsAllSelected] = useState(false); // Track Select All toggle state
 
+  // Reset page to 1 when query changes
+  useEffect(() => {
+    setValue('page', 1);
+  }, [query, setValue]);
+
   // Debounce query updates - handle in useEffect with cleanup
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -36,7 +41,7 @@ export const FilterCountries = () => {
   const { data, error, isValidating, mutate } = useSWR(`/api/admin/destinations/countries?name=${debouncedQuery}&page=${page}`, fetcher);
 
   // destructure API response
-  const { data: countries = [], total = 0, per_page: perPage = 0, last_page: lastPage = 1 } = data || {};
+  const { data: countries = [], total = 0, per_page: perPage = 0, last_page: lastPage = 1, current_page: currentPage = 1 } = data || {};
 
   // Handle page change - clears selections
   const handlePageChange = (newPage) => {
@@ -86,7 +91,8 @@ export const FilterCountries = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <FormProvider {...methods}>
+      <div className="space-y-4">
       {/* Search and Bulk Actions */}
       <div className="flex justify-between items-center">
         <DashboardSearch control={control} name="query" placeholder="Search Countries" className="max-w-sm" />
@@ -144,10 +150,11 @@ export const FilterCountries = () => {
             </Card>
 
             {/* Pagination */}
-            <CustomPagination totalItems={total} itemsPerPage={perPage} currentPage={page} onPageChange={handlePageChange} />
+            <CustomPagination totalItems={total} itemsPerPage={perPage} currentPage={currentPage} onPageChange={handlePageChange} />
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </FormProvider>
   );
 };

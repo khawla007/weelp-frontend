@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useMediaStore } from '@/lib/store/useMediaStore';
-import { Star, Trash2 } from 'lucide-react';
+import { Star, Trash2, Upload } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { Medialibrary } from '../../media/MediaLibrary';
@@ -89,8 +89,9 @@ const MediaTab = () => {
         <p className="text-sm text-gray-500">Click the star icon to mark an image as featured</p>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline" className="w-fit">
-              Upload Media
+            <Button className="w-fit">
+              <Upload className="h-4 w-4 mr-2" />
+              Select Media
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-screen-xl">

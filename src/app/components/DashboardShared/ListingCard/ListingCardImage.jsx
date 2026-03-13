@@ -16,7 +16,7 @@ export function ListingCardImage({ src, alt = 'item image', className = '' }) {
     <CardImage
       src={src}
       alt={alt}
-      className={`w-full lg:w-[326px] h-[183px] rounded-t-lg rounded-b-none object-cover ${className}`}
+      className={`w-full h-[183px] rounded-t-lg rounded-b-none object-cover ${className}`}
       fallback="https://picsum.photos/350/300?random"
     />
   );

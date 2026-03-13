@@ -5,25 +5,20 @@ import { useForm, Controller, useWatch } from 'react-hook-form';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Calendar, Clock, Ellipsis, Plus, SquarePen, Star, Tag, Trash2, Users } from 'lucide-react';
+import { Calendar, Clock, Plus, Star, Tag, Users } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import debounce from 'lodash.debounce';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { CustomPagination } from '@/app/components/Pagination';
-import Link from 'next/link';
 import useSWR from 'swr'; // for states cache and ui management
 import { fetcher } from '@/lib/fetchers'; // swr fetcher
 import { deleteActivity, deleteMultipleActivities } from '@/lib/actions/activities';
 import { useToast } from '@/hooks/use-toast';
-import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
 import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
 import { AddNewButton } from '@/app/components/Button/AddNewButton';
-import { DashboardSearch } from '@/app/components/DashboardShared';
+import { DashboardSearch, ListingCard, ListingCardImage, ListingCardBadge, ListingCardCheckbox, ListingCardContent, ListingCardTitle, ListingCardMeta, ListingCardTags, ListingCardStats, ListingCardActions } from '@/app/components/DashboardShared';
 
 const seasons = ['spring', 'summer', 'winter', 'automn']; // static season
 
@@ -428,137 +423,94 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
                 {items.map(({ id: itemId, name, media_gallery = [], tags = [], attributes = [], is_featured }, index) => (
-                  <Card
-                    key={index}
-                    className="group hover:shadow-md rounded-lg w-full lg:w-fit border relative overflow-hidden"
-                  >
-                    {is_featured && (
-                      <>
-                        <div className="absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
-                          Featured
-                        </div>
-                        <Star size={24} fill="#568f7c" strokeWidth={2} className="absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
-                      </>
-                    )}
-                    <img
-                      className="w-full lg:w-[326px] h-[183px] rounded-t-lg rounded-b-none"
-                      src={`${media_gallery?.[0]?.url ? media_gallery?.[0]?.url : 'https://picsum.photos/350/300?random'}`}
-                      alt="activity_image"
+                  <ListingCard key={index}>
+                    {/* Featured Badge */}
+                    {is_featured && <ListingCardBadge type="featured" />}
+
+                    {/* Image */}
+                    <ListingCardImage
+                      src={media_gallery?.[0]?.url}
+                      alt={`${name} image`}
                     />
 
-                    <div className=" bg-white p-4 space-y-2">
-                      <div className="flex justify-between items-start">
-                        <h2 className="m-0">{name}</h2>
+                    {/* Checkbox for bulk selection */}
+                    <ListingCardCheckbox
+                      checked={selectedItems.includes(itemId)}
+                      onCheckedChange={(checked, id) => {
+                        setSelectedItems(prev => {
+                          const newSelection = checked
+                            ? [...prev, id]
+                            : prev.filter(itemId => itemId !== id);
+                          // Update isAllSelected state
+                          setIsAllSelected(newSelection.length === items.length);
+                          return newSelection;
+                        });
+                      }}
+                      itemId={itemId}
+                    />
 
-                        {/* DropDown */}
-                        <DropdownMenu
-                          open={modalState.openDropdownIndex === itemId}
-                          onOpenChange={(open) => {
-                            setModalState((prev) => ({
-                              ...prev,
-                              openDropdownIndex: open ? itemId : '',
-                            }));
-                          }}
-                        >
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <Ellipsis size={16} />
-                            </Button>
-                          </DropdownMenuTrigger>
+                    {/* Content */}
+                    <ListingCardContent>
+                      <ListingCardTitle
+                        actions={
+                          <ListingCardActions
+                            itemId={itemId}
+                            editHref={`/dashboard/admin/activities/${itemId}`}
+                            onDelete={handleDelete}
+                            isOpen={modalState.openDropdownIndex === itemId}
+                            onOpenChange={(open) => {
+                              setModalState((prev) => ({
+                                ...prev,
+                                openDropdownIndex: open ? itemId : '',
+                              }));
+                            }}
+                            isDialogOpen={modalState.openDialogIndex === itemId}
+                            onDialogChange={(open) => {
+                              if (!open) closeDialog();
+                            }}
+                          />
+                        }
+                      >
+                        {name}
+                      </ListingCardTitle>
 
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem asChild>
-                              <Link href={`/dashboard/admin/activities/${itemId}`} className="flex items-center gap-2 cursor-pointer">
-                                <SquarePen size={14} /> Edit
-                              </Link>
-                            </DropdownMenuItem>
-
-                            <DropdownMenuSeparator />
-
-                            <DropdownMenuItem
-                              onSelect={(e) => {
-                                e.preventDefault();
-                                handleDeleteClick(itemId);
-                              }}
-                              className="text-red-400 cursor-pointer"
-                            >
-                              <Trash2 size={14} /> Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-
-                        <AlertDialog
-                          open={modalState.openDialogIndex === itemId}
-                          onOpenChange={(open) => {
-                            if (!open) closeDialog();
-                          }}
-                        >
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                              <AlertDialogDescription>This action cannot be undone. This will permanently delete your data from our servers.</AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
-                              <AlertDialogAction className="bg-dangerSecondary" onClick={() => handleDelete(itemId)}>
-                                Continue
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </div>
-
-                      {/* attributes have duration then */}
+                      {/* Duration attribute */}
                       {attributes.length > 0 &&
                         attributes.map(({ attribute_name }, index) => {
-                          {
-                            return (
-                              attribute_name === 'Duration' && ( // Specific attrbutete Value Hai
-                                <span key={index} className="text-gray-500 text-sm flex items-center gap-2">
-                                  <Clock size={16} /> 3 Hours
-                                </span>
-                              )
-                            );
-                          }
+                          return (
+                            attribute_name === 'Duration' && (
+                              <ListingCardMeta key={index} icon={Clock}>
+                                3 Hours
+                              </ListingCardMeta>
+                            )
+                          );
                         })}
 
-                      {/* Display Tags */}
+                      {/* Tags */}
                       {tags.length > 0 && (
-                        <div className="flex gap-2">
+                        <ListingCardTags>
                           {tags.map(({ tag_name }, index) => (
-                            <Badge key={index} className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${index === 0 && 'bg-gray-400'}`}>
+                            <Badge
+                              key={index}
+                              className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${
+                                index === 0 && 'bg-gray-400'
+                              }`}
+                            >
                               {tag_name}
                             </Badge>
                           ))}
-                        </div>
+                        </ListingCardTags>
                       )}
 
-                      <div className="flex justify-start gap-2">
-                        <Badge className="bg-secondarylight hover:bg-secondarylight text-secondaryDark ">4.8</Badge>
-                        <span className="text-gray-500 text-sm flex items-center gap-2">
-                          <Users size={16} /> 1200 Bookings
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Selected Items Input Field */}
-                    <div className="absolute top-4 left-4 w-fit">
-                      <SelectableCardCheckbox
-                        checked={selectedItems.includes(itemId)}
-                        onCheckedChange={(checked, id) => {
-                          setSelectedItems(prev => {
-                            const newSelection = checked
-                              ? [...prev, id]
-                              : prev.filter(itemId => itemId !== id);
-                            // Update isAllSelected state
-                            setIsAllSelected(newSelection.length === items.length);
-                            return newSelection;
-                          });
-                        }}
-                        itemId={itemId}
-                      />
-                    </div>
-                  </Card>
+                      {/* Stats */}
+                      <ListingCardStats>
+                        <Badge className="bg-secondarylight hover:bg-secondarylight text-secondaryDark">
+                          4.8
+                        </Badge>
+                        <ListingCardMeta icon={Users}>1200 Bookings</ListingCardMeta>
+                      </ListingCardStats>
+                    </ListingCardContent>
+                  </ListingCard>
                 ))}
               </div>
 

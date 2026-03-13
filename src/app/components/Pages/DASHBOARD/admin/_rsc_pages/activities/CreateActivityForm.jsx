@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { useForm, FormProvider, Controller, useFieldArray, useWatch, useFormContext } from 'react-hook-form';
 import { useState } from 'react';
-import { CalendarIcon, Star, Tag, Trash2, Users, X } from 'lucide-react';
+import { CalendarIcon, Star, Tag, Trash2, Upload, Users, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
@@ -555,8 +555,9 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
           <p className="text-sm text-gray-500">Click the star icon to mark an image as featured</p>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" className="w-fit">
-                Upload Media
+              <Button className="w-fit">
+                <Upload className="h-4 w-4 mr-2" />
+                Select Media
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-screen-xl">

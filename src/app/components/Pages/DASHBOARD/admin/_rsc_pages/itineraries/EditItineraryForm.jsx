@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm, FormProvider, Controller, useFieldArray, useWatch, useFormContext } from 'react-hook-form';
-import { Activity, CalendarIcon, Car, Clock, MapPin, Plus, Settings, Star, Trash, Trash2 } from 'lucide-react';
+import { Activity, CalendarIcon, Car, Clock, MapPin, Plus, Settings, Star, Trash, Trash2, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
@@ -1405,8 +1405,9 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
         {/**Uploaded Media As Dialog */}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline" className="w-fit self-end">
-              Upload Media
+            <Button className="w-fit self-end">
+              <Upload className="h-4 w-4 mr-2" />
+              Select Media
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-screen-xl">
