@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import { useReactTable, getCoreRowModel, getPaginationRowModel, flexRender, ColumnDef } from '@tanstack/react-table';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal, Edit, Trash, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import { TableActions } from '@/app/components/Shared/TableActions';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { deleteTag } from '@/lib/actions/tags';
@@ -109,38 +109,19 @@ export function DataTableTags({ tags = [], mutate, selectedItems = [], onSelecti
       cell: ({ getValue }) => getValue() || 'N/A',
     },
     {
-      id: 'actions',
+      accessorKey: 'id',
       header: 'Actions',
       cell: ({ row }) => {
-        const tag = row.original;
+        const tagId = row.original.id;
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href={`/dashboard/admin/taxonomies/tags/${tag.id}`} className="flex w-full cursor-pointer">
-                  <Edit className="mr-2 h-4 w-4" />
-                  Edit
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  setSelectedId(tag.id);
-                  setIsDialogOpen(true);
-                }}
-                className="text-red-600 cursor-pointer"
-              >
-                <Trash className="mr-2 h-4 w-4" />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <TableActions
+            id={tagId}
+            editUrl={`/dashboard/admin/taxonomies/tags/${tagId}`}
+            onDelete={(id) => {
+              setSelectedId(id);
+              setIsDialogOpen(true);
+            }}
+          />
         );
       },
     },

@@ -2,9 +2,12 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Edit, Star, Trash2 } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import { StatusBadge } from '@/app/components/Shared/StatusBadge';
+import { STATUS_TYPES } from '@/app/components/Shared/constants/statusConfig';
+import { TableActions } from '@/app/components/Shared/TableActions';
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { useIsClient } from '@/hooks/useIsClient';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -100,7 +103,7 @@ export function ReviewTable({
         const ratings = row.original.rating; // get user from row data
         return (
           <div>
-            <div className="flex"> {ratings && [...Array(ratings)].map((_, index) => <Star key={index} size={16} className="fill-yellow-400 stroke-yellow-400" />)}</div>
+            <div className="flex"> {ratings && [...Array(ratings)].map((_, index) => <Star key={index} size={16} className="fill-yellow-600 stroke-yellow-600" />)}</div>
           </div>
         );
       },
@@ -110,13 +113,7 @@ export function ReviewTable({
       header: 'Status',
       cell: ({ row }) => {
         const status = row.original.status;
-        return (
-          <div className="capitalize">
-            {status === 'approved' && <Badge variant="success">{status}</Badge>}
-            {status === 'pending' && <Badge variant="warning">{status}</Badge>}
-            {!['approved', 'pending'].includes(status) && <Badge variant="default">{status}</Badge>}
-          </div>
-        );
+        return <StatusBadge status={status} type={STATUS_TYPES.REVIEW} />;
       },
     },
     {
@@ -129,18 +126,11 @@ export function ReviewTable({
       cell: ({ row }) => {
         const reviewId = row?.original?.id;
         return (
-          <div className="flex gap-4">
-            <Link aschild={'true'} href={`/dashboard/admin/reviews/${reviewId}`}>
-              <Edit size={16} />
-            </Link>
-            <Trash2
-              onClick={() => {
-                onDelete(reviewId);
-              }}
-              size={16}
-              className="text-red-400 cursor-pointer"
-            />
-          </div>
+          <TableActions
+            id={reviewId}
+            editUrl={`/dashboard/admin/reviews/${reviewId}`}
+            onDelete={onDelete}
+          />
         );
       },
     },

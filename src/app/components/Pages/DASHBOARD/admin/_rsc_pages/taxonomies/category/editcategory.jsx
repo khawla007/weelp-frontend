@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { generateSlug } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { editCategory } from '@/lib/actions/categories';
@@ -24,6 +25,7 @@ const formSchema = z.object({
   description: z.string().min(3, {
     message: 'Please enter a description.',
   }),
+  status: z.enum(['active', 'draft']).default('active'),
 });
 
 export const EditCategoryForm = ({ categoryData }) => {
@@ -31,7 +33,7 @@ export const EditCategoryForm = ({ categoryData }) => {
   const { toast } = useToast();
 
   // category data
-  const { id, name, slug, description } = categoryData;
+  const { id, name, slug, description, status } = categoryData;
 
   // intialize form
   const form = useForm({
@@ -40,6 +42,7 @@ export const EditCategoryForm = ({ categoryData }) => {
       name: name || '',
       slug: slug || '',
       description: description || '',
+      status: status || 'active',
     },
   });
 
@@ -143,6 +146,38 @@ export const EditCategoryForm = ({ categoryData }) => {
                     <FormLabel>Description</FormLabel>
                     <FormControl>
                       <Textarea placeholder="Enter category description" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Status */}
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Status</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col gap-2"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="active" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Active</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="draft" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Draft</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
