@@ -13,7 +13,7 @@ import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import { ProductGalleryAnimation } from '../Animation/ProductAnimation';
 
 // Slider for City Page and
-const GallerySlider = ({ data, classNames = '' }) => {
+const GallerySlider = ({ data, classNames = '', navColor = '#fff' }) => {
   const [showGallery, setShowGallery] = useState(false); // toggle gallery visibility
   const [imageData, setImageData] = useState([]);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -36,8 +36,8 @@ const GallerySlider = ({ data, classNames = '' }) => {
         {/* Main Slider */}
         <Swiper
           style={{
-            '--swiper-navigation-color': '#fff',
-            '--swiper-pagination-color': '#fff',
+            '--swiper-navigation-color': navColor,
+            '--swiper-pagination-color': navColor,
           }}
           loop={true}
           spaceBetween={6} // Adjust the spacing between slides
