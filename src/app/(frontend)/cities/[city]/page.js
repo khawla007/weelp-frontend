@@ -4,7 +4,6 @@ import CitySection from '@/app/components/Pages/FRONT_END/Global/CitySection';
 import { whiteCardData } from '@/app/Data/ShopData';
 import { getAllBlogs } from '@/lib/services/blogs';
 import BreakSection from '@/app/components/BreakSection';
-import { TourSection } from '@/app/components/Pages/FRONT_END/Global/TourSection';
 import { ReviewSectionCity } from '@/app/components/Pages/FRONT_END/Global/ReviewSection';
 import GuideSection from '@/app/components/Pages/FRONT_END/Global/GuideSection';
 import CityProductSliderSection from '@/app/components/Pages/FRONT_END/city/CityProductSliderSection';
@@ -109,12 +108,17 @@ export default async function CityPage({ params }) {
       {packageData?.length > 0 ? (
         <>
           <BreakSection marginTop={'m-0 p-0'} />
-          <TourSection taglist={tag_list} items={packageData} />
+          <CityProductSliderSection
+            title="Top Tours"
+            subtitle={`Curated tour packages in ${citydata?.name || city}`}
+            items={packageData}
+            navigationId="city-tours"
+          />
         </>
       ) : (
         <div className="py-12 text-center">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-2">Top Tours</h2>
-          <p className="text-gray-600">No packages available in {citydata?.name || city} yet</p>
+          <h2 className="font-home-heading text-[28px] font-bold tracking-[-0.04em] text-[var(--weelp-home-ink)] mb-2">Top Tours</h2>
+          <p className="text-[15px] text-[var(--weelp-home-copy)]">No packages available in {citydata?.name || city} yet</p>
         </div>
       )}
       <BreakSection />
