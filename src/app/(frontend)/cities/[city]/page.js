@@ -5,7 +5,7 @@ import { whiteCardData } from '@/app/Data/ShopData';
 import { getAllBlogs } from '@/lib/services/blogs';
 import BreakSection from '@/app/components/BreakSection';
 import { ReviewSectionCity } from '@/app/components/Pages/FRONT_END/Global/ReviewSection';
-import GuideSection from '@/app/components/Pages/FRONT_END/Global/GuideSection';
+import CityGuideSection from '@/app/components/Pages/FRONT_END/city/CityGuideSection';
 import CityProductSliderSection from '@/app/components/Pages/FRONT_END/city/CityProductSliderSection';
 import { notFound } from 'next/navigation';
 import { CityFilter } from '@/app/components/Pages/FRONT_END/city/city_filter';
@@ -127,7 +127,7 @@ export default async function CityPage({ params }) {
 
       {typeof citydata === 'object' && <ReviewSectionCity cityData={citydata} />}
 
-      {blogsData.length > 0 && <GuideSection sectionTitle={'Blogs'} data={blogsData} />}
+      {blogsData.length > 0 && <CityGuideSection title="Blogs" data={blogsData} />}
 
       {/* Add schema in  page */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
