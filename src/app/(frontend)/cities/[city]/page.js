@@ -7,7 +7,7 @@ import BreakSection from '@/app/components/BreakSection';
 import { TourSection } from '@/app/components/Pages/FRONT_END/Global/TourSection';
 import { ReviewSectionCity } from '@/app/components/Pages/FRONT_END/Global/ReviewSection';
 import GuideSection from '@/app/components/Pages/FRONT_END/Global/GuideSection';
-import ProductSliderSection from '@/app/components/Pages/FRONT_END/Global/ProductSliderSection';
+import CityProductSliderSection from '@/app/components/Pages/FRONT_END/city/CityProductSliderSection';
 import { notFound } from 'next/navigation';
 import { CityFilter } from '@/app/components/Pages/FRONT_END/city/city_filter';
 import { getCityData } from '@/lib/services/cities';
@@ -79,20 +79,30 @@ export default async function CityPage({ params }) {
       <CitySection data={whiteCardData} />
 
       {activitesData?.length > 0 ? (
-        <ProductSliderSection sliderTitle={'Top Activities'} destinations={activitesData} />
+        <CityProductSliderSection
+          title="Top Activities"
+          subtitle={`Discover the best activities in ${citydata?.name || city}`}
+          items={activitesData}
+          navigationId="city-activities"
+        />
       ) : (
         <div className="py-12 text-center">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-2">Top Activities</h2>
-          <p className="text-gray-600">No activities available in {citydata?.name || city} yet</p>
+          <h2 className="font-home-heading text-[28px] font-bold tracking-[-0.04em] text-[var(--weelp-home-ink)] mb-2">Top Activities</h2>
+          <p className="text-[15px] text-[var(--weelp-home-copy)]">No activities available in {citydata?.name || city} yet</p>
         </div>
       )}
 
       {itineraryData.length > 0 ? (
-        <ProductSliderSection sliderTitle={'Top Itenerary'} destinations={itineraryData} />
+        <CityProductSliderSection
+          title="Top Itineraries"
+          subtitle={`Curated itineraries for ${citydata?.name || city}`}
+          items={itineraryData}
+          navigationId="city-itineraries"
+        />
       ) : (
         <div className="py-12 text-center">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-2">Top Itenerary</h2>
-          <p className="text-gray-600">No itineraries available in {citydata?.name || city} yet</p>
+          <h2 className="font-home-heading text-[28px] font-bold tracking-[-0.04em] text-[var(--weelp-home-ink)] mb-2">Top Itineraries</h2>
+          <p className="text-[15px] text-[var(--weelp-home-copy)]">No itineraries available in {citydata?.name || city} yet</p>
         </div>
       )}
 
