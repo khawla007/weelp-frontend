@@ -5,6 +5,7 @@ import ReviewSlider from '../../../sliders/ReviewSlider';
 import TotalReviews from '../../../TotalReviews';
 import Accordion from '../../../Faq';
 import { faqItems, destinationInfo } from '@/app/Data/ShopData'; //static data
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const bgImage = '/assets/images/whatabout.png';
 
@@ -29,13 +30,17 @@ export const ReviewSectionCity = ({ cityData }) => {
 
       <div className="w-full xl:w-2/3 p-6 space-y-6">
         <TotalReviews />
-        <div className="border border-gray-100 rounded-2xl p-6 sm:p-8 bg-white shadow-[8px_8px_20px_rgba(0,0,0,0.05)]">
+        <div className="border border-[var(--weelp-home-border)] rounded-2xl p-6 sm:p-8 bg-white shadow-[8px_8px_20px_rgba(0,0,0,0.05)]">
           <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between w-full relative min-h-[40px]">
-              <h2 className="text-lg sm:text-[28px] font-medium text-Nileblue">Featured review</h2>
+              <h2 className="font-home-heading text-lg sm:text-[28px] font-extrabold tracking-[-0.04em] text-[var(--weelp-home-ink)]">Featured review</h2>
               <div className="flex gap-3 items-center">
-                <div className="review-prev swiper-button-prev !static !m-0 after:!text-[14px]"></div>
-                <div className="review-next swiper-button-next !static !m-0 after:!text-[14px]"></div>
+                <button type="button" className="review-prev rounded-full bg-[#F4F4F5] px-3 py-[10px] text-[#18181B] transition hover:bg-[#E4E4E7]" aria-label="Previous review">
+                  <ChevronLeft className="size-[18px]" />
+                </button>
+                <button type="button" className="review-next rounded-full bg-[#18181B] px-3 py-[10px] text-white transition hover:bg-[#27272A]" aria-label="Next review">
+                  <ChevronRight className="size-[18px]" />
+                </button>
               </div>
             </div>
             <ReviewSlider />
@@ -57,13 +62,17 @@ export const ReviewSectionRegion = ({ cityData }) => {
 
       <div className="w-full xl:w-2/3 p-6 space-y-6">
         <TotalReviews />
-        <div className="border border-gray-100 rounded-2xl p-6 sm:p-8 bg-white shadow-[8px_8px_20px_rgba(0,0,0,0.05)]">
+        <div className="border border-[var(--weelp-home-border)] rounded-2xl p-6 sm:p-8 bg-white shadow-[8px_8px_20px_rgba(0,0,0,0.05)]">
           <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between w-full relative min-h-[40px]">
-              <h2 className="text-lg sm:text-[28px] font-medium text-Nileblue">Featured review</h2>
+              <h2 className="font-home-heading text-lg sm:text-[28px] font-extrabold tracking-[-0.04em] text-[var(--weelp-home-ink)]">Featured review</h2>
               <div className="flex gap-3 items-center">
-                <div className="review-prev swiper-button-prev !static !m-0 after:!text-[14px]"></div>
-                <div className="review-next swiper-button-next !static !m-0 after:!text-[14px]"></div>
+                <button type="button" className="review-prev rounded-full bg-[#F4F4F5] px-3 py-[10px] text-[#18181B] transition hover:bg-[#E4E4E7]" aria-label="Previous review">
+                  <ChevronLeft className="size-[18px]" />
+                </button>
+                <button type="button" className="review-next rounded-full bg-[#18181B] px-3 py-[10px] text-white transition hover:bg-[#27272A]" aria-label="Next review">
+                  <ChevronRight className="size-[18px]" />
+                </button>
               </div>
             </div>
             <ReviewSlider />
