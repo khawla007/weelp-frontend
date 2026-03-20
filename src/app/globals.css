@@ -2,6 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+/* NProgress - Navigation Progress Bar */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #588f7a;
+  position: fixed;
+  z-index: 1600;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+}
+
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0;
+  width: 100px;
+  height: 100%;
+  box-shadow:
+    0 0 10px #588f7a,
+    0 0 5px #588f7a;
+  opacity: 1;
+  transform: rotate(3deg) translate(0px, -4px);
+}
+
+html,
+body {
+  height: 100%;
+}
+
 body {
   color: var(--background);
   background: var(--foreground);
@@ -50,6 +83,27 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --weelp-home-page: #ffffff;
+    --weelp-home-ink: #18181b;
+    --weelp-home-copy: #71717a;
+    --weelp-home-label: #52525b;
+    --weelp-home-soft: #f4f4f5;
+    --weelp-home-surface: #ffffff;
+    --weelp-home-border: #e4e4e7;
+    --weelp-home-accent: #f59e0b;
+    --weelp-home-brand: #123347;
+    --weelp-home-muted: #6a7d88;
+    --weelp-home-search-shell: rgba(255, 255, 255, 0.95);
+    --weelp-home-search-border: #d6dde2;
+    --weelp-card-radius: 24px;
+    --weelp-card-inner-radius: 16px;
+    --weelp-card-padding: 20px;
+    --weelp-card-image-height: 200px;
+    --weelp-card-border: #f4f4f5;
+    --weelp-card-hover-shadow: 0 14px 30px rgba(24, 24, 27, 0.1);
+    --weelp-card-badge-bg: #f4f4f5;
+    --weelp-card-badge-text: #52525b;
+    --weelp-card-category-text: #16a34a;
   }
 
   .dark {
@@ -91,6 +145,14 @@ body {
 @layer base {
   * {
     @apply border-border;
+  }
+
+  .font-home-heading {
+    font-family: var(--font-plus-jakarta), sans-serif;
+  }
+
+  .font-home-body {
+    font-family: var(--font-inter), sans-serif;
   }
 
   /* Remove default browser styles from all input-like elements */
@@ -200,9 +262,9 @@ body {
   @apply relative;
 }
 
-.productSlider>h2,
-.productDestination>h2,
-.singleproduct_reviewslider>h2 {
+.productSlider > h2,
+.productDestination > h2,
+.singleproduct_reviewslider > h2 {
   @apply pb-8;
 }
 
@@ -267,7 +329,9 @@ body {
   font-size: 14px !important;
   font-weight: bold !important;
   color: inherit !important;
-  transition: color 0.3s ease, transform 0.3s ease;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -376,7 +440,6 @@ body {
 
 /* Slider */
 @layer components {
-
   .reviewSlider .swiper-button-next,
   .reviewSlider .swiper-button-prev,
   .singleproduct_reviewslider .swiper-button-next,
@@ -387,7 +450,6 @@ body {
 
 /* Custom Config Gallery Slider For City and SingleProduct Page*/
 @layer components {
-
   .gallery_slider .swiper-button-prev,
   .gallery_slider .swiper-button-next {
     @apply bg-white border rounded-lg size-10;
@@ -432,8 +494,22 @@ body {
   }
 }
 
+/* Modern Homepage Carousel — hide Swiper's default nav arrows (external buttons used instead) */
+.modern-carousel-shell .swiper-button-prev,
+.modern-carousel-shell .swiper-button-next {
+  display: none !important;
+}
+
+/* Let card shadows breathe — Swiper's .swiper clips overflow by default */
+.modern-carousel-shell .swiper {
+  overflow: visible;
+}
+.modern-carousel-shell .swiper-wrapper {
+  padding: 8px 0;
+}
+
 /* Shop Filter */
-.shop_filter div>input[type='checkbox'] {
+.shop_filter div > input[type='checkbox'] {
   border: 2px solid !important;
   padding: 4px;
 }
@@ -534,17 +610,17 @@ span {
   background-color: rgb(229 231 235) !important;
 }
 
-.tfc_admin_activitiesmultiselect .optionContainer>li.highlightOption {
+.tfc_admin_activitiesmultiselect .optionContainer > li.highlightOption {
   background-color: inherit;
   color: black;
 }
 
-.tfc_admin_activitiesmultiselect .optionContainer>li:hover {
+.tfc_admin_activitiesmultiselect .optionContainer > li:hover {
   background-color: #000;
   color: #fafafa;
 }
 
-.tfc_admin_activitiesmultiselect .optionContainer>li input:checked {
+.tfc_admin_activitiesmultiselect .optionContainer > li input:checked {
   background-color: #56947d;
 }
 
@@ -554,4 +630,18 @@ span {
 .tfc_calendar .day-range-end,
 .tfc_calendar .day-range-end:focus {
   @apply bg-secondaryDark text-white;
+}
+
+/* City page filter price slider — green theme */
+.city-price-slider .range-slider__range {
+  background: #57947d !important;
+}
+.city-price-slider .range-slider__thumb {
+  background: #fff !important;
+  border: 2px solid #57947d !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+.city-price-slider .range-slider__bar {
+  background: #f1f5f9 !important;
 }
