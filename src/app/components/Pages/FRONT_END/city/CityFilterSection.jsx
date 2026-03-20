@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
-import _ from 'lodash';
 import ItemCard from '@/app/components/ui/item-card';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import { LoadingPage } from '@/app/components/Animation/Cards';
@@ -22,8 +21,8 @@ export default function CityFilterSection({ cityName }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
-  const debouncedFetch = useCallback(
-    _.debounce(() => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
       setIsLoading(true);
       let query = `?min_price=${priceRange[0]}&max_price=${priceRange[1]}&page=${currentPage}&min_rating=${ratingFilter}`;
       if (selectedCategories.length > 0) query += `&categories=${selectedCategories.join(',')}`;
@@ -38,14 +37,10 @@ export default function CityFilterSection({ cityName }) {
         })
         .catch(() => { setProducts([]); setPagination(null); })
         .finally(() => setIsLoading(false));
-    }, 500),
-    [priceRange, selectedCategories, currentPage, city, ratingFilter],
-  );
+    }, 500);
 
-  useEffect(() => {
-    debouncedFetch();
-    return () => debouncedFetch.cancel();
-  }, [debouncedFetch]);
+    return () => clearTimeout(timer);
+  }, [priceRange, selectedCategories, currentPage, city, ratingFilter]);
 
   const displayName = cityName || city?.replace(/-/g, ' ')?.replace(/\b\w/g, (c) => c.toUpperCase());
 
