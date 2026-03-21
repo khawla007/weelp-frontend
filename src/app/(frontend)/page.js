@@ -1,74 +1,40 @@
-export const dynamic = 'force-dynamic';
-import HereSection from '../components/Pages/FRONT_END/home/HeroSection';
-import ProductSliderSection from '../components/Pages/FRONT_END/Global/ProductSliderSection';
-import ExpandableFeaturedDestinations from '../components/Pages/FRONT_END/home/ExpandableFeaturedDestinations';
-import { fakeData } from '../Data/ShopData';
+export const revalidate = 60;
 
-// ReusableComponents
-import SingleProductCard, { GlobalCard } from '../components/SingleProductCard';
-import TabButton from '../components/TabButton';
-import BuyNow from '../components/BuyNow';
-import BookingCard from '../components/BookingCard';
-import Testimonial from '../components/Testimonial';
-import DestinationCard, { DestinationCard2 } from '../components/DestinationCard';
+import HeroSection from '../components/Pages/FRONT_END/home/HeroSection';
+import ProductSliderSection from '@/app/components/ui/ProductSliderSection';
+import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
+import BrowseDestinationsSection from '../components/Pages/FRONT_END/home/BrowseDestinationsSection';
 import TestimonialSection from '../components/Pages/FRONT_END/Global/TestimonialSection';
-import GuideSection from '../components/Pages/FRONT_END/Global/GuideSection';
-import CurateSection from '../components/Pages/FRONT_END/home/CurateSection';
-import ReviewCard, { ReviewCard2, SingleProductReviewCard } from '../components/ReviewCard';
 import AiSection from '../components/Pages/FRONT_END/home/AiSection';
-import { publicApi } from '@/lib/axiosInstance';
-import { log } from '@/lib/utils';
+import BlogSection from '../components/ui/BlogSection';
 import { getAllFeaturedActivities } from '@/lib/services/activites';
-import { ReviewCardCarouselAnimation } from '../components/Animation/ProductAnimation';
-import { SliderLayout } from '../components/Pages/FRONT_END/Global/Layout/FilterWrapper';
-import SectionLayout from '../components/Pages/FRONT_END/Global/Layout/SectionLayout';
 import { getAllFeaturedCities } from '@/lib/services/cities';
+import { publicApi } from '@/lib/axiosInstance';
 
 const HomePage = async () => {
-  const { data: featuredActivities = [], success } = await getAllFeaturedActivities(); // featured Activities
-  const featuredCities = await getAllFeaturedCities(); // featured cities
+  const [featuredActivitiesRes, featuredCitiesRes, blogsRes] = await Promise.all([
+    getAllFeaturedActivities(),
+    getAllFeaturedCities(),
+    publicApi
+      .get('/api/blogs?per_page=10', { headers: { Accept: 'application/json' } })
+      .then((res) => res.data)
+      .catch(() => ({ data: [] })),
+  ]);
+
+  const featuredActivities = Array.isArray(featuredActivitiesRes) ? featuredActivitiesRes : (featuredActivitiesRes?.data ?? []);
+
+  const featuredCities = Array.isArray(featuredCitiesRes) ? featuredCitiesRes : (featuredCitiesRes?.data ?? []);
+
+  const blogs = blogsRes?.data ?? [];
 
   return (
     <>
-      <HereSection />
-      {/* {featuredActivities?.length > 0 && (
-        <SectionLayout title="Top Activities">
-          <SliderLayout data={featuredActivities} item={() => <span>item </span>}></SliderLayout>
-        </SectionLayout>
-      )} */}
-      {/* Featured Destinations Section */}
-      {featuredCities?.data && featuredCities.data.length > 0 && (
-        <ExpandableFeaturedDestinations data={featuredCities.data} title="Top Destinations" />
-      )}
-
-      {featuredActivities?.length > 0 && <ProductSliderSection destinations={featuredActivities} />}
+      <HeroSection />
+      {featuredActivities.length > 0 && <ProductSliderSection items={featuredActivities.map((a) => mapProductToItemCard(a))} title="Top activities" navigationId="top-activities" />}
+      <BrowseDestinationsSection cities={featuredCities} />
       <TestimonialSection />
-      <CurateSection />
       <AiSection />
-      <GuideSection sectionTitle={'Your Guide'} data={fakeData} /> {/* <RegistrationForm /> */}
-      {/* Guide Section (Blog) */}
-      <div className="hidden sm:grid-cols-2 md:grid-cols-3 p-5 gap-4 items-center max-w-fit">
-        <SingleProductCard />
-        <TabButton text={'For you'} />
-        <BuyNow text={'Buy now'} />
-        <BookingCard destination={'Desert Place'} />
-
-        {/* <Testimonial
-          username={""}
-          email={""}
-          title={""}
-          imageSrc={""}
-          date={""}
-        />
-        <ReviewCard
-          title={"Markus_K"}
-          rating={4}
-          comment={
-            "Very well and good organized trip to the Desert West Quads, Falcon Show, Camelriding and Delicious Barbecue."
-          }
-        />  
-        <DestinationCard /> */}
-      </div>
+      <BlogSection blogs={blogs} navigationId="guide-blog" />
     </>
   );
 };
