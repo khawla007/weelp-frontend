@@ -9,7 +9,7 @@ export function useIsClient() {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
+    setIsClient(true); // eslint-disable-line react-hooks/set-state-in-effect -- standard hydration-detection pattern
   }, []);
 
   return isClient;
