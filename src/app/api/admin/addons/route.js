@@ -59,16 +59,22 @@ export async function POST(req) {
 
     // Forward validation errors with proper status
     if (error?.response?.status === 422) {
-      return NextResponse.json({
-        success: false,
-        message: error.response.data?.message || 'Validation failed',
-        errors: error.response.data?.errors
-      }, { status: 422 });
+      return NextResponse.json(
+        {
+          success: false,
+          message: error.response.data?.message || 'Validation failed',
+          errors: error.response.data?.errors,
+        },
+        { status: 422 },
+      );
     }
 
-    return NextResponse.json({
-      success: false,
-      message: error?.response?.data?.message || 'Failed to create add-on'
-    }, { status: error?.response?.status || 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: error?.response?.data?.message || 'Failed to create add-on',
+      },
+      { status: error?.response?.status || 500 },
+    );
   }
 }

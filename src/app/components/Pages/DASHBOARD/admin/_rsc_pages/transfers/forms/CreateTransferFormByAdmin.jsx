@@ -5,8 +5,9 @@ import _ from 'lodash';
 import { isEmpty } from 'lodash';
 import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 import { Separator } from '@/components/ui/separator';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, useWatch } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
@@ -59,8 +60,37 @@ export const CreateTransferFormByAdmin = ({}) => {
   // Handle Global State
   const { errors, isValid, isSubmitting } = methods?.formState;
 
-  // Handle Next button for steps 1-4 (no validation)
-  const handleNext = () => {
+  // Watch Step 1 fields to enable/disable Create button (matching Activities pattern)
+  const nameValue = useWatch({ control: methods.control, name: 'name' });
+  const slugValue = useWatch({ control: methods.control, name: 'slug' });
+  const transferTypeValue = useWatch({ control: methods.control, name: 'transfer_type' });
+  const vehicleTypeValue = useWatch({ control: methods.control, name: 'vehicle_type' });
+  const pickupLocationValue = useWatch({ control: methods.control, name: 'pickup_location' });
+  const dropoffLocationValue = useWatch({ control: methods.control, name: 'dropoff_location' });
+  const descriptionValue = useWatch({ control: methods.control, name: 'description' });
+  const inclusionValue = useWatch({ control: methods.control, name: 'inclusion' });
+
+  // Check if all Step 1 required fields have values (non-empty after trimming)
+  const isStep1Valid = !!(
+    nameValue?.trim() &&
+    slugValue?.trim() &&
+    transferTypeValue?.trim() &&
+    vehicleTypeValue?.trim() &&
+    pickupLocationValue?.trim() &&
+    dropoffLocationValue?.trim() &&
+    descriptionValue?.trim() &&
+    inclusionValue?.trim()
+  );
+
+  // Step 1 required fields for validation
+  const step1Fields = ['name', 'slug', 'transfer_type', 'vehicle_type', 'pickup_location', 'dropoff_location', 'description', 'inclusion'];
+
+  // Handle Next button click - validates step 1 fields before proceeding
+  const handleNext = async () => {
+    if (currentStep === 1) {
+      const isValid = await methods.trigger(step1Fields);
+      if (!isValid) return;
+    }
     const currentData = methods.getValues();
     setFormData({ ...formData, ...currentData });
     setCurrentStep((prev) => prev + 1);
@@ -176,7 +206,14 @@ export const CreateTransferFormByAdmin = ({}) => {
                   steps.map((step) => (
                     <li
                       key={step.id}
-                      onClick={() => setCurrentStep(step?.id)}
+                      onClick={async () => {
+                        // Validate step 1 fields before allowing navigation away
+                        if (currentStep === 1 && step?.id !== 1) {
+                          const isValid = await methods.trigger(step1Fields);
+                          if (!isValid) return;
+                        }
+                        setCurrentStep(step?.id);
+                      }}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${
                         currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'
                       }`}
@@ -194,7 +231,16 @@ export const CreateTransferFormByAdmin = ({}) => {
               <Separator className="" />
             </div>
           </div>
-          <form onSubmit={currentStep === 6 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
+          <form
+            onSubmit={
+              currentStep === 6
+                ? methods.handleSubmit(onSubmit)
+                : async (e) => {
+                    e.preventDefault();
+                    await handleNext();
+                  }
+            }
+          >
             <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               {renderStep()}
               <div className="flex justify-between pt-4">
@@ -213,7 +259,7 @@ export const CreateTransferFormByAdmin = ({}) => {
                   <Button
                     type="button"
                     onClick={() => {
-                      router.back();
+                      router.push('/dashboard/admin/transfers');
                     }}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                   >
@@ -222,9 +268,22 @@ export const CreateTransferFormByAdmin = ({}) => {
                 )}
 
                 {/* Prevent Button On Schedules */}
-                <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
-                  {currentStep === 6 ? 'Submit' : 'Next'}
-                </Button>
+                {/* Step 6: Use FormActionButtons, Steps 1-5: Use Next button */}
+                {currentStep === 6 ? (
+                  <FormActionButtons
+                    mode="create"
+                    isSubmitting={isSubmitting}
+                    isDisabled={!isStep1Valid}
+                    cancelAlwaysEnabled={true}
+                    cancelHref="/dashboard/admin/transfers"
+                    containerType="div"
+                    className="flex gap-4 ml-auto"
+                  />
+                ) : (
+                  <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
+                    Next
+                  </Button>
+                )}
               </div>
             </fieldset>
           </form>

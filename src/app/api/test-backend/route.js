@@ -8,9 +8,7 @@ export async function GET() {
     // Test calling backend with the token from session
     const api = axios.create({
       baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}`,
-      headers: session?.access_token
-        ? { Authorization: `Bearer ${session.access_token}` }
-        : {},
+      headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
     });
 
     const response = await api.get('/api/admin/countries/10', {
@@ -22,14 +20,17 @@ export async function GET() {
       status: response.status,
       countryName: response.data?.name,
       hasData: !!response.data,
-      keys: Object.keys(response.data || {})
+      keys: Object.keys(response.data || {}),
     });
   } catch (error) {
-    return Response.json({
-      success: false,
-      error: error.message,
-      status: error.response?.status,
-      data: error.response?.data
-    }, { status: 200 });
+    return Response.json(
+      {
+        success: false,
+        error: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      },
+      { status: 200 },
+    );
   }
 }

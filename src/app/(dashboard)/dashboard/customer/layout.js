@@ -9,9 +9,7 @@ export default function UserLayout({ children }) {
       <AppSidebar />
       <main className="w-full dark:bg-black">
         <SidebarTrigger />
-        <DashboardContentWrapper>
-          {children}
-        </DashboardContentWrapper>
+        <DashboardContentWrapper>{children}</DashboardContentWrapper>
         <Toaster />
       </main>
     </SidebarProvider>

@@ -1,11 +1,8 @@
 // app/api/admin/packages/[id]/route.js
 import { NextResponse } from 'next/server';
 import { getSinglePackageAdmin } from '@/lib/services/package';
-import { delay } from '@/lib/utils';
-
 export async function GET(req, { params }) {
   const { id } = params;
-  await delay(500);
   try {
     const packageData = await getSinglePackageAdmin(id);
 
@@ -15,7 +12,7 @@ export async function GET(req, { params }) {
           success: false,
           message: packageData.message || 'Package not found',
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -28,7 +25,7 @@ export async function GET(req, { params }) {
         success: false,
         message: error?.message || 'Something went wrong',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -37,7 +34,6 @@ export async function PUT(req, { params }) {
   const { id } = params;
   try {
     const body = await req.json();
-    await delay(500);
 
     // Import authApi dynamically to avoid SSR issues
     const { authApi } = await import('@/lib/axiosInstance');
@@ -60,7 +56,7 @@ export async function PUT(req, { params }) {
         success: false,
         message,
       },
-      { status }
+      { status },
     );
   }
 }
@@ -68,8 +64,6 @@ export async function PUT(req, { params }) {
 export async function DELETE(req, { params }) {
   const { id } = params;
   try {
-    await delay(500);
-
     // Import authApi dynamically to avoid SSR issues
     const { authApi } = await import('@/lib/axiosInstance');
 
@@ -91,7 +85,7 @@ export async function DELETE(req, { params }) {
         success: false,
         message,
       },
-      { status }
+      { status },
     );
   }
 }

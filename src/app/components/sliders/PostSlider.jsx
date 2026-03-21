@@ -38,7 +38,7 @@ const PostSlider = ({ data }) => {
       >
         {data.map((val, index) => (
           <SwiperSlide key={index}>
-            <Singleproductguide postTitle={val?.name} imageSrc={val?.image} subtitle={val?.description} />
+            <Singleproductguide postTitle={val?.name} imageSrc={val?.image} subtitle={val?.description} slug={val?.slug} />
           </SwiperSlide>
         ))}
       </Swiper>

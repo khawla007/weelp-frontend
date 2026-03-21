@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react';
 import { useReactTable, getCoreRowModel, getPaginationRowModel, flexRender, ColumnDef } from '@tanstack/react-table';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal, Edit, Trash, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import { StatusBadge } from '@/app/components/Shared/StatusBadge';
+import { TableActions } from '@/app/components/Shared/TableActions';
+import { STATUS_TYPES } from '@/app/components/Shared/constants/statusConfig';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { deleteAttribute } from '@/lib/actions/attributes';
 import { useToast } from '@/hooks/use-toast';
@@ -34,7 +36,7 @@ export function DataTableAttributes({ attributes = [], mutate, selectedItems = [
     if (checked) {
       onSelectionChange([...selectedItems, itemId]);
     } else {
-      onSelectionChange(selectedItems.filter(id => id !== itemId));
+      onSelectionChange(selectedItems.filter((id) => id !== itemId));
       if (isAllSelected) {
         onAllSelectedChange(false);
       }
@@ -82,7 +84,7 @@ export function DataTableAttributes({ attributes = [], mutate, selectedItems = [
           checked={isAllSelected}
           onCheckedChange={(checked) => {
             if (checked) {
-              onSelectionChange(attributes.map(attribute => attribute.id));
+              onSelectionChange(attributes.map((attribute) => attribute.id));
               onAllSelectedChange(true);
             } else {
               onSelectionChange([]);
@@ -92,17 +94,19 @@ export function DataTableAttributes({ attributes = [], mutate, selectedItems = [
           className="h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
         />
       ),
-      cell: ({ row }) => (
-        <SelectableCardCheckbox
-          checked={selectedItems.includes(row.original.id)}
-          onCheckedChange={handleSelectionChange}
-          itemId={row.original.id}
-        />
-      ),
+      cell: ({ row }) => <SelectableCardCheckbox checked={selectedItems.includes(row.original.id)} onCheckedChange={handleSelectionChange} itemId={row.original.id} />,
     },
     {
       accessorKey: 'name',
       header: 'Name',
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: ({ getValue }) => {
+        const status = getValue();
+        return <StatusBadge status={status} type={STATUS_TYPES.ATTRIBUTE} />;
+      },
     },
     { accessorKey: 'slug', header: 'Slug' },
     {
@@ -116,38 +120,19 @@ export function DataTableAttributes({ attributes = [], mutate, selectedItems = [
       cell: ({ getValue }) => getValue() || 'N/A',
     },
     {
-      id: 'actions',
+      accessorKey: 'id',
       header: 'Actions',
       cell: ({ row }) => {
-        const attribute = row.original;
+        const attributeId = row.original.id;
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href={`/dashboard/admin/taxonomies/attributes/${attribute.id}`} className="flex w-full cursor-pointer">
-                  <Edit className="mr-2 h-4 w-4" />
-                  Edit
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  setSelectedId(attribute.id);
-                  setIsDialogOpen(true);
-                }}
-                className="text-red-600 cursor-pointer"
-              >
-                <Trash className="mr-2 h-4 w-4" />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <TableActions
+            id={attributeId}
+            editUrl={`/dashboard/admin/taxonomies/attributes/${attributeId}`}
+            onDelete={(id) => {
+              setSelectedId(id);
+              setIsDialogOpen(true);
+            }}
+          />
         );
       },
     },

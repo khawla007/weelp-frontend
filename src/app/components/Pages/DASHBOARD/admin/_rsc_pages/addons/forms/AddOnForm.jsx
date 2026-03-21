@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -17,6 +16,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { createAddOn, editAddOn } from '@/lib/actions/addOn'; // actions
 import { cn } from '@/lib/utils';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 
 // Extract values
 const priceCalculationValues = FORM_ADDON_PRICE_CALCULATION_BY.map(({ value }) => value);
@@ -63,7 +63,7 @@ export const AddOnForm = ({ formData = {} }) => {
 
   // destructure form
   const {
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid, isDirty },
   } = form;
 
   // Watch type field for auto-populating price_calculation
@@ -95,7 +95,7 @@ export const AddOnForm = ({ formData = {} }) => {
         itinerary: 'per_itinerary',
         transfer: 'per_transfer',
       };
-      form.setValue('price_calculation', priceCalculationMap[typeValue]);
+      form.setValue('price_calculation', priceCalculationMap[typeValue], { shouldDirty: false });
     }
   }, [typeValue, form]);
 
@@ -258,19 +258,12 @@ export const AddOnForm = ({ formData = {} }) => {
                           min="0"
                           {...field}
                           onChange={(e) => field.onChange(Number(e.target.value))}
-                          className={cn(
-                            isSalePriceInvalid && 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500'
-                          )}
+                          className={cn(isSalePriceInvalid && 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500')}
                         />
                       </FormControl>
                       <FormDescription>Leave empty if no discount is applied.</FormDescription>
                       <FormMessage />
-                      <p className={cn(
-                        "text-sm text-red-500 min-h-[20px]",
-                        !isSalePriceInvalid && 'invisible'
-                      )}>
-                        Sale price must be less than regular price.
-                      </p>
+                      <p className={cn('text-sm text-red-500 min-h-[20px]', !isSalePriceInvalid && 'invisible')}>Sale price must be less than regular price.</p>
                     </FormItem>
                   )}
                 />
@@ -284,12 +277,7 @@ export const AddOnForm = ({ formData = {} }) => {
                   <FormItem>
                     <FormLabel className={FORMSTYLE.formLabel}>Price Calculation</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        value={priceCalculationLabel}
-                        disabled
-                        className="bg-muted cursor-not-allowed"
-                      />
+                      <Input {...field} value={priceCalculationLabel} disabled className="bg-muted cursor-not-allowed" />
                     </FormControl>
                     <FormDescription>Automatically calculated based on selected Type.</FormDescription>
                     <FormMessage />
@@ -322,20 +310,14 @@ export const AddOnForm = ({ formData = {} }) => {
                 )}
               />
 
-              <div className="flex gap-2 justify-end">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="self-end"
-                  onClick={() => router.back()}
-                >
-                  Cancel
-                </Button>
-
-                <Button type="submit" variant="secondary" className="self-end">
-                  {isSubmitting ? 'Submitting' : 'Submit'}
-                </Button>
-              </div>
+              <FormActionButtons
+                mode={id ? 'update' : 'create'}
+                cancelHref="/dashboard/admin/addon"
+                isSubmitting={isSubmitting}
+                isDisabled={id ? !isValid || !isDirty : !isValid}
+                containerType="div"
+                className="justify-end"
+              />
             </fieldset>
           </form>
         </Form>

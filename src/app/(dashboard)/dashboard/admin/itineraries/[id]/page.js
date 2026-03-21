@@ -10,10 +10,10 @@ import { notFound } from 'next/navigation';
 const EditItinerary = async ({ params }) => {
   const { id } = await params;
   const [{ data: tagsData }, { data: locationsData = {} }, { data: attributesData = {} }, { data: categoriesData = {} }, transfers, { data: activitiesData = [] }] = await Promise.all([
-    getAllTagsAdmin(),
+    getAllTagsAdmin('', { all: true }),
     getAllCitiesAdmin(),
-    getAllAttributesAdmin(),
-    getCategoriesAdmin(),
+    getAllAttributesAdmin(null, { all: true }),
+    getCategoriesAdmin(null, { all: true }),
     getAllTransfersAdmin(),
     getAllActivitesAdmin(),
   ]);

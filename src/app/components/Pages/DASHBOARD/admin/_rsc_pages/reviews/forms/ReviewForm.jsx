@@ -3,7 +3,6 @@
 import React from 'react';
 import { SelectField, SelectField2 } from '../components/SelectField';
 import { useForm, useWatch } from 'react-hook-form';
-import { Button } from '@/components/ui/button';
 import { Rating } from '@/app/components/Ratings';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,6 +17,7 @@ import { useAllUsersAdmin } from '@/hooks/api/admin/users';
 import { useRouter } from 'next/navigation';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 
 const ReviewForm = ({ reviewData = {}, id = '' }) => {
   const { users, isLoading: isLoadingUsers, error: isErrorUser } = useAllUsersAdmin(); // all users
@@ -45,7 +45,7 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
 
   const {
     control,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid, isDirty },
   } = form; // destructure form
 
   // watch itemType
@@ -92,126 +92,131 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <fieldset className={isSubmitting ? 'cursor-wait space-y-8' : 'cursor-auto space-y-8'}>
-          {/* Display User */}
-          {isLoadingUsers && <span className="loader"></span>}
-          {!isLoadingUsers && !isErrorUser && (
-            <FormField
-              control={form.control}
-              name="user_id"
-              rules={{ required: 'Field Required' }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Select User</FormLabel>
-                  <FormControl>
-                    <SelectField2 placeholder="Select User" data={[...ALL_USERS]} value={field.value} onChange={(val) => field.onChange(Number(val))} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              {/* Display User */}
+              {isLoadingUsers && <span className="loader"></span>}
+              {!isLoadingUsers && !isErrorUser && (
+                <FormField
+                  control={form.control}
+                  name="user_id"
+                  rules={{ required: 'Field Required' }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Select User</FormLabel>
+                      <FormControl>
+                        <SelectField2 placeholder="Select User" data={[...ALL_USERS]} value={field.value} onChange={(val) => field.onChange(Number(val))} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               )}
-            />
-          )}
-          {isErrorUser && <span className="text-red-400">User Api Failed</span>}
+              {isErrorUser && <span className="text-red-400">User Api Failed</span>}
 
-          {/* Dynamic Content Type */}
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="item_type"
-              rules={{ required: 'Field Required' }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Content type</FormLabel>
-                  <FormControl>
-                    <SelectField placeholder="Select Content Type" data={FORM_REVIEW_ITEM_TYPE} value={field.value} onChange={field.onChange} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              {/* Dynamic Content Type */}
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="item_type"
+                  rules={{ required: 'Field Required' }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Content type</FormLabel>
+                      <FormControl>
+                        <SelectField placeholder="Select Content Type" data={FORM_REVIEW_ITEM_TYPE} value={field.value} onChange={field.onChange} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            {/* Dynamic Items */}
-            {isLoadingItems && <span className="loader"></span>}
-            {!isLoadingItems && !isErrorItems && (
+                {/* Dynamic Items */}
+                {isLoadingItems && <span className="loader"></span>}
+                {!isLoadingItems && !isErrorItems && (
+                  <FormField
+                    control={form.control}
+                    name="item_id"
+                    rules={{ required: 'Field Required' }}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Content Item</FormLabel>
+                        <FormControl>
+                          <SelectField2 placeholder="Select Item" data={items?.data || []} value={field.value} onChange={(val) => field.onChange(Number(val))} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+                {isErrorItems && <span className="text-red-400">Content Type Not Selected or Items api failed..</span>}
+              </div>
+
+              {/* Rating */}
               <FormField
                 control={form.control}
-                name="item_id"
+                name="rating"
                 rules={{ required: 'Field Required' }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Content Item</FormLabel>
+                    <FormLabel>Select User</FormLabel>
                     <FormControl>
-                      <SelectField2 placeholder="Select Item" data={items?.data || []} value={field.value} onChange={(val) => field.onChange(Number(val))} />
+                      <Rating value={field.value} max={5} onChange={field.onChange} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            )}
-            {isErrorItems && <span className="text-red-400">Content Type Not Selected or Items api failed..</span>}
-          </div>
 
-          {/* Rating */}
-          <FormField
-            control={form.control}
-            name="rating"
-            rules={{ required: 'Field Required' }}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Select User</FormLabel>
-                <FormControl>
-                  <Rating value={field.value} max={5} onChange={field.onChange} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              {/* Review Text */}
+              <FormField
+                control={form.control}
+                name="review_text"
+                defaultValue=""
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Review Text</FormLabel>
+                    <Textarea {...field} />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          {/* Review Text */}
-          <FormField
-            control={form.control}
-            name="review_text"
-            defaultValue=""
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Review Text</FormLabel>
-                <Textarea {...field} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              {/* Status */}
+              <FormField
+                control={form.control}
+                name="status"
+                rules={{ required: 'Field Required' }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status</FormLabel>
+                    <div className="flex gap-4">
+                      {REVIEW_STATUS.map((val) => (
+                        <FormControl key={val}>
+                          <Label htmlFor={val} className="flex items-center space-x-2 capitalize ">
+                            <Input id={val} type="radio" value={val} checked={field.value === val} onChange={field.onChange} />
+                            <span>{val}</span>
+                          </Label>
+                        </FormControl>
+                      ))}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          {/* Status */}
-          <FormField
-            control={form.control}
-            name="status"
-            rules={{ required: 'Field Required' }}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Status</FormLabel>
-                <div className="flex gap-4">
-                  {REVIEW_STATUS.map((val) => (
-                    <FormControl key={val}>
-                      <Label htmlFor={val} className="flex items-center space-x-2 capitalize ">
-                        <Input id={val} type="radio" value={val} checked={field.value === val} onChange={field.onChange} />
-                        <span>{val}</span>
-                      </Label>
-                    </FormControl>
-                  ))}
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              {/* Media Component */}
+              <MediaComponent />
 
-          {/* Media Component */}
-          <MediaComponent />
-
-          <Button type="submit" disabled={isErrorItems || isErrorUser || isSubmitting}>
-            {isSubmitting ? 'Submiting' : 'Submit'}
-          </Button>
-        </fieldset>
-      </form>
-    </Form>
+              <FormActionButtons
+                mode={id ? 'update' : 'create'}
+                cancelHref="/dashboard/admin/reviews"
+                isSubmitting={isSubmitting}
+                isDisabled={id ? !isValid || !isDirty || isErrorItems || isErrorUser : !isValid || isErrorItems || isErrorUser}
+                containerType="div"
+                className="justify-end"
+              />
+            </fieldset>
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );

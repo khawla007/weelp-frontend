@@ -1,5 +1,4 @@
-import { authApi } from '@/lib/axiosInstance';
-import { log } from '@/lib/utils';
+import { getAuthApi } from '@/lib/axiosInstance';
 
 /**
  * Get All Orders By Customer
@@ -8,15 +7,15 @@ import { log } from '@/lib/utils';
  */
 export async function getAllOrdersCustomer(search = '') {
   try {
-    const res = await authApi.get(`/api/customer/userorders/${search ? search : ''}`, {
+    const api = await getAuthApi();
+    const res = await api.get(`/api/customer/userorders/${search ? search : ''}`, {
       headers: { Accept: 'application/json' },
     });
 
-    // for handling diffrent response
     if (res.status === 200) return res.data;
-    if (res.status === 404) return {}; // not found
+    if (res.status === 404) return {};
 
-    return {}; // fallback for other statuses
+    return {};
   } catch (error) {
     return {};
   }

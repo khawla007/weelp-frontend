@@ -82,6 +82,7 @@ export const DashboardAdminNav = {
           title: 'Vendors',
           icon: Box,
           url: '/dashboard/admin/transfers/vendors',
+          comingSoon: true,
         },
       ],
     },

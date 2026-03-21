@@ -54,7 +54,7 @@ export const FilterStates = () => {
     if (isAllSelected) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(states.map(state => state.id));
+      setSelectedItems(states.map((state) => state.id));
     }
     setIsAllSelected(!isAllSelected);
   };
@@ -105,10 +105,7 @@ export const FilterStates = () => {
               deleteLabel="Delete"
             />
           ) : (
-            <AddNewButton
-              label="Add New"
-              href="/dashboard/admin/destinations/states/new"
-            />
+            <AddNewButton label="Add New" href="/dashboard/admin/destinations/states/new" />
           )}
         </div>
 
@@ -133,10 +130,8 @@ export const FilterStates = () => {
                     {...state}
                     checked={selectedItems.includes(state.id)}
                     onCheckedChange={(checked, id) => {
-                      setSelectedItems(prev => {
-                        const newSelection = checked
-                          ? [...prev, id]
-                          : prev.filter(itemId => itemId !== id);
+                      setSelectedItems((prev) => {
+                        const newSelection = checked ? [...prev, id] : prev.filter((itemId) => itemId !== id);
 
                         // Update isAllSelected state
                         setIsAllSelected(newSelection.length === states.length);

@@ -1,39 +1,37 @@
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { ChevronDown, Globe, Headphones, MenuIcon, ShoppingCart, UserRound } from 'lucide-react';
+import { ChevronDown, Globe, Headphones, MenuIcon, Search, ShoppingCart, Smartphone, UserRound } from 'lucide-react';
 import Link from 'next/link';
-import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from '@/components/ui/navigation-menu';
-import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Badge } from '@/components/ui/badge';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import dynamic from 'next/dynamic';
 import { useNavigationMenu } from '@/hooks/api/public/menu/menu';
-import { NAV_MENU_ITEMS } from '@/constants/shared';
+import { HEADER_NAV_ITEMS, HEADER_SECONDARY_META } from './shellContent';
 
 const MiniCartNew = dynamic(() => import('../Modals/MiniCartNew', { ssr: false })); // lazy load minicart
 
 const MobileMenu = ({ stickyHeader }) => {
   return (
-    <div className="relative lg:hidden">
-      {/* Top Bar */}
-      <div className={`${stickyHeader ? 'hidden' : 'flex'} text-black bg-Brightgray px-12 py-4 w-full items-center justify-between `}>
-        <Link href="/Helpline" className="flex items-center text-Nileblue text-sm">
-          <Headphones className="mr-2" />
-          Helpline
-        </Link>
-
-        <div className="topheader-language flex space-x-6">
-          <Link href="/Get Exclusive offer on the App" className="flex items-center text-Nileblue text-sm">
-            <Globe className="mr-2" />
-            English
-          </Link>
+    <div className="lg:hidden">
+      <div className={`${stickyHeader ? 'hidden' : 'block'} border-b border-[#E5E4E1] bg-[#ecf2f4]`}>
+        <div className="flex items-center justify-between gap-3 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1A1918]">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#f0c76d] bg-[#fff4d8] px-3 py-1.5">
+            <Smartphone className="size-3.5" />
+            <span>Get Exclusive offer on the App</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#E5E4E1] bg-white/80 px-3 py-1.5">
+              <Globe className="size-3.5" />
+              <span>{HEADER_SECONDARY_META[0]}</span>
+            </div>
+            <div className="rounded-full border border-[#E5E4E1] bg-white/80 px-3 py-1.5">{HEADER_SECONDARY_META[1]}</div>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <div className="p-2 bg-white">
+      <div className="border-b border-[#E5E4E1] bg-[#f8f9f9] px-4 py-3">
         <MobileMenuSlider />
       </div>
     </div>
@@ -41,54 +39,72 @@ const MobileMenu = ({ stickyHeader }) => {
 };
 
 const MobileMenuSlider = () => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Render a matching skeleton during SSR to avoid Radix Dialog hydration mismatch
+  // (Radix generates different aria-controls IDs on server vs client)
+  if (!mounted) {
+    return (
+      <div className="flex justify-between items-center">
+        <div className="h-11 w-11 rounded-full border border-[#E5E4E1] bg-white" />
+        <Link href="/" className="text-[1.9rem] font-bold tracking-[-0.06em] text-[#1A1918]">
+          Weelp.
+        </Link>
+        <HeaderAccountMobile />
+      </div>
+    );
+  }
+
   return (
     <Sheet>
       <div className="flex justify-between items-center">
         <SheetTrigger asChild>
-          <Button variant="link">
-            <MenuIcon />
+          <Button variant="ghost" className="h-11 w-11 rounded-full border border-[#E5E4E1] bg-white p-0 text-[#1A1918]">
+            <MenuIcon className="size-5" />
           </Button>
         </SheetTrigger>
 
-        {/* Site Logo */}
-        <div className="logo">
-          <Link href="/">
-            <Image src="/assets/images/SiteLogo.png" alt="Logo" width={120} height={120} />
-          </Link>
-        </div>
+        <Link href="/" className="text-[1.9rem] font-bold tracking-[-0.06em] text-[#1A1918]">
+          Weelp.
+        </Link>
 
-        {/* Mobile Account and MiniCart */}
         <HeaderAccountMobile />
       </div>
-      <SheetContent side="left">
+
+      <SheetContent side="left" className="w-full max-w-[360px] border-r border-[#E5E4E1] bg-[#f8f9f9] px-0">
         <SheetHeader>
-          <SheetTitle className="sr-only">Edit profile</SheetTitle>
-          <SheetDescription className="sr-only">Make changes to your profile here. Click save when you&apos;re done.</SheetDescription>
+          <SheetTitle className="sr-only">Main navigation</SheetTitle>
+          <SheetDescription className="sr-only">Browse the modern Weelp navigation.</SheetDescription>
         </SheetHeader>
 
-        {/* Site Logo */}
-        <div className="logo">
-          <Link href="/">
-            <Image src="/assets/images/SiteLogo.png" alt="Logo" width={120} height={120} />
-          </Link>
+        <div className="border-b border-[#E5E4E1] px-6 pb-5 pt-6">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="text-[2rem] font-bold tracking-[-0.06em] text-[#1A1918]">
+              Weelp.
+            </Link>
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#E5E4E1] bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1A1918]">
+              <Headphones className="size-3.5" />
+              <span>Helpline</span>
+            </div>
+          </div>
+          <p className="mt-4 max-w-[240px] text-sm leading-6 text-[#6D6C6A]">Plan stays, experiences, and transfers in one calmer booking flow.</p>
         </div>
 
-        {/* Mobile Navigation Menu */}
         <NavigationMenuMobile />
       </SheetContent>
     </Sheet>
   );
 };
 
-// Nav Items
 const NavigationMenuMobile = () => {
   const [selectedItem, setSelectedItem] = useState('');
   const { data, isLoading: isNavMenuLoading, error: isNavMenuError } = useNavigationMenu(); // fetch region through api
-  if (isNavMenuError) return <span className="text-red-400">Someting went wrong</span>;
-  if (isNavMenuLoading) return <span className="loader"></span>;
   const regions = data?.data || [];
 
-  // Handle Selcted Item
   const handleSelectedItem = (region) => {
     if (region === selectedItem) {
       setSelectedItem('');
@@ -98,68 +114,75 @@ const NavigationMenuMobile = () => {
   };
 
   return (
-    <NavigationMenu className="flex-col items-start py-4 w-full min-w-full">
-      <NavigationMenuList className="flex-col items-start w-full gap-2 min-w-full p-2">
-        <NavigationMenuItem key={'home'} className="!ml-0">
-          <Link href="/" className="text-2xl">
-            Home
+    <div className="px-6 py-6">
+      <div className="flex flex-col gap-2">
+        {HEADER_NAV_ITEMS.map(({ title, href }) => (
+          <Link key={title} href={href} className="rounded-[22px] border border-[#E5E4E1] bg-white px-4 py-4 text-base font-semibold text-[#1A1918] shadow-[0_18px_32px_-28px_rgba(18,51,71,0.7)]">
+            {title}
           </Link>
-        </NavigationMenuItem>
+        ))}
+      </div>
 
-        {regions.map(({ region, cities }, index) => {
-          return (
-            <NavigationMenuItem key={region} className="!ml-0 w-full relative" onClick={() => handleSelectedItem(region)}>
-              <span className="text-2xl w-full">{region}</span>
+      <div className="mt-6 flex gap-3">
+        <Link href="/user/login" className="flex flex-1 items-center justify-center gap-2 rounded-full border border-[#E5E4E1] bg-white px-4 py-3 text-sm font-semibold text-[#1A1918]">
+          <UserRound className="size-4" />
+          Account
+        </Link>
+        <Link href="/explore" className="flex h-12 w-12 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918]" aria-label="Search trips">
+          <Search className="size-4" />
+        </Link>
+      </div>
 
-              <ChevronDown size={20} className={`absolute left-full sm:left-[150%] top-4 transition-transform ${selectedItem === region ? 'rotate-180' : 'rotate-0'}`} />
-              {selectedItem === region && cities?.length > 0 && (
-                <ul className="px-4 w-full flex flex-col text-sm">
-                  {cities.map((city, index) => (
-                    <Link key={city.id || index} href={`/city/${city?.slug}`}>
-                      {city.name}
-                    </Link>
-                  ))}
-                </ul>
-              )}
-            </NavigationMenuItem>
-          );
-        })}
-
-        {NAV_MENU_ITEMS.map(({ title, href }, index) => {
-          return (
-            <NavigationMenuItem key={index} className="!ml-0">
-              <Link href={href} className="text-2xl">
-                {title}
-              </Link>
-            </NavigationMenuItem>
-          );
-        })}
-      </NavigationMenuList>
-    </NavigationMenu>
+      {!isNavMenuError && !isNavMenuLoading && regions.length > 0 && (
+        <div className="mt-8">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6D6C6A]">Featured regions</p>
+          <div className="mt-3 space-y-2">
+            {regions.map(({ region, cities }) => (
+              <div key={region} className="rounded-[22px] border border-[#E5E4E1] bg-white px-4 py-3">
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between text-left text-sm font-semibold uppercase tracking-[0.12em] text-[#1A1918]"
+                  onClick={() => handleSelectedItem(region)}
+                >
+                  <span>{region}</span>
+                  <ChevronDown className={`size-4 transition-transform ${selectedItem === region ? 'rotate-180' : ''}`} />
+                </button>
+                {selectedItem === region && cities?.length > 0 && (
+                  <div className="mt-3 flex flex-col gap-2 border-t border-[#ecf2f4] pt-3 text-sm text-[#6D6C6A]">
+                    {cities.map((city, index) => (
+                      <Link key={city.id || index} href={`/cities/${city?.slug}`}>
+                        {city.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
-// My Account Mobile
 const HeaderAccountMobile = () => {
   const { isMiniCartOpen, setMiniCartOpen, cartItems } = useMiniCartStore(); //mini cart store
 
-  // HanldeShowCart
   const handleShowCart = () => {
     setMiniCartOpen(!isMiniCartOpen);
   };
   return (
     <div>
-      <div className="flex gap-4">
-        <button className="relative" onClick={handleShowCart}>
-          <ShoppingCart className="text-xs" size={20} />
+      <div className="flex gap-2">
+        <button type="button" className="relative flex h-11 w-11 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918]" onClick={handleShowCart}>
+          <ShoppingCart className="size-[18px]" />
           {cartItems?.length > 0 && <Badge className={'absolute bottom-1/4  left-1/2 scale-75 '}>{cartItems?.length}</Badge>}
         </button>
-        <Link href="/user/login">
-          <UserRound />
+        <Link href="/user/login" className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918]">
+          <UserRound className="size-[18px]" />
         </Link>
       </div>
 
-      {/* Minicart */}
       {isMiniCartOpen && createPortal(<MiniCartNew />, document.body)}
     </div>
   );

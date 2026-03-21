@@ -33,7 +33,7 @@ export function DataTableCategory({ categories = [], mutate, selectedItems = [],
     if (checked) {
       onSelectionChange([...selectedItems, itemId]);
     } else {
-      onSelectionChange(selectedItems.filter(id => id !== itemId));
+      onSelectionChange(selectedItems.filter((id) => id !== itemId));
       if (isAllSelected) {
         onAllSelectedChange(false);
       }
@@ -80,7 +80,7 @@ export function DataTableCategory({ categories = [], mutate, selectedItems = [],
           checked={isAllSelected}
           onCheckedChange={(checked) => {
             if (checked) {
-              onSelectionChange(categories.map(category => category.id));
+              onSelectionChange(categories.map((category) => category.id));
               onAllSelectedChange(true);
             } else {
               onSelectionChange([]);
@@ -90,13 +90,7 @@ export function DataTableCategory({ categories = [], mutate, selectedItems = [],
           className="h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
         />
       ),
-      cell: ({ row }) => (
-        <SelectableCardCheckbox
-          checked={selectedItems.includes(row.original.id)}
-          onCheckedChange={handleSelectionChange}
-          itemId={row.original.id}
-        />
-      ),
+      cell: ({ row }) => <SelectableCardCheckbox checked={selectedItems.includes(row.original.id)} onCheckedChange={handleSelectionChange} itemId={row.original.id} />,
     },
     {
       accessorKey: 'name',
@@ -105,9 +99,7 @@ export function DataTableCategory({ categories = [], mutate, selectedItems = [],
     {
       accessorKey: 'slug',
       header: 'Slug',
-      cell: ({ getValue }) => (
-        <span className="text-muted-foreground text-sm">{getValue() || 'N/A'}</span>
-      ),
+      cell: ({ getValue }) => <span className="text-muted-foreground text-sm">{getValue() || 'N/A'}</span>,
     },
     {
       accessorKey: 'status',
@@ -172,7 +164,9 @@ export function DataTableCategory({ categories = [], mutate, selectedItems = [],
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell className="p-2 px-4" key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                    <TableCell className="p-2 px-4" key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
                   ))}
                 </TableRow>
               ))

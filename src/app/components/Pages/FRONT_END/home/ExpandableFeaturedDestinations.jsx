@@ -38,11 +38,7 @@ const DestinationCard = ({ city, isActive, onClick }) => {
       }}
     >
       {/* Background Image */}
-      <img
-        src={imageUrl}
-        alt={city.name || 'Destination'}
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+      <img src={imageUrl} alt={city.name || 'Destination'} className="absolute inset-0 w-full h-full object-cover" />
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-700" />
@@ -91,11 +87,7 @@ const DestinationCard = ({ city, isActive, onClick }) => {
                 fontFamily: 'var(--font-interTight), sans-serif',
               }}
             >
-              <Link
-                href={`/city/${city.slug || city.id}`}
-                className="text-white hover:text-white"
-                onClick={(e) => e.stopPropagation()}
-              >
+              <Link href={`/cities/${city.slug || city.id}`} className="text-white hover:text-white" onClick={(e) => e.stopPropagation()}>
                 {city.name || 'Thailand'}
               </Link>
             </h4>
@@ -128,7 +120,7 @@ const DestinationCard = ({ city, isActive, onClick }) => {
           }}
         >
           <Link
-            href={`/city/${city.slug || city.id}`}
+            href={`/cities/${city.slug || city.id}`}
             className="th-btn pointer-events-auto inline-flex items-center justify-center bg-transparent border border-white/40 text-white hover:bg-white hover:text-black transition-all duration-300"
             style={{
               height: '55px', // Larger professional size
@@ -173,7 +165,7 @@ const ExpandableFeaturedDestinations = ({ data = [], title = 'Top Destinations' 
               fontFamily: 'var(--font-montez), cursive',
               fontSize: '40px',
               fontWeight: '400',
-              textTransform: 'none'
+              textTransform: 'none',
             }}
           >
             Top Destination
@@ -214,11 +206,7 @@ const ExpandableFeaturedDestinations = ({ data = [], title = 'Top Destinations' 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
           {cities.map((city, index) => (
             <div key={city.id || index} className="destination-list-wrap">
-              <DestinationCard
-                city={city}
-                isActive={false}
-                onClick={() => setActiveIndex(activeIndex === index ? null : index)}
-              />
+              <DestinationCard city={city} isActive={false} onClick={() => setActiveIndex(activeIndex === index ? null : index)} />
             </div>
           ))}
         </div>

@@ -64,11 +64,14 @@ export async function PUT(req, { params }) {
 
     // Forward validation errors with proper status
     if (error?.response?.status === 422) {
-      return NextResponse.json({
-        success: false,
-        message: error.response.data?.message || 'Validation failed',
-        errors: error.response.data?.errors
-      }, { status: 422 });
+      return NextResponse.json(
+        {
+          success: false,
+          message: error.response.data?.message || 'Validation failed',
+          errors: error.response.data?.errors,
+        },
+        { status: 422 },
+      );
     }
 
     // Handle 404 from backend
@@ -76,10 +79,13 @@ export async function PUT(req, { params }) {
       return NextResponse.json({ success: false, message: 'Add-on not found' }, { status: 404 });
     }
 
-    return NextResponse.json({
-      success: false,
-      message: error?.response?.data?.message || 'Failed to update add-on'
-    }, { status: error?.response?.status || 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: error?.response?.data?.message || 'Failed to update add-on',
+      },
+      { status: error?.response?.status || 500 },
+    );
   }
 }
 
@@ -112,9 +118,12 @@ export async function DELETE(req, { params }) {
       return NextResponse.json({ success: false, message: 'Add-on not found' }, { status: 404 });
     }
 
-    return NextResponse.json({
-      success: false,
-      message: error?.response?.data?.message || 'Failed to delete add-on'
-    }, { status: error?.response?.status || 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: error?.response?.data?.message || 'Failed to delete add-on',
+      },
+      { status: error?.response?.status || 500 },
+    );
   }
 }

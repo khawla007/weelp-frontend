@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { useParams } from 'next/navigation';
 import { createVendorVehicle } from '@/lib/actions/vendor'; //action for creating
 import { mutate } from 'swr';
+import { VEHICLE_TYPES } from '@/constants/transfer';
 
 const CreateVendorVehicleForm = ({ onSuccess }) => {
   const { vendorId } = useParams(); // dynamic vendor id
@@ -58,18 +59,6 @@ const CreateVendorVehicleForm = ({ onSuccess }) => {
     }
   };
 
-  // schema for vehicle type
-  const vehicleTypeSchema = [
-    { name: 'Sedan', value: 'sedan' },
-    { name: 'SUV', value: 'suv' },
-    { name: 'Van', value: 'van' },
-    { name: 'Minibus', value: 'minibus' },
-    { name: 'Luxury Sedan', value: 'luxury_sedan' },
-    { name: 'Luxury SUV', value: 'luxury_suv' },
-    { name: 'Shuttle', value: 'shuttle' },
-    { name: 'Coach', value: 'coach' },
-  ];
-
   // schema for features
   const featureOptions = [
     { id: 1, label: 'WiFi', value: 'wifi' },
@@ -101,10 +90,10 @@ const CreateVendorVehicleForm = ({ onSuccess }) => {
                       <SelectValue placeholder="Select Vehicle Type" />
                     </SelectTrigger>
                     <SelectContent>
-                      {vehicleTypeSchema.map((vehicle, index) => {
+                      {VEHICLE_TYPES.map((vehicle, index) => {
                         return (
                           <SelectItem key={index} value={vehicle.value}>
-                            {vehicle.name}
+                            {vehicle.label}
                           </SelectItem>
                         );
                       })}

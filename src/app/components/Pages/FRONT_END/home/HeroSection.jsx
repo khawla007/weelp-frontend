@@ -2,42 +2,42 @@
 
 import React from 'react';
 import FilterBar from './FilterBar';
-import FeaturedPackagesSlider from './FeaturedPackagesSlider';
 
 const HeroSection = () => {
   return (
     <section
-      className="relative w-full h-[75vh] min-h-[500px] flex items-center"
+      className="relative w-full flex items-center justify-center"
       style={{
-        backgroundImage: 'url(/assets/images/hero_bg_1.jpg)',
+        backgroundImage: 'url(/assets/images/hero_illustration.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        backgroundColor: '#d9ede2',
+        height: '615px',
       }}
     >
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30"></div>
-
-      {/* Content container */}
-      <div className="relative z-10 container mx-auto px-4">
-        <div className="flex flex-col md:flex-row h-full items-center gap-8">
-
-          {/* Left Side - Text Content */}
-          <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-              Plan and Book
-            </h1>
-            <p className="text-xl md:text-2xl text-white/90 drop-shadow-md">
-              The best experiences around you.
-            </p>
-          </div>
-
-          {/* Right Side - Filter + Slider */}
-          <div className="w-full md:w-1/2 flex flex-col gap-6 px-8 md:px-16">
-            <FilterBar />
-            <FeaturedPackagesSlider />
-          </div>
-
-        </div>
+      {/* Centered content */}
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 w-full max-w-4xl mx-auto">
+        <h1
+          className="text-[38px] mb-3"
+          style={{
+            fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
+            fontWeight: 600,
+            color: '#0c2536',
+          }}
+        >
+          Plan and Book
+        </h1>
+        <p
+          className="text-[29px] mb-8"
+          style={{
+            fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
+            fontWeight: 500,
+            color: '#667085',
+          }}
+        >
+          The Best Experiences Around You
+        </p>
+        <FilterBar />
       </div>
     </section>
   );

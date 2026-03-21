@@ -74,7 +74,7 @@ export default function SingleProductForm({ productId, productData }) {
       id: productData?.id,
       price: productData?.pricing?.regular_price,
       name: productData?.name,
-      currency: productData?.pricing?.currency,
+      currency: productData?.pricing?.currency || 'usd',
       ...data,
       featured_image: 'https://picsum.photos/200/300',
       type: productData?.item_type,

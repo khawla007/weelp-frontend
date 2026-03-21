@@ -37,6 +37,10 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
       post_code: post_code || '',
       phone: phone || '',
       address_line_1: address_line_1 || '',
+      emergency_contact_name: name || '',
+      emergency_contact_phone: phone || '',
+      emergency_contact_relationship: '',
+      special_requirements: '',
     },
   });
 
@@ -80,15 +84,18 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
         return;
       }
 
+      // Format travel date from cart dateRange
+      const travelDate = from ? new Date(from).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+
       // Prepare order data
       const orderData = {
         order_type: type,
         orderable_id: orderable_id,
-        travel_date: '2025-07-10',
-        preferred_time: '15:00:00',
+        travel_date: travelDate,
+        preferred_time: '09:00:00',
         number_of_adults: adults,
         number_of_children: children,
-        special_requirements: 'Need vegetarian meals',
+        special_requirements: profileData.special_requirements || '',
         user_id: user_id,
         amount: parseInt(price),
         currency: String(currency).toLowerCase(),
@@ -97,9 +104,9 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
         customer_email: customer_email || '',
         payment_intent_id: paymentIntentId,
         emergency_contact: {
-          name: 'John Doe',
-          phone: '+911234567890',
-          relationship: 'Brother',
+          name: profileData.emergency_contact_name || name || '',
+          phone: profileData.emergency_contact_phone || profileData.phone || '',
+          relationship: profileData.emergency_contact_relationship || 'Self',
         },
       };
 
@@ -385,7 +392,7 @@ export const CheckoutFields = () => {
           {errors?.phone?.message && <span className="text-red-400 px-2">{errors?.phone?.message}</span>}
         </Label>
 
-        {/* PostCode Field */}
+        {/* Address Field */}
         <Label htmlFor="address_line_1" className="w-full flex flex-col gap-2 sm:col-span-2">
           Address
           <Controller
@@ -396,6 +403,68 @@ export const CheckoutFields = () => {
           />
           {/* Error Message */}
           {errors?.address_line_1?.message && <span className="text-red-400 px-2">{errors?.address_line_1?.message}</span>}
+        </Label>
+      </fieldset>
+
+      <h2 className="text-2xl font-semibold">Emergency Contact</h2>
+      <fieldset className={`grid grid-cols-1 sm:grid-cols-3 gap-4 py-4 ${isSubmitting ? 'cursor-not-allowed' : ''}`} disabled={isSubmitting}>
+        {/* Emergency Contact Name */}
+        <Label htmlFor="emergency_contact_name" className="w-full flex flex-col gap-2">
+          Contact Name
+          <Controller
+            name="emergency_contact_name"
+            control={control}
+            rules={{ required: 'Emergency contact name required' }}
+            render={({ field }) => <Input {...field} placeholder="Full Name" className={errors?.emergency_contact_name?.message ? 'border-red-400' : ''} />}
+          />
+          {errors?.emergency_contact_name?.message && <span className="text-red-400 px-2">{errors?.emergency_contact_name?.message}</span>}
+        </Label>
+
+        {/* Emergency Contact Phone */}
+        <Label htmlFor="emergency_contact_phone" className="w-full flex flex-col gap-2">
+          Contact Phone
+          <Controller
+            name="emergency_contact_phone"
+            control={control}
+            rules={{ required: 'Emergency contact phone required' }}
+            render={({ field }) => <Input {...field} type="tel" placeholder="Phone Number" className={errors?.emergency_contact_phone?.message ? 'border-red-400' : ''} />}
+          />
+          {errors?.emergency_contact_phone?.message && <span className="text-red-400 px-2">{errors?.emergency_contact_phone?.message}</span>}
+        </Label>
+
+        {/* Emergency Contact Relationship */}
+        <Label htmlFor="emergency_contact_relationship" className="w-full flex flex-col gap-2">
+          Relationship
+          <Controller
+            name="emergency_contact_relationship"
+            control={control}
+            rules={{ required: 'Relationship required' }}
+            render={({ field }) => (
+              <Select id="emergency_contact_relationship" value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select relationship" />
+                </SelectTrigger>
+                <SelectContent>
+                  {['Self', 'Spouse', 'Parent', 'Sibling', 'Friend', 'Other'].map((rel) => (
+                    <SelectItem key={rel} value={rel}>
+                      {rel}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors?.emergency_contact_relationship?.message && <span className="text-red-400 px-2">{errors?.emergency_contact_relationship?.message}</span>}
+        </Label>
+
+        {/* Special Requirements */}
+        <Label htmlFor="special_requirements" className="w-full flex flex-col gap-2 sm:col-span-3">
+          Special Requirements (Optional)
+          <Controller
+            name="special_requirements"
+            control={control}
+            render={({ field }) => <Textarea {...field} placeholder="Any dietary needs, accessibility requirements, etc." className="resize-none" />}
+          />
         </Label>
       </fieldset>
     </Card>

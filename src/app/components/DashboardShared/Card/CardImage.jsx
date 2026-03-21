@@ -10,17 +10,6 @@
  * @param {string} className - Additional classes (e.g., 'w-full h-40' for RouteCard, 'w-[326px] h-[183px]' for ListingCard)
  * @param {string} fallback - Fallback image URL (default: picsum placeholder)
  */
-export function CardImage({
-  src,
-  alt = 'item image',
-  className = 'w-full h-40 object-cover',
-  fallback = 'https://picsum.photos/350/300?random',
-}) {
-  return (
-    <img
-      className={className}
-      src={src || fallback}
-      alt={alt}
-    />
-  );
+export function CardImage({ src, alt = 'item image', className = 'w-full h-40 object-cover', fallback = 'https://picsum.photos/350/300?random' }) {
+  return <img className={className} src={src || fallback} alt={alt} />;
 }

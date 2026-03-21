@@ -55,7 +55,7 @@ export const FilterCountries = () => {
     if (isAllSelected) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(countries.map(country => country.id));
+      setSelectedItems(countries.map((country) => country.id));
     }
     setIsAllSelected(!isAllSelected);
   };
@@ -93,67 +93,62 @@ export const FilterCountries = () => {
   return (
     <FormProvider {...methods}>
       <div className="space-y-4">
-      {/* Search and Bulk Actions */}
-      <div className="flex justify-between items-center">
-        <DashboardSearch control={control} name="query" placeholder="Search Countries" className="max-w-sm" />
-        {selectedItems.length > 0 ? (
-          <BulkActionButtons
-            selectedCount={selectedItems.length}
-            totalCount={countries.length}
-            isAllSelected={isAllSelected}
-            onSelectAllToggle={handleSelectAllToggle}
-            onDelete={handleBulkDelete}
-            deleteLabel="Delete"
-          />
-        ) : (
-          <AddNewButton
-            label="Add New"
-            href="/dashboard/admin/destinations/countries/new"
-          />
-        )}
-      </div>
+        {/* Search and Bulk Actions */}
+        <div className="flex justify-between items-center">
+          <DashboardSearch control={control} name="query" placeholder="Search Countries" className="max-w-sm" />
+          {selectedItems.length > 0 ? (
+            <BulkActionButtons
+              selectedCount={selectedItems.length}
+              totalCount={countries.length}
+              isAllSelected={isAllSelected}
+              onSelectAllToggle={handleSelectAllToggle}
+              onDelete={handleBulkDelete}
+              deleteLabel="Delete"
+            />
+          ) : (
+            <AddNewButton label="Add New" href="/dashboard/admin/destinations/countries/new" />
+          )}
+        </div>
 
-      {/* RESULT Found */}
-      <div className="flex flex-col gap-4 h-full">
-        {/* Loading State */}
+        {/* RESULT Found */}
+        <div className="flex flex-col gap-4 h-full">
+          {/* Loading State */}
 
-        {isValidating && <span className="loader"></span>}
+          {isValidating && <span className="loader"></span>}
 
-        {/* Error State */}
-        {!isValidating && error && <div className="text-red-500 text-center py-4">Failed to load data. Please try again.</div>}
-        {/* No Items Found */}
-        {!isValidating && !error && countries.length === 0 && <div className="text-gray-500 text-center py-4">No countries found.</div>}
+          {/* Error State */}
+          {!isValidating && error && <div className="text-red-500 text-center py-4">Failed to load data. Please try again.</div>}
+          {/* No Items Found */}
+          {!isValidating && !error && countries.length === 0 && <div className="text-gray-500 text-center py-4">No countries found.</div>}
 
-        {/* For countries */}
-        {!isValidating && !error && countries.length > 0 && (
-          <div className="flex flex-col gap-4">
-            <Card className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-inherit shadow-none border-none">
-              {countries.map((country) => (
-                <RouteCard
-                  key={country?.id}
-                  {...country}
-                  checked={selectedItems.includes(country.id)}
-                  onCheckedChange={(checked, id) => {
-                    setSelectedItems(prev => {
-                      const newSelection = checked
-                        ? [...prev, id]
-                        : prev.filter(itemId => itemId !== id);
+          {/* For countries */}
+          {!isValidating && !error && countries.length > 0 && (
+            <div className="flex flex-col gap-4">
+              <Card className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-inherit shadow-none border-none">
+                {countries.map((country) => (
+                  <RouteCard
+                    key={country?.id}
+                    {...country}
+                    checked={selectedItems.includes(country.id)}
+                    onCheckedChange={(checked, id) => {
+                      setSelectedItems((prev) => {
+                        const newSelection = checked ? [...prev, id] : prev.filter((itemId) => itemId !== id);
 
-                      // Update isAllSelected state
-                      setIsAllSelected(newSelection.length === countries.length);
-                      return newSelection;
-                    });
-                  }}
-                  showCheckbox={true}
-                />
-              ))}
-            </Card>
+                        // Update isAllSelected state
+                        setIsAllSelected(newSelection.length === countries.length);
+                        return newSelection;
+                      });
+                    }}
+                    showCheckbox={true}
+                  />
+                ))}
+              </Card>
 
-            {/* Pagination */}
-            <CustomPagination totalItems={total} itemsPerPage={perPage} currentPage={currentPage} onPageChange={handlePageChange} />
-          </div>
-        )}
-      </div>
+              {/* Pagination */}
+              <CustomPagination totalItems={total} itemsPerPage={perPage} currentPage={currentPage} onPageChange={handlePageChange} />
+            </div>
+          )}
+        </div>
       </div>
     </FormProvider>
   );

@@ -48,10 +48,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
 
   // Create set of already-selected image IDs for O(1) lookup
   // alreadySelectedImages have media_id, but media library uses id
-  const alreadySelectedIds = useMemo(
-    () => new Set(alreadySelectedImages.map((img) => img.media_id || img.id).filter(Boolean)),
-    [alreadySelectedImages]
-  );
+  const alreadySelectedIds = useMemo(() => new Set(alreadySelectedImages.map((img) => img.media_id || img.id).filter(Boolean)), [alreadySelectedImages]);
 
   // Computed images array: In popup, show already selected images first, max 10 total
   const displayImages = useMemo(() => {
@@ -79,9 +76,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
     }
 
     // Filter out already selected images from paginated results and take remaining slots
-    const remainingImages = images
-      .filter((img) => !alreadySelectedIds.has(img.id))
-      .slice(0, remainingSlots);
+    const remainingImages = images.filter((img) => !alreadySelectedIds.has(img.id)).slice(0, remainingSlots);
 
     return [...alreadySelectedImageData, ...remainingImages];
   }, [isMediaPage, images, alreadySelectedImages, alreadySelectedIds]);
@@ -110,11 +105,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
 
   // Select image Store Functionality - normal toggle for all images
   const handleSelect = (image) => {
-    setSelectedImages((prev) =>
-      prev.some((img) => img.id === image.id)
-        ? prev.filter((img) => img.id !== image.id)
-        : [...prev, image]
-    );
+    setSelectedImages((prev) => (prev.some((img) => img.id === image.id) ? prev.filter((img) => img.id !== image.id) : [...prev, image]));
   };
 
   // Select image Dialog Functionality
@@ -171,7 +162,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                     if (isAllSelected) {
                       setSelectedItems([]);
                     } else {
-                      setSelectedItems(images.map(img => img.id));
+                      setSelectedItems(images.map((img) => img.id));
                     }
                     setIsAllSelected(!isAllSelected);
                   }}
@@ -272,23 +263,21 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
 
                     {/* Selection Checkbox - Only on Media Page */}
                     {isMediaPage && (
-                    <div className="absolute top-4 left-4 w-fit z-10" onClick={(e) => e.stopPropagation()}>
-                      <SelectableCardCheckbox
-                        checked={selectedItems.includes(image.id)}
-                        onCheckedChange={(checked, id) => {
-                          setSelectedItems(prev => {
-                            const newSelection = checked
-                              ? [...prev, id]
-                              : prev.filter(itemId => itemId !== id);
+                      <div className="absolute top-4 left-4 w-fit z-10" onClick={(e) => e.stopPropagation()}>
+                        <SelectableCardCheckbox
+                          checked={selectedItems.includes(image.id)}
+                          onCheckedChange={(checked, id) => {
+                            setSelectedItems((prev) => {
+                              const newSelection = checked ? [...prev, id] : prev.filter((itemId) => itemId !== id);
 
-                            // Update isAllSelected state
-                            setIsAllSelected(newSelection.length === images.length);
-                            return newSelection;
-                          });
-                        }}
-                        itemId={image.id}
-                      />
-                    </div>
+                              // Update isAllSelected state
+                              setIsAllSelected(newSelection.length === images.length);
+                              return newSelection;
+                            });
+                          }}
+                          itemId={image.id}
+                        />
+                      </div>
                     )}
 
                     {/* Dark overlay on hover */}
@@ -316,12 +305,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
           {/* Pagination */}
           {total > 0 && (
             <div className="flex justify-end mt-6">
-              <CustomPagination
-                totalItems={total}
-                itemsPerPage={perPage}
-                currentPage={apiPage}
-                onPageChange={handlePageChange}
-              />
+              <CustomPagination totalItems={total} itemsPerPage={perPage} currentPage={apiPage} onPageChange={handlePageChange} />
             </div>
           )}
         </div>

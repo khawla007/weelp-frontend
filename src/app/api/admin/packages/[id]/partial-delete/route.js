@@ -1,12 +1,9 @@
 // app/api/admin/packages/[id]/partial-delete/route.js
 import { NextResponse } from 'next/server';
-import { delay } from '@/lib/utils';
-
 export async function DELETE(req, { params }) {
   const { id } = params;
   try {
     const body = await req.json();
-    await delay(500);
 
     // Import authApi dynamically to avoid SSR issues
     const { authApi } = await import('@/lib/axiosInstance');
@@ -31,7 +28,7 @@ export async function DELETE(req, { params }) {
         success: false,
         message,
       },
-      { status }
+      { status },
     );
   }
 }

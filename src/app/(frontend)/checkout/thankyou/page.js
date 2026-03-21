@@ -87,7 +87,7 @@ const SucceceedPage = () => {
 
                 <TableRow>
                   <TableCell className="font-semibold">Amount Paid</TableCell>
-                  {/* <TableCell className="text-secondaryDark">{priceAmount}</TableCell> */}
+                  <TableCell className="text-secondaryDark">{priceAmount}</TableCell>
                 </TableRow>
 
                 <TableRow>

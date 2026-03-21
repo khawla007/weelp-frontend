@@ -54,7 +54,7 @@ const FilterPlaces = () => {
     if (isAllSelected) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(places.map(place => place.id));
+      setSelectedItems(places.map((place) => place.id));
     }
     setIsAllSelected(!isAllSelected);
   };
@@ -105,10 +105,7 @@ const FilterPlaces = () => {
               deleteLabel="Delete"
             />
           ) : (
-            <AddNewButton
-              label="Add New"
-              href="/dashboard/admin/destinations/places/new"
-            />
+            <AddNewButton label="Add New" href="/dashboard/admin/destinations/places/new" />
           )}
         </div>
 
@@ -133,10 +130,8 @@ const FilterPlaces = () => {
                     {...place}
                     checked={selectedItems.includes(place.id)}
                     onCheckedChange={(checked, id) => {
-                      setSelectedItems(prev => {
-                        const newSelection = checked
-                          ? [...prev, id]
-                          : prev.filter(itemId => itemId !== id);
+                      setSelectedItems((prev) => {
+                        const newSelection = checked ? [...prev, id] : prev.filter((itemId) => itemId !== id);
 
                         // Update isAllSelected state
                         setIsAllSelected(newSelection.length === places.length);

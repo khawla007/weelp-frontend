@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { BlogHeader } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/blogs/components/BlogHeader';
 import BlogSidebar from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/blogs/Sidebar';
 import { BlogMain } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/blogs/BlogMain';
@@ -46,6 +46,18 @@ export const BlogForm = ({ editPage = false, data: blogData, mutate }) => {
     mode: 'onTouched',
   });
 
+  // Reset dirty state after Tiptap editor initializes (it fires onChange on mount)
+  const hasResetRef = useRef(false);
+  useEffect(() => {
+    if (editPage && !hasResetRef.current) {
+      const timer = setTimeout(() => {
+        methods.reset(methods.getValues(), { keepValues: true });
+        hasResetRef.current = true;
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [editPage, methods]);
+
   // Get media_gallery from form state
   const media_gallery = methods.watch('media_gallery');
 
@@ -56,10 +68,13 @@ export const BlogForm = ({ editPage = false, data: blogData, mutate }) => {
       // prepare Data
       const finalData = {
         ...data,
-        media_gallery: data?.media_gallery?.length > 0 ? data?.media_gallery.map((media) => ({
-          media_id: media.media_id,
-          is_featured: media.is_featured ?? false,
-        })) : [], // safely handle data with is_featured
+        media_gallery:
+          data?.media_gallery?.length > 0
+            ? data?.media_gallery.map((media) => ({
+                media_id: media.media_id,
+                is_featured: media.is_featured ?? false,
+              }))
+            : [], // safely handle data with is_featured
         tags: data?.tags?.length > 0 ? data?.tags.map((tag, index) => tag.value) : [], // safely handle data
         categories: data?.categories?.length > 0 ? data?.categories.map((category, index) => category.value) : [], // safely handle data
       };
@@ -105,7 +120,7 @@ export const BlogForm = ({ editPage = false, data: blogData, mutate }) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col space-y-4">
-        <BlogHeader />
+        <BlogHeader editPage={editPage} />
 
         <div className="flex flex-col md:flex-row w-full  gap-4 ">
           {/* Content Area */}

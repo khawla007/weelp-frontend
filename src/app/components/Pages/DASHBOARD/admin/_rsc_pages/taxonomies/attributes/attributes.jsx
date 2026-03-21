@@ -45,7 +45,7 @@ export function AttributePageClient() {
     if (isAllSelected) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(items.map(item => item.id));
+      setSelectedItems(items.map((item) => item.id));
     }
     setIsAllSelected(!isAllSelected);
   };
@@ -82,9 +82,7 @@ export function AttributePageClient() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <TaxonomiesPageTitle
-          title="Attributes"
-        />
+        <TaxonomiesPageTitle title="Attributes" />
         {selectedItems.length > 0 ? (
           <BulkActionButtons
             selectedCount={selectedItems.length}
@@ -95,9 +93,7 @@ export function AttributePageClient() {
             deleteLabel="Delete"
           />
         ) : (
-          <AddNewButton
-            href="/dashboard/admin/taxonomies/attributes/new"
-          />
+          <AddNewButton href="/dashboard/admin/taxonomies/attributes/new" />
         )}
       </div>
       <DataTableAttributes

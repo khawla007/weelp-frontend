@@ -12,15 +12,15 @@ export const typography = {
 
   // Type scale with line heights
   fontSize: {
-    xs: ['0.75rem', { lineHeight: '1rem' }],   // 12px - Captions, labels
+    xs: ['0.75rem', { lineHeight: '1rem' }], // 12px - Captions, labels
     sm: ['0.875rem', { lineHeight: '1.25rem' }], // 14px - Secondary text
-    base: ['1rem', { lineHeight: '1.5rem' }],     // 16px - Body text
-    lg: ['1.125rem', { lineHeight: '1.75rem' }],  // 18px - Emphasized
-    xl: ['1.25rem', { lineHeight: '1.75rem' }],   // 20px - H4
-    '2xl': ['1.5rem', { lineHeight: '2rem' }],    // 24px - H3
+    base: ['1rem', { lineHeight: '1.5rem' }], // 16px - Body text
+    lg: ['1.125rem', { lineHeight: '1.75rem' }], // 18px - Emphasized
+    xl: ['1.25rem', { lineHeight: '1.75rem' }], // 20px - H4
+    '2xl': ['1.5rem', { lineHeight: '2rem' }], // 24px - H3
     '3xl': ['1.875rem', { lineHeight: '2.25rem' }], // 30px - H2
-    '4xl': ['2.25rem', { lineHeight: '2.5rem' }],   // 36px - H1
-    '5xl': ['3rem', { lineHeight: '1' }],            // 48px - Display
+    '4xl': ['2.25rem', { lineHeight: '2.5rem' }], // 36px - H1
+    '5xl': ['3rem', { lineHeight: '1' }], // 48px - Display
   },
 
   // Font weights

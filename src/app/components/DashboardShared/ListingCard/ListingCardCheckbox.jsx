@@ -15,11 +15,7 @@ import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCard
 export function ListingCardCheckbox({ checked, onCheckedChange, itemId, className = '' }) {
   return (
     <div className={`absolute top-4 left-4 w-fit z-20 ${className}`}>
-      <SelectableCardCheckbox
-        checked={checked}
-        onCheckedChange={onCheckedChange}
-        itemId={itemId}
-      />
+      <SelectableCardCheckbox checked={checked} onCheckedChange={onCheckedChange} itemId={itemId} />
     </div>
   );
 }

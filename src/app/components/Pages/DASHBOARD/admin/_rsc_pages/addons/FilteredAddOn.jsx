@@ -107,7 +107,7 @@ export const FilteredAddOn = () => {
     if (isAllSelected) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(addOns.map(addOn => addOn.id));
+      setSelectedItems(addOns.map((addOn) => addOn.id));
     }
     setIsAllSelected(!isAllSelected);
   };
@@ -168,9 +168,7 @@ export const FilteredAddOn = () => {
             deleteLabel="Delete"
           />
         ) : (
-          <AddNewButton
-            href="/dashboard/admin/addon/new"
-          />
+          <AddNewButton href="/dashboard/admin/addon/new" />
         )}
       </div>
 
@@ -179,14 +177,7 @@ export const FilteredAddOn = () => {
       {!isValidating && !error && (
         <>
           {addOns && addOns.length > 0 ? (
-            <AddOnTable
-              data={addOns}
-              onDelete={handleDelete}
-              selectedItems={selectedItems}
-              onSelectionChange={setSelectedItems}
-              addOnsCount={addOns.length}
-              onAllSelectedChange={setIsAllSelected}
-            />
+            <AddOnTable data={addOns} onDelete={handleDelete} selectedItems={selectedItems} onSelectionChange={setSelectedItems} addOnsCount={addOns.length} onAllSelectedChange={setIsAllSelected} />
           ) : (
             <div className="grid place-items-center text-gray-400">
               <span>Sorry No Item Found</span>

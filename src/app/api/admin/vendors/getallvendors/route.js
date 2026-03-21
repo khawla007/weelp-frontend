@@ -9,9 +9,6 @@ export async function GET(req) {
     return NextResponse.json({ ...data });
   } catch (error) {
     console.error('[API Route] Error fetching vendors:', error.message);
-    return NextResponse.json(
-      { success: false, message: error.message || 'Failed to fetch vendors' },
-      { status: error.response?.status || 500 },
-    );
+    return NextResponse.json({ success: false, message: error.message || 'Failed to fetch vendors' }, { status: error.response?.status || 500 });
   }
 }

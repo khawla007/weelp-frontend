@@ -19,13 +19,30 @@ import { deletePlace } from '@/lib/actions/places';
  * @param {{label:string, icon:string, items:number ,description:string, url:string}} props label,icons,items,description,url
  * @returns {JSX.Element}
  */
-export const RouteCard = ({ id, type, name, code, description, featured_destination, feature_image, media_gallery = [], country, state, city, region, regions = [], checked = false, onCheckedChange, showCheckbox = false }) => {
+export const RouteCard = ({
+  id,
+  type,
+  name,
+  code,
+  description,
+  featured_destination,
+  feature_image,
+  media_gallery = [],
+  country,
+  state,
+  city,
+  region,
+  regions = [],
+  checked = false,
+  onCheckedChange,
+  showCheckbox = false,
+}) => {
   const router = useRouter(); // intialize route
   const pathname = usePathname(); // intialize pathname
 
   // Use featured image if available, otherwise fall back to first image from gallery
-  const displayImage = feature_image || media_gallery.find(m => m.is_featured)?.url || media_gallery.at(0)?.url || '';
-  const altText = media_gallery.find(m => m.is_featured)?.alt_text || media_gallery.at(0)?.alt_text || name;
+  const displayImage = feature_image || media_gallery.find((m) => m.is_featured)?.url || media_gallery.at(0)?.url || '';
+  const altText = media_gallery.find((m) => m.is_featured)?.alt_text || media_gallery.at(0)?.alt_text || name;
 
   // Create excerpt with "..." for description
   const getExcerpt = (text, maxLength = 100) => {
@@ -96,11 +113,7 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
         {/* Selection Checkbox */}
         {showCheckbox && (
           <div className="absolute top-4 left-4 w-fit z-20">
-            <SelectableCardCheckbox
-              checked={checked}
-              onCheckedChange={onCheckedChange}
-              itemId={id}
-            />
+            <SelectableCardCheckbox checked={checked} onCheckedChange={onCheckedChange} itemId={id} />
           </div>
         )}
       </div>
@@ -114,11 +127,7 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
           </div>
 
           {/* Actions - using shared CardActions with confirmation dialog */}
-          <CardActions
-            itemId={id}
-            editHref={`${pathname}/${id}`}
-            onDelete={() => handleDelete(id, type)}
-          />
+          <CardActions itemId={id} editHref={`${pathname}/${id}`} onDelete={() => handleDelete(id, type)} />
         </div>
       </div>
 
@@ -129,39 +138,16 @@ export const RouteCard = ({ id, type, name, code, description, featured_destinat
         {/* Location Badges - use shared CardBadge component */}
         <div className="flex flex-wrap gap-2">
           {/* Regions - show all if available */}
-          {regions && regions.length > 0 &&
-            regions.map(region => (
-              <CardBadge
-                key={region.id}
-                type="location"
-                label={`Region: ${region.name}`}
-              />
-            ))
-          }
+          {regions && regions.length > 0 && regions.map((region) => <CardBadge key={region.id} type="location" label={`Region: ${region.name}`} />)}
 
           {/* Country badge */}
-          {country && (
-            <CardBadge
-              type="location"
-              label={`Country: ${country.name}`}
-            />
-          )}
+          {country && <CardBadge type="location" label={`Country: ${country.name}`} />}
 
           {/* State badge */}
-          {state && (
-            <CardBadge
-              type="location"
-              label={`State: ${state.name}`}
-            />
-          )}
+          {state && <CardBadge type="location" label={`State: ${state.name}`} />}
 
           {/* City badge */}
-          {city && (
-            <CardBadge
-              type="location"
-              label={`City: ${city.name}`}
-            />
-          )}
+          {city && <CardBadge type="location" label={`City: ${city.name}`} />}
         </div>
       </div>
     </div>

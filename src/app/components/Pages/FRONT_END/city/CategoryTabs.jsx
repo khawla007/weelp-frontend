@@ -24,10 +24,8 @@ export default function CategoryTabs({ onTabChange }) {
         <button
           key={tab.value}
           onClick={() => handleTabClick(tab.value)}
-          className={`rounded-[8.5px] px-5 py-2 transition-all ${
-            activeTab === tab.value
-              ? 'bg-[#1E3A4A] text-white'
-              : 'bg-white/80 text-[#435a67] border border-[#BFD0DA] hover:bg-white'
+          className={`weelp-city-tab rounded-[8.5px] px-5 py-2 transition-all ${
+            activeTab === tab.value ? 'weelp-city-tab-active' : 'hover:border-[var(--weelp-city-tab-active-border)] hover:bg-white'
           }`}
           style={{
             fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',

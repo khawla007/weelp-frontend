@@ -6,10 +6,10 @@ import { CreateActivityForm } from '@/app/components/Pages/DASHBOARD/admin/_rsc_
 // RSC
 const CreateActivity = async () => {
   const [{ data: tagsData = {} }, { data: locationsData = {} }, { data: attributesData = {} }, { data: categoriesData = {} }] = await Promise.all([
-    getAllTagsAdmin(),
+    getAllTagsAdmin('', { all: true }),
     getAllCitiesAdmin(),
-    getAllAttributesAdmin(),
-    getCategoriesAdmin(),
+    getAllAttributesAdmin(null, { all: true }),
+    getCategoriesAdmin(null, { all: true }),
   ]);
 
   const { data: tags = [] } = tagsData; // for tags

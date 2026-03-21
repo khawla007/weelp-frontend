@@ -15,10 +15,7 @@ const EditPlacePage = () => {
   const id = params?.id;
 
   // Use fetcher (not authFetcher) - goes through Next.js API route which handles auth
-  const { data: placeData, error, isLoading } = useSWR(
-    id ? `/api/admin/destinations/places/${id}` : null,
-    fetcher
-  );
+  const { data: placeData, error, isLoading } = useSWR(id ? `/api/admin/destinations/places/${id}` : null, fetcher);
 
   if (isLoading || !id) {
     return <PageLoader />;
@@ -34,12 +31,8 @@ const EditPlacePage = () => {
             <AlertCircle className="h-12 w-12 text-red-500" />
           </div>
           <h2 className="text-xl font-semibold">Place Not Found</h2>
-          <p className="text-muted-foreground">
-            {error ? error.message : 'The place you are looking for does not exist or could not be loaded.'}
-          </p>
-          <Button onClick={() => router.push('/dashboard/admin/destinations/places')}>
-            Back to Places
-          </Button>
+          <p className="text-muted-foreground">{error ? error.message : 'The place you are looking for does not exist or could not be loaded.'}</p>
+          <Button onClick={() => router.push('/dashboard/admin/destinations/places')}>Back to Places</Button>
         </div>
       </div>
     );

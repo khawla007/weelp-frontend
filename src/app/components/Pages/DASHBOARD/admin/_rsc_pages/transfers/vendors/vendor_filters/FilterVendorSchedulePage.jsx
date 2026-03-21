@@ -194,7 +194,7 @@ const FilterVendorSchedulePage = () => {
       <CardContent className="flex-col w-full space-y-4">
         {isLoading && <p className="loader"></p>}
 
-        {error && <p className="text-red-400">{error.message || "Something Went Wrong"}</p>}
+        {error && <p className="text-red-400">{error.message || 'Something Went Wrong'}</p>}
 
         {!isLoading && data?.data && schedules.length === 0 && <VendorNoResultFound />}
 

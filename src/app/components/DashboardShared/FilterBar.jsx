@@ -32,12 +32,7 @@ export function FilterBar({
   return (
     <div className="flex items-center gap-4">
       {/* Search Input */}
-      <DashboardSearch
-        control={form.control}
-        name={searchName}
-        placeholder={searchPlaceholder}
-        className="w-[500px]"
-      />
+      <DashboardSearch control={form.control} name={searchName} placeholder={searchPlaceholder} className="w-[500px]" />
 
       {/* Type Filter */}
       {typeOptions.length > 0 && (
@@ -49,13 +44,7 @@ export function FilterBar({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <SelectField
-                    data={typeOptions}
-                    value={field.value}
-                    onChange={field.onChange}
-                    placeholder={typePlaceholder}
-                    className="w-[180px] focus:ring-0"
-                  />
+                  <SelectField data={typeOptions} value={field.value} onChange={field.onChange} placeholder={typePlaceholder} className="w-[180px] focus:ring-0" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -74,13 +63,7 @@ export function FilterBar({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <SelectField
-                    data={statusOptions}
-                    value={field.value}
-                    onChange={field.onChange}
-                    placeholder={statusPlaceholder}
-                    className="w-[180px] focus:ring-0"
-                  />
+                  <SelectField data={statusOptions} value={field.value} onChange={field.onChange} placeholder={statusPlaceholder} className="w-[180px] focus:ring-0" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

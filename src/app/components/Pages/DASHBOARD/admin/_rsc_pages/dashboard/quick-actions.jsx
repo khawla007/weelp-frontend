@@ -19,11 +19,7 @@ export function QuickActions({ loading = false }) {
         const IconComponent = action.icon;
 
         return (
-          <Card
-            key={index}
-            className="cursor-pointer transition-all hover:bg-accent hover:shadow-md"
-            onClick={() => router.push(action.url)}
-          >
+          <Card key={index} className="cursor-pointer transition-all hover:bg-accent hover:shadow-md" onClick={() => router.push(action.url)}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium flex items-center justify-between w-full gap-2">
                 {action.title}

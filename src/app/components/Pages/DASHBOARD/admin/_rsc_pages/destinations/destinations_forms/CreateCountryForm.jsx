@@ -217,7 +217,16 @@ const CreateCountryForm = ({ apiFormData = {} }) => {
             </div>
 
             {/* Dynamic Tabs */}
-            <form onSubmit={currentStep === 8 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
+            <form
+              onSubmit={
+                currentStep === 8
+                  ? methods.handleSubmit(onSubmit)
+                  : (e) => {
+                      e.preventDefault();
+                      handleNext();
+                    }
+              }
+            >
               <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-4 md:px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
                 {renderStep()}
                 <div className="flex justify-between pt-4">

@@ -13,10 +13,10 @@ import { log } from '@/lib/utils';
 
 const EditPackage = async ({ params }) => {
   const [{ data: tagsData }, { data: locationsData = {} }, { data: attributesData = {} }, { data: categoriesData = {} }, { data: activitiesData = [] }, transfers, itineraries] = await Promise.all([
-    getAllTagsAdmin(),
+    getAllTagsAdmin('', { all: true }),
     getAllCitiesAdmin(),
-    getAllAttributesAdmin(),
-    getCategoriesAdmin(),
+    getAllAttributesAdmin(null, { all: true }),
+    getCategoriesAdmin(null, { all: true }),
     getAllActivitesAdmin(),
     getAllTransfersAdmin(),
     getAllItinerariesAdmin(),

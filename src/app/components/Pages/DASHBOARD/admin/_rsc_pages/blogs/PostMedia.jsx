@@ -127,11 +127,7 @@ export const PostMedia = ({ setDialogOpen, onSelectionChange }) => {
                 />
 
                 {/* Featured Badge - Top Left */}
-                {isFeatured && (
-                  <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
-                    Featured
-                  </div>
-                )}
+                {isFeatured && <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
 
                 {/* Trash - Bottom Right */}
                 <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-4 right-4 size-0 group-hover/item:size-6 transition-all text-red-500 bg-white rounded-full shadow p-1" />

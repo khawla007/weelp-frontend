@@ -13,9 +13,6 @@ export async function GET(req) {
     return NextResponse.json({ data });
   } catch (error) {
     console.error('[Reviews API Error]:', error);
-    return NextResponse.json(
-      { data: { data: [], current_page: 1, per_page: 5, total: 0 } },
-      { status: error?.response?.status || 500 }
-    );
+    return NextResponse.json({ data: { data: [], current_page: 1, per_page: 5, total: 0 } }, { status: error?.response?.status || 500 });
   }
 }

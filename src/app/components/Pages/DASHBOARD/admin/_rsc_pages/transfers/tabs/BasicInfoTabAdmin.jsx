@@ -48,7 +48,7 @@ const BasicInfoTabAdmin = () => {
       {/* Name */}
       <div className="pb-2 space-y-2 w-full">
         <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-black'}`}>
-          Name
+          Name <span className="text-red-500">*</span>
         </Label>
         <Input
           placeholder="Enter Transfer Name"
@@ -62,7 +62,7 @@ const BasicInfoTabAdmin = () => {
 
       <div className="pb-2 space-y-2 w-full">
         <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-black'}`}>
-          Slug
+          Slug <span className="text-red-500">*</span>
         </Label>
         <Input
           placeholder="Enter Url slug"
@@ -77,7 +77,7 @@ const BasicInfoTabAdmin = () => {
       {/* Transfer Type */}
       <div className="space-y-2">
         <Label htmlFor="transfer_type" className={`block text-sm font-medium ${errors?.transfer_type ? 'text-red-400' : 'text-black'}`}>
-          Transfer Type
+          Transfer Type <span className="text-red-500">*</span>
         </Label>
         <Controller
           name="transfer_type"
@@ -91,7 +91,7 @@ const BasicInfoTabAdmin = () => {
       {/* Vehicle Type */}
       <div className="space-y-2">
         <Label htmlFor="vehicle_type" className={`block text-sm font-medium ${errors?.vehicle_type ? 'text-red-400' : 'text-black'}`}>
-          Vehicle Type
+          Vehicle Type <span className="text-red-500">*</span>
         </Label>
         <Controller
           name="vehicle_type"
@@ -105,23 +105,29 @@ const BasicInfoTabAdmin = () => {
       {/* Pickup Location Dropoff Location */}
       <div className="flex w-full gap-4 flex-col sm:flex-row">
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="pickup_location">Pickup Location</Label>
+          <Label htmlFor="pickup_location" className={`block text-sm font-medium ${errors?.pickup_location ? 'text-red-400' : 'text-black'}`}>
+            Pickup Location <span className="text-red-500">*</span>
+          </Label>
           <Controller
             name="pickup_location"
             control={control}
             defaultValue=""
+            rules={{ required: 'Pickup location is required' }}
             render={({ field }) => <SelectInputTransfer value={field.value} onChange={field.onChange} options={places} placeholder="Select pickup location..." />}
           />
           {errors?.pickup_location && <p className="text-red-500 text-sm mt-1">{errors.pickup_location.message}</p>}
         </div>
 
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="dropoff_location">Dropoff Location</Label>
+          <Label htmlFor="dropoff_location" className={`block text-sm font-medium ${errors?.dropoff_location ? 'text-red-400' : 'text-black'}`}>
+            Dropoff Location <span className="text-red-500">*</span>
+          </Label>
           <Controller
             name="dropoff_location"
             control={control}
             defaultValue=""
             rules={{
+              required: 'Dropoff location is required',
               validate: (value) => value !== watch('pickup_location') || 'Pickup and Dropoff location cannot be the same',
             }}
             render={({ field }) => <SelectInputTransfer value={field.value} onChange={field.onChange} options={places} placeholder="Select dropoff location..." />}
@@ -134,7 +140,7 @@ const BasicInfoTabAdmin = () => {
       {/* Description */}
       <div className="space-y-2">
         <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-black'}`}>
-          Description
+          Description <span className="text-red-500">*</span>
         </Label>
         <Textarea
           placeholder="Detailed description"
@@ -150,7 +156,7 @@ const BasicInfoTabAdmin = () => {
       {/* Inclusions */}
       <div className="space-y-2">
         <Label htmlFor="inclusion" className={`block text-sm font-medium ${errors?.inclusion ? 'text-red-400' : 'text-black'}`}>
-          Inclusion
+          Inclusion <span className="text-red-500">*</span>
         </Label>
         <Textarea
           placeholder="Detailed inclusion"

@@ -16,10 +16,10 @@ import { getDashboardMetrics, getOverviewChart, getRecentSales } from '@/lib/ser
  */
 export function AdminDashboardPage() {
   // Fetch dashboard metrics with SWR
-  const { 
-    data: metricsData, 
-    error: metricsError, 
-    isValidating: metricsLoading 
+  const {
+    data: metricsData,
+    error: metricsError,
+    isValidating: metricsLoading,
   } = useSWR('/admin/dashboard/metrics', () => getDashboardMetrics(), {
     revalidateOnFocus: true,
     refreshInterval: 60000, // Refresh every minute
@@ -29,7 +29,7 @@ export function AdminDashboardPage() {
   const {
     data: chartData,
     error: chartError,
-    isValidating: chartLoading
+    isValidating: chartLoading,
   } = useSWR('/admin/dashboard/overview-chart', () => getOverviewChart(), {
     revalidateOnFocus: true,
     refreshInterval: 60000,
@@ -39,7 +39,7 @@ export function AdminDashboardPage() {
   const {
     data: salesData,
     error: salesError,
-    isValidating: salesLoading
+    isValidating: salesLoading,
   } = useSWR('/admin/dashboard/recent-sales', () => getRecentSales(), {
     revalidateOnFocus: true,
     refreshInterval: 60000,

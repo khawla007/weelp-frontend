@@ -62,7 +62,7 @@ export function OverviewSkeleton() {
             className="w-full rounded-t-sm"
             style={{
               height: `${heights[i % heights.length]}%`,
-              minHeight: '60px'
+              minHeight: '60px',
             }}
           />
           <Skeleton className="h-3 w-6" />

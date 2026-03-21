@@ -15,10 +15,7 @@ const EditCitiesPage = () => {
   const id = params?.id;
 
   // Use fetcher (not authFetcher) - goes through Next.js API route which handles auth
-  const { data: cityData, error, isLoading } = useSWR(
-    id ? `/api/admin/destinations/cities/${id}` : null,
-    fetcher
-  );
+  const { data: cityData, error, isLoading } = useSWR(id ? `/api/admin/destinations/cities/${id}` : null, fetcher);
 
   if (isLoading || !id) {
     return <PageLoader />;
@@ -34,12 +31,8 @@ const EditCitiesPage = () => {
             <AlertCircle className="h-12 w-12 text-red-500" />
           </div>
           <h2 className="text-xl font-semibold">City Not Found</h2>
-          <p className="text-muted-foreground">
-            {error ? error.message : 'The city you are looking for does not exist or could not be loaded.'}
-          </p>
-          <Button onClick={() => router.push('/dashboard/admin/destinations/cities')}>
-            Back to Cities
-          </Button>
+          <p className="text-muted-foreground">{error ? error.message : 'The city you are looking for does not exist or could not be loaded.'}</p>
+          <Button onClick={() => router.push('/dashboard/admin/destinations/cities')}>Back to Cities</Button>
         </div>
       </div>
     );

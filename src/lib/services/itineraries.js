@@ -1,12 +1,14 @@
+import { cache } from 'react';
 import { publicApi, createAuthenticatedServerApi } from '../axiosInstance';
 import { log } from '../utils';
 
 /**
  * Get Single Itinerary on Client side
+ * Cached per request to avoid duplicate calls in generateMetadata + page component
  * @param {String} slug
  * @returns []
  */
-export const getSingleItinerary = async (slug) => {
+export const getSingleItinerary = cache(async (slug) => {
   try {
     const response = await publicApi.get(`/api/itineraries/${slug}`, {
       headers: { Accept: 'application/json' },
@@ -15,7 +17,7 @@ export const getSingleItinerary = async (slug) => {
   } catch (error) {
     return []; // Return null to trigger 404
   }
-};
+});
 
 /**
  * Get Single Itinerary on Admin side
@@ -52,11 +54,11 @@ export async function getAllItinerariesAdmin(search = '') {
 }
 
 /**
- * Display All Itineraries by City
+ * Display Featured Itineraries by City
  * @param {string} city Slug of the City
- * @returns {Promise<{success:boolean,message?:string,data?:object}>} Returns all Itineraries by City
+ * @returns {Promise<{success:boolean,message?:string,data?:object}>} Returns featured Itineraries by City
  */
-export async function getItineraryDataByCity(city) {
+export async function getFeaturedItinerariesByCity(city) {
   try {
     const response = await publicApi.get(`/api/${city}/itineraries`, {
       headers: { Accept: 'application/json' },

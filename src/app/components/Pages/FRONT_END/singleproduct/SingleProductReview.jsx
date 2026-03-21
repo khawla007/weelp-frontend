@@ -34,7 +34,6 @@ const SingleProductReviewSlider = () => {
   );
 };
 
-
 const ReviewSlider = () => {
   return (
     <Swiper
@@ -67,7 +66,6 @@ const ReviewSlider = () => {
     </Swiper>
   );
 };
-
 
 const SingleProductAllReview = () => {
   const [showsort, setShowSort] = useState(null);

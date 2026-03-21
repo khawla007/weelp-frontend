@@ -5,7 +5,7 @@ import FilterActivity from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/ac
 import { getAttributeBySlugAdmin } from '@/lib/services/attributes';
 
 const ActivityPage = async () => {
-  const { data: allCategories = {} } = await getCategoriesAdmin();
+  const { data: allCategories = {} } = await getCategoriesAdmin(null, { all: true });
   const { data: categories = [] } = allCategories; // categories
 
   const difficulty = await getAttributeBySlugAdmin('difficulty-level'); // slug required

@@ -30,20 +30,10 @@ const SmartAddOnMultiSelectTransfer = () => {
         control={control}
         name={'addons'}
         rules={{ required: 'Add On Required' }}
-        render={({ field: { value, onChange } }) => (
-          <ComboboxMultiple
-            id="addons"
-            type="Add On"
-            items={apiData}
-            value={value || []}
-            onChange={onChange}
-          />
-        )}
+        render={({ field: { value, onChange } }) => <ComboboxMultiple id="addons" type="Add On" items={apiData} value={value || []} onChange={onChange} />}
       />
 
-      {errors?.addons?.message && (
-        <span className="text-red-400 px-2">{errors?.addons?.message}</span>
-      )}
+      {errors?.addons?.message && <span className="text-red-400 px-2">{errors?.addons?.message}</span>}
     </div>
   );
 };

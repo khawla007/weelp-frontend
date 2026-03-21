@@ -5,15 +5,15 @@ import { getVehiclesByVendorIdOptions } from '@/lib/services/vendors'; // get ve
 
 export async function GET(req, { params }) {
   try {
-  const { vendorId } = await params;
-    console.log("[API Route] Fetching vehiclesdropdown for ID: ", vendorId);
+    const { vendorId } = await params;
+    console.log('[API Route] Fetching vehiclesdropdown for ID: ', vendorId);
 
-  const data = await getVehiclesByVendorIdOptions(vendorId);
+    const data = await getVehiclesByVendorIdOptions(vendorId);
 
-    console.log("[API Route] Success fetching vehiclesdropdown");
-  return NextResponse.json({ data });
+    console.log('[API Route] Success fetching vehiclesdropdown');
+    return NextResponse.json({ data });
   } catch (error) {
-    console.error("[API Route Error]", error.message);
+    console.error('[API Route Error]', error.message);
     return NextResponse.json({ success: false, message: error.message }, { status: 500 });
   }
 }

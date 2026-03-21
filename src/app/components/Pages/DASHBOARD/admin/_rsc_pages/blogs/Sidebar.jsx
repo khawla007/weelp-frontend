@@ -9,7 +9,7 @@ import { WidgetCard } from './components/WidgetCard';
 import { Textarea } from '@/components/ui/textarea';
 import dynamic from 'next/dynamic';
 
-const Select = dynamic(() => import('react-select').then(mod => mod.default), { ssr: false });
+const Select = dynamic(() => import('react-select').then((mod) => mod.default), { ssr: false });
 import { PostMedia } from './PostMedia';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -87,11 +87,7 @@ const BlogSidebar = () => {
             <DialogContent className="max-w-screen-xl">
               <DialogTitle className="sr-only">Edit profile</DialogTitle>
               <DialogDescription className="invisible">Upload Media For Blog</DialogDescription>
-              <Medialibrary
-                closeDialog={() => setDialogOpen(false)}
-                alreadySelectedImages={media_gallery || []}
-                onSelectionChange={handleSelectionChange}
-              />
+              <Medialibrary closeDialog={() => setDialogOpen(false)} alreadySelectedImages={media_gallery || []} onSelectionChange={handleSelectionChange} />
             </DialogContent>
           </Dialog>
         }

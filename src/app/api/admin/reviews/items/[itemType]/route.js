@@ -45,7 +45,7 @@ export async function GET(req, { params }) {
         data: [],
         error: error.response?.data?.message || error.message,
       },
-      { status: error.response?.status || 500 }
+      { status: error.response?.status || 500 },
     );
   }
 }

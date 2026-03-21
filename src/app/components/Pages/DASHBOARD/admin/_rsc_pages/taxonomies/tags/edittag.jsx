@@ -3,7 +3,6 @@
 import React from 'react';
 import { Form, FormLabel, FormDescription, FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form';
 import { generateSlug } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { useForm, useWatch } from 'react-hook-form';
@@ -13,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { editTag } from '@/lib/actions/tags';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 
 // schema
 const formSchema = z.object({
@@ -42,7 +42,7 @@ export const EditTageForm = ({ tagdata }) => {
   });
 
   const {
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid, isDirty },
   } = form; // state
 
   const nameValue = useWatch({ control: form.control, name: 'name' });
@@ -148,20 +148,14 @@ export const EditTageForm = ({ tagdata }) => {
                 )}
               />
 
-              <p className="flex gap-2">
-                <Button className="w-fit bg-secondaryDark hover:bg-secondaryDark" type="submit">
-                  {isSubmitting ? 'Updating Tag' : ' Update Tag'}
-                </Button>
-                <Button
-                  className="w-fit bg-inherit hover:bg-inherit text-black border"
-                  type="button"
-                  onClick={() => {
-                    router.push('/dashboard/admin/taxonomies/tags/');
-                  }}
-                >
-                  Cancel
-                </Button>
-              </p>
+              <FormActionButtons
+                mode="update"
+                cancelHref="/dashboard/admin/taxonomies/tags/"
+                isSubmitting={isSubmitting}
+                isDisabled={!isValid || !isDirty}
+                containerType="div"
+                className="justify-end"
+              />
             </fieldset>
           </form>
         </Form>

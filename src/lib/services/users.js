@@ -50,3 +50,43 @@ export async function getAllUsersAdmin() {
     return [];
   }
 }
+
+/**
+ * Delete a single user
+ * @param {String|Number} userId - ID of the user to delete
+ * @returns {object} Response data
+ */
+export async function deleteUser(userId) {
+  try {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.delete(`/api/admin/users/${userId}`);
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.log('Error deleting user:', error);
+    return {
+      success: false,
+      error: error.response?.data?.message || 'Failed to delete user',
+    };
+  }
+}
+
+/**
+ * Bulk delete users
+ * @param {Array} userIds - Array of user IDs to delete
+ * @returns {object} Response data
+ */
+export async function bulkDeleteUsers(userIds) {
+  try {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.post('/api/admin/users/bulk-delete', {
+      user_ids: userIds,
+    });
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.log('Error bulk deleting users:', error);
+    return {
+      success: false,
+      error: error.response?.data?.message || 'Failed to delete users',
+    };
+  }
+}

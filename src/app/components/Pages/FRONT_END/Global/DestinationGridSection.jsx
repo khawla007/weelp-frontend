@@ -13,22 +13,14 @@ const DestinationGridSection = ({ sliderTitle = 'Top Destination', data = [] }) 
       <div className="container mx-auto px-4">
         {/* Title Area */}
         <div className="text-center mb-8">
-          <span className="text-sm font-medium text-secondaryDark uppercase tracking-wider">
-            Explore
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-Nileblue mt-2">
-            {sliderTitle}
-          </h2>
+          <span className="text-sm font-medium text-secondaryDark uppercase tracking-wider">Explore</span>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-Nileblue mt-2">{sliderTitle}</h2>
         </div>
 
         {/* Grid of Destinations */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {data.slice(0, 4).map((city, index) => (
-            <DestinationGridCard
-              key={city.id || index}
-              city={city}
-              isActive={index === 3}
-            />
+            <DestinationGridCard key={city.id || index} city={city} isActive={index === 3} />
           ))}
         </div>
 

@@ -13,7 +13,7 @@ export const SelectField = ({ data = [], placeholder = 'Select...', value, onCha
   return (
     <div className="flex flex-col gap-2 w-full">
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className={cn("w-full", className)}>
+        <SelectTrigger className={cn('w-full', className)}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>

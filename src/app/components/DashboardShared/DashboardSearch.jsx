@@ -15,14 +15,7 @@ import { cn } from '@/lib/utils';
  * @param {string} ariaLabel - Accessibility label (default: placeholder value)
  * @param {string} className - Additional CSS classes
  */
-export function DashboardSearch({
-  control,
-  name = 'search',
-  placeholder = 'Search...',
-  disabled = false,
-  ariaLabel,
-  className,
-}) {
+export function DashboardSearch({ control, name = 'search', placeholder = 'Search...', disabled = false, ariaLabel, className }) {
   return (
     <Controller
       name={name}
@@ -35,11 +28,7 @@ export function DashboardSearch({
             placeholder={placeholder}
             disabled={disabled}
             aria-label={ariaLabel || placeholder}
-            className={cn(
-              'w-full bg-white focus-visible:ring-secondaryDark pl-9',
-              disabled && 'opacity-50 cursor-not-allowed',
-              className
-            )}
+            className={cn('w-full bg-white focus-visible:ring-secondaryDark pl-9', disabled && 'opacity-50 cursor-not-allowed', className)}
             {...field}
           />
         </div>

@@ -11,12 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox';
  * @param {string|number} props.itemId - Unique identifier for the item
  * @param {boolean} [props.disabled=false] - Optional: disable the checkbox
  */
-export const SelectableCardCheckbox = ({
-  checked,
-  onCheckedChange,
-  itemId,
-  disabled = false,
-}) => {
+export const SelectableCardCheckbox = ({ checked, onCheckedChange, itemId, disabled = false }) => {
   return (
     <Checkbox
       checked={checked}

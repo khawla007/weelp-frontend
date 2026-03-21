@@ -112,9 +112,10 @@ export default function SingleProductFormPackage({ productData }) {
       id: productData?.id,
       price: productData?.base_pricing?.variations[0]?.regular_price ?? 420,
       name: productData?.name,
+      currency: productData?.base_pricing?.currency || 'usd',
       ...data,
       featured_image: 'https://picsum.photos/200/300',
-      type: 'itinerary',
+      type: 'package',
     });
 
     // clearCart()

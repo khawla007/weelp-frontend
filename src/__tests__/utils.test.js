@@ -1,5 +1,5 @@
 // src/utils/__tests__/generateSlug.test.ts
-import { generateSlug } from "@/lib/utils";
+import { generateSlug } from '@/lib/utils';
 
 describe('generateSlug', () => {
   test('converts a normal string to lowercase and hyphenated', () => {
@@ -26,4 +26,3 @@ describe('generateSlug', () => {
     expect(generateSlug('123 456')).toBe('123-456');
   });
 });
-

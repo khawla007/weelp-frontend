@@ -14,20 +14,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
 import { useEffect } from 'react';
 
-export function ReviewTable({
-  reviews = [],
-  onDelete,
-  selectedItems = [],
-  onSelectionChange,
-  reviewsCount = 0,
-  onAllSelectedChange
-}) {
+export function ReviewTable({ reviews = [], onDelete, selectedItems = [], onSelectionChange, reviewsCount = 0, onAllSelectedChange }) {
   const isClient = useIsClient(); // hydration errors
 
   // Update isAllSelected when individual selections change
   useEffect(() => {
     if (onAllSelectedChange && reviews.length > 0) {
-      const allSelected = reviews.length > 0 && reviews.every(review => selectedItems.includes(review.id));
+      const allSelected = reviews.length > 0 && reviews.every((review) => selectedItems.includes(review.id));
       onAllSelectedChange(allSelected);
     }
   }, [selectedItems, reviews.length, onAllSelectedChange]);
@@ -35,9 +28,7 @@ export function ReviewTable({
   // Handle individual checkbox change
   const handleSelectionChange = (checked, reviewId) => {
     if (onSelectionChange) {
-      const newSelection = checked
-        ? [...selectedItems, reviewId]
-        : selectedItems.filter(id => id !== reviewId);
+      const newSelection = checked ? [...selectedItems, reviewId] : selectedItems.filter((id) => id !== reviewId);
       onSelectionChange(newSelection);
     }
   };
@@ -51,7 +42,7 @@ export function ReviewTable({
           checked={reviews.length > 0 && selectedItems.length === reviews.length}
           onCheckedChange={(checked) => {
             if (checked) {
-              onSelectionChange(reviews.map(r => r.id));
+              onSelectionChange(reviews.map((r) => r.id));
             } else {
               onSelectionChange([]);
             }
@@ -59,13 +50,7 @@ export function ReviewTable({
           className="h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
         />
       ),
-      cell: ({ row }) => (
-        <SelectableCardCheckbox
-          checked={selectedItems.includes(row.original.id)}
-          onCheckedChange={handleSelectionChange}
-          itemId={row.original.id}
-        />
-      ),
+      cell: ({ row }) => <SelectableCardCheckbox checked={selectedItems.includes(row.original.id)} onCheckedChange={handleSelectionChange} itemId={row.original.id} />,
     },
     {
       accessorKey: 'created_at',
@@ -125,13 +110,7 @@ export function ReviewTable({
       header: 'Actions',
       cell: ({ row }) => {
         const reviewId = row?.original?.id;
-        return (
-          <TableActions
-            id={reviewId}
-            editUrl={`/dashboard/admin/reviews/${reviewId}`}
-            onDelete={onDelete}
-          />
-        );
+        return <TableActions id={reviewId} editUrl={`/dashboard/admin/reviews/${reviewId}`} onDelete={onDelete} />;
       },
     },
   ];

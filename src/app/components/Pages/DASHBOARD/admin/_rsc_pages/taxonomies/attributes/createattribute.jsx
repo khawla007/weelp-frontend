@@ -5,7 +5,6 @@ import { TaxonomyFormNavigation } from '../taxonomies_shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -15,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 // import { createCategory } from "@/lib/actions/categories";
 import { createAttribute } from '@/lib/actions/attributes';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 
 export const formSchema = z
   .object({
@@ -60,7 +60,7 @@ export const CreateAttributePageForm = () => {
   });
 
   const {
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid },
   } = form; // checking form state
 
   const typeValue = form.watch('type');
@@ -244,21 +244,7 @@ export const CreateAttributePageForm = () => {
                 />
               )}
 
-              {/* Submit/Cancel Buttons */}
-              <p className="flex gap-2">
-                <Button className="w-fit bg-secondaryDark hover:bg-secondaryDark" type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? 'Creating Attribute' : 'Create Attribute'}
-                </Button>
-                <Button
-                  className="w-fit bg-inherit hover:bg-inherit text-black border"
-                  type="button"
-                  onClick={() => {
-                    router.back();
-                  }}
-                >
-                  Cancel
-                </Button>
-              </p>
+              <FormActionButtons mode="create" cancelHref="/dashboard/admin/taxonomies/attributes/" isSubmitting={isSubmitting} isDisabled={!isValid} containerType="div" className="justify-end" />
             </fieldset>
           </form>
         </Form>

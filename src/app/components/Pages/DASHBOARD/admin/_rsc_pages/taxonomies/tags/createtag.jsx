@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import { Form, FormLabel, FormDescription, FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form';
 import { generateSlug } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { useForm, useWatch } from 'react-hook-form';
@@ -12,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { createTag } from '@/lib/actions/tags';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 
 // schema
 const formSchema = z.object({
@@ -39,7 +39,7 @@ export const CreateTagPageForm = () => {
   });
 
   const {
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid },
   } = form; // checking form state
 
   const nameValue = useWatch({ control: form.control, name: 'name' });
@@ -146,20 +146,7 @@ export const CreateTagPageForm = () => {
                 )}
               />
 
-              <p className="flex gap-2">
-                <Button className="w-fit bg-secondaryDark hover:bg-secondaryDark" type="submit">
-                  {isSubmitting ? 'Creating Tag' : ' Create Tag'}
-                </Button>
-                <Button
-                  className="w-fit bg-inherit hover:bg-inherit text-black border"
-                  type="button"
-                  onClick={() => {
-                    router.back();
-                  }}
-                >
-                  Cancel
-                </Button>
-              </p>
+              <FormActionButtons mode="create" cancelHref="/dashboard/admin/taxonomies/tags/" isSubmitting={isSubmitting} isDisabled={!isValid} containerType="div" className="justify-end" />
             </fieldset>
           </form>
         </Form>

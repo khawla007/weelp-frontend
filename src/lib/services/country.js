@@ -18,16 +18,14 @@ export async function getSingleCountryAdmin(id) {
       hasSession: !!session,
       hasToken: !!session?.access_token,
       userEmail: session?.user?.email,
-      tokenPreview: session?.access_token?.substring(0, 30) + '...'
+      tokenPreview: session?.access_token?.substring(0, 30) + '...',
     });
 
     // Create axios instance directly here instead of using helper
     const axios = (await import('axios')).default;
     const api = axios.create({
       baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}`,
-      headers: session?.access_token
-        ? { Authorization: `Bearer ${session.access_token}` }
-        : {},
+      headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
     });
 
     const response = await api.get(`/api/admin/countries/${id}`, {
@@ -44,12 +42,12 @@ export async function getSingleCountryAdmin(id) {
     console.error('[getSingleCountryAdmin] ERROR:', {
       message: error.message,
       status: error.response?.status,
-      data: error.response?.data
+      data: error.response?.data,
     });
     return {
       _error: error.message,
       _status: error.response?.status,
-      _data: error.response?.data
+      _data: error.response?.data,
     };
   }
 }

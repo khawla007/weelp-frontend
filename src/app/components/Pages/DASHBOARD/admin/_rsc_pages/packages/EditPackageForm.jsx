@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSidebar } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -77,9 +78,9 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
 
   const initialAttributes = presetAttributes?.length
     ? presetAttributes.map(({ attribute_id, attribute_value }) => ({
-      attribute_id,
-      attribute_value,
-    }))
+        attribute_id,
+        attribute_value,
+      }))
     : [];
 
   // addons modify
@@ -128,7 +129,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
 
   // Handle Global Level Error
   const { reset } = methods;
-  const { errors, isValid, isSubmitting } = methods?.formState;
+  const { errors, isValid, isSubmitting, isDirty } = methods?.formState;
 
   /** Inline Actions Side Effects */
   useEffect(() => {
@@ -244,7 +245,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
         <div className="flex w-full gap-4">
           <div className="pb-2 space-y-2 w-full">
             <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-black'}`}>
-              Package Name
+              Package Name <span className="text-red-500">*</span>
             </Label>
             <Input
               placeholder="Package name"
@@ -258,7 +259,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
 
           <div className="pb-2 space-y-2 w-full">
             <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-black'}`}>
-              Slug
+              Slug <span className="text-red-500">*</span>
             </Label>
             <Input
               placeholder="Enter Url slug"
@@ -273,7 +274,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
 
         <div className="space-y-2">
           <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-black'}`}>
-            Description
+            Description <span className="text-red-500">*</span>
           </Label>
           <Textarea
             placeholder="Detailed description"
@@ -289,7 +290,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
         {/* destination */}
         <div className="space-y-2">
           <Label htmlFor={'locations'} className={`block text-sm font-medium ${errors?.locations ? 'text-red-400' : 'text-black'}`}>
-            Destinations
+            Destinations <span className="text-red-500">*</span>
           </Label>
           <Controller
             control={methods.control}
@@ -352,162 +353,161 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
   };
 
   // Information Tab
-  const InformationTab = () => {
-    // intialize form
-    const {
-      register,
-      getValues,
-      setError,
-      clearErrors,
-      control,
-      trigger,
-      formState: { errors },
-    } = useFormContext();
+  const InformationTab = useMemo(
+    () => () => {
+      // intialize form
+      const {
+        register,
+        getValues,
+        setError,
+        clearErrors,
+        control,
+        trigger,
+        formState: { errors },
+      } = useFormContext();
 
-    // local state of schedules
-    const information = useWatch({ control, name: 'information' });
+      // information fields
+      const {
+        fields: informationFields,
+        append: addInformationField,
+        remove: removeInformationField,
+      } = useFieldArray({
+        control,
+        name: 'information', // register information field
+      });
 
-    // information fields
-    const {
-      fields: informationFields,
-      append: addInformationField,
-      remove: removeInformationField,
-    } = useFieldArray({
-      control,
-      name: 'information', // register information field
-    });
+      // Validate Fields
+      const handleValidationInformation = async (e) => {
+        e.preventDefault();
 
-    // Validate Fields
-    const handleValidationInformation = async (e) => {
-      e.preventDefault();
+        const values = getValues('information'); // get default values
 
-      const values = getValues('information'); // get default values
+        // Step 1: Validate if array is empty
+        if (!values || values.length === 0) {
+          setError('information', {
+            type: 'manual',
+            message: 'At least one section is required',
+          });
+          return;
+        }
 
-      // Step 1: Validate if array is empty
-      if (!values || values.length === 0) {
-        setError('information', {
-          type: 'manual',
-          message: 'At least one section is required',
-        });
-        return;
-      }
+        // Step 2:
+        const isValid = await trigger('information'); // ✅ this checks: information.0.content, etc.
 
-      // Step 2:
-      const isValid = await trigger('information'); // ✅ this checks: information.0.content, etc.
+        if (!isValid) {
+          // One or more nested fields are invalid
+          return;
+        }
 
-      if (!isValid) {
-        // One or more nested fields are invalid
-        return;
-      }
+        // Step 3: All good, proceed
+        clearErrors('information');
+        setCurrentStep((prev) => prev + 1);
+      };
 
-      // Step 3: All good, proceed
-      clearErrors('information');
-      setCurrentStep(currentStep + 1);
-    };
+      // handleRemoveInformation Field
+      const handleRemoveInformationField = async (field, packageId, index) => {
+        let deleted_information_ids = []; // intialize variable
 
-    // handleRemoveInformation Field
-    const handleRemoveInformationField = async (field, packageId, index) => {
-      let deleted_information_ids = []; // intialize variable
+        // check if it's come from api
+        const { id } = field;
 
-      // check if it's come from api
-      const { id } = field;
+        // check if id exist
+        if (!id) {
+          removeInformationField(index); // remove by index
+          return;
+        }
 
-      // check if id exist
-      if (!id) {
-        removeInformationField(index); // remove by index
-        return;
-      }
+        deleted_information_ids.push(id); // id to delete
 
-      deleted_information_ids.push(id); // id to delete
-
-      // delete information field
-      try {
-        const res = await deletePackageItems({
-          packageId,
-          deleted_information_ids,
-        });
-
-        // check response
-        if (res.success) {
-          toast({
-            title: res.data ?? 'Updated succesfully',
+        // delete information field
+        try {
+          const res = await deletePackageItems({
+            packageId,
+            deleted_information_ids,
           });
 
-          setToggleUpdate((prev) => !prev); // listner
-        } else {
+          // check response
+          if (res.success) {
+            toast({
+              title: res.data ?? 'Updated succesfully',
+            });
+
+            setToggleUpdate((prev) => !prev); // listner
+          } else {
+            // failed message
+            toast({
+              title: res.error,
+              variant: 'destructive',
+            });
+          }
+        } catch (error) {
           // failed message
           toast({
-            title: res.error,
+            title: 'API call failed:' ?? error.message,
             variant: 'destructive',
           });
         }
-      } catch (error) {
-        // failed message
-        toast({
-          title: 'API call failed:' ?? error.message,
-          variant: 'destructive',
-        });
-      }
-    };
+      };
 
-    return (
-      <div className="flex flex-col gap-4 py-4 relative">
-        <Button type="button" className="bg-white hover:bg-white border text-inherit self-end" onClick={() => addInformationField({ section_title: '', content: '' })}>
-          Add Section
-        </Button>
+      return (
+        <div className="flex flex-col gap-4 py-4 relative">
+          <Button type="button" className="bg-white hover:bg-white border text-inherit self-end" onClick={() => addInformationField({ section_title: '', content: '' })}>
+            Add Section
+          </Button>
 
-        {errors?.information?.message && <p className="text-red-400">{errors?.information?.message}</p>}
-        {information.map((field, index) => (
-          <Card key={index} className="w-full py-4 space-y-6 relative">
-            <div className="absolute top-4 right-4">
-              {/* Remove Information Field */}
-              <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveInformationField(field, id, index)}>
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-            <div className="px-4 space-y-2">
-              <Label htmlFor={`information.${index}.section_title`} className={errors?.information?.[index]?.section_title?.message && 'text-red-400'}>
-                Section Title
-              </Label>
-              <Input
-                id={`information.${index}.section_title`}
-                {...register(`information.${index}.section_title`, {
-                  required: ' Title Required',
-                })}
-                placeholder="Enter section title"
-                className="text-xs focus-visible:ring-secondaryDark"
-              />
-              {errors?.information?.[index]?.section_title && <p className="px-2 text-red-500 text-sm">{errors.information?.[index]?.section_title?.message}</p>}
-            </div>
-            <div className="px-4 space-y-2">
-              <Label htmlFor={`information.${index}.content`} className={errors?.information?.[index]?.content?.message && 'text-red-400'}>
-                Content
-              </Label>
-              <Textarea
-                id={`information.${index}.content`}
-                {...register(`information.${index}.content`, {
-                  required: 'Content Required',
-                })}
-                placeholder="Enter section content"
-                className="text-xs focus-visible:ring-secondaryDark"
-              />
-              {errors?.information?.[index]?.content && <p className="px-2 text-red-500 text-sm">{errors.information?.[index]?.content?.message}</p>}
-            </div>
-          </Card>
-        ))}
+          {errors?.information?.message && <p className="text-red-400">{errors?.information?.message}</p>}
+          {informationFields.map((field, index) => (
+            <Card key={field.id} className="w-full py-4 space-y-6 relative">
+              <div className="absolute top-4 right-4">
+                {/* Remove Information Field */}
+                <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveInformationField(field, id, index)}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="px-4 space-y-2">
+                <Label htmlFor={`information.${index}.section_title`} className={errors?.information?.[index]?.section_title?.message && 'text-red-400'}>
+                  Section Title
+                </Label>
+                <Input
+                  id={`information.${index}.section_title`}
+                  {...register(`information.${index}.section_title`, {
+                    required: ' Title Required',
+                  })}
+                  placeholder="Enter section title"
+                  className="text-xs focus-visible:ring-secondaryDark"
+                />
+                {errors?.information?.[index]?.section_title && <p className="px-2 text-red-500 text-sm">{errors.information?.[index]?.section_title?.message}</p>}
+              </div>
+              <div className="px-4 space-y-2">
+                <Label htmlFor={`information.${index}.content`} className={errors?.information?.[index]?.content?.message && 'text-red-400'}>
+                  Content
+                </Label>
+                <Textarea
+                  id={`information.${index}.content`}
+                  {...register(`information.${index}.content`, {
+                    required: 'Content Required',
+                  })}
+                  placeholder="Enter section content"
+                  className="text-xs focus-visible:ring-secondaryDark"
+                />
+                {errors?.information?.[index]?.content && <p className="px-2 text-red-500 text-sm">{errors.information?.[index]?.content?.message}</p>}
+              </div>
+            </Card>
+          ))}
 
-        {/* {information.map((field,index)=>{})} */}
-        {/* Next Button */}
-        <Button
-          type="submit"
-          onClick={handleValidationInformation}
-          className={`absolute right-0 -bottom-10 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}
-        >
-          {isSubmitting ? (currentStep === 7 ? 'Submitting...' : 'Submit') : currentStep === 7 ? 'Submit' : 'Next'}
-        </Button>
-      </div>
-    );
-  };
+          {/* Next Button */}
+          <Button
+            type="submit"
+            onClick={handleValidationInformation}
+            className={`absolute right-0 -bottom-10 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}
+          >
+            {isSubmitting ? (currentStep === 7 ? 'Submitting...' : 'Submit') : currentStep === 7 ? 'Submit' : 'Next'}
+          </Button>
+        </div>
+      );
+    },
+    [],
+  );
 
   // Schedule Booking
   const ScheduleTab = () => {
@@ -591,15 +591,26 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
       e.preventDefault();
 
       // check first schedules
-      if (!isEmpty(schedules)) {
-        clearErrors('schedules');
-        setCurrentStep(currentStep + 1); //
-      } else {
+      if (isEmpty(schedules)) {
         setError('schedules', {
           type: 'manual',
           message: 'At least one schedule is required',
         });
+        return;
       }
+
+      // check at least one activity, transfer, or itinerary exists
+      const hasItems = !isEmpty(activities) || !isEmpty(transferss) || !isEmpty(itinerariess);
+      if (!hasItems) {
+        setError('schedules', {
+          type: 'manual',
+          message: 'At least one activity, transfer, or itinerary is required',
+        });
+        return;
+      }
+
+      clearErrors('schedules');
+      setCurrentStep((prev) => prev + 1);
     };
 
     // Modal Handle
@@ -1864,11 +1875,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
           <DialogContent className="max-w-screen-xl">
             <DialogTitle className="sr-only">Edit profile</DialogTitle>
             <DialogDescription className="invisible">Upload Media For Activity</DialogDescription>
-            <Medialibrary
-              closeDialog={() => setDialogOpen(false)}
-              alreadySelectedImages={activityImages}
-              onSelectionChange={handleSelectionChange}
-            />
+            <Medialibrary closeDialog={() => setDialogOpen(false)} alreadySelectedImages={activityImages} onSelectionChange={handleSelectionChange} />
           </DialogContent>
         </Dialog>
 
@@ -1887,11 +1894,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                     onClick={() => handleSetFeatured(image.media_id)}
                     className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#568f7c]' : 'text-[#568f7c] hover:scale-110'}`}
                   />
-                  {isFeatured && (
-                    <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
-                      Featured
-                    </div>
-                  )}
+                  {isFeatured && <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
                   <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-4 right-4 size-0 group-hover/item:size-6 transition-all text-red-500 bg-white rounded-full shadow p-1" />
                 </div>
               );
@@ -2513,8 +2516,47 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
     }
   };
 
-  // Handle Next button for steps 1-10 (no validation)
-  const handleNext = () => {
+  // Validate current step before navigating away
+  const validateCurrentStep = async () => {
+    if (currentStep === 1) {
+      const isValid = await methods.trigger(['name', 'slug', 'description', 'locations']);
+      return isValid;
+    }
+    if (currentStep === 2) {
+      const values = methods.getValues('information');
+      if (!values || values.length === 0) {
+        methods.setError('information', { type: 'manual', message: 'At least one section is required' });
+        return false;
+      }
+      const isValid = await methods.trigger('information');
+      if (!isValid) return false;
+      methods.clearErrors('information');
+      return true;
+    }
+    if (currentStep === 3) {
+      const schedules = methods.getValues('schedules');
+      if (isEmpty(schedules)) {
+        methods.setError('schedules', { type: 'manual', message: 'At least one schedule is required' });
+        return false;
+      }
+      const activities = methods.getValues('activities');
+      const transfers = methods.getValues('transfers');
+      const itineraries = methods.getValues('itineraries');
+      const hasItems = !isEmpty(activities) || !isEmpty(transfers) || !isEmpty(itineraries);
+      if (!hasItems) {
+        methods.setError('schedules', { type: 'manual', message: 'At least one activity, transfer, or itinerary is required' });
+        return false;
+      }
+      methods.clearErrors('schedules');
+      return true;
+    }
+    return true;
+  };
+
+  // Handle Next button for steps 1-10 - validates current step fields
+  const handleNext = async () => {
+    const isValid = await validateCurrentStep();
+    if (!isValid) return;
     setCurrentStep((prev) => prev + 1);
   };
 
@@ -2578,13 +2620,21 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                   steps.map((step) => (
                     <li
                       key={step.id}
-                      onClick={() => setCurrentStep(step?.id)}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'
-                        }`}
+                      onClick={async () => {
+                        if (step?.id !== currentStep) {
+                          const isValid = await validateCurrentStep();
+                          if (!isValid) return;
+                        }
+                        setCurrentStep(step?.id);
+                      }}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${
+                        currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'
+                      }`}
                     >
                       <div
-                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${currentStep == step?.id ? 'text-secondaryDark ' : 'text-grayDark'
-                          }`}
+                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${
+                          currentStep == step?.id ? 'text-secondaryDark ' : 'text-grayDark'
+                        }`}
                       >
                         {step.title}
                       </div>
@@ -2594,7 +2644,16 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
               <Separator className="" />
             </div>
           </div>
-          <form onSubmit={currentStep === 11 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
+          <form
+            onSubmit={
+              currentStep === 11
+                ? methods.handleSubmit(onSubmit)
+                : (e) => {
+                    e.preventDefault();
+                    handleNext();
+                  }
+            }
+          >
             <fieldset className={`${currentStep === 4 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               {renderStep()}
               <div className="flex justify-between pt-4">
@@ -2610,22 +2669,29 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
 
                 {/* Prevent Button On Schedules and Information Tab */}
                 {currentStep === 3 || currentStep === 2 || currentStep === 10 ? null : (
-                  <div className={`flex ${currentStep > 10 ? 'w-fit gap-4' : 'w-full justify-between'}`}>
-                    {(currentStep < 2 || currentStep > 10) && (
-                      <Button
-                        type="button"
-                        onClick={() => {
-                          router.back();
-                        }}
-                        className={' bg-white text-black border hover:bg-white'}
-                      >
-                        Cancel
-                      </Button>
+                  <>
+                    {/* Step 11: Use FormActionButtons, Steps 1-9: Use Next button */}
+                    {currentStep === 11 ? (
+                      <FormActionButtons mode="update" isSubmitting={isSubmitting} isDisabled={!isValid || !isDirty} cancelAlwaysEnabled containerType="div" className="flex gap-4" />
+                    ) : (
+                      <div className={`flex ${currentStep > 10 ? 'w-fit gap-4' : 'w-full justify-between'}`}>
+                        {(currentStep < 2 || currentStep > 10) && (
+                          <Button
+                            type="button"
+                            onClick={() => {
+                              router.back();
+                            }}
+                            className={' bg-white text-black border hover:bg-white'}
+                          >
+                            Cancel
+                          </Button>
+                        )}
+                        <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
+                          {isSubmitting ? 'Next' : 'Next'}
+                        </Button>
+                      </div>
                     )}
-                    <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
-                      {isSubmitting ? (currentStep === 11 ? 'Submitting...' : 'Submit') : currentStep === 11 ? 'Submit' : 'Next'}
-                    </Button>
-                  </div>
+                  </>
                 )}
               </div>
             </fieldset>

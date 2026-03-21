@@ -62,9 +62,5 @@ export function ListingCardTags({ children, className = '' }) {
  * @param {string} className - Additional classes
  */
 export function ListingCardStats({ children, className = '' }) {
-  return (
-    <div className={`flex justify-start gap-2 ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={`flex justify-start gap-2 ${className}`}>{children}</div>;
 }

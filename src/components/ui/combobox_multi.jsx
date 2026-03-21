@@ -19,45 +19,75 @@ export function ComboboxMultipleAttribute({ attributes, value = [], onChange }) 
     onChange(newSelection);
   };
 
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
-          {(value || []).length > 0 ? (
-            <span className="flex items-center gap-2">
-              <Tags size={14} />
-              {(value || []).length} Attributes Selected
-            </span>
-          ) : (
-            'Select attributes...'
-          )}
-          <ChevronsUpDown className="opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[250px] p-0 h-[150px]">
-        <Command>
-          <CommandInput placeholder="Search attributes..." className="h-9" />
-          <CommandList>
-            <CommandEmpty>No attributes found.</CommandEmpty>
-            {attributes.map((attr) => (
-              <CommandGroup key={attr.id} heading={attr.name}>
-                {attr.values.split(',').map((attrValue) => {
-                  const trimmedValue = attrValue.trim();
-                  const isSelected = value.some((s) => s.attribute_id === attr.id && s.attribute_value === trimmedValue);
+  const handleRemove = (attrId, attrValue) => {
+    onChange(value.filter((s) => !(s.attribute_id === attrId && s.attribute_value === attrValue)));
+  };
 
-                  return (
-                    <CommandItem key={`${attr.id}-${trimmedValue}`} value={trimmedValue} onSelect={() => handleSelect(attr.id, trimmedValue)}>
-                      {trimmedValue}
-                      <Check className={cn('ml-auto', isSelected ? 'opacity-100' : 'opacity-0')} />
-                    </CommandItem>
-                  );
-                })}
-              </CommandGroup>
-            ))}
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+  const getAttributeName = (attrId) => {
+    const attr = attributes.find((a) => a.id === attrId);
+    return attr ? attr.name : '';
+  };
+
+  return (
+    <div>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
+            {(value || []).length > 0 ? (
+              <span className="flex items-center gap-2">
+                <Tags size={14} />
+                {(value || []).length} Attributes Selected
+              </span>
+            ) : (
+              'Select attributes...'
+            )}
+            <ChevronsUpDown className="opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[250px] p-0 h-[150px]">
+          <Command>
+            <CommandInput placeholder="Search attributes..." className="h-9" />
+            <CommandList>
+              <CommandEmpty>No attributes found.</CommandEmpty>
+              {attributes.map((attr) => (
+                <CommandGroup key={attr.id} heading={attr.name}>
+                  {attr.values.split(',').map((attrValue) => {
+                    const trimmedValue = attrValue.trim();
+                    const isSelected = value.some((s) => s.attribute_id === attr.id && s.attribute_value === trimmedValue);
+
+                    return (
+                      <CommandItem key={`${attr.id}-${trimmedValue}`} value={`${attr.name} ${trimmedValue}`} onSelect={() => handleSelect(attr.id, trimmedValue)}>
+                        {trimmedValue}
+                        <Check className={cn('ml-auto', isSelected ? 'opacity-100' : 'opacity-0')} />
+                      </CommandItem>
+                    );
+                  })}
+                </CommandGroup>
+              ))}
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+
+      {/* Selected Attributes */}
+      {(value || []).length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-2 w-full">
+          {value.map((selected) => (
+            <div
+              key={`${selected.attribute_id}-${selected.attribute_value}`}
+              className="flex items-center text-sm text-grayDark font-bold bg-[#f2f2f2] gap-2 px-2 py-1 rounded-lg hover:scale-110 duration-100 ease-linear"
+            >
+              <span>
+                {getAttributeName(selected.attribute_id)}: {selected.attribute_value}
+              </span>
+              <button onClick={() => handleRemove(selected.attribute_id, selected.attribute_value)} className="ml-2">
+                <X size={14} />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 

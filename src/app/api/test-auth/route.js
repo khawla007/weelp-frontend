@@ -9,12 +9,15 @@ export async function GET() {
       hasToken: !!session?.access_token,
       userEmail: session?.user?.email,
       userRole: session?.user?.role,
-      tokenPreview: session?.access_token?.substring(0, 30) + '...'
+      tokenPreview: session?.access_token?.substring(0, 30) + '...',
     });
   } catch (error) {
-    return Response.json({
-      error: error.message,
-      stack: error.stack
-    }, { status: 500 });
+    return Response.json(
+      {
+        error: error.message,
+        stack: error.stack,
+      },
+      { status: 500 },
+    );
   }
 }

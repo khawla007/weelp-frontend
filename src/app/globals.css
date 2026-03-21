@@ -104,6 +104,13 @@ body {
     --weelp-card-badge-bg: #f4f4f5;
     --weelp-card-badge-text: #52525b;
     --weelp-card-category-text: #16a34a;
+    --weelp-city-brand: #57947d;
+    --weelp-city-discount: #ff725e;
+    --weelp-city-discount-soft: #ff725e0a;
+    --weelp-city-tab-text: #435a67;
+    --weelp-city-tab-bg: #cfdbe533;
+    --weelp-city-tab-active-bg: #cfdbe533;
+    --weelp-city-tab-active-border: #cfdbe580;
   }
 
   .dark {
@@ -139,6 +146,31 @@ body {
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer components {
+  .weelp-city-cta-button {
+    background-color: var(--weelp-city-brand);
+    color: #fff;
+  }
+
+  .weelp-city-discount-badge {
+    border: 0.8px solid var(--weelp-city-discount);
+    background-color: var(--weelp-city-discount-soft);
+    color: var(--weelp-city-discount);
+  }
+
+  .weelp-city-tab {
+    border: 1px solid transparent;
+    background-color: var(--weelp-city-tab-bg);
+    color: var(--weelp-city-tab-text);
+  }
+
+  .weelp-city-tab-active {
+    border-color: var(--weelp-city-tab-active-border);
+    background-color: var(--weelp-city-tab-active-bg);
+    color: var(--weelp-city-tab-text);
   }
 }
 
@@ -504,8 +536,23 @@ body {
 .modern-carousel-shell .swiper {
   overflow: visible;
 }
+
 .modern-carousel-shell .swiper-wrapper {
   padding: 8px 0;
+}
+
+/* Global Slider Overflow — visible on top, bottom, left; clipped on right */
+.carousel-shell-wrapper {
+  overflow: visible;
+  /* Clip horizontal overflow (0px) but allow vertical overflow (-100px) */
+  clip-path: inset(-100px 0px -100px 0px);
+  padding: 16px 4px;
+  margin: -16px -4px;
+}
+
+.carousel-shell-wrapper .swiper,
+.carousel-shell-wrapper .swiper-wrapper {
+  overflow: visible !important;
 }
 
 /* Shop Filter */
@@ -634,14 +681,16 @@ span {
 
 /* City page filter price slider — green theme */
 .city-price-slider .range-slider__range {
-  background: #57947d !important;
+  background: var(--weelp-city-brand) !important;
 }
+
 .city-price-slider .range-slider__thumb {
   background: #fff !important;
-  border: 2px solid #57947d !important;
+  border: 2px solid var(--weelp-city-brand) !important;
   width: 20px !important;
   height: 20px !important;
 }
+
 .city-price-slider .range-slider__bar {
   background: #f1f5f9 !important;
 }

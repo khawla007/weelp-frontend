@@ -42,7 +42,7 @@ export const FormResetPassword = () => {
   const router = useRouter();
   const { toast } = useToast();
   const token = searchParams.get('token');
-  const [initialize] = useState(() => true);  // Lazy initialization - no useEffect needed
+  const [initialize] = useState(() => true); // Lazy initialization - no useEffect needed
 
   //Create Form
   const {

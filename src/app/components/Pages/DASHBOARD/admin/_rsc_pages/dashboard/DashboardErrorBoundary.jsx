@@ -41,7 +41,7 @@ export class DashboardErrorBoundary extends Component {
 
   handleReset = () => {
     this.setState({ hasError: false, error: null, errorInfo: null });
-    
+
     // Call the onReset callback if provided
     if (this.props.onReset) {
       this.props.onReset();
@@ -64,25 +64,17 @@ export class DashboardErrorBoundary extends Component {
                 <AlertTriangle className="h-6 w-6 text-destructive" />
               </div>
               <CardTitle className="text-xl">Something went wrong</CardTitle>
-              <CardDescription>
-                An unexpected error occurred while loading the dashboard.
-              </CardDescription>
+              <CardDescription>An unexpected error occurred while loading the dashboard.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Show error details in development */}
               {isDevelopment && this.state.error && (
                 <div className="bg-muted p-4 rounded-lg">
-                  <p className="text-sm font-mono text-destructive mb-2">
-                    {this.state.error.toString()}
-                  </p>
+                  <p className="text-sm font-mono text-destructive mb-2">{this.state.error.toString()}</p>
                   {this.state.errorInfo && (
                     <details className="mt-2">
-                      <summary className="text-xs font-medium cursor-pointer">
-                        Component Stack
-                      </summary>
-                      <pre className="text-xs mt-2 overflow-auto max-h-32 text-muted-foreground">
-                        {this.state.errorInfo.componentStack}
-                      </pre>
+                      <summary className="text-xs font-medium cursor-pointer">Component Stack</summary>
+                      <pre className="text-xs mt-2 overflow-auto max-h-32 text-muted-foreground">{this.state.errorInfo.componentStack}</pre>
                     </details>
                   )}
                 </div>
@@ -100,9 +92,7 @@ export class DashboardErrorBoundary extends Component {
                 </Button>
               </div>
 
-              <p className="text-xs text-center text-muted-foreground">
-                If this problem persists, please contact support.
-              </p>
+              <p className="text-xs text-center text-muted-foreground">If this problem persists, please contact support.</p>
             </CardContent>
           </Card>
         </div>

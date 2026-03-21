@@ -164,13 +164,17 @@ export const deleteMultipleAddons = async (addonIds = []) => {
     await delay(500);
 
     const api = await getAuthApi();
-    const res = await api.post('/api/admin/addons/bulk-delete', {
-      addon_ids: addonIds,
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
+    const res = await api.post(
+      '/api/admin/addons/bulk-delete',
+      {
+        addon_ids: addonIds,
       },
-    });
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
 
     revalidatePath('/dashboard/admin/addon');
 

@@ -22,7 +22,7 @@ export function MediaSelectionBadge({ isSelected, className }) {
         !isSelected && 'bg-white border-2 border-[#568f7c]',
         // Selected state: green bg with white checkmark
         isSelected && 'bg-[#568f7c]',
-        className
+        className,
       )}
     >
       {isSelected && <Check size={16} strokeWidth={3} className="text-white" />}

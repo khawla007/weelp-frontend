@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
@@ -48,18 +49,14 @@ export const EditTransferForm = ({ transferData }) => {
       addons: initialAddons,
       seo: {
         ...seo,
-        schema_data: seo?.schema_data
-          ? typeof seo.schema_data === 'string'
-            ? JSON.parse(seo.schema_data)
-            : seo.schema_data
-          : {},
+        schema_data: seo?.schema_data ? (typeof seo.schema_data === 'string' ? JSON.parse(seo.schema_data) : seo.schema_data) : {},
       },
     },
   });
 
   // Handle Global Level Error
   const { reset } = methods;
-  const { errors, isValid, isSubmitting } = methods?.formState;
+  const { errors, isValid, isSubmitting, isDirty } = methods?.formState;
 
   // Handle Next button for steps 1-4 (no validation)
   const handleNext = () => {
@@ -196,7 +193,16 @@ export const EditTransferForm = ({ transferData }) => {
               <Separator className="" />
             </div>
           </div>
-          <form onSubmit={currentStep === 6 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
+          <form
+            onSubmit={
+              currentStep === 6
+                ? methods.handleSubmit(onSubmit)
+                : (e) => {
+                    e.preventDefault();
+                    handleNext();
+                  }
+            }
+          >
             <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               {renderStep()}
               <div className="flex justify-between pt-4">
@@ -215,7 +221,7 @@ export const EditTransferForm = ({ transferData }) => {
                   <Button
                     type="button"
                     onClick={() => {
-                      router.back();
+                      router.push('/dashboard/admin/transfers');
                     }}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                   >
@@ -224,9 +230,22 @@ export const EditTransferForm = ({ transferData }) => {
                 )}
 
                 {/* Prevent Button On Schedules */}
-                <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
-                  {currentStep === 6 ? 'Submit' : 'Next'}
-                </Button>
+                {/* Step 6: Use FormActionButtons, Steps 1-5: Use Next button */}
+                {currentStep === 6 ? (
+                  <FormActionButtons
+                    mode="update"
+                    isSubmitting={isSubmitting}
+                    isDisabled={!isValid || !isDirty}
+                    cancelAlwaysEnabled={true}
+                    cancelHref="/dashboard/admin/transfers"
+                    containerType="div"
+                    className="flex gap-4 ml-auto"
+                  />
+                ) : (
+                  <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
+                    Next
+                  </Button>
+                )}
               </div>
             </fieldset>
           </form>

@@ -41,7 +41,7 @@ export function RecentSales({ loading = false, data = null }) {
   }
 
   // Use API data if available (and has content), otherwise use static data
-  const sales = (data && data.length > 0) ? data : recentSales;
+  const sales = data && data.length > 0 ? data : recentSales;
 
   return (
     <div className="space-y-8 w-full max-w-full grid grid-cols-1">

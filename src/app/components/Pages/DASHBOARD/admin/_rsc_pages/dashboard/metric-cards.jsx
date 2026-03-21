@@ -9,7 +9,7 @@ export const MetricCards = ({ loading = false, data = null }) => {
   }
 
   // Use API data if available (and has content), otherwise use static data
-  const cards = (data && data.length > 0) ? data : metricCardsData;
+  const cards = data && data.length > 0 ? data : metricCardsData;
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -31,7 +31,8 @@ export const MetricCards = ({ loading = false, data = null }) => {
             <CardContent>
               <p className={`${item.change >= 0 ? 'text-green-500' : 'text-red-500'} text-[12px] flex flex-wrap gap-1 items-center`}>
                 {item.change >= 0 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
-                {item.change > 0 ? '+' : ''}{item.change}% <span className="text-gray-400 font-medium">from last month</span>
+                {item.change > 0 ? '+' : ''}
+                {item.change}% <span className="text-gray-400 font-medium">from last month</span>
               </p>
             </CardContent>
           </Card>

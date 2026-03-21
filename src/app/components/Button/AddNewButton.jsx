@@ -12,18 +12,10 @@ import { Plus, Upload } from 'lucide-react';
  * @param {ReactNode} icon - Optional icon component
  * @param {string} className - Optional additional classes
  */
-export function AddNewButton({
-  label = 'Add New',
-  href,
-  icon = <Plus size={16} className="mr-2" />,
-  className = '',
-}) {
+export function AddNewButton({ label = 'Add New', href, icon = <Plus size={16} className="mr-2" />, className = '' }) {
   return (
     <Button asChild className="shrink-0 whitespace-nowrap">
-      <Link
-        className={`bg-secondaryDark text-black hover:bg-secondaryDark/90 ${className}`}
-        href={href}
-      >
+      <Link className={`bg-secondaryDark text-black hover:bg-secondaryDark/90 ${className}`} href={href}>
         {icon}
         {label}
       </Link>
@@ -33,12 +25,5 @@ export function AddNewButton({
 
 // Export a specific Upload variant for Media page
 export function UploadButton({ href, className = '' }) {
-  return (
-    <AddNewButton
-      label="Upload"
-      href={href}
-      icon={<Upload className="h-4 w-4 mr-2" />}
-      className={className}
-    />
-  );
+  return <AddNewButton label="Upload" href={href} icon={<Upload className="h-4 w-4 mr-2" />} className={className} />;
 }

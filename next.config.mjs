@@ -34,6 +34,7 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '3mb',
     },
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons', 'lodash', 'date-fns', 'framer-motion'],
   },
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 };

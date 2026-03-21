@@ -6,11 +6,10 @@ import { getAttributeBySlugAdmin } from '@/lib/services/attributes';
 import FilterPacakge from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/packages/FilteredPackagePage';
 
 const PackagebuilderPage = async () => {
-  const { data: categoriesData = {} } = await getCategoriesAdmin();
+  const { data: allCategories = {} } = await getCategoriesAdmin(null, { all: true });
+  const { data: categories = [] } = allCategories; // categories
   const difficulty = await getAttributeBySlugAdmin('difficulty-level'); // slug required
   const duration = await getAttributeBySlugAdmin('duration'); // slug required
-
-  const { data: categories = [] } = categoriesData; // categories
   return <FilterPacakge categories={categories} difficulties={difficulty} durations={duration} />;
 };
 

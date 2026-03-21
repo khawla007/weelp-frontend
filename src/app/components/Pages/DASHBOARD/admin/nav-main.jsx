@@ -40,10 +40,17 @@ export function NavMain({ items }) {
                   <ul className="p-2">
                     {item.children.map((child, childIndex) => (
                       <li key={childIndex}>
-                        <Link className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex items-center justify-start gap-4 font-medium text-sm leading-5 text-[#474748]" href={child.url}>
-                          <child.icon className="size-4" />
-                          {child.title}
-                        </Link>
+                        {child.comingSoon ? (
+                          <div className="px-4 py-2 flex items-center justify-start gap-4 font-medium text-sm leading-5 text-[#474748] opacity-60 cursor-not-allowed">
+                            <child.icon className="size-4" />
+                            {child.title}
+                          </div>
+                        ) : (
+                          <Link className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex items-center justify-start gap-4 font-medium text-sm leading-5 text-[#474748]" href={child.url}>
+                            <child.icon className="size-4" />
+                            {child.title}
+                          </Link>
+                        )}
                       </li>
                     ))}
                   </ul>

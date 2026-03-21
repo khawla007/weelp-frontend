@@ -1,40 +1,84 @@
 'use client';
 
 // Main User Page
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { UserDataTable } from './UserDataTable';
-import { useAllUsersAdmin } from '@/hooks/api/admin/users';
 import { useToast } from '@/hooks/use-toast';
-import { deleteMultipleUsers } from '@/lib/actions/userActions';
+import { deleteMultipleUsers, deleteUser } from '@/lib/actions/userActions';
 import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
 import { AddNewButton } from '@/app/components/Button/AddNewButton';
+import { FilterBar } from '@/app/components/DashboardShared/FilterBar';
+import { Form } from '@/components/ui/form';
+import { useForm, useWatch } from 'react-hook-form';
+import useSWR from 'swr';
+import { fetcher } from '@/lib/fetchers';
+import { CustomPagination } from '@/app/components/Pagination';
+import debounce from 'lodash.debounce';
 
 // mock user
 const UsersPageComponent = () => {
-  // Fetching All Users
-  const {
-    users: { users = [], active_users = 0, pending_users = 0, total_users = 0 },
-    error,
-    isLoading,
-    mutate,
-  } = useAllUsersAdmin();
-
   const { toast } = useToast();
   const [selectedItems, setSelectedItems] = useState([]);
   const [isAllSelected, setIsAllSelected] = useState(false);
 
-  if (isLoading) return <span className="loader"></span>;
-  if (error) return <span className="text-red-400">{error}</span>;
+  // Initialize form
+  const form = useForm({
+    defaultValues: {
+      search: '',
+      status: 'all',
+      page: 1,
+    },
+    mode: 'onChange',
+  });
+
+  const filters = useWatch({ control: form.control });
+  const [debouncedFilters, setDebouncedFilters] = useState(filters);
+
+  // Debounced search
+  const debouncedUpdate = useMemo(
+    () =>
+      debounce((newFilters) => {
+        setDebouncedFilters(newFilters);
+      }, 500),
+    [],
+  );
+
+  // Reset page to 1 when search or status changes
+  useEffect(() => {
+    form.setValue('page', 1);
+  }, [filters.search, filters.status]);
+
+  // Debounced filter update
+  useEffect(() => {
+    const { page, ...otherFilters } = filters;
+    debouncedUpdate(otherFilters);
+    return () => debouncedUpdate.cancel();
+  }, [filters.search, filters.status, debouncedUpdate]);
+
+  // Memoized query string
+  const queryParams = useMemo(() => {
+    const params = new URLSearchParams();
+    if (debouncedFilters.search) params.append('search', debouncedFilters.search);
+    if (filters.status && filters.status !== 'all') params.append('status', filters.status);
+    if (filters.page) params.append('page', filters.page);
+    return params.toString();
+  }, [debouncedFilters, filters]);
+
+  // Fetch users with filters
+  const { data = {}, isValidating, error, mutate } = useSWR(`/api/admin/users?${queryParams}`, fetcher);
+
+  const { data: responseData = {}, total_users = 0, active_users = 0, inactive_users = 0 } = data || {};
+  const { users = [], current_page = 0, per_page = 0, total = 0 } = responseData || {};
 
   // Stats of Users
   const UserStats = [
     { id: 1, title: 'Total Users', stats: total_users || 0 },
     { id: 2, title: 'Active Users', stats: active_users || 0 },
-    { id: 3, title: 'Pending Users', stats: pending_users || 0 },
+    { id: 3, title: 'Inactive Users', stats: inactive_users || 0 },
   ];
 
   // Toggle select all / unselect all
@@ -42,7 +86,7 @@ const UsersPageComponent = () => {
     if (isAllSelected) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(users.map(user => user.id));
+      setSelectedItems(users.map((user) => user.id));
     }
     setIsAllSelected(!isAllSelected);
   };
@@ -76,8 +120,36 @@ const UsersPageComponent = () => {
     }
   };
 
+  // Handle single delete
+  const handleDelete = async (userId) => {
+    try {
+      const result = await deleteUser(userId);
+
+      if (result.success) {
+        toast({
+          title: result.message || 'User deleted successfully',
+          variant: 'default',
+        });
+        mutate();
+      } else {
+        toast({
+          title: 'Delete failed',
+          description: result.error,
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Delete failed',
+        description: error.message || 'An unexpected error occurred',
+        variant: 'destructive',
+      });
+    }
+  };
+
   // Handle page change - clear selections
-  const handlePageChange = () => {
+  const handlePageChange = (newPage) => {
+    form.setValue('page', newPage, { shouldValidate: true, shouldDirty: true });
     setSelectedItems([]);
     setIsAllSelected(false);
   };
@@ -89,20 +161,6 @@ const UsersPageComponent = () => {
           <h2 className="text-2xl">Users</h2>
           <p className="text-base">Manage system users and their access</p>
         </div>
-        {selectedItems.length > 0 ? (
-          <BulkActionButtons
-            selectedCount={selectedItems.length}
-            totalCount={users.length}
-            isAllSelected={isAllSelected}
-            onSelectAllToggle={handleSelectAllToggle}
-            onDelete={handleBulkDelete}
-            deleteLabel="Delete"
-          />
-        ) : (
-          <AddNewButton
-            href="/dashboard/admin/users/new"
-          />
-        )}
       </div>
 
       {/* Analytics Cards */}
@@ -124,17 +182,51 @@ const UsersPageComponent = () => {
       </div>
 
       {/* tables */}
-      <Card className="shadow-none  mx-auto p-10 space-y-2">
-        <CardTitle className={'text-base mb-8'}>Users Overview</CardTitle>
-        <UserDataTable
-          data={users}
-          selectedItems={selectedItems}
-          onSelectionChange={setSelectedItems}
-          usersCount={users.length}
-          onAllSelectedChange={setIsAllSelected}
-          onPageChange={handlePageChange}
-        />
-      </Card>
+      <div className="space-y-8">
+        <CardTitle className={'text-base'}>Users Overview</CardTitle>
+
+        {/* Search and Status Filters with Buttons */}
+        <div className="flex justify-between items-center gap-4">
+          <Form {...form}>
+            <FilterBar
+              form={form}
+              searchName="search"
+              searchPlaceholder="Search by name or email"
+              typeFieldName="type"
+              typeOptions={[]}
+              statusFieldName="status"
+              statusPlaceholder="All Status"
+              statusOptions={[
+                { value: 'all', label: 'All Status' },
+                { value: 'active', label: 'Active' },
+                { value: 'inactive', label: 'Inactive' },
+              ]}
+            />
+          </Form>
+
+          {selectedItems.length > 0 ? (
+            <BulkActionButtons
+              selectedCount={selectedItems.length}
+              totalCount={users.length}
+              isAllSelected={isAllSelected}
+              onSelectAllToggle={handleSelectAllToggle}
+              onDelete={handleBulkDelete}
+              deleteLabel="Delete"
+            />
+          ) : (
+            <AddNewButton href="/dashboard/admin/users/new" />
+          )}
+        </div>
+
+        {isValidating && <span className="loader"></span>}
+        {!isValidating && !error && (
+          <>
+            <UserDataTable data={users} selectedItems={selectedItems} onSelectionChange={setSelectedItems} usersCount={users.length} onAllSelectedChange={setIsAllSelected} onDelete={handleDelete} />
+            <CustomPagination totalItems={total} itemsPerPage={per_page} currentPage={current_page} onPageChange={handlePageChange} />
+          </>
+        )}
+        {error && <span className="text-red-400">Something Went Wrong</span>}
+      </div>
     </div>
   );
 };

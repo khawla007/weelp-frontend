@@ -45,7 +45,7 @@ export const CityList = ({ citiesList = [] }) => {
     <ul className="grid grid-cols-4 gap-2">
       {citiesList.map(({ slug, name }) => (
         <li key={slug} className="p-2 text-[#5A5A5A] text-sm hover:text-secondaryDark">
-          <Link href={`/city/${slug}`}>{name}</Link>
+          <Link href={`/cities/${slug}`}>{name}</Link>
         </li>
       ))}
     </ul>

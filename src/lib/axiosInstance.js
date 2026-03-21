@@ -73,9 +73,7 @@ export async function createAuthenticatedServerApi() {
 
   return axios.create({
     baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}`,
-    headers: session?.access_token
-      ? { Authorization: `Bearer ${session.access_token}` }
-      : {},
+    headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
   });
 }
 

@@ -7,7 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import { StatusBadge } from '@/app/components/Shared/StatusBadge';
 import { TableActions } from '@/app/components/Shared/TableActions';
+import { STATUS_TYPES } from '@/app/components/Shared/constants/statusConfig';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { deleteTag } from '@/lib/actions/tags';
@@ -34,7 +36,7 @@ export function DataTableTags({ tags = [], mutate, selectedItems = [], onSelecti
     if (checked) {
       onSelectionChange([...selectedItems, itemId]);
     } else {
-      onSelectionChange(selectedItems.filter(id => id !== itemId));
+      onSelectionChange(selectedItems.filter((id) => id !== itemId));
       if (isAllSelected) {
         onAllSelectedChange(false);
       }
@@ -81,7 +83,7 @@ export function DataTableTags({ tags = [], mutate, selectedItems = [], onSelecti
           checked={isAllSelected}
           onCheckedChange={(checked) => {
             if (checked) {
-              onSelectionChange(tags.map(tag => tag.id));
+              onSelectionChange(tags.map((tag) => tag.id));
               onAllSelectedChange(true);
             } else {
               onSelectionChange([]);
@@ -91,17 +93,24 @@ export function DataTableTags({ tags = [], mutate, selectedItems = [], onSelecti
           className="h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
         />
       ),
-      cell: ({ row }) => (
-        <SelectableCardCheckbox
-          checked={selectedItems.includes(row.original.id)}
-          onCheckedChange={handleSelectionChange}
-          itemId={row.original.id}
-        />
-      ),
+      cell: ({ row }) => <SelectableCardCheckbox checked={selectedItems.includes(row.original.id)} onCheckedChange={handleSelectionChange} itemId={row.original.id} />,
     },
     {
       accessorKey: 'name',
       header: 'Name',
+    },
+    {
+      accessorKey: 'slug',
+      header: 'Slug',
+      cell: ({ getValue }) => <span className="text-muted-foreground text-sm">{getValue() || 'N/A'}</span>,
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: ({ getValue }) => {
+        const status = getValue();
+        return <StatusBadge status={status} type={STATUS_TYPES.TAG} />;
+      },
     },
     {
       accessorKey: 'description',

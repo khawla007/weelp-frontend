@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import _ from 'lodash';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
@@ -176,7 +177,16 @@ export const CreateTransferForm = ({}) => {
               <Separator className="" />
             </div>
           </div>
-          <form onSubmit={currentStep === 6 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
+          <form
+            onSubmit={
+              currentStep === 6
+                ? methods.handleSubmit(onSubmit)
+                : (e) => {
+                    e.preventDefault();
+                    handleNext();
+                  }
+            }
+          >
             <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               {renderStep()}
               <div className="flex justify-between pt-4">
@@ -204,9 +214,14 @@ export const CreateTransferForm = ({}) => {
                 )}
 
                 {/* Prevent Button On Schedules */}
-                <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
-                  {currentStep === 6 ? 'Submit' : 'Next'}
-                </Button>
+                {/* Step 6: Use FormActionButtons, Steps 1-5: Use Next button */}
+                {currentStep === 6 ? (
+                  <FormActionButtons mode="create" isSubmitting={isSubmitting} containerType="div" className="flex gap-4 ml-auto" />
+                ) : (
+                  <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
+                    Next
+                  </Button>
+                )}
               </div>
             </fieldset>
           </form>

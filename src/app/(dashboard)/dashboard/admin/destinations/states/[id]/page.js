@@ -15,10 +15,7 @@ const EditStatePage = () => {
   const id = params?.id;
 
   // Use fetcher (not authFetcher) - goes through Next.js API route which handles auth
-  const { data: stateData, error, isLoading } = useSWR(
-    id ? `/api/admin/destinations/states/${id}` : null,
-    fetcher
-  );
+  const { data: stateData, error, isLoading } = useSWR(id ? `/api/admin/destinations/states/${id}` : null, fetcher);
 
   if (isLoading || !id) {
     return <PageLoader />;
@@ -34,12 +31,8 @@ const EditStatePage = () => {
             <AlertCircle className="h-12 w-12 text-red-500" />
           </div>
           <h2 className="text-xl font-semibold">State Not Found</h2>
-          <p className="text-muted-foreground">
-            {error ? error.message : 'The state you are looking for does not exist or could not be loaded.'}
-          </p>
-          <Button onClick={() => router.push('/dashboard/admin/destinations/states')}>
-            Back to States
-          </Button>
+          <p className="text-muted-foreground">{error ? error.message : 'The state you are looking for does not exist or could not be loaded.'}</p>
+          <Button onClick={() => router.push('/dashboard/admin/destinations/states')}>Back to States</Button>
         </div>
       </div>
     );

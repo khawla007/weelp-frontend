@@ -10,10 +10,14 @@ import { getDestinationsCounts } from '@/lib/services/destinations';
 
 const DestinationsPageAdmin = () => {
   // Fetch destination counts
-  const { data: counts, isLoading, error } = useSWR(
+  const {
+    data: counts,
+    isLoading,
+    error,
+  } = useSWR(
     '/api/admin/destinations/counts',
     getDestinationsCounts,
-    { refreshInterval: 300000 } // Cache for 5 minutes
+    { refreshInterval: 300000 }, // Cache for 5 minutes
   );
 
   // Helper function to get count with loading/error states

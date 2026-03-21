@@ -1,6 +1,6 @@
 /**
  * Overview chart data
- * 
+ *
  * TODO: Replace with API call to fetch actual booking/revenue data
  * Current data is mock data for development
  */

@@ -138,19 +138,11 @@ export const UploadImagesForm = ({ uploadImagePop, setUploadImagePopUp, mutateMe
           </span>
           <div className="flex flex-wrap gap-2 max-h-[120px] overflow-y-auto p-2 bg-muted/50 rounded-md">
             {files.map((file, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-1.5 bg-background border px-2 py-1 rounded-md text-sm max-w-[180px]"
-                title={file.name}
-              >
+              <div key={index} className="flex items-center gap-1.5 bg-background border px-2 py-1 rounded-md text-sm max-w-[180px]" title={file.name}>
                 <FileImage className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
                 <span className="truncate flex-1">{truncateFileName(file.name)}</span>
                 {!isloading && (
-                  <button
-                    type="button"
-                    onClick={() => removeFile(index)}
-                    className="text-muted-foreground hover:text-destructive flex-shrink-0"
-                  >
+                  <button type="button" onClick={() => removeFile(index)} className="text-muted-foreground hover:text-destructive flex-shrink-0">
                     <X className="h-3.5 w-3.5" />
                   </button>
                 )}

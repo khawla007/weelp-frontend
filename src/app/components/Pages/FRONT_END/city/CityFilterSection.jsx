@@ -10,7 +10,7 @@ import FilterSidebar from './FilterSidebar';
 import CategoryTabs from './CategoryTabs';
 import SortBar from './SortBar';
 
-export default function CityFilterSection({ cityName }) {
+export default function CityFilterSection() {
   const { city } = useParams();
 
   const [products, setProducts] = useState([]);
@@ -35,29 +35,20 @@ export default function CityFilterSection({ cityName }) {
             setPagination(res?.data);
           }
         })
-        .catch(() => { setProducts([]); setPagination(null); })
+        .catch(() => {
+          setProducts([]);
+          setPagination(null);
+        })
         .finally(() => setIsLoading(false));
     }, 500);
 
     return () => clearTimeout(timer);
   }, [priceRange, selectedCategories, currentPage, city, ratingFilter]);
 
-  const displayName = cityName || city?.replace(/-/g, ' ')?.replace(/\b\w/g, (c) => c.toUpperCase());
-
   return (
-    <div className="mx-auto max-w-[1480px] px-4 sm:px-6 xl:px-0">
-      {/* Section Heading */}
-      <div className="text-center pt-8 pb-2">
-        <h2
-          className="text-[28px] sm:text-[2.8rem] text-[#273f4e]"
-          style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}
-        >
-          Explore {displayName}
-        </h2>
-      </div>
-
+    <div className="mx-auto max-w-[1480px] px-4 sm:px-6 xl:px-0 py-[70px]">
       {/* Tabs + Sort Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 py-6">
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-8">
         <CategoryTabs onTabChange={() => setCurrentPage(1)} />
         <SortBar />
       </div>
@@ -66,11 +57,17 @@ export default function CityFilterSection({ cityName }) {
       <div className="flex flex-col sm:flex-row gap-6">
         <FilterSidebar
           selectedCategories={selectedCategories}
-          onCategoryChange={(cats) => { setSelectedCategories(cats); setCurrentPage(1); }}
+          onCategoryChange={(cats) => {
+            setSelectedCategories(cats);
+            setCurrentPage(1);
+          }}
           priceRange={priceRange}
           onPriceChange={setPriceRange}
           ratingFilter={ratingFilter}
-          onRatingChange={(r) => { setRatingFilter(r); setCurrentPage(1); }}
+          onRatingChange={(r) => {
+            setRatingFilter(r);
+            setCurrentPage(1);
+          }}
         />
 
         {/* Product Grid */}
@@ -109,9 +106,7 @@ export default function CityFilterSection({ cityName }) {
                   key={i}
                   onClick={() => setCurrentPage(i + 1)}
                   className={`flex items-center justify-center size-[35px] rounded-[7.68px] border text-[#435a67] transition ${
-                    currentPage === i + 1
-                      ? 'opacity-100 shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)]'
-                      : 'opacity-45'
+                    currentPage === i + 1 ? 'opacity-100 shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)]' : 'opacity-45'
                   }`}
                   style={{
                     borderColor: '#e0e6eb',

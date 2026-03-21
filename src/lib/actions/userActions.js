@@ -122,3 +122,30 @@ export const deleteMultipleUsers = async (userIds = []) => {
     };
   }
 };
+
+/**
+ * Method to Delete a Single User
+ * @param {Number} userId - ID of the user to delete
+ * @returns {{ success: boolean, message?: string, error?: string }}
+ */
+export const deleteUser = async (userId) => {
+  try {
+    await delay(500);
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/users/${userId}`);
+
+    // revalidate path
+    revalidatePath('/dashboard/admin/users');
+
+    return {
+      success: true,
+      message: res?.data?.message || 'User deleted successfully',
+      data: res.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error?.response?.data?.message || error?.message || 'Something went wrong',
+    };
+  }
+};

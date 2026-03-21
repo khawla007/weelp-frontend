@@ -9,7 +9,6 @@ export async function GET(req, { params }) {
     const { vendorId } = await params;
     console.log(`[API Route] Fetching vendor with ID: ${vendorId}`);
 
-
     const data = await getVendorByIdAdmin(vendorId);
     console.log(`[API Route] Success fetching vendor ${vendorId}`);
 

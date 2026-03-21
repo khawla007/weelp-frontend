@@ -42,7 +42,7 @@ export async function uploadMedia(formData) {
     // NOTE: Don't set Content-Type manually - axios will set it with correct boundary for FormData
     const res = await axios.post(`${API_URL}api/admin/media/store`, formData, {
       headers: {
-        'Authorization': `Bearer ${session.access_token}`,
+        Authorization: `Bearer ${session.access_token}`,
         // Content-Type is set automatically by axios with proper boundary
       },
     });
@@ -67,10 +67,7 @@ export async function uploadMedia(formData) {
     if (err?.response) {
       // Server responded with error status
       errorDetails = err.response.data;
-      errorMessage = err.response.data?.message ||
-                     err.response.data?.error?.message?.[0] ||
-                     err.response.data?.error?.file?.[0] ||
-                     `Server error: ${err.response.status}`;
+      errorMessage = err.response.data?.message || err.response.data?.error?.message?.[0] || err.response.data?.error?.file?.[0] || `Server error: ${err.response.status}`;
     } else if (err?.request) {
       // Request was made but no response received (network error, CORS, timeout)
       errorMessage = 'Network error - unable to reach server. Please check your connection.';

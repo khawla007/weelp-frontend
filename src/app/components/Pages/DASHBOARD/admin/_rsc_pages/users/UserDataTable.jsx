@@ -1,31 +1,21 @@
 'use client';
 
-import { DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu';
-import { Edit, MoreHorizontal, Trash2 } from 'lucide-react';
-import { flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getFilteredRowModel } from '@tanstack/react-table';
+import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Checkbox } from '@/components/ui/checkbox';
 import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
 import { useEffect } from 'react';
+import { StatusBadge, STATUS_TYPES } from '@/app/components/Shared/StatusBadge';
+import { TableActions } from '@/app/components/Shared/TableActions';
 
-export function UserDataTable({
-  data,
-  selectedItems = [],
-  onSelectionChange,
-  usersCount = 0,
-  onAllSelectedChange,
-  onPageChange,
-}) {
-  const router = useRouter();
+export function UserDataTable({ data, selectedItems = [], onSelectionChange, usersCount = 0, onAllSelectedChange, onDelete }) {
   const pathname = usePathname();
 
   // Update isAllSelected when individual selections change
   useEffect(() => {
     if (onAllSelectedChange && data.length > 0) {
-      const allSelected = data.length > 0 && data.every(user => selectedItems.includes(user.id));
+      const allSelected = data.length > 0 && data.every((user) => selectedItems.includes(user.id));
       onAllSelectedChange(allSelected);
     }
   }, [selectedItems, data.length, onAllSelectedChange]);
@@ -33,9 +23,7 @@ export function UserDataTable({
   // Handle individual checkbox change
   const handleSelectionChange = (checked, userId) => {
     if (onSelectionChange) {
-      const newSelection = checked
-        ? [...selectedItems, userId]
-        : selectedItems.filter(id => id !== userId);
+      const newSelection = checked ? [...selectedItems, userId] : selectedItems.filter((id) => id !== userId);
       onSelectionChange(newSelection);
     }
   };
@@ -49,7 +37,7 @@ export function UserDataTable({
           checked={data.length > 0 && selectedItems.length === data.length}
           onCheckedChange={(checked) => {
             if (checked) {
-              onSelectionChange(data.map(user => user.id));
+              onSelectionChange(data.map((user) => user.id));
             } else {
               onSelectionChange([]);
             }
@@ -57,13 +45,7 @@ export function UserDataTable({
           className="h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
         />
       ),
-      cell: ({ row }) => (
-        <SelectableCardCheckbox
-          checked={selectedItems.includes(row.original.id)}
-          onCheckedChange={handleSelectionChange}
-          itemId={row.original.id}
-        />
-      ),
+      cell: ({ row }) => <SelectableCardCheckbox checked={selectedItems.includes(row.original.id)} onCheckedChange={handleSelectionChange} itemId={row.original.id} />,
     },
     {
       accessorKey: 'name',
@@ -72,6 +54,7 @@ export function UserDataTable({
     {
       accessorKey: 'status',
       header: 'Status',
+      cell: ({ row }) => <StatusBadge status={row.original.status} type={STATUS_TYPES.USER} />,
     },
     {
       accessorKey: 'email',
@@ -83,31 +66,11 @@ export function UserDataTable({
     },
     {
       id: 'actions',
-      header: () => <span className="sr-only">Actions</span>, // Optional: no header text
+      header: () => <span className="sr-only">Actions</span>,
       enableHiding: false,
       cell: ({ row }) => {
-        const user = row.original;
-
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => router.push(`${pathname}/${user?.id}`)}>
-                <Edit /> Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem className="text-red-400 hover:text-red-400" onSelect={(e) => e.preventDefault()}>
-                <Trash2 /> Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
+        const userId = row.original.id;
+        return <TableActions id={userId} editUrl={`${pathname}/${userId}`} onDelete={onDelete} />;
       },
     },
   ];
@@ -117,50 +80,10 @@ export function UserDataTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
   });
-
-  // Handle pagination with selection clearing
-  const handlePreviousPage = () => {
-    table.previousPage();
-    if (onPageChange) onPageChange();
-  };
-
-  const handleNextPage = () => {
-    table.nextPage();
-    if (onPageChange) onPageChange();
-  };
 
   return (
     <div>
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter emails..."
-          value={table.getColumn('email')?.getFilterValue() ?? ''}
-          onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}
-          className="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Filter
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem key={column.id} className="capitalize" checked={column.getIsVisible()} onCheckedChange={(value) => column.toggleVisibility(!!value)}>
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -192,16 +115,6 @@ export function UserDataTable({
             )}
           </TableBody>
         </Table>
-      </div>
-
-      {/* Pagination */}
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button variant="outline" size="sm" onClick={handlePreviousPage} disabled={!table.getCanPreviousPage()}>
-          Previous
-        </Button>
-        <Button variant="outline" size="sm" onClick={handleNextPage} disabled={!table.getCanNextPage()}>
-          Next
-        </Button>
       </div>
     </div>
   );

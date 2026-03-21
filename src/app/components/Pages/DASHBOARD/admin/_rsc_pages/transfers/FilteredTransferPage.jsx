@@ -9,7 +9,6 @@ import { Calendar, Car, Clock, Plus, Star, Tag, User, Users } from 'lucide-react
 import { Input } from '@/components/ui/input';
 import debounce from 'lodash.debounce';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
@@ -17,12 +16,25 @@ import { CustomPagination } from '@/app/components/Pagination';
 import Link from 'next/link';
 import useSWR from 'swr'; // for states cache and ui management
 import { useToast } from '@/hooks/use-toast'; // toast for notification
-import { DashboardSearch, ListingCard, ListingCardImage, ListingCardCheckbox, ListingCardActions, ListingCardContent, ListingCardTitle, ListingCardMeta, ListingCardTags, ListingCardStats } from '@/app/components/DashboardShared';
+import {
+  DashboardSearch,
+  ListingCard,
+  ListingCardImage,
+  ListingCardCheckbox,
+  ListingCardActions,
+  ListingCardContent,
+  ListingCardTitle,
+  ListingCardMeta,
+  ListingCardTags,
+  ListingCardStats,
+} from '@/app/components/DashboardShared';
 import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
 import { AddNewButton } from '@/app/components/Button/AddNewButton';
 import { fetcher } from '@/lib/fetchers'; // interceptors
 import { deleteMultipleTransfers, deleteTransfer } from '@/lib/actions/transfer'; // inline actions
-import { VEHICLE_TYPES } from '@/constants/transfer'; // constants
+import { VEHICLE_TYPES, AVAILABILITY_TYPES, WEEKDAYS } from '@/constants/transfer'; // constants
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import { SORT_BY } from '@/constants/shared'; // filter constants
 
 const FilterTransfer = () => {
@@ -37,10 +49,13 @@ const FilterTransfer = () => {
     defaultValues: {
       search: '',
       vehicle_type: '',
-      availability_date: '',
+      availability_type: '',
+      available_days: [],
+      time_slot_start: '',
+      time_slot_end: '',
       capacity: '',
-      price: [50, 150],
-      sort_by: '',
+      price: [50, 5000],
+      sort_by: 'default',
       page: 1,
     },
   });
@@ -90,7 +105,7 @@ const FilterTransfer = () => {
     if (isAllSelected) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(items.map(item => item.id));
+      setSelectedItems(items.map((item) => item.id));
     }
     setIsAllSelected(!isAllSelected);
   };
@@ -109,7 +124,18 @@ const FilterTransfer = () => {
   // reset page to 1 when filters change
   useEffect(() => {
     if (filters.page > 1) setValue('page', 1);
-  }, [filters.search, filters.vehicle_type, filters.availability_date, filters.capacity, priceMemoized, filters.sort_by, setValue]);
+  }, [
+    filters.search,
+    filters.vehicle_type,
+    filters.availability_type,
+    filters.available_days,
+    filters.time_slot_start,
+    filters.time_slot_end,
+    filters.capacity,
+    priceMemoized,
+    filters.sort_by,
+    setValue,
+  ]);
 
   // side effect for if fiilter change
   useEffect(() => {
@@ -119,7 +145,10 @@ const FilterTransfer = () => {
   }, [
     filters.search,
     filters.vehicle_type,
-    filters.availability_date,
+    filters.availability_type,
+    filters.available_days,
+    filters.time_slot_start,
+    filters.time_slot_end,
     filters.capacity,
     priceMemoized,
     filters.sort_by,
@@ -131,13 +160,17 @@ const FilterTransfer = () => {
     const params = new URLSearchParams();
 
     if (debouncedFilters.search) params.append('search', debouncedFilters.search);
-    if (debouncedFilters.vehicle_type) params.append('vehicle_type', debouncedFilters.vehicle_type);
-    if (debouncedFilters.availability_date) params.append('availability_date', debouncedFilters.availability_date);
+    if (debouncedFilters.vehicle_type && debouncedFilters.vehicle_type !== 'all') params.append('vehicle_type', debouncedFilters.vehicle_type);
+    if (debouncedFilters.availability_type && debouncedFilters.availability_type !== 'all') params.append('availability_type', debouncedFilters.availability_type);
+    if (debouncedFilters.availability_type === 'custom_schedule' && debouncedFilters.available_days?.length > 0) params.append('available_days', debouncedFilters.available_days.join(','));
+    if (debouncedFilters.availability_type === 'custom_schedule' && debouncedFilters.time_slot_start) params.append('time_slot_start', debouncedFilters.time_slot_start);
+    if (debouncedFilters.availability_type === 'custom_schedule' && debouncedFilters.time_slot_end) params.append('time_slot_end', debouncedFilters.time_slot_end);
     if (debouncedFilters.capacity) params.append('capacity', debouncedFilters.capacity);
     if (debouncedFilters.sort_by) params.append('sort_by', debouncedFilters.sort_by);
-    if (debouncedFilters.price?.[0]) params.append('min_price', debouncedFilters.price[0]);
-    if (debouncedFilters.price?.[1]) params.append('max_price', debouncedFilters.price[1]);
-    if (debouncedFilters.page) params.append('page', filters.page); // use live page, debounced search
+    if (debouncedFilters.price?.[0] && debouncedFilters.price[0] !== 50) params.append('min_price', debouncedFilters.price[0]);
+    if (debouncedFilters.price?.[1] && debouncedFilters.price[1] !== 5000) params.append('max_price', debouncedFilters.price[1]);
+    if (debouncedFilters.page)
+      params.append('page', filters.page); // use live page, debounced search
     else if (filters.page) params.append('page', filters.page);
 
     return params.toString();
@@ -212,12 +245,15 @@ const FilterTransfer = () => {
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className="focus:ring-0">
-                      <SelectValue placeholder="Select a vehicle_type" />
+                      <SelectValue placeholder="Select Vehicle Type" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
+                        <SelectItem value="all" className="cursor-pointer">
+                          All Vehicles
+                        </SelectItem>
                         {VEHICLE_TYPES.map((vehicle, i) => (
-                          <SelectItem key={i} value={vehicle?.value}>
+                          <SelectItem key={i} value={vehicle?.value} className="cursor-pointer">
                             {vehicle?.label}
                           </SelectItem>
                         ))}
@@ -230,14 +266,90 @@ const FilterTransfer = () => {
           </AccordionItem>
 
           {/* Availability */}
-          <AccordionItem value="availablity_date">
+          <AccordionItem value="availability">
             <AccordionTrigger>
               <p className="flex items-center gap-4">
                 <Calendar size={18} /> Availability
               </p>
             </AccordionTrigger>
             <AccordionContent>
-              <Input type="date" {...register('availability_date')} />
+              <div className="space-y-3">
+                {/* Availability Type Select */}
+                <Controller
+                  name="availability_type"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      value={field.value}
+                      onValueChange={(val) => {
+                        field.onChange(val);
+                        // Reset sub-filters when type changes
+                        if (val !== 'custom_schedule') {
+                          setValue('available_days', []);
+                          setValue('time_slot_start', '');
+                          setValue('time_slot_end', '');
+                        }
+                      }}
+                    >
+                      <SelectTrigger className="focus:ring-0">
+                        <SelectValue placeholder="Select Availability" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="all" className="cursor-pointer">
+                            All
+                          </SelectItem>
+                          {AVAILABILITY_TYPES.map((type, i) => (
+                            <SelectItem key={i} value={type.value} className="cursor-pointer">
+                              {type.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+
+                {/* Weekdays + Time Slots - shown when "Weekdays" selected */}
+                {filters.availability_type === 'custom_schedule' && (
+                  <div className="space-y-3">
+                    {/* Weekday Checkboxes */}
+                    <div className="space-y-1">
+                      <Label className="text-xs text-gray-500">Days</Label>
+                      <Controller
+                        name="available_days"
+                        control={control}
+                        render={({ field }) => (
+                          <div className="grid grid-cols-4 gap-2">
+                            {WEEKDAYS.map((day) => (
+                              <label key={day.value} className="flex items-center gap-1.5 cursor-pointer text-sm">
+                                <Checkbox
+                                  checked={field.value?.includes(day.value)}
+                                  onCheckedChange={(checked) => {
+                                    const updated = checked ? [...(field.value || []), day.value] : (field.value || []).filter((d) => d !== day.value);
+                                    field.onChange(updated);
+                                  }}
+                                />
+                                {day.label}
+                              </label>
+                            ))}
+                          </div>
+                        )}
+                      />
+                    </div>
+
+                    {/* Time Slot Inputs */}
+                    <div className="space-y-1">
+                      <Label className="text-xs text-gray-500">Time Slot</Label>
+                      <div className="flex items-center gap-2">
+                        <Input type="time" {...register('time_slot_start')} className="text-sm" />
+                        <span className="text-xs text-gray-400">to</span>
+                        <Input type="time" {...register('time_slot_end')} className="text-sm" />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </AccordionContent>
           </AccordionItem>
 
@@ -284,8 +396,7 @@ const FilterTransfer = () => {
       {/* Filtered Items Output */}
       <div className="lg:w-3/4 p-4 space-y-4">
         {/* Sidebar */}
-        <div className="flex justify-start lg:justify-between flex-wrap">
-          Recommended
+        <div className="flex justify-start lg:justify-end flex-wrap">
           <div className="space-y-4 flex flex-col">
             {selectedItems.length > 0 ? (
               <BulkActionButtons
@@ -296,20 +407,16 @@ const FilterTransfer = () => {
                 onDelete={handleMultpleDelete}
               />
             ) : (
-              <AddNewButton
-                label="Add New"
-                href="/dashboard/admin/transfers/new"
-              />
+              <AddNewButton label="Add New" href="/dashboard/admin/transfers/new" />
             )}
 
-            {/* Recommended */}
             <Controller
               name="sort_by"
               control={control}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger className="w-64">
-                    <SelectValue placeholder="Recommended" />
+                    <SelectValue placeholder="Default (Newest First)" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
@@ -343,17 +450,12 @@ const FilterTransfer = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
                 {items.map(({ id: itemId, name, media_gallery = [], tags = [], attributes = [], vendor_routes: { is_vendor } = {}, feature_image }, index) => (
                   <ListingCard key={index}>
-                    <ListingCardImage
-                      src={feature_image || media_gallery?.[0]?.url || 'https://picsum.photos/350/300?random'}
-                      alt={`${name} image`}
-                    />
+                    <ListingCardImage src={feature_image || media_gallery?.[0]?.url || 'https://picsum.photos/350/300?random'} alt={`${name} image`} />
                     <ListingCardCheckbox
                       checked={selectedItems.includes(itemId)}
                       onCheckedChange={(checked) => {
-                        setSelectedItems(prev => {
-                          const newSelection = checked
-                            ? [...prev, itemId]
-                            : prev.filter(id => id !== itemId);
+                        setSelectedItems((prev) => {
+                          const newSelection = checked ? [...prev, itemId] : prev.filter((id) => id !== itemId);
                           setIsAllSelected(newSelection.length === items.length);
                           return newSelection;
                         });
@@ -374,12 +476,13 @@ const FilterTransfer = () => {
                       </ListingCardTitle>
                       <span className="text-gray-500 text-sm">{is_vendor ? 'Vendor Route' : 'Admin Route'}</span>
                       {attributes.length > 0 &&
-                        attributes.map(({ attribute_name }, index) =>
-                          attribute_name === 'Duration' && (
-                            <ListingCardMeta key={index} icon={Clock}>
-                              3 Hours
-                            </ListingCardMeta>
-                          )
+                        attributes.map(
+                          ({ attribute_name }, index) =>
+                            attribute_name === 'Duration' && (
+                              <ListingCardMeta key={index} icon={Clock}>
+                                3 Hours
+                              </ListingCardMeta>
+                            ),
                         )}
                       {tags.length > 0 && (
                         <ListingCardTags>

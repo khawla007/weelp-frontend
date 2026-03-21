@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import { getStripe } from '@/lib/stripe/stripe';
 import CheckoutForm from './CheckoutForm';
@@ -17,15 +17,14 @@ export default function CheckoutMainManual() {
   const { cartItems = [] } = useMiniCartStore(); // store items
   const { user } = useUserProfile(); // client side fetch user
   const item = cartItems.at(0) || {}; // item destructure
-  const { price, currency } = item;
+  const { price, currency = 'usd' } = item;
 
   const amount = parseInt(price); // convert to number
   const [clientSecret, setClientSecret] = useState('');
   const [paymentIntent, setPayMentIntent] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  console.log(user);
+  const initRef = useRef(false); // prevent double-mount PI creation
 
   const name = user?.name;
   const email = user?.email;
@@ -60,16 +59,10 @@ export default function CheckoutMainManual() {
     try {
       // POST request to your test API route
       const res = await axios.post('/api/payments/create-intent', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount, // from cart item
-          currency: String(currency).toLowerCase(),
-          email: email,
-          name: name,
-          user,
-        }),
+        amount, // from cart item
+        currency: String(currency).toLowerCase(),
+        email: email,
+        name: name,
       });
 
       const data = await res?.data;
@@ -91,16 +84,15 @@ export default function CheckoutMainManual() {
     }
   };
 
-  // on mount call generate
+  // on mount create fresh payment intent (guarded against React StrictMode double-mount)
   useEffect(() => {
-    const cachedSecret = sessionStorage.getItem('clientSecret');
+    if (initRef.current) return;
+    initRef.current = true;
 
-    if (cachedSecret) {
-      setClientSecret(cachedSecret);
-      setLoading(false);
-    } else {
-      initializePaymentIntent();
-    }
+    // Always clear stale cached secrets to avoid expired token issues
+    sessionStorage.removeItem('clientSecret');
+    sessionStorage.removeItem('paymentIntent');
+    initializePaymentIntent();
   }, []);
 
   // Show loading

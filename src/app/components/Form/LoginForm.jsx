@@ -58,12 +58,15 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup }) {
       }
 
       if (result?.ok) {
-        // Wait for session to update, then redirect based on role
+        // Wait for session to update, then redirect
         setTimeout(async () => {
           await updateSession(); // Refresh session to get user data with role
           const currentSession = await updateSession();
 
-          if (currentSession?.user?.role) {
+          // If a custom redirect URL was provided (e.g. from checkout), use it
+          if (customUrl) {
+            router.push(customUrl);
+          } else if (currentSession?.user?.role) {
             const role = currentSession.user.role;
             // Redirect based on role
             if (role === 'super_admin' || role === 'admin') {
@@ -71,12 +74,10 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup }) {
             } else if (role === 'customer') {
               router.push('/dashboard/customer');
             } else {
-              // Default fallback
-              router.push(customUrl ?? '/dashboard');
+              router.push('/dashboard');
             }
           } else {
-            // Fallback if no role
-            router.push(customUrl ?? '/dashboard');
+            router.push('/dashboard');
           }
         }, 100);
 
@@ -95,11 +96,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup }) {
     return (
       <div className={`relative bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8 ${isSubmitting && 'cursor-wait'}`}>
         {/* Custom Close Button */}
-        <button
-          onClick={onCloseDialog}
-          className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10"
-          aria-label="Close"
-        >
+        <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
           <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
         </button>
         <div className="bg-white  rounded-t-xl border-b py-4 px-8 pr-12">

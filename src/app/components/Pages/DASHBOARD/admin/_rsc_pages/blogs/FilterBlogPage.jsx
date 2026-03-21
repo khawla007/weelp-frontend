@@ -42,12 +42,7 @@ const FilterBlog = () => {
     openDialogIndex: '',
   });
 
-  const {
-    register,
-    setValue,
-    control,
-    reset,
-  } = useForm({
+  const { register, setValue, control, reset } = useForm({
     //initalize form
     defaultValues: {
       search: '',
@@ -107,7 +102,7 @@ const FilterBlog = () => {
     if (isAllSelected) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(items.map(item => item.id));
+      setSelectedItems(items.map((item) => item.id));
     }
     setIsAllSelected(!isAllSelected);
   };
@@ -125,24 +120,12 @@ const FilterBlog = () => {
     const { page, ...otherFilters } = filters;
     debouncedUpdate(otherFilters);
     return () => debouncedUpdate.cancel();
-  }, [
-    filters.search,
-    filters.category,
-    filters.tag,
-    filters.sort_by,
-    debouncedUpdate,
-  ]);
+  }, [filters.search, filters.category, filters.tag, filters.sort_by, debouncedUpdate]);
 
   // Reset page to 1 when any filter other than page changes
   useEffect(() => {
     setValue('page', 1);
-  }, [
-    filters.search,
-    filters.category,
-    filters.tag,
-    filters.sort_by,
-    setValue,
-  ]);
+  }, [filters.search, filters.category, filters.tag, filters.sort_by, setValue]);
 
   // Memoized query string
   const queryParams = useMemo(() => {
@@ -304,10 +287,7 @@ const FilterBlog = () => {
                 onDelete={handleMultpleDelete}
               />
             ) : (
-              <AddNewButton
-                label="Add New"
-                href="/dashboard/admin/blogs/new"
-              />
+              <AddNewButton label="Add New" href="/dashboard/admin/blogs/new" />
             )}
 
             {/* Recommended */}
@@ -351,18 +331,13 @@ const FilterBlog = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
                 {items.map(({ id: itemId, name, media_gallery = [], tags = [], categories = [], excerpt = '', publish = false, feature_image = null }, index) => (
                   <ListingCard key={index}>
-                    <ListingCardImage
-                      src={feature_image ?? media_gallery?.[0]?.url ?? FALLBACK_IMAGE.src}
-                      alt={`${name} image`}
-                    />
+                    <ListingCardImage src={feature_image ?? media_gallery?.[0]?.url ?? FALLBACK_IMAGE.src} alt={`${name} image`} />
 
                     <ListingCardCheckbox
                       checked={selectedItems.includes(itemId)}
                       onCheckedChange={(checked, id) => {
-                        setSelectedItems(prev => {
-                          const newSelection = checked
-                            ? [...prev, id]
-                            : prev.filter(itemId => itemId !== id);
+                        setSelectedItems((prev) => {
+                          const newSelection = checked ? [...prev, id] : prev.filter((itemId) => itemId !== id);
                           setIsAllSelected(newSelection.length === items.length);
                           return newSelection;
                         });
@@ -409,12 +384,7 @@ const FilterBlog = () => {
                       {tags.length > 0 && (
                         <ListingCardTags>
                           {tags.map(({ tag_name }, idx) => (
-                            <Badge
-                              key={idx}
-                              className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${
-                                idx === 0 && 'bg-gray-400'
-                              }`}
-                            >
+                            <Badge key={idx} className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${idx === 0 && 'bg-gray-400'}`}>
                               {tag_name}
                             </Badge>
                           ))}
@@ -424,19 +394,11 @@ const FilterBlog = () => {
                       {/* Status */}
                       <div className="flex items-center gap-2">
                         <b>Status:</b>
-                        {publish ? (
-                          <Badge className={'bg-secondaryDark'}>Published</Badge>
-                        ) : (
-                          <Badge className={'bg-yellow-400'}>Draft</Badge>
-                        )}
+                        {publish ? <Badge className={'bg-secondaryDark'}>Published</Badge> : <Badge className={'bg-yellow-400'}>Draft</Badge>}
                       </div>
 
                       {/* Excerpt */}
-                      {excerpt && (
-                        <p className="bg-card text-foreground text-sm text-wrap">
-                          {excerpt.concat('...')}
-                        </p>
-                      )}
+                      {excerpt && <p className="bg-card text-foreground text-sm text-wrap">{excerpt.concat('...')}</p>}
                     </ListingCardContent>
                   </ListingCard>
                 ))}

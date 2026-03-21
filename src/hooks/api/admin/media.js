@@ -2,11 +2,7 @@ import useSWR from 'swr';
 import { fetcher } from '@/lib/fetchers';
 
 export function useAllMediaAdmin(page = 1, perPage = 10) {
-  const { data, error, isValidating, isLoading, mutate } = useSWR(
-    `/api/admin/media?page=${page}&per_page=${perPage}`,
-    fetcher,
-    { revalidateOnFocus: true }
-  );
+  const { data, error, isValidating, isLoading, mutate } = useSWR(`/api/admin/media?page=${page}&per_page=${perPage}`, fetcher, { revalidateOnFocus: true });
 
   return {
     media: data?.data || [],

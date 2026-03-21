@@ -5,7 +5,6 @@ import { TaxonomyFormNavigation } from '../taxonomies_shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -14,6 +13,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { generateSlug } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { editCategory } from '@/lib/actions/categories';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 
 const formSchema = z.object({
   name: z.string().min(3, {
@@ -50,7 +50,7 @@ export const EditCategoryForm = ({ categoryData }) => {
 
   // getting form state
   const {
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid, isDirty },
   } = form;
 
   // on submit handle
@@ -160,11 +160,7 @@ export const EditCategoryForm = ({ categoryData }) => {
                   <FormItem className="space-y-3">
                     <FormLabel>Status</FormLabel>
                     <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-col gap-2"
-                      >
+                      <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col gap-2">
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
                             <RadioGroupItem value="active" />
@@ -184,20 +180,14 @@ export const EditCategoryForm = ({ categoryData }) => {
                 )}
               />
 
-              <p className="flex gap-2">
-                <Button className="w-fit bg-secondaryDark hover:bg-secondaryDark" type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? 'Updating Category ' : 'Update Category'}
-                </Button>
-                <Button
-                  className="w-fit bg-inherit hover:bg-inherit text-black border"
-                  type="button"
-                  onClick={() => {
-                    router.back();
-                  }}
-                >
-                  Cancel
-                </Button>
-              </p>
+              <FormActionButtons
+                mode="update"
+                cancelHref="/dashboard/admin/taxonomies/categories/"
+                isSubmitting={isSubmitting}
+                isDisabled={!isValid || !isDirty}
+                containerType="div"
+                className="justify-end"
+              />
             </fieldset>
           </form>
         </Form>

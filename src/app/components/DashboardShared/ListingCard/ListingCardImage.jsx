@@ -12,12 +12,5 @@ import { CardImage } from '../Card/CardImage';
  * @param {string} className - Additional classes
  */
 export function ListingCardImage({ src, alt = 'item image', className = '' }) {
-  return (
-    <CardImage
-      src={src}
-      alt={alt}
-      className={`w-full h-[183px] rounded-t-lg rounded-b-none object-cover ${className}`}
-      fallback="https://picsum.photos/350/300?random"
-    />
-  );
+  return <CardImage src={src} alt={alt} className={`w-full h-[183px] rounded-t-lg rounded-b-none object-cover ${className}`} fallback="https://picsum.photos/350/300?random" />;
 }

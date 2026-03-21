@@ -43,14 +43,10 @@ export function FormActionButtons({
   const router = useRouter();
 
   // Derive submit text from mode if not provided
-  const defaultSubmitText = mode === 'create'
-    ? 'Create'
-    : 'Update';
+  const defaultSubmitText = mode === 'create' ? 'Create' : 'Update';
 
   const finalSubmitText = submitText ? `${defaultSubmitText} ${submitText}` : defaultSubmitText;
-  const loadingText = mode === 'create'
-    ? `Creating ${submitText || ''}...`
-    : `Updating ${submitText || ''}...`;
+  const loadingText = mode === 'create' ? `Creating ${submitText || ''}...` : `Updating ${submitText || ''}...`;
 
   // Handle cancel action
   const handleCancel = () => {
@@ -71,33 +67,17 @@ export function FormActionButtons({
   const Container = containerType === 'none' ? 'div' : containerType;
 
   const cancelButton = cancelHref ? (
-    <Button
-      type="button"
-      variant="outline"
-      className="border text-black hover:bg-inherit min-w-[100px]"
-      disabled={cancelAlwaysEnabled ? false : (isSubmitting || isDisabled)}
-      asChild
-    >
+    <Button type="button" variant="outline" className="border text-black hover:bg-inherit min-w-[100px]" disabled={cancelAlwaysEnabled ? false : isSubmitting || isDisabled} asChild>
       <Link href={cancelHref}>{cancelText}</Link>
     </Button>
   ) : (
-    <Button
-      type="button"
-      variant="outline"
-      className="border text-black hover:bg-inherit min-w-[100px]"
-      onClick={handleCancel}
-      disabled={cancelAlwaysEnabled ? false : (isSubmitting || isDisabled)}
-    >
+    <Button type="button" variant="outline" className="border text-black hover:bg-inherit min-w-[100px]" onClick={handleCancel} disabled={cancelAlwaysEnabled ? false : isSubmitting || isDisabled}>
       {cancelText}
     </Button>
   );
 
   const submitButton = (
-    <Button
-      type="submit"
-      className="bg-secondaryDark hover:bg-secondaryDark/90 text-white min-w-[100px] relative"
-      disabled={isSubmitting || isDisabled}
-    >
+    <Button type="submit" className="bg-secondaryDark hover:bg-secondaryDark/90 text-white min-w-[100px] relative" disabled={isSubmitting || isDisabled}>
       {isSubmitting ? (
         <>
           <Loader2 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-4 w-4 animate-spin" />

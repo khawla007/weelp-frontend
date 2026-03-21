@@ -1,12 +1,14 @@
+import { cache } from 'react';
 import { publicApi, createAuthenticatedServerApi } from '../axiosInstance';
 import { log } from '../utils';
 
 /**
  * Get Single Activity on Client side
+ * Cached per request to avoid duplicate calls in generateMetadata + page component
  * @param {String} activitySlug slug of the activity
  * @returns []
  */
-export async function getSingleActivity(activitySlug) {
+export const getSingleActivity = cache(async (activitySlug) => {
   try {
     const response = await publicApi.get(`/api/activities/${activitySlug}`, {
       headers: { Accept: 'application/json' },
@@ -15,7 +17,7 @@ export async function getSingleActivity(activitySlug) {
   } catch (error) {
     return [];
   }
-}
+});
 
 /**
  * Get Single Activity on Admin side
@@ -69,11 +71,11 @@ export async function getAllFeaturedActivities() {
 }
 
 /**
- * Display All Activities by City
+ * Display Featured Activities by City
  * @param {string} city Slug of the City
  * @returns {Promise<{success:boolean,message?:string,data?:object}>}
  */
-export async function getActivitisDataByCity(city) {
+export async function getFeaturedActivitiesByCity(city) {
   try {
     const response = await publicApi.get(`/api/${city}/activities`, {
       headers: { Accept: 'application/json' },

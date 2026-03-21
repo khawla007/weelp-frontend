@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import EditUserForm from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/users/forms/EditUser';
 
 const EditUserPage = async ({ params }) => {
-  const { id } = params;
+  const { id } = await params; // await params in Next.js 16+
 
   const userData = await getSingleUserAdmin(id); // await async call
 

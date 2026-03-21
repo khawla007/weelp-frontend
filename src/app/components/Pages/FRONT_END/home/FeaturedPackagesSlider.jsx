@@ -8,28 +8,28 @@ const featuredPackages = [
   {
     id: 1,
     title: 'Mountain Tour',
-    price: 850.00,
+    price: 850.0,
     duration: '7 Days',
     image: '/assets/images/Frame.jpg',
   },
   {
     id: 2,
     title: 'Yachts Tour',
-    price: 750.00,
+    price: 750.0,
     duration: '6 Days',
     image: '/assets/images/china.jpg',
   },
   {
     id: 3,
     title: 'Beach Getaway',
-    price: 620.00,
+    price: 620.0,
     duration: '5 Days',
     image: '/assets/images/Automn.png',
   },
   {
     id: 4,
     title: 'Desert Adventure',
-    price: 540.00,
+    price: 540.0,
     duration: '4 Days',
     image: '/assets/images/special.png',
   },
@@ -57,9 +57,7 @@ export default function FeaturedPackagesSlider() {
     <div className="w-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-white text-lg font-semibold drop-shadow-md">
-          Featured Packages
-        </h3>
+        <h3 className="text-white text-lg font-semibold drop-shadow-md">Featured Packages</h3>
         <div className="flex gap-2">
           <button
             onClick={prevSlide}
@@ -103,15 +101,8 @@ export default function FeaturedPackagesSlider() {
               }}
             >
               {/* Card Image - Left Side */}
-              <div
-                className="flex-shrink-0 overflow-hidden rounded-2xl"
-                style={{ width: '150px', height: '150px' }}
-              >
-                <img
-                  src={pkg.image}
-                  alt={pkg.title}
-                  className="w-full h-full object-cover"
-                />
+              <div className="flex-shrink-0 overflow-hidden rounded-2xl" style={{ width: '150px', height: '150px' }}>
+                <img src={pkg.image} alt={pkg.title} className="w-full h-full object-cover" />
               </div>
 
               {/* Card Content - Right Side */}
@@ -140,11 +131,7 @@ export default function FeaturedPackagesSlider() {
           ))}
 
           {/* Empty spacer to allow last card to be fully visible */}
-          <div
-            className="flex-shrink-0"
-            style={{ width: '400px' }}
-            aria-hidden="true"
-          />
+          <div className="flex-shrink-0" style={{ width: '400px' }} aria-hidden="true" />
         </div>
       </div>
 
@@ -154,9 +141,7 @@ export default function FeaturedPackagesSlider() {
           <button
             key={idx}
             onClick={() => setCurrentIndex(idx)}
-            className={`w-2 h-2 rounded-full transition-colors ${
-              idx === currentIndex ? 'bg-white' : 'bg-white/40'
-            }`}
+            className={`w-2 h-2 rounded-full transition-colors ${idx === currentIndex ? 'bg-white' : 'bg-white/40'}`}
             aria-label={`Go to slide ${idx + 1}`}
           />
         ))}

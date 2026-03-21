@@ -15,10 +15,7 @@ const EditCountryPage = () => {
   const id = params?.id;
 
   // Use fetcher (not authFetcher) - goes through Next.js API route which handles auth
-  const { data: countryData, error, isLoading } = useSWR(
-    id ? `/api/admin/destinations/countries/${id}` : null,
-    fetcher
-  );
+  const { data: countryData, error, isLoading } = useSWR(id ? `/api/admin/destinations/countries/${id}` : null, fetcher);
 
   if (isLoading || !id) {
     return <PageLoader />;
@@ -34,12 +31,8 @@ const EditCountryPage = () => {
             <AlertCircle className="h-12 w-12 text-red-500" />
           </div>
           <h2 className="text-xl font-semibold">Country Not Found</h2>
-          <p className="text-muted-foreground">
-            {error ? error.message : 'The country you are looking for does not exist or could not be loaded.'}
-          </p>
-          <Button onClick={() => router.push('/dashboard/admin/destinations/countries')}>
-            Back to Countries
-          </Button>
+          <p className="text-muted-foreground">{error ? error.message : 'The country you are looking for does not exist or could not be loaded.'}</p>
+          <Button onClick={() => router.push('/dashboard/admin/destinations/countries')}>Back to Countries</Button>
         </div>
       </div>
     );

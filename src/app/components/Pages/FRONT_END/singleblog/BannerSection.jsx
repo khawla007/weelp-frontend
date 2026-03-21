@@ -49,7 +49,7 @@ const BannerSectionBlog = ({ title = '', excerpt = '', tags = [], media_gallery 
             </div>
           ) : (
             <img
-              src={media_gallery?.find(img => img.is_featured)?.url || media_gallery?.[0]?.url}
+              src={media_gallery?.find((img) => img.is_featured)?.url || media_gallery?.[0]?.url}
               alt={media_gallery?.[0]?.alt ?? `Gallery Image`}
               className=" object-center w-full rounded-lg h-[400px]"
             />

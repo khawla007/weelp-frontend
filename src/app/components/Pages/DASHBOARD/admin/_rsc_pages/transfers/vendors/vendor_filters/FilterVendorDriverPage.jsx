@@ -72,7 +72,7 @@ const FilterVendorDriverPage = () => {
       </Form>
       {isLoading && <p className="loader"></p>}
 
-      {error && <p className="text-red-400">{error.message || "Something Went Wrong"}</p>}
+      {error && <p className="text-red-400">{error.message || 'Something Went Wrong'}</p>}
 
       {!isLoading && data?.data && drivers.length === 0 && <VendorNoResultFound />}
 

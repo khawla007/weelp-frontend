@@ -88,11 +88,7 @@ const MediaComponent = () => {
         <DialogContent className="max-w-screen-xl">
           <DialogTitle className="sr-only">Edit profile</DialogTitle>
           <DialogDescription className="invisible">Upload Media For Activity</DialogDescription>
-          <Medialibrary
-            closeDialog={() => setDialogOpen(false)}
-            alreadySelectedImages={activityImages}
-            onSelectionChange={handleSelectionChange}
-          />
+          <Medialibrary closeDialog={() => setDialogOpen(false)} alreadySelectedImages={activityImages} onSelectionChange={handleSelectionChange} />
         </DialogContent>
       </Dialog>
 

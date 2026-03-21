@@ -5,7 +5,6 @@ import { TaxonomyFormNavigation } from '../taxonomies_shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -14,6 +13,7 @@ import { generateSlug } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { editAttribute } from '@/lib/actions/attributes';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 
 export const formSchema = z
   .object({
@@ -61,7 +61,7 @@ export const EditAttributePageForm = ({ attributeData }) => {
   });
 
   const {
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid, isDirty },
   } = form;
 
   const typeValue = form.watch('type');
@@ -238,21 +238,14 @@ export const EditAttributePageForm = ({ attributeData }) => {
                 />
               )}
 
-              {/* Submit/Cancel */}
-              <div className="flex gap-2">
-                <Button className="w-fit bg-secondaryDark hover:bg-secondaryDark" type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? 'Updating Attribute' : 'Update Attribute'}
-                </Button>
-                <Button
-                  className="w-fit bg-inherit hover:bg-inherit text-black border"
-                  type="button"
-                  onClick={() => {
-                    router.back();
-                  }}
-                >
-                  Cancel
-                </Button>
-              </div>
+              <FormActionButtons
+                mode="update"
+                cancelHref="/dashboard/admin/taxonomies/attributes/"
+                isSubmitting={isSubmitting}
+                isDisabled={!isValid || !isDirty}
+                containerType="div"
+                className="justify-end"
+              />
             </fieldset>
           </form>
         </Form>

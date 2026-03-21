@@ -22,8 +22,8 @@ export const colors = {
   semantic: {
     success: '#10b981', // Green for success states
     warning: '#f59e0b', // Amber for warnings
-    error: '#ef4444',   // Red for errors
-    info: '#3b82f6',    // Blue for informational messages
+    error: '#ef4444', // Red for errors
+    info: '#3b82f6', // Blue for informational messages
   },
 
   // Neutral grays - for text, borders, backgrounds
@@ -43,22 +43,22 @@ export const colors = {
 
 // Legacy color mappings for migration (old name -> new value)
 export const legacyMappings = {
-  'secondaryDark': colors.brand[600],
-  'secondarylight': colors.brand[200],
-  'secondaryLight2': colors.brand[50],
-  'dangerSecondary': colors.semantic.error,
-  'dangerLite': '#fef2f2',
-  'grayDark': colors.gray[700],
-  'graycolor': colors.gray[400],
-  'Brightgray': colors.gray[100],
-  'Nileblue': '#273F4E',
-  'Bluewhale': colors.gray[600],
-  'Blueish': '#0c2536',
-  'Lynchcolor': colors.gray[500],
-  'solitude': colors.gray[200],
-  'homebackground': colors.brand[50],
-  'blackish': colors.gray[700],
-  'mainBackground': '#F8F9F9',
+  secondaryDark: colors.brand[600],
+  secondarylight: colors.brand[200],
+  secondaryLight2: colors.brand[50],
+  dangerSecondary: colors.semantic.error,
+  dangerLite: '#fef2f2',
+  grayDark: colors.gray[700],
+  graycolor: colors.gray[400],
+  Brightgray: colors.gray[100],
+  Nileblue: '#273F4E',
+  Bluewhale: colors.gray[600],
+  Blueish: '#0c2536',
+  Lynchcolor: colors.gray[500],
+  solitude: colors.gray[200],
+  homebackground: colors.brand[50],
+  blackish: colors.gray[700],
+  mainBackground: '#F8F9F9',
 };
 
 export default colors;

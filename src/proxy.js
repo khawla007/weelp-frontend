@@ -4,7 +4,7 @@ import { auth } from './lib/auth/auth';
 export async function proxy(req) {
   // Only apply auth check to dashboard routes
   const path = req.nextUrl.pathname;
-  
+
   // Skip non-dashboard routes
   if (!path.startsWith('/dashboard/')) {
     return NextResponse.next();

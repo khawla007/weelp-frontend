@@ -45,7 +45,7 @@ export function CategoryPageClient() {
     if (isAllSelected) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(items.map(item => item.id));
+      setSelectedItems(items.map((item) => item.id));
     }
     setIsAllSelected(!isAllSelected);
   };
@@ -82,9 +82,7 @@ export function CategoryPageClient() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <TaxonomiesPageTitle
-          title="Categories"
-        />
+        <TaxonomiesPageTitle title="Categories" />
         {selectedItems.length > 0 ? (
           <BulkActionButtons
             selectedCount={selectedItems.length}
@@ -95,9 +93,7 @@ export function CategoryPageClient() {
             deleteLabel="Delete"
           />
         ) : (
-          <AddNewButton
-            href="/dashboard/admin/taxonomies/categories/new"
-          />
+          <AddNewButton href="/dashboard/admin/taxonomies/categories/new" />
         )}
       </div>
       <DataTableCategory

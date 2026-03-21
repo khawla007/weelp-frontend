@@ -15,12 +15,8 @@ export function PageLoader({ message, className = '' }) {
 
       {/* Optional message or default loading text */}
       <div className="mt-10 text-center">
-        <p className="text-Nileblue font-semibold text-lg sm:text-xl tracking-tight animate-pulse">
-          {message || 'Loading Experiences...'}
-        </p>
-        <p className="mt-2 text-secondaryDark/50 font-medium text-xs sm:text-sm uppercase tracking-[0.2em]">
-          Please wait a moment
-        </p>
+        <p className="text-Nileblue font-semibold text-lg sm:text-xl tracking-tight animate-pulse">{message || 'Loading Experiences...'}</p>
+        <p className="mt-2 text-secondaryDark/50 font-medium text-xs sm:text-sm uppercase tracking-[0.2em]">Please wait a moment</p>
       </div>
     </div>
   );

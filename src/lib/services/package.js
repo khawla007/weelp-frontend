@@ -1,12 +1,29 @@
+import { cache } from 'react';
 import { createAuthenticatedServerApi, publicApi } from '../axiosInstance';
 import { log } from '../utils';
 
 /**
+ * Get Featured Packages on Public side
+ * @returns {Promise<{success:boolean, data?:Array}>}
+ */
+export async function getFeaturedPackages() {
+  try {
+    const response = await publicApi.get('/api/packages/featured-packages', {
+      headers: { Accept: 'application/json' },
+    });
+    return response.data;
+  } catch (error) {
+    return { success: false, data: [] };
+  }
+}
+
+/**
  * Get Single Package on Public side
+ * Cached per request to avoid duplicate calls in generateMetadata + page component
  * @param {Number} id
  * @returns []
  */
-export async function getSinglePackage(packagee) {
+export const getSinglePackage = cache(async (packagee) => {
   try {
     const response = await publicApi.get(`/api/packages/${packagee}`, {
       headers: { Accept: 'application/json' },
@@ -16,7 +33,7 @@ export async function getSinglePackage(packagee) {
   } catch (error) {
     return []; // Return null instead of an empty array for clarity
   }
-}
+});
 
 /**
  * Get Single Package on Admin side

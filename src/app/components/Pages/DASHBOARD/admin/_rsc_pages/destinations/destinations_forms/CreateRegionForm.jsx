@@ -115,11 +115,7 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
               <Label htmlFor="name">
                 Name <span className="text-red-500">*</span>
               </Label>
-              <Input
-                id="name"
-                placeholder="e.g., Europe, Asia, Americas"
-                {...register('name', { required: 'Name is required' })}
-              />
+              <Input id="name" placeholder="e.g., Europe, Asia, Americas" {...register('name', { required: 'Name is required' })} />
               {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
             </div>
 
@@ -128,10 +124,7 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
               <Label htmlFor="type">
                 Type <span className="text-red-500">*</span>
               </Label>
-              <Select
-                defaultValue={FORM_REGION_VALUES_DEFAULT.type}
-                onValueChange={(value) => setValue('type', value)}
-              >
+              <Select defaultValue={FORM_REGION_VALUES_DEFAULT.type} onValueChange={(value) => setValue('type', value)}>
                 <SelectTrigger id="type">
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
@@ -146,23 +139,13 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
             {/* Description */}
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                placeholder="Enter region description..."
-                rows={4}
-                {...register('description')}
-              />
+              <Textarea id="description" placeholder="Enter region description..." rows={4} {...register('description')} />
             </div>
 
             {/* Image URL */}
             <div className="space-y-2">
               <Label htmlFor="image_url">Image URL</Label>
-              <Input
-                id="image_url"
-                type="url"
-                placeholder="https://example.com/image.jpg"
-                {...register('image_url')}
-              />
+              <Input id="image_url" type="url" placeholder="https://example.com/image.jpg" {...register('image_url')} />
             </div>
 
             {/* Countries - Multi-select via checkboxes */}
@@ -175,11 +158,7 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {countries.map((country) => (
                       <div key={country.id} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`country-${country.id}`}
-                          checked={watchedCountries?.includes(country.id)}
-                          onCheckedChange={() => handleCountryToggle(country.id)}
-                        />
+                        <Checkbox id={`country-${country.id}`} checked={watchedCountries?.includes(country.id)} onCheckedChange={() => handleCountryToggle(country.id)} />
                         <Label htmlFor={`country-${country.id}`} className="cursor-pointer text-sm font-normal">
                           {country.name}
                         </Label>
@@ -193,12 +172,7 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
 
             {/* Submit Button */}
             <div className="flex justify-end gap-3 pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => router.push('/dashboard/admin/destinations/regions/')}
-                disabled={isSubmitting}
-              >
+              <Button type="button" variant="outline" onClick={() => router.push('/dashboard/admin/destinations/regions/')} disabled={isSubmitting}>
                 Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting}>

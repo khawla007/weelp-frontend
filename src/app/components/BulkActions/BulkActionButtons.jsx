@@ -13,14 +13,7 @@ import { Trash2 } from 'lucide-react';
  * @param {() => void} onDelete - Callback for delete action
  * @param {string} deleteLabel - Label for delete button (default: 'Delete')
  */
-export function BulkActionButtons({
-  selectedCount,
-  totalCount,
-  isAllSelected,
-  onSelectAllToggle,
-  onDelete,
-  deleteLabel = 'Delete',
-}) {
+export function BulkActionButtons({ selectedCount, totalCount, isAllSelected, onSelectAllToggle, onDelete, deleteLabel = 'Delete' }) {
   // Don't render if nothing is selected
   if (selectedCount === 0) {
     return null;
@@ -36,7 +29,7 @@ export function BulkActionButtons({
           onSelectAllToggle();
         }}
         variant="outline"
-        className="shrink-0 whitespace-nowrap bg-secondaryDark text-black hover:bg-secondaryDark/90"
+        className="shrink-0 whitespace-nowrap bg-secondaryDark text-white hover:bg-secondaryDark/90"
       >
         {isAllSelected ? 'Unselect All' : `Select All (${totalCount})`}
       </Button>

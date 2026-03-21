@@ -1,61 +1,55 @@
 import React, { useState } from 'react';
-import { DollarSign, Globe, Headphones, UserRound, ChevronRight, ShoppingCart, Search, Smartphone } from 'lucide-react';
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
+import { ChevronDown, Globe, Headphones, MapPin, Search, ShoppingCart, Smartphone, UserRound } from 'lucide-react';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import { Button } from '@/components/ui/button';
-import { NAV_MENU_ITEMS } from '@/constants/shared'; // static configuraitn nav menu
 import { createPortal } from 'react-dom';
 import ModalForm from '../Modals/ModalForm';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { Badge } from '@/components/ui/badge';
 import MiniCartNew from '../Modals/MiniCartNew';
 import SubmenuAccount from '../Modals/SubmenuAccount';
-
-const MegaMenu = dynamic(() => import('../Modals/MegaMenu/MegaMenu'), { ssr: false }); // lazy load Mega Menu
+import { HEADER_NAV_ITEMS, HEADER_PRIMARY_META, HEADER_SECONDARY_META } from './shellContent';
 
 const DesktopMenu = ({ stickyHeader }) => {
   return (
-    <div className="relative hidden lg:block">
-      {/* Top Bar */}
-      <div className={`${stickyHeader ? 'hidden' : 'flex'} text-black bg-[#EAEAEA] px-12 py-3 w-full items-center justify-between`}>
-        <div className="topheader offer flex space-x-3 items-center">
-          {/* <Link href={'/region/asia'}>Country</Link> */}
+    <div className="hidden lg:block">
+      <div className={`${stickyHeader ? 'hidden' : 'block'} border-b border-[#ededed] bg-[linear-gradient(180deg,#eaeaea_0%,#ffffff66_100%)]`}>
+        <div className="mx-auto flex h-[46px] w-full items-center justify-between px-[60px]">
+          <div className="flex items-center gap-4">
+            <div className="inline-flex items-center gap-2 text-[14px] text-[#273f4e]">
+              <Smartphone className="size-[18px] text-[#273f4e]" />
+              <span>{HEADER_PRIMARY_META[0].label}</span>
+            </div>
+            <div className="inline-flex items-center gap-2 text-[14px] text-[#273f4e]">
+              <Headphones className="size-[18px] text-[#273f4e]" />
+              <span>{HEADER_PRIMARY_META[1].label}</span>
+            </div>
+          </div>
 
-          <Smartphone size={20} className="text-grayDark" />
-          <Link href="/Get Exclusive offer on the App" className="text-Nileblue text-sm">
-            Get Exclusive offer on the App
-          </Link>
-          <a href="/Helpline" className="flex items-center text-Nileblue text-sm">
-            <Headphones className="mr-2" />
-            Helpline
-          </a>
-        </div>
-
-        <div className="topheader-language flex space-x-6">
-          <a href="/Get Exclusive offer on the App" className="flex items-center text-Nileblue text-sm">
-            <Globe className="mr-2" />
-            English
-          </a>
-          <a href="/Helpline" className="flex items-center text-Nileblue text-sm">
-            <DollarSign className="mr-2" />
-            Helpline
-          </a>
+          <div className="flex items-center gap-3">
+            <div className="inline-flex items-center gap-[13px] text-[14px] text-[#273f4e]">
+              <Globe className="size-[18px] text-[#273f4e]" />
+              <span>{HEADER_SECONDARY_META[0]}</span>
+            </div>
+            <div className="inline-flex items-center gap-[13px] text-[14px] text-[#273f4e]">
+              <span>{HEADER_SECONDARY_META[1]}</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Menu Bar */}
-      <div className="flex text-black px-12 py-4 w-full items-center justify-between bg-white">
-        <div className="logo">
-          <Link href="/">
-            <img src="/assets/images/SiteLogo.png" alt="Logo" className="h-10" />
+      <div className={`border-b border-[#ededed] ${stickyHeader ? 'bg-[#ffffffcc] shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] backdrop-blur-[47px]' : 'bg-[#ffffffcc] backdrop-blur-[47px]'}`}>
+        <div className="flex h-[66px] w-full items-center justify-between px-[60px] py-[8px]">
+          <Link href="/" className="shrink-0 flex items-center gap-3">
+            <img src="/assets/images/weelp-logo-icon.png" alt="" className="h-9 w-auto" />
+            <span className="text-[18px] font-semibold text-[#142a38]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
+              Weelp.
+            </span>
           </Link>
+
+          <NavMenuDesktop />
+
+          <HeaderAccount />
         </div>
-
-        <NavMenuDesktop />
-
-        {/* Account  */}
-        <HeaderAccount />
       </div>
     </div>
   );
@@ -63,27 +57,18 @@ const DesktopMenu = ({ stickyHeader }) => {
 
 const NavMenuDesktop = () => {
   return (
-    <NavigationMenu viewport="false" className="w-fit menu z-20">
-      <NavigationMenuList className="flex gap-2">
-        <NavigationMenuItem className="!text-Bluewhale font-medium">
-          <NavigationMenuTrigger>Home</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <MegaMenu />
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-
-        {/* Navigaitons */}
-        {NAV_MENU_ITEMS.map((nav, index) => {
-          return (
-            <Button key={index} asChild variant="link">
-              <Link className="!text-Bluewhale font-medium hover:no-underline" href={nav.href}>
-                {nav.title}
-              </Link>
-            </Button>
-          );
-        })}
-      </NavigationMenuList>
-    </NavigationMenu>
+    <nav aria-label="Primary" className="flex flex-1 items-center justify-center">
+      <ul className="flex items-center gap-[36px]">
+        {HEADER_NAV_ITEMS.map((nav, index) => (
+          <li key={nav.title}>
+            <Link className="flex items-center gap-2 text-[16px] font-medium text-[#142a38]/70 transition hover:text-[#142a38]" href={nav.href}>
+              {index === 0 && <MapPin className="size-[15px] text-[#142a38]/70" strokeWidth={1.24} />}
+              {nav.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };
 
@@ -108,34 +93,24 @@ export const HeaderAccount = () => {
   };
 
   return (
-    <div>
-      <ul className="flex items-center gap-6">
-        {/* forspacing */}
-        <li className="appearance-none"></li>
-        <li className="appearance-none"></li>
-
+    <div className="relative">
+      <ul className="flex items-center gap-[24px]">
         <li>
-          <button className="relative" onClick={handleShowCart}>
-            <ShoppingCart className="text-xs" size={20} />
-            {cartItems?.length > 0 && <Badge className={'absolute bottom-1/4  left-1/2 scale-75 '}>{cartItems?.length}</Badge>}
+          <button type="button" className="relative flex items-center justify-center text-[#0c2536] transition hover:text-[#142a38]" onClick={handleShowCart}>
+            <ShoppingCart className="size-5" strokeWidth={1.5} />
+            {cartItems?.length > 0 && <Badge className={'absolute -right-4 -top-2 scale-75'}>{cartItems?.length}</Badge>}
           </button>
         </li>
         <li>
-          <button onClick={handleShowForm}>
-            <Search className="text-xs" size={20} />
+          <button type="button" className="flex items-center justify-center text-[#0c2536] transition hover:text-[#142a38]" onClick={handleShowForm}>
+            <Search className="size-5" strokeWidth={1.5} />
           </button>
         </li>
 
         <li>
-          <button className="flex items-center gap-1 py-1 px-2 border border-gray-300 rounded-full shadow-sm transition" onClick={handleSubmenu}>
-            <div className="w-8 h-8 bg-[#b3b3b3] rounded-full  flex items-center justify-center ">
-              <UserRound className="text-gray-600 fill-white stroke-white w-5 h-5 scale-125" />
-            </div>
-
-            <ChevronRight
-              className={`transition-transform ease-in-out duration-500 ${showSubmenu ? 'rotate-0' : 'rotate-90'}`}
-              size={16} // Optional: adjust icon size
-            />
+          <button type="button" className="flex items-center gap-2 rounded-[30px] border border-[#d9d9d9] px-4 py-1.5 text-[#0c2536] transition hover:bg-gray-50" onClick={handleSubmenu}>
+            <UserRound className="size-[18px]" strokeWidth={1.5} />
+            <span className="text-[15px] font-medium">Account</span>
           </button>
         </li>
       </ul>

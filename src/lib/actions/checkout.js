@@ -84,12 +84,13 @@ export const createPaymentIntent = async (payload = {}) => {
       name: payload.name,
     });
 
-    // Create Intent
+    // Create Intent — card only, no Link/wallets
     const paymentIntent = await stripe.paymentIntents.create({
       amount: payload.amount,
-      currency: payload.currency,
+      currency: payload.currency || 'usd',
       receipt_email: payload.email,
       customer: customer.id,
+      payment_method_types: ['card'],
     });
 
     return {

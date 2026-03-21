@@ -18,10 +18,11 @@ const MediaTab = () => {
     formState: { errors },
   } = useFormContext();
 
-  const media_gallery = useWatch({
-    name: 'media_gallery',
-    control,
-  }) || [];
+  const media_gallery =
+    useWatch({
+      name: 'media_gallery',
+      control,
+    }) || [];
 
   // Derive featured image ID from media_gallery
   const featuredImageId = media_gallery.find((img) => img.is_featured)?.media_id ?? null;
@@ -30,9 +31,7 @@ const MediaTab = () => {
   useEffect(() => {
     if (selectedMedia.length > 0) {
       // 1. Transform selectedMedia (id → media_id)
-      const transformedMedia = selectedMedia.map((obj) =>
-        _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))
-      );
+      const transformedMedia = selectedMedia.map((obj) => _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key)));
 
       // 2. Add to existing gallery and sync to form
       const updatedGallery = [...media_gallery, ...transformedMedia];
@@ -97,11 +96,7 @@ const MediaTab = () => {
           <DialogContent className="max-w-screen-xl">
             <DialogTitle className="sr-only">Edit profile</DialogTitle>
             <DialogDescription className="invisible">Upload Media For Activity</DialogDescription>
-            <Medialibrary
-              closeDialog={() => setDialogOpen(false)}
-              alreadySelectedImages={media_gallery}
-              onSelectionChange={handleSelectionChange}
-            />
+            <Medialibrary closeDialog={() => setDialogOpen(false)} alreadySelectedImages={media_gallery} onSelectionChange={handleSelectionChange} />
           </DialogContent>
         </Dialog>
       </div>
@@ -122,11 +117,7 @@ const MediaTab = () => {
                   onClick={() => handleSetFeatured(image.media_id)}
                   className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#568f7c]' : 'text-[#568f7c] hover:scale-110'}`}
                 />
-                {isFeatured && (
-                  <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
-                    Featured
-                  </div>
-                )}
+                {isFeatured && <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
                 <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-4 right-4 size-0 group-hover/item:size-6 transition-all text-red-500 bg-white rounded-full shadow p-1" />
               </div>
             );

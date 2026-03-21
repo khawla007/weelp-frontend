@@ -117,11 +117,7 @@ const MediaTab = () => {
         <DialogContent className="max-w-screen-xl">
           <DialogTitle className="sr-only">Edit profile</DialogTitle>
           <DialogDescription className="invisible">Upload Media For Activity</DialogDescription>
-          <Medialibrary
-            closeDialog={() => setDialogOpen(false)}
-            alreadySelectedImages={activityImages}
-            onSelectionChange={handleSelectionChange}
-          />
+          <Medialibrary closeDialog={() => setDialogOpen(false)} alreadySelectedImages={activityImages} onSelectionChange={handleSelectionChange} />
         </DialogContent>
       </Dialog>
 
@@ -135,11 +131,7 @@ const MediaTab = () => {
                 <img className="size-72 rounded-md border" src={image?.url} alt="activity_image" />
 
                 {/* Featured Badge */}
-                {isFeatured && (
-                  <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
-                    Featured
-                  </div>
-                )}
+                {isFeatured && <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
 
                 {/* Star Icon for Featured */}
                 <Star
@@ -147,9 +139,7 @@ const MediaTab = () => {
                   fill={isFeatured ? '#568f7c' : 'white'}
                   strokeWidth={2}
                   onClick={() => handleSetFeatured(image.media_id)}
-                  className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${
-                    isFeatured ? 'text-[#568f7c]' : 'text-[#568f7c] hover:scale-110'
-                  }`}
+                  className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#568f7c]' : 'text-[#568f7c] hover:scale-110'}`}
                 />
 
                 <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-8 right-8 size-0 group-hover/item:size-6 transition-all text-red-400 bg-white rounded-full shadow" />

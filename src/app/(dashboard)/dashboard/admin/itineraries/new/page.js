@@ -8,10 +8,10 @@ import { log } from '@/lib/utils';
 
 const CreateItineriary = async () => {
   const [{ data: tagsData }, { data: locationsData = {} }, { data: attributesData = {} }, { data: categoriesData = {} }, { data: activitiesData = [] }, transfers] = await Promise.all([
-    getAllTagsAdmin(),
+    getAllTagsAdmin('', { all: true }),
     getAllCitiesAdmin(),
-    getAllAttributesAdmin(),
-    getCategoriesAdmin(),
+    getAllAttributesAdmin(null, { all: true }),
+    getCategoriesAdmin(null, { all: true }),
     getAllActivitesAdmin(),
     getAllTransfersAdmin(),
   ]);

@@ -32,25 +32,13 @@ export const Overview: React.FC<OverviewProps> = ({ loading = false, data }) => 
   }
 
   // Use API data if available (and has content), otherwise use static data
-  const chartData = (data && data.length > 0) ? data : overviewChartData;
+  const chartData = data && data.length > 0 ? data : overviewChartData;
 
   return (
     <ResponsiveContainer width="100%" height={chartConfig.height} className={''}>
       <BarChart data={chartData}>
-        <XAxis 
-          dataKey="name" 
-          stroke={chartConfig.axisColor} 
-          fontSize={chartConfig.axisFontSize} 
-          tickLine={false} 
-          axisLine={false} 
-        />
-        <YAxis 
-          stroke={chartConfig.axisColor} 
-          fontSize={chartConfig.axisFontSize} 
-          tickLine={false} 
-          axisLine={false} 
-          tickFormatter={chartConfig.valueFormatter} 
-        />
+        <XAxis dataKey="name" stroke={chartConfig.axisColor} fontSize={chartConfig.axisFontSize} tickLine={false} axisLine={false} />
+        <YAxis stroke={chartConfig.axisColor} fontSize={chartConfig.axisFontSize} tickLine={false} axisLine={false} tickFormatter={chartConfig.valueFormatter} />
         <Bar dataKey="total" fill="currentColor" radius={[4, 4, 0, 0]} className="fill-secondaryDark" />
       </BarChart>
     </ResponsiveContainer>

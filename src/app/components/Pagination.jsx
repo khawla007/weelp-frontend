@@ -48,72 +48,35 @@ export const CustomPagination = ({ totalItems = 0, itemsPerPage = 0, currentPage
   return (
     <div className="flex items-center justify-between gap-4 w-full">
       {/* Total items - Left aligned */}
-      <span className="text-sm text-gray-600 whitespace-nowrap">
-        Total: {totalItems} items
-      </span>
+      <span className="text-sm text-gray-600 whitespace-nowrap">Total: {totalItems} items</span>
 
       {/* Pagination controls - Right aligned */}
       <div className="flex items-center gap-2">
         {/* First page button */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(1)}
-          disabled={!canGoPrev}
-          className="h-9 px-3"
-        >
+        <Button variant="outline" size="sm" onClick={() => onPageChange(1)} disabled={!canGoPrev} className="h-9 px-3">
           <ChevronsLeft className="h-4 w-4" />
         </Button>
 
         {/* Previous page button */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={!canGoPrev}
-          className="h-9 px-3"
-        >
+        <Button variant="outline" size="sm" onClick={() => onPageChange(currentPage - 1)} disabled={!canGoPrev} className="h-9 px-3">
           <ChevronLeft className="h-4 w-4" />
         </Button>
 
         {/* Page input */}
         <form onSubmit={handleInputSubmit} className="flex items-center gap-1">
-          <Input
-            type="text"
-            inputMode="numeric"
-            value={inputPage}
-            onChange={handleInputChange}
-            onBlur={handleInputBlur}
-            className="w-16 h-9 text-center"
-            min={1}
-            max={totalPages}
-          />
+          <Input type="text" inputMode="numeric" value={inputPage} onChange={handleInputChange} onBlur={handleInputBlur} className="w-16 h-9 text-center" min={1} max={totalPages} />
         </form>
 
         {/* of total pages */}
-        <span className="text-sm text-gray-600">
-          of {totalPages}
-        </span>
+        <span className="text-sm text-gray-600">of {totalPages}</span>
 
         {/* Next page button */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={!canGoNext}
-          className="h-9 px-3"
-        >
+        <Button variant="outline" size="sm" onClick={() => onPageChange(currentPage + 1)} disabled={!canGoNext} className="h-9 px-3">
           <ChevronRight className="h-4 w-4" />
         </Button>
 
         {/* Last page button */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(totalPages)}
-          disabled={!canGoNext}
-          className="h-9 px-3"
-        >
+        <Button variant="outline" size="sm" onClick={() => onPageChange(totalPages)} disabled={!canGoNext} className="h-9 px-3">
           <ChevronsRight className="h-4 w-4" />
         </Button>
       </div>

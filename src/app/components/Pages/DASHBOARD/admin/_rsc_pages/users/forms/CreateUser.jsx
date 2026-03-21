@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -12,6 +11,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { createUserAction } from '@/lib/actions/userActions';
 import { NavigationUser } from '../components/NavigationUser';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 
 // Updated schema without department field and with proper error messages
 const userFormSchema = z
@@ -28,7 +28,7 @@ const userFormSchema = z
     role: z.enum(['super_admin', 'customer', 'admin'], {
       required_error: 'Please select a role',
     }),
-    status: z.enum(['active', 'inactive', 'pending'], {
+    status: z.enum(['active', 'inactive'], {
       required_error: 'Please select a status',
     }),
   })
@@ -205,7 +205,6 @@ export default function CreateUserForm() {
                           </FormControl>
                           <SelectContent>
                             <SelectItem value="active">Active</SelectItem>
-                            <SelectItem value="pending">Inactive</SelectItem>
                             <SelectItem value="inactive">Inactive</SelectItem>
                           </SelectContent>
                         </Select>
@@ -217,12 +216,7 @@ export default function CreateUserForm() {
                 </div>
               </CardContent>
               <CardFooter className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => router.push('/dashboard/admin/users')} type="button">
-                  Cancel
-                </Button>
-                <Button type="submit" disabled={!isValid}>
-                  {isSubmitting ? 'Creating...' : 'Create User'}
-                </Button>
+                <FormActionButtons mode="create" cancelHref="/dashboard/admin/users" isSubmitting={isSubmitting} isDisabled={!isValid} containerType="div" className="justify-end" />
               </CardFooter>
             </form>
           </fieldset>

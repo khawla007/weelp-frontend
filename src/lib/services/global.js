@@ -36,10 +36,11 @@ export const getCategories = async () => {
  * @param {String} page pageno
  * @returns {}
  */
-export const getCategoriesAdmin = async (page) => {
+export const getCategoriesAdmin = async (page, { all = false } = {}) => {
   try {
     const api = await createAuthenticatedServerApi();
-    const response = await api.get(`/api/admin/categories${page ? `?page=${page}` : ''}`);
+    const query = all ? '?all=true' : page ? `?page=${page}` : '';
+    const response = await api.get(`/api/admin/categories${query}`);
     return { data: response?.data ?? [] };
   } catch (error) {
     return { data: [] };
@@ -56,7 +57,7 @@ export const getCategoriesAdmin = async (page) => {
 export const getAllCitiesAdmin = async () => {
   try {
     const api = await createAuthenticatedServerApi();
-    const response = await api.get('/api/admin/cities');
+    const response = await api.get('/api/admin/cities/list');
     return { data: response?.data ?? [] };
   } catch (error) {
     return { data: [] };
@@ -68,13 +69,43 @@ export const getAllCitiesAdmin = async () => {
  * @param {string} page
  * @returns []
  */
-export const getAllAttributesAdmin = async (page) => {
+export const getAllAttributesAdmin = async (page, { all = false } = {}) => {
   try {
     const api = await createAuthenticatedServerApi();
-    const response = await api.get(`/api/admin/attributes${page ? `?page=${page}` : ''}`);
+    const query = all ? '?all=true' : page ? `?page=${page}` : '';
+    const response = await api.get(`/api/admin/attributes${query}`);
     return { data: response?.data ?? [] };
   } catch (error) {
     return { data: [] };
+  }
+};
+
+/**
+ * Get All Tags (Public)
+ * @returns []
+ */
+export const getTags = async () => {
+  try {
+    const response = await publicApi.get('/api/tags');
+    return response?.data?.data ?? response?.data ?? [];
+  } catch (error) {
+    console.log('Error fetching tags:', error);
+    return [];
+  }
+};
+
+/**
+ * Home Search - merges activities, itineraries, packages
+ * @param {Object} params - Search parameters
+ * @returns {Object} { data: [], pagination: {} }
+ */
+export const homeSearch = async (params) => {
+  try {
+    const response = await publicApi.get('/api/homesearch', { params });
+    return response?.data;
+  } catch (error) {
+    console.log('Error in home search:', error);
+    return { success: 'false', data: [] };
   }
 };
 
@@ -83,10 +114,11 @@ export const getAllAttributesAdmin = async (page) => {
  * @param {string} page
  * @returns []
  */
-export const getAllTagsAdmin = async (page = '') => {
+export const getAllTagsAdmin = async (page = '', { all = false } = {}) => {
   try {
     const api = await createAuthenticatedServerApi();
-    const response = await api.get(`/api/admin/tags${page ? `?page=${page}` : ''}`);
+    const query = all ? '?all=true' : page ? `?page=${page}` : '';
+    const response = await api.get(`/api/admin/tags${query}`);
     return { data: response?.data ?? [] };
   } catch (error) {
     return { data: [] }; // ✅ FIXED: consistent return shape

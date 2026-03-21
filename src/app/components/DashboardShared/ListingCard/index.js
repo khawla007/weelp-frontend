@@ -19,11 +19,5 @@ export { ListingCard } from './ListingCard';
 export { ListingCardImage } from './ListingCardImage';
 export { ListingCardBadge } from './ListingCardBadge';
 export { ListingCardCheckbox } from './ListingCardCheckbox';
-export {
-  ListingCardContent,
-  ListingCardTitle,
-  ListingCardMeta,
-  ListingCardTags,
-  ListingCardStats,
-} from './ListingCardContent';
+export { ListingCardContent, ListingCardTitle, ListingCardMeta, ListingCardTags, ListingCardStats } from './ListingCardContent';
 export { ListingCardActions } from './ListingCardActions';

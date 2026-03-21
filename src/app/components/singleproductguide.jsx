@@ -6,11 +6,11 @@ import Image from 'next/image';
 import { FALLBACK_IMAGE } from '@/constants/image';
 
 // Guide Card **
-const Singleproductguide = ({ imageSrc, postTitle, subtitle }) => {
+const Singleproductguide = ({ imageSrc, postTitle, subtitle, slug }) => {
   const modifiedSubtitle = String(subtitle).slice(0, 30);
   return (
     <div className="max-w-full sm:max-w-sm flex flex-col bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50 mb-4">
-      <Link href={'/blogs/blog'}>
+      <Link href={slug ? `/blogs/${slug}` : '/blogs'}>
         <img src={imageSrc || '/assets/images/8597548-ai 1.jpg'} alt={'China'} className="object-cover w-full h-52 sm:h-60" />
         <div className="p-4 sm:p-5">
           <h2 className="text-xs sm:text-sm font-medium text-secondaryDark mb-1 uppercase tracking-wider">{postTitle || 'Solo'}</h2>
@@ -29,7 +29,7 @@ export default Singleproductguide;
  */
 export const BlogCard = ({ imageSrc = '', blogTitle = '', created_at = '', slug = '' }) => {
   return (
-    <div className='max-w-full sm:max-w-sm w-full flex flex-col bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50 mb-4'>
+    <div className="max-w-full sm:max-w-sm w-full flex flex-col bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50 mb-4">
       <Link href={`/blogs/${slug}`}>
         <Image alt="blog_logo" src={imageSrc ? imageSrc : FALLBACK_IMAGE.src} className="w-full h-52 sm:h-60" width={400} height={250} style={{ objectFit: 'cover' }} />
         <div className="p-4 sm:p-5">

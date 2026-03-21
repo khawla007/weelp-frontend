@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { useForm, FormProvider, Controller, useFieldArray, useWatch, useFormContext } from 'react-hook-form';
+import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { useForm, FormProvider, Controller, useFieldArray, useWatch, useFormContext, useFormState } from 'react-hook-form';
 import { useState } from 'react';
 import { CalendarIcon, Star, Tag, Trash2, Upload, Users, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -28,6 +28,7 @@ import { useMediaStore } from '@/lib/store/useMediaStore'; // For Handling Media
 import { Medialibrary } from '../media/MediaLibrary'; // Handling Media Library
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import dynamic from 'next/dynamic';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnActivity'), { ssr: false });
 
@@ -36,9 +37,50 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
   const [formData, setFormData] = useState({});
   const router = useRouter();
   const { toast } = useToast();
+
+  // Ref to preserve scroll position during re-renders in step 6
+  const scrollPositionRef = useRef(0);
+  const containerRef = useRef(null);
+
+  // Set up MutationObserver to prevent scroll loss in step 6
+  useEffect(() => {
+    if (currentStep !== 6) return;
+
+    // Save current scroll position
+    scrollPositionRef.current = window.scrollY;
+
+    // Observe DOM changes and restore scroll position
+    const observer = new MutationObserver(() => {
+      if (scrollPositionRef.current > 0 && window.scrollY !== scrollPositionRef.current) {
+        window.scrollTo(0, scrollPositionRef.current);
+      }
+    });
+
+    // Start observing the document body for changes
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      characterData: true,
+    });
+
+    return () => observer.disconnect();
+  }, [currentStep]);
+
+  // Also update scroll position on user scroll
+  useEffect(() => {
+    if (currentStep !== 6) return;
+
+    const handleScroll = () => {
+      scrollPositionRef.current = window.scrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [currentStep]);
   const methods = useForm({
     shouldUnregister: false,
-    mode: 'onSubmit',
+    mode: 'all',
     defaultValues: {
       media_gallery: [],
       seasonal_pricing: [], //
@@ -62,7 +104,19 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
   //
   // Handle Global Level Error
   const { reset } = methods;
-  const { errors, isValid, isSubmitting } = methods?.formState;
+  // Use useFormState hook for reactive access to form state
+  const { errors, isValid, isSubmitting, isDirty } = useFormState({
+    control: methods.control,
+  });
+
+  // Watch Step 1 fields to enable/disable Create button (same pattern as Categories form)
+  const nameValue = useWatch({ control: methods.control, name: 'name' });
+  const slugValue = useWatch({ control: methods.control, name: 'slug' });
+  const descriptionValue = useWatch({ control: methods.control, name: 'description' });
+  const shortDescriptionValue = useWatch({ control: methods.control, name: 'short_description' });
+
+  // Check if all Step 1 required fields have values (non-empty after trimming)
+  const isStep1Valid = !!(nameValue?.trim() && slugValue?.trim() && descriptionValue?.trim() && shortDescriptionValue?.trim());
 
   //  Main Steps
   const steps = [
@@ -100,108 +154,110 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
   ];
 
   // Basic Information
-  const PersonalInfoTab = () => {
-    const {
-      register,
-      watch,
-      getValues,
-      setValue,
-      formState: { errors },
-    } = useFormContext();
+  const PersonalInfoTab = useMemo(
+    () => () => {
+      const {
+        register,
+        getValues,
+        setValue,
+        formState: { errors },
+      } = useFormContext();
 
-    // handling value when blur
-    const handleBlur = () => {
-      const name = getValues('name');
-      const currentSlug = getValues('slug');
-      const newSlug = generateSlug(name);
+      // handling value when blur
+      const handleBlur = () => {
+        const name = getValues('name');
+        const currentSlug = getValues('slug');
+        const newSlug = generateSlug(name);
 
-      if (currentSlug !== newSlug) {
-        setValue('slug', newSlug);
-      }
-    };
+        if (currentSlug !== newSlug) {
+          setValue('slug', newSlug);
+        }
+      };
 
-    return (
-      <div className="space-y-4 py-6">
-        <div className="pb-2 space-x-4 flex">
-          <div className="w-full pb-2 space-y-2">
-            <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-gray-700'}`}>
-              Name
-            </Label>
-            <Input
-              placeholder="Activity name"
-              id="name"
-              {...register('name', { required: 'Name is required' })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus:outline-secondaryDark"
-              onBlur={handleBlur}
-            />
-            {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+      return (
+        <div className="space-y-4 py-6">
+          <div className="pb-2 space-x-4 flex">
+            <div className="w-full pb-2 space-y-2">
+              <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-gray-700'}`}>
+                Name <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                placeholder="Activity name"
+                id="name"
+                {...register('name', { required: 'Name is required' })}
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus:outline-secondaryDark"
+                onBlur={handleBlur}
+              />
+              {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+            </div>
+
+            <div className="pb-2 space-y-2 w-full">
+              <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-black'}`}>
+                Slug <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                placeholder="Enter Url slug"
+                id="slug"
+                {...register('slug', { required: 'Slug is required' })}
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+                onBlur={handleBlur}
+              />
+              {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
+            </div>
           </div>
 
-          <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-black'}`}>
-              Slug
+          <div className="pb-2 space-y-2">
+            <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-gray-700'}`}>
+              Description <span className="text-red-500">*</span>
             </Label>
-            <Input
-              placeholder="Enter Url slug"
-              id="slug"
-              {...register('slug', { required: 'Slug is required' })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
-              onBlur={handleBlur}
+            <Textarea
+              placeholder="Detailed description"
+              id="description"
+              {...register('description', {
+                required: 'Description is required',
+              })}
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm h-28 focus:outline-secondaryDark"
             />
-            {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
+            {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+          </div>
+
+          <div className="pb-2 space-y-2">
+            <Label htmlFor="short_description" className={`block text-sm font-medium ${errors?.short_description ? 'text-red-400' : 'text-gray-700'}`}>
+              Short Description <span className="text-red-500">*</span>
+            </Label>
+            <Textarea
+              placeholder="Short description"
+              id="short_description"
+              {...register('short_description', {
+                required: 'Field is required',
+              })}
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 h-20 focus:outline-secondaryDark"
+            />
+            {errors?.short_description && <p className="text-red-500 text-sm mt-1">{errors.short_description.message}</p>}
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <label className="text-sm font-medium text-gray-700">Feature Activity</label>
+            <Controller
+              name="featured_activity"
+              defaultValue={false}
+              control={methods.control}
+              render={({ field }) => (
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-gray-300 data-[state=checked]:bg-secondaryDark"
+                >
+                  <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
+                </Switch>
+              )}
+            />
           </div>
         </div>
-
-        <div className="pb-2 space-y-2">
-          <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-gray-700'}`}>
-            Description
-          </Label>
-          <Textarea
-            placeholder="Detailed description"
-            id="description"
-            {...register('description', {
-              required: 'Description is required',
-            })}
-            className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm h-28 focus:outline-secondaryDark"
-          />
-          {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
-        </div>
-
-        <div className="pb-2 space-y-2">
-          <Label htmlFor="short_description" className={`block text-sm font-medium ${errors?.short_description ? 'text-red-400' : 'text-gray-700'}`}>
-            Short Description
-          </Label>
-          <Textarea
-            placeholder="Short description"
-            id="short_description"
-            {...register('short_description', {
-              required: 'Field is required',
-            })}
-            className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 h-20 focus:outline-secondaryDark"
-          />
-          {errors?.short_description && <p className="text-red-500 text-sm mt-1">{errors.short_description.message}</p>}
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <label className="text-sm font-medium text-gray-700">Feature Activity</label>
-          <Controller
-            name="featured_activity"
-            defaultValue={false}
-            control={methods.control}
-            render={({ field }) => (
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-gray-300 data-[state=checked]:bg-secondaryDark"
-              >
-                <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
-              </Switch>
-            )}
-          />
-        </div>
-      </div>
-    );
-  };
+      );
+    },
+    [],
+  );
 
   // Locations Cities
   const LocationsTab = () => {
@@ -441,7 +497,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                   <SelectValue placeholder="Select a unit" />
                 </SelectTrigger>
                 <SelectContent>
-                  {['easy', 'moderate', 'hard'].map((val, index) => (
+                  {['easy', 'medium', 'hard'].map((val, index) => (
                     <SelectItem key={index} value={val} className="capitalize">
                       {val}
                     </SelectItem>
@@ -563,11 +619,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
             <DialogContent className="max-w-screen-xl">
               <DialogTitle className="sr-only">Edit profile</DialogTitle>
               <DialogDescription className="invisible">Upload Media For Activity</DialogDescription>
-              <Medialibrary
-                closeDialog={() => setDialogOpen(false)}
-                alreadySelectedImages={activityImages}
-                onSelectionChange={handleSelectionChange}
-              />
+              <Medialibrary closeDialog={() => setDialogOpen(false)} alreadySelectedImages={activityImages} onSelectionChange={handleSelectionChange} />
             </DialogContent>
           </Dialog>
         </div>
@@ -588,11 +640,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                     onClick={() => handleSetFeatured(image.media_id)}
                     className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#568f7c]' : 'text-[#568f7c] hover:scale-110'}`}
                   />
-                  {isFeatured && (
-                    <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
-                      Featured
-                    </div>
-                  )}
+                  {isFeatured && <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
                   <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-4 right-4 size-0 group-hover/item:size-6 transition-all text-red-500 bg-white rounded-full shadow p-1" />
                 </div>
               );
@@ -1001,8 +1049,13 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
     }
   };
 
-  // Handle Next button click (steps 1-5) - no validation
-  const handleNext = () => {
+  // Handle Next button click (steps 1-5) - validates step 1 fields
+  const handleNext = async () => {
+    // Validate step 1 required fields before proceeding
+    if (currentStep === 1) {
+      const isValid = await methods.trigger(['name', 'slug', 'description', 'short_description']);
+      if (!isValid) return;
+    }
     const currentData = methods.getValues();
     setFormData({ ...formData, ...currentData });
     setCurrentStep((prev) => prev + 1);
@@ -1039,19 +1092,26 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 py-12 sm:px-6 lg:px-8">
+    <div className="w-full bg-gray-50 py-6 sm:px-4 lg:px-6" style={{ overflowAnchor: 'none' }}>
       <NavigationActivity title={'Create new Activity'} desciption={'Create a new activity for your customers'} />
-      <div className="w-full space-y-8">
+      <div className="w-full space-y-6">
         <FormProvider {...methods}>
           <div className="w-full bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <div className="mb-8 w-full">
-              <ul className="flex justify-between gap-8 items-center w-full mb-4 flex-wrap md:flex-nowrap">
+              <ul className="flex justify-between gap-8 items-stretch w-full mb-4 flex-wrap md:flex-nowrap">
                 {steps &&
                   steps.map((step) => (
                     <li
                       key={step.id}
-                      onClick={() => setCurrentStep(step?.id)}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer self-start group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && 'bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'}`}
+                      onClick={async () => {
+                        // Validate step 1 fields before allowing navigation away
+                        if (currentStep === 1 && step?.id !== 1) {
+                          const isValid = await methods.trigger(['name', 'slug', 'description', 'short_description']);
+                          if (!isValid) return;
+                        }
+                        setCurrentStep(step?.id);
+                      }}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && 'bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'}`}
                     >
                       <Separator className={`pt-1 rounded-full ${currentStep >= step?.id ? 'bg-[#568f7c] group-hover:bg-[#e5e5e5]' : 'bg-neutral-200 group-hover:bg-[#568f7c]'}`} />
 
@@ -1062,9 +1122,18 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
               </ul>
             </div>
           </div>
-          <form onSubmit={currentStep === 6 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
+          <form
+            onSubmit={
+              currentStep === 6
+                ? methods.handleSubmit(onSubmit)
+                : (e) => {
+                    e.preventDefault();
+                    handleNext();
+                  }
+            }
+          >
             <fieldset className={`space-y-6 ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
-              {renderStep()}
+              <div key={currentStep}>{renderStep()}</div>
               <div className="flex justify-between pt-4">
                 {currentStep > 1 && (
                   <Button
@@ -1089,23 +1158,14 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                   </Button>
                 )}
 
-                <div className="flex gap-4">
-                  {/* Display Cancel Button */}
-                  {currentStep === 6 && (
-                    <Button
-                      type="button"
-                      onClick={() => {
-                        router.back();
-                      }}
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                    >
-                      Cancel
-                    </Button>
-                  )}
+                {/* Step 6: Use FormActionButtons, Steps 1-5: Use Next button */}
+                {currentStep === 6 ? (
+                  <FormActionButtons mode="create" isSubmitting={isSubmitting} isDisabled={!isStep1Valid} cancelAlwaysEnabled={true} containerType="div" className="flex gap-4" />
+                ) : (
                   <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
-                    {isSubmitting ? (currentStep === 6 ? 'Submitting...' : 'Next') : currentStep === 6 ? 'Submit' : 'Next'}
+                    {isSubmitting ? 'Next' : 'Next'}
                   </Button>
-                </div>
+                )}
               </div>
             </fieldset>
           </form>

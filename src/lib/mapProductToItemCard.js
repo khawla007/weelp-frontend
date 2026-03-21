@@ -15,32 +15,27 @@ const ITEM_TYPE_PLURAL = {
  */
 export function mapProductToItemCard(product, citySlug) {
   const pluralType = ITEM_TYPE_PLURAL[product.item_type] || product.item_type;
-  const href = citySlug
-    ? `/cities/${citySlug}/${pluralType}/${product.slug}`
-    : `/${product.item_type}/${product.slug}`;
+  const href = citySlug ? `/cities/${citySlug}/${pluralType}/${product.slug}` : `/${product.item_type}/${product.slug}`;
 
-  const image =
-    product.featured_image ||
-    product.media_gallery?.[0]?.media?.url ||
-    product.media_gallery?.[0]?.url ||
-    product.image ||
-    '/assets/Card.png';
+  const image = product.featured_images || product.featured_image || product.media_gallery?.[0]?.media?.url || product.media_gallery?.[0]?.url || product.image || '/assets/Card.png';
 
-  const rawPrice =
-    product.pricing?.regular_price ??
-    product.base_pricing?.variations?.[0]?.regular_price;
+  const rawPrice = product.pricing?.regular_price ?? product.base_pricing?.variations?.[0]?.regular_price;
   const currency = product.pricing?.currency;
-  const price =
-    rawPrice && currency
-      ? formatCurrency(parseInt(rawPrice), currency)
-      : rawPrice
-        ? `$${rawPrice}`
-        : '';
+  const price = rawPrice && currency ? formatCurrency(parseInt(rawPrice), currency) : rawPrice ? `$${rawPrice}` : '';
 
-  const category =
-    product.item_type
-      ? product.item_type.charAt(0).toUpperCase() + product.item_type.slice(1)
-      : '';
+  const category = product.item_type ? product.item_type.charAt(0).toUpperCase() + product.item_type.slice(1) : '';
+
+  const rating = product.average_rating ? `${product.average_rating}` : null;
+
+  const reviewCount = product.reviews_count ? `${product.reviews_count >= 1000 ? `${(product.reviews_count / 1000).toFixed(1)}K` : product.reviews_count}` : null;
+
+  const discount = product.discount_percentage ? `${product.discount_percentage}% OFF` : null;
+
+  let originalPrice = null;
+  if (product.discount_percentage && rawPrice) {
+    const originalRaw = Math.round(parseInt(rawPrice) / (1 - product.discount_percentage / 100));
+    originalPrice = rawPrice && currency ? formatCurrency(originalRaw, currency) : `$${originalRaw}`;
+  }
 
   return {
     id: product.id,
@@ -49,6 +44,10 @@ export function mapProductToItemCard(product, citySlug) {
     title: product.name || 'Untitled',
     category,
     price,
+    originalPrice,
+    rating,
+    reviewCount,
+    discount,
   };
 }
 
@@ -58,20 +57,16 @@ export function mapProductToItemCard(product, citySlug) {
  * @returns {{ href: string, image: string, title: string, category: string }}
  */
 export function mapBlogToItemCard(blog) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000';
+  const featured = blog.media_gallery?.find((m) => m.is_featured === 1 || m.is_featured === true);
+  const image = featured?.url || blog.media_gallery?.[0]?.url || blog.image || '/assets/images/home-tour-hero.jpg';
 
-  let image = blog.image || '/assets/images/home-tour-hero.jpg';
-  if (image && !image.startsWith('http') && !image.startsWith('/assets/')) {
-    const normalizedBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-    const normalizedPath = image.startsWith('/') ? image : `/${image}`;
-    image = `${normalizedBase}${normalizedPath}`;
-  }
+  const category = blog.categories?.[0]?.category_name || blog.name || 'Travel';
 
   return {
     id: blog.id,
     href: `/blogs/${blog.slug}`,
     image,
-    title: blog.description || blog.name || 'Untitled',
-    category: blog.name || 'Travel',
+    title: blog.excerpt || blog.name || 'Untitled',
+    category,
   };
 }

@@ -29,13 +29,7 @@ export const NavigationDestinations = ({ title = '', description = '', url = '',
               </div>
             </div>
 
-            {url && name && (
-              <AddNewButton
-                label={name}
-                href={url}
-                className="text-base bg-[#568f7c] text-white hover:bg-[#4a7a6a]"
-              />
-            )}
+            {url && name && <AddNewButton label={name} href={url} className="text-base bg-[#568f7c] text-white hover:bg-[#4a7a6a]" />}
           </div>
         </CardHeader>
       </Card>

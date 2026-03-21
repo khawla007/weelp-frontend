@@ -9,10 +9,10 @@ import { getAllItinerariesAdmin } from '@/lib/services/itineraries';
 
 const CreatePackage = async () => {
   const [{ data: tagsData }, { data: locationsData = {} }, { data: attributesData = {} }, { data: categoriesData = {} }, { data: activitiesData = [] }, transfers, itineraries] = await Promise.all([
-    getAllTagsAdmin(),
+    getAllTagsAdmin('', { all: true }),
     getAllCitiesAdmin(),
-    getAllAttributesAdmin(),
-    getCategoriesAdmin(),
+    getAllAttributesAdmin(null, { all: true }),
+    getCategoriesAdmin(null, { all: true }),
     getAllActivitesAdmin(),
     getAllTransfersAdmin(),
     getAllItinerariesAdmin(),

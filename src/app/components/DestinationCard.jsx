@@ -10,7 +10,7 @@ const DestinationCard = ({ url, imgHeight, imgWidth, imgUrl, title, description 
 
   return (
     <div className="relative w-full max-w-sm sm:w-fit mx-auto">
-      <Link href={`/city/${url}`}>
+      <Link href={`/cities/${url}`}>
         <Image
           src={imgUrl || '/assets/images/china.jpg'}
           alt="image"

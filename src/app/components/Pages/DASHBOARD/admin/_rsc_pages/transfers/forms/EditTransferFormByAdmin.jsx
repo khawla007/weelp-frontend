@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
@@ -33,7 +34,19 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
   const { toast } = useToast(); // intialize toast
 
   // destructure transfer data
-  const { id: transferId, name = '', slug = '', transfer_type = '', vendor_routes = {}, description = '', pricing_availability = {}, seo = {}, schedule = {}, media_gallery = [], addons = [] } = transferData;
+  const {
+    id: transferId,
+    name = '',
+    slug = '',
+    transfer_type = '',
+    vendor_routes = {},
+    description = '',
+    pricing_availability = {},
+    seo = {},
+    schedule = {},
+    media_gallery = [],
+    addons = [],
+  } = transferData;
   const { vehicle_type = '', dropoff_location = '', pickup_location = '', inclusion = '' } = vendor_routes || {}; // routes destructure
   const { base_price = '', currency = '', price_type = '', extra_luggage_charge = '', waiting_charge } = pricing_availability || {}; //pricing destructure
   const { availability_type, available_days = [], time_slots = [], blackout_dates = [], minimum_lead_time, maximum_passengers } = schedule || {}; // destructure schedule data
@@ -70,11 +83,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
       // seo
       seo: {
         ...seo,
-        schema_data: seo.schema_data
-          ? typeof seo.schema_data === 'string'
-            ? JSON.parse(seo.schema_data)
-            : seo.schema_data
-          : {},
+        schema_data: seo.schema_data ? (typeof seo.schema_data === 'string' ? JSON.parse(seo.schema_data) : seo.schema_data) : {},
       },
       media_gallery: media_gallery,
       addons: initialAddons,
@@ -82,7 +91,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
   });
 
   // Handle Global State
-  const { errors, isValid, isSubmitting } = methods?.formState;
+  const { errors, isValid, isSubmitting, isDirty } = methods?.formState;
 
   // Handle Next button for steps 1-4 (no validation)
   const handleNext = () => {
@@ -185,12 +194,14 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
                     <li
                       key={step.id}
                       onClick={() => setCurrentStep(step?.id)}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'
-                        }`}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${
+                        currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'
+                      }`}
                     >
                       <div
-                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${currentStep == step?.id ? 'text-secondaryDark ' : 'text-grayDark'
-                          }`}
+                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${
+                          currentStep == step?.id ? 'text-secondaryDark ' : 'text-grayDark'
+                        }`}
                       >
                         {step.title}
                       </div>
@@ -200,7 +211,16 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
               <Separator className="" />
             </div>
           </div>
-          <form onSubmit={currentStep === 6 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
+          <form
+            onSubmit={
+              currentStep === 6
+                ? methods.handleSubmit(onSubmit)
+                : (e) => {
+                    e.preventDefault();
+                    handleNext();
+                  }
+            }
+          >
             <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               {renderStep()}
               <div className="flex justify-between pt-4">
@@ -219,7 +239,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
                   <Button
                     type="button"
                     onClick={() => {
-                      router.back();
+                      router.push('/dashboard/admin/transfers');
                     }}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                   >
@@ -228,9 +248,22 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
                 )}
 
                 {/* Prevent Button On Schedules */}
-                <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
-                  {currentStep === 6 ? 'Submit' : 'Next'}
-                </Button>
+                {/* Step 6: Use FormActionButtons, Steps 1-5: Use Next button */}
+                {currentStep === 6 ? (
+                  <FormActionButtons
+                    mode="update"
+                    isSubmitting={isSubmitting}
+                    isDisabled={!isValid || !isDirty}
+                    cancelAlwaysEnabled={true}
+                    cancelHref="/dashboard/admin/transfers"
+                    containerType="div"
+                    className="flex gap-4 ml-auto"
+                  />
+                ) : (
+                  <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
+                    Next
+                  </Button>
+                )}
               </div>
             </fieldset>
           </form>

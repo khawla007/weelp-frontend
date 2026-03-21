@@ -1,15 +1,16 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Calendar } from '@/components/ui/calendar';
 import { ActivitySearchModal, CustomizedEditActivityForm, CustomizedEditTransferForm, NavigationItinerary, TransferSearchModal } from './itinerary_shared';
-import { useForm, FormProvider, Controller, useFieldArray, useWatch, useFormContext } from 'react-hook-form';
+import { useForm, FormProvider, Controller, useFieldArray, useWatch, useFormContext, useFormState } from 'react-hook-form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
@@ -38,7 +39,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
 
   const methods = useForm({
     shouldUnregister: false,
-    mode: 'onSubmit',
+    mode: 'all',
     defaultValues: {
       schedules: [],
       pricing: {
@@ -57,7 +58,19 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
 
   // Handle Global Level Error
   const { reset } = methods;
-  const { errors, isValid, isSubmitting } = methods?.formState;
+  // Use useFormState hook for reactive access to form state
+  const { errors, isValid, isSubmitting, isDirty } = useFormState({
+    control: methods.control,
+  });
+
+  // Smart Form Button: Watch Step 1 (Basic Information) required fields
+  const nameValue = useWatch({ control: methods.control, name: 'name' });
+  const slugValue = useWatch({ control: methods.control, name: 'slug' });
+  const descriptionValue = useWatch({ control: methods.control, name: 'description' });
+  const locationsValue = useWatch({ control: methods.control, name: 'locations' });
+
+  // Check if all Step 1 required fields have values
+  const isStep1Valid = !!(nameValue?.trim() && slugValue?.trim() && descriptionValue?.trim() && locationsValue && locationsValue.length > 0);
 
   //  Main Steps
   const steps = [
@@ -95,148 +108,177 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
     },
   ];
 
-  // Handle Next for steps 1-7 (no validation)
-  const handleNext = () => {
+  // Validate current step before navigating away
+  const validateCurrentStep = async () => {
+    if (currentStep === 1) {
+      const isValid = await methods.trigger(['name', 'slug', 'description', 'locations']);
+      return isValid;
+    }
+    if (currentStep === 2) {
+      const schedules = methods.getValues('schedules');
+      if (isEmpty(schedules)) {
+        methods.setError('schedules', { type: 'manual', message: 'At least one schedule is required' });
+        return false;
+      }
+      const activities = methods.getValues('activities');
+      const transfers = methods.getValues('transfers');
+      const hasItems = !isEmpty(activities) || !isEmpty(transfers);
+      if (!hasItems) {
+        methods.setError('schedules', { type: 'manual', message: 'At least one activity or transfer is required' });
+        return false;
+      }
+      methods.clearErrors('schedules');
+      return true;
+    }
+    return true;
+  };
+
+  // Handle Next for steps 1-7 - validates current step fields
+  const handleNext = async () => {
+    const isValid = await validateCurrentStep();
+    if (!isValid) return;
     if (currentStep < 8) {
       setCurrentStep((prev) => prev + 1);
     }
   };
 
   // Basic Information
-  const PersonalInfoTab = () => {
-    const {
-      register,
-      watch,
-      getValues,
-      setValue,
-      formState: { errors },
-    } = useFormContext();
+  const PersonalInfoTab = useMemo(
+    () => () => {
+      const {
+        register,
+        getValues,
+        setValue,
+        formState: { errors },
+      } = useFormContext();
 
-    // handling value when blur
-    const handleBlur = () => {
-      const name = getValues('name');
-      const currentSlug = getValues('slug');
-      const newSlug = generateSlug(name);
+      // handling value when blur
+      const handleBlur = () => {
+        const name = getValues('name');
+        const currentSlug = getValues('slug');
+        const newSlug = generateSlug(name);
 
-      if (currentSlug !== newSlug) {
-        setValue('slug', newSlug);
-      }
-    };
+        if (currentSlug !== newSlug) {
+          setValue('slug', newSlug);
+        }
+      };
 
-    return (
-      <div className="space-y-4 py-6">
-        <h2 className="text-base font-semibold text-[#09090B]">Basic Information</h2>
+      return (
+        <div className="space-y-4 py-6">
+          <h2 className="text-base font-semibold text-[#09090B]">Basic Information</h2>
 
-        <div className="flex w-full gap-4">
-          <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-black'}`}>
-              Itinerary Name
-            </Label>
-            <Input
-              placeholder="Itinerary name"
-              id="name"
-              {...register('name', { required: 'Name is required' })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
-              onBlur={handleBlur}
-            />
-            {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
-          </div>
-
-          <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-black'}`}>
-              Slug
-            </Label>
-            <Input
-              placeholder="Enter Url slug"
-              id="slug"
-              {...register('slug', { required: 'Slug is required' })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
-              onBlur={handleBlur}
-            />
-            {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-black'}`}>
-            Description
-          </Label>
-          <Textarea
-            placeholder="Detailed description"
-            id="description"
-            {...register('description', {
-              required: 'Description is required',
-            })}
-            className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
-          />
-          {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
-        </div>
-
-        {/* destination */}
-        <div className="space-y-2">
-          <Label htmlFor={'locations'} className={`block text-sm font-medium ${errors?.locations ? 'text-red-400' : 'text-black'}`}>
-            Destinations
-          </Label>
-          <Controller
-            control={methods.control}
-            name="locations"
-            defaultValue={[]}
-            rules={{ required: 'Locations Required' }}
-            render={({ field: { value, onChange } }) => (
-              <ComboboxMultiple
-                id={'locations'}
-                name="locations"
-                type={'locations'} //Required
-                items={locations} //Required
-                value={value ?? []} //Required
-                onChange={onChange} //Required
+          <div className="flex w-full gap-4">
+            <div className="pb-2 space-y-2 w-full">
+              <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-black'}`}>
+                Itinerary Name <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                placeholder="Itinerary name"
+                id="name"
+                {...register('name', { required: 'Name is required' })}
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+                onBlur={handleBlur}
               />
-            )}
-          />
-          {errors?.locations && <span className="text-red-400">{errors?.locations?.message}</span>}
-        </div>
+              {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+            </div>
 
-        <div className="flex items-center space-x-2">
-          <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" htmlFor="featured_itinerary">
+            <div className="pb-2 space-y-2 w-full">
+              <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-black'}`}>
+                Slug <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                placeholder="Enter Url slug"
+                id="slug"
+                {...register('slug', { required: 'Slug is required' })}
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+                onBlur={handleBlur}
+              />
+              {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-black'}`}>
+              Description <span className="text-red-500">*</span>
+            </Label>
+            <Textarea
+              placeholder="Detailed description"
+              id="description"
+              {...register('description', {
+                required: 'Description is required',
+              })}
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+            />
+            {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+          </div>
+
+          {/* destination */}
+          <div className="space-y-2">
+            <Label htmlFor={'locations'} className={`block text-sm font-medium ${errors?.locations ? 'text-red-400' : 'text-black'}`}>
+              Destinations <span className="text-red-500">*</span>
+            </Label>
             <Controller
-              name="featured_itinerary"
-              defaultValue={false}
               control={methods.control}
-              render={({ field }) => (
-                <Switch
-                  id="featured_itinerary"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-gray-300 data-[state=checked]:bg-secondaryDark"
-                >
-                  <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
-                </Switch>
+              name="locations"
+              defaultValue={[]}
+              rules={{ required: 'Locations Required' }}
+              render={({ field: { value, onChange } }) => (
+                <ComboboxMultiple
+                  id={'locations'}
+                  name="locations"
+                  type={'locations'} //Required
+                  items={locations} //Required
+                  value={value ?? []} //Required
+                  onChange={onChange} //Required
+                />
               )}
             />
-            Featured
-          </Label>
-          <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" htmlFor="private_itinerary">
-            <Controller
-              name="private_itinerary"
-              defaultValue={false}
-              control={methods.control}
-              render={({ field }) => (
-                <Switch
-                  id="private_itinerary"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-gray-300 data-[state=checked]:bg-secondaryDark"
-                >
-                  <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
-                </Switch>
-              )}
-            />
-            Private
-          </Label>
+            {errors?.locations && <span className="text-red-400">{errors?.locations?.message}</span>}
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" htmlFor="featured_itinerary">
+              <Controller
+                name="featured_itinerary"
+                defaultValue={false}
+                control={methods.control}
+                render={({ field }) => (
+                  <Switch
+                    id="featured_itinerary"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-gray-300 data-[state=checked]:bg-secondaryDark"
+                  >
+                    <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
+                  </Switch>
+                )}
+              />
+              Featured
+            </Label>
+            <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" htmlFor="private_itinerary">
+              <Controller
+                name="private_itinerary"
+                defaultValue={false}
+                control={methods.control}
+                render={({ field }) => (
+                  <Switch
+                    id="private_itinerary"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-gray-300 data-[state=checked]:bg-secondaryDark"
+                  >
+                    <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
+                  </Switch>
+                )}
+              />
+              Private
+            </Label>
+          </div>
         </div>
-      </div>
-    );
-  };
+      );
+    },
+    [],
+  );
 
   // Schedule Booking
   const ScheduleTab = () => {
@@ -308,15 +350,26 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
       e.preventDefault();
 
       // check first schedules
-      if (!isEmpty(schedules)) {
-        clearErrors('schedules');
-        setCurrentStep(currentStep + 1); //
-      } else {
+      if (isEmpty(schedules)) {
         setError('schedules', {
           type: 'manual',
           message: 'At least one schedule is required',
         });
+        return;
       }
+
+      // check at least one activity or transfer exists
+      const hasItems = !isEmpty(activities) || !isEmpty(transferss);
+      if (!hasItems) {
+        setError('schedules', {
+          type: 'manual',
+          message: 'At least one activity or transfer is required',
+        });
+        return;
+      }
+
+      clearErrors('schedules');
+      setCurrentStep((prev) => prev + 1);
     };
 
     // Modal Handle
@@ -1185,11 +1238,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
           <DialogContent className="max-w-screen-xl">
             <DialogTitle className="sr-only">Edit profile</DialogTitle>
             <DialogDescription className="invisible">Upload Media For Activity</DialogDescription>
-            <Medialibrary
-              closeDialog={() => setDialogOpen(false)}
-              alreadySelectedImages={activityImages}
-              onSelectionChange={handleSelectionChange}
-            />
+            <Medialibrary closeDialog={() => setDialogOpen(false)} alreadySelectedImages={activityImages} onSelectionChange={handleSelectionChange} />
           </DialogContent>
         </Dialog>
 
@@ -1209,11 +1258,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                     onClick={() => handleSetFeatured(image?.media_id)}
                     className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#568f7c]' : 'text-[#568f7c] hover:scale-110'}`}
                   />
-                  {isFeatured && (
-                    <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">
-                      Featured
-                    </div>
-                  )}
+                  {isFeatured && <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
                   <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-4 right-4 size-0 group-hover/item:size-6 transition-all text-red-500 bg-white rounded-full shadow p-1" />
                 </div>
               );
@@ -1624,7 +1669,13 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   steps.map((step) => (
                     <li
                       key={step.id}
-                      onClick={() => setCurrentStep(step?.id)}
+                      onClick={async () => {
+                        if (step?.id !== currentStep) {
+                          const isValid = await validateCurrentStep();
+                          if (!isValid) return;
+                        }
+                        setCurrentStep(step?.id);
+                      }}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'}`}
                     >
                       <div
@@ -1638,7 +1689,16 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
               <Separator className="" />
             </div>
           </div>
-          <form onSubmit={currentStep === 8 ? methods.handleSubmit(onSubmit) : (e) => { e.preventDefault(); handleNext(); }}>
+          <form
+            onSubmit={
+              currentStep === 8
+                ? methods.handleSubmit(onSubmit)
+                : (e) => {
+                    e.preventDefault();
+                    handleNext();
+                  }
+            }
+          >
             <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               {renderStep()}
               <div className="flex justify-between pt-4">
@@ -1667,23 +1727,16 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
 
                 {/* Prevent Button On Schedules */}
                 {currentStep === 2 ? null : (
-                  <div className="flex gap-4">
-                    {/* Display Cancel Button Final Step */}
-                    {currentStep === 8 && (
-                      <Button
-                        type="button"
-                        onClick={() => {
-                          router.back();
-                        }}
-                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                      >
-                        Cancel
+                  <>
+                    {/* Step 8: Use FormActionButtons, Steps 1-7: Use Next button */}
+                    {currentStep === 8 ? (
+                      <FormActionButtons mode="create" isSubmitting={isSubmitting} isDisabled={!isStep1Valid} cancelAlwaysEnabled={true} containerType="div" className="flex gap-4" />
+                    ) : (
+                      <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
+                        {isSubmitting ? 'Next' : 'Next'}
                       </Button>
                     )}
-                    <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
-                      {isSubmitting ? (currentStep === 8 ? 'Submitting...' : 'Submit') : currentStep === 8 ? 'Submit' : 'Next'}
-                    </Button>
-                  </div>
+                  </>
                 )}
               </div>
             </fieldset>

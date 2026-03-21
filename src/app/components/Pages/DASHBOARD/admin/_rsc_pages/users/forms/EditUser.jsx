@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -12,30 +11,48 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { editUserAdmin } from '@/lib/actions/userActions';
 import { NavigationUser } from '../components/NavigationUser';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 
-// Updated schema without department field and with proper error messages
+// Updated schema - password optional for edit
 const userFormSchema = z
   .object({
     name: z.string().min(3, { message: 'Username must be at least 3 characters' }).max(50, { message: 'Username must be less than 50 characters' }),
     email: z.string().email({ message: 'Please enter a valid email address' }),
-    password: z
-      .string()
-      .min(8, { message: 'Password must be at least 8 characters' })
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/, {
-        message: 'Password must include at least one uppercase letter, one lowercase letter, one number, and one special character',
-      }),
-    confirm_password: z.string(),
+    password: z.string().optional(),
+    confirm_password: z.string().optional(),
     role: z.enum(['super_admin', 'customer', 'admin'], {
       required_error: 'Please select a role',
     }),
-    status: z.enum(['active', 'inactive', 'pending'], {
+    status: z.enum(['active', 'inactive'], {
       required_error: 'Please select a status',
     }),
   })
-  .refine((data) => data.password === data.confirm_password, {
-    message: "Passwords don't match",
-    path: ['confirm_password'],
-  });
+  .refine(
+    (data) => {
+      // Only validate password match if password is provided
+      if (data.password && data.password !== data.confirm_password) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: "Passwords don't match",
+      path: ['confirm_password'],
+    },
+  )
+  .refine(
+    (data) => {
+      // Only validate password strength if password is provided
+      if (data.password && data.password.length > 0) {
+        return data.password.length >= 8 && /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/.test(data.password);
+      }
+      return true;
+    },
+    {
+      message: 'Password must be at least 8 characters with uppercase, lowercase, number and special character',
+      path: ['password'],
+    },
+  );
 
 export default function EditUserForm({ userData = {} }) {
   console.log(userData);
@@ -60,7 +77,7 @@ export default function EditUserForm({ userData = {} }) {
   });
 
   // const formstatus
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting, isValid, isDirty } = form.formState;
 
   // handle on submit
   async function onSubmit(data) {
@@ -146,9 +163,11 @@ export default function EditUserForm({ userData = {} }) {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Password</FormLabel>
+                        <FormLabel>
+                          Password <span className="text-muted-foreground">(Optional)</span>
+                        </FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="••••••••" {...field} />
+                          <Input type="password" placeholder="Leave empty to keep current" {...field} />
                         </FormControl>
                         <FormDescription>Must be at least 8 characters with uppercase, lowercase, number and special character</FormDescription>
                         <FormMessage />
@@ -161,11 +180,13 @@ export default function EditUserForm({ userData = {} }) {
                     name="confirm_password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Confirm Password</FormLabel>
+                        <FormLabel>
+                          Confirm Password <span className="text-muted-foreground">(Optional)</span>
+                        </FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="••••••••" {...field} />
+                          <Input type="password" placeholder="Leave empty to keep current" {...field} />
                         </FormControl>
-                        <FormDescription>Re-enter the password</FormDescription>
+                        <FormDescription>Re-enter the password only if changing it</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -209,7 +230,6 @@ export default function EditUserForm({ userData = {} }) {
                           </FormControl>
                           <SelectContent>
                             <SelectItem value="active">Active</SelectItem>
-                            <SelectItem value="pending">Pending</SelectItem>
                             <SelectItem value="inactive">Inactive</SelectItem>
                           </SelectContent>
                         </Select>
@@ -221,12 +241,15 @@ export default function EditUserForm({ userData = {} }) {
                 </div>
               </CardContent>
               <CardFooter className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => router.push('/dashboard/admin/users')} type="button">
-                  Cancel
-                </Button>
-                <Button type="submit" disabled={!isValid}>
-                  {isSubmitting ? 'Updating...' : 'Update User'}
-                </Button>
+                <FormActionButtons
+                  mode="update"
+                  cancelHref="/dashboard/admin/users"
+                  isSubmitting={isSubmitting}
+                  isDisabled={!isDirty}
+                  cancelAlwaysEnabled={true}
+                  containerType="div"
+                  className="justify-end"
+                />
               </CardFooter>
             </form>
           </fieldset>

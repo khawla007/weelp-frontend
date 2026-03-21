@@ -35,7 +35,6 @@ export const useUIStore = create(
       partialize: (state) => ({
         theme: state.theme,
         font: state.font,
-        stickyHeader: state.stickyHeader,
       }), // Only persist these fields
     },
   ),

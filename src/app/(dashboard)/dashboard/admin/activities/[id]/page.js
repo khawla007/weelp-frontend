@@ -8,10 +8,10 @@ import { notFound } from 'next/navigation';
 const EditActivity = async ({ params }) => {
   const { id } = await params;
   const [{ data: tagsData }, { data: locationsData = {} }, { data: attributesData = {} }, { data: categoriesData = {} }] = await Promise.all([
-    getAllTagsAdmin(),
+    getAllTagsAdmin('', { all: true }),
     getAllCitiesAdmin(),
-    getAllAttributesAdmin(),
-    getCategoriesAdmin(),
+    getAllAttributesAdmin(null, { all: true }),
+    getCategoriesAdmin(null, { all: true }),
   ]);
 
   const { data: tags = [] } = tagsData; // for tags
@@ -19,7 +19,6 @@ const EditActivity = async ({ params }) => {
   const { data: categories = [] } = categoriesData; // for categories
   const { data: attributes = [] } = attributesData; // for attributes
 
-  console.log(categoriesData);
   const activitydata = await getSingleActivityAdmin(id); //dyanmic id
 
   if (isEmpty(activitydata)) {

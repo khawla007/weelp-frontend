@@ -24,7 +24,7 @@ export default function SafeImage({ src = '', alt = '', ...props }) {
     return (
       <img
         {...props}
-        src={hasError ? FALLBACK_IMAGE : (imgSrc || FALLBACK_IMAGE)}
+        src={hasError ? FALLBACK_IMAGE : imgSrc || FALLBACK_IMAGE}
         alt={alt}
         onError={() => {
           setHasError(true);

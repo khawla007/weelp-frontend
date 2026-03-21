@@ -23,10 +23,10 @@ import {
 
 // schema for name - validation only on submit
 const formSchema = z.object({
-  name: z.string().transform(val => val || '').refine(
-    val => val.length >= 3 || val.length === 0,
-    { message: 'Name must be at least 3 characters when provided.' }
-  ),
+  name: z
+    .string()
+    .transform((val) => val || '')
+    .refine((val) => val.length >= 3 || val.length === 0, { message: 'Name must be at least 3 characters when provided.' }),
   alt_text: z.string().optional(),
   id: z.number().optional(),
 });
@@ -117,11 +117,7 @@ export const ImagePreviewForm = ({ isDialogOpen, setIsDialogOpen, selectedImage 
     <div className="space-y-6">
       {/* Image Preview */}
       <div className="relative rounded-lg overflow-hidden border">
-        <img
-          src={selectedImage.url}
-          alt={selectedImage.alt_text}
-          className="w-full h-auto max-h-[400px] object-contain bg-muted"
-        />
+        <img src={selectedImage.url} alt={selectedImage.alt_text} className="w-full h-auto max-h-[400px] object-contain bg-muted" />
         {/* Metadata Overlay */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-4 py-3">
           <div className="flex justify-between items-center text-white text-sm">

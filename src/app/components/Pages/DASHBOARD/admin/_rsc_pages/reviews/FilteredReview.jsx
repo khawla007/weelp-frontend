@@ -110,7 +110,7 @@ const FilteredReview = () => {
     if (isAllSelected) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(reveiws.map(review => review.id));
+      setSelectedItems(reveiws.map((review) => review.id));
     }
     setIsAllSelected(!isAllSelected);
   };
@@ -161,7 +161,7 @@ const FilteredReview = () => {
             statusOptions={[
               { value: 'all', label: 'All Status' },
               { value: 'approved', label: 'Approved' },
-              { value: 'pending', label: 'Pending' }
+              { value: 'pending', label: 'Pending' },
             ]}
           />
         </Form>
@@ -176,9 +176,7 @@ const FilteredReview = () => {
             deleteLabel="Delete"
           />
         ) : (
-          <AddNewButton
-            href="/dashboard/admin/reviews/new"
-          />
+          <AddNewButton href="/dashboard/admin/reviews/new" />
         )}
       </div>
 
