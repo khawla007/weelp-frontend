@@ -5,10 +5,11 @@ import { whiteCardData } from '@/app/Data/ShopData';
 import { getAllBlogs } from '@/lib/services/blogs';
 import BreakSection from '@/app/components/BreakSection';
 import { ReviewSectionCity } from '@/app/components/Pages/FRONT_END/Global/ReviewSection';
-import CityActivitiesSlider from '@/app/components/Pages/FRONT_END/city/CityActivitiesSlider';
-import CityToursHeader from '@/app/components/Pages/FRONT_END/city/CityToursHeader';
+import ProductSliderSection from '@/app/components/ui/ProductSliderSection';
+import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
+import CityToursSection from '@/app/components/Pages/FRONT_END/city/CityToursSection';
 import CityFilterSection from '@/app/components/Pages/FRONT_END/city/CityFilterSection';
-import CityBlogSlider from '@/app/components/Pages/FRONT_END/city/CityBlogSlider';
+import BlogSection from '@/app/components/ui/BlogSection';
 import { notFound } from 'next/navigation';
 import { getCityData } from '@/lib/services/cities';
 import { getFeaturedActivitiesByCity } from '@/lib/services/activites';
@@ -53,7 +54,7 @@ export default async function CityPage({ params }) {
   const { data: citydata = [] } = cityResponse;
   const { data: activitesData = [] } = activitiesResponse;
   const { data: itineraryData = [] } = itineraryResponse;
-  const { data: packageData = [] } = packageResponse;
+  const { data: packageData = [], tag_list: packageTagList = [] } = packageResponse;
   const blogsData = blogsResponse?.data || [];
 
   if (!citydata || Object.keys(citydata).length === 0) {
@@ -72,65 +73,28 @@ export default async function CityPage({ params }) {
       <CitySection data={whiteCardData} />
 
       {/* Top Activities Slider — only if activities exist */}
-      {activitesData?.length > 0 && (
-        <CityActivitiesSlider
-          title="Top activities"
-          subtitle={`Discover the best activities in ${citydata?.name || city}`}
-          items={activitesData}
-          navigationId="city-activities"
-        />
-      )}
+      {activitesData?.length > 0 && <ProductSliderSection items={activitesData.map((a) => mapProductToItemCard(a, city))} title="Top activities" navigationId="city-activities" />}
 
-      {/* Top Itineraries Slider — only if itineraries exist */}
-      {itineraryData?.length > 0 && (
-        <CityActivitiesSlider
-          title="Top Itineraries"
-          subtitle={`Curated itineraries for ${citydata?.name || city}`}
-          items={itineraryData}
-          navigationId="city-itineraries"
-        />
-      )}
+      {/* Divider before tours section */}
+      {activitesData?.length > 0 && packageData.length > 0 && <BreakSection marginTop="m-0 p-0" />}
 
-      {/* Divider — only if there are products above AND below */}
-      {(activitesData?.length > 0 || itineraryData?.length > 0) && packageData?.length > 0 && (
-        <BreakSection marginTop="m-0 p-0" />
-      )}
-
-      {/* City Tours Header + Tours Slider — only if packages exist */}
-      {packageData?.length > 0 && (
-        <>
-          <CityToursHeader cityName={citydata?.name || city} citySlug={city} />
-          <CityActivitiesSlider
-            title="Top Tours"
-            subtitle={`Curated tour packages in ${citydata?.name || city}`}
-            items={packageData}
-            navigationId="city-tours"
-          />
-        </>
-      )}
+      {/* Tours grid section — paginated in pen design */}
+      {packageData.length > 0 && <CityToursSection cityName={citydata?.name || city} items={packageData} taglist={packageTagList} />}
 
       {/* Divider before filter section */}
       {hasAnyProducts && <BreakSection />}
 
       {/* Filter Section (tabs, sort, sidebar, grid, pagination) — only if any product data */}
-      {hasAnyProducts && (
-        <CityFilterSection cityName={citydata?.name} />
-      )}
+      {hasAnyProducts && <CityFilterSection />}
 
       {/* Reviews + What About + FAQ — only if city data is a valid object */}
-      {typeof citydata === 'object' && citydata?.location_details && (
-        <ReviewSectionCity cityData={citydata} />
-      )}
+      {typeof citydata === 'object' && citydata?.location_details && <ReviewSectionCity cityData={citydata} />}
 
       {/* Blogs Slider — only if blogs exist */}
-      {blogsData.length > 0 && (
-        <CityBlogSlider blogs={blogsData} />
-      )}
+      {blogsData.length > 0 && <BlogSection blogs={blogsData} title="Blogs" navigationId="city-blogs" />}
 
       {/* JSON-LD Schema */}
-      {jsonLd && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      )}
+      {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}
     </>
   );
 }
