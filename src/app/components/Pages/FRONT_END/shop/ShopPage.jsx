@@ -21,6 +21,7 @@ const ShopFilter = () => {
   const page = Number(searchParams.get('page')) || 1;
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     axios
       .get(`${process.env.NEXT_PUBLIC_API_BASE_URLL}api/shop?page=${page}`)

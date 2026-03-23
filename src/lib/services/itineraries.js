@@ -54,13 +54,14 @@ export async function getAllItinerariesAdmin(search = '') {
 }
 
 /**
- * Display Featured Itineraries by City
- * @param {string} city Slug of the City
- * @returns {Promise<{success:boolean,message?:string,data?:object}>} Returns featured Itineraries by City
+ * Get Featured Itineraries (optionally filtered by city)
+ * @param {string} [city] Optional city slug to filter by
+ * @returns {Promise<{success:boolean,message?:string,data?:object}>}
  */
-export async function getFeaturedItinerariesByCity(city) {
+export async function getFeaturedItineraries(city) {
   try {
-    const response = await publicApi.get(`/api/${city}/itineraries`, {
+    const params = city ? `?city=${city}` : '';
+    const response = await publicApi.get(`/api/itineraries/featured-itineraries${params}`, {
       headers: { Accept: 'application/json' },
     });
 
@@ -70,9 +71,8 @@ export async function getFeaturedItinerariesByCity(city) {
 
     return { success: false, message: 'Not Found' };
   } catch (error) {
-    // Only log unexpected errors, not 404s (which are expected for cities with no itineraries)
     if (error.response?.status !== 404) {
-      console.error(`Unexpected error fetching itineraries of City: ${city}`, error);
+      console.error(`Unexpected error fetching featured itineraries`, error);
     }
 
     return { success: false, message: 'Something Went Wrong' };

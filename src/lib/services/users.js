@@ -40,10 +40,10 @@ export async function getSingleUserAdmin(userId) {
  * Get All Users
  * @returns []
  */
-export async function getAllUsersAdmin() {
+export async function getAllUsersAdmin(query = '') {
   try {
     const api = await createAuthenticatedServerApi();
-    const response = await api.get('/api/admin/users');
+    const response = await api.get(`/api/admin/users${query}`);
     return response?.data;
   } catch (error) {
     console.log('Error fetching users:', error);

@@ -63,6 +63,7 @@ export const CreateAttributePageForm = () => {
     formState: { isSubmitting, isValid },
   } = form; // checking form state
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const typeValue = form.watch('type');
 
   // on submit handle

@@ -181,6 +181,7 @@ export const RegionFilter = () => {
         <h2 className="text-lg font-medium text-[#143042] my-4">Price Range</h2>
         <ReactRangeSliderInput min={100} max={5000} value={priceRange} onInput={handlePriceRangeChange} className="mt-2" />
 
+        {/* eslint-disable-next-line react-hooks/static-components */}
         <StarRatingFilter />
       </div>
 
@@ -195,6 +196,7 @@ export const RegionFilter = () => {
                 productSlug={product?.slug}
                 item_type={product?.item_type}
                 productPrice={product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price}
+                citySlug={product?.city_slug}
               />
             ))
           ) : (
@@ -202,6 +204,7 @@ export const RegionFilter = () => {
           )}
         </div>
 
+        {/* eslint-disable-next-line react-hooks/static-components */}
         {pagination.last_page > 1 && <PaginationControls />}
       </div>
     </div>

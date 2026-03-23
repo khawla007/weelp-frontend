@@ -8,7 +8,7 @@ import { Star } from 'lucide-react';
 
 const FONT = { fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' };
 
-export default function FilterSidebar({ disabled = false, selectedCategories, onCategoryChange, priceRange, onPriceChange, ratingFilter, onRatingChange }) {
+export default function FilterSidebar({ disabled = false, selectedItemType, onItemTypeChange, selectedCategories, onCategoryChange, priceRange, onPriceChange, ratingFilter, onRatingChange }) {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -34,6 +34,35 @@ export default function FilterSidebar({ disabled = false, selectedCategories, on
   return (
     <div className="w-full sm:max-w-xs bg-white h-fit rounded-[11.5px] p-6 px-7" style={{ boxShadow: '0 2.22px 5.63px rgba(0,0,0,0.05)' }}>
       <div className="flex flex-col gap-10">
+        {/* Item Type */}
+        <div>
+          <h3 className="text-[18px] text-[#143042] mb-4" style={{ ...FONT, fontWeight: 500 }}>
+            Item Type
+          </h3>
+          <div className={`flex flex-col gap-3 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
+            {[
+              { value: '', label: 'All' },
+              { value: 'activity', label: 'Activity' },
+              { value: 'package', label: 'Package' },
+              { value: 'itinerary', label: 'Itinerary' },
+            ].map((type) => (
+              <label key={type.value} className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="itemType"
+                  checked={selectedItemType === type.value}
+                  onChange={() => onItemTypeChange(type.value)}
+                  disabled={disabled}
+                  className="size-[19px] accent-[#57947d]"
+                />
+                <span className="text-[18px] text-[#435a67]" style={{ ...FONT, fontWeight: 500 }}>
+                  {type.label}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+
         {/* Categories */}
         <div>
           <h3 className="text-[18px] text-[#143042] mb-4" style={{ ...FONT, fontWeight: 500 }}>
@@ -101,23 +130,6 @@ export default function FilterSidebar({ disabled = false, selectedCategories, on
                     <Star key={i} size={19} className={i < r ? 'fill-[#fed141] stroke-none' : 'stroke-[#fed141] fill-none'} strokeWidth={2} />
                   ))}
                 </div>
-              </label>
-            ))}
-          </div>
-        </div>
-
-        {/* Location — placeholder UI per .pen design, not wired to API yet */}
-        <div>
-          <h3 className="text-[18px] text-[#143042] mb-4" style={{ ...FONT, fontWeight: 500 }}>
-            Location
-          </h3>
-          <div className="flex flex-col space-y-3">
-            {['Asia', 'Europe', 'Middle East', 'America'].map((loc) => (
-              <label key={loc} className="flex items-center gap-2 cursor-pointer opacity-50">
-                <input type="checkbox" disabled className="size-[19px] rounded-[2px] border-2 border-[#667085] accent-[#57947d]" />
-                <span className="text-[18px] text-[#435a67]" style={{ ...FONT, fontWeight: 500 }}>
-                  {loc}
-                </span>
               </label>
             ))}
           </div>

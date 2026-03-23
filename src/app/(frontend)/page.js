@@ -9,16 +9,18 @@ import AiSection from '../components/Pages/FRONT_END/home/AiSection';
 import BlogSection from '../components/ui/BlogSection';
 import { getAllFeaturedActivities } from '@/lib/services/activites';
 import { getAllFeaturedCities } from '@/lib/services/cities';
+import { getPublicReviews } from '@/lib/services/reviews';
 import { publicApi } from '@/lib/axiosInstance';
 
 const HomePage = async () => {
-  const [featuredActivitiesRes, featuredCitiesRes, blogsRes] = await Promise.all([
+  const [featuredActivitiesRes, featuredCitiesRes, blogsRes, reviewsRes] = await Promise.all([
     getAllFeaturedActivities(),
     getAllFeaturedCities(),
     publicApi
       .get('/api/blogs?per_page=10', { headers: { Accept: 'application/json' } })
       .then((res) => res.data)
       .catch(() => ({ data: [] })),
+    getPublicReviews(),
   ]);
 
   const featuredActivities = Array.isArray(featuredActivitiesRes) ? featuredActivitiesRes : (featuredActivitiesRes?.data ?? []);
@@ -26,13 +28,14 @@ const HomePage = async () => {
   const featuredCities = Array.isArray(featuredCitiesRes) ? featuredCitiesRes : (featuredCitiesRes?.data ?? []);
 
   const blogs = blogsRes?.data ?? [];
+  const reviews = Array.isArray(reviewsRes?.data) ? reviewsRes.data : [];
 
   return (
     <>
       <HeroSection />
       {featuredActivities.length > 0 && <ProductSliderSection items={featuredActivities.map((a) => mapProductToItemCard(a))} title="Top activities" navigationId="top-activities" />}
       <BrowseDestinationsSection cities={featuredCities} />
-      <TestimonialSection />
+      <TestimonialSection reviews={reviews} />
       <AiSection />
       <BlogSection blogs={blogs} navigationId="guide-blog" />
     </>

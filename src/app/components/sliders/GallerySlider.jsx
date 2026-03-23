@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
@@ -15,7 +15,6 @@ import { ProductGalleryAnimation } from '../Animation/ProductAnimation';
 // Slider for City Page and
 const GallerySlider = ({ data, classNames = '', navColor = '#fff' }) => {
   const [showGallery, setShowGallery] = useState(false); // toggle gallery visibility
-  const [imageData, setImageData] = useState([]);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   // Handle Toggle Gallery visibility
@@ -23,11 +22,7 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff' }) => {
     setShowGallery(!showGallery);
   };
 
-  useEffect(() => {
-    if (data) {
-      setImageData(data);
-    }
-  }, [data]);
+  const imageData = data || [];
 
   // check for having data
   if (imageData.length > 0) {

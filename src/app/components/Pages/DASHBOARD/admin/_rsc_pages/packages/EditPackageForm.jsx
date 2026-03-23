@@ -354,6 +354,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
 
   // Information Tab
   const InformationTab = useMemo(
+    // eslint-disable-next-line react/display-name
     () => () => {
       // intialize form
       const {
@@ -364,6 +365,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
         control,
         trigger,
         formState: { errors },
+        // eslint-disable-next-line react-hooks/rules-of-hooks
       } = useFormContext();
 
       // information fields
@@ -371,6 +373,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
         fields: informationFields,
         append: addInformationField,
         remove: removeInformationField,
+        // eslint-disable-next-line react-hooks/rules-of-hooks
       } = useFieldArray({
         control,
         name: 'information', // register information field

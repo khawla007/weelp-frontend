@@ -1,4 +1,8 @@
 import createMDX from '@next/mdx';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -35,6 +39,9 @@ const nextConfig = {
       bodySizeLimit: '3mb',
     },
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons', 'lodash', 'date-fns', 'framer-motion'],
+  },
+  turbopack: {
+    root: __dirname,
   },
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 };

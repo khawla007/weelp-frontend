@@ -76,6 +76,7 @@ export function UserDataTable({ data, selectedItems = [], onSelectionChange, use
   ];
 
   // table instance for user
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,

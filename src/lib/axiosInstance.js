@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-// Log the baseURL for debugging
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
-console.log('[axiosInstance] Creating publicApi with baseURL:', baseURL);
 
 export const publicApi = axios.create({
   baseURL: baseURL,

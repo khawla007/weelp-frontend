@@ -57,41 +57,16 @@ export async function getAllActivitesAdmin(search = '') {
  * Returns all Featured Activities
  * @returns []
  */
-export async function getAllFeaturedActivities() {
+export async function getAllFeaturedActivities(city) {
   try {
-    const response = await publicApi.get(`/api/activities/featured-activities`, {
+    const params = city ? `?city=${city}` : '';
+    const response = await publicApi.get(`/api/activities/featured-activities${params}`, {
       headers: { Accept: 'application/json' },
     });
 
     return response.data;
   } catch (error) {
-    console.log('Error fetching city data:', error);
+    console.log('Error fetching featured activities:', error);
     return [];
-  }
-}
-
-/**
- * Display Featured Activities by City
- * @param {string} city Slug of the City
- * @returns {Promise<{success:boolean,message?:string,data?:object}>}
- */
-export async function getFeaturedActivitiesByCity(city) {
-  try {
-    const response = await publicApi.get(`/api/${city}/activities`, {
-      headers: { Accept: 'application/json' },
-    });
-
-    if (response.status == 200) {
-      return response?.data;
-    }
-
-    return { success: false, message: 'Not Found' };
-  } catch (error) {
-    // Only log unexpected errors, not 404s (which are expected for cities with no activities)
-    if (error.response?.status !== 404) {
-      console.error(`Unexpected error fetching Activities of City: ${city}`, error);
-    }
-
-    return { success: false, message: 'Something Went Wrong', error: error.message };
   }
 }

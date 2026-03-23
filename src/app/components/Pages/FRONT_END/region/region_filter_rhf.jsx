@@ -172,12 +172,15 @@ export const RegionFilterNew = () => {
         {/* Sidebar */}
         <aside className="w-full sm:max-w-xs p-6 bg-white rounded shadow h-fit">
           <h2 className="text-lg font-semibold mb-4">Category</h2>
+          {/* eslint-disable-next-line react-hooks/static-components */}
           <CategoryFilter />
 
           <h2 className="text-lg font-semibold mt-6 mb-2">Price Range</h2>
+          {/* eslint-disable-next-line react-hooks/static-components */}
           <PriceFilter />
 
           <h2 className="text-lg font-semibold mt-6 mb-2">Rating</h2>
+          {/* eslint-disable-next-line react-hooks/static-components */}
           <RatingFilter />
         </aside>
 
@@ -193,10 +196,12 @@ export const RegionFilterNew = () => {
                     productSlug={product.slug}
                     item_type={product.item_type}
                     productPrice={product?.pricing?.regular_price ?? product?.base_pricing?.variations?.[0]?.regular_price}
+                    citySlug={product?.city_slug}
                   />
                 ))
               : !isLoading && <p className="text-center w-full py-8 text-gray-500">Sorry, no products found.</p>}
           </div>
+          {/* eslint-disable-next-line react-hooks/static-components */}
           <Pagination />
         </div>
       </div>

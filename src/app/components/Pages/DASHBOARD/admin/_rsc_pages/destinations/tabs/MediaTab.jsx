@@ -38,6 +38,7 @@ const MediaTab = () => {
       setValue('media_gallery', updatedGallery, { shouldDirty: true, shouldValidate: true });
 
       resetMedia();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDialogOpen(false);
     }
   }, [selectedMedia, media_gallery, setValue, resetMedia]);

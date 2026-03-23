@@ -85,6 +85,7 @@ export default function SingleProductFormPackage({ productData }) {
     },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const selectedPackage = watch('package'); // Track current package
   const scubaDivingItem = watch('scubaDivingItem'); // Track scuba diving item
   const withoutScubaDivingItem = watch('withoutScubaDivingItem'); // Track without scuba diving item

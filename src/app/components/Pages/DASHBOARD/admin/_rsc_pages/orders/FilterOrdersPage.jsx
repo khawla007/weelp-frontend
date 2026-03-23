@@ -113,6 +113,7 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
   ];
 
   // table instance
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: orders,
     columns,

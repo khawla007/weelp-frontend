@@ -136,6 +136,7 @@ export function DataTableTags({ tags = [], mutate, selectedItems = [], onSelecti
     },
   ];
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: tags,
     columns,

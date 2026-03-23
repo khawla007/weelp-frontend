@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, Globe, Headphones, MapPin, Search, ShoppingCart, Smartphone, UserRound } from 'lucide-react';
+import { ChevronDown, Globe, Headphones, MapPin, Search, ShoppingCart, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
 import ModalForm from '../Modals/ModalForm';
@@ -108,9 +108,20 @@ export const HeaderAccount = () => {
         </li>
 
         <li>
-          <button type="button" className="flex items-center gap-2 rounded-[30px] border border-[#d9d9d9] px-4 py-1.5 text-[#0c2536] transition hover:bg-gray-50" onClick={handleSubmenu}>
-            <UserRound className="size-[18px]" strokeWidth={1.5} />
-            <span className="text-[15px] font-medium">Account</span>
+          <button type="button" className="flex items-center justify-center w-[65px] h-[40px] rounded-[30px] border border-[#d9d9d9] transition hover:bg-gray-50" onClick={handleSubmenu}>
+            <svg width="32" height="32" viewBox="0 0 36 36" fill="none" className="shrink-0">
+              <defs>
+                <clipPath id="header-avatar-clip">
+                  <circle cx="18" cy="18" r="18" />
+                </clipPath>
+              </defs>
+              <circle cx="18" cy="18" r="18" fill="#B3B3B3" />
+              <g clipPath="url(#header-avatar-clip)">
+                <circle cx="18" cy="14" r="6.5" fill="white" />
+                <ellipse cx="18" cy="34" rx="12" ry="10" fill="white" />
+              </g>
+            </svg>
+            <ChevronDown className="size-[16px] text-[#142a38]/70 shrink-0" strokeWidth={1.5} />
           </button>
         </li>
       </ul>

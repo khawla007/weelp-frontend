@@ -64,6 +64,7 @@ export const CreateTransferForm = ({}) => {
     // Only save form data if step has changed and we're not on the first render
     if (prevStepRef.current !== currentStep && prevStepRef.current !== 0) {
       const currentData = methods.getValues();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData((prevFormData) => ({ ...prevFormData, ...currentData }));
     }
     prevStepRef.current = currentStep;

@@ -59,6 +59,7 @@ const ProductSlider = ({ data }) => {
                 currency={product?.pricing?.currency}
                 productRating={product?.rating}
                 imgsrc={product?.featured_image || product?.media_gallery?.[0]?.media?.url || product?.image}
+                citySlug={product?.city_slug}
               />
             </SwiperSlide>
           ))}

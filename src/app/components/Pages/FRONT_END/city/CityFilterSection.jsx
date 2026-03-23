@@ -1,19 +1,21 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
 import ItemCard from '@/app/components/ui/item-card';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import { LoadingPage } from '@/app/components/Animation/Cards';
+import Pagination from '@/app/components/ui/Pagination';
 import FilterSidebar from './FilterSidebar';
-import CategoryTabs from './CategoryTabs';
-import SortBar from './SortBar';
 
 export default function CityFilterSection() {
   const { city } = useParams();
 
+  const sectionRef = useRef(null);
+
   const [products, setProducts] = useState([]);
+  const [selectedItemType, setSelectedItemType] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 5000]);
   const [ratingFilter, setRatingFilter] = useState(0);
@@ -21,14 +23,24 @@ export default function CityFilterSection() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
+  const handlePageChange = useCallback(
+    (page) => {
+      if (page === currentPage) return;
+      setCurrentPage(page);
+      setTimeout(() => sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    },
+    [currentPage],
+  );
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(true);
-      let query = `?min_price=${priceRange[0]}&max_price=${priceRange[1]}&page=${currentPage}&min_rating=${ratingFilter}`;
+      let query = `?min_price=${priceRange[0]}&max_price=${priceRange[1]}&page=${currentPage}&per_page=8&min_rating=${ratingFilter}`;
+      if (selectedItemType) query += `&item_type=${selectedItemType}`;
       if (selectedCategories.length > 0) query += `&categories=${selectedCategories.join(',')}`;
 
       axios
-        .get(`${process.env.NEXT_PUBLIC_API_BASE_URLL}api/${city}/all-items${query}`)
+        .get(`${process.env.NEXT_PUBLIC_API_BASE_URLL}api/cities/${city}/all-items${query}`)
         .then((res) => {
           if (res.status === 200) {
             setProducts(res?.data?.data || []);
@@ -43,19 +55,18 @@ export default function CityFilterSection() {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [priceRange, selectedCategories, currentPage, city, ratingFilter]);
+  }, [priceRange, selectedItemType, selectedCategories, currentPage, city, ratingFilter]);
 
   return (
-    <div className="mx-auto max-w-[1480px] px-4 sm:px-6 xl:px-0 py-[70px]">
-      {/* Tabs + Sort Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-8">
-        <CategoryTabs onTabChange={() => setCurrentPage(1)} />
-        <SortBar />
-      </div>
-
+    <div ref={sectionRef} className="mx-auto max-w-[1480px] px-4 sm:px-6 xl:px-0 py-[70px]">
       {/* Sidebar + Grid */}
       <div className="flex flex-col sm:flex-row gap-6">
         <FilterSidebar
+          selectedItemType={selectedItemType}
+          onItemTypeChange={(type) => {
+            setSelectedItemType(type);
+            setCurrentPage(1);
+          }}
           selectedCategories={selectedCategories}
           onCategoryChange={(cats) => {
             setSelectedCategories(cats);
@@ -99,27 +110,9 @@ export default function CityFilterSection() {
           </div>
 
           {/* Pagination */}
-          {pagination && pagination.last_page > 1 && (
-            <div className="flex justify-center mt-8 gap-2">
-              {Array.from({ length: pagination.last_page }, (_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentPage(i + 1)}
-                  className={`flex items-center justify-center size-[35px] rounded-[7.68px] border text-[#435a67] transition ${
-                    currentPage === i + 1 ? 'opacity-100 shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)]' : 'opacity-45'
-                  }`}
-                  style={{
-                    borderColor: '#e0e6eb',
-                    fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
-                    fontWeight: 400,
-                    fontSize: '21px',
-                  }}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="mt-8">
+            <Pagination currentPage={currentPage} totalPages={pagination?.last_page || 1} onPageChange={handlePageChange} />
+          </div>
         </div>
       </div>
     </div>

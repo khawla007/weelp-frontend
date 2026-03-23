@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -11,7 +11,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
 
-const SucceceedPage = () => {
+const SucceceedPageContent = () => {
   const searchParams = useSearchParams(); // params serach
 
   const { clearCart, cartItems } = useMiniCartStore(); // store for itesm
@@ -165,5 +165,17 @@ const SucceceedPage = () => {
     </div>
   );
 };
+
+const SucceceedPage = () => (
+  <Suspense
+    fallback={
+      <div className="my-4 h-screen flex items-center justify-center">
+        <span className="loader"></span>
+      </div>
+    }
+  >
+    <SucceceedPageContent />
+  </Suspense>
+);
 
 export default SucceceedPage;

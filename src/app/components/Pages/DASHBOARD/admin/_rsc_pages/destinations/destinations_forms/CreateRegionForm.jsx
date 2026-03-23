@@ -51,6 +51,7 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
     watch,
   } = methods;
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const watchedCountries = watch('countries', []);
 
   // Handle country selection (multi-select via checkboxes)

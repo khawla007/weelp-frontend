@@ -33,6 +33,7 @@ const MediaComponent = () => {
       const transformedMedia = selectedMedia.map((obj) => mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))); // update key to media id
 
       // 2. Push transformed data to local state
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActivityImages((prev) => [...prev, ...transformedMedia]);
       resetMedia(); // runs immediately after set
       setDialogOpen(false);

@@ -230,6 +230,7 @@ export const ShopAllProduct = () => {
                         productSlug={product.slug}
                         item_type={product?.item_type}
                         productPrice={product?.price?.regular_price ?? product?.price?.variations[0]?.regular_price}
+                        citySlug={product?.city_slug}
                       />
                     ))
                   ) : (

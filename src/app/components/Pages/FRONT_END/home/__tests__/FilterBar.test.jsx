@@ -23,4 +23,13 @@ describe('FilterBar', () => {
     expect(screen.getByText('When?')).toBeInTheDocument();
     expect(screen.getByText(/Guest/i)).toBeInTheDocument();
   });
+
+  it('stacks the search fields on small screens to avoid horizontal overflow', async () => {
+    const { container } = render(<FilterBar />);
+    await waitFor(() => expect(getCitiesRegions).toHaveBeenCalled());
+
+    const fieldGroup = container.querySelector('form > div');
+    expect(fieldGroup).toHaveClass('flex-col');
+    expect(fieldGroup).toHaveClass('sm:flex-row');
+  });
 });

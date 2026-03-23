@@ -67,6 +67,7 @@ export const CheckoutFields = () => {
   // Load all countries on mount
   useEffect(() => {
     const allCountries = Country.getAllCountries();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCountries(allCountries);
   }, []);
 
@@ -77,6 +78,7 @@ export const CheckoutFields = () => {
 
       // set first country
       if (foundCountry?.isoCode !== selectedCountry?.isoCode) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedCountry(foundCountry);
       }
     }
@@ -86,6 +88,7 @@ export const CheckoutFields = () => {
   useEffect(() => {
     if (selectedCountry) {
       const statesList = State.getStatesOfCountry(selectedCountry.isoCode);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStates(statesList);
 
       // Only reset state if form already has a value
@@ -104,6 +107,7 @@ export const CheckoutFields = () => {
       const foundState = states.find((s) => s.name === watchState);
 
       if (foundState?.name !== selectedState?.name) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedState(foundState);
       }
     }
@@ -113,6 +117,7 @@ export const CheckoutFields = () => {
   useEffect(() => {
     if (selectedCountry?.isoCode && selectedState?.isoCode) {
       const cityList = City.getCitiesOfState(selectedCountry.isoCode, selectedState.isoCode);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCities(cityList);
     } else {
       setCities([]); // Clear cities if state or country isn't selected

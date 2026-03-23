@@ -59,6 +59,7 @@ export const BlogForm = ({ editPage = false, data: blogData, mutate }) => {
   }, [editPage, methods]);
 
   // Get media_gallery from form state
+  // eslint-disable-next-line react-hooks/incompatible-library
   const media_gallery = methods.watch('media_gallery');
 
   // form data

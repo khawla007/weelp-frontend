@@ -20,6 +20,7 @@ export function TagsPageClient() {
     },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const page = watch('page'); // watch page value
 
   const { data, error, isLoading, mutate } = useSWR(`/api/admin/taxonomies/tags?page=${page}`, fetcher); // fetch data

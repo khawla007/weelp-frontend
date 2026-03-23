@@ -15,7 +15,8 @@ const ITEM_TYPE_PLURAL = {
  */
 export function mapProductToItemCard(product, citySlug) {
   const pluralType = ITEM_TYPE_PLURAL[product.item_type] || product.item_type;
-  const href = citySlug ? `/cities/${citySlug}/${pluralType}/${product.slug}` : `/${product.item_type}/${product.slug}`;
+  const resolvedCitySlug = citySlug || product.city_slug || product.locations?.[0]?.city_slug;
+  const href = resolvedCitySlug ? `/cities/${resolvedCitySlug}/${pluralType}/${product.slug}` : `/${product.item_type}/${product.slug}`;
 
   const image = product.featured_images || product.featured_image || product.media_gallery?.[0]?.media?.url || product.media_gallery?.[0]?.url || product.image || '/assets/Card.png';
 

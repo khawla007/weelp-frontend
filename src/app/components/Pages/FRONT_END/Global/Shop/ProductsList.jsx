@@ -6,6 +6,7 @@ const ProductsList = ({ data }) => {
 
   // Use useEffect to set mounted to true on component mount
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 

@@ -141,6 +141,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
 
   // Basic Information
   const PersonalInfoTab = useMemo(
+    // eslint-disable-next-line react/display-name
     () => () => {
       const {
         register,
@@ -148,6 +149,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
         getValues,
         setValue,
         formState: { errors },
+        // eslint-disable-next-line react-hooks/rules-of-hooks
       } = useFormContext();
 
       // handling value when blur
@@ -281,6 +283,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
 
   // Information Tab
   const InformationTab = useMemo(
+    // eslint-disable-next-line react/display-name
     () => () => {
       // intialize form
       const {
@@ -291,6 +294,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
         control,
         trigger,
         formState: { errors },
+        // eslint-disable-next-line react-hooks/rules-of-hooks
       } = useFormContext();
 
       // information fields
@@ -298,6 +302,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
         fields: informationFields,
         append: addInformationField,
         remove: removeInformationField,
+        // eslint-disable-next-line react-hooks/rules-of-hooks
       } = useFieldArray({
         control,
         name: 'information', // register information field

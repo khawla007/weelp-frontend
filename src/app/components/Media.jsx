@@ -38,6 +38,7 @@ export const MediaTab = ({ galleryThumbnail = false, buttonTitle = 'Upload Media
       const transformedMedia = selectedMedia.map((obj) => _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))); // update key to media id
 
       // 2. Filter out duplicates before adding (defense-in-depth)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActivityImages((prev) => {
         const existingIds = new Set(prev.map((img) => img.media_id || img.id));
         const newImages = transformedMedia.filter((img) => !existingIds.has(img.media_id));

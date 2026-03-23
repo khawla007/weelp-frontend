@@ -67,6 +67,7 @@ export const AddOnForm = ({ formData = {} }) => {
   } = form;
 
   // Watch type field for auto-populating price_calculation
+  // eslint-disable-next-line react-hooks/incompatible-library
   const typeValue = form.watch('type');
 
   // Watch price_calculation field for display label

@@ -13,9 +13,9 @@ const ITEM_TYPE_PLURAL = {
   transfer: 'transfers',
 };
 
-export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productRating, productTitle, productPrice, currency, is_featured }) => {
+export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productRating, productTitle, productPrice, currency, is_featured, citySlug: citySlugProp }) => {
   const params = useParams();
-  const citySlug = params?.city;
+  const citySlug = citySlugProp || params?.city;
   const pluralType = ITEM_TYPE_PLURAL[item_type] || item_type;
   const itemHref = citySlug ? `/cities/${citySlug}/${pluralType}/${productSlug}` : `/${item_type}/${productSlug}`;
 

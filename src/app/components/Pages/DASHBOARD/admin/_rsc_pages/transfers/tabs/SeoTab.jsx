@@ -126,6 +126,7 @@ const SeoTab = () => {
   useEffect(() => {
     const selectedSchema = schemaTypes.find((s) => s.value === selectedSchemaType);
     if (selectedSchema) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setJsonInput(JSON.stringify(selectedSchema.template, null, 2));
     }
   }, [selectedSchemaType]);
@@ -133,6 +134,7 @@ const SeoTab = () => {
   // update with latest value
   useEffect(() => {
     if (!String(jsonInput).trim()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setJsonInput(JSON.stringify(selectedSchemaData || {}, null, 2));
     }
   }, [selectedSchemaData]);

@@ -11,7 +11,7 @@ import { authApi } from '../axiosInstance';
  */
 export const getDashboardMetrics = async () => {
   try {
-    const response = await authApi.get('/admin/dashboard/metrics');
+    const response = await authApi.get('/api/admin/dashboard/metrics');
     return response?.data?.data?.metrics || [];
   } catch (error) {
     console.error('Error fetching dashboard metrics:', error);
@@ -25,7 +25,7 @@ export const getDashboardMetrics = async () => {
  */
 export const getOverviewChart = async () => {
   try {
-    const response = await authApi.get('/admin/dashboard/overview-chart');
+    const response = await authApi.get('/api/admin/dashboard/overview-chart');
     return response?.data?.data || [];
   } catch (error) {
     console.error('Error fetching overview chart:', error);
@@ -39,7 +39,7 @@ export const getOverviewChart = async () => {
  */
 export const getRecentSales = async () => {
   try {
-    const response = await authApi.get('/admin/dashboard/recent-sales');
+    const response = await authApi.get('/api/admin/dashboard/recent-sales');
     return response?.data?.data || [];
   } catch (error) {
     console.error('Error fetching recent sales:', error);
@@ -57,7 +57,7 @@ export const searchDashboard = async (query) => {
     if (!query || query.length < 2) {
       return [];
     }
-    const response = await authApi.get(`/admin/dashboard/search`, { params: { q: query } });
+    const response = await authApi.get(`/api/admin/dashboard/search`, { params: { q: query } });
     return response?.data?.data || [];
   } catch (error) {
     console.error('Error searching dashboard:', error);

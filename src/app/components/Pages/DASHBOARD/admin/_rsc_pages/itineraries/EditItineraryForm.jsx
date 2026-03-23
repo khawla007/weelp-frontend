@@ -211,12 +211,14 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
 
   // Basic Information
   const PersonalInfoTab = useMemo(
+    // eslint-disable-next-line react/display-name
     () => () => {
       const {
         register,
         getValues,
         setValue,
         formState: { errors },
+        // eslint-disable-next-line react-hooks/rules-of-hooks
       } = useFormContext();
 
       // handling value when blur

@@ -64,6 +64,7 @@ export const EditAttributePageForm = ({ attributeData }) => {
     formState: { isSubmitting, isValid, isDirty },
   } = form;
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const typeValue = form.watch('type');
 
   // Clear default_value if type is 'yes/no'

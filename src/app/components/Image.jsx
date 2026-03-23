@@ -14,6 +14,7 @@ export default function SafeImage({ src = '', alt = '', ...props }) {
   // Update imgSrc when src prop changes
   useEffect(() => {
     if (src) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setImgSrc(src);
       setHasError(false);
     }

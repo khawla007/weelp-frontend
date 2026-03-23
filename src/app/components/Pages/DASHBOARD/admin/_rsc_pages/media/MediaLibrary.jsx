@@ -98,7 +98,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
         ...img,
         id: img.media_id || img.id,
       }));
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional sync with props
+       
       setSelectedImages(transformed);
     }
   }, [alreadySelectedImages]);

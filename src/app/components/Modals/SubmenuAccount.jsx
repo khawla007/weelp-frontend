@@ -31,7 +31,7 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
         e.stopPropagation();
         setShowSubmenu(!showSubmenu);
       }}
-      className="absolute top-3/4 border rounded-xl bg-white z-10"
+      className="absolute right-0 top-3/4 border rounded-xl bg-white z-10 whitespace-nowrap"
     >
       <ul>
         {/* Conditionally render the first li based on session existence */}

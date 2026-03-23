@@ -17,6 +17,7 @@ export const FORM_REVIEWS_VALUES_DEFAULT = {
   review_text: '',
   media_gallery: [],
   status: 'approved',
+  is_featured: false,
 };
 
 /**

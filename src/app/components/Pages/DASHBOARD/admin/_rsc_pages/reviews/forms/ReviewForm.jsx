@@ -4,7 +4,8 @@ import React from 'react';
 import { SelectField, SelectField2 } from '../components/SelectField';
 import { useForm, useWatch } from 'react-hook-form';
 import { Rating } from '@/app/components/Ratings';
-import { Input } from '@/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import MediaComponent from '../components/MediaComponent';
 import useSWR from 'swr';
@@ -24,7 +25,7 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
   const { toast } = useToast(); // intialize toaster
   const router = useRouter(); // intialize route
 
-  const ALL_USERS = users?.users ?? []; //destructure users data
+  const ALL_USERS = users?.data?.users ?? []; //destructure users data
 
   // default value in edit
   const user_id = reviewData?.user?.id ?? null;
@@ -157,7 +158,7 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
                 rules={{ required: 'Field Required' }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Select User</FormLabel>
+                    <FormLabel>Rating</FormLabel>
                     <FormControl>
                       <Rating value={field.value} max={5} onChange={field.onChange} />
                     </FormControl>
@@ -188,17 +189,38 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Status</FormLabel>
-                    <div className="flex gap-4">
-                      {REVIEW_STATUS.map((val) => (
-                        <FormControl key={val}>
-                          <Label htmlFor={val} className="flex items-center space-x-2 capitalize ">
-                            <Input id={val} type="radio" value={val} checked={field.value === val} onChange={field.onChange} />
-                            <span>{val}</span>
-                          </Label>
-                        </FormControl>
-                      ))}
-                    </div>
+                    <FormControl>
+                      <RadioGroup onValueChange={field.onChange} value={field.value} defaultValue={field.value} className="flex gap-4">
+                        {REVIEW_STATUS.map((val) => (
+                          <FormItem key={val} className="flex items-center space-x-2 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value={val} id={`status-${val}`} />
+                            </FormControl>
+                            <Label htmlFor={`status-${val}`} className="capitalize cursor-pointer">
+                              {val}
+                            </Label>
+                          </FormItem>
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Featured Toggle */}
+              <FormField
+                control={form.control}
+                name="is_featured"
+                render={({ field }) => (
+                  <FormItem className="flex items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">Featured Review</FormLabel>
+                      <p className="text-sm text-muted-foreground">Show this review in the featured reviews section on public pages.</p>
+                    </div>
+                    <FormControl>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
                   </FormItem>
                 )}
               />

@@ -45,6 +45,7 @@ const MediaTab = () => {
   //  Hydarte First if there is already media exist
   useEffect(() => {
     if (media?.length > 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActivityImages(media); // Sync from form to local state
     }
   }, []);
@@ -59,6 +60,7 @@ const MediaTab = () => {
       })); // update key to media id and add is_featured
 
       // 2. Push transformed data to local state
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActivityImages((prev) => [...prev, ...transformedMedia]);
       resetMedia(); // runs immediately after set
       setDialogOpen(false);

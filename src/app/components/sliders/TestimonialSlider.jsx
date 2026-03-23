@@ -1,15 +1,13 @@
 // Testimonial Slider
 'use client';
-import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
 import Testimonial from '../Testimonial';
-import { TestimonialCarouselAnimation } from '../Animation/ProductAnimation';
 
-export const TestmonialSlider = () => {
+export const TestmonialSlider = ({ reviews = [] }) => {
   return (
     <div className="carousel-shell-wrapper">
       <Swiper
@@ -20,7 +18,7 @@ export const TestmonialSlider = () => {
         }}
         speed={8000}
         spaceBetween={20}
-        loop={true}
+        loop={reviews.length > 4}
         breakpoints={{
           450: {
             slidesPerView: 1,
@@ -41,10 +39,9 @@ export const TestmonialSlider = () => {
         }}
         className=""
       >
-        {[...Array(6)].map((_, index) => (
-          <SwiperSlide key={index}>
-            {/* <DestinationCard /> */}
-            <Testimonial />
+        {reviews.map((review) => (
+          <SwiperSlide key={review.id}>
+            <Testimonial username={review.user?.name} title={review.review_text} date={review.created_at} itemName={review.item?.name} rating={review.rating} />
           </SwiperSlide>
         ))}
       </Swiper>

@@ -185,15 +185,15 @@ export default function FilterBar() {
   };
 
   return (
-    <div className="w-full max-w-[560px] relative">
+    <div className="relative w-full max-w-[720px]">
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Connected Filter Fields */}
-        <div className="flex -space-x-px">
+        <div className="flex flex-col gap-2 sm:flex-row sm:gap-0 sm:-space-x-px">
           {/* Where To */}
           <div className="flex-1 relative" ref={locationRef}>
             <div
               onClick={handleInputClick}
-              className="flex items-center gap-3 px-6 py-[18px] bg-white rounded-l-xl border border-[#cccccc80] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer"
+              className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none"
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <MapPin size={20} className="flex-shrink-0" style={{ color: '#142a38b2' }} />
@@ -247,7 +247,7 @@ export default function FilterBar() {
                 setShowLocation(false);
                 setShowHowMany(false);
               }}
-              className="flex items-center gap-3 px-6 py-[18px] bg-white border border-[#cccccc80] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer"
+              className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <Calendar size={20} className="flex-shrink-0" style={{ color: '#142a38b2' }} />
@@ -298,7 +298,7 @@ export default function FilterBar() {
                 setShowLocation(false);
                 setShowCalendar(false);
               }}
-              className="flex items-center gap-3 px-6 py-[18px] bg-white rounded-r-xl border border-[#cccccc80] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer"
+              className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-l-none"
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <Users size={20} className="flex-shrink-0" style={{ color: '#142a38b2' }} />

@@ -119,6 +119,7 @@ const FilterTransfer = () => {
   );
 
   // Memoize price array to prevent infinite re-renders
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const priceMemoized = useMemo(() => filters.price, [filters.price?.[0], filters.price?.[1]]);
 
   // reset page to 1 when filters change

@@ -40,6 +40,7 @@ export function AppearanceSettingForm() {
     },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const selectedTheme = form.watch('theme');
   const { isDirty } = form.formState;
 

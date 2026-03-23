@@ -136,6 +136,7 @@ const Tours = ({ items, taglist }) => {
                   productPrice={val?.base_pricing?.variations[0]?.regular_price}
                   productId={val?.id}
                   productSlug={val?.slug}
+                  citySlug={val?.city_slug}
                 />
               </li>
             );

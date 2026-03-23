@@ -38,9 +38,10 @@ export const SelectField = ({ data = [], placeholder = 'Select...', value, onCha
  * @param {(value: string) => void} [props.onChange] - Callback when value changes
  */
 export const SelectField2 = ({ data = [], placeholder = 'Select...', value, onChange }) => {
+  const selectValue = value != null ? String(value) : undefined;
   return (
     <div className="flex flex-col gap-2 w-full">
-      <Select value={String(value)} onValueChange={onChange}>
+      <Select value={selectValue} onValueChange={onChange}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

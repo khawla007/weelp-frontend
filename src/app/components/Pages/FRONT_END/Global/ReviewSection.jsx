@@ -18,9 +18,9 @@ const bgStyle = {
 };
 
 // Review Section City Page
-export const ReviewSectionCity = ({ cityData }) => {
+export const ReviewSectionCity = ({ cityData, reviews = [] }) => {
   return (
-    <section className="flex flex-wrap mt-8">
+    <section className="flex flex-wrap">
       {/* if values exist inoobjects */}
       {cityData?.location_details && Object.keys(cityData.location_details).length > 0 && (
         <div className="w-full xl:w-1/3 bg-[#f4f5f7]" style={bgStyle}>
@@ -43,7 +43,7 @@ export const ReviewSectionCity = ({ cityData }) => {
                 </button>
               </div>
             </div>
-            <ReviewSlider />
+            <ReviewSlider reviews={reviews} />
           </div>
         </div>
         <Accordion items={faqItems} />

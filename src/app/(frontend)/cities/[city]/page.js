@@ -12,9 +12,9 @@ import CityFilterSection from '@/app/components/Pages/FRONT_END/city/CityFilterS
 import BlogSection from '@/app/components/ui/BlogSection';
 import { notFound } from 'next/navigation';
 import { getCityData } from '@/lib/services/cities';
-import { getFeaturedActivitiesByCity } from '@/lib/services/activites';
-import { getFeaturedItinerariesByCity } from '@/lib/services/itineraries';
-import { getPackageDataByCity } from '@/lib/services/package';
+import { getAllFeaturedActivities } from '@/lib/services/activites';
+import { getFeaturedItineraries } from '@/lib/services/itineraries';
+import { getFeaturedReviews } from '@/lib/services/reviews';
 
 export async function generateMetadata({ params }) {
   const { city } = await params;
@@ -46,23 +46,23 @@ export default async function CityPage({ params }) {
   const { city } = await params;
 
   const cityResponse = await getCityData(city);
-  const activitiesResponse = await getFeaturedActivitiesByCity(city);
-  const itineraryResponse = await getFeaturedItinerariesByCity(city);
-  const packageResponse = await getPackageDataByCity(city);
+  const activitiesResponse = await getAllFeaturedActivities(city);
+  const itineraryResponse = await getFeaturedItineraries(city);
   const blogsResponse = await getAllBlogs();
+  const featuredReviewsResponse = await getFeaturedReviews(city);
 
   const { data: citydata = [] } = cityResponse;
   const { data: activitesData = [] } = activitiesResponse;
   const { data: itineraryData = [] } = itineraryResponse;
-  const { data: packageData = [], tag_list: packageTagList = [] } = packageResponse;
   const blogsData = blogsResponse?.data || [];
+  const featuredReviews = Array.isArray(featuredReviewsResponse?.data) ? featuredReviewsResponse.data : [];
 
   if (!citydata || Object.keys(citydata).length === 0) {
     notFound();
   }
 
   const jsonLd = citydata?.seo?.schema_data || '';
-  const hasAnyProducts = activitesData?.length > 0 || itineraryData?.length > 0 || packageData?.length > 0;
+  const hasAnyProducts = activitesData?.length > 0 || itineraryData?.length > 0;
 
   return (
     <>
@@ -76,19 +76,19 @@ export default async function CityPage({ params }) {
       {activitesData?.length > 0 && <ProductSliderSection items={activitesData.map((a) => mapProductToItemCard(a, city))} title="Top activities" navigationId="city-activities" />}
 
       {/* Divider before tours section */}
-      {activitesData?.length > 0 && packageData.length > 0 && <BreakSection marginTop="m-0 p-0" />}
+      {activitesData?.length > 0 && <BreakSection marginTop="m-0 p-0" />}
 
-      {/* Tours grid section — paginated in pen design */}
-      {packageData.length > 0 && <CityToursSection cityName={citydata?.name || city} items={packageData} taglist={packageTagList} />}
+      {/* Tours grid section — fetches its own data with pagination, tag filter, sort */}
+      <CityToursSection cityName={citydata?.name || city} />
 
       {/* Divider before filter section */}
-      {hasAnyProducts && <BreakSection />}
+      {hasAnyProducts && <BreakSection marginTop="m-0" />}
 
       {/* Filter Section (tabs, sort, sidebar, grid, pagination) — only if any product data */}
       {hasAnyProducts && <CityFilterSection />}
 
       {/* Reviews + What About + FAQ — only if city data is a valid object */}
-      {typeof citydata === 'object' && citydata?.location_details && <ReviewSectionCity cityData={citydata} />}
+      {typeof citydata === 'object' && citydata?.location_details && <ReviewSectionCity cityData={citydata} reviews={featuredReviews} />}
 
       {/* Blogs Slider — only if blogs exist */}
       {blogsData.length > 0 && <BlogSection blogs={blogsData} title="Blogs" navigationId="city-blogs" />}

@@ -32,6 +32,7 @@
  * @property {number} rating - Rating value (e.g., 1-5)
  * @property {string} review_text - The review content
  * @property {ReviewStatus} status - Status of the Review
+ * @property {boolean} is_featured - Whether the review is featured on public pages
  * @property {number[]} media_gallery - Array of image IDs attached to the review
  */
 

@@ -90,13 +90,37 @@ export const getPackageDataByRegion = async (region) => {
 };
 
 /**
+ * Fetch city packages (client-side) with pagination, tag filter, and sorting
+ * @param {string} city City slug
+ * @param {object} params Query parameters { tags, sort_by, page, per_page }
+ * @returns {Promise<{success:boolean, data:Array, all_tags:Array, current_page:number, last_page:number, total:number}>}
+ */
+export async function fetchCityPackages(city, params = {}) {
+  const { default: axios } = await import('axios');
+  try {
+    const query = new URLSearchParams();
+    if (city) query.set('city', city);
+    if (params.tags) query.set('tags', params.tags);
+    if (params.sort_by) query.set('sort_by', params.sort_by);
+    if (params.page) query.set('page', params.page);
+    if (params.per_page) query.set('per_page', params.per_page);
+    const qs = query.toString();
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URLL}api/packages/featured-packages${qs ? `?${qs}` : ''}`);
+    return response.data;
+  } catch {
+    return { success: false, data: [], all_tags: [], current_page: 1, last_page: 1, total: 0 };
+  }
+}
+
+/**
  * Display All Packages by City
  * @param {string} city Slug of the City
  * @returns {Promise<{success:boolean,message?:string,data?:object}>} Returns all Packages
  */
 export async function getPackageDataByCity(city) {
   try {
-    const response = await publicApi.get(`/api/${city}/packages`, {
+    const params = city ? `?city=${city}` : '';
+    const response = await publicApi.get(`/api/packages/featured-packages${params}`, {
       headers: { Accept: 'application/json' },
     });
     if (response.status == 200) {
@@ -105,9 +129,8 @@ export async function getPackageDataByCity(city) {
 
     return { success: false, message: 'Not Found' };
   } catch (error) {
-    // Only log unexpected errors, not 404s (which are expected for cities with no packages)
     if (error.response?.status !== 404) {
-      console.error(`Unexpected error fetching Packages of City: ${city}`, error);
+      console.error(`Unexpected error fetching packages`, error);
     }
 
     return { success: false, message: 'Something Went Wrong' };

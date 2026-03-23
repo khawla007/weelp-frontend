@@ -55,11 +55,13 @@ const Shoppage = () => {
       return byCategory && byPrice && byRating && byAvailability && byLocation;
     });
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFilteredData(filtered);
   }, [filters]);
 
   // intialize filter
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsClient(true);
   });
 

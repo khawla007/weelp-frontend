@@ -36,6 +36,7 @@ export const SearchPage = () => {
   // Extract values from query params
   useEffect(() => {
     const defaultLocation = searchParams.get('location') || '';
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setStartDate(searchParams.get('start_date') || '2025-03-26');
     setEndDate(searchParams.get('end_date') || '2025-03-28');
     setQuantity(parseInt(searchParams.get('quantity')) || 1);
@@ -208,6 +209,7 @@ export const SearchPage = () => {
                     productPrice={product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price}
                     item_type={product?.item_type}
                     productSlug={product?.slug}
+                    citySlug={product?.city_slug}
                   />
                 ))
               ) : (

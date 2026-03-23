@@ -9,12 +9,13 @@ export const MetricCards = ({ loading = false, data = null }) => {
   }
 
   // Use API data if available (and has content), otherwise use static data
-  const cards = data && data.length > 0 ? data : metricCardsData;
+  // Merge API data with static icons since API doesn't return React components
+  const cards = data && data.length > 0 ? data.map((item, i) => ({ ...item, icon: metricCardsData[i]?.icon })) : metricCardsData;
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {cards.map((item, index) => {
-        const IconComponent = item.icon;
+        const IconComponent = item.icon || metricCardsData[index]?.icon;
 
         return (
           <Card key={index} className="cursor-pointer transition-all hover:shadow-lg hover:border-primary/50">

@@ -102,3 +102,22 @@ export async function getAllFeaturedCities() {
     return { success: false, data: [] };
   }
 }
+
+/**
+ * Get All Cities with Pagination
+ * @param {number} page - Page number (default 1)
+ * @param {number} perPage - Items per page (default 8)
+ * @returns {Promise<{success:boolean, data:[], current_page:number, last_page:number, per_page:number, total:number}>}
+ */
+export async function getAllCities(page = 1, perPage = 8) {
+  try {
+    const response = await publicApi.get(`/api/cities?page=${page}&per_page=${perPage}`, {
+      headers: { Accept: 'application/json' },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching cities:', error.message);
+    return { success: false, data: [], current_page: 1, last_page: 1, per_page: perPage, total: 0 };
+  }
+}
