@@ -121,3 +121,24 @@ export async function getAllCities(page = 1, perPage = 8) {
     return { success: false, data: [], current_page: 1, last_page: 1, per_page: perPage, total: 0 };
   }
 }
+
+/**
+ * Get paginated items (activities, packages, or itineraries) for a city.
+ * @param {string} citySlug - City slug
+ * @param {'activity'|'package'|'itinerary'} itemType - Singular item type for API
+ * @param {number} page - Page number (default 1)
+ * @param {number} perPage - Items per page (default 10)
+ * @returns {Promise<{success:boolean, data:[], current_page:number, last_page:number, per_page:number, total:number}>}
+ */
+export async function getCityItemsByType(citySlug, itemType, page = 1, perPage = 10) {
+  try {
+    const response = await publicApi.get(
+      `/api/cities/${citySlug}/all-items?item_type=${itemType}&page=${page}&per_page=${perPage}`,
+      { headers: { Accept: 'application/json' } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching ${itemType}s for city ${citySlug}:`, error.message);
+    return { success: false, data: [], current_page: 1, last_page: 1, per_page: perPage, total: 0 };
+  }
+}
