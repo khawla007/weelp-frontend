@@ -20,7 +20,13 @@ const SearchContent = () => {
 };
 
 const Search = () => (
-  <Suspense fallback={<div className="my-4 h-screen flex items-center justify-center"><span className="loader"></span></div>}>
+  <Suspense
+    fallback={
+      <div className="my-4 h-screen flex items-center justify-center">
+        <span className="loader"></span>
+      </div>
+    }
+  >
     <SearchContent />
   </Suspense>
 );
