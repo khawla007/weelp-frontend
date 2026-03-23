@@ -5,7 +5,7 @@ export const CreatorCard = ({ imagSrc, rating, views, title, creatorLogo }) => {
   return (
     <div className="w-full max-w-full sm:max-w-sm  p-4 sm:p-6">
       <div className="relative sm:max-w-80 w-full min-h-[350px] h-full">
-        <Image src={imagSrc || '/assets/Card.png'} alt="Product Image" fill className="rounded-xl object-cover" />
+        <Image src={imagSrc || '/assets/Card.webp'} alt="Product Image" fill className="rounded-xl object-cover" />
       </div>
       <div className="px-4 flex justify-between">
         <div className="flex flex-col">
@@ -22,7 +22,7 @@ export const CreatorCard = ({ imagSrc, rating, views, title, creatorLogo }) => {
           <h3 className="text-[#142A38] text-lg font-medium">{`${title ? title : '4N-3D In London'}`}</h3>
         </div>
         <div className="flex justify-between items-center">
-          <Image src={creatorLogo ? creatorLogo : '/assets/Card.png'} className="size-11 rounded-full mt-4" width={44} height={44} alt="creator_image" />
+          <Image src={creatorLogo ? creatorLogo : '/assets/Card.webp'} className="size-11 rounded-full mt-4" width={44} height={44} alt="creator_image" />
         </div>
       </div>
     </div>

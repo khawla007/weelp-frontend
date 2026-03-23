@@ -26,7 +26,9 @@ import { format } from 'date-fns';
 import { Medialibrary } from '../media/MediaLibrary';
 import { useMediaStore } from '@/lib/store/useMediaStore';
 import { createItinerary } from '@/lib/actions/itineraries';
-import _, { isEmpty } from 'lodash';
+import mapKeys from 'lodash/mapKeys';
+import set from 'lodash/set';
+import isEmpty from 'lodash/isEmpty';
 import dynamic from 'next/dynamic';
 
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnItinerary'), { ssr: false });
@@ -1165,7 +1167,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
       if (selectedMedia.length > 0) {
         // 1. Transform selectedMedia (id → media_id) before adding
         const transformedMedia = selectedMedia.map((obj) => {
-          const mapped = _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
+          const mapped = mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
           return { ...mapped, is_featured: false };
         });
 
@@ -1630,8 +1632,8 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
     const activities = removeNestedKey(dirtyActivities, 'activitydata');
     const transfers = removeNestedKey(dirtyTransfers, 'transferData');
 
-    let finalData = _.set(mergedData, 'activities', activities); // add new activites
-    finalData = _.set(mergedData, 'transfers', transfers); // add new transfers
+    let finalData = set(mergedData, 'activities', activities); // add new activites
+    finalData = set(mergedData, 'transfers', transfers); // add new transfers
 
     // submit full data
     try {

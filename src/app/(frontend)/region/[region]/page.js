@@ -1,15 +1,17 @@
 /** This File will handle Region Page */
+import dynamic from 'next/dynamic';
 import BannerSection from '@/app/components/Pages/FRONT_END/region/BannerSection';
-import { ReviewSectionRegion } from '@/app/components/Pages/FRONT_END/Global/ReviewSection';
-import DestinationSliderSection from '@/app/components/Pages/FRONT_END/Global/DestinationSection';
 import { fakeData } from '@/app/Data/ShopData';
 import BreakSection from '@/app/components/BreakSection';
-import { TourSection } from '@/app/components/Pages/FRONT_END/Global/TourSection';
-import GuideSection from '@/app/components/Pages/FRONT_END/Global/GuideSection';
 import { notFound } from 'next/navigation';
 import { getCitiesByRegion } from '@/lib/services/region';
 import { getPackageDataByRegion } from '@/lib/services/package';
-import { RegionFilterNew } from '@/app/components/Pages/FRONT_END/region/region_filter_rhf';
+
+const ReviewSectionRegion = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/ReviewSection').then((mod) => mod.ReviewSectionRegion));
+const DestinationSliderSection = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/DestinationSection'));
+const TourSection = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/TourSection').then((mod) => mod.TourSection));
+const GuideSection = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/GuideSection'));
+const RegionFilterNew = dynamic(() => import('@/app/components/Pages/FRONT_END/region/region_filter_rhf').then((mod) => mod.RegionFilterNew));
 
 //  Region Page Component
 export default async function Region({ params }) {

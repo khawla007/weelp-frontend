@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { CornerDecorations } from './CornerDecorations';
 
 // Helper function to construct full image URL
@@ -38,7 +39,7 @@ const DestinationCard = ({ city, isActive, onClick }) => {
       }}
     >
       {/* Background Image */}
-      <img src={imageUrl} alt={city.name || 'Destination'} className="absolute inset-0 w-full h-full object-cover" />
+      <Image src={imageUrl} alt={city.name || 'Destination'} fill className="object-cover" />
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-700" />

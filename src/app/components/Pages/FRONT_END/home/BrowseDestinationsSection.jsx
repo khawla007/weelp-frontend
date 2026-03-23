@@ -14,11 +14,11 @@ const DESTINATION_BREAKPOINTS = {
 };
 
 const STATIC_DESTINATIONS = [
-  { id: 1, name: 'Paris', slug: 'paris', image: '/assets/Card.png', activitiesCount: 150 },
-  { id: 2, name: 'Florence', slug: 'florence', image: '/assets/Card.png', activitiesCount: 85 },
-  { id: 3, name: 'Istanbul', slug: 'istanbul', image: '/assets/Card.png', activitiesCount: 120 },
-  { id: 4, name: 'Bangkok', slug: 'bangkok', image: '/assets/Card.png', activitiesCount: 200 },
-  { id: 5, name: 'Tokyo', slug: 'tokyo', image: '/assets/Card.png', activitiesCount: 175 },
+  { id: 1, name: 'Paris', slug: 'paris', image: '/assets/Card.webp', activitiesCount: 150 },
+  { id: 2, name: 'Florence', slug: 'florence', image: '/assets/Card.webp', activitiesCount: 85 },
+  { id: 3, name: 'Istanbul', slug: 'istanbul', image: '/assets/Card.webp', activitiesCount: 120 },
+  { id: 4, name: 'Bangkok', slug: 'bangkok', image: '/assets/Card.webp', activitiesCount: 200 },
+  { id: 5, name: 'Tokyo', slug: 'tokyo', image: '/assets/Card.webp', activitiesCount: 175 },
 ];
 
 export default function BrowseDestinationsSection({ cities = [] }) {
@@ -26,7 +26,7 @@ export default function BrowseDestinationsSection({ cities = [] }) {
     id: c.id,
     name: c.name,
     slug: c.slug,
-    image: c.featured_image || c.image || '/assets/Card.png',
+    image: c.featured_image || c.image || '/assets/Card.webp',
     activitiesCount: c.activities_count ?? 0,
   }));
   const items = apiCities.length > 0 ? apiCities : STATIC_DESTINATIONS;

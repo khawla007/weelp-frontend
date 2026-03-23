@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import CityCard from '@/app/components/CityCard';
 import SectionHeader from '@/app/components/ui/SectionHeader';
+import BreadCrumb from '@/app/components/BreadCrumb';
 import { getAllCities } from '@/lib/services/cities';
 
 export const metadata = {
@@ -21,6 +22,7 @@ export default async function CitiesPage({ searchParams }) {
 
   return (
     <section className="container mx-auto flex flex-col gap-8 px-4 py-10">
+      <BreadCrumb />
       <SectionHeader superTitle="Discover your next adventure" title="All Cities" titleSize="lg" subtitle="Browse all destinations and find the perfect city for your next trip." />
 
       {isError ? (

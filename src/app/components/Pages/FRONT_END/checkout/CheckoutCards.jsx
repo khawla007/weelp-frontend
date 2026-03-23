@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { useFormContext, Controller, useWatch } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { Country, State, City } from 'country-state-city';
+
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
@@ -66,9 +66,10 @@ export const CheckoutFields = () => {
 
   // Load all countries on mount
   useEffect(() => {
-    const allCountries = Country.getAllCountries();
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setCountries(allCountries);
+    import('country-state-city').then(({ Country }) => {
+      const allCountries = Country.getAllCountries();
+      setCountries(allCountries);
+    });
   }, []);
 
   // Onchange Selected Country
@@ -78,7 +79,6 @@ export const CheckoutFields = () => {
 
       // set first country
       if (foundCountry?.isoCode !== selectedCountry?.isoCode) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedCountry(foundCountry);
       }
     }
@@ -87,17 +87,18 @@ export const CheckoutFields = () => {
   // Load states when selectedCountry changes (and load new state list based on country change e.g User Select India then (india state list should be))
   useEffect(() => {
     if (selectedCountry) {
-      const statesList = State.getStatesOfCountry(selectedCountry.isoCode);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setStates(statesList);
+      import('country-state-city').then(({ State }) => {
+        const statesList = State.getStatesOfCountry(selectedCountry.isoCode);
+        setStates(statesList);
 
-      // Only reset state if form already has a value
-      if (watchState) {
-        const stillValid = statesList.some((s) => s.name === watchState);
-        if (!stillValid) {
-          setValue('state', '');
+        // Only reset state if form already has a value
+        if (watchState) {
+          const stillValid = statesList.some((s) => s.name === watchState);
+          if (!stillValid) {
+            setValue('state', '');
+          }
         }
-      }
+      });
     }
   }, [selectedCountry]);
 
@@ -107,7 +108,6 @@ export const CheckoutFields = () => {
       const foundState = states.find((s) => s.name === watchState);
 
       if (foundState?.name !== selectedState?.name) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedState(foundState);
       }
     }
@@ -116,9 +116,10 @@ export const CheckoutFields = () => {
   // Load cities when selectedState changes
   useEffect(() => {
     if (selectedCountry?.isoCode && selectedState?.isoCode) {
-      const cityList = City.getCitiesOfState(selectedCountry.isoCode, selectedState.isoCode);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setCities(cityList);
+      import('country-state-city').then(({ City }) => {
+        const cityList = City.getCitiesOfState(selectedCountry.isoCode, selectedState.isoCode);
+        setCities(cityList);
+      });
     } else {
       setCities([]); // Clear cities if state or country isn't selected
     }

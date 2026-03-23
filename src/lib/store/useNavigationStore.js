@@ -4,14 +4,17 @@ import { create } from 'zustand';
 
 export const useNavigationStore = create((set, get) => ({
   isNavigating: false,
+  navigationKey: 0,
 
   setNavigating: (isNavigating) => {
-    set({ isNavigating });
+    set((state) => ({
+      isNavigating,
+      navigationKey: isNavigating ? state.navigationKey + 1 : state.navigationKey,
+    }));
   },
 
   checkAndClearNavigation: () => {
-    const state = get();
-    if (state.isNavigating) {
+    if (get().isNavigating) {
       set({ isNavigating: false });
     }
   },

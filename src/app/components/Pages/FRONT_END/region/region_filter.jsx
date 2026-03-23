@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
-import _, { set } from 'lodash';
+import set from 'lodash/set';
 import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { GlobalCard } from '@/app/components/SingleProductCard';

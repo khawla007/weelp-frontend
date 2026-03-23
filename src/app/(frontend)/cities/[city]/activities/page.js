@@ -8,9 +8,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: cityName ? `Activities in ${cityName} | Weelp` : 'Activities | Weelp',
-    description: cityName
-      ? `Browse all activities in ${cityName}. Find the best things to do and book your next adventure.`
-      : 'Browse activities and find the best things to do on Weelp.',
+    description: cityName ? `Browse all activities in ${cityName}. Find the best things to do and book your next adventure.` : 'Browse activities and find the best things to do on Weelp.',
   };
 }
 

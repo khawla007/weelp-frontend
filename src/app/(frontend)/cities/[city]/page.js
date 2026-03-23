@@ -1,20 +1,22 @@
 /** City Page — matches designs/citypage.pen */
+import dynamic from 'next/dynamic';
 import CityHeroBanner from '@/app/components/Pages/FRONT_END/city/CityHeroBanner';
 import CitySection from '@/app/components/Pages/FRONT_END/Global/CitySection';
 import { whiteCardData } from '@/app/Data/ShopData';
 import { getAllBlogs } from '@/lib/services/blogs';
 import BreakSection from '@/app/components/BreakSection';
-import { ReviewSectionCity } from '@/app/components/Pages/FRONT_END/Global/ReviewSection';
-import ProductSliderSection from '@/app/components/ui/ProductSliderSection';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import CityToursSection from '@/app/components/Pages/FRONT_END/city/CityToursSection';
-import CityFilterSection from '@/app/components/Pages/FRONT_END/city/CityFilterSection';
-import BlogSection from '@/app/components/ui/BlogSection';
 import { notFound } from 'next/navigation';
 import { getCityData } from '@/lib/services/cities';
 import { getAllFeaturedActivities } from '@/lib/services/activites';
 import { getFeaturedItineraries } from '@/lib/services/itineraries';
 import { getFeaturedReviews } from '@/lib/services/reviews';
+
+const ReviewSectionCity = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/ReviewSection').then((mod) => mod.ReviewSectionCity));
+const ProductSliderSection = dynamic(() => import('@/app/components/ui/ProductSliderSection'));
+const CityFilterSection = dynamic(() => import('@/app/components/Pages/FRONT_END/city/CityFilterSection'));
+const BlogSection = dynamic(() => import('@/app/components/ui/BlogSection'));
 
 export async function generateMetadata({ params }) {
   const { city } = await params;

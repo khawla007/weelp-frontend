@@ -1,10 +1,11 @@
 /** This File Will Handle Destination Page (Single Product) */
-
+import dynamic from 'next/dynamic';
 import BannerSection from '@/app/components/Pages/FRONT_END/singleproduct/BannerSection';
-import { TabSectionActivity } from '@/app/components/Pages/FRONT_END/singleproduct/TabSection';
 import { notFound } from 'next/navigation';
 import { getSingleActivity } from '@/lib/services/activites';
 import { isEmpty } from 'lodash';
+
+const TabSectionActivity = dynamic(() => import('@/app/components/Pages/FRONT_END/singleproduct/TabSection').then((mod) => mod.TabSectionActivity));
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;

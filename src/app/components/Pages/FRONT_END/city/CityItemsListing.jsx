@@ -33,27 +33,19 @@ export default async function CityItemsListing({ citySlug, itemType, searchParam
   const label = TYPE_LABELS[itemType];
 
   // Fetch city info + items in parallel
-  const [cityResponse, itemsResponse] = await Promise.all([
-    getCityData(citySlug),
-    getCityItemsByType(citySlug, apiType, currentPage, 10),
-  ]);
+  const [cityResponse, itemsResponse] = await Promise.all([getCityData(citySlug), getCityItemsByType(citySlug, apiType, currentPage, 10)]);
 
   const cityName = cityResponse?.data?.name || citySlug;
   const isError = !itemsResponse?.success;
-  const items = itemsResponse?.success ? (itemsResponse.data || []) : [];
+  const items = itemsResponse?.success ? itemsResponse.data || [] : [];
   const lastPage = itemsResponse?.last_page ?? 1;
 
   const basePath = `/cities/${citySlug}/${itemType}`;
 
   return (
-    <section className="container mx-auto flex flex-col gap-8 px-4 py-10">
+    <section className="container mx-auto flex flex-col gap-8 px-4 py-[70px]">
       <BreadCrumb />
-      <SectionHeader
-        superTitle={`Explore ${cityName}`}
-        title={`All ${label}`}
-        titleSize="lg"
-        subtitle={`Discover the best ${label.toLowerCase()} in ${cityName}.`}
-      />
+      <SectionHeader superTitle={`Explore ${cityName}`} title={`All ${label}`} titleSize="lg" subtitle={`Discover the best ${label.toLowerCase()} in ${cityName}.`} />
 
       {isError ? (
         <div className="flex flex-col items-center gap-4 py-20 text-center">
@@ -61,7 +53,9 @@ export default async function CityItemsListing({ citySlug, itemType, searchParam
         </div>
       ) : items.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-20 text-center">
-          <p className="text-lg text-[#6f7680]">No {label.toLowerCase()} found in {cityName}.</p>
+          <p className="text-lg text-[#6f7680]">
+            No {label.toLowerCase()} found in {cityName}.
+          </p>
           {currentPage > 1 && (
             <Link href={basePath} className="text-brand-500 hover:underline">
               Back to first page
@@ -70,7 +64,7 @@ export default async function CityItemsListing({ citySlug, itemType, searchParam
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {items.map((item) => {
               const cardProps = mapProductToItemCard(item, citySlug);
               return <ItemCard key={cardProps.id} {...cardProps} />;

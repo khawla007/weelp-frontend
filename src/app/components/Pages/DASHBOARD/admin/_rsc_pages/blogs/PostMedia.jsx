@@ -1,5 +1,5 @@
 import { useMediaStore } from '@/lib/store/useMediaStore';
-import _ from 'lodash';
+import mapKeys from 'lodash/mapKeys';
 import { Trash2, Star } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
@@ -50,7 +50,7 @@ export const PostMedia = ({ setDialogOpen, onSelectionChange }) => {
     if (selectedMedia.length > 0) {
       // 1. Transform selectedMedia (id → media_id) before adding
       const transformedMedia = selectedMedia.map((obj) => {
-        const mapped = _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
+        const mapped = mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
         return { ...mapped, is_featured: false }; // Explicitly set as NOT featured
       });
 

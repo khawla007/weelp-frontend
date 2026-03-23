@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useMediaStore } from '@/lib/store/useMediaStore';
-import _ from 'lodash';
+import mapKeys from 'lodash/mapKeys';
 import { Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
@@ -35,7 +35,7 @@ export const MediaTab = ({ galleryThumbnail = false, buttonTitle = 'Upload Media
   useEffect(() => {
     if (selectedMedia.length > 0) {
       // 1. Transform selectedMedia (id → media_id) before adding
-      const transformedMedia = selectedMedia.map((obj) => _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))); // update key to media id
+      const transformedMedia = selectedMedia.map((obj) => mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key))); // update key to media id
 
       // 2. Filter out duplicates before adding (defense-in-depth)
       // eslint-disable-next-line react-hooks/set-state-in-effect

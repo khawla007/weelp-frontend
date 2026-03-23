@@ -23,7 +23,7 @@ import { useToast } from '@/hooks/use-toast';
 import { createActivity } from '@/lib/actions/activities';
 import { useRouter } from 'next/navigation';
 import { NavigationActivity } from './activity_shared';
-import _ from 'lodash';
+import mapKeys from 'lodash/mapKeys';
 import { useMediaStore } from '@/lib/store/useMediaStore'; // For Handling Media Store
 import { Medialibrary } from '../media/MediaLibrary'; // Handling Media Library
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -543,7 +543,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
       if (selectedMedia.length > 0) {
         // 1. Transform selectedMedia (id → media_id) before adding
         const transformedMedia = selectedMedia.map((obj) => {
-          const mapped = _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
+          const mapped = mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
           return { ...mapped, is_featured: false };
         });
 

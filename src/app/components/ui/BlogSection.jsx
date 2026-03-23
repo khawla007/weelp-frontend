@@ -7,11 +7,11 @@ import ItemCard from '@/app/components/ui/item-card';
 import { mapBlogToItemCard } from '@/lib/mapProductToItemCard';
 
 const STATIC_BLOGS = [
-  { id: 1, href: '#', image: '/assets/Card.png', title: 'Best Places for Solo Travel', category: 'Solo' },
-  { id: 2, href: '#', image: '/assets/Card.png', title: 'Your Gang, Your Rules', category: 'Friends' },
-  { id: 3, href: '#', image: '/assets/Card.png', title: 'Your Gang, Your Rules', category: 'Friends' },
-  { id: 4, href: '#', image: '/assets/Card.png', title: 'Best Places for Winter', category: 'Curated' },
-  { id: 5, href: '#', image: '/assets/Card.png', title: 'Hidden Gems of Europe', category: 'Travel' },
+  { id: 1, href: '#', image: '/assets/Card.webp', title: 'Best Places for Solo Travel', category: 'Solo' },
+  { id: 2, href: '#', image: '/assets/Card.webp', title: 'Your Gang, Your Rules', category: 'Friends' },
+  { id: 3, href: '#', image: '/assets/Card.webp', title: 'Your Gang, Your Rules', category: 'Friends' },
+  { id: 4, href: '#', image: '/assets/Card.webp', title: 'Best Places for Winter', category: 'Curated' },
+  { id: 5, href: '#', image: '/assets/Card.webp', title: 'Hidden Gems of Europe', category: 'Travel' },
 ];
 
 const BLOG_BREAKPOINTS = {

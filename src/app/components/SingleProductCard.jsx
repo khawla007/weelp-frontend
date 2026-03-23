@@ -30,7 +30,7 @@ export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productR
         </>
       )}
       <NavigationLink href={itemHref} className="block">
-        <img src={imgsrc ?? '/assets/Card.png'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
+        <img src={imgsrc ?? '/assets/Card.webp'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
         <div className="flex flex-col gap-[6px] justify-evenly p-4">
           <div className="flex gap-1 text-secondaryDark text-sm pt-2">
             <Star className="fill-current" size={18} />
@@ -102,7 +102,7 @@ const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, pro
         </>
       )}
       <NavigationLink href={city ? `/cities/${city}/activities/${productSlug}` : `/activity/${productSlug}`} className="block">
-        <img src={imgsrc || '/assets/Card.png'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
+        <img src={imgsrc || '/assets/Card.webp'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
         <div className="flex flex-col gap-[6px] justify-evenly p-4">
           <div className="flex gap-1 text-secondaryDark text-sm">
             <Star className="fill-current" size={18} />
@@ -145,7 +145,7 @@ export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, p
         </>
       )}
       <NavigationLink href={city ? `/cities/${city}/itineraries/${productSlug}` : `/itinerary/${productSlug}`} className="block">
-        <img src={imgsrc || '/assets/Card.png'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
+        <img src={imgsrc || '/assets/Card.webp'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
         <div className="flex flex-col gap-[6px] justify-evenly p-4">
           <div className="flex gap-1 text-secondaryDark text-sm">
             <Star className="fill-current" size={18} />
@@ -183,7 +183,7 @@ export const SingleProductCardPackage = ({ productId, imgsrc, productRating, pro
         </>
       )}
       <NavigationLink href={city ? `/cities/${city}/packages/${productSlug}` : `/package/${productSlug}`} className="block">
-        <img src={imgsrc || '/assets/Card.png'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
+        <img src={imgsrc || '/assets/Card.webp'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
         <div className="flex flex-col gap-[6px] justify-evenly p-4">
           <div className="flex gap-1 text-secondaryDark text-sm">
             <Star className="fill-current" size={18} />

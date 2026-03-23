@@ -3,7 +3,13 @@ import { FormVerifyEmail } from '@/app/components/Form/VerifyEmailForm';
 
 const VerifyEmail = () => {
   return (
-    <Suspense fallback={<div className="my-4 h-screen flex items-center justify-center"><span className="loader"></span></div>}>
+    <Suspense
+      fallback={
+        <div className="my-4 h-screen flex items-center justify-center">
+          <span className="loader"></span>
+        </div>
+      }
+    >
       <FormVerifyEmail />
     </Suspense>
   );

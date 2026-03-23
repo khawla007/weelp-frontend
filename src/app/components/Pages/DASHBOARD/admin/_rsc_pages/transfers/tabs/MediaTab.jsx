@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
-import _ from 'lodash';
+import mapKeys from 'lodash/mapKeys';
 import { useMediaStore } from '@/lib/store/useMediaStore';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -55,7 +55,7 @@ const MediaTab = () => {
     if (selectedMedia.length > 0) {
       // 1. Transform selectedMedia (id → media_id) before adding
       const transformedMedia = selectedMedia.map((obj) => ({
-        ..._.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key)),
+        ...mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key)),
         is_featured: false,
       })); // update key to media id and add is_featured
 

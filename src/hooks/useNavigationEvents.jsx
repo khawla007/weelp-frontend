@@ -9,10 +9,10 @@ export function useNavigationEvents() {
   const searchParams = useSearchParams();
   const { setNavigating, checkAndClearNavigation } = useNavigationStore();
 
-  // Clear navigation state when pathname changes (navigation completed)
+  // Clear navigation state when pathname or searchParams change (navigation completed)
   useEffect(() => {
     checkAndClearNavigation();
-  }, [pathname, checkAndClearNavigation]);
+  }, [pathname, searchParams, checkAndClearNavigation]);
 
   useEffect(() => {
     // Intercept all link clicks to trigger progress bar.

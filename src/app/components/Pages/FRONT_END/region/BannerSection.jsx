@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import BookingForm2 from '../../../Form/Form2';
 const bannerImage2 = '/assets/images/CountryBanner2.png';
-const bannerImage = '/assets/images/CountryBanner.jpeg';
+const bannerImage = '/assets/images/CountryBanner.webp';
 import * as Icons from '../../../../../../public/assets/Icons/Icons';
 import axios from 'axios';
 import { useParams } from 'next/navigation';

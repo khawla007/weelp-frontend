@@ -24,7 +24,7 @@ const featuredPackages = [
     title: 'Beach Getaway',
     price: 620.0,
     duration: '5 Days',
-    image: '/assets/images/Automn.png',
+    image: '/assets/images/Automn.webp',
   },
   {
     id: 4,

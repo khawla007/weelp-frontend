@@ -132,10 +132,7 @@ export async function getAllCities(page = 1, perPage = 8) {
  */
 export async function getCityItemsByType(citySlug, itemType, page = 1, perPage = 10) {
   try {
-    const response = await publicApi.get(
-      `/api/cities/${citySlug}/all-items?item_type=${itemType}&page=${page}&per_page=${perPage}`,
-      { headers: { Accept: 'application/json' } }
-    );
+    const response = await publicApi.get(`/api/cities/${citySlug}/all-items?item_type=${itemType}&page=${page}&per_page=${perPage}`, { headers: { Accept: 'application/json' } });
     return response.data;
   } catch (error) {
     console.error(`Error fetching ${itemType}s for city ${citySlug}:`, error.message);

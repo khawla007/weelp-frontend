@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 export default function CityCard({ city, className = '' }) {
-  const image = city.featured_image || city.image || '/assets/Card.png';
+  const image = city.featured_image || city.image || '/assets/Card.webp';
   const activitiesCount = city.activities_count ?? city.activitiesCount ?? 0;
 
   return (

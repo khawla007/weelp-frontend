@@ -9,7 +9,13 @@ const ResetPassword = async () => {
     redirect('/dashboard');
   }
   return (
-    <Suspense fallback={<div className="my-4 h-screen flex items-center justify-center"><span className="loader"></span></div>}>
+    <Suspense
+      fallback={
+        <div className="my-4 h-screen flex items-center justify-center">
+          <span className="loader"></span>
+        </div>
+      }
+    >
       <FormResetPassword />
     </Suspense>
   );

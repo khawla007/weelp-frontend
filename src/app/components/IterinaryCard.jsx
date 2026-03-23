@@ -7,7 +7,7 @@ const ItineraryCard = ({ productId, imgsrc, productTitle, category }) => {
     <div className={`${'product_' + productId} bg-white rounded-lg gap-3 shadow-md sm:max-w-fit max-w-full min-h-fit h-fit w-full sm:mx-0`}>
       <Link href={'/blogs/blog'}>
         <div className="relative w-full sm:w-[349px] h-72">
-          <Image src={imgsrc || '/assets/Card.png'} alt="product image" fill className="rounded-t-lg object-cover" />
+          <Image src={imgsrc || '/assets/Card.webp'} alt="product image" fill className="rounded-t-lg object-cover" />
         </div>
 
         <div className="flex justify-between p-4">

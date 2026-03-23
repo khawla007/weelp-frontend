@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Clock } from 'lucide-react';
 
 // Static data for featured packages (will be replaced with API later)
@@ -24,7 +25,7 @@ const featuredPackages = [
     title: 'Beach Getaway',
     price: 620.0,
     duration: '5 Days',
-    image: '/assets/images/Automn.png',
+    image: '/assets/images/Automn.webp',
   },
   {
     id: 4,
@@ -101,8 +102,8 @@ export default function FeaturedPackagesSlider() {
               }}
             >
               {/* Card Image - Left Side */}
-              <div className="flex-shrink-0 overflow-hidden rounded-2xl" style={{ width: '150px', height: '150px' }}>
-                <img src={pkg.image} alt={pkg.title} className="w-full h-full object-cover" />
+              <div className="relative flex-shrink-0 overflow-hidden rounded-2xl" style={{ width: '150px', height: '150px' }}>
+                <Image src={pkg.image} alt={pkg.title} fill className="object-cover" />
               </div>
 
               {/* Card Content - Right Side */}

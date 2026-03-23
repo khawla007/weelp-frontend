@@ -7,7 +7,7 @@ import Accordion from '../../../Faq';
 import { faqItems, destinationInfo } from '@/app/Data/ShopData'; //static data
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const bgImage = '/assets/images/whatabout.png';
+const bgImage = '/assets/images/whatabout.webp';
 
 const bgStyle = {
   backgroundImage: `url(${bgImage})`,

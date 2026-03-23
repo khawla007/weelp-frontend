@@ -8,9 +8,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: cityName ? `Itineraries in ${cityName} | Weelp` : 'Itineraries | Weelp',
-    description: cityName
-      ? `Browse all itineraries in ${cityName}. Find the best travel itineraries and plan your next trip.`
-      : 'Browse travel itineraries and plan your next trip on Weelp.',
+    description: cityName ? `Browse all itineraries in ${cityName}. Find the best travel itineraries and plan your next trip.` : 'Browse travel itineraries and plan your next trip on Weelp.',
   };
 }
 

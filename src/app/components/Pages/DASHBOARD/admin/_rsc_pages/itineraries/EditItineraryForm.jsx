@@ -20,7 +20,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { ActivitySearchModal, CustomizedEditActivityForm, CustomizedEditTransferForm, NavigationItinerary, TransferSearchModal } from './itinerary_shared';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import _, { isEmpty } from 'lodash';
+import mapKeys from 'lodash/mapKeys';
+import set from 'lodash/set';
+import isEmpty from 'lodash/isEmpty';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useMediaStore } from '@/lib/store/useMediaStore';
@@ -1381,7 +1383,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       if (selectedMedia.length > 0) {
         // 1. Transform selectedMedia (id → media_id) before adding
         const transformedMedia = selectedMedia.map((obj) => {
-          const mapped = _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
+          const mapped = mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
           return { ...mapped, is_featured: false };
         });
 
@@ -1922,10 +1924,10 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
     const inclusions_exclusions = removeNestedKey(dirty_inclusions_exclusions, ['created_at', 'updated_at']);
     const media_gallery = removeNestedKey(dirtyMedia_gallery, ['name', 'url', 'alt_text', 'itinerary_id']);
 
-    let finalData = _.set(mergedData, 'activities', activities); // add new activites
-    finalData = _.set(mergedData, 'transfers', transfers); // add new transfers
-    finalData = _.set(finalData, 'inclusions_exclusions', inclusions_exclusions); // add new inclusion exclusion
-    finalData = _.set(finalData, 'media_gallery', media_gallery);
+    let finalData = set(mergedData, 'activities', activities); // add new activites
+    finalData = set(mergedData, 'transfers', transfers); // add new transfers
+    finalData = set(finalData, 'inclusions_exclusions', inclusions_exclusions); // add new inclusion exclusion
+    finalData = set(finalData, 'media_gallery', media_gallery);
 
     // Final step: submit full data
     try {

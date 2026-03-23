@@ -1,6 +1,8 @@
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import _ from 'lodash';
+import isObject from 'lodash/isObject';
+import omit from 'lodash/omit';
+import mapValues from 'lodash/mapValues';
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -64,10 +66,10 @@ export const stringSignRemover = (string) => {
  */
 export function removeNestedKey(arr, keyToRemove) {
   return arr.map((item) => {
-    if (_.isObject(item)) {
-      const newItem = _.omit(item, keyToRemove); // Remove the key
+    if (isObject(item)) {
+      const newItem = omit(item, keyToRemove); // Remove the key
       // Recursively remove the key from nested objects/values
-      return _.mapValues(newItem, (val) => removeNestedKey([val], keyToRemove)[0]);
+      return mapValues(newItem, (val) => removeNestedKey([val], keyToRemove)[0]);
     }
     return item;
   });

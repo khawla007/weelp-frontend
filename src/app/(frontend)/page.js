@@ -1,16 +1,18 @@
 export const revalidate = 60;
 
+import dynamic from 'next/dynamic';
 import HeroSection from '../components/Pages/FRONT_END/home/HeroSection';
-import ProductSliderSection from '@/app/components/ui/ProductSliderSection';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
-import BrowseDestinationsSection from '../components/Pages/FRONT_END/home/BrowseDestinationsSection';
-import TestimonialSection from '../components/Pages/FRONT_END/Global/TestimonialSection';
-import AiSection from '../components/Pages/FRONT_END/home/AiSection';
-import BlogSection from '../components/ui/BlogSection';
 import { getAllFeaturedActivities } from '@/lib/services/activites';
 import { getAllFeaturedCities } from '@/lib/services/cities';
 import { getPublicReviews } from '@/lib/services/reviews';
 import { publicApi } from '@/lib/axiosInstance';
+
+const ProductSliderSection = dynamic(() => import('@/app/components/ui/ProductSliderSection'));
+const BrowseDestinationsSection = dynamic(() => import('../components/Pages/FRONT_END/home/BrowseDestinationsSection'));
+const TestimonialSection = dynamic(() => import('../components/Pages/FRONT_END/Global/TestimonialSection'));
+const AiSection = dynamic(() => import('../components/Pages/FRONT_END/home/AiSection'));
+const BlogSection = dynamic(() => import('../components/ui/BlogSection'));
 
 const HomePage = async () => {
   const [featuredActivitiesRes, featuredCitiesRes, blogsRes, reviewsRes] = await Promise.all([

@@ -1,8 +1,10 @@
 'use client';
 import React, { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import BannerSection from '@/app/components/Pages/FRONT_END/shop/BannerSection';
 import { redirect, useSearchParams } from 'next/navigation';
-import { SearchPage } from '@/app/components/Pages/FRONT_END/shop/SearchPage';
+
+const SearchPage = dynamic(() => import('@/app/components/Pages/FRONT_END/shop/SearchPage').then((mod) => mod.SearchPage));
 
 const SearchContent = () => {
   const searchParams = useSearchParams();

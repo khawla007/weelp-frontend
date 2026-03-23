@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import _ from 'lodash';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
 import { FormActionButtons } from '@/app/components/Button/FormActionButtons';

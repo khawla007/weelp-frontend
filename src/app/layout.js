@@ -6,30 +6,35 @@ const interTight = Inter_Tight({
   weight: ['400', '600', '500', '700'],
   variable: '--font-interTight',
   style: 'normal',
+  display: 'swap',
 });
 
 const montez = Montez({
   subsets: ['latin'],
   weight: ['400'],
   variable: '--font-montez',
+  display: 'swap',
 });
 
 const inter = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-inter',
+  display: 'swap',
 });
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   weight: ['500', '600', '700', '800'],
   variable: '--font-plus-jakarta',
+  display: 'swap',
 });
 
 const outfit = Outfit({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-outfit',
+  display: 'swap',
 });
 
 export const metadata = {

@@ -1,9 +1,11 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import BannerSectionSearchForm from '@/app/components/Pages/FRONT_END/Global/BannerSectionSearchForm';
 import { fakeData } from '@/app/Data/ShopData';
-import BlogSliderSection from '@/app/components/Pages/FRONT_END/Global/BlogSliderSection';
-import DestinationSliderSection from '@/app/components/Pages/FRONT_END/Global/DestinationSection';
-import BlogList from '@/app/components/Pages/FRONT_END/Global/BlogFilter/BlogList';
+
+const BlogSliderSection = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/BlogSliderSection'));
+const DestinationSliderSection = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/DestinationSection'));
+const BlogList = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/BlogFilter/BlogList'));
 
 export async function generateMetadata() {
   return {

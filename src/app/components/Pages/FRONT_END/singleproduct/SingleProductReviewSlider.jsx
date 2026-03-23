@@ -5,9 +5,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
 import { SingleProductReviewCard } from '@/app/components/ReviewCard';
 import { ReviewCardCarouselAnimation } from '@/app/components/Animation/ProductAnimation';
-import 'swiper/css';
-import 'swiper/css/navigation';
-
 const ReviewSlider = () => {
   return (
     <Swiper

@@ -1,3 +1,9 @@
+/* Swiper CSS - centralized imports */
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/free-mode';
+@import 'swiper/css/thumbs';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

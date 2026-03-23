@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import mapKeys from 'lodash/mapKeys';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useMediaStore } from '@/lib/store/useMediaStore';
@@ -31,7 +31,7 @@ const MediaTab = () => {
   useEffect(() => {
     if (selectedMedia.length > 0) {
       // 1. Transform selectedMedia (id → media_id)
-      const transformedMedia = selectedMedia.map((obj) => _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key)));
+      const transformedMedia = selectedMedia.map((obj) => mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key)));
 
       // 2. Add to existing gallery and sync to form
       const updatedGallery = [...media_gallery, ...transformedMedia];

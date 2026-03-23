@@ -13,6 +13,7 @@ NProgress.configure({
 
 export function NavigationProgressBar() {
   const isNavigating = useNavigationStore((state) => state.isNavigating);
+  const navigationKey = useNavigationStore((state) => state.navigationKey);
 
   useEffect(() => {
     if (isNavigating) {
@@ -20,7 +21,7 @@ export function NavigationProgressBar() {
     } else {
       NProgress.done();
     }
-  }, [isNavigating]);
+  }, [isNavigating, navigationKey]);
 
   return null;
 }

@@ -9,9 +9,6 @@ import { Navigation, Autoplay } from 'swiper/modules';
 import { ReviewCardCarouselAnimation } from '@/app/components/Animation/ProductAnimation';
 import TabButton from '@/app/components/TabButton';
 import { ListFilter } from 'lucide-react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-
 export const SingleProductReview = () => {
   return (
     <div className="flex flex-col gap-4">

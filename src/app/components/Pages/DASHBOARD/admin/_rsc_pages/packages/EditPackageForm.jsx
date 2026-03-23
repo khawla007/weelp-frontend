@@ -34,7 +34,9 @@ import { useRouter } from 'next/navigation';
 import { format, parse } from 'date-fns';
 import { Medialibrary } from '../media/MediaLibrary';
 import { useMediaStore } from '@/lib/store/useMediaStore';
-import _, { isEmpty } from 'lodash';
+import mapKeys from 'lodash/mapKeys';
+import set from 'lodash/set';
+import isEmpty from 'lodash/isEmpty';
 import { deletePackageItems, editPackage } from '@/lib/actions/packages';
 import dynamic from 'next/dynamic';
 
@@ -1813,7 +1815,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
       if (selectedMedia.length > 0) {
         // 1. Transform selectedMedia (id → media_id) before adding
         const transformedMedia = selectedMedia.map((obj) => {
-          const mapped = _.mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
+          const mapped = mapKeys(obj, (value, key) => (key === 'id' ? 'media_id' : key));
           return { ...mapped, is_featured: false };
         });
 
@@ -2581,9 +2583,9 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
     const transfers = removeNestedKey(dirtyTransfers, 'transferData');
     const itineraries = removeNestedKey(dirtyItineraries, 'itineraryData');
 
-    let finalData = _.set(mergedData, 'activities', activities); // add new activites
-    finalData = _.set(mergedData, 'transfers', transfers); // add new transfers
-    finalData = _.set(mergedData, 'itineraries', itineraries); // add new itineraries
+    let finalData = set(mergedData, 'activities', activities); // add new activites
+    finalData = set(mergedData, 'transfers', transfers); // add new transfers
+    finalData = set(mergedData, 'itineraries', itineraries); // add new itineraries
 
     // submit full data
     try {
