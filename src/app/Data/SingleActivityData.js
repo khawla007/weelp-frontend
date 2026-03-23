@@ -47,7 +47,8 @@ export const allReviewsData = [
     date: 'Oct 2024',
     rating: 5,
     title: 'Great trip',
-    comment: "I've written a lot, explore a lot of trip activities and tours all for the day. Lots of opportunities for walking down. Recommending everyone too! Light's amazing and its gorgeous on top.",
+    comment:
+      "I've written a lot, explore a lot of trip activities and tours all for the day. Lots of opportunities for walking down. Recommending everyone too! Light's amazing and its gorgeous on top.",
     avatar: '/images/reviews/avatar1.jpg',
     image: '/images/reviews/review1.jpg',
   },
@@ -56,7 +57,8 @@ export const allReviewsData = [
     date: 'Oct 2024',
     rating: 5,
     title: 'Great trip',
-    comment: "I've written a lot, explore a lot of trip activities and tours all for the day. Lots of opportunities for walking down. Recommending everyone too! Light's amazing and its gorgeous on top.",
+    comment:
+      "I've written a lot, explore a lot of trip activities and tours all for the day. Lots of opportunities for walking down. Recommending everyone too! Light's amazing and its gorgeous on top.",
     avatar: '/images/reviews/avatar2.jpg',
     image: '/images/reviews/review2.jpg',
   },
@@ -65,7 +67,8 @@ export const allReviewsData = [
     date: 'Oct 2024',
     rating: 5,
     title: 'Great trip',
-    comment: "I've written a lot, explore a lot of trip activities and tours all for the day. Lots of opportunities for walking down. Recommending everyone too! Light's amazing and its gorgeous on top.",
+    comment:
+      "I've written a lot, explore a lot of trip activities and tours all for the day. Lots of opportunities for walking down. Recommending everyone too! Light's amazing and its gorgeous on top.",
     avatar: '/images/reviews/avatar3.jpg',
     image: '/images/reviews/review3.jpg',
   },
@@ -74,7 +77,8 @@ export const allReviewsData = [
 export const activityFaqs = [
   {
     title: 'Can I change my booking package or participation date?',
-    content: 'If you would like to change the designated park or date, please note you will need to rebook. Also, please note that there is cancellation fee (JPY200)/per ticket will be applied from 14 day(s) before the selected activity date ~ the expiration date(within 1 month after the participate date)',
+    content:
+      'If you would like to change the designated park or date, please note you will need to rebook. Also, please note that there is cancellation fee (JPY200)/per ticket will be applied from 14 day(s) before the selected activity date ~ the expiration date(within 1 month after the participate date)',
   },
   {
     title: "Why can't I search this activity or select a tour date?",

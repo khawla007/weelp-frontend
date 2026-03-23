@@ -3,12 +3,7 @@
 import React, { useState } from 'react';
 import { Check, X, ChevronRight, ChevronDown, CircleCheckBig, MapPin, Users, CalendarDays, LifeBuoy, User, Wind } from 'lucide-react';
 import { SingleProductReview } from './SingleProductReview';
-import {
-  activityHighlights,
-  inclusionsList,
-  activityFaqs,
-  packageOptions,
-} from '@/app/Data/SingleActivityData';
+import { activityHighlights, inclusionsList, activityFaqs, packageOptions } from '@/app/Data/SingleActivityData';
 import BreakSection from '@/app/components/BreakSection';
 import SingleProductForm from '@/app/components/Form/SingleProductForm';
 import SingleProductFormItinerary from '@/app/components/Form/SingleProductFormItinerary';
@@ -22,9 +17,7 @@ export const OverViewPanel = ({ description }) => {
   return (
     <div className="flex flex-col gap-4">
       <h2 className="text-[28px] font-semibold text-[#273f4e] capitalize">Overview</h2>
-      {description && (
-        <p className="text-base text-black leading-[1.5]">{description}</p>
-      )}
+      {description && <p className="text-base text-black leading-[1.5]">{description}</p>}
       <ul className="flex flex-col gap-3 mt-2">
         {activityHighlights.map((item, index) => (
           <li key={index} className="flex items-start gap-3 text-base text-black leading-[1.5]">
@@ -63,9 +56,7 @@ export const WhatIncludedPanel = () => {
           ))}
         </ul>
       </div>
-      <button className="text-left text-base text-black mt-4 hover:underline">
-        See 14 More
-      </button>
+      <button className="text-left text-base text-black mt-4 hover:underline">See 14 More</button>
     </div>
   );
 };
@@ -90,20 +81,24 @@ export const FaqPanel = ({ faqs = [] }) => {
       {/* Inclusion checklist repeated per design */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 mb-6">
         <ul className="flex flex-col gap-4">
-          {inclusionsList.filter((i) => i.included).map((item, index) => (
-            <li key={index} className="flex items-start gap-3 text-base text-black">
-              <Check className="w-5 h-5 flex-shrink-0 mt-0.5" size={20} />
-              {item.text}
-            </li>
-          ))}
+          {inclusionsList
+            .filter((i) => i.included)
+            .map((item, index) => (
+              <li key={index} className="flex items-start gap-3 text-base text-black">
+                <Check className="w-5 h-5 flex-shrink-0 mt-0.5" size={20} />
+                {item.text}
+              </li>
+            ))}
         </ul>
         <ul className="flex flex-col gap-4">
-          {inclusionsList.filter((i) => !i.included).map((item, index) => (
-            <li key={index} className="flex items-start gap-3 text-base text-black">
-              <X className="w-5 h-5 flex-shrink-0 mt-0.5" size={20} />
-              {item.text}
-            </li>
-          ))}
+          {inclusionsList
+            .filter((i) => !i.included)
+            .map((item, index) => (
+              <li key={index} className="flex items-start gap-3 text-base text-black">
+                <X className="w-5 h-5 flex-shrink-0 mt-0.5" size={20} />
+                {item.text}
+              </li>
+            ))}
         </ul>
       </div>
 
@@ -121,10 +116,7 @@ const FaqAccordionItem = ({ question, answer, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   return (
     <div className="border border-[#e5e5e5] rounded-xl overflow-hidden">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-5 text-left"
-      >
+      <button onClick={() => setIsOpen(!isOpen)} className="w-full flex items-center justify-between p-5 text-left">
         <span className="text-base font-semibold text-[#0c2536]">{question}</span>
         <ChevronRight className={`transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-90' : ''}`} size={16} />
       </button>
@@ -140,9 +132,7 @@ export const ProductForm = ({ productId, productData }) => {
   return (
     <div className="p-6 lg:px-[60px] lg:pt-[60px] lg:pb-[70px] lg:sticky lg:top-[76px]">
       {/* Price */}
-      <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
-        From ${productData?.pricing?.regular_price ?? '6,790.18'}
-      </h3>
+      <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">From ${productData?.pricing?.regular_price ?? '6,790.18'}</h3>
 
       {/* Date & Travelers */}
       <p className="text-[#5a5a5a] text-base mt-4 mb-3">Select Date & Travelers</p>
@@ -171,9 +161,7 @@ export const ProductForm = ({ productId, productData }) => {
             <p className="text-base text-black">Visit the Weelp Help Centre for any further questions.</p>
             <span className="text-base mt-2">Product ID : {productId ?? 451245}</span>
           </div>
-          <button className="px-6 py-3 border border-black rounded-lg text-sm font-medium text-black whitespace-nowrap hover:bg-gray-50 transition-colors">
-            Help Center
-          </button>
+          <button className="px-6 py-3 border border-black rounded-lg text-sm font-medium text-black whitespace-nowrap hover:bg-gray-50 transition-colors">Help Center</button>
         </div>
       </div>
     </div>
@@ -245,9 +233,7 @@ const PackageCard = ({ pkg, isSelected, isExpanded: defaultExpanded }) => {
               <p className="text-lg font-bold text-[#0c2536]">${pkg.price.toLocaleString()}</p>
               <p className="text-sm text-[#5a5a5a] italic">Detailed Breakdown</p>
             </div>
-            <button className="bg-[#57947d] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#4a8370] transition-colors">
-              Select
-            </button>
+            <button className="bg-[#57947d] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#4a8370] transition-colors">Select</button>
           </div>
         </div>
       )}

@@ -2,16 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import throttle from 'lodash/throttle';
-import {
-  OverViewPanel,
-  WhatIncludedPanel,
-  ReviewPanel,
-  FaqPanel,
-  ProductForm,
-  ItineraryPanel,
-  ProductFormItinerary,
-  ProductFormPackage,
-} from './TabSection__modules';
+import { OverViewPanel, WhatIncludedPanel, ReviewPanel, FaqPanel, ProductForm, ItineraryPanel, ProductFormItinerary, ProductFormPackage } from './TabSection__modules';
 import SimilarExperiences from './SimilarExperiences';
 
 export const TabSectionActivity = ({ productId, productData, similarActivities = [] }) => {
@@ -24,12 +15,7 @@ export const TabSectionActivity = ({ productId, productData, similarActivities =
   const hasReviews = productData?.reviews && productData.reviews.length > 0;
 
   // Build tabs array - conditionally include Reviews
-  const tabs = [
-    { id: 'tab_1', label: 'Overview' },
-    { id: 'tab_2', label: "What's Included" },
-    ...(hasReviews ? [{ id: 'tab_3', label: 'Reviews' }] : []),
-    { id: 'tab_4', label: 'FAQs' },
-  ];
+  const tabs = [{ id: 'tab_1', label: 'Overview' }, { id: 'tab_2', label: "What's Included" }, ...(hasReviews ? [{ id: 'tab_3', label: 'Reviews' }] : []), { id: 'tab_4', label: 'FAQs' }];
 
   useEffect(() => {
     const checkScrollY = () => {
@@ -78,15 +64,11 @@ export const TabSectionActivity = ({ productId, productData, similarActivities =
             <button
               key={tab.id}
               onClick={() => toggleTab(tab.id)}
-              className={`relative px-6 lg:px-8 py-4 text-sm lg:text-[14px] cursor-pointer transition-colors ${
-                activeTab === tab.id ? 'font-bold text-[#0c2536]' : 'font-normal text-black'
-              }`}
+              className={`relative px-6 lg:px-8 py-4 text-sm lg:text-[14px] cursor-pointer transition-colors ${activeTab === tab.id ? 'font-bold text-[#0c2536]' : 'font-normal text-black'}`}
               style={index < tabs.length - 1 ? { marginRight: '44px' } : undefined}
             >
               {tab.label}
-              {activeTab === tab.id && (
-                <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#0c2536]" />
-              )}
+              {activeTab === tab.id && <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#0c2536]" />}
             </button>
           ))}
         </div>

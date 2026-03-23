@@ -10,9 +10,7 @@ const BannerSection = ({ activityName, media_gallery = [] }) => {
         <div className="flex flex-col gap-2 pt-[70px]">
           <BreadCrumb className="mb-2" />
 
-          <h1 className="text-[#273f4e] font-semibold text-xl lg:text-4xl capitalize">
-            {activityName ?? 'Melaka Wonderland Water Theme Park Ticket'}
-          </h1>
+          <h1 className="text-[#273f4e] font-semibold text-xl lg:text-4xl capitalize">{activityName ?? 'Melaka Wonderland Water Theme Park Ticket'}</h1>
 
           {/* Stats Row + Save to Wishlist */}
           <div className="flex flex-wrap items-center justify-between pb-4">
@@ -25,27 +23,19 @@ const BannerSection = ({ activityName, media_gallery = [] }) => {
                       <Star key={i} className="stroke-none fill-yellow-500" size={18} />
                     ))}
                 </span>
-                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">
-                  {activityStats.reviewCount} Reviews
-                </span>
+                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">{activityStats.reviewCount} Reviews</span>
               </li>
               <li className="flex items-center gap-2 pr-4 border-r border-[#143042]/40">
                 <CircleCheckBig size={18} className="text-[#5a5a5a]" />
-                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">
-                  {activityStats.totalBooked} booked
-                </span>
+                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">{activityStats.totalBooked} booked</span>
               </li>
               <li className="flex items-center gap-2 pr-4 border-r border-[#143042]/40">
                 <MapPin size={18} className="text-[#5a5a5a]" />
-                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium border-b border-inherit">
-                  {activityStats.locationName}
-                </span>
+                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium border-b border-inherit">{activityStats.locationName}</span>
               </li>
               <li className="flex items-center gap-2">
                 <Clock4 size={18} className="text-[#5a5a5a]" />
-                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">
-                  {activityStats.duration}
-                </span>
+                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">{activityStats.duration}</span>
               </li>
             </ul>
 
@@ -65,17 +55,8 @@ const BannerSection = ({ activityName, media_gallery = [] }) => {
           <div className="relative mt-6">
             <div className="flex gap-1 h-[250px] lg:h-[349px] overflow-hidden">
               {media_gallery.slice(0, 3).map((img, index) => (
-                <div
-                  key={index}
-                  className={`flex-1 overflow-hidden ${index === 0 ? 'rounded-l-xl' : ''} ${
-                    index === Math.min(media_gallery.length, 3) - 1 ? 'rounded-r-xl' : ''
-                  }`}
-                >
-                  <img
-                    src={img?.url}
-                    alt={img?.alt_text || `${activityName} Image ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
+                <div key={index} className={`flex-1 overflow-hidden ${index === 0 ? 'rounded-l-xl' : ''} ${index === Math.min(media_gallery.length, 3) - 1 ? 'rounded-r-xl' : ''}`}>
+                  <img src={img?.url} alt={img?.alt_text || `${activityName} Image ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>

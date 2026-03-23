@@ -11,9 +11,7 @@ const SimilarExperiences = ({ activities = [] }) => {
 
   return (
     <div className="flex flex-col border-t border-[#d9d9d9]">
-      <h2 className="text-[28px] font-semibold text-[#273f4e] capitalize pt-6 mb-4">
-        Similar Experiences
-      </h2>
+      <h2 className="text-[28px] font-semibold text-[#273f4e] capitalize pt-6 mb-4">Similar Experiences</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {activities.map((item) => {

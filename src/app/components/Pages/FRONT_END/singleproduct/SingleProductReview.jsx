@@ -27,11 +27,7 @@ export const SingleProductReview = () => {
       <div className="flex gap-2 mt-4">
         {allReviewsData.slice(0, 3).map((review, i) => (
           <div key={i} className="w-[100px] h-[70px] rounded-lg overflow-hidden bg-gray-200">
-            <img
-              src={review.image || 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=200&h=140&fit=crop'}
-              alt="Review"
-              className="w-full h-full object-cover"
-            />
+            <img src={review.image || 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=200&h=140&fit=crop'} alt="Review" className="w-full h-full object-cover" />
           </div>
         ))}
       </div>
@@ -43,9 +39,7 @@ export const SingleProductReview = () => {
           {featuredReviews.map((review, index) => (
             <div key={index} className="flex flex-col gap-2 p-4 bg-white rounded-lg border border-[#e5e5e5]">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-600">
-                  {review.userName.charAt(0)}
-                </div>
+                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-600">{review.userName.charAt(0)}</div>
                 <span className="text-sm font-medium text-[#0c2536]">{review.userName}</span>
               </div>
               <p className="text-sm text-black leading-relaxed">{review.comment}</p>
@@ -73,21 +67,13 @@ const AllReviewsList = () => {
       <div className="flex items-center justify-between">
         <div className="hidden sm:flex gap-3">
           {filterTabs.map((tab, i) => (
-            <button
-              key={i}
-              className={`px-4 py-2 rounded-lg text-sm border ${
-                i === 0 ? 'bg-[#f2f2f2] border-[#e5e5e5] font-medium' : 'border-[#e5e5e5] text-[#5a5a5a]'
-              }`}
-            >
+            <button key={i} className={`px-4 py-2 rounded-lg text-sm border ${i === 0 ? 'bg-[#f2f2f2] border-[#e5e5e5] font-medium' : 'border-[#e5e5e5] text-[#5a5a5a]'}`}>
               {tab}
             </button>
           ))}
         </div>
         <div className="relative">
-          <button
-            onClick={() => setShowSort(!showSort)}
-            className="flex items-center gap-2 text-[#5a5a5a] border border-[#e5e5e5] text-sm px-4 py-2 rounded-lg"
-          >
+          <button onClick={() => setShowSort(!showSort)} className="flex items-center gap-2 text-[#5a5a5a] border border-[#e5e5e5] text-sm px-4 py-2 rounded-lg">
             Sort <ListFilter size={16} />
           </button>
         </div>
@@ -103,9 +89,7 @@ const AllReviewsList = () => {
                 {review.avatar ? (
                   <img src={review.avatar} alt={review.userName} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-sm font-medium text-gray-600">
-                    {review.userName.charAt(0)}
-                  </div>
+                  <div className="w-full h-full flex items-center justify-center text-sm font-medium text-gray-600">{review.userName.charAt(0)}</div>
                 )}
               </div>
               <div>
