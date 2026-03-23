@@ -98,7 +98,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
         ...img,
         id: img.media_id || img.id,
       }));
-       
+
       setSelectedImages(transformed);
     }
   }, [alreadySelectedImages]);
