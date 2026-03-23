@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { Form, FormLabel, FormDescription, FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form';
 import { generateSlug } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { useForm, useWatch } from 'react-hook-form';
 import { TaxonomyFormNavigation } from '../taxonomies_shared';
@@ -24,6 +25,7 @@ const formSchema = z.object({
   description: z.string().min(3, {
     message: 'Please enter a description.',
   }),
+  is_featured: z.boolean().default(false),
 });
 
 export const CreateTagPageForm = () => {
@@ -35,6 +37,7 @@ export const CreateTagPageForm = () => {
       name: '',
       slug: '',
       description: '',
+      is_featured: false,
     },
   });
 
@@ -142,6 +145,23 @@ export const CreateTagPageForm = () => {
                       <Textarea placeholder="Enter tag description" {...field} />
                     </FormControl>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Featured */}
+              <FormField
+                control={form.control}
+                name="is_featured"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">Featured</FormLabel>
+                      <FormDescription>Mark this tag as featured</FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
                   </FormItem>
                 )}
               />

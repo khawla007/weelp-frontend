@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 // import { createCategory } from "@/lib/actions/categories";
 import { createAttribute } from '@/lib/actions/attributes';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
 import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 
 export const formSchema = z
@@ -31,6 +32,7 @@ export const formSchema = z
     values: z.string().min(3, 'Each value must be at least 3 character'),
 
     default_value: z.string().optional(),
+    is_featured: z.boolean().default(false),
   })
   .superRefine((data, ctx) => {
     if (data.type !== 'yes/no') {
@@ -56,6 +58,7 @@ export const CreateAttributePageForm = () => {
       description: '',
       values: '',
       default_value: '',
+      is_featured: false,
     },
   });
 
@@ -244,6 +247,23 @@ export const CreateAttributePageForm = () => {
                   )}
                 />
               )}
+
+              {/* Featured */}
+              <FormField
+                control={form.control}
+                name="is_featured"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">Featured</FormLabel>
+                      <FormDescription>Mark this attribute as featured</FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
               <FormActionButtons mode="create" cancelHref="/dashboard/admin/taxonomies/attributes/" isSubmitting={isSubmitting} isDisabled={!isValid} containerType="div" className="justify-end" />
             </fieldset>

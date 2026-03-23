@@ -10,6 +10,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Switch } from '@/components/ui/switch';
 import { generateSlug } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { editCategory } from '@/lib/actions/categories';
@@ -26,6 +27,7 @@ const formSchema = z.object({
     message: 'Please enter a description.',
   }),
   status: z.enum(['active', 'draft']).default('active'),
+  is_featured: z.boolean().default(false),
 });
 
 export const EditCategoryForm = ({ categoryData }) => {
@@ -33,7 +35,7 @@ export const EditCategoryForm = ({ categoryData }) => {
   const { toast } = useToast();
 
   // category data
-  const { id, name, slug, description, status } = categoryData;
+  const { id, name, slug, description, status, is_featured } = categoryData;
 
   // intialize form
   const form = useForm({
@@ -43,6 +45,7 @@ export const EditCategoryForm = ({ categoryData }) => {
       slug: slug || '',
       description: description || '',
       status: status || 'active',
+      is_featured: is_featured || false,
     },
   });
 
@@ -176,6 +179,23 @@ export const EditCategoryForm = ({ categoryData }) => {
                       </RadioGroup>
                     </FormControl>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Featured */}
+              <FormField
+                control={form.control}
+                name="is_featured"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">Featured</FormLabel>
+                      <FormDescription>Mark this category as featured</FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
                   </FormItem>
                 )}
               />

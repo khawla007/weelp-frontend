@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { generateSlug } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
 import { editAttribute } from '@/lib/actions/attributes';
 import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 
@@ -29,6 +30,7 @@ export const formSchema = z
     description: z.string().optional(),
     values: z.string().min(3, 'Each value must be at least 3 character'),
     default_value: z.string().optional(),
+    is_featured: z.boolean().default(false),
   })
   .superRefine((data, ctx) => {
     if (data.type !== 'yes/no') {
@@ -46,7 +48,7 @@ export const EditAttributePageForm = ({ attributeData }) => {
   const router = useRouter();
   const { toast } = useToast();
 
-  const { id, name, slug, type, description, values, default_value } = attributeData;
+  const { id, name, slug, type, description, values, default_value, is_featured } = attributeData;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -57,6 +59,7 @@ export const EditAttributePageForm = ({ attributeData }) => {
       description: description || '',
       values: values || '',
       default_value: default_value || '',
+      is_featured: is_featured || false,
     },
   });
 
@@ -238,6 +241,23 @@ export const EditAttributePageForm = ({ attributeData }) => {
                   )}
                 />
               )}
+
+              {/* Featured */}
+              <FormField
+                control={form.control}
+                name="is_featured"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">Featured</FormLabel>
+                      <FormDescription>Mark this attribute as featured</FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
               <FormActionButtons
                 mode="update"
