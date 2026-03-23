@@ -18,7 +18,9 @@ export function mapProductToItemCard(product, citySlug) {
   const resolvedCitySlug = citySlug || product.city_slug || product.locations?.[0]?.city_slug;
   const href = resolvedCitySlug ? `/cities/${resolvedCitySlug}/${pluralType}/${product.slug}` : `/${product.item_type}/${product.slug}`;
 
-  const image = product.featured_images || product.featured_image || product.media_gallery?.[0]?.media?.url || product.media_gallery?.[0]?.url || product.image || '/assets/Card.webp';
+  // Look for is_featured image in media_gallery first
+  const featuredImage = product.media_gallery?.find((m) => m.is_featured === true || m.is_featured === 1);
+  const image = featuredImage?.url || featuredImage?.media?.url || product.featured_images || product.featured_image || product.media_gallery?.[0]?.media?.url || product.media_gallery?.[0]?.url || product.image || '/assets/Card.webp';
 
   const rawPrice = product.pricing?.regular_price ?? product.base_pricing?.variations?.[0]?.regular_price;
   const currency = product.pricing?.currency;

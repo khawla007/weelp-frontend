@@ -7,108 +7,118 @@ import {
   WhatIncludedPanel,
   ReviewPanel,
   FaqPanel,
-  SingleProductForm,
-  SingleProductSummary,
   ProductForm,
   ItineraryPanel,
   ProductFormItinerary,
   ProductFormPackage,
-} from './TabSection__modules'; // Separate components
+} from './TabSection__modules';
+import SimilarExperiences from './SimilarExperiences';
 
-export const TabSectionActivity = ({ productId, base_price, productData }) => {
+export const TabSectionActivity = ({ productId, productData, similarActivities = [] }) => {
   const [activeTab, setActiveTab] = useState('tab_1');
   const sectionRefs = useRef({});
   const [fixedTab, setFixedTab] = useState(false);
-  const tabBarHeight = 68;
+  const tabBarHeight = 60;
+
+  // Check if reviews exist — hide reviews tab and section if no reviews
+  const hasReviews = productData?.reviews && productData.reviews.length > 0;
+
+  // Build tabs array - conditionally include Reviews
+  const tabs = [
+    { id: 'tab_1', label: 'Overview' },
+    { id: 'tab_2', label: "What's Included" },
+    ...(hasReviews ? [{ id: 'tab_3', label: 'Reviews' }] : []),
+    { id: 'tab_4', label: 'FAQs' },
+  ];
 
   useEffect(() => {
     const checkScrollY = () => {
-      if (window.scrollY > 700) {
-        setFixedTab(true);
-      } else {
-        setFixedTab(false);
-      }
+      setFixedTab(window.scrollY > 700);
     };
 
-    // Use lodash's throttle to limit execution frequency
     const throttledCheckScrollY = throttle(checkScrollY, 100);
-
     window.addEventListener('scroll', throttledCheckScrollY);
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveTab(entry.target.id); // Update active tab when section is in viewport
+            setActiveTab(entry.target.id);
           }
         });
       },
-      { threshold: 0.5 }, // Trigger when 50% of the section is in view
+      { threshold: 0.3 },
     );
 
-    // Observe all sections
     Object.values(sectionRefs.current).forEach((section) => {
       if (section) observer.observe(section);
     });
 
     return () => {
-      window.removeEventListener('scroll', throttledCheckScrollY, checkScrollY);
+      window.removeEventListener('scroll', throttledCheckScrollY);
       observer.disconnect();
-    }; // Cleanup on unmount
+    };
   }, []);
 
   const toggleTab = (tab) => {
     setActiveTab(tab);
     const element = sectionRefs.current[tab];
     if (element) {
-      const offsetTop = element.getBoundingClientRect().top + window.scrollY - tabBarHeight - 16; // Offset to account for the sticky tab bar and some margin
+      const offsetTop = element.getBoundingClientRect().top + window.scrollY - tabBarHeight - 16;
       window.scrollTo({ top: offsetTop, behavior: 'smooth' });
     }
   };
 
   return (
-    <section className="w-full  bg-mainBackground singleProduct_tabSection">
+    <section className="w-full bg-white mt-[70px]">
       {/* Sticky Tab Bar */}
-      <div className={`${fixedTab ? 'fixed top-0 z-20' : ''} flex flex-col w-full  shadow-md bg-mainBackground`}>
-        <ul className="flex items-center justify-center sm:gap-x-12 container mx-auto ">
-          {[
-            { id: 'tab_1', label: 'Overview' },
-            { id: 'tab_2', label: "What's Included" },
-            { id: 'tab_3', label: 'Reviews' },
-            { id: 'tab_4', label: 'FAQs' },
-          ].map((tab) => (
-            <li
+      <div className={`${fixedTab ? 'fixed top-0' : ''} relative z-[999] w-full bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]`}>
+        <div className="flex items-center justify-center">
+          {tabs.map((tab, index) => (
+            <button
               key={tab.id}
               onClick={() => toggleTab(tab.id)}
-              className={`${activeTab === tab.id ? 'font-semibold border-b-2 border-black ' : ''} sm:text-base text-black cursor-pointer p-2 py-4 sm:px-6 sm:py-6  capitalize`}
+              className={`relative px-6 lg:px-8 py-4 text-sm lg:text-[14px] cursor-pointer transition-colors ${
+                activeTab === tab.id ? 'font-bold text-[#0c2536]' : 'font-normal text-black'
+              }`}
+              style={index < tabs.length - 1 ? { marginRight: '44px' } : undefined}
             >
               {tab.label}
-            </li>
+              {activeTab === tab.id && (
+                <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#0c2536]" />
+              )}
+            </button>
           ))}
-        </ul>
+        </div>
       </div>
 
-      {/* Content */}
-      <div className={`flex flex-col  xl:flex-row justify-between pt-4   mx-auto`}>
-        <div className={`w-full xl:w-3/5  flex ${fixedTab ? 'mt-12' : ''}`}>
-          <div className={`flex flex-col gap-8 p-6 lg:p-12 max-w-fit w-full xl:w-[85%] ml-auto `}>
-            <div id="tab_1" ref={(el) => (sectionRefs.current['tab_1'] = el)}>
+      {/* Two-Column Content */}
+      <div className={`flex flex-col xl:flex-row ${fixedTab ? 'mt-[60px]' : ''}`}>
+        {/* Left Column — Content */}
+        <div className="w-full xl:w-[58%]">
+          <div className="max-w-[838px] mx-auto xl:ml-auto xl:mr-0 px-4 lg:px-0">
+            <div id="tab_1" ref={(el) => (sectionRefs.current['tab_1'] = el)} className="pt-[70px] lg:mb-[35px]">
               <OverViewPanel description={productData?.description} />
             </div>
-            <div id="tab_2" ref={(el) => (sectionRefs.current['tab_2'] = el)}>
+            <div id="tab_2" ref={(el) => (sectionRefs.current['tab_2'] = el)} className="pt-[35px] lg:mb-[35px]">
               <WhatIncludedPanel />
             </div>
-            <div id="tab_3" ref={(el) => (sectionRefs.current['tab_3'] = el)}>
-              <ReviewPanel />
-            </div>
-            <div id="tab_4" ref={(el) => (sectionRefs.current['tab_4'] = el)}>
+            {hasReviews && (
+              <div id="tab_3" ref={(el) => (sectionRefs.current['tab_3'] = el)} className="pt-[35px] lg:mb-[35px]">
+                <ReviewPanel />
+              </div>
+            )}
+            <div id="tab_4" ref={(el) => (sectionRefs.current['tab_4'] = el)} className="pt-[35px] lg:mb-[35px]">
               <FaqPanel />
+            </div>
+            <div className="lg:mb-[70px]">
+              <SimilarExperiences activities={similarActivities} />
             </div>
           </div>
         </div>
 
-        {/* Cart Functionality */}
-        <div className={`${fixedTab ? 'mt-12   ' : ''} relative h-auto bg-[#f4f5f7]  w-full xl:w-2/5`}>
+        {/* Right Column — Booking Sidebar */}
+        <div className="w-full xl:w-[42%] bg-[#f5f9fa]">
           <ProductForm productId={productId} productData={productData} />
         </div>
       </div>

@@ -1,137 +1,142 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import { ReviewCard2, SingleProductReviewCard } from '@/app/components/ReviewCard';
-import TotalReviews from '@/app/components/TotalReviews';
-import { SingleProductPhotoGallery } from '@/app/components/SingleProductPhotoGallery';
-import { allReviews } from '@/app/Data/ShopData';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
-import { ReviewCardCarouselAnimation } from '@/app/components/Animation/ProductAnimation';
-import TabButton from '@/app/components/TabButton';
-import { ListFilter } from 'lucide-react';
+
+import React, { useState } from 'react';
+import { Star, ListFilter } from 'lucide-react';
+import { featuredReviews, allReviewsData } from '@/app/Data/SingleActivityData';
+
 export const SingleProductReview = () => {
   return (
-    <div className="flex flex-col gap-4">
-      <TotalReviews /> {/*Only Total Review Count */}
-      <SingleProductPhotoGallery photos={allReviews?.at(0)?.galleryImages} /> {/* Display Only Gallery */}
-      <SingleProductReviewSlider /> {/* Review Slider For Single Product */}
-      <SingleProductAllReview />
-    </div>
-  );
-};
+    <div className="flex flex-col border-t border-[#d9d9d9]">
+      {/* Reviews heading */}
+      <h2 className="text-[28px] font-semibold text-[#273f4e] capitalize pt-6">Reviews</h2>
 
-// Only Use In Single Product
+      {/* Rating Summary */}
+      <div className="flex items-center gap-3 mt-2">
+        <span className="text-2xl font-bold text-[#d4a017]">5.0</span>
+        <div className="flex">
+          {Array(5)
+            .fill(0)
+            .map((_, i) => (
+              <Star key={i} className="fill-yellow-500 stroke-none" size={18} />
+            ))}
+        </div>
+      </div>
+      <p className="text-sm text-[#5a5a5a] mt-1">18,313 reviews</p>
 
-const SingleProductReviewSlider = () => {
-  return (
-    <div className="flex flex-col singleproduct_reviewslider">
-      <h2 className={`text-lg sm:text-[28px] font-medium text-Nileblue capitalize `}>Featured Review</h2>
-      <ReviewSlider />
-    </div>
-  );
-};
-
-const ReviewSlider = () => {
-  return (
-    <Swiper
-      modules={[Navigation, Autoplay]}
-      spaceBetween={20}
-      navigation={true}
-      loop={true}
-      autoplay={{
-        delay: 2000,
-      }}
-      breakpoints={{
-        450: {
-          slidesPerView: 1,
-          spaceBetween: 10,
-        },
-        640: {
-          slidesPerView: 2,
-        },
-        768: {
-          slidesPerView: 2,
-        },
-      }}
-      className="w-full py-8 "
-    >
-      {[...Array(6)].map((_, index) => (
-        <SwiperSlide key={index}>
-          <SingleProductReviewCard title={'Markus_K'} rating={4} comment={'Very well and good organized trip to the Desert West Quads, Falcon Show, Camelriding and Delicious Barbecue.'} />
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  );
-};
-
-const SingleProductAllReview = () => {
-  const [showsort, setShowSort] = useState(null);
-  const buttonItems = ['all reviews', 'influencer', 'with photos only'];
-
-  // display sort
-  const handleSort = () => {
-    setShowSort(!showsort);
-  };
-
-  // handleSortValue
-  const handleSortValue = (e) => {
-    setShowSort(!showsort);
-  };
-  return (
-    <div className="flex flex-col gap-4">
-      <h3 className="text-lg sm:text-[28px] font-medium text-Nileblue capitalize mb-2">All Reviews</h3>
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-end sm:justify-between">
-          <ul className="hidden sm:flex gap-4 flex-wrap">
-            {buttonItems.map((val, index) => {
-              return <TabButton key={index} text={val} className={' border-none bg-inherit first:bg-graycolor'} />;
-            })}
-          </ul>
-
-          <div className="relative">
-            <button className="flex items-center gap-4 text-grayDark border text-base p-2 px-6  rounded-lg ret" onClick={handleSort}>
-              Sort <ListFilter size={18} />
-            </button>
-
-            {showsort && (
-              <div className="absolute z-10 right-0 mt-2">
-                {/* <input type='hidden' value={sortData} /> */}
-                <ul className=" border flex flex-col bg-white rounded-md text-sm">
-                  <li className="cursor-pointer ease-in-out duration-200 p-4 capitalize hover:bg-[#f2f7f5] text-nowrap  text-grayDark" onClick={handleSortValue} value={'5'}>
-                    Sort By Popularity
-                  </li>
-                  <li className="cursor-pointer ease-in-out duration-200 p-4 capitalize hover:bg-[#f2f7f5] text-nowrap  text-grayDark" onClick={handleSortValue} value={5}>
-                    Sort By Rating: low to high
-                  </li>
-                  <li className="cursor-pointer ease-in-out duration-200 p-4 capitalize hover:bg-[#f2f7f5] text-nowrap  text-grayDark" onClick={handleSortValue} value={2}>
-                    Sort By Rating : High to Low
-                  </li>
-                </ul>
-              </div>
-            )}
+      {/* Photo Strip */}
+      <div className="flex gap-2 mt-4">
+        {allReviewsData.slice(0, 3).map((review, i) => (
+          <div key={i} className="w-[100px] h-[70px] rounded-lg overflow-hidden bg-gray-200">
+            <img
+              src={review.image || 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=200&h=140&fit=crop'}
+              alt="Review"
+              className="w-full h-full object-cover"
+            />
           </div>
-        </div>
+        ))}
+      </div>
 
-        <div className="flex flex-col gap-4">
-          {allReviews &&
-            allReviews.map((val, index) => {
-              if (index > 1) {
-                return null;
-              }
-              return (
-                <ReviewCard2
-                  key={index}
-                  userImageSrc={val?.userImageSrc || null}
-                  galleryImages={val?.galleryImages || null}
-                  userName={val?.userName || null}
-                  date={val?.date || null}
-                  title={val?.title || null}
-                  rating={val?.rating}
-                  comment={val?.comment}
-                />
-              );
-            })}
+      {/* Featured Reviews */}
+      <div className="mt-6">
+        <h3 className="text-sm font-medium text-[#5a5a5a] mb-3">Featured review</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {featuredReviews.map((review, index) => (
+            <div key={index} className="flex flex-col gap-2 p-4 bg-white rounded-lg border border-[#e5e5e5]">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-600">
+                  {review.userName.charAt(0)}
+                </div>
+                <span className="text-sm font-medium text-[#0c2536]">{review.userName}</span>
+              </div>
+              <p className="text-sm text-black leading-relaxed">{review.comment}</p>
+              <span className="text-xs text-[#5a5a5a]">{review.date}</span>
+            </div>
+          ))}
         </div>
+      </div>
+
+      {/* All Reviews */}
+      <AllReviewsList />
+    </div>
+  );
+};
+
+const AllReviewsList = () => {
+  const [showSort, setShowSort] = useState(false);
+  const filterTabs = ['Most Recent', 'All Languages'];
+
+  return (
+    <div className="flex flex-col gap-4 mt-8">
+      <h3 className="text-[28px] font-semibold text-[#273f4e] capitalize">All Reviews</h3>
+
+      {/* Filter + Sort Row */}
+      <div className="flex items-center justify-between">
+        <div className="hidden sm:flex gap-3">
+          {filterTabs.map((tab, i) => (
+            <button
+              key={i}
+              className={`px-4 py-2 rounded-lg text-sm border ${
+                i === 0 ? 'bg-[#f2f2f2] border-[#e5e5e5] font-medium' : 'border-[#e5e5e5] text-[#5a5a5a]'
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+        <div className="relative">
+          <button
+            onClick={() => setShowSort(!showSort)}
+            className="flex items-center gap-2 text-[#5a5a5a] border border-[#e5e5e5] text-sm px-4 py-2 rounded-lg"
+          >
+            Sort <ListFilter size={16} />
+          </button>
+        </div>
+      </div>
+
+      {/* Review Cards */}
+      <div className="flex flex-col gap-6">
+        {allReviewsData.map((review, index) => (
+          <div key={index} className="flex flex-col gap-3">
+            {/* User Info Row */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
+                {review.avatar ? (
+                  <img src={review.avatar} alt={review.userName} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-sm font-medium text-gray-600">
+                    {review.userName.charAt(0)}
+                  </div>
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-[#0c2536]">{review.userName}</p>
+                <p className="text-xs text-[#5a5a5a]">{review.date}</p>
+              </div>
+            </div>
+
+            {/* Stars */}
+            <div className="flex">
+              {Array(review.rating)
+                .fill(0)
+                .map((_, i) => (
+                  <Star key={i} className="fill-yellow-500 stroke-none" size={14} />
+                ))}
+            </div>
+
+            {/* Review Content */}
+            <div className="flex gap-4">
+              <div className="flex-1">
+                <h4 className="font-semibold text-base text-[#0c2536] mb-1">{review.title}</h4>
+                <p className="text-sm text-black/80 leading-relaxed">{review.comment}</p>
+              </div>
+              {review.image && (
+                <div className="w-[120px] h-[90px] rounded-lg overflow-hidden flex-shrink-0">
+                  <img src={review.image} alt="Review" className="w-full h-full object-cover" />
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

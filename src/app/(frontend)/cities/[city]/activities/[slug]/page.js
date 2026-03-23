@@ -3,7 +3,7 @@
 import BannerSection from '@/app/components/Pages/FRONT_END/singleproduct/BannerSection';
 import { TabSectionActivity } from '@/app/components/Pages/FRONT_END/singleproduct/TabSection';
 import { notFound } from 'next/navigation';
-import { getSingleActivity } from '@/lib/services/activites';
+import { getSingleActivity, getRandomSimilarActivities } from '@/lib/services/activites';
 import { isEmpty } from 'lodash';
 
 export async function generateMetadata({ params }) {
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function SingleActivityPage({ params }) {
-  const { slug } = await params;
+  const { city, slug } = await params;
 
   const { data: activityData = [] } = await getSingleActivity(slug);
 
@@ -38,6 +38,9 @@ export default async function SingleActivityPage({ params }) {
     media_gallery,
   } = activityData;
 
+  // Fetch 2 random similar activities from the same city, excluding current activity
+  const similarActivities = await getRandomSimilarActivities(city, id);
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': item_type,
@@ -48,7 +51,7 @@ export default async function SingleActivityPage({ params }) {
   return (
     <>
       <BannerSection activityName={name} media_gallery={media_gallery} />
-      <TabSectionActivity productId={id} productData={activityData} />
+      <TabSectionActivity productId={id} productData={activityData} similarActivities={similarActivities} />
 
       {/* Add JSON-LD to your page */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

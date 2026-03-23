@@ -70,3 +70,30 @@ export async function getAllFeaturedActivities(city) {
     return [];
   }
 }
+
+/**
+ * Returns 2 random similar activities from the same city, excluding the current activity
+ * @param {string} city - City slug
+ * @param {number|string} excludeId - Activity ID to exclude (current activity)
+ * @returns {Array} - Array of 2 random activities
+ */
+export async function getRandomSimilarActivities(city, excludeId) {
+  try {
+    const params = city ? `?city=${city}` : '';
+    const response = await publicApi.get(`/api/activities/featured-activities${params}`, {
+      headers: { Accept: 'application/json' },
+    });
+
+    let activities = Array.isArray(response.data) ? response.data : (response.data?.data ?? []);
+
+    // Exclude the current activity
+    activities = activities.filter((activity) => activity.id != excludeId);
+
+    // Shuffle and take 2 random activities
+    const shuffled = activities.sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 2);
+  } catch (error) {
+    console.log('Error fetching similar activities:', error);
+    return [];
+  }
+}
