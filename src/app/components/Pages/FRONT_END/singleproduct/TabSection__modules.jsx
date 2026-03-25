@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Check, X, ChevronRight, ChevronDown, CircleCheckBig, MapPin, Users, CalendarDays, LifeBuoy, User, Wind } from 'lucide-react';
+import { Check, X, ChevronRight, MapPin, LifeBuoy, User, Wind } from 'lucide-react';
 import { SingleProductReview } from './SingleProductReview';
-import { activityHighlights, inclusionsList, activityFaqs, packageOptions } from '@/app/Data/SingleActivityData';
+import { activityHighlights, inclusionsList, activityFaqs } from '@/app/Data/SingleActivityData';
 import BreakSection from '@/app/components/BreakSection';
 import SingleProductForm from '@/app/components/Form/SingleProductForm';
 import SingleProductFormItinerary from '@/app/components/Form/SingleProductFormItinerary';
@@ -62,10 +62,10 @@ export const WhatIncludedPanel = () => {
 };
 
 // Review Panel
-export const ReviewPanel = () => {
+export const ReviewPanel = ({ productData, activitySlug }) => {
   return (
     <div>
-      <SingleProductReview />
+      <SingleProductReview productData={productData} activitySlug={activitySlug} />
     </div>
   );
 };
@@ -134,24 +134,8 @@ export const ProductForm = ({ productId, productData }) => {
       {/* Price */}
       <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">From ${productData?.pricing?.regular_price ?? '6,790.18'}</h3>
 
-      {/* Date & Travelers */}
-      <p className="text-[#5a5a5a] text-base mt-4 mb-3">Select Date & Travelers</p>
-      <div className="flex gap-3 mb-6">
-        <div className="flex items-center gap-2 border border-[#ccc] rounded-lg px-4 py-3 flex-1 text-sm text-[#5a5a5a]">
-          <Users size={16} /> 2 Adults, 1 Teen
-        </div>
-        <div className="flex items-center gap-2 border border-[#ccc] rounded-lg px-4 py-3 flex-1 text-sm text-[#5a5a5a]">
-          <CalendarDays size={16} /> 3rd Oct, 2024
-        </div>
-      </div>
-
-      {/* Select Package */}
-      <p className="text-[#5a5a5a] text-base mb-3">Select Package</p>
-
-      {/* Package Cards */}
-      {packageOptions.map((pkg, index) => (
-        <PackageCard key={pkg.id} pkg={pkg} isSelected={index === 0} isExpanded={index === 0} />
-      ))}
+      {/* Actual Form with Inputs */}
+      <SingleProductForm productId={productId} productData={productData} />
 
       {/* Questions Card */}
       <div className="mt-8 border border-[#e5e5e5] rounded-xl p-7 bg-white/70 backdrop-blur-sm">
@@ -164,90 +148,6 @@ export const ProductForm = ({ productId, productData }) => {
           <button className="px-6 py-3 border border-black rounded-lg text-sm font-medium text-black whitespace-nowrap hover:bg-gray-50 transition-colors">Help Center</button>
         </div>
       </div>
-    </div>
-  );
-};
-
-const PackageCard = ({ pkg, isSelected, isExpanded: defaultExpanded }) => {
-  const [expanded, setExpanded] = useState(defaultExpanded);
-  return (
-    <div className="border rounded-xl mb-4 overflow-hidden shadow-sm bg-white border-[#ccc]/50">
-      {/* Package Header */}
-      <button onClick={() => setExpanded(!expanded)} className="w-full flex items-center justify-between p-5">
-        <div className="flex items-center gap-3">
-          <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${isSelected ? 'border-[#57947d]' : 'border-gray-300'}`}>
-            {isSelected && <span className="w-2.5 h-2.5 rounded-full bg-[#57947d]" />}
-          </span>
-          <span className="font-medium text-base text-[#0c2536]">{pkg.name}</span>
-        </div>
-        <ChevronDown className={`transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} size={18} />
-      </button>
-
-      {expanded && (
-        <div className="px-5 pb-5">
-          {/* Time Slots */}
-          <div className="flex gap-2 mb-4">
-            {pkg.timeSlots.map((slot, i) => (
-              <span key={i} className={`px-4 py-2 rounded-lg text-sm border ${i === 0 ? 'border-[#57947d] text-[#57947d] font-medium' : 'border-[#ccc] text-[#5a5a5a]'}`}>
-                {slot}
-              </span>
-            ))}
-          </div>
-
-          {/* Separator */}
-          <div className="border-t border-[#d0d6d9]/50 my-4" />
-
-          {/* Include Transfer */}
-          {pkg.includeTransfer && (
-            <>
-              <div className="flex items-center gap-3 mb-3">
-                <span className="w-5 h-5 rounded bg-[#57947d] flex items-center justify-center">
-                  <Check size={14} className="text-white" />
-                </span>
-                <span className="font-medium text-base">Include Transfer</span>
-              </div>
-              <div className="flex gap-3 mb-4">
-                <div className="flex items-center gap-2 border border-[#ccc] rounded-lg px-4 py-2 flex-1 text-sm text-[#5a5a5a]">
-                  <MapPin size={14} /> From
-                </div>
-                <div className="flex items-center gap-2 border border-[#ccc] rounded-lg px-4 py-2 flex-1 text-sm text-[#5a5a5a]">
-                  <MapPin size={14} /> Melaka
-                </div>
-              </div>
-              <div className="border-t border-[#d0d6d9]/50 my-4" />
-            </>
-          )}
-
-          {/* Features */}
-          <div className="flex items-center gap-4 mb-4 bg-[#f3f5f5] px-4 py-2 rounded">
-            {pkg.features.map((feat, i) => (
-              <span key={i} className="flex items-center gap-1.5 text-sm text-[#57947d]">
-                <CircleCheckBig size={14} /> {feat}
-              </span>
-            ))}
-          </div>
-
-          {/* Price + Select */}
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-lg font-bold text-[#0c2536]">${pkg.price.toLocaleString()}</p>
-              <p className="text-sm text-[#5a5a5a] italic">Detailed Breakdown</p>
-            </div>
-            <button className="bg-[#57947d] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#4a8370] transition-colors">Select</button>
-          </div>
-        </div>
-      )}
-
-      {/* Collapsed alternative — show name + price for non-selected non-expanded */}
-      {!expanded && (
-        <div className="px-5 pb-4 flex items-center justify-between">
-          <span className="text-base text-[#0c2536]">{pkg.name}</span>
-          <div className="flex items-center gap-2">
-            <span className="font-medium">${pkg.price.toLocaleString()}</span>
-            <ChevronRight size={16} />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

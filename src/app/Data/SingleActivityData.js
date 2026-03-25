@@ -113,21 +113,3 @@ export const similarExperiences = [
   },
 ];
 
-export const packageOptions = [
-  {
-    id: 1,
-    name: 'Cruise With Scuba Diving',
-    timeSlots: ['11:30 AM', '12:30 AM', '1:30 AM'],
-    price: 6790.18,
-    features: ['Live Guide', 'Duration - 1.5 Hours'],
-    includeTransfer: true,
-  },
-  {
-    id: 2,
-    name: 'Scuba Diving',
-    timeSlots: ['10:00 AM', '2:00 PM'],
-    price: 3790.18,
-    features: ['Duration - 1 Hour'],
-    includeTransfer: false,
-  },
-];
