@@ -129,13 +129,87 @@ const FaqAccordionItem = ({ question, answer, defaultOpen = false }) => {
 
 // Activity Product Form (booking sidebar)
 export const ProductForm = ({ productId, productData }) => {
+  const [selectedAddons, setSelectedAddons] = useState([]);
+
+  const toggleAddon = (addon) => {
+    setSelectedAddons((prev) => {
+      const exists = prev.some((a) => a.addon_id === addon.addon_id);
+      return exists ? prev.filter((a) => a.addon_id !== addon.addon_id) : [...prev, addon];
+    });
+  };
+
+  const addonsTotal = selectedAddons.reduce((sum, a) => sum + Number(a.addon_sale_price ?? a.addon_price), 0);
+  const basePrice = Number(productData?.pricing?.regular_price ?? 0);
+
   return (
     <div className="p-6 lg:px-[60px] lg:pt-[60px] lg:pb-[70px] lg:sticky lg:top-[76px]">
-      {/* Price */}
+      {/* Base Price */}
       <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">From ${productData?.pricing?.regular_price ?? '6,790.18'}</h3>
 
+      {/* Add-on price subtotal */}
+      {selectedAddons.length > 0 && (
+        <div className="mt-2 flex flex-col gap-1">
+          <p className="text-base font-medium text-[#57947d]">+ Add-ons: ${addonsTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+          <p className="text-lg font-bold text-[#0c2536]">Total: ${(basePrice + addonsTotal).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+        </div>
+      )}
+
       {/* Actual Form with Inputs */}
-      <SingleProductForm productId={productId} productData={productData} />
+      <SingleProductForm productId={productId} productData={productData} selectedAddons={selectedAddons} />
+
+      {/* Select Addon */}
+      {productData?.addons?.length > 0 && (
+        <>
+          <p className="text-[#5a5a5a] text-base mb-3 mt-6">Select Addon</p>
+          <div className="flex flex-col gap-3">
+            {productData.addons.map((addon) => {
+              const isChecked = selectedAddons.some((a) => a.addon_id === addon.addon_id);
+              return (
+                <div
+                  key={addon.addon_id}
+                  role="checkbox"
+                  aria-checked={isChecked}
+                  tabIndex={0}
+                  className="flex items-center gap-3 cursor-pointer group"
+                  onClick={() => toggleAddon(addon)}
+                  onKeyDown={(e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleAddon(addon); } }}
+                >
+                  {/* Checkbox */}
+                  <span
+                    className={`w-5 h-5 rounded-[4px] flex items-center justify-center flex-shrink-0 transition-colors ${
+                      isChecked ? 'bg-[#57947d]' : 'border-2 border-gray-300 bg-white'
+                    }`}
+                  >
+                    {isChecked && (
+                      <Check size={14} className="text-white" />
+                    )}
+                  </span>
+
+                  {/* Name + Description */}
+                  <div className="flex-1 min-w-0">
+                    <span className="text-base font-medium text-[#0c2536]">{addon.addon_name}</span>
+                    {addon.addon_description && (
+                      <p className="text-sm text-[#5a5a5a] truncate">{addon.addon_description}</p>
+                    )}
+                  </div>
+
+                  {/* Price */}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    {addon.addon_sale_price != null ? (
+                      <>
+                        <span className="text-sm text-gray-400 line-through">${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        <span className="text-base font-semibold text-[#273f4e]">${Number(addon.addon_sale_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                      </>
+                    ) : (
+                      <span className="text-base font-semibold text-[#273f4e]">${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
 
       {/* Questions Card */}
       <div className="mt-8 border border-[#e5e5e5] rounded-xl p-7 bg-white/70 backdrop-blur-sm">
