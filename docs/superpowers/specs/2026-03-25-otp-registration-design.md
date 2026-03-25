@@ -10,6 +10,7 @@ Add OTP-based email verification to the user registration flow. Users must verif
 ## Requirements
 
 ### User Flow
+
 1. User enters: full name, username, email, password, confirm password
 2. Click "Continue" → Send OTP to email
 3. Show 6-digit OTP input screen
@@ -19,6 +20,7 @@ Add OTP-based email verification to the user registration flow. Users must verif
 ### Technical Specifications
 
 #### OTP Configuration
+
 - **Format:** 6-digit numeric code
 - **Length:** Exactly 6 characters
 - **Expiry:** 10 minutes
@@ -27,6 +29,7 @@ Add OTP-based email verification to the user registration flow. Users must verif
 - **Rate limit:** 3 OTP requests per email per hour
 
 #### Data Storage
+
 - **Backend:** Laravel Cache (`otp:{email}` key)
 - **TTL:** 600 seconds (10 minutes)
 
@@ -43,13 +46,16 @@ Add OTP-based email verification to the user registration flow. Users must verif
 ```
 
 #### Database Changes
+
 - **No schema changes needed** - OTP uses temporary cache only
 - **Username** stored in `user_meta` table (`meta_key='username'`)
 
 ## API Endpoints
 
 ### POST `/api/public/send-otp`
+
 **Request:**
+
 ```json
 {
   "name": "John Doe",
@@ -61,6 +67,7 @@ Add OTP-based email verification to the user registration flow. Users must verif
 ```
 
 **Response (201):**
+
 ```json
 {
   "success": true,
@@ -70,11 +77,14 @@ Add OTP-based email verification to the user registration flow. Users must verif
 ```
 
 **Errors:**
+
 - 422: Validation failed
 - 429: Too many OTP requests (rate limit)
 
 ### POST `/api/public/verify-otp`
+
 **Request:**
+
 ```json
 {
   "email": "user@example.com",
@@ -83,6 +93,7 @@ Add OTP-based email verification to the user registration flow. Users must verif
 ```
 
 **Response (201):**
+
 ```json
 {
   "success": true,
@@ -98,6 +109,7 @@ Add OTP-based email verification to the user registration flow. Users must verif
 ```
 
 **Errors:**
+
 - 400: Invalid OTP format
 - 404: OTP not found or expired
 - 422: Incorrect OTP (includes `attempts_remaining`)
@@ -106,6 +118,7 @@ Add OTP-based email verification to the user registration flow. Users must verif
 ## Frontend Components
 
 ### OtpInput.jsx
+
 - 6 individual input boxes (1 digit each)
 - Auto-focus next box on entry
 - Handle backspace to focus previous box
@@ -118,17 +131,19 @@ Add OTP-based email verification to the user registration flow. Users must verif
   - `timeUntilResend: number` - seconds until resend available
 
 ### RegisterForm.jsx Modifications
+
 - Add `step` state: `'info'` | `'otp'`
 - Store form data between steps
 - Integrate OTP input component
 - Handle API calls and errors
 
 ### State Management
+
 ```javascript
-const [step, setStep] = useState('info')
-const [formData, setFormData] = useState(null)
-const [userEmail, setUserEmail] = useState('')
-const [timeUntilResend, setTimeUntilResend] = useState(30)
+const [step, setStep] = useState('info');
+const [formData, setFormData] = useState(null);
+const [userEmail, setUserEmail] = useState('');
+const [timeUntilResend, setTimeUntilResend] = useState(30);
 ```
 
 ## Email Template
@@ -136,6 +151,7 @@ const [timeUntilResend, setTimeUntilResend] = useState(30)
 **Subject:** Verify your Weelp account
 
 **Body:**
+
 ```
 Your verification code is: 123456
 

@@ -23,7 +23,7 @@ export function AuthPageClient({ defaultTab = 'login' }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9F9] flex flex-col lg:flex-row">
+    <div className="w-screen min-h-screen bg-[#F8F9F9] flex flex-col lg:flex-row">
       {/* Left Side - Hero Image (50% on desktop, 35% on mobile) */}
       <div className="lg:w-1/2 h-[35vh] lg:h-auto relative bg-gradient-to-br from-[#588f7a]/20 to-[#b5d8cb]/20">
         <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: 'url("/assets/images/auth-hero.jpg")' }} />
@@ -45,13 +45,13 @@ export function AuthPageClient({ defaultTab = 'login' }) {
           <div className="flex mb-6 border-b border-gray-200">
             <button
               onClick={() => handleTabSwitch('login')}
-              className={`flex-1 pb-3 text-center font-medium transition-colors duration-200 ${isLogin ? 'text-[#588f7a] border-b-2 border-[#588f7a]' : 'text-gray-500 hover:text-gray-700'}`}
+              className={`flex-1 py-3 text-center font-medium transition-colors duration-200 ${isLogin ? 'text-[#588f7a] border-b-2 border-[#588f7a]' : 'text-gray-500 hover:text-gray-700'}`}
             >
               Log In
             </button>
             <button
               onClick={() => handleTabSwitch('signup')}
-              className={`flex-1 pb-3 text-center font-medium transition-colors duration-200 ${!isLogin ? 'text-[#588f7a] border-b-2 border-[#588f7a]' : 'text-gray-500 hover:text-gray-700'}`}
+              className={`flex-1 py-3 text-center font-medium transition-colors duration-200 ${!isLogin ? 'text-[#588f7a] border-b-2 border-[#588f7a]' : 'text-gray-500 hover:text-gray-700'}`}
             >
               Sign Up
             </button>

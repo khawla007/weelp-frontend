@@ -37,6 +37,7 @@ A modern booking application built with **Next.js 15**, leveraging powerful libr
 ### **Authentication**
 
 - **NextAuth.js (v5) Authjs** – Authentication and session handling
+- **OTP-based Email Verification** – 6-digit OTP sent during registration with 10-minute expiration and rate limiting
 
 ### **File Handling**
 
