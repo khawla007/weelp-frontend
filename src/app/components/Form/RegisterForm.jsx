@@ -32,7 +32,7 @@ const schema = z
     message: 'Passwords do not match',
   });
 
-export function RegisterForm({ onCloseDialog, onSwitchToLogin }) {
+export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton = true }) {
   const { visible, toggle } = useTogglePassword(); // toggle password hook
   const { toast } = useToast();
 
@@ -71,21 +71,19 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin }) {
         onSwitchToLogin?.();
       }
     } catch (error) {
-      // Validation Erro
-      const { response } = error;
-      if (response.status === 422) {
-        const { error, message } = response?.data;
+      const response = error?.response;
 
-        // Displaying the error using toast
+      if (response?.status === 422) {
+        const { error: errorTitle, message } = response?.data || {};
         toast({
           variant: 'destructive',
-          title: error,
-          description: message, // Show the error message
+          title: errorTitle || 'Validation error',
+          description: message,
         });
+        return;
       }
 
-      //  unexpected
-      const { message } = response?.data;
+      const message = response?.data?.message || 'An unexpected error occurred. Please try again.';
       toast({
         variant: 'destructive',
         title: message,
@@ -96,9 +94,11 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin }) {
   return (
     <div className="relative space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8">
       {/* Custom Close Button */}
-      <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
-        <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
-      </button>
+      {showCloseButton && (
+        <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
+          <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
+        </button>
+      )}
       <div className="bg-white rounded-t-xl border-b py-4 px-8 pr-12">
         <Image src="/assets/images/SiteLogo.png" alt="Site Logo" width={122} height={42} />
       </div>
@@ -154,7 +154,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin }) {
             <label htmlFor="password_confirmation" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
               <KeyRound className="text-[#5A5A5A] size-4" />
               <input
-                type="text"
+                type="password"
                 id="password_confirmation"
                 placeholder="Confirm Password"
                 {...register('password_confirmation')}

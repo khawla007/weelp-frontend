@@ -1,16 +1,19 @@
 import React from 'react';
 import { auth } from '@/lib/auth/auth';
 import { redirect } from 'next/navigation';
-import { LoginForm } from '@/app/components/Form/LoginForm';
+import { AuthPageClient } from '@/app/components/Form/AuthPageClient';
 
-const LoginPage = async () => {
+const LoginPage = async ({ searchParams }) => {
   const session = await auth();
 
   if (session?.user) {
     redirect('/dashboard');
   }
 
-  return <LoginForm />;
+  // Determine default tab from URL param, default to 'login'
+  const defaultTab = searchParams.tab === 'signup' ? 'signup' : 'login';
+
+  return <AuthPageClient defaultTab={defaultTab} />;
 };
 
 export default LoginPage;

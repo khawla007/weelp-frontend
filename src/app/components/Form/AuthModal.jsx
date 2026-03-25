@@ -13,9 +13,9 @@ export function AuthModal({ customUrl, onCloseDialog }) {
   return (
     <>
       {view === 'login' ? (
-        <LoginForm customUrl={customUrl} onCloseDialog={onCloseDialog} onSwitchToSignup={switchToSignup} />
+        <LoginForm customUrl={customUrl} showCloseButton={true} onCloseDialog={onCloseDialog} onSwitchToSignup={switchToSignup} />
       ) : (
-        <RegisterForm onCloseDialog={onCloseDialog} onSwitchToLogin={switchToLogin} />
+        <RegisterForm showCloseButton={true} onCloseDialog={onCloseDialog} onSwitchToLogin={switchToLogin} />
       )}
     </>
   );

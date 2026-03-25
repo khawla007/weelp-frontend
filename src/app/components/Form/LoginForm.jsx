@@ -21,7 +21,7 @@ const schema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters').nonempty('Password is required'),
 });
 
-export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup }) {
+export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showCloseButton = true }) {
   const { toast } = useToast();
   const isClient = useIsClient(); // custom hook for hydration
   const { visible, toggle } = useTogglePassword(); // toggle password hook
@@ -51,7 +51,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup }) {
         if (result?.error === 'CredentialsSignin') {
           toast({
             variant: 'destructive',
-            title: 'Email or Password Incorect',
+            title: 'Email or Password Incorrect',
           });
         }
         return;
@@ -96,9 +96,11 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup }) {
     return (
       <div className={`relative bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8 ${isSubmitting && 'cursor-wait'}`}>
         {/* Custom Close Button */}
-        <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
-          <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
-        </button>
+        {showCloseButton && (
+          <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
+            <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
+          </button>
+        )}
         <div className="bg-white  rounded-t-xl border-b py-4 px-8 pr-12">
           <Image width={122} height={42} alt="form_logo" src="/assets/images/SiteLogo.png" />
         </div>
@@ -184,4 +186,5 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup }) {
       </div>
     );
   }
+  return null;
 }
