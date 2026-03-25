@@ -16,8 +16,8 @@ export async function POST(req) {
       return NextResponse.json({ message, success }, { status: response.status });
     }
   } catch (error) {
-    if (error) {
-      return NextResponse.json({ message: 'An unexpected error occurred. Please try again .' }, { status: 500 });
-    }
+    const message = error?.response?.data?.message || 'An unexpected error occurred. Please try again.';
+    const status = error?.response?.status || 500;
+    return NextResponse.json({ message, success: false }, { status });
   }
 }

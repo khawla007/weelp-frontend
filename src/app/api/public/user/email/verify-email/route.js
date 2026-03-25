@@ -9,7 +9,7 @@ export async function GET(request) {
     const token = searchParams.get('token');
 
     if (!token) {
-      return new NextResponse.json({ success: false, message: 'Token is required' });
+      return NextResponse.json({ success: false, message: 'Token is required' }, { status: 400 });
     }
 
     // Use your Axios instance

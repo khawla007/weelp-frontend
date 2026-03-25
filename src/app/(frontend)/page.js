@@ -13,6 +13,7 @@ const BrowseDestinationsSection = dynamic(() => import('../components/Pages/FRON
 const TestimonialSection = dynamic(() => import('../components/Pages/FRONT_END/Global/TestimonialSection'));
 const AiSection = dynamic(() => import('../components/Pages/FRONT_END/home/AiSection'));
 const BlogSection = dynamic(() => import('../components/ui/BlogSection'));
+const WeelpRecommendations = dynamic(() => import('../components/Pages/FRONT_END/home/WeelpRecommendations'));
 
 const HomePage = async () => {
   const [featuredActivitiesRes, featuredCitiesRes, blogsRes, reviewsRes] = await Promise.all([
@@ -40,6 +41,7 @@ const HomePage = async () => {
       <TestimonialSection reviews={reviews} />
       <AiSection />
       <BlogSection blogs={blogs} navigationId="guide-blog" />
+      <WeelpRecommendations />
     </>
   );
 };

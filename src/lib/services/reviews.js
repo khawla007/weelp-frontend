@@ -104,3 +104,49 @@ export async function getAllItemsByTypeOptions(itemType) {
     return { success: false, data: [], error: error.message };
   }
 }
+
+/**
+ * Get reviews for a specific activity
+ * Used on: Single Activity Page - review section
+ * @param {string} activitySlug - Activity slug
+ * @param {Object} params - Query params (sort, photos_only, per_page, page)
+ * @returns {Promise<Object>} Reviews data with summary
+ */
+export async function getActivityReviews(activitySlug, params = {}) {
+  try {
+    const { sort = 'recent', photos_only = false, per_page = 10, page = 1 } = params;
+
+    const queryParams = new URLSearchParams();
+    if (sort) queryParams.append('sort', sort);
+    if (photos_only) queryParams.append('photos_only', 'true');
+    if (per_page) queryParams.append('per_page', per_page.toString());
+    if (page) queryParams.append('page', page.toString());
+
+    const queryString = queryParams.toString();
+    const response = await publicApi.get(`/api/reviews/activity/${activitySlug}${queryString ? `?${queryString}` : ''}`, {
+      headers: { Accept: 'application/json' },
+    });
+
+    return response?.data;
+  } catch (error) {
+    return { success: false, data: [], summary: { average_rating: 0, total_reviews: 0, total_photos: 0 } };
+  }
+}
+
+/**
+ * Get featured reviews for a specific activity
+ * Used on: Single Activity Page - featured review carousel
+ * @param {string} activitySlug - Activity slug
+ * @returns {Promise<Object>} Featured reviews data
+ */
+export async function getActivityFeaturedReviews(activitySlug) {
+  try {
+    const response = await publicApi.get(`/api/reviews/activity/${activitySlug}/featured`, {
+      headers: { Accept: 'application/json' },
+    });
+
+    return response?.data;
+  } catch (error) {
+    return { success: false, data: [] };
+  }
+}

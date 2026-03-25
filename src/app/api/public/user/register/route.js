@@ -16,8 +16,6 @@ export async function POST(req) {
     if (response.status === 201) {
       return NextResponse.json({ message: response.data.message }, { status: 201 });
     }
-
-    return NextResponse.json({ message: response.data.message }, { status: 201 });
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       const { response } = error;

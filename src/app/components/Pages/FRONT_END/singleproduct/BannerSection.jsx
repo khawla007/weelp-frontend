@@ -1,8 +1,8 @@
 import BreadCrumb from '@/app/components/BreadCrumb';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { CircleCheckBig, Clock4, MapPin, Star, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
-import { activityStats } from '@/app/Data/SingleActivityData';
 
-const BannerSection = ({ activityName, media_gallery = [] }) => {
+const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null, primaryLocation = null, city = null }) => {
   return (
     <section className="bg-white">
       <div className="max-w-[1480px] mx-auto px-4">
@@ -17,25 +17,27 @@ const BannerSection = ({ activityName, media_gallery = [] }) => {
             <ul className="flex flex-wrap items-center gap-4">
               <li className="flex items-center gap-2 pr-4 border-r border-[#143042]/40">
                 <span className="flex">
-                  {Array(3)
+                  {Array(5)
                     .fill(0)
                     .map((_, i) => (
-                      <Star key={i} className="stroke-none fill-yellow-500" size={18} />
+                      <Star key={i} className={i < Math.round(reviewSummary?.average_rating || 0) ? 'stroke-none fill-[#fed141ff]' : 'stroke-none fill-gray-300'} size={16} />
                     ))}
                 </span>
-                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">{activityStats.reviewCount} Reviews</span>
+                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">{reviewSummary?.total_reviews || 0} Reviews</span>
               </li>
               <li className="flex items-center gap-2 pr-4 border-r border-[#143042]/40">
                 <CircleCheckBig size={18} className="text-[#5a5a5a]" />
-                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">{activityStats.totalBooked} booked</span>
+                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">3M+ booked</span>
               </li>
               <li className="flex items-center gap-2 pr-4 border-r border-[#143042]/40">
                 <MapPin size={18} className="text-[#5a5a5a]" />
-                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium border-b border-inherit">{activityStats.locationName}</span>
+                <NavigationLink href={`/cities/${city || '#'}`} className="text-[#5a5a5a] text-sm lg:text-base font-medium hover:text-[#0c2536] transition-colors">
+                  {primaryLocation?.city || 'Location'} {primaryLocation?.location_label && `(${primaryLocation.location_label})`}
+                </NavigationLink>
               </li>
               <li className="flex items-center gap-2">
                 <Clock4 size={18} className="text-[#5a5a5a]" />
-                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">{activityStats.duration}</span>
+                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">{primaryLocation?.duration ? `${primaryLocation.duration} Minutes` : 'Flexible'}</span>
               </li>
             </ul>
 

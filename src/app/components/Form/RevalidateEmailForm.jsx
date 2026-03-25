@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
-import { Key } from 'lucide-react';
+import { AtSign } from 'lucide-react';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 import axios from 'axios';
@@ -15,12 +15,7 @@ import { Label } from '@/components/ui/label';
 
 // Zod schema for validation
 const schema = z.object({
-  email: z
-    .string()
-    .min(8, 'Must be at least 8 characters long')
-    .regex(/[A-Za-z]/, 'Must contain at least one letter')
-    .regex(/[@#$%^&+=]/, 'Must contain at least one special character (@, #, $, etc.)')
-    .nonempty('Email Required'),
+  email: z.string().nonempty('Email is required').email('Invalid email address'),
 });
 
 export const FormRevalidateEmail = () => {
@@ -58,16 +53,10 @@ export const FormRevalidateEmail = () => {
         reset();
       }
     } catch (error) {
-      const {
-        response: { data },
-      } = error;
-
-      const { message } = data || {};
-
-      // handle error for forgot password
+      const message = error?.response?.data?.message || 'Something Went Wrong';
       toast({
         variant: 'destructive',
-        title: message || 'Something Went Wrong',
+        title: message,
       });
     }
   };
@@ -85,7 +74,7 @@ export const FormRevalidateEmail = () => {
           {/* Email Input */}
           <div>
             <Label htmlFor="email" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
-              <Key className="text-[#5A5A5A] size-4" />
+              <AtSign className="text-[#5A5A5A] size-4" />
               <input
                 placeholder="Enter your Email"
                 type="email"

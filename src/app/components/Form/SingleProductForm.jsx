@@ -11,7 +11,6 @@ import 'react-day-picker/dist/style.css';
 import { useRouter } from 'next/navigation';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { log } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
 // Zod Schema
@@ -30,17 +29,15 @@ const bookingSchema = z.object({
 });
 
 // activity
-export default function SingleProductForm({ productId, productData, selectedAddons = [] }) {
+export default function SingleProductForm({ productId, productData, selectedAddons = [], formId }) {
   const [initform] = useState(() => true);
   const [showCalendar, setShowCalendar] = useState(false); // date & howmany
   const [showHowMany, setShowHowMany] = useState(false); // date & howmany
   const [showResponse, setShowResponse] = useState(false);
-  const { setMiniCartOpen, addItem, clearCart, cartItems } = useMiniCartStore();
+  const { setMiniCartOpen, addItem, clearCart } = useMiniCartStore();
   const { toast } = useToast();
 
   const router = useRouter(); // intialize router
-
-  const isInCart = cartItems.some((item) => item.id === productData.id);
 
   // React Hook Form setup with Zod
   const {
@@ -58,6 +55,8 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     },
   });
 
+  const [selectedDates, setSelectedDates] = useState({ from: null, to: null });
+
   const [howMany, setHowMany] = useState({
     adults: 1,
     children: 0,
@@ -69,9 +68,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     setMiniCartOpen(true);
 
     // compute combined price with add-ons
-    const addonsTotal = selectedAddons.reduce(
-      (sum, a) => sum + Number(a.addon_sale_price ?? a.addon_price), 0
-    );
+    const addonsTotal = selectedAddons.reduce((sum, a) => sum + Number(a.addon_sale_price ?? a.addon_price), 0);
 
     // add item to cart
     addItem({
@@ -82,7 +79,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
       ...data,
       featured_image: 'https://picsum.photos/200/300',
       type: productData?.item_type,
-      addons: selectedAddons.map(a => ({
+      addons: selectedAddons.map((a) => ({
         addon_id: a.addon_id,
         addon_name: a.addon_name,
         price: a.addon_sale_price ?? a.addon_price,
@@ -138,118 +135,109 @@ export default function SingleProductForm({ productId, productData, selectedAddo
   if (initform) {
     return (
       <div className="p-4 sm:p-6 sm:px-0 w-full relative singleProducform">
-        {/* if item is in cart */}
-        {isInCart ? (
-          <h2 className="text-lg font-medium flex gap-4 items-center">
-            Item already in cart{' '}
-            <span className={`${buttonVariants()} bg-secondaryDark cursor-pointer`} onClick={() => setMiniCartOpen(true)}>
-              Show Cart
-            </span>
-          </h2>
-        ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-around items-center gap-4 w-full">
-            <span className="hidden" id={productId} />
-            {/* For Date & Total */}
-            <div className=" w-full flex flex-col gap-4">
-              <h5 className="self-start text-[#5A5A5A]">Select Date & Travelers</h5>
-              <div className="flex border-y-[1px]  shadow-sm border w-full bg-white rounded-l-xl rounded-r-xl">
-                {/* When? */}
-                <div className="flex flex-col items-center border-x border-l-0 w-full justify-center">
-                  <div className="p-2 sm:p-4">
-                    <label className="flex cursor-pointer flex-wrap justify-center items-center gap-2 text-[#5A5A5A] text-[12px] sm:text-base" onClick={toggleCalendar}>
-                      <Calendar size={20} />
-                      <span>When?</span>
-                    </label>
-                    {errors.dateRange && <p className="text-red-500 text-sm text-center">{errors.dateRange.message}</p>}
-                  </div>
+        {/* Form with Inputs */}
+        <form id={formId} onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-around items-center gap-4 w-full">
+          <span className="hidden" id={productId} />
+          {/* For Date & Travelers */}
+          <div className="w-full flex flex-col gap-4">
+            <h5 className="self-start text-[#5A5A5A]">Select Date & Travelers</h5>
+            <div className="flex gap-3 w-full">
+              {/* Travelers Card */}
+              <div className="flex-1 bg-white rounded-xl border border-[#ccc]/50 shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[24px] cursor-pointer" onClick={toggleHowMany}>
+                <div className="flex items-center gap-3 text-[#5A5A5A]">
+                  <Users size={20} />
+                  <span className="text-base">{howMany?.adults + howMany?.children} Travelers</span>
                 </div>
-
-                {/* How Many? */}
-                <div className="flex flex-col items-center border-x border-r-0 w-full  justify-center">
-                  <div className="p-2 sm:p-4">
-                    <label className="flex cursor-pointer flex-wrap justify-center items-center gap-2 text-[#5A5A5A] text-[12px] sm:text-base" onClick={toggleHowMany}>
-                      <Users size={20} />
-
-                      {howMany?.adults + howMany?.children}
-                    </label>
-                    {errors.howMany && <p className="text-red-500 text-sm text-center">{errors.howMany?.adults?.message || ''}</p>}
-                  </div>
-                </div>
+                {errors.howMany && <p className="text-red-500 text-sm mt-1">{errors.howMany?.adults?.message || ''}</p>}
               </div>
 
-              {/* Toggle Fields */}
-              <div className="flex rounded-lg absolute z-50 pointer-events-auto  top-[30%] w-full scale-90 sm:scale-[unset]">
-                {showCalendar && (
-                  <div
-                    onMouseLeave={(e) => {
-                      setShowCalendar(!showCalendar);
-                    }}
-                    className="flex justify-center mx-auto bg-white w-fit rounded-2xl p-2"
-                  >
-                    <Controller
-                      name="dateRange"
-                      control={control}
-                      render={({ field }) => (
-                        <DayPicker
-                          mode="range"
-                          selected={field.value}
-                          disabled={{
-                            before: new Date(),
-                          }}
-                          onSelect={(value) => field.onChange(value)}
-                          className="scale-90"
-                          classNames={{ today: 'text-black' }}
-                        />
-                      )}
-                    />
-                  </div>
-                )}
-
-                {showHowMany && (
-                  <div className="text-nowrap flex flex-col gap-4  w-full items-center ">
-                    <div
-                      onMouseLeave={(e) => {
-                        setShowHowMany(!showHowMany);
-                      }}
-                      className="bg-white w-fit p-4 px-6 rounded-lg flex flex-col gap-4 border"
-                    >
-                      {['adults', 'children', 'infants'].map((type, index) => (
-                        <div key={index} className="flex justify-between items-center w-full gap-6">
-                          <div>
-                            <h3 className="font-semibold capitalize">{type}</h3>
-                            <span className="text-sm">{type == 'adults' ? 'Above 13 or above' : type == 'children' ? 'Age 2-12' : type == 'infants' ? 'Under 2' : null}</span>
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <button
-                              type="button"
-                              onClick={() => handleDecrement(type)}
-                              className="w-8 h-8 rounded-full border text-lg flex items-center justify-center text-gray-700 bg-graycolor hover:bg-[#e9f5ed] hover:opacity-80"
-                            >
-                              <Minus size={14} />
-                            </button>
-                            <span className="font-semibold">{howMany[type]}</span>
-                            <button
-                              type="button"
-                              onClick={() => handleIncrement(type)}
-                              className="w-8 h-8 rounded-full border border-secondarylight text-lg flex items-center justify-center text-secondaryDark hover:bg-[#e9f5ed] hover:opacity-80 "
-                            >
-                              <Plus size={14} />
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+              {/* Date Card */}
+              <div className="flex-1 bg-white rounded-xl border border-[#ccc]/50 shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[24px] cursor-pointer" onClick={toggleCalendar}>
+                <div className="flex items-center gap-3 text-[#5A5A5A]">
+                  <Calendar size={20} />
+                  <span className="text-base">
+                    {selectedDates?.from && selectedDates?.to
+                      ? `${selectedDates.from.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${selectedDates.to.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+                      : 'When?'}
+                  </span>
+                </div>
+                {errors.dateRange && <p className="text-red-500 text-sm mt-1">{errors.dateRange.message}</p>}
               </div>
             </div>
 
-            {/* For Submit */}
-            <button type="submit" disabled={!isValid} className="disabled:bg-gray-400 disabled:cursor-not-allowed w-fit p-4 px-10 text-base font-medium bg-secondaryDark text-white rounded-md shadow">
-              Select
-            </button>
-          </form>
-        )}
+            {/* Toggle Fields */}
+            <div className="flex rounded-lg absolute z-50 pointer-events-auto  top-[30%] w-full scale-90 sm:scale-[unset]">
+              {showCalendar && (
+                <div
+                  onMouseLeave={(e) => {
+                    setShowCalendar(!showCalendar);
+                  }}
+                  className="flex justify-center mx-auto bg-white w-fit rounded-2xl p-2"
+                >
+                  <Controller
+                    name="dateRange"
+                    control={control}
+                    render={({ field }) => (
+                      <DayPicker
+                        mode="range"
+                        selected={field.value}
+                        disabled={{
+                          before: new Date(),
+                        }}
+                        onSelect={(value) => {
+                          field.onChange(value);
+                          setSelectedDates(value ?? { from: null, to: null });
+                          if (value?.from && value?.to && value.from.getTime() !== value.to.getTime()) {
+                            setShowCalendar(false);
+                          }
+                        }}
+                        className="scale-90"
+                        classNames={{ today: 'text-black' }}
+                      />
+                    )}
+                  />
+                </div>
+              )}
+
+              {showHowMany && (
+                <div className="text-nowrap flex flex-col gap-4  w-full items-center ">
+                  <div
+                    onMouseLeave={(e) => {
+                      setShowHowMany(!showHowMany);
+                    }}
+                    className="bg-white w-fit p-4 px-6 rounded-lg flex flex-col gap-4 border"
+                  >
+                    {['adults', 'children', 'infants'].map((type, index) => (
+                      <div key={index} className="flex justify-between items-center w-full gap-6">
+                        <div>
+                          <h3 className="font-semibold capitalize">{type}</h3>
+                          <span className="text-sm">{type == 'adults' ? 'Above 13 or above' : type == 'children' ? 'Age 2-12' : type == 'infants' ? 'Under 2' : null}</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <button
+                            type="button"
+                            onClick={() => handleDecrement(type)}
+                            className="w-8 h-8 rounded-full border text-lg flex items-center justify-center text-gray-700 bg-graycolor hover:bg-[#e9f5ed] hover:opacity-80"
+                          >
+                            <Minus size={14} />
+                          </button>
+                          <span className="font-semibold">{howMany[type]}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleIncrement(type)}
+                            className="w-8 h-8 rounded-full border border-secondarylight text-lg flex items-center justify-center text-secondaryDark hover:bg-[#e9f5ed] hover:opacity-80 "
+                          >
+                            <Plus size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </form>
       </div>
     );
   }

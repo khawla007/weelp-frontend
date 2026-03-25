@@ -9,7 +9,7 @@ export async function POST(request) {
     const { email } = formData; // destructure email
 
     if (!email) {
-      return new NextResponse.json({ success: false, message: 'Email is required' });
+      return NextResponse.json({ success: false, message: 'Email is required' }, { status: 400 });
     }
 
     // Use your Axios instance

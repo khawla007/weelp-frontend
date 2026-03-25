@@ -5,14 +5,15 @@ import throttle from 'lodash/throttle';
 import { OverViewPanel, WhatIncludedPanel, ReviewPanel, FaqPanel, ProductForm, ItineraryPanel, ProductFormItinerary, ProductFormPackage } from './TabSection__modules';
 import SimilarExperiences from './SimilarExperiences';
 
-export const TabSectionActivity = ({ productId, productData, similarActivities = [] }) => {
+export const TabSectionActivity = ({ productId, productData, similarActivities = [], activitySlug }) => {
   const [activeTab, setActiveTab] = useState('tab_1');
   const sectionRefs = useRef({});
   const [fixedTab, setFixedTab] = useState(false);
   const tabBarHeight = 60;
+  const HEADER_HEIGHT = 66; // Height of sticky header
 
   // Check if reviews exist — hide reviews tab and section if no reviews
-  const hasReviews = productData?.reviews && productData.reviews.length > 0;
+  const hasReviews = productData?.review_summary?.total_reviews > 0;
 
   // Build tabs array - conditionally include Reviews
   const tabs = [{ id: 'tab_1', label: 'Overview' }, { id: 'tab_2', label: "What's Included" }, ...(hasReviews ? [{ id: 'tab_3', label: 'Reviews' }] : []), { id: 'tab_4', label: 'FAQs' }];
@@ -58,7 +59,7 @@ export const TabSectionActivity = ({ productId, productData, similarActivities =
   return (
     <section className="w-full bg-white mt-[70px]">
       {/* Sticky Tab Bar */}
-      <div className={`${fixedTab ? 'fixed top-0' : ''} relative z-[999] w-full bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]`}>
+      <div className={`${fixedTab ? 'fixed' : 'relative'} z-[999] w-full bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]`} style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}>
         <div className="flex items-center justify-center">
           {tabs.map((tab, index) => (
             <button
@@ -87,7 +88,7 @@ export const TabSectionActivity = ({ productId, productData, similarActivities =
             </div>
             {hasReviews && (
               <div id="tab_3" ref={(el) => (sectionRefs.current['tab_3'] = el)} className="pt-[35px] lg:mb-[35px]">
-                <ReviewPanel />
+                <ReviewPanel productData={productData} activitySlug={activitySlug} />
               </div>
             )}
             <div id="tab_4" ref={(el) => (sectionRefs.current['tab_4'] = el)} className="pt-[35px] lg:mb-[35px]">
@@ -100,7 +101,13 @@ export const TabSectionActivity = ({ productId, productData, similarActivities =
         </div>
 
         {/* Right Column — Booking Sidebar */}
-        <div className="w-full xl:w-[42%] bg-[#f5f9fa]">
+        <div className="w-full xl:w-[42%] relative" style={{ background: 'linear-gradient(180deg, #f5f9fa 0%, rgba(255, 255, 255, 0.4) 100%)' }}>
+          {/* Bottom decorative image */}
+          <div className="absolute bottom-0 left-0 w-full h-auto pointer-events-none">
+            <img src="/assets/images/activity-sidebar-bottom.png" alt="" className="w-full h-auto object-cover" style={{ maxHeight: '150px' }} />
+            {/* Blur overlay effect */}
+            <div className="absolute bottom-0 left-0 w-full h-24 backdrop-blur-3xl opacity-70" />
+          </div>
           <ProductForm productId={productId} productData={productData} />
         </div>
       </div>

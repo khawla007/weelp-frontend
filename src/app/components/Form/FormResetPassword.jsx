@@ -97,16 +97,10 @@ export const FormResetPassword = () => {
         reset();
       }
     } catch (error) {
-      const {
-        response: { data },
-      } = error;
-
-      const { message } = data || {};
-
-      // handle error for forgot password
+      const message = error?.response?.data?.message || 'Something Went Wrong';
       toast({
         variant: 'destructive',
-        title: message || 'Something Went Wrong',
+        title: message,
       });
     }
   };
@@ -124,7 +118,7 @@ export const FormResetPassword = () => {
                 Login
               </Link>
             </h3>
-            <sub className="text-[#5a5a5a]">Login into your account using your email.</sub>
+            <sub className="text-[#5a5a5a]">Enter your new password below.</sub>
           </div>
 
           {/* Email Input */}
@@ -149,7 +143,7 @@ export const FormResetPassword = () => {
               <Key className="text-[#5A5A5A] size-4" />
               <input
                 placeholder="Confirm Password"
-                type="password_confirmation"
+                type="password"
                 id="password_confirmation"
                 {...register('password_confirmation')}
                 autoComplete="off"

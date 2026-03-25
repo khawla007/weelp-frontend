@@ -205,6 +205,7 @@ export const SearchPage = () => {
                 products.map((product, index) => (
                   <GlobalCard
                     key={index}
+                    imgsrc={product?.featured_image}
                     productTitle={product?.name}
                     productPrice={product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price}
                     item_type={product?.item_type}

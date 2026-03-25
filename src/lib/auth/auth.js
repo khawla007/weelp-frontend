@@ -33,17 +33,12 @@ export const {
             }),
           });
 
-          // Get the error response if the request failed
           if (!loginRes.ok) {
-            const errorData = await loginRes.json().catch(() => ({}));
-
-            const { error } = errorData;
-            throw new CredentialsSignin(error);
+            throw new CredentialsSignin('Invalid credentials');
           }
 
           const data = await loginRes.json();
-
-          const decodedToken = jwtDecode(data.accessToken); // decode token
+          const decodedToken = jwtDecode(data.accessToken);
 
           return {
             id: data.id,
@@ -54,8 +49,8 @@ export const {
             expiresAt: decodedToken.exp * 1000,
           };
         } catch (error) {
+          if (error instanceof CredentialsSignin) throw error;
           console.error('Authorization error:', error);
-
           return null;
         }
       },

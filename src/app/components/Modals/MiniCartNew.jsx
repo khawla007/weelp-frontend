@@ -15,7 +15,7 @@ const MiniCartNew = () => {
   const { cartItems, totalPrice, isMiniCartOpen, setMiniCartOpen } = useMiniCartStore();
   return (
     <Sheet open={isMiniCartOpen} onOpenChange={setMiniCartOpen}>
-      <SheetContent className="!max-w-[485px] w-full h-full p-6 bg-[#F3F5F6] rounded-t-xl shadow-xl">
+      <SheetContent className="!max-w-[485px] w-full h-full p-6 bg-[#F3F5F6] rounded-t-xl shadow-xl !z-[1000]">
         <SheetHeader>
           <SheetTitle className="sr-only">MiniCart</SheetTitle>
           <SheetDescription className="sr-only"></SheetDescription>

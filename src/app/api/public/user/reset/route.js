@@ -11,13 +11,7 @@ export async function POST(req) {
 
     return NextResponse.json({ message: message || 'Password has been reset successfully.' }, { status: response.status });
   } catch (error) {
-    // Handle Error
-    const {
-      response: { data },
-    } = error;
-
-    const { message } = data;
-
-    return NextResponse.json({ message: message || 'An unexpected error occurred. Please try again.' }, { status: 500 });
+    const message = error?.response?.data?.message || 'An unexpected error occurred. Please try again.';
+    return NextResponse.json({ message }, { status: error?.response?.status || 500 });
   }
 }

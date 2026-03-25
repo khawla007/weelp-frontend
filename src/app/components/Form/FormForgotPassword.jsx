@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,8 +16,6 @@ const schema = z.object({
 });
 
 export function FormForgotPassword() {
-  const [error, setError] = useState('');
-  const router = useRouter();
   const { toast } = useToast();
 
   const {
@@ -33,7 +29,6 @@ export function FormForgotPassword() {
 
   const onSubmit = async (data) => {
     const { email } = data;
-    setError(''); // Clear any previous errors
     try {
       const response = await axios.post('/api/public/user/forgot', {
         email,
@@ -60,16 +55,11 @@ export function FormForgotPassword() {
       // reset password
       reset();
     } catch (error) {
-      console.log(error);
-
-      // handle error for forgot password
-      const { message } = error?.response?.data;
-      if (error) {
-        toast({
-          variant: 'destructive',
-          title: message,
-        });
-      }
+      const message = error?.response?.data?.message || 'An unexpected error occurred. Please try again.';
+      toast({
+        variant: 'destructive',
+        title: message,
+      });
     }
   };
 
@@ -86,7 +76,7 @@ export function FormForgotPassword() {
               Login
             </Link>
           </h3>
-          <sub className="text-[#5a5a5a]">Login into your account using your email.</sub>
+          <sub className="text-[#5a5a5a]">Enter your email to receive a password reset link.</sub>
         </div>
 
         {/* Email Input */}

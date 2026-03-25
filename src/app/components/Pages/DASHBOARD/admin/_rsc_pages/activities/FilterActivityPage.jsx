@@ -207,13 +207,13 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
           {!isValidating && !error && items.length > 0 && (
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
-                {items.map(({ id: itemId, name, media_gallery = [], tags = [], attributes = [], is_featured }, index) => (
+                {items.map(({ id: itemId, name, feature_image, media_gallery = [], tags = [], attributes = [], is_featured }, index) => (
                   <ListingCard key={index}>
                     {/* Featured Badge */}
                     {is_featured && <ListingCardBadge type="featured" />}
 
                     {/* Image */}
-                    <ListingCardImage src={media_gallery?.[0]?.url} alt={`${name} image`} />
+                    <ListingCardImage src={feature_image || media_gallery?.[0]?.url} alt={`${name} image`} />
 
                     {/* Checkbox for bulk selection */}
                     <ListingCardCheckbox

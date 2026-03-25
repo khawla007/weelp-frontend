@@ -13,7 +13,7 @@ const ReviewCard = ({ title, rating, comment }) => {
         {Array(rating)
           .fill()
           .map((_, index) => (
-            <Star key={index} className="fill-[var(--weelp-home-accent)] stroke-none" />
+            <Star key={index} className="fill-[#fed141ff] stroke-none" size={16} />
           ))}
       </div>
       <p className="text-base text-black overflow-x-hidden tfc_scroll">{comment}</p>
@@ -42,7 +42,7 @@ export const ReviewCard2 = ({ userImageSrc, userName, galleryImages, date, title
           {Array(rating)
             .fill()
             .map((_, index) => (
-              <Star key={index} className="fill-[var(--weelp-home-accent)] stroke-none" />
+              <Star key={index} className="fill-[#fed141ff] stroke-none" size={16} />
             ))}
         </div>
       )}
@@ -67,7 +67,7 @@ export const SingleProductReviewCard = ({ title, rating, comment }) => {
         {Array(rating)
           .fill()
           .map((_, index) => (
-            <Star key={index} className="fill-[var(--weelp-home-accent)] stroke-none" />
+            <Star key={index} className="fill-[#fed141ff] stroke-none" size={16} />
           ))}
       </div>
       <p className="text-base text-black overflow-x-hidden tfc_scroll">{comment}</p>
