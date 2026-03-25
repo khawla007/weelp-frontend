@@ -17,10 +17,7 @@ import { useRouter } from 'next/navigation';
 // Zod schema for validation
 const schema = z
   .object({
-    name: z
-      .string()
-      .nonempty('Name is required')
-      .min(3, 'Name must be greater than 3 characters'),
+    name: z.string().nonempty('Name is required').min(3, 'Name must be greater than 3 characters'),
     username: z
       .string()
       .nonempty('Username is required')
@@ -222,11 +219,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
       if (response?.status === 422) {
         const attemptsRemaining = response?.data?.attempts_remaining;
-        setOtpError(
-          attemptsRemaining > 0
-            ? `Incorrect OTP. ${attemptsRemaining} attempts remaining.`
-            : 'Maximum attempts exceeded. Please request a new OTP.'
-        );
+        setOtpError(attemptsRemaining > 0 ? `Incorrect OTP. ${attemptsRemaining} attempts remaining.` : 'Maximum attempts exceeded. Please request a new OTP.');
         return;
       }
 
@@ -248,11 +241,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
   return (
     <div className="relative space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8">
       {showCloseButton && (
-        <button
-          onClick={onCloseDialog}
-          className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10"
-          aria-label="Close"
-        >
+        <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
           <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
         </button>
       )}
@@ -262,10 +251,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
       {step === 'info' ? (
         <form onSubmit={handleSubmit(onSubmitInfo)}>
-          <fieldset
-            className={`space-y-4 bg-white px-8 py-4 ${isSubmitting && 'cursor-wait'}`}
-            disabled={isSubmitting}
-          >
+          <fieldset className={`space-y-4 bg-white px-8 py-4 ${isSubmitting && 'cursor-wait'}`} disabled={isSubmitting}>
             <div>
               <h3 className="font-semibold text-xl">
                 Sign Up or{' '}
@@ -278,29 +264,16 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
             {/* Name Input */}
             <div>
-              <label
-                htmlFor="name"
-                className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md"
-              >
+              <label htmlFor="name" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
                 <User className="text-[#5A5A5A] size-4" />
-                <input
-                  placeholder="Full Name"
-                  type="text"
-                  id="name"
-                  {...register('name')}
-                  autoComplete="name"
-                  className="mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base"
-                />
+                <input placeholder="Full Name" type="text" id="name" {...register('name')} autoComplete="name" className="mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base" />
               </label>
               {errors.name && <p className="text-sm text-red-600 pt-2">{errors.name.message}</p>}
             </div>
 
             {/* Username Input */}
             <div>
-              <label
-                htmlFor="username"
-                className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md"
-              >
+              <label htmlFor="username" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
                 <User className="text-[#5A5A5A] size-4" />
                 <input
                   placeholder="Username"
@@ -316,10 +289,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
             {/* Email Input */}
             <div>
-              <label
-                htmlFor="email"
-                className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md"
-              >
+              <label htmlFor="email" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
                 <AtSign className="text-[#5A5A5A] size-4" />
                 <input
                   placeholder="Email ID"
@@ -335,10 +305,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
             {/* Password Input */}
             <div className="border relative">
-              <label
-                htmlFor="password"
-                className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md"
-              >
+              <label htmlFor="password" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
                 <KeyRound className="text-[#5A5A5A] size-4" />
                 <input
                   type={visible ? 'text' : 'password'}
@@ -348,21 +315,14 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                   autoComplete="new-password"
                   className="mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base"
                 />
-                {!visible ? (
-                  <Eye size={20} className="absolute right-4" onClick={toggle} />
-                ) : (
-                  <EyeClosed size={20} className="absolute right-4" onClick={toggle} />
-                )}
+                {!visible ? <Eye size={20} className="absolute right-4" onClick={toggle} /> : <EyeClosed size={20} className="absolute right-4" onClick={toggle} />}
               </label>
               {errors.password && <p className="text-sm text-red-600 pt-2">{errors.password.message}</p>}
             </div>
 
             {/* Confirm Password Input */}
             <div>
-              <label
-                htmlFor="password_confirmation"
-                className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md"
-              >
+              <label htmlFor="password_confirmation" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
                 <KeyRound className="text-[#5A5A5A] size-4" />
                 <input
                   type={visible ? 'text' : 'password'}
@@ -373,19 +333,11 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                   className="mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base"
                 />
               </label>
-              {errors.password_confirmation && (
-                <p className="text-sm text-red-600 pt-2">{errors.password_confirmation.message}</p>
-              )}
+              {errors.password_confirmation && <p className="text-sm text-red-600 pt-2">{errors.password_confirmation.message}</p>}
             </div>
 
             {/* Submit Button */}
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className={`w-full p-4 rounded-md ${
-                isSubmitting ? 'bg-gray-400' : 'bg-secondaryDark hover:bg-secondarylight text-white'
-              }`}
-            >
+            <Button type="submit" disabled={isSubmitting} className={`w-full p-4 rounded-md ${isSubmitting ? 'bg-gray-400' : 'bg-secondaryDark hover:bg-secondarylight text-white'}`}>
               {isSubmitting ? (
                 <>
                   <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
@@ -408,14 +360,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
           {/* OTP Input */}
           <div className="py-4">
-            <OtpInput
-              length={6}
-              value={otp}
-              onChange={setOtp}
-              onComplete={handleOtpComplete}
-              error={otpError}
-              disabled={isSubmitting}
-            />
+            <OtpInput length={6} value={otp} onChange={setOtp} onComplete={handleOtpComplete} error={otpError} disabled={isSubmitting} />
             {otpError && <p className="text-sm text-red-600 pt-4 text-center">{otpError}</p>}
           </div>
 
@@ -428,23 +373,13 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
               disabled={timeUntilResend > 0 || isResending}
               className="text-sm font-semibold text-secondaryDark hover:underline disabled:text-gray-400 disabled:no-underline"
             >
-              {isResending ? (
-                'Sending...'
-              ) : timeUntilResend > 0 ? (
-                `Resend in ${timeUntilResend}s`
-              ) : (
-                'Resend OTP'
-              )}
+              {isResending ? 'Sending...' : timeUntilResend > 0 ? `Resend in ${timeUntilResend}s` : 'Resend OTP'}
             </button>
           </div>
 
           {/* Back Button */}
           <div className="text-center pt-2">
-            <button
-              type="button"
-              onClick={handleBackToInfo}
-              className="text-sm text-[#5a5a5a] hover:text-secondaryDark"
-            >
+            <button type="button" onClick={handleBackToInfo} className="text-sm text-[#5a5a5a] hover:text-secondaryDark">
               ← Back to registration
             </button>
           </div>
