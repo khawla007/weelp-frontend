@@ -30,7 +30,7 @@ const bookingSchema = z.object({
 });
 
 // activity
-export default function SingleProductForm({ productId, productData }) {
+export default function SingleProductForm({ productId, productData, selectedAddons = [] }) {
   const [initform] = useState(() => true);
   const [showCalendar, setShowCalendar] = useState(false); // date & howmany
   const [showHowMany, setShowHowMany] = useState(false); // date & howmany
@@ -38,7 +38,6 @@ export default function SingleProductForm({ productId, productData }) {
   const { setMiniCartOpen, addItem, clearCart, cartItems } = useMiniCartStore();
   const { toast } = useToast();
 
-  const [showScuvadiving, setShowScuvadiving] = useState(null); // show scuvadiving content
   const router = useRouter(); // intialize router
 
   const isInCart = cartItems.some((item) => item.id === productData.id);
@@ -69,23 +68,31 @@ export default function SingleProductForm({ productId, productData }) {
   const onSubmit = async (data) => {
     setMiniCartOpen(true);
 
+    // compute combined price with add-ons
+    const addonsTotal = selectedAddons.reduce(
+      (sum, a) => sum + Number(a.addon_sale_price ?? a.addon_price), 0
+    );
+
     // add item to cart
     addItem({
       id: productData?.id,
-      price: productData?.pricing?.regular_price,
+      price: Number(productData?.pricing?.regular_price ?? 0) + addonsTotal,
       name: productData?.name,
       currency: productData?.pricing?.currency || 'usd',
       ...data,
       featured_image: 'https://picsum.photos/200/300',
       type: productData?.item_type,
+      addons: selectedAddons.map(a => ({
+        addon_id: a.addon_id,
+        addon_name: a.addon_name,
+        price: a.addon_sale_price ?? a.addon_price,
+      })),
     });
 
-    // display notificatin
+    // display notification
     toast({
-      title: 'Item Added to Card',
-      // description: "Friday, February 10, 2023 at 5:57 PM",
+      title: 'Item Added to Cart',
     });
-    // clearCart()
 
     setMiniCartOpen(true);
     setShowResponse(!showResponse);
@@ -127,13 +134,6 @@ export default function SingleProductForm({ productId, productData }) {
     // handleReponse
     setShowResponse(false);
   };
-
-  // // handleScuvadiving change
-  // const handlePackageSelection = (e) => {
-  //   const value = e.target.value;
-  //   setValue("package", value);
-  //   setShowScuvadiving(value === "scuba-diving");
-  // };
 
   if (initform) {
     return (
