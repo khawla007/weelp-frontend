@@ -1,7 +1,7 @@
 /** This File Will Handle Package Page under City context */
 
 import BannerSection from '@/app/components/Pages/FRONT_END/singleproduct/BannerSection';
-import { TabSectionPackage } from '@/app/components/Pages/FRONT_END/singleproduct/TabSection';
+import SingleProductTabSection from '@/app/components/Pages/FRONT_END/singleproduct/SingleProductTabSection';
 import { notFound } from 'next/navigation';
 import { getSinglePackage } from '@/lib/services/package';
 import { isEmpty } from 'lodash';
@@ -32,7 +32,7 @@ export default async function PackagePage({ params }) {
   return (
     <>
       <BannerSection activityName={name} media_gallery={media_gallery} />
-      <TabSectionPackage productData={packageData} />
+      <SingleProductTabSection productData={packageData} />
     </>
   );
 }

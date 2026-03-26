@@ -1,7 +1,7 @@
 /** This File Will Handle Activity Page under City context */
 
 import BannerSection from '@/app/components/Pages/FRONT_END/singleproduct/BannerSection';
-import { TabSectionActivity } from '@/app/components/Pages/FRONT_END/singleproduct/TabSection';
+import SingleProductTabSection from '@/app/components/Pages/FRONT_END/singleproduct/SingleProductTabSection';
 import { notFound } from 'next/navigation';
 import { getSingleActivity, getRandomSimilarActivities } from '@/lib/services/activites';
 import { isEmpty } from 'lodash';
@@ -56,7 +56,7 @@ export default async function SingleActivityPage({ params }) {
   return (
     <>
       <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} primaryLocation={primaryLocation} city={city} />
-      <TabSectionActivity productId={id} productData={activityData} similarActivities={similarActivities} activitySlug={slug} />
+      <SingleProductTabSection productId={id} productData={activityData} similarActivities={similarActivities} activitySlug={slug} />
 
       {/* Add JSON-LD to your page */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
