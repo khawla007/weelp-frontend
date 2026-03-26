@@ -29,7 +29,7 @@ const bookingSchema = z.object({
 });
 
 // activity
-export default function SingleProductForm({ productId, productData, selectedAddons = [], formId }) {
+export default function SingleProductForm({ productId, productData, selectedAddons = [], formId, defaultDateRange = null, onDateChange = null }) {
   const [initform] = useState(() => true);
   const [showCalendar, setShowCalendar] = useState(false); // date & howmany
   const [showHowMany, setShowHowMany] = useState(false); // date & howmany
@@ -50,12 +50,12 @@ export default function SingleProductForm({ productId, productData, selectedAddo
   } = useForm({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
-      dateRange: { from: null, to: null },
+      dateRange: defaultDateRange ?? { from: null, to: null },
       howMany: { adults: 1, children: 0, infants: 0 },
     },
   });
 
-  const [selectedDates, setSelectedDates] = useState({ from: null, to: null });
+  const [selectedDates, setSelectedDates] = useState(defaultDateRange ?? { from: null, to: null });
 
   const [howMany, setHowMany] = useState({
     adults: 1,
@@ -187,6 +187,9 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                         onSelect={(value) => {
                           field.onChange(value);
                           setSelectedDates(value ?? { from: null, to: null });
+                          if (onDateChange && value?.from) {
+                            onDateChange(value);
+                          }
                           if (value?.from && value?.to && value.from.getTime() !== value.to.getTime()) {
                             setShowCalendar(false);
                           }
