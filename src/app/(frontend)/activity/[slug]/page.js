@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { getSingleActivity } from '@/lib/services/activites';
 import { isEmpty } from 'lodash';
 
-const TabSectionActivity = dynamic(() => import('@/app/components/Pages/FRONT_END/singleproduct/TabSection').then((mod) => mod.TabSectionActivity));
+const SingleProductTabSection = dynamic(() => import('@/app/components/Pages/FRONT_END/singleproduct/SingleProductTabSection'));
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -37,6 +37,7 @@ export default async function SingleActivityPage({ params }) {
     item_type,
     pricing: { regular_price },
     media_gallery,
+    review_summary,
   } = activityData;
 
   const jsonLd = {
@@ -48,12 +49,16 @@ export default async function SingleActivityPage({ params }) {
 
   return (
     <>
-      <BannerSection activityName={name} media_gallery={media_gallery} />
-      <TabSectionActivity productId={id} productData={activityData} />
+      <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} />
+      <SingleProductTabSection
+        productType="activity"
+        productId={id}
+        productData={activityData}
+        activitySlug={slug}
+      />
 
       {/* Add JSON-LD to your page */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      {/* <Script type="application/ld+json" strategy='beforeInteractive' dangerouslySetInnerHTML={{__html:JSON.stringify(jsonLd)}} /> */}
     </>
   );
 }

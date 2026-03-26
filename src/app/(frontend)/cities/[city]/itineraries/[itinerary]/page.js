@@ -1,9 +1,10 @@
 /** This File Will Handle Itinerary Page under City context */
-
+import dynamic from 'next/dynamic';
 import BannerSection from '@/app/components/Pages/FRONT_END/singleproduct/BannerSection';
-import { TabSectionIterenary } from '@/app/components/Pages/FRONT_END/singleproduct/TabSection';
 import { notFound } from 'next/navigation';
 import { getSingleItinerary } from '@/lib/services/itineraries';
+
+const SingleProductTabSection = dynamic(() => import('@/app/components/Pages/FRONT_END/singleproduct/SingleProductTabSection'));
 
 export async function generateMetadata({ params }) {
   const { itinerary } = await params;
@@ -17,7 +18,6 @@ export async function generateMetadata({ params }) {
   }
 
   const { data } = iterenaryData;
-
   const { meta_title, meta_description, keywords } = data.seo || {};
 
   return {
@@ -36,8 +36,8 @@ export default async function IterenaryPage({ params }) {
     notFound();
   }
 
-  const { data } = iterenaryData;
-  const { name, seo, media_gallery = [] } = data;
+  const { data, id } = iterenaryData;
+  const { name, seo, media_gallery = [], review_summary } = data;
 
   let schemaJson = {};
   try {
@@ -48,8 +48,12 @@ export default async function IterenaryPage({ params }) {
 
   return (
     <>
-      <BannerSection activityName={name} media_gallery={media_gallery} />
-      <TabSectionIterenary productData={data} />
+      <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} />
+      <SingleProductTabSection
+        productType="itinerary"
+        productId={id}
+        productData={data}
+      />
 
       {schemaJson && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }} />}
     </>
