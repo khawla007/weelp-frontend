@@ -33,14 +33,7 @@ const getDefaultDateRange = (scheduleCount) => {
   return { from: tomorrow, to: endDate };
 };
 
-const SingleProductTabSection = ({
-  productType = 'activity',
-  productId,
-  productData,
-  similarActivities = [],
-  activitySlug,
-  sidebarBottomImage,
-}) => {
+const SingleProductTabSection = ({ productType = 'activity', productId, productData, similarActivities = [], activitySlug, itinerarySlug, packageSlug, sidebarBottomImage }) => {
   const [activeTab, setActiveTab] = useState('tab_1');
   const sectionRefs = useRef({});
   const [fixedTab, setFixedTab] = useState(false);
@@ -74,12 +67,10 @@ const SingleProductTabSection = ({
   const faqs = productData?.faqs || [];
 
   // Build tabs
-  const tabs = useMemo(() => [
-    { id: 'tab_1', label: TAB_1_LABELS[productType] },
-    { id: 'tab_2', label: "What's Included" },
-    ...(hasReviews ? [{ id: 'tab_3', label: 'Reviews' }] : []),
-    { id: 'tab_4', label: 'FAQs' },
-  ], [productType, hasReviews]);
+  const tabs = useMemo(
+    () => [{ id: 'tab_1', label: TAB_1_LABELS[productType] }, { id: 'tab_2', label: "What's Included" }, ...(hasReviews ? [{ id: 'tab_3', label: 'Reviews' }] : []), { id: 'tab_4', label: 'FAQs' }],
+    [productType, hasReviews],
+  );
 
   // Sticky tab + intersection observer
   useEffect(() => {
@@ -125,10 +116,7 @@ const SingleProductTabSection = ({
   return (
     <section className="w-full bg-white mt-[70px]">
       {/* Sticky Tab Bar */}
-      <div
-        className={`${fixedTab ? 'fixed' : 'relative'} z-[999] w-full bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]`}
-        style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}
-      >
+      <div className={`${fixedTab ? 'fixed' : 'relative'} z-[999] w-full bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]`} style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}>
         <div className="flex items-center justify-center">
           {tabs.map((tab, index) => (
             <button
@@ -148,19 +136,13 @@ const SingleProductTabSection = ({
       <div className={`flex flex-col xl:flex-row ${fixedTab ? 'mt-[60px]' : ''}`}>
         {/* Left Column — Content */}
         <div className="w-full xl:w-[58%]">
-          <div className="max-w-[838px] mx-auto xl:ml-auto xl:mr-0 px-4 lg:px-0">
+          <div className="max-w-[838px] mx-auto xl:ml-auto xl:mr-0 px-4 lg:px-0 xl:pr-[15px]">
             {/* Tab 1: varies by productType */}
             <div id="tab_1" ref={(el) => (sectionRefs.current['tab_1'] = el)} className="pt-[70px] lg:mb-[35px]">
               {productType === 'activity' ? (
                 <OverViewPanel description={productData?.description} />
               ) : (
-                productData?.schedules?.length > 0 && (
-                  <ItineraryPanel
-                    schedules={productData.schedules}
-                    startDate={selectedStartDate}
-                    title={TAB_1_LABELS[productType]}
-                  />
-                )
+                productData?.schedules?.length > 0 && <ItineraryPanel schedules={productData.schedules} startDate={selectedStartDate} title={TAB_1_LABELS[productType]} />
               )}
             </div>
 
@@ -198,8 +180,12 @@ const SingleProductTabSection = ({
           <ProductSidebar
             productId={productId}
             productData={productData}
+            productType={productType}
+            itinerarySlug={itinerarySlug}
+            packageSlug={packageSlug}
             defaultDateRange={defaultDateRange}
             onDateChange={isScheduleType ? handleDateChange : null}
+            scheduleCount={isScheduleType ? scheduleCount : 0}
           />
         </div>
       </div>

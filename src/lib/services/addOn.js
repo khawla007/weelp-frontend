@@ -1,5 +1,5 @@
 import { ApiError } from '@/dto/Error';
-import { authApi } from '../axiosInstance';
+import { authApi, publicApi } from '../axiosInstance';
 import { log } from '../utils';
 
 /**
@@ -95,5 +95,41 @@ export async function getAddOnOptionsAdmin() {
       default:
         return ApiError({ status });
     }
+  }
+}
+
+/**
+ * Get addons for a specific itinerary
+ * Used on: Single Itinerary Page - sidebar addon selection
+ * @param {string} itinerarySlug - Itinerary slug
+ * @returns {Promise<{ success: boolean, data: any[] }>}
+ */
+export async function getItineraryAddons(itinerarySlug) {
+  try {
+    const response = await publicApi.get(`/api/itineraries/${itinerarySlug}/addons`, {
+      headers: { Accept: 'application/json' },
+    });
+    return response?.data;
+  } catch (error) {
+    console.error('Error fetching itinerary addons:', error?.message || error);
+    return { success: false, data: [] };
+  }
+}
+
+/**
+ * Get addons for a specific package
+ * Used on: Single Package Page - sidebar addon selection
+ * @param {string} packageSlug - Package slug
+ * @returns {Promise<{ success: boolean, data: any[] }>}
+ */
+export async function getPackageAddons(packageSlug) {
+  try {
+    const response = await publicApi.get(`/api/packages/${packageSlug}/addons`, {
+      headers: { Accept: 'application/json' },
+    });
+    return response?.data;
+  } catch (error) {
+    console.error('Error fetching package addons:', error?.message || error);
+    return { success: false, data: [] };
   }
 }

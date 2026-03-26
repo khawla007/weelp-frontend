@@ -33,11 +33,7 @@ export default async function PackagePage({ params }) {
   return (
     <>
       <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} />
-      <SingleProductTabSection
-        productType="package"
-        productId={id}
-        productData={packageData}
-      />
+      <SingleProductTabSection productType="package" productId={id} productData={packageData} packageSlug={pack} />
     </>
   );
 }

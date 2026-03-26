@@ -48,11 +48,7 @@ export default async function IterenaryPage({ params }) {
   return (
     <>
       <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} />
-      <SingleProductTabSection
-        productType="itinerary"
-        productId={id}
-        productData={data}
-      />
+      <SingleProductTabSection productType="itinerary" productId={id} productData={data} itinerarySlug={itinerary} />
 
       {schemaJson && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }} />}
     </>

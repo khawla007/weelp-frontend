@@ -2,13 +2,24 @@
 
 import React, { useState } from 'react';
 import { Check } from 'lucide-react';
+import useSWR from 'swr';
 import SingleProductForm from '@/app/components/Form/SingleProductForm';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
+import { getItineraryAddons, getPackageAddons } from '@/lib/services/addOn';
 
-const ProductSidebar = ({ productId, productData, defaultDateRange = null, onDateChange = null }) => {
+const ProductSidebar = ({ productId, productData, productType = 'activity', itinerarySlug, packageSlug, defaultDateRange = null, onDateChange = null, scheduleCount = 0 }) => {
   const [selectedAddons, setSelectedAddons] = useState([]);
   const { cartItems, setMiniCartOpen } = useMiniCartStore();
   const isInCart = cartItems.some((item) => item.id === productData?.id);
+
+  // Fetch addons via SWR for itinerary/package (activity addons come from productData)
+  const addonSlug = productType === 'itinerary' ? itinerarySlug : productType === 'package' ? packageSlug : null;
+  const addonFetcher = productType === 'itinerary' ? getItineraryAddons : productType === 'package' ? getPackageAddons : null;
+
+  const { data: addonsResponse } = useSWR(addonSlug ? `${productType}/${addonSlug}/addons` : null, () => addonFetcher(addonSlug), { revalidateOnFocus: false, dedupingInterval: 60000 });
+
+  // Use addons from API response (activity) or fetched data (itinerary/package)
+  const addons = productType === 'activity' ? productData?.addons || [] : addonsResponse?.data || [];
 
   const toggleAddon = (addon) => {
     setSelectedAddons((prev) => {
@@ -34,14 +45,15 @@ const ProductSidebar = ({ productId, productData, defaultDateRange = null, onDat
         formId={`booking-form-${productId}`}
         defaultDateRange={defaultDateRange}
         onDateChange={onDateChange}
+        scheduleCount={scheduleCount}
       />
 
       {/* Select Addon */}
-      {productData?.addons?.length > 0 && (
+      {addons.length > 0 && (
         <>
           <p className="text-[#5a5a5a] text-base font-medium mb-3 mt-6">Select Addon</p>
           <div className="bg-white rounded-xl border border-[#ccc]/50 shadow-[0_3px_9px_rgba(0,0,0,0.04)] p-5 flex flex-col gap-3">
-            {productData.addons.map((addon) => {
+            {addons.map((addon) => {
               const isChecked = selectedAddons.some((a) => a.addon_id === addon.addon_id);
               return (
                 <div
