@@ -1,10 +1,12 @@
-export const dynamic = 'force-dynamic';
+'use client';
 
-import React from 'react';
-import { AppearanceSettingForm } from '@/app/components/Pages/DASHBOARD/user/_rsc_pages/settings/AppearanceSetting';
+import { AppearanceSettings } from '@/app/components/Pages/DASHBOARD/customer/settings/AppearanceSettings';
+import { useUserProfile } from '@/hooks/api/customer/profile';
 
 const AppearancePage = () => {
-  return <AppearanceSettingForm />;
+  const { user } = useUserProfile();
+
+  return <AppearanceSettings user={user} />;
 };
 
 export default AppearancePage;
