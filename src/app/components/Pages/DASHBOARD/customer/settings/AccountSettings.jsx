@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { changePasswordAction, editUserProfileAction } from '@/lib/actions/userActions';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -9,6 +10,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Check, X, Eye, EyeOff } from 'lucide-react';
+import { useTogglePassword } from '@/hooks/useTogglePassword';
 
 const addressSchema = z.object({
   phone: z.string().optional(),
@@ -21,9 +24,16 @@ const addressSchema = z.object({
 
 const passwordSchema = z
   .object({
-    current_password: z.string().min(1, 'Current password is required'),
-    password: z.string().min(8, 'Password must be at least 8 characters'),
-    password_confirmation: z.string().min(1, 'Please confirm your password'),
+    current_password: z.string().nonempty('Current password is required'),
+    password: z
+      .string()
+      .nonempty('Password Required')
+      .min(8, 'Must be at least 8 characters long')
+      .regex(/[A-Z]/, 'Must contain at least one uppercase letter (A-Z)')
+      .regex(/[a-z]/, 'Must contain at least one lowercase letter (a-z)')
+      .regex(/\d/, 'Must contain at least one number (0-9)')
+      .regex(/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/, 'Must contain at least one special character'),
+    password_confirmation: z.string().nonempty('Please confirm your password'),
   })
   .refine((data) => data.password === data.password_confirmation, {
     message: "Passwords don't match",
@@ -35,7 +45,9 @@ const TabButton = ({ active, onClick, children }) => (
   <button
     type="button"
     onClick={onClick}
-    className={`px-4 py-2 font-medium transition-colors border-b-2 ${active ? 'border-secondaryDark text-secondaryDark' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
+    className={`px-4 py-2 font-semibold transition-all border-x-0 border-t-0 border-b-[3px] outline-none focus:outline-none ${
+      active ? 'border-secondaryDark text-secondaryDark' : 'border-transparent text-muted-foreground hover:text-foreground'
+    }`}
   >
     {children}
   </button>
@@ -45,6 +57,14 @@ export function AccountSettings({ user }) {
   const [activeTab, setActiveTab] = useState('contact');
   const { toast } = useToast();
   const { profile } = user;
+
+  const { visible: currentPwdVisible, toggle: toggleCurrentPwd } = useTogglePassword();
+  const { visible: newPwdVisible, toggle: toggleNewPwd } = useTogglePassword();
+
+  // Helper function to check if password meets all requirements
+  const isPasswordValid = (pwd) => {
+    return pwd.length >= 8 && /[A-Z]/.test(pwd) && /[a-z]/.test(pwd) && /\d/.test(pwd) && /[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(pwd);
+  };
 
   // Address Form
   const addressForm = useForm({
@@ -67,29 +87,24 @@ export function AccountSettings({ user }) {
       password: '',
       password_confirmation: '',
     },
+    mode: 'onChange',
   });
+
+  const watchPassword = passwordForm.watch('password'); // eslint-disable-line react-hooks/incompatible-library
+  const watchPasswordConfirmation = passwordForm.watch('password_confirmation');
 
   const onAddressSubmit = async (data) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/customer/profile`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify(data),
-      });
+      const result = await editUserProfileAction(data);
 
-      const result = await response.json();
-
-      if (response.ok) {
+      if (result.success) {
         toast({
           title: 'Contact information updated successfully',
         });
       } else {
         toast({
           variant: 'destructive',
-          title: result.error || 'Failed to update contact information',
+          title: result.message || 'Failed to update contact information',
         });
       }
     } catch (error) {
@@ -102,26 +117,20 @@ export function AccountSettings({ user }) {
 
   const onPasswordSubmit = async (data) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/customer/password`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify(data),
-      });
+      const result = await changePasswordAction(data);
 
-      const result = await response.json();
-
-      if (response.ok) {
+      if (result.success) {
         toast({
           title: 'Password changed successfully',
         });
         passwordForm.reset();
       } else {
+        // Specifically check for current password error message
+        const errorMessage = result.error === 'Current password is incorrect' ? 'Current password entered incorrect' : result.error || 'Failed to change password';
+
         toast({
           variant: 'destructive',
-          title: result.error || 'Failed to change password',
+          title: errorMessage,
         });
       }
     } catch (error) {
@@ -138,7 +147,7 @@ export function AccountSettings({ user }) {
       <p className="text-base text-[#71717A]">Manage your contact information and security settings.</p>
 
       {/* Tabs */}
-      <div className="flex border-b">
+      <div className="flex gap-4">
         <TabButton active={activeTab === 'contact'} onClick={() => setActiveTab('contact')}>
           Contact & Address
         </TabButton>
@@ -263,7 +272,12 @@ export function AccountSettings({ user }) {
                   <FormItem>
                     <Label>Current Password</Label>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <div className="relative">
+                        <Input type={currentPwdVisible ? 'text' : 'password'} {...field} />
+                        <button type="button" onClick={toggleCurrentPwd} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                          {currentPwdVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </button>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -277,10 +291,41 @@ export function AccountSettings({ user }) {
                   <FormItem>
                     <Label>New Password</Label>
                     <FormControl>
-                      <Input type="password" placeholder="Min 8 characters" {...field} />
+                      <div className="relative">
+                        <Input type={newPwdVisible ? 'text' : 'password'} placeholder="Min 8 characters" {...field} />
+                        <button type="button" onClick={toggleNewPwd} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                          {newPwdVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </button>
+                      </div>
                     </FormControl>
-                    <FormDescription>Must be at least 8 characters long.</FormDescription>
                     <FormMessage />
+
+                    {/* Password Requirements Checklist (Register Style) */}
+                    {watchPassword && (
+                      <div className="mt-2 space-y-1 text-xs">
+                        <p className="text-gray-500 font-medium mb-1">Password must contain:</p>
+                        <div className={`flex items-center gap-1 ${watchPassword.length >= 8 ? 'text-green-600' : 'text-gray-400'}`}>
+                          {watchPassword.length >= 8 ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
+                          <span>At least 8 characters</span>
+                        </div>
+                        <div className={`flex items-center gap-1 ${/[A-Z]/.test(watchPassword) ? 'text-green-600' : 'text-gray-400'}`}>
+                          {/[A-Z]/.test(watchPassword) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
+                          <span>One uppercase letter (A-Z)</span>
+                        </div>
+                        <div className={`flex items-center gap-1 ${/[a-z]/.test(watchPassword) ? 'text-green-600' : 'text-gray-400'}`}>
+                          {/[a-z]/.test(watchPassword) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
+                          <span>One lowercase letter (a-z)</span>
+                        </div>
+                        <div className={`flex items-center gap-1 ${/[0-9]/.test(watchPassword) ? 'text-green-600' : 'text-gray-400'}`}>
+                          {/[0-9]/.test(watchPassword) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
+                          <span>One number (0-9)</span>
+                        </div>
+                        <div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(watchPassword) ? 'text-green-600' : 'text-gray-400'}`}>
+                          {/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(watchPassword) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
+                          <span>One special character</span>
+                        </div>
+                      </div>
+                    )}
                   </FormItem>
                 )}
               />
@@ -292,15 +337,25 @@ export function AccountSettings({ user }) {
                   <FormItem>
                     <Label>Confirm New Password</Label>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <div className="relative">
+                        <Input type={newPwdVisible ? 'text' : 'password'} {...field} />
+                        {watchPasswordConfirmation && (
+                          <div className="absolute right-10 top-1/2 -translate-y-1/2">
+                            {watchPassword === watchPasswordConfirmation ? <Check className="text-green-500 size-5" strokeWidth={3} /> : <X className="text-red-500 size-5" strokeWidth={2} />}
+                          </div>
+                        )}
+                        <button type="button" onClick={toggleNewPwd} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                          {newPwdVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </button>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <Button type="submit" className="bg-secondaryDark">
-                Change Password
+              <Button type="submit" disabled={passwordForm.formState.isSubmitting || !isPasswordValid(watchPassword)} className="bg-secondaryDark">
+                {passwordForm.formState.isSubmitting ? 'Changing...' : 'Change Password'}
               </Button>
             </form>
           </Form>

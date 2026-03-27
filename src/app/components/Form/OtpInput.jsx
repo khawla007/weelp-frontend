@@ -36,9 +36,11 @@ export const OtpInput = forwardRef(({ length = 6, value = '', onChange, onComple
       onChange(newValue);
     }
 
-    // Auto-focus next input
+    // Auto-focus next input - use setTimeout to avoid React re-render interference
     if (digit && index < length - 1) {
-      inputRefs.current[index + 1]?.focus();
+      setTimeout(() => {
+        inputRefs.current[index + 1]?.focus();
+      }, 0);
     }
 
     // Call onComplete when all digits entered
@@ -49,8 +51,22 @@ export const OtpInput = forwardRef(({ length = 6, value = '', onChange, onComple
 
   const handleKeyDown = (index, e) => {
     // Handle backspace
-    if (e.key === 'Backspace' && !value[index] && index > 0) {
+    if (e.key === 'Backspace') {
+      if (!value[index] && index > 0) {
+        // If current input is empty, move to previous and clear it
+        inputRefs.current[index - 1]?.focus();
+      }
+      // If current input has a value, let it be cleared (default behavior)
+    }
+
+    // Handle arrow keys for navigation
+    if (e.key === 'ArrowLeft' && index > 0) {
+      e.preventDefault();
       inputRefs.current[index - 1]?.focus();
+    }
+    if (e.key === 'ArrowRight' && index < length - 1) {
+      e.preventDefault();
+      inputRefs.current[index + 1]?.focus();
     }
   };
 
@@ -77,7 +93,10 @@ export const OtpInput = forwardRef(({ length = 6, value = '', onChange, onComple
   };
 
   const handleFocus = (e) => {
-    e.target.select();
+    // Only select if there's already content, to allow easy replacement
+    if (e.target.value) {
+      e.target.select();
+    }
   };
 
   return (

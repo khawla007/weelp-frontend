@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { useUIStore } from '@/lib/store/uiStore';
-import { NavigationProgressBar } from '@/app/components/Navigation/NavigationProgressBar';
 
 export function FrontendShell({ header, footer, children }) {
   const pathname = usePathname();
@@ -22,10 +21,7 @@ export function FrontendShell({ header, footer, children }) {
   return (
     <div style={shellStyle}>
       {header}
-      <main className={`bg-mainBackground ${stickyHeader ? 'pt-[var(--weelp-header-height-mobile)] lg:pt-[var(--weelp-header-height-desktop)]' : ''} min-h-[90vh] relative`}>
-        <NavigationProgressBar />
-        {children}
-      </main>
+      <main className={`bg-mainBackground ${stickyHeader ? 'pt-[var(--weelp-header-height-mobile)] lg:pt-[var(--weelp-header-height-desktop)]' : ''} min-h-[90vh] relative`}>{children}</main>
       {footer}
     </div>
   );

@@ -2,7 +2,7 @@
 import dynamic from 'next/dynamic';
 import BannerSection from '@/app/components/Pages/FRONT_END/singleproduct/BannerSection';
 import { notFound } from 'next/navigation';
-import { getSingleItinerary } from '@/lib/services/itineraries';
+import { getSingleItinerary, getRandomSimilarItineraries } from '@/lib/services/itineraries';
 
 const SingleProductTabSection = dynamic(() => import('@/app/components/Pages/FRONT_END/singleproduct/SingleProductTabSection'));
 
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function IterenaryPage({ params }) {
-  const { itinerary } = await params;
+  const { city, itinerary } = await params;
 
   const iterenaryData = await getSingleItinerary(itinerary);
 
@@ -37,7 +37,10 @@ export default async function IterenaryPage({ params }) {
   }
 
   const { data, id } = iterenaryData;
-  const { name, seo, media_gallery = [], review_summary } = data;
+  const { name, seo, media_gallery = [], review_summary, locations = [] } = data;
+
+  // Fetch similar itineraries using the city param
+  const similarItineraries = city ? await getRandomSimilarItineraries(city, id) : [];
 
   let schemaJson = {};
   try {
@@ -49,11 +52,7 @@ export default async function IterenaryPage({ params }) {
   return (
     <>
       <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} />
-      <SingleProductTabSection
-        productType="itinerary"
-        productId={id}
-        productData={data}
-      />
+      <SingleProductTabSection productType="itinerary" productId={id} productData={data} itinerarySlug={itinerary} similarActivities={similarItineraries} />
 
       {schemaJson && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }} />}
     </>

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
-import { AtSign, Eye, EyeClosed, KeyRound, User, X, LoaderCircle } from 'lucide-react';
+import { AtSign, Eye, EyeClosed, KeyRound, User, X, LoaderCircle, Check } from 'lucide-react';
 import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react';
 import { OtpInput } from './OtpInput';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import useAuthModalStore from '@/lib/store/useAuthModalStore';
 
 // Zod schema for validation
 const schema = z
@@ -29,9 +30,10 @@ const schema = z
       .string()
       .nonempty('Password Required')
       .min(8, 'Must be at least 8 characters long')
-      .regex(/[A-Za-z]/, 'Must contain at least one letter')
-      .regex(/\d/, 'Must contain at least one number')
-      .regex(/[@#$%^&+=]/, 'Must contain at least one special character (@, #, $, etc.)'),
+      .regex(/[A-Z]/, 'Must contain at least one uppercase letter (A-Z)')
+      .regex(/[a-z]/, 'Must contain at least one lowercase letter (a-z)')
+      .regex(/\d/, 'Must contain at least one number (0-9)')
+      .regex(/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/, 'Must contain at least one special character'),
     password_confirmation: z.string().nonempty('Please confirm your password'),
   })
   .refine((data) => data.password === data.password_confirmation, {
@@ -43,6 +45,34 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
   const { visible, toggle } = useTogglePassword();
   const { toast } = useToast();
   const router = useRouter();
+  const { redirectTo: storeRedirectTo, closeAuthModal } = useAuthModalStore();
+
+  // Helper function to check if password meets all requirements
+  const isPasswordValid = (pwd) => {
+    return pwd.length >= 8 && /[A-Z]/.test(pwd) && /[a-z]/.test(pwd) && /\d/.test(pwd) && /[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(pwd);
+  };
+
+  // Setup form with watch for real-time password match validation
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    watch,
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: '',
+      username: '',
+      email: '',
+      password: '',
+      password_confirmation: '',
+    },
+  });
+
+  // Watch password fields for live validation
+  const password = watch('password');
+  const passwordConfirmation = watch('password_confirmation');
+  const username = watch('username');
 
   const [step, setStep] = useState('info'); // 'info' | 'otp'
   const [formData, setFormData] = useState(null);
@@ -50,15 +80,9 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
   const [timeUntilResend, setTimeUntilResend] = useState(30);
   const [isResending, setIsResending] = useState(false);
   const [otpError, setOtpError] = useState('');
-
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { isSubmitting, errors },
-  } = useForm({
-    resolver: zodResolver(schema),
-  });
+  const [isOtpSubmitting, setIsOtpSubmitting] = useState(false);
+  const [usernameError, setUsernameError] = useState('');
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
 
   // Countdown timer for resend button
   useEffect(() => {
@@ -69,6 +93,32 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
       return () => clearTimeout(timer);
     }
   }, [step, timeUntilResend]);
+
+  // Check username availability with debounce
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      if (username && username.length >= 3) {
+        setIsCheckingUsername(true);
+        setUsernameError('');
+        try {
+          const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/check-username`, {
+            params: { username },
+          });
+          if (!response.data.available) {
+            setUsernameError('Already in use');
+          }
+        } catch (error) {
+          console.error('Username check error:', error);
+        } finally {
+          setIsCheckingUsername(false);
+        }
+      } else {
+        setUsernameError('');
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [username]);
 
   const onSubmitInfo = async (data) => {
     const { name, username, email, password, password_confirmation } = data;
@@ -107,10 +157,21 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
       }
 
       if (response?.status === 429) {
+        const retryAfter = response?.data?.retry_after;
+        const errorMessage = response?.data?.error || '';
+
+        let description = 'Please try again later.';
+        if (retryAfter) {
+          const seconds = Math.ceil(retryAfter);
+          description = `Please wait ${seconds} seconds before trying again.`;
+        } else if (errorMessage.includes('Too many OTP requests')) {
+          description = 'You have reached the maximum OTP requests. Please try again after 1 hour.';
+        }
+
         toast({
           variant: 'destructive',
           title: 'Too many requests',
-          description: response?.data?.error || 'Please try again later',
+          description,
         });
         return;
       }
@@ -152,10 +213,21 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
       const response = error?.response;
 
       if (response?.status === 429) {
+        const retryAfter = response?.data?.retry_after;
+        const errorMessage = response?.data?.error || '';
+
+        let description = 'Please try again later.';
+        if (retryAfter) {
+          const seconds = Math.ceil(retryAfter);
+          description = `Please wait ${seconds} seconds before trying again.`;
+        } else if (errorMessage.includes('Too many OTP requests')) {
+          description = 'You have reached the maximum OTP requests. Please try again after 1 hour.';
+        }
+
         toast({
           variant: 'destructive',
           title: 'Too many requests',
-          description: response?.data?.error || 'Please try again later',
+          description,
         });
         return;
       }
@@ -172,6 +244,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
   const handleOtpComplete = async (otpValue) => {
     setOtpError('');
+    setIsOtpSubmitting(true);
 
     try {
       const response = await axios.post('/api/public/otp/verify', {
@@ -180,6 +253,12 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
       });
 
       if (response.status === 201) {
+        // First toast: Account created
+        toast({
+          variant: 'success',
+          title: 'Account created!',
+        });
+
         // Auto-login using NextAuth
         const result = await signIn('credentials', {
           email: formData.email,
@@ -187,17 +266,24 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
           redirect: false,
         });
 
+        console.log('SignIn result:', result);
+
         if (result?.ok) {
+          // Close auth modal if open
+          closeAuthModal();
+          // Close any parent dialog
+          onCloseDialog?.();
+
           toast({
             variant: 'success',
-            title: 'Account created!',
-            description: 'Welcome to Weelp!',
+            title: 'Welcome to Weelp!',
           });
 
-          // Close dialog and redirect to dashboard
-          onCloseDialog?.();
-          router.push('/dashboard/customer');
-          router.refresh();
+          // Redirect to store target or fallback to dashboard
+          const targetUrl = storeRedirectTo || '/dashboard/customer';
+          setTimeout(() => {
+            window.location.href = targetUrl;
+          }, 300);
         } else {
           // Fallback: redirect to login page
           toast({
@@ -229,6 +315,8 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
       }
 
       setOtpError('Verification failed. Please try again.');
+    } finally {
+      setIsOtpSubmitting(false);
     }
   };
 
@@ -239,29 +327,16 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
   };
 
   return (
-    <div className="relative space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8">
+    <div className="relative space-y-4 bg-white rounded-xl w-full">
       {showCloseButton && (
         <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
           <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
         </button>
       )}
-      <div className="bg-white rounded-t-xl border-b py-4 px-8 pr-12">
-        <Image src="/assets/images/SiteLogo.png" alt="Site Logo" width={122} height={42} />
-      </div>
 
       {step === 'info' ? (
         <form onSubmit={handleSubmit(onSubmitInfo)}>
-          <fieldset className={`space-y-4 bg-white px-8 py-4 ${isSubmitting && 'cursor-wait'}`} disabled={isSubmitting}>
-            <div>
-              <h3 className="font-semibold text-xl">
-                Sign Up or{' '}
-                <button type="button" onClick={onSwitchToLogin} className="underline">
-                  Back to Login
-                </button>
-              </h3>
-              <sub className="text-[#5a5a5a]">Create your account using your email.</sub>
-            </div>
-
+          <fieldset className={`space-y-4 bg-white py-4 ${isSubmitting && 'cursor-wait'}`} disabled={isSubmitting}>
             {/* Name Input */}
             <div>
               <label htmlFor="name" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
@@ -273,7 +348,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
             {/* Username Input */}
             <div>
-              <label htmlFor="username" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
+              <label htmlFor="username" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative">
                 <User className="text-[#5A5A5A] size-4" />
                 <input
                   placeholder="Username"
@@ -281,10 +356,23 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                   id="username"
                   {...register('username')}
                   autoComplete="username"
-                  className="mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base"
+                  className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1"
                 />
+                {/* Username availability indicator */}
+                {username && username.length >= 3 && (
+                  <div className="absolute right-10">
+                    {isCheckingUsername ? (
+                      <LoaderCircle className="text-gray-400 size-5 animate-spin" />
+                    ) : usernameError ? (
+                      <X className="text-red-500 size-5" strokeWidth={3} />
+                    ) : (
+                      <Check className="text-green-500 size-5" strokeWidth={3} />
+                    )}
+                  </div>
+                )}
               </label>
               {errors.username && <p className="text-sm text-red-600 pt-2">{errors.username.message}</p>}
+              {usernameError && <p className="text-sm text-red-600 pt-2">{usernameError}</p>}
             </div>
 
             {/* Email Input */}
@@ -304,8 +392,8 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
             </div>
 
             {/* Password Input */}
-            <div className="border relative">
-              <label htmlFor="password" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
+            <div className="border relative mb-4">
+              <label htmlFor="password" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative">
                 <KeyRound className="text-[#5A5A5A] size-4" />
                 <input
                   type={visible ? 'text' : 'password'}
@@ -313,16 +401,47 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                   placeholder="Password"
                   {...register('password')}
                   autoComplete="new-password"
-                  className="mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base"
+                  className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1"
                 />
-                {!visible ? <Eye size={20} className="absolute right-4" onClick={toggle} /> : <EyeClosed size={20} className="absolute right-4" onClick={toggle} />}
+                {!visible ? <Eye size={20} className="absolute right-4 cursor-pointer" onClick={toggle} /> : <EyeClosed size={20} className="absolute right-4 cursor-pointer" onClick={toggle} />}
               </label>
               {errors.password && <p className="text-sm text-red-600 pt-2">{errors.password.message}</p>}
+
+              {/* Password Requirements Checklist */}
+              {password && (
+                <>
+                  <div className="mt-2 space-y-1 text-xs">
+                    <p className="text-gray-500 font-medium mb-1">Password must contain:</p>
+                    <div className={`flex items-center gap-1 ${password.length >= 8 ? 'text-green-600' : 'text-gray-400'}`}>
+                      {password.length >= 8 ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
+                      <span>At least 8 characters</span>
+                    </div>
+                    <div className={`flex items-center gap-1 ${/[A-Z]/.test(password) ? 'text-green-600' : 'text-gray-400'}`}>
+                      {/[A-Z]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
+                      <span>One uppercase letter (A-Z)</span>
+                    </div>
+                    <div className={`flex items-center gap-1 ${/[a-z]/.test(password) ? 'text-green-600' : 'text-gray-400'}`}>
+                      {/[a-z]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
+                      <span>One lowercase letter (a-z)</span>
+                    </div>
+                    <div className={`flex items-center gap-1 ${/[0-9]/.test(password) ? 'text-green-600' : 'text-gray-400'}`}>
+                      {/[0-9]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
+                      <span>One number (0-9)</span>
+                    </div>
+                    <div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? 'text-green-600' : 'text-gray-400'}`}>
+                      {/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
+                      <span>One special character</span>
+                    </div>
+                  </div>
+                  {/* Password strength message */}
+                  {password.length > 0 && !isPasswordValid(password) && <p className="text-sm text-orange-500 mt-2">Please meet all password requirements</p>}
+                </>
+              )}
             </div>
 
             {/* Confirm Password Input */}
             <div>
-              <label htmlFor="password_confirmation" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
+              <label htmlFor="password_confirmation" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative">
                 <KeyRound className="text-[#5A5A5A] size-4" />
                 <input
                   type={visible ? 'text' : 'password'}
@@ -330,29 +449,42 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                   placeholder="Confirm Password"
                   {...register('password_confirmation')}
                   autoComplete="new-password"
-                  className="mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base"
+                  className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1"
                 />
+                {/* Live password match indicator */}
+                {passwordConfirmation && (
+                  <div className="absolute right-10">
+                    {password === passwordConfirmation ? <Check className="text-green-500 size-5" strokeWidth={3} /> : <X className="text-red-500 size-5" strokeWidth={3} />}
+                  </div>
+                )}
+                {!visible ? <Eye size={20} className="absolute right-4 cursor-pointer" onClick={toggle} /> : <EyeClosed size={20} className="absolute right-4 cursor-pointer" onClick={toggle} />}
               </label>
               {errors.password_confirmation && <p className="text-sm text-red-600 pt-2">{errors.password_confirmation.message}</p>}
             </div>
 
-            {/* Submit Button */}
-            <Button type="submit" disabled={isSubmitting} className={`w-full p-4 rounded-md ${isSubmitting ? 'bg-gray-400' : 'bg-secondaryDark hover:bg-secondarylight text-white'}`}>
-              {isSubmitting ? (
-                <>
-                  <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                  Processing...
-                </>
-              ) : (
-                'Continue'
-              )}
-            </Button>
+            {/* Submit Button - with added spacing */}
+            <div className="pt-4">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className={`w-full h-auto py-3 rounded-lg text-base border border-[#568f7c] transition-all duration-200 ${isSubmitting ? 'bg-gray-400 cursor-not-allowed border-gray-400' : 'bg-[#568f7c] text-white hover:bg-white hover:text-[#568f7c]'}`}
+              >
+                {isSubmitting ? (
+                  <>
+                    <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  'Continue'
+                )}
+              </Button>
+            </div>
           </fieldset>
         </form>
       ) : (
-        <fieldset className={`space-y-4 bg-white px-8 py-4`} disabled={isSubmitting}>
-          <div>
-            <h3 className="font-semibold text-xl text-center">Verify Your Email</h3>
+        <fieldset className={`space-y-4 bg-white py-4`} disabled={isOtpSubmitting}>
+          <div className="text-center">
+            <h3 className="font-semibold text-xl">Verify Your Email</h3>
             <sub className="text-[#5a5a5a]">
               We sent a 6-digit code to <strong>{formData?.email}</strong>
             </sub>
@@ -360,7 +492,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
           {/* OTP Input */}
           <div className="py-4">
-            <OtpInput length={6} value={otp} onChange={setOtp} onComplete={handleOtpComplete} error={otpError} disabled={isSubmitting} />
+            <OtpInput length={6} value={otp} onChange={setOtp} onComplete={handleOtpComplete} error={otpError} disabled={isOtpSubmitting} />
             {otpError && <p className="text-sm text-red-600 pt-4 text-center">{otpError}</p>}
           </div>
 

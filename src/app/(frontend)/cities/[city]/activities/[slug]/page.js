@@ -56,7 +56,7 @@ export default async function SingleActivityPage({ params }) {
   return (
     <>
       <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} primaryLocation={primaryLocation} city={city} />
-      <SingleProductTabSection productId={id} productData={activityData} similarActivities={similarActivities} activitySlug={slug} />
+      <SingleProductTabSection productType="activity" productId={id} productData={activityData} similarActivities={similarActivities} activitySlug={slug} />
 
       {/* Add JSON-LD to your page */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

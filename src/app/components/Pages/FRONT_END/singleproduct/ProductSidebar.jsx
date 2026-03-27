@@ -16,7 +16,16 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
   const addonSlug = productType === 'itinerary' ? itinerarySlug : productType === 'package' ? packageSlug : null;
   const addonFetcher = productType === 'itinerary' ? getItineraryAddons : productType === 'package' ? getPackageAddons : null;
 
-  const { data: addonsResponse } = useSWR(addonSlug ? `${productType}/${addonSlug}/addons` : null, () => addonFetcher(addonSlug), { revalidateOnFocus: false, dedupingInterval: 60000 });
+  // Only fetch addons for itinerary/package, not activity
+  const shouldFetchAddons = productType !== 'activity' && addonSlug && addonFetcher;
+
+  const swrKey = shouldFetchAddons ? `${productType}/${addonSlug}/addons` : null;
+
+  // Fetcher function - uses the slug from closure
+  const { data: addonsResponse } = useSWR(swrKey, () => addonFetcher(addonSlug), {
+    revalidateOnFocus: false,
+    dedupingInterval: 60000,
+  });
 
   // Use addons from API response (activity) or fetched data (itinerary/package)
   const addons = productType === 'activity' ? productData?.addons || [] : addonsResponse?.data || [];

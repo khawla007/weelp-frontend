@@ -11,7 +11,8 @@ const LoginPage = async ({ searchParams }) => {
   }
 
   // Determine default tab from URL param, default to 'login'
-  const defaultTab = searchParams.tab === 'signup' ? 'signup' : 'login';
+  const params = await searchParams;
+  const defaultTab = params.tab === 'signup' ? 'signup' : 'login';
 
   return <AuthPageClient defaultTab={defaultTab} />;
 };

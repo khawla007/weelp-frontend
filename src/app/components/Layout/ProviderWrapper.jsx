@@ -4,9 +4,11 @@ import { Suspense } from 'react';
 import { SessionProvider } from 'next-auth/react';
 import { useIsClient } from '@/hooks/useIsClient';
 import { Toaster } from '@/components/ui/toaster';
+import AuthModalDialog from '@/app/components/Modals/AuthModalDialog';
 import { SWRConfig } from 'swr';
 import { fetcher } from '@/lib/fetchers';
 import { useNavigationEvents } from '@/hooks/useNavigationEvents';
+import { NavigationProgressBar } from '@/app/components/Navigation/NavigationProgressBar';
 
 function NavigationHandler() {
   useNavigationEvents();
@@ -26,8 +28,10 @@ export default function AppProviders({ children, session }) {
         <Suspense fallback={null}>
           <NavigationHandler />
         </Suspense>
+        <NavigationProgressBar />
         {children}
         <Toaster />
+        <AuthModalDialog />
       </SWRConfig>
     </SessionProvider>
   );

@@ -32,14 +32,25 @@ export function ProfileSettings({ user }) {
   const { toast } = useToast();
   const { name, email, meta, profile } = user;
 
+  let parsedInterest = [];
+  try {
+    if (typeof meta?.interest === 'string') {
+      parsedInterest = JSON.parse(meta.interest);
+    } else if (Array.isArray(meta?.interest)) {
+      parsedInterest = meta.interest;
+    }
+  } catch (e) {
+    parsedInterest = [];
+  }
+
   const form = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       name: name || '',
-      username: meta?.username || '',
+      username: meta?.username || user?.username || name?.toLowerCase()?.replace(/\s+/g, '') || '',
       email: email || '',
       bio: meta?.bio || '',
-      interest: meta?.interest || [],
+      interest: parsedInterest,
       urls: profile?.urls?.length > 0 ? profile.urls : [{ label: '', url: '' }],
     },
   });
@@ -104,7 +115,7 @@ export function ProfileSettings({ user }) {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled className="bg-muted" />
+                  <Input {...field} disabled className="bg-gray-100 text-gray-700 opacity-100 dark:bg-zinc-800 dark:text-gray-300 pointer-events-none" />
                 </FormControl>
                 <FormDescription>Your unique username. Cannot be changed.</FormDescription>
                 <FormMessage />
@@ -120,7 +131,7 @@ export function ProfileSettings({ user }) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled className="bg-muted" />
+                  <Input {...field} disabled className="bg-gray-100 text-gray-700 opacity-100 dark:bg-zinc-800 dark:text-gray-300 pointer-events-none" />
                 </FormControl>
                 <FormDescription>Manage email in Account settings.</FormDescription>
                 <FormMessage />

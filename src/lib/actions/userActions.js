@@ -149,3 +149,26 @@ export const deleteUser = async (userId) => {
     };
   }
 };
+
+/**
+ * Action to Change User Password
+ * @param {object} passwordData - { current_password, password, password_confirmation }
+ * @returns {{ success: boolean, message?: string, error?: string }}
+ */
+export const changePasswordAction = async (passwordData) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.put('/api/customer/password', passwordData);
+
+    return {
+      success: true,
+      message: res?.data?.message || 'Password changed successfully',
+    };
+  } catch (error) {
+    console.error('Error in changePasswordAction:', error);
+    return {
+      success: false,
+      error: error?.response?.data?.error || error?.response?.data?.message || 'Failed to change password',
+    };
+  }
+};

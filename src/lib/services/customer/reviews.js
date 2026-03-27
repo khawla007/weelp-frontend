@@ -52,6 +52,7 @@ export async function getAllReviewsByCustomer(search = '') {
       return ApiResponse({
         data: response.data,
         status: 200,
+        success: true,
       });
     }
 

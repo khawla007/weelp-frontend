@@ -78,3 +78,30 @@ export async function getFeaturedItineraries(city) {
     return { success: false, message: 'Something Went Wrong' };
   }
 }
+
+/**
+ * Returns 2 random similar itineraries from the same city, excluding the current itinerary
+ * @param {string} city - City slug (from itinerary locations[0].city)
+ * @param {number|string} excludeId - Itinerary ID to exclude (current itinerary)
+ * @returns {Array} - Array of 2 random itineraries
+ */
+export async function getRandomSimilarItineraries(city, excludeId) {
+  try {
+    const params = city ? `?city=${city}` : '';
+    const response = await publicApi.get(`/api/itineraries/featured-itineraries${params}`, {
+      headers: { Accept: 'application/json' },
+    });
+
+    let itineraries = Array.isArray(response.data) ? response.data : (response.data?.data ?? []);
+
+    // Exclude the current itinerary
+    itineraries = itineraries.filter((itinerary) => itinerary.id != excludeId);
+
+    // Shuffle and take 2 random itineraries
+    const shuffled = itineraries.sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 2);
+  } catch (error) {
+    console.log('Error fetching similar itineraries:', error);
+    return [];
+  }
+}

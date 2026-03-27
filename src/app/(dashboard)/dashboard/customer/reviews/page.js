@@ -1,24 +1,48 @@
+'use client';
+
 import React from 'react';
 import { CustomerReviewList } from '@/app/components/Pages/DASHBOARD/user/_rsc_pages/reviews/CustomerReviewList';
-import { getAllReviewsByCustomer } from '@/lib/services/customer/reviews';
-import { notFound } from 'next/navigation';
+import useAllReviewsCustomer from '@/hooks/api/customer/reviews';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
-export const dynamic = 'force-dynamic';
-const ReviewsPage = async () => {
-  const { data, status, message = '' } = await getAllReviewsByCustomer();
-  const { reviews = [] } = data;
+const ReviewsPage = () => {
+  const { data, isLoading, error, mutate } = useAllReviewsCustomer();
 
-  // for 404
-  if (status === 404) {
-    notFound();
+  // Extract reviews from data - data is already processed by the hook
+  const reviews = data?.reviews || [];
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <Card className="shadow-none border-none bg-inherit bg-white">
+        <CardHeader className={'px-8'}>
+          <CardTitle className="text-xl text-Blueish font-medium">Your Reviews</CardTitle>
+          <CardDescription className="text-lg text-grayDark">Manage your Reviews, Create New.</CardDescription>
+        </CardHeader>
+        <div className="bg-[#f5f9fa] p-8 min-h-full h-[78vh] flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-Blueish"></div>
+        </div>
+      </Card>
+    );
   }
 
-  // for 500
-  if (status !== 200) {
-    return <div className="text-red-500">{message}</div>;
+  // Error state
+  if (error) {
+    return (
+      <Card className="shadow-none border-none bg-inherit bg-white">
+        <CardHeader className={'px-8'}>
+          <CardTitle className="text-xl text-Blueish font-medium">Your Reviews</CardTitle>
+          <CardDescription className="text-lg text-grayDark">Manage your Reviews, Create New.</CardDescription>
+        </CardHeader>
+        <div className="bg-[#f5f9fa] p-8 min-h-full h-[78vh] flex items-center justify-center">
+          <p className="text-red-500">Failed to load reviews. Please try again.</p>
+        </div>
+      </Card>
+    );
   }
 
-  return <CustomerReviewList reviews={reviews} />;
+  // Success state - pass reviews to child component
+  return <CustomerReviewList reviews={reviews} mutate={mutate} />;
 };
 
 export default ReviewsPage;

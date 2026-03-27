@@ -6,6 +6,15 @@ import { useUserProfile } from '@/hooks/api/customer/profile';
 const ProfilePage = () => {
   const { user, error, isLoading } = useUserProfile();
 
+  if (isLoading) {
+    return (
+      <div className="w-full flex flex-col items-center justify-center min-h-[400px]">
+        <span className="loader"></span>
+        <p className="text-sm text-gray-500 mt-4">Loading profile data...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full">
       <h2 className="font-bold text-lg">Profile</h2>

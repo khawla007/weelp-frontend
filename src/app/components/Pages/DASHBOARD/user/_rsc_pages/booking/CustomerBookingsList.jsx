@@ -15,8 +15,8 @@ export const CustomerBookingsList = () => {
   // intialize form
   const { register, control } = useForm({
     defaultValues: {
-      status: 'completed',
-      sort_by: 'activity',
+      status: 'all',
+      sort_by: 'all',
     },
   });
 
@@ -29,14 +29,16 @@ export const CustomerBookingsList = () => {
   // Apply filters here using useMemo
   const filteredOrders = useMemo(() => {
     return allOrders.filter((order) => {
-      const matchStatus = filters.status ? order.status === filters.status : true; // for filtering
-      const matchType = filters.sort_by ? order.item?.item_type === filters.sort_by : true; // for sorting
+      const matchStatus = filters.status && filters.status !== 'all' ? order.status === filters.status : true; // for filtering
+      const matchType = filters.sort_by && filters.sort_by !== 'all' ? order.item?.item_type === filters.sort_by : true; // for sorting
       return matchStatus && matchType;
     });
   }, [allOrders, filters]);
 
   // Order Status
   const orderStatus = [
+    { name: 'All', value: 'all' },
+    { name: 'Processing', value: 'processing' },
     { name: 'Completed', value: 'completed' },
     { name: 'Cancelled', value: 'cancelled' },
     { name: 'Pending', value: 'pending' },
@@ -45,10 +47,10 @@ export const CustomerBookingsList = () => {
 
   // ItemType
   const itemType = [
+    { name: 'All Items', value: 'all' },
     { name: 'Activity', value: 'activity' },
     { name: 'Itinerary', value: 'itinerary' },
     { name: 'Package', value: 'package' },
-    { name: 'All Items', value: 'all' },
   ];
 
   return (
@@ -80,9 +82,9 @@ export const CustomerBookingsList = () => {
           control={control}
           name="sort_by"
           render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
+            <Select onValueChange={field.onChange} value={field.value || 'all'}>
               <SelectTrigger className="w-[120px] dark:bg-black">
-                <SelectValue placeholder="Item Type" />
+                <SelectValue placeholder="Item Type">{field.value ? itemType.find((t) => t.value === field.value)?.name : 'Item Type'}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>

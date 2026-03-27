@@ -6,7 +6,7 @@ export const useUserProfile = () => {
   const { data, error, isLoading } = useSWR('/api/customer/profile', fetcher);
 
   return {
-    user: data?.user || {},
+    user: data?.user || null,
     error: data?.error || error,
     isLoading,
   };

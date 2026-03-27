@@ -136,3 +136,30 @@ export async function getPackageDataByCity(city) {
     return { success: false, message: 'Something Went Wrong' };
   }
 }
+
+/**
+ * Returns 2 random similar packages from the same city, excluding the current package
+ * @param {string} city - City slug (from package locations[0].city)
+ * @param {number|string} excludeId - Package ID to exclude (current package)
+ * @returns {Array} - Array of 2 random packages
+ */
+export async function getRandomSimilarPackages(city, excludeId) {
+  try {
+    const params = city ? `?city=${city}` : '';
+    const response = await publicApi.get(`/api/packages/featured-packages${params}`, {
+      headers: { Accept: 'application/json' },
+    });
+
+    let packages = Array.isArray(response.data) ? response.data : (response.data?.data ?? []);
+
+    // Exclude the current package
+    packages = packages.filter((pkg) => pkg.id != excludeId);
+
+    // Shuffle and take 2 random packages
+    const shuffled = packages.sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 2);
+  } catch (error) {
+    console.log('Error fetching similar packages:', error);
+    return [];
+  }
+}

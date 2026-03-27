@@ -41,5 +41,5 @@ export function useNavigationEvents() {
     return () => {
       document.removeEventListener('click', handleLinkClick, true);
     };
-  }, [pathname, searchParams, setNavigating]);
+  }, [setNavigating]);
 }

@@ -1,10 +1,11 @@
 /** This File Will Handle Package Page under City context */
-
+import dynamic from 'next/dynamic';
 import BannerSection from '@/app/components/Pages/FRONT_END/singleproduct/BannerSection';
-import SingleProductTabSection from '@/app/components/Pages/FRONT_END/singleproduct/SingleProductTabSection';
 import { notFound } from 'next/navigation';
-import { getSinglePackage } from '@/lib/services/package';
+import { getSinglePackage, getRandomSimilarPackages } from '@/lib/services/package';
 import { isEmpty } from 'lodash';
+
+const SingleProductTabSection = dynamic(() => import('@/app/components/Pages/FRONT_END/singleproduct/SingleProductTabSection'));
 
 export async function generateMetadata({ params }) {
   const { package: pack } = await params;
@@ -21,18 +22,22 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function PackagePage({ params }) {
-  const { package: pack } = await params;
+  const { city, package: pack } = await params;
   const { data: packageData = [] } = await getSinglePackage(pack);
 
   if (!packageData || packageData.length === 0) {
     notFound();
   }
-  const { name, media_gallery = [] } = packageData;
+
+  const { id, name, media_gallery = [], review_summary, locations = [] } = packageData;
+
+  // Fetch similar packages using the city param
+  const similarPackages = city ? await getRandomSimilarPackages(city, id) : [];
 
   return (
     <>
-      <BannerSection activityName={name} media_gallery={media_gallery} />
-      <SingleProductTabSection productData={packageData} />
+      <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} />
+      <SingleProductTabSection productType="package" productId={id} productData={packageData} packageSlug={pack} similarActivities={similarPackages} />
     </>
   );
 }

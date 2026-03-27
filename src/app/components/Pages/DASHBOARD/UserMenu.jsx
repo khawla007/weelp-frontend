@@ -83,7 +83,7 @@ export default function UserMenu() {
             <DropdownMenuItem
               className="text-red-400"
               onClick={() => {
-                signOut();
+                signOut({ callbackUrl: '/' });
               }}
             >
               <LogOut />
