@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useNavigationStore } from '@/lib/store/useNavigationStore';
 
@@ -8,10 +8,22 @@ export function useNavigationEvents() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { setNavigating, checkAndClearNavigation } = useNavigationStore();
+  const navigationTimeoutRef = useRef(null);
 
   // Clear navigation state when pathname or searchParams change (navigation completed)
   useEffect(() => {
-    checkAndClearNavigation();
+    // Use requestAnimationFrame to ensure state update happens after render
+    const rafId = requestAnimationFrame(() => {
+      checkAndClearNavigation();
+    });
+
+    // Clear any pending timeout
+    if (navigationTimeoutRef.current) {
+      clearTimeout(navigationTimeoutRef.current);
+      navigationTimeoutRef.current = null;
+    }
+
+    return () => cancelAnimationFrame(rafId);
   }, [pathname, searchParams, checkAndClearNavigation]);
 
   useEffect(() => {
@@ -34,12 +46,23 @@ export function useNavigationEvents() {
       if (isSamePage) return;
 
       setNavigating(true);
+
+      // Safety timeout: clear navigation state after 10 seconds if pathname hasn't changed
+      if (navigationTimeoutRef.current) {
+        clearTimeout(navigationTimeoutRef.current);
+      }
+      navigationTimeoutRef.current = setTimeout(() => {
+        checkAndClearNavigation();
+      }, 10000);
     };
 
     document.addEventListener('click', handleLinkClick, true);
 
     return () => {
       document.removeEventListener('click', handleLinkClick, true);
+      if (navigationTimeoutRef.current) {
+        clearTimeout(navigationTimeoutRef.current);
+      }
     };
-  }, [setNavigating]);
+  }, [setNavigating, checkAndClearNavigation, pathname]);
 }

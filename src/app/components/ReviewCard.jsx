@@ -84,26 +84,32 @@ export const SingleProductReviewCard = ({ title, rating, comment }) => {
  */
 export const UserDashboardReviewCard = ({ review, onDelete }) => {
   // destructure review
-  const { id, item_type = '', item_name = '', rating, review_text = '', status } = review;
+  const { id, order_id, item_type = '', item_name = '', item_slug, has_live_item, rating, review_text = '', status, created_at } = review;
+
+  // Format date from created_at
+  const formatDate = (dateString) => {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
 
   return (
     <Card className={'flex w-full max-w-full sm:max-w-md flex-col'}>
-      <CardHeader className="flex flex-row items-center justify-between w-full">
-        {/* ItemName and Type */}
-        {item_type && item_name && (
-          <div className={'shadow-none bg-inherit border-none w-full'}>
-            <CardTitle className="text-[#143042] text-xl">{item_name}</CardTitle>
-            <span className="text-grayDark text-lg capitalize">{item_type}</span>
-          </div>
-        )}
+      <CardHeader className="flex flex-col w-full gap-2">
+        {/* First Row: Item Name and Date */}
+        <div className="flex justify-between items-center w-full">
+          {item_name && <CardTitle className="text-[#143042] text-xl font-medium">{item_name}</CardTitle>}
+          {created_at && formatDate(created_at) && <span className="text-[#435a67] text-base font-normal">{formatDate(created_at)}</span>}
+        </div>
 
-        {/* Booking ID */}
-        {id && (
-          <div className={'shadow-none bg-inherit border-none flex flex-col w-full'}>
-            <span className="text-end text-grayDark text-lg">Booking Id</span>
-            <span className="text-end text-[#747474] text-lg sm:text-nowrap">{id}</span>
+        {/* Second Row: Location/Type and Booking ID */}
+        <div className="flex justify-between items-center w-full">
+          <div className="flex items-center gap-2">
+            {item_type && <span className="text-[#435a67] text-base capitalize font-normal">{item_type}</span>}
+            {!has_live_item && <span className="text-xs text-gray-400">(Archived)</span>}
           </div>
-        )}
+          {order_id && <span className="text-[#747474] text-base font-medium opacity-40 text-right">Booking ID : {order_id}</span>}
+        </div>
       </CardHeader>
       <Separator className={'w-11/12 mx-auto'} />
       <CardContent className={'space-y-2 py-4'}>

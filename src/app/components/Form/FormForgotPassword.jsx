@@ -81,9 +81,9 @@ export function FormForgotPassword() {
 
         {/* Email Input */}
         <div>
-          <label htmlFor="email" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
+          <label htmlFor="email" className="flex items-center bg-white shadow-md border p-2 rounded-md w-full">
             <AtSign className="text-[#5A5A5A] size-4" />
-            <input placeholder="Email ID" type="email" id="email" {...register('email')} autoComplete="off" className="mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base" />
+            <input placeholder="Email ID" type="email" id="email" {...register('email')} autoComplete="off" className="py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base w-full" />
           </label>
           {errors.email && <p className="text-sm text-red-600 pt-2">{errors.email.message}</p>}
         </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, useSession, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -72,19 +72,19 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
         } else {
           // Wait for session to update, then redirect based on role
           setTimeout(async () => {
-            const currentSession = await updateSession();
+            const currentSession = await getSession();
 
             if (currentSession?.user?.role) {
               const role = currentSession.user.role;
               if (role === 'super_admin' || role === 'admin') {
-                router.push('/dashboard/admin');
+                window.location.href = '/dashboard/admin';
               } else if (role === 'customer') {
-                router.push('/dashboard/customer');
+                window.location.href = '/dashboard/customer';
               } else {
-                router.push('/dashboard');
+                window.location.href = '/dashboard';
               }
             } else {
-              router.push('/dashboard');
+              window.location.href = '/dashboard';
             }
           }, 100);
 

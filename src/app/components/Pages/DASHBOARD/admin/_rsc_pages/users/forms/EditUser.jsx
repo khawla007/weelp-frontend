@@ -83,7 +83,7 @@ export default function EditUserForm({ userData = {} }) {
   async function onSubmit(data) {
     console.log('form data', data);
     try {
-      const response = await editUserAdmin(data);
+      const response = await editUserAdmin(userData.id, data);
 
       if (!response.success) {
         // Extract first error message dynamically
@@ -115,7 +115,7 @@ export default function EditUserForm({ userData = {} }) {
 
   console.log(form.formState);
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="space-y-4">
       <NavigationUser title="Edit User" content="Edit a user Account" />
       <Card>
         <CardHeader>

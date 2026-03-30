@@ -94,7 +94,7 @@ export default function CreateUserForm() {
     }
   }
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="space-y-4">
       <NavigationUser title="New User" content="Create a new user Account" />
       <Card>
         <CardHeader>

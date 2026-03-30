@@ -5,7 +5,7 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/verify-otp`, body);
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}api/verify-otp`, body);
 
     if (response.status >= 200 && response.status < 300) {
       return NextResponse.json(response.data, { status: response.status });

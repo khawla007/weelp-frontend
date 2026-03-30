@@ -9,10 +9,29 @@ import { PanelLeft } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { useSession } from 'next-auth/react';
 
 export default function UserLayout({ children }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const user = session?.user || {};
+
+  const { name = '', avatar, avatar_url } = user;
+
+  // Generate initials from name for fallback
+  const getInitials = (name) => {
+    if (!name) return 'U';
+    const parts = name.trim().split(' ');
+    if (parts.length === 1) {
+      return parts[0].charAt(0).toUpperCase();
+    }
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+  };
+
+  const userInitials = getInitials(name);
+  const avatarSrc = avatar || avatar_url;
 
   const isActive = (path) => {
     if (path === '/dashboard/customer') return pathname === path;
@@ -39,6 +58,28 @@ export default function UserLayout({ children }) {
           <div className="sticky top-[112px] h-[calc(100vh-112px)] flex flex-col">
             {/* Sidebar Content */}
             <div className="flex-1 py-4 px-2 space-y-2 overflow-y-auto">
+              {/* User Profile Section */}
+              <div
+                className={`
+                bg-white rounded-lg shadow-sm border border-gray-200/50
+                transition-all duration-300 ease-in-out
+                ${sidebarCollapsed ? 'p-2' : 'p-3'}
+                mb-5
+              `}
+              >
+                <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'}`}>
+                  {/* Avatar */}
+                  <Avatar className="h-10 w-10 rounded-full border-2 border-white shadow-sm flex-shrink-0">
+                    {avatarSrc && <AvatarImage src={avatarSrc} alt={name || 'user'} />}
+                    <AvatarFallback className="text-white font-semibold rounded-full" style={{ backgroundColor: '#568f7c' }}>
+                      {userInitials}
+                    </AvatarFallback>
+                  </Avatar>
+
+                  {/* User Name - only show when expanded */}
+                  {!sidebarCollapsed && <span className="text-sm font-medium text-gray-900 truncate">{name || 'User'}</span>}
+                </div>
+              </div>
               <Link
                 href="/dashboard/customer"
                 className={`flex items-center gap-2 px-3 py-2 text-md transition-colors rounded-md ${isActive('/dashboard/customer') ? 'bg-secondaryDark text-white' : 'text-black hover:bg-gray-100'}`}

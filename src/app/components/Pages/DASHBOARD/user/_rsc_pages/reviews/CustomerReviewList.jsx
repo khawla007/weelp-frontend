@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { UserDashboardReviewCard } from '@/app/components/ReviewCard';
 import { deleteReviewCustomer } from '@/lib/actions/customer/reviews';
 import { useToast } from '@/hooks/use-toast';
@@ -53,26 +52,16 @@ export const CustomerReviewList = ({ reviews = [], mutate }) => {
   };
 
   return (
-    <Card className="shadow-none border-none bg-inherit  bg-white">
-      <CardHeader className={'px-8'}>
-        <CardTitle className="text-xl text-Blueish font-medium">Your Reviews</CardTitle>
-        <CardDescription className="text-lg text-grayDark">Manage your Reviews, Create New.</CardDescription>
-      </CardHeader>
-      <div className="bg-[#f5f9fa] p-8 min-h-full h-[78vh]">
-        <div className="flex flex-wrap  bg-[#F5F9FA] gap-4">
-          {reviews.length > 0 ? (
-            reviews.map((review, index) => {
-              return <UserDashboardReviewCard key={review.id || index} review={review} onDelete={handleOnDelete} />;
-            })
-          ) : (
-            <div className="w-full flex items-center justify-center py-12">
-              <p className="text-gray-500 text-lg">No reviews found. Start reviewing your bookings!</p>
-            </div>
-          )}
+    <div className="flex flex-wrap  bg-[#F5F9FA] gap-4">
+      {reviews.length > 0 ? (
+        reviews.map((review, index) => {
+          return <UserDashboardReviewCard key={review.id || index} review={review} onDelete={handleOnDelete} />;
+        })
+      ) : (
+        <div className="w-full flex items-center justify-center py-12">
+          <p className="text-gray-500 text-lg">No reviews found. Start reviewing your bookings!</p>
         </div>
-      </div>
-      {/*
-      </Tabs> */}
-    </Card>
+      )}
+    </div>
   );
 };

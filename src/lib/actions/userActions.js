@@ -57,7 +57,7 @@ export const editUserAdmin = async (userId, data = {}) => {
     await delay(500);
 
     const api = await getAuthApi();
-    const res = await api.put(`/api/admin/users/${userId}`, data, {
+    const res = await api.put(`/api/admin/users/update${userId}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -84,12 +84,13 @@ export const editUserAdmin = async (userId, data = {}) => {
       return {
         success: false,
         message: 'User Validation error',
+        errors: err?.response?.data?.errors,
       };
     }
 
     return {
       success: false,
-      message: 'Something went wrong while editing Place',
+      message: 'Something went wrong while editing user',
     };
   }
 };

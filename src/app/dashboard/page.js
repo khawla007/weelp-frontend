@@ -11,7 +11,7 @@ const DashboardPage = async () => {
   // Redirect based on user role
   const userRole = session.user.role;
 
-  if (userRole === 'admin') {
+  if (userRole === 'admin' || userRole === 'super_admin') {
     redirect('/dashboard/admin');
   } else if (userRole === 'customer') {
     redirect('/dashboard/customer');

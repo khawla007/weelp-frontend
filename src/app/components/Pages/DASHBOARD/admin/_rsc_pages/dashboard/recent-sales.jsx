@@ -9,11 +9,7 @@ export function RecentSales({ loading = false, data = null }) {
   }
 
   if (!loading && sales.length === 0) {
-    return (
-      <div className="flex items-center justify-center h-40 text-muted-foreground">
-        No recent sales
-      </div>
-    );
+    return <div className="flex items-center justify-center h-40 text-muted-foreground">No recent sales</div>;
   }
 
   return (

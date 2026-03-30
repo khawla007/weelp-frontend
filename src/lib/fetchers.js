@@ -23,6 +23,11 @@ export const authFetcher = async (url) => {
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
+      // Don't throw for 404 or 401 errors, just return empty data to prevent infinite retries
+      if (error.response?.status === 404 || error.response?.status === 401) {
+        console.warn(`[authFetcher] ${error.response?.status} for ${url}`);
+        return null;
+      }
       throw new Error(`API Error (${error.response?.status}): ${error.message}`);
     } else {
       throw new Error('Unexpected Error Occurred');

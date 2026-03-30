@@ -18,7 +18,7 @@ export const MetricCards = ({ loading = false, data = null }) => {
         const IconComponent = item.icon || metricCardsData[index]?.icon;
 
         return (
-          <Card key={index} className="cursor-pointer transition-all hover:shadow-lg hover:border-primary/50">
+          <Card key={index} className="cursor-pointer transition-all hover:bg-accent hover:shadow-md">
             <CardHeader className="flex flex-col justify-between pb-2 flex-wrap">
               <CardTitle className="text-xs font-medium flex items-center justify-between w-full gap-2 capitalize">
                 {item.title}

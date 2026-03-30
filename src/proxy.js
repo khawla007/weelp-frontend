@@ -5,7 +5,7 @@ export default async function proxy(req) {
   const path = req.nextUrl.pathname;
 
   // Public routes that don't require authentication
-  const publicRoutes = ['/explore', '/blogs', '/transfers', '/holiday', '/about-us', '/api/auth', '/user/login', '/user/forgot-password', '/user/signup', '/assets'];
+  const publicRoutes = ['/explore', '/blogs', '/transfers', '/holiday', '/about-us', '/api/auth', '/user/login', '/user/forgot-password', '/user/reset-password', '/user/signup', '/assets'];
 
   // Skip auth check for public routes
   if (path === '/' || publicRoutes.some((route) => path.startsWith(route))) {

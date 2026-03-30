@@ -4,6 +4,9 @@ const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const publicApi = axios.create({
   baseURL: baseURL,
+  headers: {
+    Accept: 'application/json',
+  },
 });
 
 /**
@@ -12,6 +15,9 @@ export const publicApi = axios.create({
  */
 export const authApi = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}`,
+  headers: {
+    Accept: 'application/json',
+  },
 });
 
 // Client-side interceptor - only attaches token in browser
@@ -20,13 +26,16 @@ if (typeof window !== 'undefined') {
     async (config) => {
       try {
         const { getSession } = await import('next-auth/react');
-        const session = await getSession();
+        // Add timeout to prevent hanging on session fetch
+        const session = await Promise.race([getSession(), new Promise((resolve) => setTimeout(() => resolve(null), 2000))]);
 
         if (session?.access_token) {
           config.headers.Authorization = `Bearer ${session?.access_token}`;
         }
       } catch (error) {
         console.error('Error fetching session:', error);
+        // Continue with request even if session fetch fails
+        // The server will return 401 if auth is required
       }
 
       return config;
@@ -71,7 +80,10 @@ export async function createAuthenticatedServerApi() {
 
   return axios.create({
     baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}`,
-    headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
+    headers: {
+      Accept: 'application/json',
+      ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+    },
   });
 }
 

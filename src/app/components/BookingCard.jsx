@@ -11,7 +11,9 @@ const ReviewForm = dynamic(() => import('@/app/components/Pages/DASHBOARD/user/_
 
 const BookingCard = ({ bookingItem = {} }) => {
   const [open, setOpen] = useState(false); // For Control Dialog
-  const { id, travel_date, item: { name, city } = {}, review } = bookingItem;
+  const { id, travel_date, item, review } = bookingItem;
+  const name = item?.name || item?.item_name || 'Booking';
+  const city = item?.city || '';
   const rating = review?.rating ?? 0;
 
   return (

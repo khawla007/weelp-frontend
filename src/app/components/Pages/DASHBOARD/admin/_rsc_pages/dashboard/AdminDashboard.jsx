@@ -88,9 +88,7 @@ export function AdminDashboardPage() {
         <Card className="col-span-3">
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
-            <CardDescription>
-              Monthly sales: ${monthlyTotal.toLocaleString()}
-            </CardDescription>
+            <CardDescription>Monthly sales: ${monthlyTotal.toLocaleString()}</CardDescription>
           </CardHeader>
           <CardContent>
             <RecentSales loading={salesLoading} data={salesData} />
