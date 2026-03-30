@@ -1,47 +1,20 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-
-const recentSales = [
-  {
-    username: 'John Doe',
-    email: 'john@email.com',
-    amount: 1299,
-    icon: 'https://picsum.photos/40?random=1',
-  },
-  {
-    username: 'Jane Smith',
-    email: 'jane@email.com',
-    amount: 899,
-    icon: 'https://picsum.photos/40?random=2',
-  },
-  {
-    username: 'Michael Johnson',
-    email: 'michael@email.com',
-    amount: 1599,
-    icon: 'https://picsum.photos/40?random=3',
-  },
-  {
-    username: 'Emily Brown',
-    email: 'emily@email.com',
-    amount: 749,
-    icon: 'https://picsum.photos/40?random=4',
-  },
-  {
-    username: 'David Wilson',
-    email: 'david@email.com',
-    amount: 1899,
-    icon: 'https://picsum.photos/40?random=5',
-  },
-];
-
 import { RecentSalesSkeleton } from './DashboardSkeleton';
 
 export function RecentSales({ loading = false, data = null }) {
+  const sales = data ?? [];
+
   if (loading) {
     return <RecentSalesSkeleton />;
   }
 
-  // Use API data if available (and has content), otherwise use static data
-  const sales = data && data.length > 0 ? data : recentSales;
+  if (!loading && sales.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-40 text-muted-foreground">
+        No recent sales
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 w-full max-w-full grid grid-cols-1">
