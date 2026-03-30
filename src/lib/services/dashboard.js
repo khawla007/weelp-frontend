@@ -34,13 +34,13 @@ export const getOverviewChart = async () => {
 };
 
 /**
- * Get recent sales data
- * @returns {Promise} Recent sales data
+ * Get recent sales data with monthly total
+ * @returns {Promise<{success: boolean, data: Array, monthly_total: number}>} Recent sales data with monthly total
  */
 export const getRecentSales = async () => {
   try {
     const response = await authApi.get('/api/admin/dashboard/recent-sales');
-    return response?.data?.data || [];
+    return response?.data || {};
   } catch (error) {
     console.error('Error fetching recent sales:', error);
     throw error;
