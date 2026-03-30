@@ -549,7 +549,8 @@ body {
 
 /* Global Slider Overflow — visible on top, bottom, left; clipped on right */
 .carousel-shell-wrapper {
-  overflow: visible;
+  overflow-x: hidden;
+  overflow-y: visible;
   /* Clip horizontal overflow (0px) but allow vertical overflow (-100px) */
   clip-path: inset(-100px 0px -100px 0px);
   padding: 16px 4px;
