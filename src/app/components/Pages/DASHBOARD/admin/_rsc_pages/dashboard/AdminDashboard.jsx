@@ -89,7 +89,7 @@ export function AdminDashboardPage() {
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
             <CardDescription>
-              {salesCount} processing orders. Monthly revenue: ${monthlyTotal.toLocaleString()}
+              Monthly sales: ${monthlyTotal.toLocaleString()}
             </CardDescription>
           </CardHeader>
           <CardContent>
