@@ -1,14 +1,15 @@
 'use client';
 import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { ChevronDown, Clock, MoreHorizontal, Trash } from 'lucide-react';
+import { ChevronDown, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useState } from 'react';
-import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { deleteOrder } from '@/lib/actions/orders';
+import { deleteOrder, updateOrderStatus } from '@/lib/actions/orders';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { TypeBadge, TYPE_ICONS } from '@/app/components/Shared/TypeBadge';
 
 export function FilterOrdersPage({ data = {}, mutateOrders }) {
   const [sorting, setSorting] = useState('');
@@ -18,6 +19,9 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
 
   const { data: orders = [] } = data;
   const { toast } = useToast(); // show notification
+
+  // Order status options
+  const orderStatuses = ['pending', 'processing', 'completed', 'cancelled'];
 
   // handle for order delete
   const handleDeleteOrder = async (id) => {
@@ -29,6 +33,22 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
         mutateOrders(); // Refetch updated data
       } else {
         toast({ title: message || 'Failed to delete order.' });
+      }
+    } catch (error) {
+      toast({ title: 'Something went wrong.', variant: 'destructive' });
+    }
+  };
+
+  // handle for order status update
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      const { success, message } = await updateOrderStatus(id, newStatus);
+
+      if (success) {
+        toast({ title: message || 'Order status updated successfully.' });
+        mutateOrders(); // Refetch updated data
+      } else {
+        toast({ title: message || 'Failed to update order status.', variant: 'destructive' });
       }
     } catch (error) {
       toast({ title: 'Something went wrong.', variant: 'destructive' });
@@ -54,14 +74,21 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
         const item = row.original;
         return (
           <div className="flex justify-start">
-            <Badge
-              className={` flex gap-2 items-center justify-center p-2 w-fit  ${item.status === 'pending' && 'bg-amber-100 hover:bg-amber-100 text-amber-500 hover:text-amber-500'} ${
-                item.status === 'cancelled' && 'bg-red-100 hover:bg-red-100 text-dangerSecondary hover:text-dangerSecondary '
-              } ${item.status === 'confirmed' && 'bg-green-50 hover:bg-green-50 text-secondaryDark hover:text-secondaryDark '}`}
+            <Select
+              value={item.status}
+              onValueChange={(newStatus) => handleStatusChange(item.id, newStatus)}
             >
-              <Clock size={14} />
-              {item.status}
-            </Badge>
+              <SelectTrigger className="h-8 w-[140px] capitalize">
+                <SelectValue placeholder="Select status" />
+              </SelectTrigger>
+              <SelectContent>
+                {orderStatuses.map((status) => (
+                  <SelectItem key={status} value={status} className="capitalize">
+                    {status}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         );
       },
@@ -74,6 +101,12 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
       header: 'ITEM TYPE',
       accessorFn: (row) => row.orderable?.item_type,
       id: 'activityName',
+      cell: ({ row }) => {
+        const itemType = row.original.orderable?.item_type;
+        if (!itemType) return 'Unknown';
+        const Icon = TYPE_ICONS[itemType?.toLowerCase()];
+        return <TypeBadge type={itemType} />;
+      },
     },
     {
       header: 'TOTAL AMOUNT',
@@ -88,25 +121,16 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
 
     {
       id: 'actions',
+      header: 'ACTIONS',
       enableHiding: false,
       cell: ({ row }) => {
         const item = row.original;
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => handleDeleteOrder(item.id)} className="flex items-center gap-2 px-2 py-2 text-red-600 hover:bg-red-50 cursor-pointer">
-                <Trash size={16} />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Trash2
+            size={16}
+            onClick={() => handleDeleteOrder(item.id)}
+            className="text-red-400 cursor-pointer hover:text-red-500"
+          />
         );
       },
     },

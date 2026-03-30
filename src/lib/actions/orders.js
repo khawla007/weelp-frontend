@@ -79,3 +79,40 @@ export async function deleteOrder(orderId) {
     return { success: false, error: error.message };
   }
 }
+
+/**
+ * Action to update Order Status
+ * @param {number} orderId
+ * @param {string} status
+ * @returns [{}]
+ */
+export async function updateOrderStatus(orderId, status) {
+  try {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/orders/${orderId}`, { status });
+
+    // On successful
+    if (res.data?.success) {
+      revalidatePath('/dashboard/admin/orders'); // Revalidating Orders
+      return { success: true, message: res.data.message };
+    }
+
+    // Return server response in case of known error
+    return {
+      success: false,
+      message: res.data?.message || 'Failed to update order status.',
+    };
+  } catch (error) {
+    const status = error?.response?.status;
+    const message = error?.response?.data?.message || error.message;
+
+    if (status === 400) {
+      return {
+        success: false,
+        message: message || 'Invalid status update request.',
+      };
+    }
+
+    return { success: false, error: message };
+  }
+}

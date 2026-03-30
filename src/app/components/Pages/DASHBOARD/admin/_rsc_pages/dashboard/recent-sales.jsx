@@ -4,6 +4,16 @@ import { RecentSalesSkeleton } from './DashboardSkeleton';
 export function RecentSales({ loading = false, data = null }) {
   const sales = data ?? [];
 
+  // Helper function to get initials from name
+  const getInitials = (name) => {
+    if (!name) return 'NA';
+    const parts = name.trim().split(' ');
+    if (parts.length === 1) {
+      return parts[0].charAt(0).toUpperCase();
+    }
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+  };
+
   if (loading) {
     return <RecentSalesSkeleton />;
   }
@@ -15,11 +25,13 @@ export function RecentSales({ loading = false, data = null }) {
   return (
     <div className="space-y-8 w-full max-w-full grid grid-cols-1">
       {sales.map((item, index) => {
+        const initials = getInitials(item.username);
+        const hasCustomAvatar = item.icon && !item.icon.includes('ui-avatars.com');
         return (
           <div key={index} className="flex  flex-wrap items-center gap-4 sm:gap-0">
             <Avatar className="h-9 w-9">
-              <AvatarImage src={item.icon} alt="Avatar" />
-              <AvatarFallback>JD</AvatarFallback>
+              {hasCustomAvatar && <AvatarImage src={item.icon} alt="Avatar" />}
+              <AvatarFallback className="bg-[#568f7c] text-white font-medium">{initials}</AvatarFallback>
             </Avatar>
             <div className="ml-4 space-y-1">
               <p className="text-sm font-medium leading-none">{item.username}</p>
