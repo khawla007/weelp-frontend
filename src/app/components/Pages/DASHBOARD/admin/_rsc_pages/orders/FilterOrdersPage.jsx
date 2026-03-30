@@ -74,10 +74,7 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
         const item = row.original;
         return (
           <div className="flex justify-start">
-            <Select
-              value={item.status}
-              onValueChange={(newStatus) => handleStatusChange(item.id, newStatus)}
-            >
+            <Select value={item.status} onValueChange={(newStatus) => handleStatusChange(item.id, newStatus)}>
               <SelectTrigger className="h-8 w-[140px] capitalize">
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
@@ -125,13 +122,7 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
       enableHiding: false,
       cell: ({ row }) => {
         const item = row.original;
-        return (
-          <Trash2
-            size={16}
-            onClick={() => handleDeleteOrder(item.id)}
-            className="text-red-400 cursor-pointer hover:text-red-500"
-          />
-        );
+        return <Trash2 size={16} onClick={() => handleDeleteOrder(item.id)} className="text-red-400 cursor-pointer hover:text-red-500" />;
       },
     },
   ];

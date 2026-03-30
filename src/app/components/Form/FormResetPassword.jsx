@@ -60,7 +60,7 @@ export const FormResetPassword = () => {
   // Watch password fields for live validation
   // eslint-disable-next-line react-hooks/incompatible-library
   const password = watch('password');
-   
+
   const passwordConfirmation = watch('password_confirmation');
 
   //check first token

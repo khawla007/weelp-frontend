@@ -58,7 +58,7 @@ export const StatsOrdersCards = ({ summary = {} }) => {
     completed_orders = 0,
     completed_orders_growth = 0,
     total_revenue = 0,
-    total_revenue_growth = 0
+    total_revenue_growth = 0,
   } = summary;
 
   // Revenue Format
