@@ -37,13 +37,17 @@ export function AdminDashboardPage() {
 
   // Fetch recent sales with SWR
   const {
-    data: salesData,
+    data: salesResponse,
     error: salesError,
     isValidating: salesLoading,
   } = useSWR('/admin/dashboard/recent-sales', () => getRecentSales(), {
     revalidateOnFocus: true,
     refreshInterval: 60000,
   });
+
+  // Extract sales data and monthly total from response
+  const salesData = salesResponse?.data ?? [];
+  const monthlyTotal = salesResponse?.monthly_total ?? 0;
 
   // Aggregate loading states
   const loading = metricsLoading || chartLoading || salesLoading;
@@ -84,7 +88,9 @@ export function AdminDashboardPage() {
         <Card className="col-span-3">
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
-            <CardDescription>You made {salesCount} sales this month.</CardDescription>
+            <CardDescription>
+              {salesCount} processing orders. Monthly revenue: ${monthlyTotal.toLocaleString()}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <RecentSales loading={salesLoading} data={salesData} />
