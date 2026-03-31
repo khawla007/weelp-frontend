@@ -98,5 +98,5 @@ export const {
   },
   secret: process.env.AUTH_SECRET,
   // debug: true
-  // useSecureCookies:true
+  useSecureCookies: process.env.NODE_ENV === 'production',
 });
