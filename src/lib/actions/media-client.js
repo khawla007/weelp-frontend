@@ -1,7 +1,7 @@
 // Client-side media upload action
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000/';
+// Media uploads go through Next.js proxy route
 
 /**
  * Client-side upload media function - fetches token from cookies and uploads directly
@@ -40,10 +40,9 @@ export async function uploadMedia(formData) {
 
     // Make direct API call to backend
     // NOTE: Don't set Content-Type manually - axios will set it with correct boundary for FormData
-    const res = await axios.post(`${API_URL}api/admin/media/store`, formData, {
+    const res = await axios.post('/api/admin/media', formData, {
       headers: {
         Authorization: `Bearer ${session.access_token}`,
-        // Content-Type is set automatically by axios with proper boundary
       },
     });
 

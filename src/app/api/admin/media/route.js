@@ -27,3 +27,25 @@ export async function GET(request) {
     );
   }
 }
+
+/**
+ * UPLOAD MEDIA - proxied from client-side
+ */
+export async function POST(request) {
+  try {
+    const api = await getAuthApi();
+    const formData = await request.formData();
+    const response = await api.post('api/admin/media/store', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return new Response(JSON.stringify(response.data), { status: 200 });
+  } catch (error) {
+    return new Response(
+      JSON.stringify({
+        error: 'Failed to upload media',
+        details: error.message,
+      }),
+      { status: error.response?.status || 500 },
+    );
+  }
+}

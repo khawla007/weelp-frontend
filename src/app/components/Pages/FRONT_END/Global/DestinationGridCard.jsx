@@ -19,7 +19,7 @@ const DestinationGridCard = ({ city, isActive = false }) => {
     // If already a full URL, return as is
     if (imgPath.startsWith('http')) return imgPath;
     // Otherwise prepend backend URL
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000/';
+    const baseUrl = process.env.NEXT_PUBLIC_MEDIA_URL || '/media';
     const fullUrl = `${baseUrl}${imgPath.startsWith('/') ? '' : '/'}${imgPath}`;
     console.log('Image URL constructed:', fullUrl);
     return fullUrl;

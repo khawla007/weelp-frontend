@@ -10,7 +10,7 @@ const getImgUrl = (imgPath) => {
     return '/assets/images/destination-placeholder.jpg';
   }
   if (imgPath.startsWith('http')) return imgPath;
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000/';
+  const baseUrl = process.env.NEXT_PUBLIC_MEDIA_URL || '/media';
   return `${baseUrl}${imgPath.startsWith('/') ? '' : '/'}${imgPath}`;
 };
 
