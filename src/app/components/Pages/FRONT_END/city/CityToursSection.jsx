@@ -70,7 +70,7 @@ export default function CityToursSection({ cityName }) {
       query.set('city', city);
 
       axios
-        .get(`${process.env.NEXT_PUBLIC_API_BASE_URLL}api/packages/featured-packages?${query.toString()}`)
+        .get(`/api/public/packages/featured?${query.toString()}`)
         .then((res) => {
           if (res.data?.success) {
             setPackages(res.data.data || []);

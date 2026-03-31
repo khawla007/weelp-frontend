@@ -13,10 +13,9 @@ import ShopProduct from '../Global/Shop/Shop';
 import Styles from './BannerSection.module.css';
 import { Icon } from './BannerSection';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URLL;
-const PRODUCTS_API = `${API_BASE_URL}api/shop/`;
-const LOCATIONS_API = `${API_BASE_URL}api/regions-cities`;
-const CATEGORIES_API = `${API_BASE_URL}api/categories`;
+const PRODUCTS_API = '/api/public/shop';
+const LOCATIONS_API = '/api/public/regions-cities';
+const CATEGORIES_API = '/api/public/taxonomies/categories';
 
 export const ShopAllProduct = () => {
   const [products, setProducts] = useState([]);

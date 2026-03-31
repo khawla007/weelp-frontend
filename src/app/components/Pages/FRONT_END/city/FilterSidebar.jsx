@@ -13,7 +13,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
 
   useEffect(() => {
     axios
-      .get(`${process.env.NEXT_PUBLIC_API_BASE_URLL}api/categories`)
+      .get('/api/public/taxonomies/categories')
       .then((res) => {
         if (res.status === 200) setCategories(res?.data?.data || []);
       })

@@ -24,7 +24,7 @@ const ShopFilter = () => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     axios
-      .get(`${process.env.NEXT_PUBLIC_API_BASE_URLL}api/shop?page=${page}`)
+      .get(`/api/public/shop?page=${page}`)
       .then((response) => {
         const { data, categories_list, location_list, last_page } = response.data;
         setActivities(data);

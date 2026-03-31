@@ -30,7 +30,7 @@ export const RegionFilter = () => {
   // Fetch Categories
   const fetchCategories = useCallback(() => {
     axios
-      .get(`${process.env.NEXT_PUBLIC_API_BASE_URLL}api/categories`)
+      .get('/api/public/taxonomies/categories')
       .then((response) => {
         if (response?.status === 200 && response?.data?.data?.length > 0) {
           setCategories(response.data.data);
@@ -61,7 +61,7 @@ export const RegionFilter = () => {
       }
 
       axios
-        .get(`${process.env.NEXT_PUBLIC_API_BASE_URLL}api/region/${region}/region-all-items${query}`)
+        .get(`/api/public/region/${region}/all-items${query}`)
         .then((response) => {
           setProducts(response.data.data);
           console.log(response);

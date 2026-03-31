@@ -13,10 +13,9 @@ import { Button, buttonVariants } from '@/components/ui/button';
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URLL;
-const PRODUCTS_API = `${API_BASE_URL}api/homesearch`;
-const LOCATIONS_API = `${API_BASE_URL}api/regions-cities`;
-const CATEGORIES_API = `${API_BASE_URL}api/categories`;
+const PRODUCTS_API = '/api/public/search';
+const LOCATIONS_API = '/api/public/regions-cities';
+const CATEGORIES_API = '/api/public/taxonomies/categories';
 
 export const SearchPage = () => {
   const searchParams = useSearchParams();

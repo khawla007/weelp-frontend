@@ -101,7 +101,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
         setIsCheckingUsername(true);
         setUsernameError('');
         try {
-          const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/check-username`, {
+          const response = await axios.get('/api/public/user/check-username', {
             params: { username },
           });
           if (!response.data.available) {

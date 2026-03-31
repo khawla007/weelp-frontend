@@ -40,7 +40,7 @@ export default function CityFilterSection() {
       if (selectedCategories.length > 0) query += `&categories=${selectedCategories.join(',')}`;
 
       axios
-        .get(`${process.env.NEXT_PUBLIC_API_BASE_URLL}api/cities/${city}/all-items${query}`)
+        .get(`/api/public/cities/${city}/all-items${query}`)
         .then((res) => {
           if (res.status === 200) {
             setProducts(res?.data?.data || []);
