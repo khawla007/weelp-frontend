@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL;
+const baseURL = process.env.API_BASE_URL;
 
 export const publicApi = axios.create({
   baseURL: baseURL,
@@ -79,7 +79,7 @@ export async function createAuthenticatedServerApi() {
   const session = await auth();
 
   return axios.create({
-    baseURL: process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL,
+    baseURL: process.env.API_BASE_URL,
     headers: {
       Accept: 'application/json',
       ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
