@@ -47,7 +47,7 @@ const nextConfig = {
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
   async rewrites() {
     return {
-      afterFiles: [
+      fallback: [
         {
           source: '/api/:path*',
           destination: `${process.env.API_BASE_URL}api/:path*`,
