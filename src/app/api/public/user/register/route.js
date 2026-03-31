@@ -5,7 +5,7 @@ export async function POST(req) {
   try {
     const { name, email, password, password_confirmation } = await req.json();
 
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}api/register`, {
+    const response = await axios.post(`${process.env.API_BASE_URL}api/register`, {
       name,
       email,
       password,

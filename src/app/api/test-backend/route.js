@@ -7,7 +7,7 @@ export async function GET() {
 
     // Test calling backend with the token from session
     const api = axios.create({
-      baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}`,
+      baseURL: `${process.env.API_BASE_URL}`,
       headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
     });
 

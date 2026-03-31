@@ -15,7 +15,7 @@ export async function GET(req) {
 
     // Make API call with explicit token
     const api = axios.create({
-      baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+      baseURL: process.env.API_BASE_URL,
       headers: {
         Authorization: `Bearer ${session.access_token}`,
         Accept: 'application/json',
@@ -44,7 +44,7 @@ export async function POST(req) {
     const body = await req.json();
 
     const api = axios.create({
-      baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+      baseURL: process.env.API_BASE_URL,
       headers: {
         Authorization: `Bearer ${session.access_token}`,
         Accept: 'application/json',
