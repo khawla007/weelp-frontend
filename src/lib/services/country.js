@@ -24,7 +24,7 @@ export async function getSingleCountryAdmin(id) {
     // Create axios instance directly here instead of using helper
     const axios = (await import('axios')).default;
     const api = axios.create({
-      baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}`,
+      baseURL: process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL,
       headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
     });
 

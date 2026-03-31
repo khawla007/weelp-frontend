@@ -105,7 +105,7 @@ export async function fetchCityPackages(city, params = {}) {
     if (params.page) query.set('page', params.page);
     if (params.per_page) query.set('per_page', params.per_page);
     const qs = query.toString();
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URLL}api/packages/featured-packages${qs ? `?${qs}` : ''}`);
+    const response = await axios.get(`${process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL}api/packages/featured-packages${qs ? `?${qs}` : ''}`);
     return response.data;
   } catch {
     return { success: false, data: [], all_tags: [], current_page: 1, last_page: 1, total: 0 };
