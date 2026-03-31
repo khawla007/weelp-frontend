@@ -50,11 +50,8 @@ export function AvatarUpload({ currentAvatar, onUploadSuccess, className = '' })
     formData.append('file', file);
 
     try {
-      const response = await fetch(`http://localhost:8000/api/customer/avatar`, {
+      const response = await fetch('/api/customer/avatar', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
         body: formData,
       });
 

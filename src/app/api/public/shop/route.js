@@ -7,6 +7,7 @@ export async function GET(request) {
     const response = await publicApi.get(`api/shop${query}`);
     return NextResponse.json(response.data);
   } catch (error) {
-    return NextResponse.json({ data: [], error: error.message }, { status: error.response?.status || 500 });
+    const message = error.response?.data?.message || 'Service unavailable';
+    return NextResponse.json({ data: [], error: message }, { status: error.response?.status || 500 });
   }
 }

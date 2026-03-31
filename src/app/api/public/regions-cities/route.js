@@ -6,6 +6,7 @@ export async function GET() {
     const response = await publicApi.get('api/regions-cities');
     return NextResponse.json(response.data);
   } catch (error) {
-    return NextResponse.json({ data: [], error: error.message }, { status: error.response?.status || 500 });
+    const message = error.response?.data?.message || 'Service unavailable';
+    return NextResponse.json({ data: [], error: message }, { status: error.response?.status || 500 });
   }
 }

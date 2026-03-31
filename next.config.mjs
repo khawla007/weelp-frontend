@@ -45,6 +45,16 @@ const nextConfig = {
     root: __dirname,
   },
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+  async rewrites() {
+    return {
+      afterFiles: [
+        {
+          source: '/api/:path*',
+          destination: `${process.env.API_BASE_URL}api/:path*`,
+        },
+      ],
+    };
+  },
   async headers() {
     return [
       {
@@ -88,9 +98,9 @@ export default withSentryConfig(withMDX(nextConfig), {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
-  org: "team-fanatic-coders",
+  org: 'team-fanatic-coders',
 
-  project: "javascript-nextjs",
+  project: 'javascript-nextjs',
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
@@ -105,7 +115,7 @@ export default withSentryConfig(withMDX(nextConfig), {
   // This can increase your server load as well as your hosting bill.
   // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
   // side errors will fail.
-  tunnelRoute: "/monitoring",
+  tunnelRoute: '/monitoring',
 
   webpack: {
     // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
