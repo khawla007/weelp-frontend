@@ -2,6 +2,11 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth/auth';
 import CreatorSidebar from '@/app/components/Dashboard/Creator/CreatorSidebar';
 
+export const metadata = {
+  title: 'Creator Dashboard - Weelp',
+  description: 'Manage your creator content',
+};
+
 export default async function CreatorDashboardLayout({ children }) {
   const session = await auth();
 

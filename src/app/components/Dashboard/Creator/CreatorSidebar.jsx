@@ -15,7 +15,7 @@ export default function CreatorSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-white border-r border-[#435a6742] min-h-screen p-6">
+    <aside className="w-64 bg-white border-r border-[#435a6742] min-h-screen p-6" aria-label="Creator dashboard navigation">
       {/* Logo/Brand */}
       <div className="mb-8">
         <Link href="/explore" className="text-2xl font-bold text-secondaryDark">
@@ -25,7 +25,7 @@ export default function CreatorSidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="space-y-2">
+      <nav className="space-y-2 overflow-y-auto">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
