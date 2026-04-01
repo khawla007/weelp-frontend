@@ -23,11 +23,7 @@ export async function GET(request) {
       }),
     ]);
 
-    const [activities, itineraries, packages] = await Promise.all([
-      activitiesRes.json(),
-      itinerariesRes.json(),
-      packagesRes.json(),
-    ]);
+    const [activities, itineraries, packages] = await Promise.all([activitiesRes.json(), itinerariesRes.json(), packagesRes.json()]);
 
     const results = [
       ...(activities?.data || []).map((a) => ({

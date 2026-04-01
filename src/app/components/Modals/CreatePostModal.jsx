@@ -18,7 +18,12 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated }) {
   const [selectedItems, setSelectedItems] = useState([]);
   const [searching, setSearching] = useState(false);
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     if (!open) {
@@ -119,11 +124,7 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated }) {
             {mediaPreview ? (
               <div className="relative mt-2 rounded-lg overflow-hidden">
                 <img src={mediaPreview} alt="Preview" className="w-full h-48 object-cover rounded-lg" />
-                <button
-                  type="button"
-                  onClick={removeMedia}
-                  className="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1"
-                >
+                <button type="button" onClick={removeMedia} className="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1">
                   <X size={16} />
                 </button>
               </div>
@@ -184,10 +185,7 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated }) {
             {selectedItems.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-2">
                 {selectedItems.map((item, index) => (
-                  <span
-                    key={index}
-                    className="inline-flex items-center gap-1 px-3 py-1 text-xs font-medium rounded-full bg-[#CFDBE54D] text-grayDark"
-                  >
+                  <span key={index} className="inline-flex items-center gap-1 px-3 py-1 text-xs font-medium rounded-full bg-[#CFDBE54D] text-grayDark">
                     {item.name}
                     <button type="button" onClick={() => removeItem(index)}>
                       <X size={12} />
@@ -199,11 +197,7 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated }) {
           </div>
 
           {/* Submit */}
-          <Button
-            type="submit"
-            disabled={submitting}
-            className="w-full bg-secondaryDark hover:bg-secondaryDark/90 text-white"
-          >
+          <Button type="submit" disabled={submitting} className="w-full bg-secondaryDark hover:bg-secondaryDark/90 text-white">
             {submitting ? <Loader2 className="size-4 animate-spin mr-2" /> : null}
             {submitting ? 'Publishing...' : 'Publish Post'}
           </Button>
