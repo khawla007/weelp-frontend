@@ -45,6 +45,7 @@ export const {
             name: data.name,
             email: data.email,
             role: data.role,
+            is_creator: data.is_creator,
             accessToken: data.accessToken,
             expiresAt: decodedToken.exp * 1000,
           };
@@ -65,6 +66,7 @@ export const {
         token.email = user.email;
         token.name = user.name;
         token.role = user.role;
+        token.is_creator = user.is_creator;
         token.accessToken = user.accessToken;
         token.expiresAt = user.expiresAt;
       }
@@ -87,6 +89,7 @@ export const {
       session.user.email = token.email;
       session.user.name = token.name;
       session.user.role = token.role;
+      session.user.is_creator = token.is_creator;
       session.access_token = token.accessToken;
       session.expires = new Date(token.expiresAt).toISOString();
 
