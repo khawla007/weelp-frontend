@@ -1,17 +1,65 @@
 'use client';
-import React, { useState } from 'react';
+
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { CreatorCard } from '@/app/components/CreatorCard';
-import { fakeData } from '@/app/Data/ShopData';
-import { Menu, ChevronDown } from 'lucide-react';
+import { Menu, ChevronDown, Plus } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 const NAV_TABS = ['Home', 'Explore', 'Create'];
 
-const CreatorFilter = () => {
-  const [visibleCount, setVisibleCount] = useState(15);
+const CreatorFilter = ({ initialPosts, lastPage, onCreateClick }) => {
+  const { data: session } = useSession();
+  const [posts, setPosts] = useState(initialPosts || []);
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(lastPage || 1);
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('Home');
+  const observerRef = useRef(null);
+  const isAuthenticated = !!session?.user;
 
-  const handleShowMore = () => {
-    setVisibleCount((prev) => prev + 15);
+  const loadMorePosts = useCallback(async () => {
+    if (loading || page >= maxPage) return;
+
+    setLoading(true);
+    try {
+      const nextPage = page + 1;
+      const res = await fetch(`/api/public/posts?page=${nextPage}`);
+      const data = await res.json();
+
+      if (data?.data?.length > 0) {
+        setPosts((prev) => [...prev, ...data.data]);
+        setPage(nextPage);
+        setMaxPage(data.last_page);
+      }
+    } catch (error) {
+      console.error('Error loading more posts:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, page, maxPage]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMorePosts();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [loadMorePosts]);
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    if (tab === 'Create' && onCreateClick) {
+      onCreateClick();
+    }
   };
 
   return (
@@ -32,7 +80,7 @@ const CreatorFilter = () => {
             {NAV_TABS.map((tab) => (
               <li key={tab}>
                 <button
-                  onClick={() => setActiveTab(tab)}
+                  onClick={() => handleTabClick(tab)}
                   className="text-[18px] font-medium"
                   style={{
                     color: '#435a67',
@@ -41,6 +89,7 @@ const CreatorFilter = () => {
                     borderRadius: activeTab === tab ? '8.5px' : '0',
                   }}
                 >
+                  {tab === 'Create' && <Plus size={14} className="inline mr-1" />}
                   {tab}
                 </button>
               </li>
@@ -59,23 +108,27 @@ const CreatorFilter = () => {
 
       {/* Results Section */}
       <div className="flex flex-col gap-4 py-6">
-        <ul className="w-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {fakeData.slice(0, visibleCount).map((val) => (
-            <li key={val.id}>
-              <CreatorCard imagSrc={val?.image} title={val?.name} rating={val?.rating} />
-            </li>
-          ))}
-        </ul>
+        {posts.length === 0 ? (
+          <div className="text-center py-12 text-grayDark">
+            <p className="text-lg font-medium">No posts yet</p>
+            <p className="text-sm mt-2">Be the first creator to share your travel experience!</p>
+          </div>
+        ) : (
+          <ul className="w-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+            {posts.map((post) => (
+              <li key={post.id}>
+                <CreatorCard post={post} isAuthenticated={isAuthenticated} />
+              </li>
+            ))}
+          </ul>
+        )}
 
-        {/* View More Button */}
-        {visibleCount < fakeData.length && (
-          <div className="flex justify-center">
-            <button
-              onClick={handleShowMore}
-              className="bg-secondaryDark hover:bg-[#ffffff] text-[#ffffff] hover:text-secondaryDark border border-secondaryDark text-base font-medium rounded-md w-fit py-2 px-6"
-            >
-              View More
-            </button>
+        {/* Infinite scroll sentinel */}
+        {page < maxPage && (
+          <div ref={observerRef} className="flex justify-center py-4">
+            {loading && (
+              <div className="w-8 h-8 border-2 border-secondaryDark border-t-transparent rounded-full animate-spin" />
+            )}
           </div>
         )}
       </div>
