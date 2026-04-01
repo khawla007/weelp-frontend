@@ -10,13 +10,15 @@ const DashboardPage = async () => {
 
   // Redirect based on user role
   const userRole = session.user.role;
+  const isCreator = session.user.is_creator;
 
   if (userRole === 'admin' || userRole === 'super_admin') {
     redirect('/dashboard/admin');
-  } else if (userRole === 'customer') {
-    redirect('/dashboard/customer');
+  } else if (isCreator) {
+    // Creators go to their dashboard
+    redirect('/dashboard/creator/overview');
   } else {
-    // Default fallback
+    // Customers go to their dashboard
     redirect('/dashboard/customer');
   }
 };
