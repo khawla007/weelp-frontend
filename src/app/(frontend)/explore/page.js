@@ -1,14 +1,24 @@
 import React from 'react';
-import CreatorFilter from '@/app/components/Pages/FRONT_END/explore/SectionCreatorFilter';
+import { getExplorePosts } from '@/lib/services/posts';
 import BannerSectionSearchForm from '@/app/components/Pages/FRONT_END/Global/BannerSectionSearchForm';
 import WeelpRecommendations from '@/app/components/Pages/FRONT_END/explore/WeelpRecommendations';
+import ExploreClientWrapper from '@/app/components/Pages/FRONT_END/explore/ExploreClientWrapper';
 
 const ExplorePage = async () => {
+  const postsData = await getExplorePosts(1);
+  const initialPosts = postsData?.data || [];
+  const lastPage = postsData?.last_page || 1;
+
   return (
     <>
-      <BannerSectionSearchForm title={'Explore Creators'} description={"You'll discover everything from whisky to Harry Potter, or even some body snatchers, in Scotland's captivating capital."} />
+      <BannerSectionSearchForm
+        title={'Explore Creators'}
+        description={
+          "Discover travel experiences shared by creators. Find inspiration and book your next adventure."
+        }
+      />
 
-      <CreatorFilter />
+      <ExploreClientWrapper initialPosts={initialPosts} lastPage={lastPage} />
 
       <WeelpRecommendations />
     </>
