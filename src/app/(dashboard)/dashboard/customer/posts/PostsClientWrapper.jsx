@@ -81,11 +81,7 @@ export default function PostsClientWrapper({ initialPosts, lastPage }) {
           <div key={post.id} className="bg-white rounded-lg border border-[#435a6742] overflow-hidden">
             {post.media_url && (
               <div className="aspect-video bg-[#CFDBE54D] relative">
-                <img
-                  src={post.media_url}
-                  alt={post.caption || 'Post'}
-                  className="w-full h-full object-cover"
-                />
+                <img src={post.media_url} alt={post.caption || 'Post'} className="w-full h-full object-cover" />
               </div>
             )}
             <div className="p-4">
@@ -114,11 +110,7 @@ export default function PostsClientWrapper({ initialPosts, lastPage }) {
                       {item.name}
                     </span>
                   ))}
-                  {post.tagged_items?.length > 2 && (
-                    <span className="text-[10px] px-2 py-0.5 bg-[#CFDBE54D] rounded-full text-[#435a67]">
-                      +{post.tagged_items.length - 2}
-                    </span>
-                  )}
+                  {post.tagged_items?.length > 2 && <span className="text-[10px] px-2 py-0.5 bg-[#CFDBE54D] rounded-full text-[#435a67]">+{post.tagged_items.length - 2}</span>}
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -131,11 +123,7 @@ export default function PostsClientWrapper({ initialPosts, lastPage }) {
                       <Edit2 className="size-4 mr-2" />
                       Edit
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => handleDelete(post.id)}
-                      disabled={deletingId === post.id}
-                      className="text-red-600 focus:text-red-600"
-                    >
+                    <DropdownMenuItem onClick={() => handleDelete(post.id)} disabled={deletingId === post.id} className="text-red-600 focus:text-red-600">
                       <Trash2 className="size-4 mr-2" />
                       {deletingId === post.id ? 'Deleting...' : 'Delete'}
                     </DropdownMenuItem>
@@ -149,25 +137,13 @@ export default function PostsClientWrapper({ initialPosts, lastPage }) {
 
       {page < lastPage && (
         <div className="mt-8 text-center">
-          <Button
-            onClick={loadMore}
-            disabled={loading}
-            variant="outline"
-            className="border-[#435a6742] text-[#435a67] hover:bg-[#CFDBE54D]"
-          >
+          <Button onClick={loadMore} disabled={loading} variant="outline" className="border-[#435a6742] text-[#435a67] hover:bg-[#CFDBE54D]">
             {loading ? 'Loading...' : 'Load More'}
           </Button>
         </div>
       )}
 
-      {editingPost && (
-        <CreatePostModal
-          open={editModalOpen}
-          onOpenChange={setEditModalOpen}
-          onPostCreated={handlePostUpdated}
-          initialData={editingPost}
-        />
-      )}
+      {editingPost && <CreatePostModal open={editModalOpen} onOpenChange={setEditModalOpen} onPostCreated={handlePostUpdated} initialData={editingPost} />}
     </>
   );
 }

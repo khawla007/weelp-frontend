@@ -47,7 +47,7 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated, ini
               taggable_id: item.taggable_id,
               taggable_type: item.taggable_type,
               name: item.name,
-            }))
+            })),
           );
         }
       }
@@ -176,9 +176,7 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated, ini
     });
 
     // Use updatePost if editing, createPost otherwise
-    const result = isEditing
-      ? await updatePost(initialData.id, formData)
-      : await createPost(formData);
+    const result = isEditing ? await updatePost(initialData.id, formData) : await createPost(formData);
 
     if (result.success) {
       onOpenChange(false);
@@ -192,9 +190,7 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated, ini
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-[#142A38] text-xl">
-            {isEditing ? 'Edit Post' : 'Create Post'}
-          </DialogTitle>
+          <DialogTitle className="text-[#142A38] text-xl">{isEditing ? 'Edit Post' : 'Create Post'}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -236,9 +232,7 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated, ini
             <Label className="text-[#435A67] text-sm font-medium">Tag Activities / Packages / Itineraries</Label>
 
             {/* Max limit notice */}
-            {isMaxReached && (
-              <p className="text-xs text-amber-600 mt-2">Maximum 3 items tagged.</p>
-            )}
+            {isMaxReached && <p className="text-xs text-amber-600 mt-2">Maximum 3 items tagged.</p>}
 
             {/* Primary: My Bookings */}
             {!isMaxReached && (
@@ -259,28 +253,20 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated, ini
                           key={booking.order_id}
                           type="button"
                           disabled={selected}
-                          onClick={() =>
-                            addItem({ id: booking.item_id, type: booking.item_type, name: booking.item_name })
-                          }
+                          onClick={() => addItem({ id: booking.item_id, type: booking.item_type, name: booking.item_name })}
                           className={`w-full flex items-center gap-3 p-2 rounded-lg text-left transition-colors ${
                             selected ? 'opacity-40 cursor-not-allowed bg-[#CFDBE54D]' : 'hover:bg-[#CFDBE54D] cursor-pointer'
                           }`}
                         >
                           {booking.item_image ? (
-                            <img
-                              src={booking.item_image}
-                              alt={booking.item_name}
-                              className="w-10 h-10 rounded-md object-cover flex-shrink-0"
-                            />
+                            <img src={booking.item_image} alt={booking.item_name} className="w-10 h-10 rounded-md object-cover flex-shrink-0" />
                           ) : (
                             <div className="w-10 h-10 rounded-md bg-[#CFDBE54D] flex-shrink-0" />
                           )}
                           <div className="flex-1 min-w-0">
                             <p className="text-sm text-[#142A38] truncate">{booking.item_name}</p>
                             <div className="flex items-center gap-2 mt-0.5">
-                              <span className="text-[10px] font-medium text-secondaryDark bg-secondaryDark/10 px-1.5 py-0.5 rounded">
-                                {booking.type_label}
-                              </span>
+                              <span className="text-[10px] font-medium text-secondaryDark bg-secondaryDark/10 px-1.5 py-0.5 rounded">{booking.type_label}</span>
                               <span className="text-[10px] text-[#5A5A5A] flex items-center gap-0.5">
                                 <Calendar className="size-2.5" />
                                 {booking.travel_date}
@@ -293,9 +279,7 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated, ini
                     })}
                   </div>
                 ) : (
-                  <p className="text-xs text-[#5A5A5A] italic py-3 text-center border border-dashed border-[#435a6742] rounded-lg">
-                    No completed bookings yet
-                  </p>
+                  <p className="text-xs text-[#5A5A5A] italic py-3 text-center border border-dashed border-[#435a6742] rounded-lg">No completed bookings yet</p>
                 )}
               </div>
             )}
@@ -303,11 +287,7 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated, ini
             {/* Secondary: Paste Link */}
             {!isMaxReached && (
               <div className="mt-3">
-                <button
-                  type="button"
-                  onClick={() => setShowPasteLink((prev) => !prev)}
-                  className="flex items-center gap-1.5 text-xs text-secondaryDark hover:text-secondaryDark/80 transition-colors"
-                >
+                <button type="button" onClick={() => setShowPasteLink((prev) => !prev)} className="flex items-center gap-1.5 text-xs text-secondaryDark hover:text-secondaryDark/80 transition-colors">
                   {showPasteLink ? <ChevronDown className="size-3" /> : <ChevronRight className="size-3" />}
                   <Link className="size-3" />
                   Or paste a Weelp link
@@ -326,13 +306,7 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated, ini
                         placeholder="e.g. https://weelp.com/activities/dubai-safari"
                         className="flex-1 px-3 py-2 border border-[#435a6742] rounded-lg text-sm focus:outline-none focus:border-secondaryDark"
                       />
-                      <Button
-                        type="button"
-                        onClick={handleResolveLink}
-                        disabled={resolvingLink || !linkInput.trim()}
-                        className="bg-secondaryDark hover:bg-secondaryDark/90 text-white px-3"
-                        size="sm"
-                      >
+                      <Button type="button" onClick={handleResolveLink} disabled={resolvingLink || !linkInput.trim()} className="bg-secondaryDark hover:bg-secondaryDark/90 text-white px-3" size="sm">
                         {resolvingLink ? <Loader2 className="size-3.5 animate-spin" /> : 'Add'}
                       </Button>
                     </div>
@@ -345,11 +319,7 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated, ini
             {/* Tertiary: Search by name */}
             {!isMaxReached && (
               <div className="mt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowSearch((prev) => !prev)}
-                  className="flex items-center gap-1.5 text-xs text-secondaryDark hover:text-secondaryDark/80 transition-colors"
-                >
+                <button type="button" onClick={() => setShowSearch((prev) => !prev)} className="flex items-center gap-1.5 text-xs text-secondaryDark hover:text-secondaryDark/80 transition-colors">
                   {showSearch ? <ChevronDown className="size-3" /> : <ChevronRight className="size-3" />}
                   <Search className="size-3" />
                   Or search by name
@@ -372,9 +342,7 @@ export default function CreatePostModal({ open, onOpenChange, onPostCreated, ini
                             disabled={isItemSelected(item.id, item.type)}
                             onClick={() => addItem(item)}
                             className={`w-full text-left px-3 py-2 text-sm transition-colors flex justify-between items-center ${
-                              isItemSelected(item.id, item.type)
-                                ? 'opacity-40 cursor-not-allowed'
-                                : 'hover:bg-[#CFDBE54D]'
+                              isItemSelected(item.id, item.type) ? 'opacity-40 cursor-not-allowed' : 'hover:bg-[#CFDBE54D]'
                             }`}
                           >
                             <span className="text-[#142A38]">{item.name}</span>

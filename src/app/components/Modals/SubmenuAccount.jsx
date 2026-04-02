@@ -36,7 +36,12 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
     }
     // Handle multiple roles separated by comma
     if (role.includes(',')) {
-      const roles = role.split(',').map(r => r.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()).trim());
+      const roles = role.split(',').map((r) =>
+        r
+          .replace(/_/g, ' ')
+          .replace(/\b\w/g, (l) => l.toUpperCase())
+          .trim(),
+      );
       if (roles.length === 2) {
         return `${roles[0]} & ${roles[1]}`;
       }
@@ -104,11 +109,7 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
             {/* User Info Header */}
             <li className="p-4 px-6 flex items-center gap-x-3">
               <div className="h-10 w-10 rounded-full flex items-center justify-center text-white font-semibold overflow-hidden" style={{ backgroundColor: '#568f7c' }}>
-                {avatarSrc ? (
-                  <img src={avatarSrc} alt={name || 'user'} className="h-full w-full object-cover" />
-                ) : (
-                  <span>{userInitials}</span>
-                )}
+                {avatarSrc ? <img src={avatarSrc} alt={name || 'user'} className="h-full w-full object-cover" /> : <span>{userInitials}</span>}
               </div>
               <div className="flex flex-col">
                 <span className="font-semibold text-gray-900">{name || 'User'}</span>
@@ -196,13 +197,7 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
         )}
       </ul>
 
-      {createPostOpen && (
-        <CreatePostModal
-          open={createPostOpen}
-          onOpenChange={setCreatePostOpen}
-          onPostCreated={handlePostCreated}
-        />
-      )}
+      {createPostOpen && <CreatePostModal open={createPostOpen} onOpenChange={setCreatePostOpen} onPostCreated={handlePostCreated} />}
     </div>
   );
 };

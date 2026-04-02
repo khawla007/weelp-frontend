@@ -45,10 +45,7 @@ const BookingCard = ({ bookingItem = {} }) => {
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               {rating === 0 ? (
-                <Button
-                  className="ml-auto border border-[#568f7c] bg-[#568f7c] text-white hover:bg-white hover:text-black"
-                  onClick={() => setOpen(true)}
-                >
+                <Button className="ml-auto border border-[#568f7c] bg-[#568f7c] text-white hover:bg-white hover:text-black" onClick={() => setOpen(true)}>
                   Add Review
                 </Button>
               ) : (

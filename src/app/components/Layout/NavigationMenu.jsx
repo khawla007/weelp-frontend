@@ -133,10 +133,7 @@ export const HeaderAccount = () => {
         {/* Create Post Button - Only for Creators */}
         {isCreator && (
           <li>
-            <Button
-              onClick={() => setCreatePostModalOpen(true)}
-              className="bg-secondaryDark hover:bg-secondaryDark/90 text-white h-9 px-4 text-sm font-medium rounded-full"
-            >
+            <Button onClick={() => setCreatePostModalOpen(true)} className="bg-secondaryDark hover:bg-secondaryDark/90 text-white h-9 px-4 text-sm font-medium rounded-full">
               <Plus className="size-4 mr-1.5" strokeWidth={2} />
               Create Post
             </Button>
@@ -144,7 +141,11 @@ export const HeaderAccount = () => {
         )}
 
         <li>
-          <button type="button" className="flex items-center justify-center gap-2 w-[65px] h-[40px] rounded-[30px] border border-[#d9d9d9] transition hover:bg-gray-50 overflow-hidden" onClick={handleSubmenu}>
+          <button
+            type="button"
+            className="flex items-center justify-center gap-2 w-[65px] h-[40px] rounded-[30px] border border-[#d9d9d9] transition hover:bg-gray-50 overflow-hidden"
+            onClick={handleSubmenu}
+          >
             {isLoggedIn && avatarSrc ? (
               <img src={avatarSrc} alt={name || 'user'} className="h-8 w-8 rounded-full object-cover shrink-0" />
             ) : isLoggedIn ? (

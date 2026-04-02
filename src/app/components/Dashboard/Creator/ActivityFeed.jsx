@@ -55,9 +55,7 @@ export default function ActivityFeed({ limit = 5 }) {
             <Clock className="size-4 text-[#435a67]" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm text-[#142A38] truncate">
-              Post: &ldquo;{post.caption || 'Untitled'}&rdquo;
-            </p>
+            <p className="text-sm text-[#142A38] truncate">Post: &ldquo;{post.caption || 'Untitled'}&rdquo;</p>
             <p className="text-xs text-[#5A5A5A] mt-1">
               {formatTimeAgo(post.created_at)} • {post.likes_count || 0} <Heart className="size-3 inline" />
             </p>

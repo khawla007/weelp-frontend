@@ -94,9 +94,7 @@ export default function UserLayout({ children }) {
                 <Link
                   key={route.url}
                   href={route.url}
-                  className={`flex items-center gap-2 px-3 py-2 text-md transition-colors rounded-md ${
-                    isActive(route.url) ? 'bg-secondaryDark text-white' : 'text-black hover:bg-gray-100'
-                  }`}
+                  className={`flex items-center gap-2 px-3 py-2 text-md transition-colors rounded-md ${isActive(route.url) ? 'bg-secondaryDark text-white' : 'text-black hover:bg-gray-100'}`}
                 >
                   <route.icon strokeWidth={2} className="size-5" />
                   {!sidebarCollapsed && <span>{route.title}</span>}
