@@ -26,7 +26,7 @@ export default function QuickActions() {
           Create Post
         </Button>
         <Button
-          onClick={() => router.push('/dashboard/creator/posts')}
+          onClick={() => router.push('/dashboard/customer/posts')}
           variant="outline"
           className="border-[#435a6742] text-[#435a67] hover:bg-[#CFDBE54D]"
         >

@@ -4,6 +4,7 @@ import { ChevronDown, Globe, Headphones, MenuIcon, Search, ShoppingCart, Smartph
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useSession } from 'next-auth/react';
 import { Badge } from '@/components/ui/badge';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import dynamic from 'next/dynamic';
@@ -11,6 +12,16 @@ import { useNavigationMenu } from '@/hooks/api/public/menu/menu';
 import { HEADER_NAV_ITEMS, HEADER_SECONDARY_META } from './shellContent';
 
 const MiniCartNew = dynamic(() => import('../Modals/MiniCartNew', { ssr: false })); // lazy load minicart
+
+// Helper function to generate initials from name
+const getInitials = (name) => {
+  if (!name) return 'U';
+  const parts = name.trim().split(' ');
+  if (parts.length === 1) {
+    return parts[0].charAt(0).toUpperCase();
+  }
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+};
 
 const MobileMenu = ({ stickyHeader }) => {
   return (
@@ -167,7 +178,17 @@ const NavigationMenuMobile = () => {
 };
 
 const HeaderAccountMobile = () => {
+  const { data: session } = useSession();
   const { isMiniCartOpen, setMiniCartOpen, cartItems } = useMiniCartStore(); //mini cart store
+
+  // Extract user data
+  const user = session?.user || {};
+  const { name = '', role = '', avatar, avatar_url } = user;
+  const userInitials = getInitials(name);
+  const avatarSrc = avatar || avatar_url;
+  const isLoggedIn = !!session;
+  const isAdmin = role === 'super_admin';
+  const accountLink = isAdmin ? '/dashboard/admin' : '/dashboard/customer';
 
   const handleShowCart = () => {
     setMiniCartOpen(!isMiniCartOpen);
@@ -179,9 +200,19 @@ const HeaderAccountMobile = () => {
           <ShoppingCart className="size-[18px]" />
           {cartItems?.length > 0 && <Badge className={'absolute bottom-1/4  left-1/2 scale-75 '}>{cartItems?.length}</Badge>}
         </button>
-        <Link href="/user/login" className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918]">
-          <UserRound className="size-[18px]" />
-        </Link>
+        {isLoggedIn && avatarSrc ? (
+          <Link href={accountLink} className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E5E4E1] bg-white overflow-hidden">
+            <img src={avatarSrc} alt={name || 'user'} className="h-full w-full object-cover" />
+          </Link>
+        ) : isLoggedIn ? (
+          <Link href={accountLink} className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E5E4E1] text-white font-semibold" style={{ backgroundColor: '#568f7c' }}>
+            {userInitials}
+          </Link>
+        ) : (
+          <Link href="/user/login" className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918]">
+            <UserRound className="size-[18px]" />
+          </Link>
+        )}
       </div>
 
       {isMiniCartOpen && createPortal(<MiniCartNew />, document.body)}

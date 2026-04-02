@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { delay } from '@/lib/utils';
 import Image from 'next/image';
 import { debounce } from 'lodash';
+import { useCallback } from 'react';
 import { useBlogs } from '@/hooks/api/public/blogs/useBlogs';
 import { FALLBACK_IMAGE } from '@/constants/image';
 import Link from 'next/link';
@@ -16,18 +17,19 @@ export const SearchFormCreator = () => {
   });
 
   // Initialize form once - setup click outside handler
-  useEffect(() => {
-    const handleClickOutside = () => {
-      setResponse({ data: [] });
-    };
+  // Use useCallback to prevent function recreation and proper cleanup
+  const handleClickOutside = useCallback(() => {
+    setResponse({ data: [] });
+  }, []);
 
+  useEffect(() => {
     document.body.addEventListener('click', handleClickOutside);
 
     // Cleanup the event listener when the component unmounts
     return () => {
       document.body.removeEventListener('click', handleClickOutside);
     };
-  }, []);
+  }, [handleClickOutside]);
 
   // Using react-hook-form
   const {

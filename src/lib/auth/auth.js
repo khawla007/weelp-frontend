@@ -59,7 +59,7 @@ export const {
   ],
 
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         // Update token with user data
         token.id = user.id;
@@ -69,6 +69,13 @@ export const {
         token.is_creator = user.is_creator;
         token.accessToken = user.accessToken;
         token.expiresAt = user.expiresAt;
+      }
+
+      // Handle session updates (e.g., after creator upgrade)
+      if (trigger === 'update' && session) {
+        if (session.is_creator !== undefined) {
+          token.is_creator = session.is_creator;
+        }
       }
 
       // Check if token is expired

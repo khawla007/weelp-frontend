@@ -12,9 +12,7 @@ export const CreatorCard = ({ post, isAuthenticated = false }) => {
   const [sharesCount, setSharesCount] = useState(post?.shares_count || 0);
 
   const creatorId = post?.creator?.id;
-  const mediaUrl = post?.media?.url
-    ? `${process.env.NEXT_PUBLIC_MEDIA_URL ? '' : ''}${post.media.url}`
-    : '/assets/Card.webp';
+  const mediaUrl = post?.media?.url ? `${process.env.NEXT_PUBLIC_MEDIA_URL ? '' : ''}${post.media.url}` : '/assets/Card.webp';
   const creatorAvatar = post?.creator?.avatar_media?.url || '/assets/Card.webp';
   const firstTaggedItem = post?.tagged_items?.[0];
 
@@ -82,12 +80,7 @@ export const CreatorCard = ({ post, isAuthenticated = false }) => {
     <div className="w-full max-w-full sm:max-w-sm p-4 sm:p-6">
       <NavigationLink href={mainHref}>
         <div className="relative w-full aspect-[93/100]">
-          <Image
-            src={mediaUrl}
-            alt={post?.caption || 'Creator post'}
-            fill
-            className="rounded-lg object-cover"
-          />
+          <Image src={mediaUrl} alt={post?.caption || 'Creator post'} fill className="rounded-lg object-cover" />
         </div>
       </NavigationLink>
 
@@ -103,18 +96,10 @@ export const CreatorCard = ({ post, isAuthenticated = false }) => {
               {formatCount(sharesCount)}
             </button>
           </div>
-          <h3 className="text-[#142A38] text-lg font-medium line-clamp-1">
-            {post?.caption || 'Untitled Post'}
-          </h3>
+          <h3 className="text-[#142A38] text-lg font-medium line-clamp-1">{post?.caption || 'Untitled Post'}</h3>
         </div>
         <div className="flex items-center">
-          <Image
-            src={creatorAvatar}
-            className="size-11 rounded-full object-cover"
-            width={44}
-            height={44}
-            alt={post?.creator?.name || 'Creator'}
-          />
+          <Image src={creatorAvatar} className="size-11 rounded-full object-cover" width={44} height={44} alt={post?.creator?.name || 'Creator'} />
         </div>
       </div>
 

@@ -76,12 +76,13 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
 
             if (currentSession?.user?.role) {
               const role = currentSession.user.role;
+              const isCreator = currentSession.user.is_creator;
               if (role === 'super_admin' || role === 'admin') {
                 window.location.href = '/dashboard/admin';
-              } else if (role === 'customer') {
-                window.location.href = '/dashboard/customer';
+              } else if (isCreator) {
+                window.location.href = '/dashboard/customer/overview';
               } else {
-                window.location.href = '/dashboard';
+                window.location.href = '/dashboard/customer';
               }
             } else {
               window.location.href = '/dashboard';
@@ -144,7 +145,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
             </label>
             {errors.password && <p className="text-sm text-red-600 p-2">{errors.password.message}</p>}
           </div>
-          <Link className="pt-2 block" href={'/user/forgot-password'}>
+          <Link className="pt-2 block" href={'/user/forgot-password'} onClick={closeAuthModal}>
             Forgot Password ?
           </Link>
           <Button

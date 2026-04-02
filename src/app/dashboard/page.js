@@ -15,10 +15,10 @@ const DashboardPage = async () => {
   if (userRole === 'admin' || userRole === 'super_admin') {
     redirect('/dashboard/admin');
   } else if (isCreator) {
-    // Creators go to their dashboard
-    redirect('/dashboard/creator/overview');
+    // Creators land on Overview tab
+    redirect('/dashboard/customer/overview');
   } else {
-    // Customers go to their dashboard
+    // Customers land on Bookings tab
     redirect('/dashboard/customer');
   }
 };

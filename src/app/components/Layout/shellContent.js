@@ -1,5 +1,5 @@
 export const HEADER_NAV_ITEMS = [
-  { title: 'Explore Destinations', href: '/explore' },
+  { title: 'Explore Creators', href: '/explore' },
   { title: 'Tours & Experiences', href: '/' },
   { title: 'Transfers', href: '/transfers' },
   { title: 'Trips', href: '/holiday' },

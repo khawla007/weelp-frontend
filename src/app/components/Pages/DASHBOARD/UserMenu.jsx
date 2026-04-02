@@ -61,21 +61,6 @@ export default function UserMenu() {
             </DropdownMenuTrigger>
           </div>
           <DropdownMenuContent className="w-56 rounded-lg shadow-lg border-gray-200 dark:border-gray-700" side="bottom" align="end" sideOffset={8}>
-            <DropdownMenuLabel className="p-3 font-normal border-b border-gray-100 dark:border-gray-700">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-10 w-10 rounded-lg">
-                  {avatarSrc && <AvatarImage src={avatarSrc} alt={name || 'user'} />}
-                  <AvatarFallback className="text-white font-semibold rounded-lg" style={{ backgroundColor: '#568f7c' }}>
-                    {userInitials}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <span className="font-semibold text-gray-900 dark:text-gray-100">{name || 'User'}</span>
-                  <span className="text-muted-foreground text-xs">{email}</span>
-                </div>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800">
                 <Link href="/" className="flex items-center gap-2">

@@ -28,7 +28,7 @@ const BookingCard = ({ bookingItem = {} }) => {
       <CardContent className="border py-2 space-y-2 border-y-graycolor border-x-0">
         <div className="flex justify-between">
           {/* Reviews */}
-          {!rating == 0 && (
+          {rating !== 0 && (
             <>
               <CardTitle className="text-black text-base font-semibold">Your Review</CardTitle>
               <ul className="flex">
@@ -44,9 +44,18 @@ const BookingCard = ({ bookingItem = {} }) => {
           {/* Controlled Dialog */}
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2" onClick={() => setOpen(true)}>
-                <Edit size={16} />
-              </Button>
+              {rating === 0 ? (
+                <Button
+                  className="ml-auto border border-[#568f7c] bg-[#568f7c] text-white hover:bg-white hover:text-black"
+                  onClick={() => setOpen(true)}
+                >
+                  Add Review
+                </Button>
+              ) : (
+                <Button variant="outline" className="flex items-center gap-2" onClick={() => setOpen(true)}>
+                  <Edit size={16} />
+                </Button>
+              )}
             </DialogTrigger>
 
             <DialogContent className="sm:max-w-[425px]">

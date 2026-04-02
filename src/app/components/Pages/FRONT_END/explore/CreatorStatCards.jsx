@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { TrendingUp, DollarSign, MousePointerClick } from 'lucide-react';
 import { getCreatorStats } from '@/lib/actions/posts';
 
-export default function CreatorStatCards() {
+export default function CreatorStatCards({ className = 'max-w-[95%] mx-auto px-6' }) {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -22,7 +22,7 @@ export default function CreatorStatCards() {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 px-6 py-4">
+      <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 pb-6 ${className}`}>
         {[1, 2, 3].map((i) => (
           <div key={i} className="h-24 bg-[#CFDBE54D] rounded-lg animate-pulse" />
         ))}
@@ -57,7 +57,7 @@ export default function CreatorStatCards() {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 px-6 py-4">
+    <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 pb-6 ${className}`}>
       {statItems.map((item) => (
         <Card key={item.label} className="border border-[#435a6742]">
           <CardContent className="flex items-center gap-4 p-4">

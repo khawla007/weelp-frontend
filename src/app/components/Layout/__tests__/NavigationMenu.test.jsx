@@ -3,6 +3,10 @@ import { render, screen } from '@testing-library/react';
 
 import DesktopMenu from '../NavigationMenu';
 
+jest.mock('next-auth/react', () => ({
+  useSession: () => ({ data: null, status: 'unauthenticated' }),
+}));
+
 jest.mock('next/dynamic', () => () => {
   const DynamicComponent = () => <div data-testid="dynamic-component" />;
   DynamicComponent.displayName = 'DynamicComponent';
@@ -46,7 +50,7 @@ describe('DesktopMenu', () => {
     expect(screen.getByText(/get exclusive offer on the app/i)).toBeInTheDocument();
     expect(screen.getByText(/^usd$/i)).toBeInTheDocument();
     expect(screen.getByText('Weelp.')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /explore destinations/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /explore creators/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /tours & experiences/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^transfers$/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^trips$/i })).toBeInTheDocument();

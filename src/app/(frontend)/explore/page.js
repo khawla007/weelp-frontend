@@ -11,12 +11,7 @@ const ExplorePage = async () => {
 
   return (
     <>
-      <BannerSectionSearchForm
-        title={'Explore Creators'}
-        description={
-          "Discover travel experiences shared by creators. Find inspiration and book your next adventure."
-        }
-      />
+      <BannerSectionSearchForm title={'Explore Creators'} description={'Discover travel experiences shared by creators. Find inspiration and book your next adventure.'} />
 
       <ExploreClientWrapper initialPosts={initialPosts} lastPage={lastPage} />
 

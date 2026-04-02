@@ -45,7 +45,7 @@ const CreatorFilter = ({ initialPosts, lastPage, onCreateClick }) => {
           loadMorePosts();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (observerRef.current) {
@@ -126,9 +126,7 @@ const CreatorFilter = ({ initialPosts, lastPage, onCreateClick }) => {
         {/* Infinite scroll sentinel */}
         {page < maxPage && (
           <div ref={observerRef} className="flex justify-center py-4">
-            {loading && (
-              <div className="w-8 h-8 border-2 border-secondaryDark border-t-transparent rounded-full animate-spin" />
-            )}
+            {loading && <div className="w-8 h-8 border-2 border-secondaryDark border-t-transparent rounded-full animate-spin" />}
           </div>
         )}
       </div>

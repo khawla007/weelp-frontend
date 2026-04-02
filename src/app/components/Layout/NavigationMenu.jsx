@@ -1,13 +1,26 @@
 import React, { useState } from 'react';
-import { ChevronDown, Globe, Headphones, MapPin, Search, ShoppingCart, Smartphone } from 'lucide-react';
+import { ChevronDown, Globe, Headphones, MapPin, Plus, Search, ShoppingCart, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
+import { useSession } from 'next-auth/react';
 import ModalForm from '../Modals/ModalForm';
+import CreatePostModal from '../Modals/CreatePostModal';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import MiniCartNew from '../Modals/MiniCartNew';
 import SubmenuAccount from '../Modals/SubmenuAccount';
 import { HEADER_NAV_ITEMS, HEADER_PRIMARY_META, HEADER_SECONDARY_META } from './shellContent';
+
+// Helper function to generate initials from name
+const getInitials = (name) => {
+  if (!name) return 'U';
+  const parts = name.trim().split(' ');
+  if (parts.length === 1) {
+    return parts[0].charAt(0).toUpperCase();
+  }
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+};
 
 const DesktopMenu = ({ stickyHeader }) => {
   return (
@@ -73,9 +86,19 @@ const NavMenuDesktop = () => {
 };
 
 export const HeaderAccount = () => {
+  const { data: session } = useSession();
   const { isMiniCartOpen, setMiniCartOpen, cartItems } = useMiniCartStore(); //mini cart store
   const [showSubmenu, setShowSubmenu] = useState(null);
   const [showForm, setShowForm] = useState(null);
+  const [createPostModalOpen, setCreatePostModalOpen] = useState(false);
+
+  // Extract user data
+  const user = session?.user || {};
+  const { name = '', avatar, avatar_url } = user;
+  const userInitials = getInitials(name);
+  const avatarSrc = avatar || avatar_url;
+  const isLoggedIn = !!session;
+  const isCreator = !!session?.user?.is_creator;
 
   // for handle Submenu
   const handleSubmenu = () => {
@@ -96,7 +119,7 @@ export const HeaderAccount = () => {
     <div className="relative">
       <ul className="flex items-center gap-[24px]">
         <li>
-          <button type="button" className="relative flex items-center justify-center text-[#0c2536] transition hover:text-[#142a38]" onClick={handleShowCart}>
+          <button type="button" className="flex items-center justify-center text-[#0c2536] transition hover:text-[#142a38]" onClick={handleShowCart}>
             <ShoppingCart className="size-5" strokeWidth={1.5} />
             {cartItems?.length > 0 && <Badge className={'absolute -right-4 -top-2 scale-75'}>{cartItems?.length}</Badge>}
           </button>
@@ -107,20 +130,41 @@ export const HeaderAccount = () => {
           </button>
         </li>
 
+        {/* Create Post Button - Only for Creators */}
+        {isCreator && (
+          <li>
+            <Button
+              onClick={() => setCreatePostModalOpen(true)}
+              className="bg-secondaryDark hover:bg-secondaryDark/90 text-white h-9 px-4 text-sm font-medium rounded-full"
+            >
+              <Plus className="size-4 mr-1.5" strokeWidth={2} />
+              Create Post
+            </Button>
+          </li>
+        )}
+
         <li>
-          <button type="button" className="flex items-center justify-center w-[65px] h-[40px] rounded-[30px] border border-[#d9d9d9] transition hover:bg-gray-50" onClick={handleSubmenu}>
-            <svg width="32" height="32" viewBox="0 0 36 36" fill="none" className="shrink-0">
-              <defs>
-                <clipPath id="header-avatar-clip">
-                  <circle cx="18" cy="18" r="18" />
-                </clipPath>
-              </defs>
-              <circle cx="18" cy="18" r="18" fill="#B3B3B3" />
-              <g clipPath="url(#header-avatar-clip)">
-                <circle cx="18" cy="14" r="6.5" fill="white" />
-                <ellipse cx="18" cy="34" rx="12" ry="10" fill="white" />
-              </g>
-            </svg>
+          <button type="button" className="flex items-center justify-center gap-2 w-[65px] h-[40px] rounded-[30px] border border-[#d9d9d9] transition hover:bg-gray-50 overflow-hidden" onClick={handleSubmenu}>
+            {isLoggedIn && avatarSrc ? (
+              <img src={avatarSrc} alt={name || 'user'} className="h-8 w-8 rounded-full object-cover shrink-0" />
+            ) : isLoggedIn ? (
+              <span className="h-8 w-8 rounded-full flex items-center justify-center text-white font-semibold text-sm shrink-0" style={{ backgroundColor: '#568f7c' }}>
+                {userInitials}
+              </span>
+            ) : (
+              <svg width="32" height="32" viewBox="0 0 36 36" fill="none" className="shrink-0">
+                <defs>
+                  <clipPath id="header-avatar-clip">
+                    <circle cx="18" cy="18" r="18" />
+                  </clipPath>
+                </defs>
+                <circle cx="18" cy="18" r="18" fill="#B3B3B3" />
+                <g clipPath="url(#header-avatar-clip)">
+                  <circle cx="18" cy="14" r="6.5" fill="white" />
+                  <ellipse cx="18" cy="34" rx="12" ry="10" fill="white" />
+                </g>
+              </svg>
+            )}
             <ChevronDown className="size-[16px] text-[#142a38]/70 shrink-0" strokeWidth={1.5} />
           </button>
         </li>
@@ -134,6 +178,20 @@ export const HeaderAccount = () => {
 
       {/* Mini Cart With React Portal */}
       {isMiniCartOpen && createPortal(<MiniCartNew />, document.body)}
+
+      {/* Create Post Modal - Only for Creators */}
+      {isCreator && (
+        <CreatePostModal
+          open={createPostModalOpen}
+          onOpenChange={setCreatePostModalOpen}
+          onPostCreated={(data) => {
+            // Optionally refresh or navigate after creating a post
+            if (data) {
+              window.location.reload();
+            }
+          }}
+        />
+      )}
     </div>
   );
 };

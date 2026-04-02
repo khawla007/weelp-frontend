@@ -84,6 +84,27 @@ export const getCreatorStats = async () => {
   }
 };
 
+export const getCompletedBookings = async () => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.get('/api/creator/completed-bookings');
+    return { success: true, data: res.data?.data || [] };
+  } catch (err) {
+    return { success: false, message: 'Failed to fetch bookings.', data: [] };
+  }
+};
+
+export const resolveLink = async (url) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post('/api/creator/resolve-link', { url });
+    return { success: true, data: res.data?.data };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Could not find this item. Please check the link and try again.';
+    return { success: false, message };
+  }
+};
+
 export const getCreatorPosts = async () => {
   try {
     const api = await getAuthApi();
