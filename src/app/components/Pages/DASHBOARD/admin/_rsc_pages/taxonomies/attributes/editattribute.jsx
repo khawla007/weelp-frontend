@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { generateSlug } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
 import { editAttribute } from '@/lib/actions/attributes';
 import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
@@ -30,6 +31,7 @@ export const formSchema = z
     description: z.string().optional(),
     values: z.string().min(3, 'Each value must be at least 3 character'),
     default_value: z.string().optional(),
+    status: z.enum(['active', 'draft']).default('active'),
     is_featured: z.boolean().default(false),
   })
   .superRefine((data, ctx) => {
@@ -48,7 +50,7 @@ export const EditAttributePageForm = ({ attributeData }) => {
   const router = useRouter();
   const { toast } = useToast();
 
-  const { id, name, slug, type, description, values, default_value, is_featured } = attributeData;
+  const { id, name, slug, type, description, values, default_value, status, is_featured } = attributeData;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -59,6 +61,7 @@ export const EditAttributePageForm = ({ attributeData }) => {
       description: description || '',
       values: values || '',
       default_value: default_value || '',
+      status: status || 'active',
       is_featured: is_featured || false,
     },
   });
@@ -241,6 +244,34 @@ export const EditAttributePageForm = ({ attributeData }) => {
                   )}
                 />
               )}
+
+              {/* Status */}
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Status</FormLabel>
+                    <FormControl>
+                      <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col gap-2">
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="active" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Active</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="draft" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Draft</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               {/* Featured */}
               <FormField

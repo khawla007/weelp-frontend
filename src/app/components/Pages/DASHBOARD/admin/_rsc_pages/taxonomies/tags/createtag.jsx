@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { Form, FormLabel, FormDescription, FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form';
 import { generateSlug } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { useForm, useWatch } from 'react-hook-form';
@@ -25,6 +26,7 @@ const formSchema = z.object({
   description: z.string().min(3, {
     message: 'Please enter a description.',
   }),
+  status: z.enum(['active', 'draft']).default('active'),
   is_featured: z.boolean().default(false),
 });
 
@@ -37,6 +39,7 @@ export const CreateTagPageForm = () => {
       name: '',
       slug: '',
       description: '',
+      status: 'active',
       is_featured: false,
     },
   });
@@ -143,6 +146,34 @@ export const CreateTagPageForm = () => {
                     <FormLabel>Description</FormLabel>
                     <FormControl>
                       <Textarea placeholder="Enter tag description" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Status */}
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Status</FormLabel>
+                    <FormControl>
+                      <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col gap-2">
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="active" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Active</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="draft" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Draft</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
