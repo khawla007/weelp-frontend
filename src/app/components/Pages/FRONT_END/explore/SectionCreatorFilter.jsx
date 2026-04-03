@@ -4,12 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { CreatorCard } from '@/app/components/CreatorCard';
 import { ChevronDown, Plus, Check } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 const NAV_TABS = ['Home', 'Explore', 'Create'];
 
@@ -221,9 +216,7 @@ const CreatorFilter = ({ initialPosts, lastPage, onCreateClick }) => {
         ) : posts.length === 0 ? (
           <div className="text-center py-12 text-grayDark">
             <p className="text-lg font-medium">{activeSource === 'mine' ? "You haven't created any posts yet" : 'No posts yet'}</p>
-            <p className="text-sm mt-2">
-              {activeSource === 'mine' ? 'Share your travel experiences with the community!' : 'Be the first creator to share your travel experience!'}
-            </p>
+            <p className="text-sm mt-2">{activeSource === 'mine' ? 'Share your travel experiences with the community!' : 'Be the first creator to share your travel experience!'}</p>
           </div>
         ) : (
           <ul className="w-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
