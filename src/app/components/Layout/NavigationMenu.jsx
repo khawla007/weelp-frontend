@@ -87,7 +87,9 @@ const NavMenuDesktop = () => {
 
 export const HeaderAccount = () => {
   const { data: session } = useSession();
-  const { isMiniCartOpen, setMiniCartOpen, cartItems } = useMiniCartStore(); //mini cart store
+  const isMiniCartOpen = useMiniCartStore((state) => state.isMiniCartOpen);
+  const setMiniCartOpen = useMiniCartStore((state) => state.setMiniCartOpen);
+  const cartItems = useMiniCartStore((state) => state.cartItems);
   const [showSubmenu, setShowSubmenu] = useState(null);
   const [showForm, setShowForm] = useState(null);
   const [createPostModalOpen, setCreatePostModalOpen] = useState(false);
@@ -119,7 +121,7 @@ export const HeaderAccount = () => {
     <div className="relative">
       <ul className="flex items-center gap-[24px]">
         <li>
-          <button type="button" className="flex items-center justify-center text-[#0c2536] transition hover:text-[#142a38]" onClick={handleShowCart}>
+          <button type="button" className="relative flex items-center justify-center text-[#0c2536] transition hover:text-[#142a38]" onClick={handleShowCart}>
             <ShoppingCart className="size-5" strokeWidth={1.5} />
             {cartItems?.length > 0 && <Badge className={'absolute -right-4 -top-2 scale-75'}>{cartItems?.length}</Badge>}
           </button>

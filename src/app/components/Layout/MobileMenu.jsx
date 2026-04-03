@@ -179,7 +179,9 @@ const NavigationMenuMobile = () => {
 
 const HeaderAccountMobile = () => {
   const { data: session } = useSession();
-  const { isMiniCartOpen, setMiniCartOpen, cartItems } = useMiniCartStore(); //mini cart store
+  const isMiniCartOpen = useMiniCartStore((state) => state.isMiniCartOpen);
+  const setMiniCartOpen = useMiniCartStore((state) => state.setMiniCartOpen);
+  const cartItems = useMiniCartStore((state) => state.cartItems);
 
   // Extract user data
   const user = session?.user || {};

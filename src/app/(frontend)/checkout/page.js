@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
 import { buttonVariants } from '@/components/ui/button';
@@ -13,12 +14,17 @@ const CheckoutMainManual = dynamic(() => import('@/app/components/Pages/FRONT_EN
 
 const CheckoutPage = () => {
   const { data: session, status } = useSession();
+  const router = useRouter();
   const { cartItems = [] } = useMiniCartStore();
   const { openAuthModal } = useAuthModalStore();
+  const hasOpenedModal = useRef(false);
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      openAuthModal({ redirectTo: '/checkout' });
+    if (status === 'unauthenticated' && !hasOpenedModal.current) {
+      hasOpenedModal.current = true;
+      // Get the referrer (page user came from)
+      const referrerUrl = document.referrer;
+      openAuthModal({ redirectTo: '/checkout', referrer: referrerUrl || '/' });
     }
   }, [status, openAuthModal]);
 
