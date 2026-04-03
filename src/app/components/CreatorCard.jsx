@@ -21,10 +21,13 @@ export const CreatorCard = ({ post, isAuthenticated = false }) => {
     const taggable = item.taggable;
     const slug = taggable.slug;
     const type = item.taggable_type;
+    const citySlug = taggable.locations?.[0]?.city?.slug;
 
-    if (type === 'App\\Models\\Activity') return `/cities/activity/${slug}?ref=${creatorId}`;
-    if (type === 'App\\Models\\Itinerary') return `/cities/itinerary/${slug}?ref=${creatorId}`;
-    if (type === 'App\\Models\\Package') return `/cities/package/${slug}?ref=${creatorId}`;
+    if (!citySlug) return '#';
+
+    if (type === 'App\\Models\\Activity') return `/cities/${citySlug}/activities/${slug}?ref=${creatorId}`;
+    if (type === 'App\\Models\\Itinerary') return `/cities/${citySlug}/itineraries/${slug}?ref=${creatorId}`;
+    if (type === 'App\\Models\\Package') return `/cities/${citySlug}/packages/${slug}?ref=${creatorId}`;
     return '#';
   };
 
