@@ -2,6 +2,7 @@ export const revalidate = 60;
 
 import dynamic from 'next/dynamic';
 import HeroSection from '../components/Pages/FRONT_END/home/HeroSection';
+import WeelpRecommendations from '@/app/components/Pages/FRONT_END/home/WeelpRecommendations';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import { getAllFeaturedActivities } from '@/lib/services/activites';
 import { getAllFeaturedCities } from '@/lib/services/cities';
@@ -13,7 +14,6 @@ const BrowseDestinationsSection = dynamic(() => import('../components/Pages/FRON
 const TestimonialSection = dynamic(() => import('../components/Pages/FRONT_END/Global/TestimonialSection'));
 const AiSection = dynamic(() => import('../components/Pages/FRONT_END/home/AiSection'));
 const BlogSection = dynamic(() => import('../components/ui/BlogSection'));
-const WeelpRecommendations = dynamic(() => import('../components/Pages/FRONT_END/home/WeelpRecommendations'));
 
 const HomePage = async () => {
   const [featuredActivitiesRes, featuredCitiesRes, blogsRes, reviewsRes] = await Promise.all([
