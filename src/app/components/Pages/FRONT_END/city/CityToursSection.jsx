@@ -77,6 +77,7 @@ export default function CityToursSection({ cityName }) {
         })
         .catch(() => {
           setPackages([]);
+          setAllTags([]);
           setPagination({ last_page: 1, total: 0 });
         })
         .finally(() => setIsLoading(false));
