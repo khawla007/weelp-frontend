@@ -6,7 +6,7 @@ import Testimonial from '../Testimonial';
 
 export const TestmonialSlider = ({ reviews = [] }) => {
   return (
-    <div className="carousel-shell-wrapper">
+    <div className="carousel-shell-wrapper testimonial-slider">
       <Swiper
         modules={[Autoplay]}
         autoplay={{

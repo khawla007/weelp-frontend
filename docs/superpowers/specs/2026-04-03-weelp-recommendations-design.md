@@ -36,23 +36,25 @@ Replace the static `FOOTER_EXPLORE_TAGS` in the Weelp Recommendations section (a
 
 ### Display Specifications
 
-| Aspect | Specification |
-|--------|---------------|
-| Max items | 32 (random selection if database has more) |
-| Layout | Grid: 8 columns (lg), 6 (md), 4 (sm), 2 (base) |
-| Item display | Title only (`name`) |
-| Link format | `/cities/{city_slug}/itineraries/{slug}` |
-| Fallback | Hide entire section if no featured itineraries exist |
+| Aspect       | Specification                                        |
+| ------------ | ---------------------------------------------------- |
+| Max items    | 32 (random selection if database has more)           |
+| Layout       | Grid: 8 columns (lg), 6 (md), 4 (sm), 2 (base)       |
+| Item display | Title only (`name`)                                  |
+| Link format  | `/cities/{city_slug}/itineraries/{slug}`             |
+| Fallback     | Hide entire section if no featured itineraries exist |
 
 ### Component Changes
 
 **`WeelpRecommendations.jsx`**
+
 - Convert from Client Component to async Server Component
 - Fetch data using `getFeaturedItineraries()` service
 - Map 32 random items to links
 - Return `null` if no data
 
 **`shellContent.js`**
+
 - Remove `FOOTER_EXPLORE_TAGS` export (no longer needed)
 
 ## Architecture
@@ -69,12 +71,12 @@ Laravel API: /api/itineraries/featured-itineraries
 
 ## Error Handling
 
-| Scenario | Behavior |
-|----------|----------|
-| API error / timeout | Hide section, log error |
-| Empty response | Hide section |
-| < 32 items | Show all available items |
-| > 32 items | Randomly select 32 |
+| Scenario            | Behavior                 |
+| ------------------- | ------------------------ |
+| API error / timeout | Hide section, log error  |
+| Empty response      | Hide section             |
+| < 32 items          | Show all available items |
+| > 32 items          | Randomly select 32       |
 
 ## Success Criteria
 

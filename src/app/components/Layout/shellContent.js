@@ -39,7 +39,6 @@ export const FOOTER_COLUMNS = [
   },
 ];
 
-
 export const FOOTER_PAYMENT_METHODS = ['Visa', 'Mastercard', 'PayPal', 'Apple Pay', 'Google Pay'];
 
 export const FOOTER_LEGAL_ITEMS = ['Legal Notice', 'Terms Corporate', 'Privacy'];

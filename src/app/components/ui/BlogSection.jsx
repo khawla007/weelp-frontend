@@ -35,7 +35,7 @@ export default function BlogSection({ blogs = [], title = 'Your Guide', navigati
   const items = apiItems.length > 0 ? apiItems : STATIC_BLOGS;
 
   return (
-    <section className={`container mx-auto flex flex-col gap-8 px-4 py-[70px] ${className}`}>
+    <section className={`container mx-auto flex flex-col gap-8 px-4 pb-[100px] ${className}`}>
       <div className="flex items-center justify-between">
         <SectionHeader title={title} />
         <div className="flex items-center gap-2">

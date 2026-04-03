@@ -562,6 +562,14 @@ body {
   overflow: visible !important;
 }
 
+/* Equal-height testimonial slides */
+.testimonial-slider .swiper-wrapper {
+  align-items: stretch;
+}
+.testimonial-slider .swiper-slide {
+  height: auto;
+}
+
 /* Shop Filter */
 .shop_filter div > input[type='checkbox'] {
   border: 2px solid !important;

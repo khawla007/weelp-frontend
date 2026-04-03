@@ -12,17 +12,18 @@
 
 ## File Structure
 
-| File | Action | Responsibility |
-|------|--------|-----------------|
-| `src/app/components/Pages/FRONT_END/home/WeelpRecommendations.jsx` | Modify | Async Server Component, fetches and displays featured itineraries |
-| `src/app/components/Layout/shellContent.js` | Modify | Remove FOOTER_EXPLORE_TAGS export (no longer needed) |
-| `src/lib/services/itineraries.js` | Reference | Existing getFeaturedItineraries() service (no changes needed) |
+| File                                                               | Action    | Responsibility                                                    |
+| ------------------------------------------------------------------ | --------- | ----------------------------------------------------------------- |
+| `src/app/components/Pages/FRONT_END/home/WeelpRecommendations.jsx` | Modify    | Async Server Component, fetches and displays featured itineraries |
+| `src/app/components/Layout/shellContent.js`                        | Modify    | Remove FOOTER_EXPLORE_TAGS export (no longer needed)              |
+| `src/lib/services/itineraries.js`                                  | Reference | Existing getFeaturedItineraries() service (no changes needed)     |
 
 ---
 
 ## Task 1: Update WeelpRecommendations.jsx to Server Component
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/home/WeelpRecommendations.jsx`
 
 - [ ] **Step 1: Convert component to async Server Component**
@@ -89,11 +90,13 @@ export default WeelpRecommendations;
 Open `src/app/(frontend)/page.js` and remove the dynamic import since the component is now a Server Component:
 
 Find this line (around line 16):
+
 ```javascript
 const WeelpRecommendations = dynamic(() => import('../components/Pages/FRONT_END/home/WeelpRecommendations'));
 ```
 
 Replace with regular import at top of file:
+
 ```javascript
 import WeelpRecommendations from '@/app/components/Pages/FRONT_END/home/WeelpRecommendations';
 ```
@@ -120,6 +123,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ## Task 2: Remove Unused FOOTER_EXPLORE_TAGS
 
 **Files:**
+
 - Modify: `src/app/components/Layout/shellContent.js`
 
 - [ ] **Step 1: Remove FOOTER_EXPLORE_TAGS export**
@@ -127,6 +131,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 Open `src/app/components/Layout/shellContent.js` and find the FOOTER_EXPLORE_TAGS array (lines 42-83). Delete the entire array export including all 32 items.
 
 Delete from line 42 through line 83:
+
 ```javascript
 // Remove all of this:
 export const FOOTER_EXPLORE_TAGS = [
@@ -161,16 +166,19 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ## Task 3: Verification & Testing
 
 **Files:**
+
 - Test: Manual browser verification
 
 - [ ] **Step 1: Start dev servers**
 
 Backend:
+
 ```bash
 cd ../backend && php artisan serve --port=8000
 ```
 
 Frontend (new terminal):
+
 ```bash
 npm run dev
 ```
@@ -184,6 +192,7 @@ Expected: Page loads without errors
 
 Scroll to bottom of page, above footer.
 Expected outcomes:
+
 - If featured itineraries exist: Section displays with itineraries
 - If no featured itineraries: Section is hidden (not visible)
 - Layout: 8 columns on large screens, responsive on smaller

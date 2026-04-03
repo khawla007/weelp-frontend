@@ -32,7 +32,7 @@ export default function BrowseDestinationsSection({ cities = [] }) {
   const items = apiCities.length > 0 ? apiCities : STATIC_DESTINATIONS;
 
   return (
-    <section className="container mx-auto flex flex-col gap-8 px-4 pb-[70px]">
+    <section className="container mx-auto flex flex-col gap-8 px-4 pb-[100px]">
       <div className="flex items-center justify-between">
         <SectionHeader
           superTitle="Plan where to next"
