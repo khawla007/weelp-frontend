@@ -2,7 +2,7 @@ import BreadCrumb from '@/app/components/BreadCrumb';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { CircleCheckBig, Clock4, MapPin, Star, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null, primaryLocation = null, city = null }) => {
+const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null, primaryLocation = null, city = null, scheduleDisplay = null }) => {
   return (
     <section className="bg-white">
       <div className="max-w-[1480px] mx-auto px-4">
@@ -37,7 +37,7 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
               </li>
               <li className="flex items-center gap-2">
                 <Clock4 size={18} className="text-[#5a5a5a]" />
-                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">{primaryLocation?.duration ? `${primaryLocation.duration} Minutes` : 'Flexible'}</span>
+                <span className="text-[#5a5a5a] text-sm lg:text-base font-medium">{scheduleDisplay || (primaryLocation?.duration ? `${primaryLocation.duration} Minutes` : 'Flexible')}</span>
               </li>
             </ul>
 

@@ -29,14 +29,25 @@ export default async function PackagePage({ params }) {
     notFound();
   }
 
-  const { id, name, media_gallery = [], review_summary, locations = [] } = packageData;
+  const { id, name, media_gallery = [], review_summary, locations = [], schedules = [] } = packageData;
+
+  // Get primary location (first location with city)
+  // API returns: locations[0] = { city_id, city: "City Name", state, country, ... }
+  const firstLocation = locations?.[0] || null;
+  const locationCity = city; // Use route param for city slug since API doesn't provide it in location
+  const primaryLocation = firstLocation ? { city: firstLocation.city, location_label: null } : null;
+
+  // Calculate day/night from schedules (e.g., 3 days = 2 nights)
+  const totalDays = schedules?.length || 0;
+  const totalNights = totalDays > 0 ? totalDays - 1 : 0;
+  const scheduleDisplay = totalDays > 0 ? `${totalDays} Day${totalDays > 1 ? 's' : ''} ${totalNights} Night${totalNights !== 1 ? 's' : ''}` : null;
 
   // Fetch similar packages using the city param
-  const similarPackages = city ? await getRandomSimilarPackages(city, id) : [];
+  const similarPackages = locationCity ? await getRandomSimilarPackages(locationCity, id) : [];
 
   return (
     <>
-      <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} />
+      <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} primaryLocation={primaryLocation} city={locationCity} scheduleDisplay={scheduleDisplay} />
       <SingleProductTabSection productType="package" productId={id} productData={packageData} packageSlug={pack} similarActivities={similarPackages} />
     </>
   );

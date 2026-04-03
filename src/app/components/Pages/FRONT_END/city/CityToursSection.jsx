@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, ChevronRight, ChevronLeft, ChevronDown } from 'lucide-react';
+import { MapPin, ChevronDown } from 'lucide-react';
 import Pagination from '@/app/components/ui/Pagination';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
@@ -28,7 +28,6 @@ export default function CityToursSection({ cityName }) {
   const [pagination, setPagination] = useState({ last_page: 1, total: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const sortRef = useRef(null);
-  const tagScrollRef = useRef(null);
   const sectionRef = useRef(null);
 
   const scrollToSection = () => {
@@ -39,11 +38,6 @@ export default function CityToursSection({ cityName }) {
     if (page === currentPage) return;
     setCurrentPage(page);
     setTimeout(() => scrollToSection(), 50);
-  };
-
-  const scrollTags = (direction) => {
-    if (!tagScrollRef.current) return;
-    tagScrollRef.current.scrollBy({ left: direction === 'left' ? -200 : 200, behavior: 'smooth' });
   };
 
   // Close sort dropdown on outside click
@@ -114,77 +108,71 @@ export default function CityToursSection({ cityName }) {
         {cityName} Tours
       </h2>
 
-      <div className="flex items-center justify-between">
-        {/* Tag Scroller */}
-        <div className="flex min-w-0 max-w-[700px] flex-1 items-center overflow-hidden rounded-[7.86px] border" style={{ borderColor: 'rgba(67, 90, 103, 0.26)' }}>
-          <span
-            className="shrink-0 border-r px-4 py-2 text-[#435a67]"
-            style={{
-              borderColor: 'rgba(67, 90, 103, 0.16)',
-              fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
-              fontWeight: 600,
-              fontSize: '16px',
-            }}
-          >
-            Tags
-          </span>
+      <div className="flex flex-wrap items-center gap-4">
+        {/* Featured Tags — Simple Box Design */}
+        <div className="flex flex-1 flex-wrap items-center gap-3">
           <button
             type="button"
             onClick={() => {
               setSelectedTags([]);
               setCurrentPage(1);
             }}
-            className={`weelp-city-tab ml-2 shrink-0 rounded-full px-[14px] py-[4px] transition-all ${selectedTags.length === 0 ? 'weelp-city-tab-active' : 'hover:border-[var(--weelp-city-tab-active-border)]'}`}
+            className="rounded-[7.86px] border px-4 py-2 text-[#435a67] transition"
             style={{
+              backgroundColor: '#f2f2f2',
+              borderColor: 'rgba(67, 90, 103, 0.26)',
               fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
               fontWeight: selectedTags.length === 0 ? 600 : 500,
-              fontSize: '13px',
+              fontSize: '16px',
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f2f2f2')}
           >
             All
           </button>
-          <button type="button" onClick={() => scrollTags('left')} className="shrink-0 px-1 text-[#435a67] transition hover:text-[#273f4e]" aria-label="Scroll tags left">
-            <ChevronLeft className="size-4" />
-          </button>
-          <div ref={tagScrollRef} className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
-            {allTags.map((tag) => {
+          {allTags
+            .filter((tag) => tag.is_featured === true)
+            .map((tag) => {
               const isActive = selectedTags.includes(tag.name);
               return (
                 <button
                   key={tag.id || tag.name}
                   type="button"
                   onClick={() => handleTagToggle(tag.name)}
-                  className={`weelp-city-tab shrink-0 rounded-full px-[14px] py-[4px] transition-all ${isActive ? 'weelp-city-tab-active' : 'hover:border-[var(--weelp-city-tab-active-border)]'}`}
+                  className="rounded-[7.86px] border px-4 py-2 text-[#435a67] transition"
                   style={{
+                    backgroundColor: '#f2f2f2',
+                    borderColor: 'rgba(67, 90, 103, 0.26)',
                     fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
                     fontWeight: isActive ? 600 : 500,
-                    fontSize: '13px',
+                    fontSize: '16px',
                   }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f2f2f2')}
                 >
                   {tag.name}
                 </button>
               );
             })}
-          </div>
-          <button type="button" onClick={() => scrollTags('right')} className="shrink-0 px-1 text-[#435a67] transition hover:text-[#273f4e]" aria-label="Scroll tags right">
-            <ChevronRight className="size-4" />
-          </button>
         </div>
 
-        {/* Sort + View on Map */}
-        <div className="flex shrink-0 items-center gap-3">
+        {/* Sort + View on Map — Always on right */}
+        <div className="flex shrink-0 items-center gap-3 ml-auto">
           {/* Sort Dropdown */}
           <div className="relative" ref={sortRef}>
             <button
               type="button"
               onClick={() => setShowSortDropdown((prev) => !prev)}
-              className="flex items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition hover:bg-gray-50"
+              className="flex items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition"
               style={{
+                backgroundColor: '#f2f2f2',
                 borderColor: 'rgba(67, 90, 103, 0.26)',
                 fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
                 fontWeight: 500,
                 fontSize: '16px',
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f2f2f2')}
             >
               Sort
               <ChevronDown className="size-4" />
@@ -209,13 +197,16 @@ export default function CityToursSection({ cityName }) {
           {/* View on Map — static */}
           <button
             type="button"
-            className="flex items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition hover:bg-gray-50"
+            className="flex items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition"
             style={{
+              backgroundColor: '#f2f2f2',
               borderColor: 'rgba(67, 90, 103, 0.26)',
               fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
               fontWeight: 500,
               fontSize: '16px',
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f2f2f2')}
           >
             <MapPin className="size-5" strokeWidth={1.2} />
             View on Map

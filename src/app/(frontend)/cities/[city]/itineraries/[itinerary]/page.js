@@ -37,10 +37,21 @@ export default async function IterenaryPage({ params }) {
   }
 
   const { data, id } = iterenaryData;
-  const { name, seo, media_gallery = [], review_summary, locations = [] } = data;
+  const { name, seo, media_gallery = [], review_summary, locations = [], schedules = [] } = data;
+
+  // Get primary location (first location with city)
+  // API returns: locations[0] = { city_id, city: "City Name", state, country, ... }
+  const firstLocation = locations?.[0] || null;
+  const locationCity = city; // Use route param for city slug since API doesn't provide it in location
+  const primaryLocation = firstLocation ? { city: firstLocation.city, location_label: null } : null;
+
+  // Calculate day/night from schedules (e.g., 3 days = 2 nights)
+  const totalDays = schedules?.length || 0;
+  const totalNights = totalDays > 0 ? totalDays - 1 : 0;
+  const scheduleDisplay = totalDays > 0 ? `${totalDays} Day${totalDays > 1 ? 's' : ''} ${totalNights} Night${totalNights !== 1 ? 's' : ''}` : null;
 
   // Fetch similar itineraries using the city param
-  const similarItineraries = city ? await getRandomSimilarItineraries(city, id) : [];
+  const similarItineraries = locationCity ? await getRandomSimilarItineraries(locationCity, id) : [];
 
   let schemaJson = {};
   try {
@@ -51,7 +62,7 @@ export default async function IterenaryPage({ params }) {
 
   return (
     <>
-      <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} />
+      <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} primaryLocation={primaryLocation} city={locationCity} scheduleDisplay={scheduleDisplay} />
       <SingleProductTabSection productType="itinerary" productId={id} productData={data} itinerarySlug={itinerary} similarActivities={similarItineraries} />
 
       {schemaJson && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }} />}
