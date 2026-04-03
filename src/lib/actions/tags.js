@@ -35,10 +35,10 @@ export const createTag = async (data) => {
     }
 
     if (status === 422) {
-      const message = err.response.data.message;
       return {
         success: false,
-        message: 'Tags Already Exist',
+        message: err.response.data?.message || 'Validation error',
+        errors: err.response.data?.errors,
       };
     }
 
@@ -88,10 +88,10 @@ export const editTag = async (id, data) => {
     }
 
     if (status === 422) {
-      const message = err.response.data.message;
       return {
         success: false,
-        message: 'Tags Already Exist',
+        message: err.response.data?.message || 'Validation error',
+        errors: err.response.data?.errors,
       };
     }
 
