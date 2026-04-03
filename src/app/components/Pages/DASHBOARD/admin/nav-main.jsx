@@ -11,9 +11,7 @@ export function NavMain({ items }) {
   const pathname = usePathname();
 
   const getActiveParentIndex = () => {
-    const index = items.findIndex(
-      (item) => item.children?.some((child) => pathname.startsWith(child.url))
-    );
+    const index = items.findIndex((item) => item.children?.some((child) => pathname.startsWith(child.url)));
     return index !== -1 ? index : null;
   };
 
