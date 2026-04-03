@@ -86,7 +86,7 @@ export const CreateTagPageForm = () => {
 
   return (
     <div>
-      <TaxonomyFormNavigation title={'Create Tag'} description={'Add a new tag to organize activities'} url={'/dashboard/admin/taxonomies/categories/'} />
+      <TaxonomyFormNavigation title={'Create Tag'} description={'Add a new tag to organize activities'} url={'/dashboard/admin/taxonomies/tags/'} />
 
       <div className="px-6">
         <Form {...form}>

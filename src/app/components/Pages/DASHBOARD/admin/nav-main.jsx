@@ -8,10 +8,21 @@ import { useState } from 'react';
 
 export function NavMain({ items }) {
   const { state, open } = useSidebar();
-  const [showchildLink, setShowChildLink] = useState(false);
-
   const pathname = usePathname();
-  const splitPathname = pathname.split('/');
+
+  const getActiveParentIndex = () => {
+    const index = items.findIndex(
+      (item) => item.children?.some((child) => pathname.startsWith(child.url))
+    );
+    return index !== -1 ? index : null;
+  };
+
+  const [showchildLink, setShowChildLink] = useState(getActiveParentIndex);
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setShowChildLink(getActiveParentIndex());
+  }
 
   // handleChild Links
   const handleChildLinks = (index) => {
@@ -28,8 +39,8 @@ export function NavMain({ items }) {
                 <item.icon className="size-4" />
               </Link>
             ) : (
-              <div className={`px-4 py-2 cursor-pointer font-medium text-sm leading-5 text-black ${open ? 'mx-4' : ''}`} onClick={() => handleChildLinks(index)}>
-                <p className="flex gap-4 items-center">
+              <div className={`px-4 py-2 font-medium text-sm leading-5 text-black ${open ? 'mx-4' : ''}`}>
+                <p className="flex gap-4 items-center cursor-pointer" onClick={() => handleChildLinks(index)}>
                   <item.icon />
                   <span className="flex justify-between w-full">
                     {item.title}
