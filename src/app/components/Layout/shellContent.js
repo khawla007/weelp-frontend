@@ -39,48 +39,6 @@ export const FOOTER_COLUMNS = [
   },
 ];
 
-export const FOOTER_EXPLORE_TAGS = [
-  // Column 1
-  { label: 'Cherry Blossom', href: '/' },
-  { label: 'Universal Studios Japan', href: '/' },
-  { label: 'Tokyo Disney Resort Park', href: '/' },
-  { label: 'Mount Fuji', href: '/' },
-  // Column 2
-  { label: 'Shibuya Sky', href: '/' },
-  { label: 'Tokyo Subway Ticket', href: '/' },
-  { label: 'Buses in Japan', href: '/' },
-  { label: 'Keisei Skyliner', href: '/' },
-  // Column 3
-  { label: 'Things to do in Tokyo', href: '/' },
-  { label: 'Things to do in Osaka', href: '/' },
-  { label: 'Things to do in Kyoto', href: '/' },
-  { label: 'Things to do in Dubai', href: '/' },
-  // Column 4
-  { label: 'Disneyland', href: '/' },
-  { label: 'Paris', href: '/' },
-  { label: 'Orlando', href: '/' },
-  { label: 'Bali', href: '/' },
-  // Column 5
-  { label: 'Nami Island', href: '/' },
-  { label: 'Everland', href: '/' },
-  { label: 'Lotte World', href: '/' },
-  { label: 'Seoul Sky', href: '/' },
-  // Column 6
-  { label: 'Coex Aquarium', href: '/' },
-  { label: 'N Seoul Tower', href: '/' },
-  { label: 'Visit Busan Pass', href: '/' },
-  { label: 'T-Money Card', href: '/' },
-  // Column 7
-  { label: 'KTX Train', href: '/' },
-  { label: 'AREX Express Train', href: '/' },
-  { label: 'Tokyo Skytree', href: '/' },
-  { label: 'Things to do in Osaka', href: '/' },
-  // Column 8
-  { label: 'Things to do in Tokyo', href: '/' },
-  { label: 'Things to do in Kyoto', href: '/' },
-  { label: 'Things to do in Osaka', href: '/' },
-  { label: 'Things to do in Kyoto', href: '/' },
-];
 
 export const FOOTER_PAYMENT_METHODS = ['Visa', 'Mastercard', 'PayPal', 'Apple Pay', 'Google Pay'];
 
