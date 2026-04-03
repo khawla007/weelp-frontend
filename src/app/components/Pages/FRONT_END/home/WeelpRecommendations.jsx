@@ -3,7 +3,7 @@ import { getFeaturedItineraries } from '@/lib/services/itineraries';
 
 const fontIT = 'var(--font-interTight), Inter Tight, sans-serif';
 
-async function getRandomItems(array, count) {
+function getRandomItems(array, count) {
   if (array.length <= count) return array;
   const shuffled = [...array].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count);
@@ -18,7 +18,7 @@ const WeelpRecommendations = async () => {
   }
 
   // Get up to 32 random itineraries
-  const itineraries = await getRandomItems(response.data, 32);
+  const itineraries = getRandomItems(response.data, 32);
 
   return (
     <div className="w-full bg-[#f3f5f6]">
