@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import CreatorFilter from './SectionCreatorFilter';
 import CreatorStatCards from './CreatorStatCards';
@@ -15,7 +15,6 @@ export default function ExploreClientWrapper({ initialPosts, lastPage }) {
   const { data: session, update: updateSession } = useSession();
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [upgrading, setUpgrading] = useState(false);
-  const [posts, setPosts] = useState(initialPosts);
   const [activeTab, setActiveTab] = useState('home');
   const { toast } = useToast();
   const { openAuthModal } = useAuthModalStore();
@@ -23,75 +22,54 @@ export default function ExploreClientWrapper({ initialPosts, lastPage }) {
   const isCreator = !!session?.user?.is_creator;
   const isLoggedIn = !!session?.user;
 
-  // Sort posts for trending: by total engagement (likes + shares) descending
-  const trendingPosts = useMemo(() => {
-    if (activeTab !== 'trending') return null;
-    return [...posts].sort((a, b) => {
-      const scoreA = (a.likes_count || 0) + (a.shares_count || 0);
-      const scoreB = (b.likes_count || 0) + (b.shares_count || 0);
-      return scoreB - scoreA;
-    });
-  }, [posts, activeTab]);
-
-  const displayPosts = activeTab === 'trending' ? trendingPosts : posts;
+  // Shared upgrade logic — accepts optional token override for post-auth flow
+  const performUpgrade = useCallback(
+    async (tokenOverride) => {
+      try {
+        const config = tokenOverride ? { headers: { Authorization: `Bearer ${tokenOverride}` } } : {};
+        const res = await authApi.post('/api/customer/upgrade-to-creator', {}, config);
+        if (res.data?.success) {
+          toast({ title: "You're now a Creator!", description: 'Welcome to the creator community.' });
+          await updateSession({ is_creator: true });
+        }
+      } catch (err) {
+        const msg = err?.response?.data?.message || 'Failed to upgrade.';
+        if (err?.response?.status === 422 && msg.toLowerCase().includes('already')) {
+          toast({ title: 'You are already a creator!', description: 'Refreshing your session...' });
+          await updateSession({ is_creator: true });
+        } else {
+          toast({ title: 'Upgrade failed', description: msg, variant: 'destructive' });
+        }
+      }
+    },
+    [toast, updateSession],
+  );
 
   const handleUpgrade = useCallback(async () => {
     setUpgrading(true);
     try {
-      const res = await authApi.post('/api/customer/upgrade-to-creator');
-      if (res.data?.success) {
-        toast({ title: "You're now a Creator!", description: 'Welcome to the creator community.' });
-        await updateSession({ is_creator: true });
-      }
-    } catch (err) {
-      const msg = err?.response?.data?.message || 'Failed to upgrade.';
-      if (err?.response?.status === 422 && msg.toLowerCase().includes('already')) {
-        toast({ title: 'You are already a creator!', description: 'Refreshing your session...' });
-        await updateSession({ is_creator: true });
-      } else {
-        toast({ title: 'Upgrade failed', description: msg, variant: 'destructive' });
-      }
+      await performUpgrade();
     } finally {
       setUpgrading(false);
     }
-  }, [toast, updateSession]);
+  }, [performUpgrade]);
 
   // Called when the dynamic action button is clicked
   const handleActionClick = useCallback(() => {
     if (isCreator) {
-      // Creator: open create post modal
       setCreateModalOpen(true);
     } else if (isLoggedIn) {
-      // Logged-in non-creator: upgrade to creator
       handleUpgrade();
     } else {
-      // Guest: open auth modal with onSuccess callback to auto-upgrade
+      // Guest: open auth modal — onSuccess fires with session after login
       openAuthModal({
         onSuccess: async (newSession) => {
-          try {
-            await authApi.post('/api/customer/upgrade-to-creator');
-            toast({ title: "You're now a Creator!", description: 'Welcome to the creator community.' });
-            // Update session to reflect creator status without full page reload
-            await updateSession({ is_creator: true });
-          } catch (err) {
-            const msg = err?.response?.data?.message || 'Failed to upgrade.';
-            if (err?.response?.status === 422 && msg.toLowerCase().includes('already')) {
-              toast({ title: 'You are already a creator!' });
-              await updateSession({ is_creator: true });
-            } else {
-              toast({ title: 'Upgrade failed', description: msg, variant: 'destructive' });
-            }
-          }
+          // Use explicit token to avoid race with getSession() in interceptor
+          await performUpgrade(newSession?.access_token);
         },
       });
     }
-  }, [isCreator, isLoggedIn, handleUpgrade, openAuthModal, toast, updateSession]);
-
-  const handlePostCreated = (newPost) => {
-    if (newPost) {
-      setPosts((prev) => [newPost, ...prev]);
-    }
-  };
+  }, [isCreator, isLoggedIn, handleUpgrade, openAuthModal, performUpgrade]);
 
   return (
     <>
@@ -116,7 +94,7 @@ export default function ExploreClientWrapper({ initialPosts, lastPage }) {
 
       {/* Post Feed */}
       <CreatorFilter
-        initialPosts={displayPosts}
+        initialPosts={initialPosts}
         lastPage={lastPage}
         activeTab={activeTab}
         onTabChange={setActiveTab}
@@ -124,10 +102,12 @@ export default function ExploreClientWrapper({ initialPosts, lastPage }) {
         isLoggedIn={isLoggedIn}
         isCreator={isCreator}
         upgrading={upgrading}
+        createModalOpen={createModalOpen}
+        onCreateModalChange={setCreateModalOpen}
       />
 
       {/* Create Post Modal */}
-      {isCreator && <CreatePostModal open={createModalOpen} onOpenChange={setCreateModalOpen} onPostCreated={handlePostCreated} />}
+      {isCreator && <CreatePostModal open={createModalOpen} onOpenChange={setCreateModalOpen} />}
     </>
   );
 }

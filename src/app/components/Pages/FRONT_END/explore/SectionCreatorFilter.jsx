@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { CreatorCard } from '@/app/components/CreatorCard';
 import { ChevronDown, Plus, Check, UserPlus, Sparkles, TrendingUp, Home } from 'lucide-react';
 import { useSession } from 'next-auth/react';
@@ -32,16 +32,7 @@ function getActionButton(isLoggedIn, isCreator, upgrading) {
   return { label: 'Create', icon: Plus };
 }
 
-const CreatorFilter = ({
-  initialPosts,
-  lastPage,
-  activeTab,
-  onTabChange,
-  onActionClick,
-  isLoggedIn,
-  isCreator,
-  upgrading,
-}) => {
+const CreatorFilter = ({ initialPosts, lastPage, activeTab, onTabChange, onActionClick, isLoggedIn, isCreator, upgrading }) => {
   const { data: session } = useSession();
   const [posts, setPosts] = useState(initialPosts || []);
   const [page, setPage] = useState(1);
@@ -53,10 +44,15 @@ const CreatorFilter = ({
   const isInitialMount = useRef(true);
   const isAuthenticated = !!session?.user;
 
-  // Sync posts when parent passes new initialPosts (e.g. trending sorted)
-  useEffect(() => {
-    setPosts(initialPosts || []);
-  }, [initialPosts]);
+  // Sort posts for trending: by total engagement (likes + shares) descending
+  const displayPosts = useMemo(() => {
+    if (activeTab !== 'trending') return posts;
+    return [...posts].sort((a, b) => {
+      const scoreA = (a.likes_count || 0) + (a.shares_count || 0);
+      const scoreB = (b.likes_count || 0) + (b.shares_count || 0);
+      return scoreB - scoreA;
+    });
+  }, [posts, activeTab]);
 
   const fetchPosts = useCallback(
     async (pageNum, sort, source) => {
@@ -253,18 +249,18 @@ const CreatorFilter = ({
 
       {/* Results Section */}
       <div className="flex flex-col gap-4 py-6">
-        {loading && posts.length === 0 ? (
+        {loading && displayPosts.length === 0 ? (
           <div className="flex justify-center py-12">
             <div className="w-8 h-8 border-2 border-secondaryDark border-t-transparent rounded-full animate-spin" />
           </div>
-        ) : posts.length === 0 ? (
+        ) : displayPosts.length === 0 ? (
           <div className="text-center py-12 text-grayDark">
             <p className="text-lg font-medium">{activeSource === 'mine' ? "You haven't created any posts yet" : 'No posts yet'}</p>
             <p className="text-sm mt-2">{activeSource === 'mine' ? 'Share your travel experiences with the community!' : 'Be the first creator to share your travel experience!'}</p>
           </div>
         ) : (
           <ul className="w-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-            {posts.map((post) => (
+            {displayPosts.map((post) => (
               <li key={post.id}>
                 <CreatorCard post={post} isAuthenticated={isAuthenticated} />
               </li>
