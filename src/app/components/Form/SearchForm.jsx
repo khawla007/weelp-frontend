@@ -11,69 +11,63 @@ import { FALLBACK_IMAGE } from '@/constants/image';
 import Link from 'next/link';
 
 export const SearchFormCreator = () => {
-  const [response, setResponse] = useState({
-    message: '',
-    data: [], // Default to an empty array, not string
-  });
+  const [results, setResults] = useState([]);
+  const [message, setMessage] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
 
-  // Initialize form once - setup click outside handler
-  // Use useCallback to prevent function recreation and proper cleanup
   const handleClickOutside = useCallback(() => {
-    setResponse({ data: [] });
+    setShowDropdown(false);
   }, []);
 
   useEffect(() => {
     document.body.addEventListener('click', handleClickOutside);
-
-    // Cleanup the event listener when the component unmounts
     return () => {
       document.body.removeEventListener('click', handleClickOutside);
     };
   }, [handleClickOutside]);
 
-  // Using react-hook-form
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
   } = useForm({
-    defaultValues: {
-      search: '',
-    },
+    defaultValues: { search: '' },
   });
 
   const onSubmit = async (data) => {
+    if (!data.search || data.search.trim().length < 3) {
+      setResults([]);
+      setMessage('');
+      setShowDropdown(false);
+      return;
+    }
+
     try {
-      await delay(1000); // Simulate delay
-      const api = await fetch('/api/search/creator', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
+      const res = await fetch(`/api/search/creator?search=${encodeURIComponent(data.search.trim())}`);
+      const { posts } = await res.json();
 
-      const { message, items } = await api.json();
-
-      // Set the response state with the items
-      if (items && items.length > 0) {
-        setResponse({
-          message: message,
-          data: items,
-        });
+      if (posts && posts.length > 0) {
+        setResults(posts);
+        setMessage('');
       } else {
-        setResponse({
-          message: message,
-          data: [],
-        });
+        setResults([]);
+        setMessage('No results found');
       }
+      setShowDropdown(true);
     } catch (error) {
-      console.log('Request failed:', error);
+      console.error('Search failed:', error);
+      setResults([]);
+      setMessage('No results found');
+      setShowDropdown(true);
     }
   };
 
   return (
     <div className="flex flex-col max-w-[30rem] w-full mx-auto">
-      <form onKeyUp={handleSubmit(onSubmit)} className={`w-full bg-white flex items-center justify-evenly rounded shadow ${errors?.search?.message ? 'border-red-400 border' : null}`}>
+      <form
+        onKeyUp={debounce(handleSubmit(onSubmit), 600)}
+        className={`w-full bg-white flex items-center justify-evenly rounded shadow ${errors?.search?.message ? 'border-red-400 border' : ''}`}
+      >
         <input
           id="search"
           autoComplete="off"
@@ -82,33 +76,67 @@ export const SearchFormCreator = () => {
             required: 'Field Required',
             minLength: { value: 3, message: 'Minimum 3 characters required' },
           })}
-          placeholder={'What`s on your Bucket list?'}
+          placeholder="Search posts or creators..."
           className="w-10/12 p-4 focus-visible:outline-none placeholder:text-grayDark"
         />
-        <div>{isSubmitting ? <LoaderCircle size={16} className="animate-spin duration-1000" /> : <Search size={16} />}</div>
+        <div>
+          {isSubmitting ? (
+            <LoaderCircle size={16} className="animate-spin duration-1000" />
+          ) : (
+            <Search size={16} />
+          )}
+        </div>
       </form>
 
-      <span className={`${errors?.search?.message ? 'flex' : 'hidden'} items-center  gap-1 mx-4 p-2 text-base text-red-400 `}>
+      <span className={`${errors?.search?.message ? 'flex' : 'hidden'} items-center gap-1 mx-4 p-2 text-base text-red-400`}>
         <b>Error: </b> {errors?.search?.message}
       </span>
 
       <div className="relative">
-        {response.message && response.data && (
+        {showDropdown && (
           <div>
-            {response.data.length > 0 ? (
-              <ul className="absolute z-10 top-4 bg-white w-full rounded-md flex flex-col gap-2 max-h-52 h-fit shadow-md overflow-y-auto tfc_scroll">
-                {response.data.map((val, index) => (
-                  <li key={index} className="hover:bg-grayDark flex justify-between items-center py-2 px-6 hover:text-white hover:cursor-pointer">
-                    {val?.name}
-                    <Image src={val?.image} className="size-9 rounded-full" alt="search_images" width={36} height={36} />
+            {results.length > 0 ? (
+              <ul className="absolute z-10 top-4 bg-white w-full rounded-md flex flex-col gap-1 max-h-64 h-fit shadow-md overflow-y-auto tfc_scroll">
+                {results.map((post) => (
+                  <li
+                    key={post.id}
+                    onClick={() => setShowDropdown(false)}
+                    className="hover:bg-gray-50 flex items-center gap-3 py-2.5 px-4 hover:cursor-pointer"
+                  >
+                    <Image
+                      src={post?.media?.url || FALLBACK_IMAGE.src}
+                      className="size-10 rounded-md object-cover shrink-0"
+                      alt="post thumbnail"
+                      width={40}
+                      height={40}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                        {post?.caption || 'Untitled post'}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate">
+                        by {post?.creator?.name || 'Unknown creator'}
+                      </p>
+                    </div>
+                    {post?.creator?.avatar_media?.url && (
+                      <Image
+                        src={post.creator.avatar_media.url}
+                        className="size-7 rounded-full object-cover shrink-0"
+                        alt="creator avatar"
+                        width={28}
+                        height={28}
+                      />
+                    )}
                   </li>
                 ))}
               </ul>
             ) : (
-              <div className="hover:bg-grayDark  flex justify-between rounded-md items-center py-2 px-6 hover:text-white hover:cursor-not-allowed bg-white mt-2">
-                Sorry No Result Found
-                <Frown size={24} className="animate-pulse" />
-              </div>
+              message && (
+                <div className="hover:bg-grayDark flex justify-between rounded-md items-center py-2 px-6 hover:text-white hover:cursor-not-allowed bg-white mt-2">
+                  Sorry No Result Found
+                  <Frown size={24} className="animate-pulse" />
+                </div>
+              )
             )}
           </div>
         )}
