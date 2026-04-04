@@ -103,6 +103,9 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
         custom_amount: 0,
         customer_email: customer_email || '',
         payment_intent_id: paymentIntentId,
+        addons: item.addons || [],
+        base_amount: item.base_price || item.price,
+        addons_amount: (item.addons || []).reduce((sum, a) => sum + Number(a.price), 0),
         emergency_contact: {
           name: profileData.emergency_contact_name || name || '',
           phone: profileData.emergency_contact_phone || profileData.phone || '',
@@ -184,8 +187,8 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
         />
 
         {/* Handle Submit */}
-        <Button type="submit" disabled={!stripe}>
-          Proceed To Checkout
+        <Button type="submit" disabled={!stripe || methods.formState.isSubmitting}>
+          {methods.formState.isSubmitting ? 'Processing...' : 'Proceed'}
         </Button>
       </form>
     </FormProvider>
