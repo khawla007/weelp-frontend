@@ -15,7 +15,7 @@ const AdminLayout = async ({ children }) => {
     <SidebarProvider>
       <div className="flex min-h-screen bg-gray-50 w-full">
         <div>
-          <AppSidebar />
+          <AppSidebar session={session} />
         </div>
         <div className="flex flex-col w-full">
           <>
