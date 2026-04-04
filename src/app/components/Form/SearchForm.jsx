@@ -13,6 +13,7 @@ export const SearchFormCreator = () => {
   const [results, setResults] = useState([]);
   const [message, setMessage] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
+  const [minLengthHint, setMinLengthHint] = useState('');
 
   const handleClickOutside = useCallback(() => {
     setShowDropdown(false);
@@ -28,7 +29,7 @@ export const SearchFormCreator = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm({
     defaultValues: { search: '' },
   });
@@ -50,15 +51,28 @@ export const SearchFormCreator = () => {
   };
 
   const onSubmit = async (data) => {
-    if (!data.search || data.search.trim().length < 3) {
+    const query = data.search?.trim() || '';
+
+    if (query.length === 0) {
       setResults([]);
       setMessage('');
+      setMinLengthHint('');
       setShowDropdown(false);
       return;
     }
 
+    if (query.length < 3) {
+      setResults([]);
+      setMessage('');
+      setMinLengthHint('Minimum 3 characters required');
+      setShowDropdown(false);
+      return;
+    }
+
+    setMinLengthHint('');
+
     try {
-      const res = await fetch(`/api/search/creator?search=${encodeURIComponent(data.search.trim())}`);
+      const res = await fetch(`/api/search/creator?search=${encodeURIComponent(query)}`);
       const { posts } = await res.json();
 
       if (posts && posts.length > 0) {
@@ -77,26 +91,44 @@ export const SearchFormCreator = () => {
     }
   };
 
+  const handleInputChange = useCallback(
+    (e) => {
+      const val = e.target.value;
+      if (!val || val.trim().length === 0) {
+        setResults([]);
+        setMessage('');
+        setMinLengthHint('');
+        setShowDropdown(false);
+      }
+    },
+    [],
+  );
+
+  const { onChange: registerOnChange, ...registerRest } = register('search');
+
   return (
     <div className="flex flex-col max-w-[30rem] w-full mx-auto">
-      <form onKeyUp={debounce(handleSubmit(onSubmit), 600)} className={`w-full bg-white flex items-center justify-evenly rounded shadow ${errors?.search?.message ? 'border-red-400 border' : ''}`}>
+      <form onKeyUp={debounce(handleSubmit(onSubmit), 600)} className="w-full bg-white flex items-center justify-evenly rounded shadow">
         <input
           id="search"
           autoComplete="off"
           type="text"
-          {...register('search', {
-            required: 'Field Required',
-            minLength: { value: 3, message: 'Minimum 3 characters required' },
-          })}
+          {...registerRest}
+          onChange={(e) => {
+            registerOnChange(e);
+            handleInputChange(e);
+          }}
           placeholder="Search posts or creators..."
           className="w-10/12 p-4 focus-visible:outline-none placeholder:text-grayDark"
         />
         <div>{isSubmitting ? <LoaderCircle size={16} className="animate-spin duration-1000" /> : <Search size={16} />}</div>
       </form>
 
-      <span className={`${errors?.search?.message ? 'flex' : 'hidden'} items-center gap-1 mx-4 p-2 text-base text-red-400`}>
-        <b>Error: </b> {errors?.search?.message}
-      </span>
+      {minLengthHint && (
+        <span className="flex items-center gap-1 mx-4 p-1.5 text-[0.7em] text-red-400">
+          {minLengthHint}
+        </span>
+      )}
 
       <div className="relative">
         {showDropdown && (
