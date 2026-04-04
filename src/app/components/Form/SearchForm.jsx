@@ -1,8 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Crosshair, Frown, LoaderCircle, Search, X } from 'lucide-react';
+import { Frown, LoaderCircle, Search, X } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { delay } from '@/lib/utils';
 import Image from 'next/image';
 import { debounce } from 'lodash';
 import { useCallback } from 'react';
@@ -64,10 +63,7 @@ export const SearchFormCreator = () => {
 
   return (
     <div className="flex flex-col max-w-[30rem] w-full mx-auto">
-      <form
-        onKeyUp={debounce(handleSubmit(onSubmit), 600)}
-        className={`w-full bg-white flex items-center justify-evenly rounded shadow ${errors?.search?.message ? 'border-red-400 border' : ''}`}
-      >
+      <form onKeyUp={debounce(handleSubmit(onSubmit), 600)} className={`w-full bg-white flex items-center justify-evenly rounded shadow ${errors?.search?.message ? 'border-red-400 border' : ''}`}>
         <input
           id="search"
           autoComplete="off"
@@ -79,13 +75,7 @@ export const SearchFormCreator = () => {
           placeholder="Search posts or creators..."
           className="w-10/12 p-4 focus-visible:outline-none placeholder:text-grayDark"
         />
-        <div>
-          {isSubmitting ? (
-            <LoaderCircle size={16} className="animate-spin duration-1000" />
-          ) : (
-            <Search size={16} />
-          )}
-        </div>
+        <div>{isSubmitting ? <LoaderCircle size={16} className="animate-spin duration-1000" /> : <Search size={16} />}</div>
       </form>
 
       <span className={`${errors?.search?.message ? 'flex' : 'hidden'} items-center gap-1 mx-4 p-2 text-base text-red-400`}>
@@ -98,34 +88,14 @@ export const SearchFormCreator = () => {
             {results.length > 0 ? (
               <ul className="absolute z-10 top-4 bg-white w-full rounded-md flex flex-col gap-1 max-h-64 h-fit shadow-md overflow-y-auto tfc_scroll">
                 {results.map((post) => (
-                  <li
-                    key={post.id}
-                    onClick={() => setShowDropdown(false)}
-                    className="hover:bg-gray-50 flex items-center gap-3 py-2.5 px-4 hover:cursor-pointer"
-                  >
-                    <Image
-                      src={post?.media?.url || FALLBACK_IMAGE.src}
-                      className="size-10 rounded-md object-cover shrink-0"
-                      alt="post thumbnail"
-                      width={40}
-                      height={40}
-                    />
+                  <li key={post.id} onClick={() => setShowDropdown(false)} className="hover:bg-gray-50 flex items-center gap-3 py-2.5 px-4 hover:cursor-pointer">
+                    <Image src={post?.media?.url || FALLBACK_IMAGE.src} className="size-10 rounded-md object-cover shrink-0" alt="post thumbnail" width={40} height={40} />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">
-                        {post?.caption || 'Untitled post'}
-                      </p>
-                      <p className="text-xs text-gray-500 truncate">
-                        by {post?.creator?.name || 'Unknown creator'}
-                      </p>
+                      <p className="text-sm font-medium text-gray-900 truncate">{post?.caption || 'Untitled post'}</p>
+                      <p className="text-xs text-gray-500 truncate">by {post?.creator?.name || 'Unknown creator'}</p>
                     </div>
                     {post?.creator?.avatar_media?.url && (
-                      <Image
-                        src={post.creator.avatar_media.url}
-                        className="size-7 rounded-full object-cover shrink-0"
-                        alt="creator avatar"
-                        width={28}
-                        height={28}
-                      />
+                      <Image src={post.creator.avatar_media.url} className="size-7 rounded-full object-cover shrink-0" alt="creator avatar" width={28} height={28} />
                     )}
                   </li>
                 ))}
