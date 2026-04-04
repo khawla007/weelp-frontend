@@ -1,23 +1,22 @@
 import { NextResponse } from 'next/server';
-import { fakeData } from '@/app/Data/ShopData';
+import { publicApi } from '@/lib/axiosInstance';
 
-export async function POST(req) {
+export async function GET(req) {
+  const search = req.nextUrl.searchParams.get('search');
+
+  if (!search || search.trim().length < 3) {
+    return NextResponse.json({ posts: [] });
+  }
+
   try {
-    // Parse the request body
-    const { query } = await req.json();
+    const response = await publicApi.get('/api/posts', {
+      params: { search: search.trim(), per_page: 5 },
+      headers: { Accept: 'application/json' },
+    });
 
-    // Find all items that include the query string in their name
-    const resultitems = fakeData.filter((item) => item.name.toLowerCase().includes(query.toLowerCase()));
-
-    if (resultitems.length === 0) {
-      return NextResponse.json({ message: 'Item not found' }, { status: 200 });
-    }
-
-    return NextResponse.json({ message: 'Items found', items: resultitems }, { status: 200 });
+    return NextResponse.json({ posts: response.data?.data || [] });
   } catch (error) {
-    console.error('Error:', error);
-
-    // Return an error response
-    return NextResponse.json({ error: 'An error occurred', details: error.message }, { status: 500 });
+    console.error('Creator search error:', error?.message);
+    return NextResponse.json({ posts: [] });
   }
 }
