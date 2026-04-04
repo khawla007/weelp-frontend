@@ -91,23 +91,20 @@ export const SearchFormCreator = () => {
     }
   };
 
-  const handleInputChange = useCallback(
-    (e) => {
-      const val = e.target.value;
-      if (!val || val.trim().length === 0) {
-        setResults([]);
-        setMessage('');
-        setMinLengthHint('');
-        setShowDropdown(false);
-      }
-    },
-    [],
-  );
+  const handleInputChange = useCallback((e) => {
+    const val = e.target.value;
+    if (!val || val.trim().length === 0) {
+      setResults([]);
+      setMessage('');
+      setMinLengthHint('');
+      setShowDropdown(false);
+    }
+  }, []);
 
   const { onChange: registerOnChange, ...registerRest } = register('search');
 
   return (
-    <div className="flex flex-col max-w-[30rem] w-full mx-auto">
+    <div className="flex flex-col max-w-[30rem] w-full mx-auto relative">
       <form onKeyUp={debounce(handleSubmit(onSubmit), 600)} className="w-full bg-white flex items-center justify-evenly rounded shadow">
         <input
           id="search"
@@ -124,17 +121,13 @@ export const SearchFormCreator = () => {
         <div>{isSubmitting ? <LoaderCircle size={16} className="animate-spin duration-1000" /> : <Search size={16} />}</div>
       </form>
 
-      {minLengthHint && (
-        <span className="flex items-center gap-1 mx-4 p-1.5 text-[0.7em] text-red-400">
-          {minLengthHint}
-        </span>
-      )}
+      {minLengthHint && <span className="absolute left-0 top-full mt-1 flex items-center gap-1 mx-4 p-1.5 text-[0.7em] text-red-400 z-10">{minLengthHint}</span>}
 
-      <div className="relative">
+      <div className="absolute left-0 right-0 top-full mt-1 z-10">
         {showDropdown && (
           <div>
             {results.length > 0 ? (
-              <ul className="absolute z-10 top-4 bg-white w-full rounded-md flex flex-col gap-1 max-h-64 h-fit shadow-md overflow-y-auto tfc_scroll">
+              <ul className="bg-white w-full rounded-md flex flex-col gap-1 max-h-64 h-fit shadow-md overflow-y-auto tfc_scroll">
                 {results.map((post) => (
                   <li key={post.id}>
                     <Link href={getItemHref(post)} onClick={() => setShowDropdown(false)} className="hover:bg-gray-50 flex items-center gap-3 py-2.5 px-4 hover:cursor-pointer">
@@ -154,7 +147,7 @@ export const SearchFormCreator = () => {
               </ul>
             ) : (
               message && (
-                <div className="hover:bg-grayDark flex justify-between rounded-md items-center py-2 px-6 hover:text-white hover:cursor-not-allowed bg-white mt-2">
+                <div className="hover:bg-grayDark flex justify-between rounded-md items-center py-2 px-6 hover:text-white hover:cursor-not-allowed bg-white shadow-md">
                   Sorry No Result Found
                   <Frown size={24} className="animate-pulse" />
                 </div>
