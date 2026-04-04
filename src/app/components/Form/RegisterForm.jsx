@@ -269,6 +269,13 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
         console.log('SignIn result:', result);
 
         if (result?.ok) {
+          // If onSuccess callback exists in store, don't redirect — AuthModalDialog handles it
+          const { onSuccess } = useAuthModalStore.getState();
+          if (onSuccess) {
+            toast({ variant: 'success', title: 'Welcome to Weelp!' });
+            return;
+          }
+
           // Close auth modal if open
           closeAuthModal();
           // Close any parent dialog

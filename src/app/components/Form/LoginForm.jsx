@@ -60,6 +60,14 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
       }
 
       if (result?.ok) {
+        // If onSuccess callback exists in store, don't redirect — AuthModalDialog handles it
+        const { onSuccess } = useAuthModalStore.getState();
+        if (onSuccess) {
+          // Just show success toast, the AuthModalDialog effect will fire onSuccess
+          toast({ title: 'Login successful!' });
+          return;
+        }
+
         // Close auth modal if open
         closeAuthModal();
 
