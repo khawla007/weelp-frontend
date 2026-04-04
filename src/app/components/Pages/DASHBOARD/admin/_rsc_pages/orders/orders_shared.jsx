@@ -2,8 +2,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, CheckCircle2, Clock, DollarSign, Plus, ShoppingCart, TrendingUp, TrendingDown } from 'lucide-react';
-import { Card } from '@/components/ui/card';
+import { ArrowLeft, CheckCircle2, Clock, DollarSign, Plus, ShoppingCart } from 'lucide-react';
+import { StatCard } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/shared/StatCard';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 
 // Order Navigation
@@ -59,64 +59,52 @@ export const StatsOrdersCards = ({ summary = {} }) => {
     completed_orders_growth = 0,
     total_revenue = 0,
     total_revenue_growth = 0,
+    monthly_orders = 0,
+    monthly_pending_orders = 0,
+    monthly_completed_orders = 0,
+    monthly_revenue = 0,
   } = summary;
 
-  // Revenue Format
-  const formattedRevenue = total_revenue
-    ? total_revenue.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      })
-    : '$0';
+  const formatCurrency = (amount) =>
+    amount
+      ? amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+      : '$0';
 
-  // Orders Card Data - using dynamic growth values from API
-  const orderCards = [
-    {
-      label: 'Total Orders',
-      icon: <ShoppingCart size={14} className="text-[#09090B] text-sm font-medium" />,
-      total: total_orders,
-      change: total_orders_growth,
-    },
-    {
-      label: 'Pending Orders',
-      icon: <Clock size={14} className="text-[#09090B] text-sm font-medium" />,
-      total: pending_orders,
-      change: pending_orders_growth,
-    },
-    {
-      label: 'Completed Orders',
-      icon: <CheckCircle2 size={14} className="text-[#09090B] text-sm font-medium" />,
-      total: completed_orders,
-      change: completed_orders_growth,
-    },
-    {
-      label: 'Total Revenue',
-      icon: <DollarSign size={14} className="text-[#09090B] text-sm font-medium" />,
-      total: formattedRevenue,
-      change: total_revenue_growth,
-    },
+  const currentMonth = new Date().toLocaleString('en-US', { month: 'long' });
+
+  const iconClass = 'text-[#09090B] text-sm font-medium';
+
+  // All-time stat cards (growth = current month vs previous month)
+  const allTimeCards = [
+    { label: 'Total Orders', icon: <ShoppingCart size={14} className={iconClass} />, value: total_orders, change: total_orders_growth },
+    { label: 'Pending Orders', icon: <Clock size={14} className={iconClass} />, value: pending_orders, change: pending_orders_growth },
+    { label: 'Completed Orders', icon: <CheckCircle2 size={14} className={iconClass} />, value: completed_orders, change: completed_orders_growth },
+    { label: 'Total Revenue', icon: <DollarSign size={14} className={iconClass} />, value: formatCurrency(total_revenue), change: total_revenue_growth },
+  ];
+
+  // Monthly stat cards (same growth percentages — both compare current month vs previous month)
+  const monthlyCards = [
+    { label: `${currentMonth} Orders`, icon: <ShoppingCart size={14} className={iconClass} />, value: monthly_orders, change: total_orders_growth },
+    { label: `${currentMonth} Pending`, icon: <Clock size={14} className={iconClass} />, value: monthly_pending_orders, change: pending_orders_growth },
+    { label: `${currentMonth} Completed`, icon: <CheckCircle2 size={14} className={iconClass} />, value: monthly_completed_orders, change: completed_orders_growth },
+    { label: `${currentMonth} Revenue`, icon: <DollarSign size={14} className={iconClass} />, value: formatCurrency(monthly_revenue), change: total_revenue_growth },
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {orderCards.map(({ label, icon, total, change }, index) => {
-        return (
-          <Card key={index} className="rounded-lg border bg-card text-card-foreground shadow-sm transition-all hover:bg-accent hover:shadow-lg">
-            <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
-              <h3 className="text-[#09090B] text-sm font-medium">{label}</h3>
-              {icon}
-            </div>
-            <div className="p-6 pt-0">
-              <div className="text-2xl font-bold">{total}</div>
-              <p className={`${change >= 0 ? 'text-green-500' : 'text-red-500'} text-[12px] flex flex-wrap gap-1 items-center`}>
-                {change >= 0 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
-                {change > 0 ? '+' : ''}
-                {change}% <span className="text-gray-400 font-medium">from last month</span>
-              </p>
-            </div>
-          </Card>
-        );
-      })}
+    <div className="space-y-4">
+      {/* All Time Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {allTimeCards.map((card, index) => (
+          <StatCard key={index} {...card} />
+        ))}
+      </div>
+
+      {/* Monthly Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {monthlyCards.map((card, index) => (
+          <StatCard key={index} {...card} />
+        ))}
+      </div>
     </div>
   );
 };
