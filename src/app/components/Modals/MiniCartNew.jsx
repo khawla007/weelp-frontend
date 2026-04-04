@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 const MiniCartNew = () => {
   const router = useRouter(); // intialize route
   const { cartItems, totalPrice, isMiniCartOpen, setMiniCartOpen } = useMiniCartStore();
+
   return (
     <Sheet open={isMiniCartOpen} onOpenChange={setMiniCartOpen}>
       <SheetContent className="!max-w-[485px] w-full h-full p-6 bg-[#F3F5F6] rounded-t-xl shadow-xl !z-[1000]">
@@ -43,7 +44,18 @@ const MiniCartNew = () => {
                 {/* From  ->  To */}
                 <div className="rounded-xl shadow-sm flex flex-col gap-4">
                   {cartItems.map((val, index) => {
-                    return <MiniCartProductCard key={index} itemId={val?.id} itemType={val?.type} productName={val?.name} howMany={val?.howMany} dateRange={val?.dateRange} />;
+                    return (
+                      <MiniCartProductCard
+                        key={index}
+                        itemId={val?.id}
+                        itemType={val?.type}
+                        productName={val?.name}
+                        howMany={val?.howMany}
+                        dateRange={val?.dateRange}
+                        addons={val?.addons || []}
+                        onClose={() => setMiniCartOpen(false)}
+                      />
+                    );
                   })}
                 </div>
                 <MinicartReviewcontent />

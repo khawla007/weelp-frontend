@@ -34,7 +34,7 @@ export const CheckoutItems = () => {
     <div className="flex flex-col gap-4 justify-between">
       {cartItems && cartItems.length > 0 ? (
         cartItems.map((val, index) => {
-          return <CheckoutItemCard key={index} itemName={val?.name} totalPassenger={val?.howMany} date={val?.dateRange} />;
+          return <CheckoutItemCard key={index} itemName={val?.name} totalPassenger={val?.howMany} date={val?.dateRange} addons={val?.addons || []} />;
         })
       ) : (
         <p>Sorry No items in cart</p>
@@ -275,7 +275,7 @@ export const CheckoutFields = () => {
   );
 };
 
-export const CheckoutItemCard = ({ itemName, totalPassenger, date }) => {
+export const CheckoutItemCard = ({ itemName, totalPassenger, date, addons = [] }) => {
   const { adults = '', children = '' } = totalPassenger;
   const { from } = date;
   return (
@@ -291,6 +291,17 @@ export const CheckoutItemCard = ({ itemName, totalPassenger, date }) => {
         <Calendar size={20} />
         {from && <span className="font-medium">{actualDate(from)}</span>}
       </div>
+
+      {addons.length > 0 && (
+        <div className="flex flex-col mt-1">
+          <span className="text-[#5A5A5A] text-xs font-semibold">Add-ons:</span>
+          {addons.map((addon, i) => (
+            <span key={i} className="text-[#5A5A5A] text-xs font-medium ml-2">
+              + {addon.addon_name}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

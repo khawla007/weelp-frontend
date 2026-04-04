@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { actualDate } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
-const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, itemId, itemType }) => {
+const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, itemId, itemType, onClose, addons = [] }) => {
   const { adults, children } = howMany;
   const { from } = dateRange;
   return (
@@ -23,7 +23,7 @@ const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, it
       <div className="flex justify-between w-full p-4 py-2">
         <h3 className="text-wrap font-medium capitalize text-Blueish text-lg">{itemType}</h3>
         <div className="flex gap-4 justify-between">
-          <DeleteItem id={itemId} name={productName} />
+          <DeleteItem id={itemId} name={productName} onClose={onClose} />
           <SquarePen size={18} className="text-[#5a5a5a]" />
         </div>
       </div>
@@ -46,6 +46,15 @@ const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, it
 
             {/* }   */}
           </span>
+          {addons.length > 0 && (
+            <div className="flex flex-col mt-2">
+              {addons.map((addon, i) => (
+                <span key={i} className="text-[#5a5a5a] text-xs font-medium ml-7">
+                  + {addon.addon_name}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
         <div className="flex">
           <img src="https://picsum.photos/300/200?random" className="max-w-32 min-h-28 object-cover w-full h-full rounded-md" alt="logo" />
@@ -58,17 +67,19 @@ const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, it
 export default MiniCartProductCard;
 
 // display popup for item deletion
-export function DeleteItem({ id, name }) {
+export function DeleteItem({ id, name, onClose }) {
   const { removeItem } = useMiniCartStore();
   const { toast } = useToast();
 
   // remove item from modal action
   const removeItemAlertAction = () => {
     removeItem(id);
+    if (onClose) onClose();
 
     // display notice
     toast({
       title: 'Item Remove from Cart',
+      duration: 1000,
     });
   };
   return (
