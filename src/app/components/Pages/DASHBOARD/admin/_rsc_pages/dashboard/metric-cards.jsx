@@ -17,15 +17,7 @@ export const MetricCards = ({ loading = false, data = null }) => {
         const IconComponent = item.icon || metricCardsData[index]?.icon;
         const formattedValue = index === 0 ? `$${item.total.toLocaleString()}` : item.total.toLocaleString();
 
-        return (
-          <StatCard
-            key={index}
-            label={item.title}
-            icon={<IconComponent size={14} className="text-[#09090B] text-sm font-medium" />}
-            value={formattedValue}
-            change={item.change}
-          />
-        );
+        return <StatCard key={index} label={item.title} icon={<IconComponent size={14} className="text-[#09090B] text-sm font-medium" />} value={formattedValue} change={item.change} />;
       })}
     </div>
   );

@@ -65,10 +65,7 @@ export const StatsOrdersCards = ({ summary = {} }) => {
     monthly_revenue = 0,
   } = summary;
 
-  const formatCurrency = (amount) =>
-    amount
-      ? amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-      : '$0';
+  const formatCurrency = (amount) => (amount ? amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '$0');
 
   const currentMonth = new Date().toLocaleString('en-US', { month: 'long' });
 
