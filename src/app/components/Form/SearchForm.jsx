@@ -33,6 +33,22 @@ export const SearchFormCreator = () => {
     defaultValues: { search: '' },
   });
 
+  const getItemHref = (post) => {
+    const item = post?.tagged_items?.[0];
+    if (!item?.taggable) return '#';
+    const slug = item.taggable.slug;
+    const type = item.taggable_type;
+    const citySlug = item.taggable.locations?.[0]?.city?.slug;
+    const creatorId = post?.creator?.id;
+
+    if (!citySlug) return '#';
+
+    if (type === 'App\\Models\\Activity') return `/cities/${citySlug}/activities/${slug}?ref=${creatorId}`;
+    if (type === 'App\\Models\\Itinerary') return `/cities/${citySlug}/itineraries/${slug}?ref=${creatorId}`;
+    if (type === 'App\\Models\\Package') return `/cities/${citySlug}/packages/${slug}?ref=${creatorId}`;
+    return '#';
+  };
+
   const onSubmit = async (data) => {
     if (!data.search || data.search.trim().length < 3) {
       setResults([]);
@@ -88,15 +104,19 @@ export const SearchFormCreator = () => {
             {results.length > 0 ? (
               <ul className="absolute z-10 top-4 bg-white w-full rounded-md flex flex-col gap-1 max-h-64 h-fit shadow-md overflow-y-auto tfc_scroll">
                 {results.map((post) => (
-                  <li key={post.id} onClick={() => setShowDropdown(false)} className="hover:bg-gray-50 flex items-center gap-3 py-2.5 px-4 hover:cursor-pointer">
-                    <Image src={post?.media?.url || FALLBACK_IMAGE.src} className="size-10 rounded-md object-cover shrink-0" alt="post thumbnail" width={40} height={40} />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">{post?.caption || 'Untitled post'}</p>
-                      <p className="text-xs text-gray-500 truncate">by {post?.creator?.name || 'Unknown creator'}</p>
-                    </div>
-                    {post?.creator?.avatar_media?.url && (
-                      <Image src={post.creator.avatar_media.url} className="size-7 rounded-full object-cover shrink-0" alt="creator avatar" width={28} height={28} />
-                    )}
+                  <li key={post.id}>
+                    <Link href={getItemHref(post)} onClick={() => setShowDropdown(false)} className="hover:bg-gray-50 flex items-center gap-3 py-2.5 px-4 hover:cursor-pointer">
+                      <img src={post?.media?.url || '/assets/Card.webp'} className="size-10 rounded-md object-cover shrink-0" alt="post thumbnail" width={40} height={40} />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 truncate">{post?.caption || 'Untitled post'}</p>
+                        <p className="text-xs text-gray-500 truncate">by {post?.creator?.name || 'Unknown creator'}</p>
+                      </div>
+                      {post?.creator?.avatar_media?.url ? (
+                        <img src={post.creator.avatar_media.url} className="size-7 rounded-full object-cover shrink-0" alt="creator avatar" width={28} height={28} />
+                      ) : (
+                        <img src="/assets/Card.webp" className="size-7 rounded-full object-cover shrink-0" alt="creator avatar" width={28} height={28} />
+                      )}
+                    </Link>
                   </li>
                 ))}
               </ul>
