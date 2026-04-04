@@ -64,6 +64,11 @@ export default function ExploreClientWrapper({ initialPosts, lastPage }) {
       // Guest: open auth modal — onSuccess fires with session after login
       openAuthModal({
         onSuccess: async (newSession) => {
+          // If user logged in with an account that's already a creator, skip upgrade
+          if (newSession?.user?.is_creator) {
+            toast({ title: 'Welcome back, Creator!' });
+            return;
+          }
           // Use explicit token to avoid race with getSession() in interceptor
           await performUpgrade(newSession?.access_token);
         },
