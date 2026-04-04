@@ -87,6 +87,9 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
       // Format travel date from cart dateRange
       const travelDate = from ? new Date(from).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
 
+      // Read affiliate creator reference from localStorage
+      const affiliateRef = localStorage.getItem('affiliate_ref');
+
       // Prepare order data
       const orderData = {
         order_type: type,
@@ -111,6 +114,7 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
           phone: profileData.emergency_contact_phone || profileData.phone || '',
           relationship: profileData.emergency_contact_relationship || 'Self',
         },
+        ...(affiliateRef ? { creator_id: parseInt(affiliateRef) } : {}),
       };
 
       // Create order
@@ -125,6 +129,11 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
           variant: 'destructive',
         });
         return;
+      }
+
+      // Clear affiliate reference after successful order creation
+      if (affiliateRef) {
+        localStorage.removeItem('affiliate_ref');
       }
 
       // // Confirm payment

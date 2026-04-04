@@ -4,6 +4,7 @@ import BannerSection from '@/app/components/Pages/FRONT_END/singleproduct/Banner
 import { notFound } from 'next/navigation';
 import { getSinglePackage, getRandomSimilarPackages } from '@/lib/services/package';
 import { isEmpty } from 'lodash';
+import AffiliateTracker from '@/app/components/AffiliateTracker';
 
 const SingleProductTabSection = dynamic(() => import('@/app/components/Pages/FRONT_END/singleproduct/SingleProductTabSection'));
 
@@ -21,8 +22,9 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default async function PackagePage({ params }) {
+export default async function PackagePage({ params, searchParams }) {
   const { city, package: pack } = await params;
+  const { ref } = await searchParams;
   const { data: packageData = [] } = await getSinglePackage(pack);
 
   if (!packageData || packageData.length === 0) {
@@ -47,6 +49,7 @@ export default async function PackagePage({ params }) {
 
   return (
     <>
+      <AffiliateTracker creatorId={ref} />
       <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} primaryLocation={primaryLocation} city={locationCity} scheduleDisplay={scheduleDisplay} />
       <SingleProductTabSection productType="package" productId={id} productData={packageData} packageSlug={pack} similarActivities={similarPackages} />
     </>

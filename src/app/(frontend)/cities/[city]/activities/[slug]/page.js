@@ -5,6 +5,7 @@ import SingleProductTabSection from '@/app/components/Pages/FRONT_END/singleprod
 import { notFound } from 'next/navigation';
 import { getSingleActivity, getRandomSimilarActivities } from '@/lib/services/activites';
 import { isEmpty } from 'lodash';
+import AffiliateTracker from '@/app/components/AffiliateTracker';
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -19,8 +20,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function SingleActivityPage({ params }) {
+export default async function SingleActivityPage({ params, searchParams }) {
   const { city, slug } = await params;
+  const { ref } = await searchParams;
 
   const { data: activityData = [] } = await getSingleActivity(slug);
 
@@ -55,6 +57,7 @@ export default async function SingleActivityPage({ params }) {
 
   return (
     <>
+      <AffiliateTracker creatorId={ref} />
       <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} primaryLocation={primaryLocation} city={city} />
       <SingleProductTabSection productType="activity" productId={id} productData={activityData} similarActivities={similarActivities} activitySlug={slug} />
 

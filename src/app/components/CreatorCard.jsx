@@ -74,6 +74,15 @@ export const CreatorCard = ({ post, isAuthenticated = false }) => {
     }
   };
 
+  const handleItemClick = async () => {
+    try {
+      await incrementShare(post.id);
+      setSharesCount((prev) => prev + 1);
+    } catch (err) {
+      // Non-blocking — don't prevent navigation
+    }
+  };
+
   const formatCount = (count) => {
     if (count >= 1000) return (count / 1000).toFixed(1) + 'k';
     return count;
@@ -81,7 +90,7 @@ export const CreatorCard = ({ post, isAuthenticated = false }) => {
 
   return (
     <div className="w-full max-w-full sm:max-w-sm p-4 sm:p-6">
-      <NavigationLink href={mainHref}>
+      <NavigationLink href={mainHref} onClick={handleItemClick}>
         <div className="relative w-full aspect-[93/100]">
           <Image src={mediaUrl} alt={post?.caption || 'Creator post'} fill className="rounded-lg object-cover" />
         </div>
@@ -113,6 +122,7 @@ export const CreatorCard = ({ post, isAuthenticated = false }) => {
             <NavigationLink
               key={item.id}
               href={getItemHref(item)}
+              onClick={handleItemClick}
               className="inline-flex items-center gap-1 px-3 py-1 text-xs font-medium rounded-full bg-[#CFDBE54D] text-grayDark hover:bg-secondaryDark hover:text-white transition-colors"
             >
               {item.taggable?.name || getItemLabel(item)}

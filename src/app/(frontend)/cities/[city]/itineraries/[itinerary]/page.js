@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import BannerSection from '@/app/components/Pages/FRONT_END/singleproduct/BannerSection';
 import { notFound } from 'next/navigation';
 import { getSingleItinerary, getRandomSimilarItineraries } from '@/lib/services/itineraries';
+import AffiliateTracker from '@/app/components/AffiliateTracker';
 
 const SingleProductTabSection = dynamic(() => import('@/app/components/Pages/FRONT_END/singleproduct/SingleProductTabSection'));
 
@@ -27,8 +28,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function IterenaryPage({ params }) {
+export default async function IterenaryPage({ params, searchParams }) {
   const { city, itinerary } = await params;
+  const { ref } = await searchParams;
 
   const iterenaryData = await getSingleItinerary(itinerary);
 
@@ -62,6 +64,7 @@ export default async function IterenaryPage({ params }) {
 
   return (
     <>
+      <AffiliateTracker creatorId={ref} />
       <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} primaryLocation={primaryLocation} city={locationCity} scheduleDisplay={scheduleDisplay} />
       <SingleProductTabSection productType="itinerary" productId={id} productData={data} itinerarySlug={itinerary} similarActivities={similarItineraries} />
 
