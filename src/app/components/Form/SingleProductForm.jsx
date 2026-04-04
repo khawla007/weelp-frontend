@@ -95,10 +95,13 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     // compute combined price with add-ons
     const addonsTotal = selectedAddons.reduce((sum, a) => sum + Number(a.addon_sale_price ?? a.addon_price), 0);
 
+    const basePrice = Number(productData?.pricing?.regular_price ?? productData?.base_pricing?.variations?.[0]?.regular_price ?? 0);
+
     // add item to cart
     addItem({
       id: productData?.id,
-      price: Number(productData?.pricing?.regular_price ?? productData?.base_pricing?.variations?.[0]?.regular_price ?? 0) + addonsTotal,
+      base_price: basePrice,
+      price: basePrice + addonsTotal,
       name: productData?.name,
       currency: productData?.pricing?.currency || productData?.base_pricing?.currency || 'usd',
       ...data,
@@ -114,6 +117,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     // display notification
     toast({
       title: 'Item Added to Cart',
+      duration: 1000,
     });
 
     setMiniCartOpen(true);
