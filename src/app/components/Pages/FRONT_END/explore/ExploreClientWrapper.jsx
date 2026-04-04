@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
 import CreatorFilter from './SectionCreatorFilter';
 import CreatorStatCards from './CreatorStatCards';
 import CreatePostModal from '@/app/components/Modals/CreatePostModal';
@@ -11,8 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Sparkles } from 'lucide-react';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
 
-export default function ExploreClientWrapper({ initialPosts, lastPage }) {
-  const { data: session, update: updateSession } = useSession();
+export default function ExploreClientWrapper({ initialPosts, lastPage, session }) {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [upgrading, setUpgrading] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
@@ -30,19 +28,19 @@ export default function ExploreClientWrapper({ initialPosts, lastPage }) {
         const res = await authApi.post('/api/customer/upgrade-to-creator', {}, config);
         if (res.data?.success) {
           toast({ title: "You're now a Creator!", description: 'Welcome to the creator community.' });
-          await updateSession({ is_creator: true });
+          // Session will refresh on navigation via server prop
         }
       } catch (err) {
         const msg = err?.response?.data?.message || 'Failed to upgrade.';
         if (err?.response?.status === 422 && msg.toLowerCase().includes('already')) {
           toast({ title: 'You are already a creator!', description: 'Refreshing your session...' });
-          await updateSession({ is_creator: true });
+          // Session will refresh on navigation via server prop
         } else {
           toast({ title: 'Upgrade failed', description: msg, variant: 'destructive' });
         }
       }
     },
-    [toast, updateSession],
+    [toast],
   );
 
   const handleUpgrade = useCallback(async () => {
