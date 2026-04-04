@@ -1,33 +1,39 @@
-import { DollarSign, Box, Activity, Users } from 'lucide-react';
+import { DollarSign, Box, UserPlus, Clock } from 'lucide-react';
+
+/**
+ * Get current month name for metric card titles
+ */
+const currentMonth = new Date().toLocaleString('en-US', { month: 'long' });
 
 /**
  * Metric card data for dashboard
  * Icons are stored as component references, not JSX elements
+ * Titles include current month name (auto-updates each month)
  */
 export const metricCardsData = [
   {
-    title: 'total revenue',
+    title: `${currentMonth} Revenue`,
     icon: DollarSign,
-    total: 45321,
-    change: 20,
+    total: 0,
+    change: 0,
   },
   {
-    title: 'total bookings',
+    title: `${currentMonth} Bookings`,
     icon: Box,
-    total: 2350,
-    change: 180,
+    total: 0,
+    change: 0,
   },
   {
-    title: 'active tours',
-    icon: Activity,
-    total: 45321,
-    change: 19,
+    title: `${currentMonth} New Users`,
+    icon: UserPlus,
+    total: 0,
+    change: 0,
   },
   {
-    title: 'active users',
-    icon: Users,
-    total: 573,
-    change: 10,
+    title: `${currentMonth} Orders In Process`,
+    icon: Clock,
+    total: 0,
+    change: 0,
   },
 ];
 
