@@ -1,7 +1,7 @@
 # Sentry Errors Fix - Design Spec
 
 **Date:** 2026-04-04
-**Status:** Approved
+**Status:** Completed
 **Related Issues:** JAVASCRIPT-NEXTJS-4, JAVASCRIPT-NEXTJS-5, JAVASCRIPT-NEXTJS-6, JAVASCRIPT-NEXTJS-7, JAVASCRIPT-NEXTJS-8
 
 ---
@@ -10,30 +10,33 @@
 
 Fix the 5 unresolved Sentry errors in the `javascript-nextjs` project. After root cause analysis, these resolve to **3 unique issues**:
 
-| Sentry Issue | Root Cause | Fix Type | Complexity |
-|--------------|------------|----------|------------|
-| JAVASCRIPT-NEXTJS-4 | Missing import (already fixed) | Sentry resolve only | None |
-| JAVASCRIPT-NEXTJS-5 | Object rendered as React child `{label, href}` | Defensive search + fix if found | Quick |
-| JAVASCRIPT-NEXTJS-6 | `useSession()` SSR failure on `/explore` | Pass session as props | Moderate |
-| JAVASCRIPT-NEXTJS-7 | `useSession()` SSR failure on `/dashboard/admin` | Pass session as props | Moderate |
-| JAVASCRIPT-NEXTJS-8 | sidebar.jsx module SSR error | Cascading from #7 | Auto-resolves |
+| Sentry Issue        | Root Cause                                       | Fix Type                        | Complexity    |
+| ------------------- | ------------------------------------------------ | ------------------------------- | ------------- |
+| JAVASCRIPT-NEXTJS-4 | Missing import (already fixed)                   | Sentry resolve only             | None          |
+| JAVASCRIPT-NEXTJS-5 | Object rendered as React child `{label, href}`   | Defensive search + fix if found | Quick         |
+| JAVASCRIPT-NEXTJS-6 | `useSession()` SSR failure on `/explore`         | Pass session as props           | Moderate      |
+| JAVASCRIPT-NEXTJS-7 | `useSession()` SSR failure on `/dashboard/admin` | Pass session as props           | Moderate      |
+| JAVASCRIPT-NEXTJS-8 | sidebar.jsx module SSR error                     | Cascading from #7               | Auto-resolves |
 
 ---
 
 ## Root Cause Analysis
 
 ### Error 1: WeelpRecommendations is not defined
+
 - **File:** `src/app/(frontend)/explore/page.js:17`
 - **Status:** Already fixed in code
 - **Action:** Resolve in Sentry only
 
 ### Error 2: Objects are not valid as React child
+
 - **Page:** `/explore` (client-side)
 - **Pattern:** `{label, href}` object rendered directly instead of accessing `.label`
 - **Status:** Active, but exact location not found in current code (may be transient HMR issue)
 - **Action:** Defensive grep search to locate and fix
 
 ### Errors 3, 4, 5: useSession SSR failures
+
 - **Root Cause:** Client components call `useSession()` during server-side pre-rendering before `SessionProvider` context is available
 - **Affected Components:**
   - `ExploreClientWrapper.jsx` (line 15)
@@ -67,29 +70,33 @@ Fix the 5 unresolved Sentry errors in the `javascript-nextjs` project. After roo
 ## Implementation Details
 
 ### Error 1: Resolve in Sentry (JAVASCRIPT-NEXTJS-4)
+
 - Action: Mark as resolved in Sentry dashboard
 - No code change needed
 
 ### Error 2: Defensive Search (JAVASCRIPT-NEXTJS-5)
+
 ```bash
 # Search for any {label, href} objects being rendered directly
 grep -r "href.*label\|label.*href" --include="*.jsx" --include="*.js" src/
 ```
+
 - Find the component rendering the object directly
 - Fix: Access `.label` property instead of rendering the entire object
 
 ### Errors 3, 4, 5: Pass Session as Props
 
-| File | Change |
-|------|--------|
-| `src/app/(frontend)/explore/page.js` | Add `const session = await auth();`, pass to `ExploreClientWrapper` |
+| File                                                                  | Change                                                               |
+| --------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `src/app/(frontend)/explore/page.js`                                  | Add `const session = await auth();`, pass to `ExploreClientWrapper`  |
 | `src/app/components/Pages/FRONT_END/explore/ExploreClientWrapper.jsx` | Accept `session` prop, remove `useSession()` call, use prop directly |
-| `src/app/(dashboard)/dashboard/admin/layout.js` | Pass `session` to `AppSidebar` |
-| `src/app/components/Pages/DASHBOARD/admin/app-sidebar.jsx` | Accept `session` prop, remove `useSession()` call |
+| `src/app/(dashboard)/dashboard/admin/layout.js`                       | Pass `session` to `AppSidebar`                                       |
+| `src/app/components/Pages/DASHBOARD/admin/app-sidebar.jsx`            | Accept `session` prop, remove `useSession()` call                    |
 
 #### Code Changes
 
 **explore/page.js:**
+
 ```javascript
 // Add import
 import { auth } from '@/lib/auth/auth';
@@ -114,6 +121,7 @@ const ExplorePage = async () => {
 ```
 
 **ExploreClientWrapper.jsx:**
+
 ```javascript
 // Remove: import { useSession } from 'next-auth/react';
 // Add: session prop
@@ -126,12 +134,14 @@ export default function ExploreClientWrapper({ initialPosts, lastPage, session }
 ```
 
 **admin/layout.js:**
+
 ```javascript
 // Pass session to AppSidebar
 <AppSidebar session={session} />
 ```
 
 **app-sidebar.jsx:**
+
 ```javascript
 // Remove: import { useSession } from 'next-auth/react';
 // Add: session prop
@@ -156,10 +166,12 @@ export function AppSidebar({ session, ...props }) {
 ## Error Handling & Edge Cases
 
 **Session null handling:**
+
 - Server component: `auth()` returns `null` for unauthenticated users — pass through
 - Client components: Handle `session === null` gracefully (existing logic already does this)
 
 **Rollback plan:**
+
 - Changes are isolated to 4 files
 - If issues arise, revert individual commits
 - No database or config changes
@@ -168,10 +180,10 @@ export function AppSidebar({ session, ...props }) {
 
 ## Estimated Time
 
-| Task | Time |
-|------|------|
-| Error 1: Sentry resolve | 2 min |
-| Error 2: Defensive search + fix | 10 min |
-| Errors 3-5: Session prop changes | 20 min |
-| Testing | 10 min |
-| **Total** | **~45 minutes** |
+| Task                             | Time            |
+| -------------------------------- | --------------- |
+| Error 1: Sentry resolve          | 2 min           |
+| Error 2: Defensive search + fix  | 10 min          |
+| Errors 3-5: Session prop changes | 20 min          |
+| Testing                          | 10 min          |
+| **Total**                        | **~45 minutes** |
