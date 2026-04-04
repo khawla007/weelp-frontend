@@ -44,6 +44,9 @@ const SucceceedPageContent = () => {
   }
 
   const { emergency_contact = {}, item = {}, payment = {}, user = {} } = order || {}; // destructure order data
+  const addons = order?.addons || [];
+  const baseAmount = order?.base_amount;
+  const addonsAmount = order?.addons_amount || 0;
   const dashboardUrl = session?.user?.role === 'super_admin' ? '/dashboard/admin' : '/dashboard/customer'; // use role send based on use link
   const amount = parseFloat(payment?.amount || 0);
   const currency = payment?.currency || 'USD';
@@ -84,6 +87,17 @@ const SucceceedPageContent = () => {
                   <TableCell className="font-semibold">Item</TableCell>
                   <TableCell>{item?.name}</TableCell>
                 </TableRow>
+
+                {addons.length > 0 && (
+                  <TableRow>
+                    <TableCell className="font-semibold">Add-ons</TableCell>
+                    <TableCell>
+                      {addons.map((a, i) => (
+                        <span key={i} className="block text-sm">{a.addon_name}</span>
+                      ))}
+                    </TableCell>
+                  </TableRow>
+                )}
 
                 <TableRow>
                   <TableCell className="font-semibold">Amount Paid</TableCell>
@@ -153,9 +167,29 @@ const SucceceedPageContent = () => {
             <div className="text-black flex w-full justify-between">
               <strong>Method:</strong> {payment?.payment_method}
             </div>
-            <div className="text-black flex w-full justify-between">
-              <strong>Amount:</strong> {priceAmount}
-            </div>
+
+            {baseAmount != null && (
+              <div className="text-black flex w-full justify-between">
+                <strong>Item Price:</strong> {formatCurrency(parseFloat(baseAmount), currency)}
+              </div>
+            )}
+
+            {addons.length > 0 && (
+              <div className="text-black flex flex-col gap-1">
+                <strong>Add-ons:</strong>
+                {addons.map((a, i) => (
+                  <div key={i} className="flex justify-between ml-2 text-xs">
+                    <span>{a.addon_name}</span>
+                    <span>{formatCurrency(parseFloat(a.price), currency)}</span>
+                  </div>
+                ))}
+                <div className="flex justify-between font-medium border-t pt-1 mt-1">
+                  <span>Add-ons Total:</span>
+                  <span>{formatCurrency(parseFloat(addonsAmount), currency)}</span>
+                </div>
+              </div>
+            )}
+
             <div className="text-black flex w-full justify-between font-bold border p-4 rounded-md">
               <strong>Total:</strong> {priceAmount}
             </div>
