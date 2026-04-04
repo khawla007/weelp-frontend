@@ -1,14 +1,13 @@
 'use client';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { LogOut, UserIcon, Settings, Users, ChevronDown, Home } from 'lucide-react';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
-export default function UserMenu() {
-  const { data: session } = useSession();
+export default function UserMenu({ session }) {
   const user = session?.user || {};
 
   const { name = '', email = '', role = '', avatar, avatar_url } = user; // destructure data with default

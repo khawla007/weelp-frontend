@@ -3,7 +3,6 @@ import { AppSidebar } from '@/app/components/Pages/DASHBOARD/admin/app-sidebar';
 import AdminHeader from '@/app/components/Pages/DASHBOARD/admin/header';
 import { Toaster } from '@/components/ui/toaster';
 import { auth } from '@/lib/auth/auth';
-import { LoginForm } from '@/app/components/Form/LoginForm';
 import { DashboardContentWrapper } from '@/app/components/Pages/DASHBOARD/DashboardContentWrapper';
 
 const AdminLayout = async ({ children }) => {
@@ -19,7 +18,7 @@ const AdminLayout = async ({ children }) => {
         </div>
         <div className="flex flex-col w-full">
           <>
-            <AdminHeader />
+            <AdminHeader session={session} />
           </>
           <main className="flex-1">
             <DashboardContentWrapper>

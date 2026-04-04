@@ -18,7 +18,7 @@ import Link from 'next/link';
  * - Clear button when search has value
  * - Live search results dropdown
  */
-const AdminHeader = () => {
+const AdminHeader = ({ session }) => {
   const { isMobile, toggleSidebar } = useSidebar();
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -199,7 +199,7 @@ const AdminHeader = () => {
         </div>
 
         <div className="flex sm:w-full max-w-fit justify-center items-start">
-          <UserMenu />
+          <UserMenu session={session} />
         </div>
       </div>
     </header>
