@@ -2,11 +2,14 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { CreatorCard } from '@/app/components/CreatorCard';
-import { ChevronDown, Plus, Check } from 'lucide-react';
+import { ChevronDown, Plus, Check, UserPlus, Sparkles, TrendingUp, Home } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
-const NAV_TABS = ['Home', 'Explore', 'Create'];
+const CONTENT_TABS = [
+  { value: 'home', label: 'Home', icon: Home },
+  { value: 'trending', label: 'Trending', icon: TrendingUp },
+];
 
 const SORT_OPTIONS = [
   { value: 'latest', label: 'Latest First' },
@@ -19,18 +22,41 @@ const SOURCE_OPTIONS = [
   { value: 'mine', label: 'My Posts' },
 ];
 
-const CreatorFilter = ({ initialPosts, lastPage, onCreateClick }) => {
+function getActionButton(isLoggedIn, isCreator, upgrading) {
+  if (!isLoggedIn) {
+    return { label: 'Join as Creator', icon: UserPlus };
+  }
+  if (!isCreator) {
+    return { label: upgrading ? 'Joining...' : 'Become Creator', icon: Sparkles };
+  }
+  return { label: 'Create', icon: Plus };
+}
+
+const CreatorFilter = ({
+  initialPosts,
+  lastPage,
+  activeTab,
+  onTabChange,
+  onActionClick,
+  isLoggedIn,
+  isCreator,
+  upgrading,
+}) => {
   const { data: session } = useSession();
   const [posts, setPosts] = useState(initialPosts || []);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(lastPage || 1);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('Home');
   const [activeSort, setActiveSort] = useState('latest');
   const [activeSource, setActiveSource] = useState('all');
   const observerRef = useRef(null);
   const isInitialMount = useRef(true);
   const isAuthenticated = !!session?.user;
+
+  // Sync posts when parent passes new initialPosts (e.g. trending sorted)
+  useEffect(() => {
+    setPosts(initialPosts || []);
+  }, [initialPosts]);
 
   const fetchPosts = useCallback(
     async (pageNum, sort, source) => {
@@ -55,6 +81,9 @@ const CreatorFilter = ({ initialPosts, lastPage, onCreateClick }) => {
       return;
     }
 
+    // Skip refetch when on trending tab — parent handles sort
+    if (activeTab === 'trending') return;
+
     let cancelled = false;
     const refetch = async () => {
       setLoading(true);
@@ -77,9 +106,11 @@ const CreatorFilter = ({ initialPosts, lastPage, onCreateClick }) => {
     return () => {
       cancelled = true;
     };
-  }, [activeSort, activeSource, fetchPosts]);
+  }, [activeSort, activeSource, fetchPosts, activeTab]);
 
   const loadMorePosts = useCallback(async () => {
+    // Disable infinite scroll on trending tab (client-side sort of existing data)
+    if (activeTab === 'trending') return;
     if (loading || page >= maxPage) return;
 
     setLoading(true);
@@ -97,7 +128,7 @@ const CreatorFilter = ({ initialPosts, lastPage, onCreateClick }) => {
     } finally {
       setLoading(false);
     }
-  }, [loading, page, maxPage, fetchPosts, activeSort, activeSource]);
+  }, [loading, page, maxPage, fetchPosts, activeSort, activeSource, activeTab]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -116,13 +147,6 @@ const CreatorFilter = ({ initialPosts, lastPage, onCreateClick }) => {
     return () => observer.disconnect();
   }, [loadMorePosts]);
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-    if (tab === 'Create' && onCreateClick) {
-      onCreateClick();
-    }
-  };
-
   const handleSourceChange = (value) => {
     if (value === 'mine' && !isAuthenticated) return;
     setActiveSource(value);
@@ -130,52 +154,72 @@ const CreatorFilter = ({ initialPosts, lastPage, onCreateClick }) => {
 
   const activeSortLabel = SORT_OPTIONS.find((o) => o.value === activeSort)?.label;
   const activeSourceLabel = SOURCE_OPTIONS.find((o) => o.value === activeSource)?.label;
+  const actionBtn = getActionButton(isLoggedIn, isCreator, upgrading);
+  const ActionIcon = actionBtn.icon;
 
   return (
     <section className="relative max-w-[95%] mx-auto">
       {/* Top Bar */}
       <div className="flex justify-between items-center flex-col sm:flex-row px-6">
-        {/* Sort Dropdown */}
+        {/* Sort Dropdown — hidden on Trending tab */}
         <div className="mt-[1.5rem]">
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-              <button className="flex items-center justify-between gap-2 bg-transparent border border-[#435a6742] rounded-[8px] px-4 py-2 text-[17px] font-medium text-[#435a67] outline-none min-w-[160px]">
-                {activeSortLabel}
-                <ChevronDown size={16} className="shrink-0" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="min-w-[160px]">
-              {SORT_OPTIONS.map((option) => (
-                <DropdownMenuItem key={option.value} onClick={() => setActiveSort(option.value)} className="flex items-center justify-between gap-4 cursor-pointer">
-                  {option.label}
-                  {activeSort === option.value && <Check size={14} className="text-secondaryDark" />}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {activeTab === 'home' ? (
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center justify-between gap-2 bg-transparent border border-[#435a6742] rounded-[8px] px-4 py-2 text-[17px] font-medium text-[#435a67] outline-none min-w-[160px]">
+                  {activeSortLabel}
+                  <ChevronDown size={16} className="shrink-0" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="min-w-[160px]">
+                {SORT_OPTIONS.map((option) => (
+                  <DropdownMenuItem key={option.value} onClick={() => setActiveSort(option.value)} className="flex items-center justify-between gap-4 cursor-pointer">
+                    {option.label}
+                    {activeSort === option.value && <Check size={14} className="text-secondaryDark" />}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="min-w-[160px]" />
+          )}
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="mt-4">
-          <ul className="flex items-center gap-[22px]">
-            {NAV_TABS.map((tab) => (
-              <li key={tab}>
-                <button
-                  onClick={() => handleTabClick(tab)}
-                  className="text-[18px] font-medium"
-                  style={{
-                    color: '#435a67',
-                    padding: activeTab === tab ? '7px 21px' : '7px 0',
-                    backgroundColor: activeTab === tab ? '#cfdbe54d' : 'transparent',
-                    borderRadius: activeTab === tab ? '8.5px' : '0',
-                  }}
-                >
-                  {tab === 'Create' && <Plus size={14} className="inline mr-1" />}
-                  {tab}
-                </button>
-              </li>
-            ))}
-          </ul>
+        {/* Content Tabs + Action Button */}
+        <div className="mt-4 flex items-center gap-[22px]">
+          {/* Home / Trending tabs */}
+          {CONTENT_TABS.map((tab) => {
+            const TabIcon = tab.icon;
+            return (
+              <button
+                key={tab.value}
+                onClick={() => onTabChange(tab.value)}
+                className="text-[18px] font-medium flex items-center gap-1.5"
+                style={{
+                  color: '#435a67',
+                  padding: activeTab === tab.value ? '7px 21px' : '7px 0',
+                  backgroundColor: activeTab === tab.value ? '#cfdbe54d' : 'transparent',
+                  borderRadius: activeTab === tab.value ? '8.5px' : '0',
+                }}
+              >
+                <TabIcon size={16} />
+                {tab.label}
+              </button>
+            );
+          })}
+
+          {/* Divider */}
+          <div className="w-px h-6 bg-[#435a6730]" />
+
+          {/* Dynamic Action Button */}
+          <button
+            onClick={onActionClick}
+            disabled={upgrading}
+            className="flex items-center gap-1.5 text-[18px] font-medium text-white bg-secondaryDark hover:bg-secondaryDark/90 px-5 py-[7px] rounded-[8.5px] transition-colors disabled:opacity-60"
+          >
+            <ActionIcon size={16} />
+            {actionBtn.label}
+          </button>
         </div>
 
         {/* Source Filter Dropdown */}
@@ -228,8 +272,8 @@ const CreatorFilter = ({ initialPosts, lastPage, onCreateClick }) => {
           </ul>
         )}
 
-        {/* Infinite scroll sentinel */}
-        {page < maxPage && (
+        {/* Infinite scroll sentinel — disabled on trending tab */}
+        {activeTab === 'home' && page < maxPage && (
           <div ref={observerRef} className="flex justify-center py-4">
             {loading && <div className="w-8 h-8 border-2 border-secondaryDark border-t-transparent rounded-full animate-spin" />}
           </div>
