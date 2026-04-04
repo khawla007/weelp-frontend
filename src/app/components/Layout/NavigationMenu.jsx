@@ -51,8 +51,8 @@ const DesktopMenu = ({ stickyHeader }) => {
       </div>
 
       <div className={`border-b border-[#ededed] ${stickyHeader ? 'bg-[#ffffffcc] shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] backdrop-blur-[47px]' : 'bg-[#ffffffcc] backdrop-blur-[47px]'}`}>
-        <div className="flex h-[66px] w-full items-center justify-between px-[60px] py-[8px]">
-          <Link href="/" className="shrink-0 flex items-center gap-3">
+        <div className="grid h-[66px] w-full items-center px-[60px] py-[8px]" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
+          <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start">
             <img src="/assets/images/weelp-logo-icon.png" alt="" className="h-9 w-auto" />
             <span className="text-[18px] font-semibold text-[#142a38]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
               Weelp.
@@ -70,7 +70,7 @@ const DesktopMenu = ({ stickyHeader }) => {
 
 const NavMenuDesktop = () => {
   return (
-    <nav aria-label="Primary" className="flex flex-1 items-center justify-center">
+    <nav aria-label="Primary" className="flex items-center justify-center">
       <ul className="flex items-center gap-[36px]">
         {HEADER_NAV_ITEMS.map((nav, index) => (
           <li key={nav.title}>
@@ -118,7 +118,7 @@ export const HeaderAccount = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative justify-self-end">
       <ul className="flex items-center gap-[24px]">
         <li>
           <button type="button" className="relative flex items-center justify-center text-[#0c2536] transition hover:text-[#142a38]" onClick={handleShowCart}>

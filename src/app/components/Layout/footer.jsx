@@ -95,7 +95,12 @@ const Footer = () => {
               </p>
               <div className="flex items-center gap-6">
                 {FOOTER_LEGAL_ITEMS.map((item) => (
-                  <Link key={item.label} href={item.href} className="text-[18px] text-[#6f7680] cursor-pointer transition hover:text-[#243141]" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="text-[18px] text-[#6f7680] cursor-pointer transition hover:text-[#243141]"
+                    style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}
+                  >
                     {item.label}
                   </Link>
                 ))}

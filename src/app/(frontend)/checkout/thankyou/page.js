@@ -93,7 +93,9 @@ const SucceceedPageContent = () => {
                     <TableCell className="font-semibold">Add-ons</TableCell>
                     <TableCell>
                       {addons.map((a, i) => (
-                        <span key={i} className="block text-sm">{a.addon_name}</span>
+                        <span key={i} className="block text-sm">
+                          {a.addon_name}
+                        </span>
                       ))}
                     </TableCell>
                   </TableRow>
@@ -144,10 +146,10 @@ const SucceceedPageContent = () => {
 
             {/* Navigation */}
             <div className="flex justify-between w-full mt-6">
-              <Link href="/" className="bg-white text-black border p-2 rounded-2xl text-sm font-medium px-4">
+              <Link href="/" className="bg-white text-black border border-[#558e7b] p-2 rounded-2xl text-sm font-medium px-4 transition-colors hover:bg-[#558e7b] hover:text-white">
                 Back to Home
               </Link>
-              <Link href={dashboardUrl} className="bg-[#163b4e] text-white border p-2 px-4 rounded-2xl text-sm font-medium">
+              <Link href={dashboardUrl} className="bg-[#558e7b] text-white border border-[#558e7b] p-2 px-4 rounded-2xl text-sm font-medium transition-colors hover:bg-white hover:text-black">
                 Go To Bookings
               </Link>
             </div>
@@ -156,7 +158,7 @@ const SucceceedPageContent = () => {
 
         {/* Payment Info */}
         <Card className="h-fit rounded-md border">
-          <CardHeader className="bg-[#163b4e] text-white rounded-md">
+          <CardHeader className="bg-[#558e7b] text-white rounded-md">
             <CardTitle>Payment Info</CardTitle>
             <h2 className="font-semibold text-lg">{item?.name}</h2>
           </CardHeader>

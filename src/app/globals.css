@@ -8,6 +8,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Prevent layout shift when modals/dialogs hide the scrollbar.
+   scrollbar-gutter reserves scrollbar space permanently.
+   Override Radix Dialog's duplicate margin-right compensation
+   since scrollbar-gutter already handles it. */
+html {
+  scrollbar-gutter: stable;
+}
+
+html body[data-scroll-locked] {
+  margin-right: 0px !important;
+}
+
 /* NProgress - Navigation Progress Bar */
 #nprogress {
   pointer-events: none;
