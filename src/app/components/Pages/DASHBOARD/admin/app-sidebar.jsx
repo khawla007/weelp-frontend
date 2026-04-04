@@ -5,13 +5,11 @@ import { Menu } from 'lucide-react';
 import { NavMain } from './nav-main';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail, useSidebar } from '@/components/ui/sidebar';
 import { DashboardAdminNav } from '@/constants/navigations/AdminNavigation';
-import { useSession } from 'next-auth/react';
 
 const { adminRoutes } = DashboardAdminNav;
 
-export function AppSidebar({ ...props }) {
+export function AppSidebar({ session, ...props }) {
   const { state, open, toggleSidebar, isMobile } = useSidebar();
-  const { data: session } = useSession(); //getsssion
 
   return (
     <Sidebar collapsible="icon" {...props}>
