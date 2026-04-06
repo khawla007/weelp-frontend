@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import MiniCartNew from '../Modals/MiniCartNew';
 import SubmenuAccount from '../Modals/SubmenuAccount';
 import { HEADER_NAV_ITEMS, HEADER_PRIMARY_META, HEADER_SECONDARY_META } from './shellContent';
+import NotificationBell from './NotificationBell';
 
 // Helper function to generate initials from name
 const getInitials = (name) => {
@@ -121,6 +122,9 @@ export const HeaderAccount = () => {
             <ShoppingCart className="size-5" strokeWidth={1.5} />
             {cartItems?.length > 0 && <Badge className={'absolute -right-4 -top-2 scale-75'}>{cartItems?.length}</Badge>}
           </button>
+        </li>
+        <li>
+          <NotificationBell />
         </li>
         <li>
           <button type="button" className="flex items-center justify-center text-[#0c2536] transition hover:text-[#142a38]" onClick={handleShowForm}>
