@@ -171,7 +171,7 @@ export const getAdminCreatorItineraries = async (status = '', page = 1) => {
     if (page) params.append('page', page);
     const query = params.toString() ? `?${params.toString()}` : '';
     const res = await api.get(`/api/admin/creator-itineraries${query}`);
-    return { success: true, data: res.data };
+    return { success: true, data: res.data?.data };
   } catch (err) {
     return { success: false, message: 'Failed to fetch creator itineraries.' };
   }

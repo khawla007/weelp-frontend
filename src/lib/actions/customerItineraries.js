@@ -27,7 +27,7 @@ export const getMyItineraries = async (page = 1) => {
   try {
     const api = await getAuthApi();
     const res = await api.get(`/api/customer/my-itineraries?page=${page}`);
-    return { success: true, data: res.data };
+    return { success: true, data: res.data?.data };
   } catch (err) {
     return { success: false, message: 'Failed to fetch itineraries.', data: [] };
   }
