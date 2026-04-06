@@ -7,17 +7,7 @@ import useSWR from 'swr';
 import { Badge } from '@/components/ui/badge';
 import { fetchUnreadCount, fetchNotifications, markAsRead, markAllAsRead } from '@/lib/services/notifications';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
-
-const timeAgo = (dateStr) => {
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return 'Just now';
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  const days = Math.floor(hrs / 24);
-  return `${days}d ago`;
-};
+import { timeAgo } from '@/lib/utils';
 
 export default function NotificationBell() {
   const { data: session } = useSession();
@@ -26,24 +16,24 @@ export default function NotificationBell() {
   const [loadingNotifs, setLoadingNotifs] = useState(false);
   const dropdownRef = useRef(null);
 
-  const token = session?.user?.token;
+  const userId = session?.user?.id;
 
   // Poll unread count every 30s
-  const { data: countData, mutate: mutateCount } = useSWR(token ? ['notifications-unread', token] : null, () => fetchUnreadCount(token), { refreshInterval: 30000 });
+  const { data: countData, mutate: mutateCount } = useSWR(userId ? ['notifications-unread', userId] : null, () => fetchUnreadCount(), { refreshInterval: 30000 });
 
   const unreadCount = countData?.count || 0;
 
   // Load notifications when dropdown opens
   useEffect(() => {
-    if (!open || !token) return;
+    if (!open || !userId) return;
     const load = async () => {
       setLoadingNotifs(true);
-      const res = await fetchNotifications(1, token);
+      const res = await fetchNotifications(1);
       setNotifications(res?.data?.data || []);
       setLoadingNotifs(false);
     };
     load();
-  }, [open, token]);
+  }, [open, userId]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -59,13 +49,13 @@ export default function NotificationBell() {
   if (!session) return null;
 
   const handleMarkAsRead = async (id) => {
-    await markAsRead(id, token);
+    await markAsRead(id);
     setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read_at: new Date().toISOString() } : n)));
     mutateCount();
   };
 
   const handleMarkAllRead = async () => {
-    await markAllAsRead(token);
+    await markAllAsRead();
     setNotifications((prev) => prev.map((n) => ({ ...n, read_at: n.read_at || new Date().toISOString() })));
     mutateCount();
   };

@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import CreatorStatCards from '@/app/components/Pages/FRONT_END/explore/CreatorStatCards';
 import QuickActions from '@/app/components/Dashboard/Creator/QuickActions';
 import ActivityFeed from '@/app/components/Dashboard/Creator/ActivityFeed';
+import NotificationWidget from '@/app/components/Dashboard/NotificationWidget';
 
 export const metadata = {
   title: 'Dashboard Overview - Weelp',
@@ -30,6 +31,10 @@ export default async function OverviewPage() {
       <section className="mb-8">
         <h2 className="text-lg font-semibold text-[#142A38] mb-4">Quick Actions</h2>
         <QuickActions />
+      </section>
+
+      <section className="mb-8">
+        <NotificationWidget />
       </section>
 
       <section>

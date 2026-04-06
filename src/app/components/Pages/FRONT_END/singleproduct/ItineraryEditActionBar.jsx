@@ -61,25 +61,27 @@ export default function ItineraryEditActionBar({ session }) {
 
   const handleGuestBookNow = () => {
     // Persist edit state to sessionStorage before opening auth modal
-    sessionStorage.setItem(
-      'itinerary_edit_state',
-      JSON.stringify({ itineraryId, modifiedSchedules })
-    );
+    sessionStorage.setItem('itinerary_edit_state', JSON.stringify({ itineraryId, modifiedSchedules }));
 
     openAuthModal({
       onSuccess: async () => {
-        // After auth, restore and submit
-        const saved = sessionStorage.getItem('itinerary_edit_state');
-        if (saved) {
-          const { itineraryId: savedId, modifiedSchedules: savedSchedules } = JSON.parse(saved);
-          sessionStorage.removeItem('itinerary_edit_state');
-          const res = await saveCustomerItinerary({
-            parent_itinerary_id: savedId,
-            schedules: savedSchedules,
-          });
-          if (res.success && res.data?.slug) {
-            router.push(`/itineraries/${res.data.slug}`);
+        try {
+          const saved = sessionStorage.getItem('itinerary_edit_state');
+          if (saved) {
+            const { itineraryId: savedId, modifiedSchedules: savedSchedules } = JSON.parse(saved);
+            sessionStorage.removeItem('itinerary_edit_state');
+            const res = await saveCustomerItinerary({
+              parent_itinerary_id: savedId,
+              schedules: savedSchedules,
+            });
+            if (res.success && res.data?.slug) {
+              router.push(`/itineraries/${res.data.slug}`);
+            } else {
+              toast({ variant: 'destructive', title: res.message || 'Failed to save itinerary.' });
+            }
           }
+        } catch {
+          toast({ variant: 'destructive', title: 'Something went wrong. Please try again.' });
         }
       },
     });
