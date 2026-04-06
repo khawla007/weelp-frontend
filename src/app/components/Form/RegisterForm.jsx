@@ -348,7 +348,14 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
             <div>
               <label htmlFor="name" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
                 <User className="text-[#5A5A5A] size-4" />
-                <input placeholder="Full Name" type="text" id="name" {...register('name')} autoComplete="name" className="mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base flex-1" />
+                <input
+                  placeholder="Full Name"
+                  type="text"
+                  id="name"
+                  {...register('name')}
+                  autoComplete="name"
+                  className="mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base flex-1"
+                />
               </label>
               {errors.name && <p className="text-sm text-red-600 pt-2">{errors.name.message}</p>}
             </div>
