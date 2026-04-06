@@ -75,13 +75,7 @@ export default function ActivitySearchModalPublic({ open, onOpenChange, slug, on
         <div className="flex gap-2 items-center">
           <div className="relative flex-1">
             <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="text"
-              placeholder="Search activities..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 focus-visible:ring-secondaryDark focus-visible:ring-1"
-            />
+            <Input type="text" placeholder="Search activities..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9 focus-visible:ring-secondaryDark focus-visible:ring-1" />
           </div>
         </div>
 
@@ -92,17 +86,11 @@ export default function ActivitySearchModalPublic({ open, onOpenChange, slug, on
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
             </div>
           ) : filtered.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-8">
-              {search ? 'No activities match your search.' : 'No activities available.'}
-            </p>
+            <p className="text-sm text-muted-foreground text-center py-8">{search ? 'No activities match your search.' : 'No activities available.'}</p>
           ) : (
             <ul className="space-y-1">
               {filtered.map((activity) => (
-                <li
-                  key={activity.id}
-                  className="flex items-center gap-3 p-2 rounded-md hover:bg-neutral-100 cursor-pointer transition-colors"
-                  onClick={() => handleSelect(activity)}
-                >
+                <li key={activity.id} className="flex items-center gap-3 p-2 rounded-md hover:bg-neutral-100 cursor-pointer transition-colors" onClick={() => handleSelect(activity)}>
                   <div className="relative h-14 w-14 rounded-md overflow-hidden bg-neutral-200 flex-shrink-0">
                     {activity.featured_image ? (
                       <Image src={activity.featured_image} alt={activity.name} fill className="object-cover" sizes="56px" />

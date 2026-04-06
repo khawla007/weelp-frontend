@@ -104,9 +104,7 @@ export default function TransferSearchModalPublic({ open, onOpenChange, slug, on
       <DialogContent className="sm:max-w-[500px] max-h-[80vh] flex flex-col">
         <DialogHeader>
           <DialogTitle>{stage === 'search' ? 'Add Transfer' : 'Configure Transfer'}</DialogTitle>
-          <DialogDescription className="sr-only">
-            {stage === 'search' ? 'Search and select a transfer.' : 'Configure pickup and dropoff details.'}
-          </DialogDescription>
+          <DialogDescription className="sr-only">{stage === 'search' ? 'Search and select a transfer.' : 'Configure pickup and dropoff details.'}</DialogDescription>
         </DialogHeader>
 
         {/* Stage 1: Search */}
@@ -115,7 +113,13 @@ export default function TransferSearchModalPublic({ open, onOpenChange, slug, on
             <div className="flex gap-2 items-center">
               <div className="relative flex-1">
                 <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input type="text" placeholder="Search transfers..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9 focus-visible:ring-secondaryDark focus-visible:ring-1" />
+                <Input
+                  type="text"
+                  placeholder="Search transfers..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-9 focus-visible:ring-secondaryDark focus-visible:ring-1"
+                />
               </div>
             </div>
 

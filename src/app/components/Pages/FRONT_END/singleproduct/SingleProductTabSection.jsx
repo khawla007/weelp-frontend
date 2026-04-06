@@ -6,6 +6,7 @@ import { OverViewPanel, WhatIncludedPanel, ReviewPanel, FaqPanel } from './TabSe
 import SimilarExperiences from './SimilarExperiences';
 import ProductSidebar from './ProductSidebar';
 import ItineraryPanel from './ItineraryPanel';
+import ItineraryEditActionBar from './ItineraryEditActionBar';
 
 const HEADER_HEIGHT = 66;
 const TAB_BAR_HEIGHT = 60;
@@ -33,7 +34,18 @@ const getDefaultDateRange = (scheduleCount) => {
   return { from: tomorrow, to: endDate };
 };
 
-const SingleProductTabSection = ({ productType = 'activity', productId, productData, similarActivities = [], activitySlug, itinerarySlug, packageSlug, sidebarBottomImage }) => {
+const SingleProductTabSection = ({
+  productType = 'activity',
+  productId,
+  productData,
+  similarActivities = [],
+  activitySlug,
+  itinerarySlug,
+  packageSlug,
+  sidebarBottomImage,
+  session = null,
+  itinerary = null,
+}) => {
   const [activeTab, setActiveTab] = useState('tab_1');
   const sectionRefs = useRef({});
   const [fixedTab, setFixedTab] = useState(false);
@@ -142,7 +154,9 @@ const SingleProductTabSection = ({ productType = 'activity', productId, productD
               {productType === 'activity' ? (
                 <OverViewPanel description={productData?.description} />
               ) : (
-                productData?.schedules?.length > 0 && <ItineraryPanel schedules={productData.schedules} startDate={selectedStartDate} title={TAB_1_LABELS[productType]} />
+                productData?.schedules?.length > 0 && (
+                  <ItineraryPanel schedules={productData.schedules} startDate={selectedStartDate} title={TAB_1_LABELS[productType]} session={session} itinerary={itinerary} />
+                )
               )}
             </div>
 
@@ -189,6 +203,9 @@ const SingleProductTabSection = ({ productType = 'activity', productId, productD
           />
         </div>
       </div>
+
+      {/* Edit Action Bar for logged-in users on itinerary pages */}
+      {session?.user && productType === 'itinerary' && <ItineraryEditActionBar isCreator={session.user.is_creator} isLoggedIn={true} />}
     </section>
   );
 };
