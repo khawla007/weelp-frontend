@@ -9,13 +9,15 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Sparkles, Clock } from 'lucide-react';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
+import { useSession } from 'next-auth/react';
 
-export default function ExploreClientWrapper({ initialItineraries, lastPage, session }) {
+export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
   const [applicationFormOpen, setApplicationFormOpen] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(null);
   const [activeTab, setActiveTab] = useState('home');
   const { toast } = useToast();
   const { openAuthModal } = useAuthModalStore();
+  const { data: session } = useSession();
 
   const isCreator = !!session?.user?.is_creator;
   const isLoggedIn = !!session?.user;
@@ -49,6 +51,8 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage, ses
       openAuthModal({
         onSuccess: async () => {
           toast({ title: 'Welcome! You can now apply to become a creator.' });
+          // Auto-open apply form after successful signup
+          setApplicationFormOpen(true);
         },
       });
     }

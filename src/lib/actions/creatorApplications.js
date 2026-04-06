@@ -52,6 +52,39 @@ export const approveApplication = async (id) => {
 };
 
 /**
+ * Update a creator application (admin)
+ * @param {number} id - Application ID
+ * @param {object} data - Fields to update
+ * @returns {object} { success, message, data }
+ */
+export const updateApplication = async (id, data) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/creator-applications/${id}`, data);
+    return { success: true, message: res.data?.message, data: res.data?.data };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to update application.';
+    return { success: false, message };
+  }
+};
+
+/**
+ * Delete a creator application (admin)
+ * @param {number} id - Application ID
+ * @returns {object} { success, message }
+ */
+export const deleteApplication = async (id) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/creator-applications/${id}`);
+    return { success: true, message: res.data?.message };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to delete application.';
+    return { success: false, message };
+  }
+};
+
+/**
  * Reject a creator application (admin)
  * @param {number} id - Application ID
  * @param {string} adminNotes - Rejection reason

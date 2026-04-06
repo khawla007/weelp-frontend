@@ -2,13 +2,17 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Eye, CheckCircle, XCircle } from 'lucide-react';
+import { Eye, CheckCircle, XCircle, Trash2, Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
-import { approveApplication, rejectApplication } from '@/lib/actions/creatorApplications';
+import { approveApplication, rejectApplication, deleteApplication, updateApplication } from '@/lib/actions/creatorApplications';
 
 const STATUS_TABS = ['all', 'pending', 'approved', 'rejected'];
 
@@ -34,6 +38,14 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
   const [dialogOpen, setDialogOpen] = useState(false);
   const [rejectNotes, setRejectNotes] = useState('');
   const [processing, setProcessing] = useState(false);
+
+  // Delete state
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [appToDelete, setAppToDelete] = useState(null);
+
+  // Edit state
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editForm, setEditForm] = useState({});
 
   const filtered = activeTab === 'all' ? applications : applications.filter((a) => a.status === activeTab);
 
@@ -74,6 +86,62 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
       setApplications((prev) => prev.map((a) => (a.id === id ? { ...a, status: 'rejected', admin_notes: rejectNotes } : a)));
       setDialogOpen(false);
       setRejectNotes('');
+      router.refresh();
+    } else {
+      toast({ title: 'Error', description: result.message, variant: 'destructive' });
+    }
+    setProcessing(false);
+  };
+
+  // Delete handlers
+  const openDeleteDialog = (app) => {
+    setAppToDelete(app);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!appToDelete) return;
+    setProcessing(true);
+    const result = await deleteApplication(appToDelete.id);
+    if (result.success) {
+      toast({ title: 'Application deleted', description: result.message || 'The application has been deleted.' });
+      setApplications((prev) => prev.filter((a) => a.id !== appToDelete.id));
+      setDeleteDialogOpen(false);
+      setAppToDelete(null);
+      router.refresh();
+    } else {
+      toast({ title: 'Error', description: result.message, variant: 'destructive' });
+    }
+    setProcessing(false);
+  };
+
+  // Edit handlers
+  const openEditDialog = (app) => {
+    setEditForm({
+      name: app.name || '',
+      email: app.email || '',
+      gender: app.gender || '',
+      instagram: app.instagram || '',
+      phone: app.phone || '',
+      youtube: app.youtube || '',
+      facebook: app.facebook || '',
+    });
+    setSelectedApp(app);
+    setEditDialogOpen(true);
+  };
+
+  const handleEditChange = (field, value) => {
+    setEditForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleEditSave = async () => {
+    if (!selectedApp) return;
+    setProcessing(true);
+    const result = await updateApplication(selectedApp.id, editForm);
+    if (result.success) {
+      toast({ title: 'Application updated', description: result.message || 'The application has been updated.' });
+      setApplications((prev) => prev.map((a) => (a.id === selectedApp.id ? { ...a, ...editForm } : a)));
+      setEditDialogOpen(false);
       router.refresh();
     } else {
       toast({ title: 'Error', description: result.message, variant: 'destructive' });
@@ -128,10 +196,17 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
                     <Badge variant={statusBadgeVariant(app.status)}>{app.status}</Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="sm" onClick={() => handleView(app)}>
-                      <Eye className="size-4 mr-1" />
-                      View
-                    </Button>
+                    <div className="flex items-center justify-end gap-1">
+                      <Button variant="ghost" size="icon" onClick={() => handleView(app)} title="View">
+                        <Eye className="size-4 text-[#435A67]" />
+                      </Button>
+                      <Button variant="ghost" size="icon" onClick={() => openEditDialog(app)} title="Edit">
+                        <Pencil className="size-4 text-[#435A67]" />
+                      </Button>
+                      <Button variant="ghost" size="icon" onClick={() => openDeleteDialog(app)} title="Delete">
+                        <Trash2 className="size-4 text-red-500" />
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -151,50 +226,50 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
           {selectedApp && (
             <div className="space-y-4 py-2">
               <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
+                <div className="min-w-0">
                   <span className="text-[#5A5A5A] block">Name</span>
-                  <span className="font-medium text-[#142A38]">{selectedApp.user?.name || selectedApp.name || '-'}</span>
+                  <span className="font-medium text-[#142A38] block truncate">{selectedApp.user?.name || selectedApp.name || '-'}</span>
                 </div>
-                <div>
+                <div className="min-w-0">
                   <span className="text-[#5A5A5A] block">Email</span>
-                  <span className="font-medium text-[#142A38]">{selectedApp.user?.email || selectedApp.email || '-'}</span>
+                  <span className="font-medium text-[#142A38] block truncate">{selectedApp.user?.email || selectedApp.email || '-'}</span>
                 </div>
-                <div>
-                  <span className="text-[#5A5A5A] block">Instagram</span>
-                  <span className="font-medium text-[#142A38]">{selectedApp.instagram_handle || '-'}</span>
-                </div>
-                <div>
+                <div className="min-w-0">
                   <span className="text-[#5A5A5A] block">Gender</span>
                   <span className="font-medium text-[#142A38]">{selectedApp.gender || '-'}</span>
                 </div>
-                <div>
+                <div className="min-w-0">
                   <span className="text-[#5A5A5A] block">Phone</span>
-                  <span className="font-medium text-[#142A38]">{selectedApp.phone || '-'}</span>
+                  <span className="font-medium text-[#142A38] block truncate">{selectedApp.phone || '-'}</span>
+                </div>
+                <div className="col-span-2 min-w-0">
+                  <span className="text-[#5A5A5A] block">Instagram</span>
+                  <span className="font-medium text-[#142A38] block break-all">{selectedApp.instagram || '-'}</span>
                 </div>
                 {selectedApp.youtube && (
-                  <div>
+                  <div className="col-span-2 min-w-0">
                     <span className="text-[#5A5A5A] block">YouTube</span>
-                    <span className="font-medium text-[#142A38]">{selectedApp.youtube}</span>
+                    <span className="font-medium text-[#142A38] block break-all">{selectedApp.youtube}</span>
                   </div>
                 )}
                 {selectedApp.facebook && (
-                  <div>
+                  <div className="col-span-2 min-w-0">
                     <span className="text-[#5A5A5A] block">Facebook</span>
-                    <span className="font-medium text-[#142A38]">{selectedApp.facebook}</span>
+                    <span className="font-medium text-[#142A38] block break-all">{selectedApp.facebook}</span>
                   </div>
                 )}
-                <div>
+                <div className="min-w-0">
                   <span className="text-[#5A5A5A] block">Status</span>
                   <Badge variant={statusBadgeVariant(selectedApp.status)}>{selectedApp.status}</Badge>
                 </div>
-                <div>
+                <div className="min-w-0">
                   <span className="text-[#5A5A5A] block">Submitted</span>
                   <span className="font-medium text-[#142A38]">{formatDate(selectedApp.created_at)}</span>
                 </div>
                 {selectedApp.admin_notes && (
-                  <div className="col-span-2">
+                  <div className="col-span-2 min-w-0">
                     <span className="text-[#5A5A5A] block">Admin Notes</span>
-                    <span className="font-medium text-[#142A38]">{selectedApp.admin_notes}</span>
+                    <span className="font-medium text-[#142A38] block break-all">{selectedApp.admin_notes}</span>
                   </div>
                 )}
               </div>
@@ -230,6 +305,83 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Edit Application Dialog */}
+      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+        <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Application</DialogTitle>
+            <DialogDescription>Update the creator application details.</DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-2">
+            <div>
+              <Label className="text-[#435A67] text-sm font-medium">Name</Label>
+              <Input value={editForm.name || ''} onChange={(e) => handleEditChange('name', e.target.value)} className="mt-1.5" />
+            </div>
+            <div>
+              <Label className="text-[#435A67] text-sm font-medium">Email</Label>
+              <Input type="email" value={editForm.email || ''} onChange={(e) => handleEditChange('email', e.target.value)} className="mt-1.5" />
+            </div>
+            <div>
+              <Label className="text-[#435A67] text-sm font-medium">Gender</Label>
+              <Select value={editForm.gender || ''} onValueChange={(val) => handleEditChange('gender', val)}>
+                <SelectTrigger className="mt-1.5">
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label className="text-[#435A67] text-sm font-medium">Instagram</Label>
+              <Input value={editForm.instagram || ''} onChange={(e) => handleEditChange('instagram', e.target.value)} className="mt-1.5" />
+            </div>
+            <div>
+              <Label className="text-[#435A67] text-sm font-medium">Phone</Label>
+              <Input value={editForm.phone || ''} onChange={(e) => handleEditChange('phone', e.target.value)} className="mt-1.5" />
+            </div>
+            <div>
+              <Label className="text-[#435A67] text-sm font-medium">YouTube</Label>
+              <Input value={editForm.youtube || ''} onChange={(e) => handleEditChange('youtube', e.target.value)} className="mt-1.5" />
+            </div>
+            <div>
+              <Label className="text-[#435A67] text-sm font-medium">Facebook</Label>
+              <Input value={editForm.facebook || ''} onChange={(e) => handleEditChange('facebook', e.target.value)} className="mt-1.5" />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditDialogOpen(false)} className="border-[#435a6742] text-[#435a67]">
+              Cancel
+            </Button>
+            <Button onClick={handleEditSave} disabled={processing} className="bg-secondaryDark hover:bg-secondaryDark/90">
+              {processing ? 'Saving...' : 'Save Changes'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Application</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete the application from <span className="font-medium text-[#142A38]">{appToDelete?.name || appToDelete?.user?.name}</span>? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={processing}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} disabled={processing} className="bg-red-600 hover:bg-red-700">
+              {processing ? 'Deleting...' : 'Delete'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

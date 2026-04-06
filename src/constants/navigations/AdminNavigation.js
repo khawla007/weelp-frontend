@@ -32,43 +32,18 @@ export const DashboardAdminNav = {
   },
   adminRoutes: [
     { title: 'Dashboard', icon: LayoutDashboard, url: '/dashboard/admin/' },
+    { title: 'Blogs', icon: FileText, url: '/dashboard/admin/blogs' },
+    { title: 'Media', icon: BookImage, url: '/dashboard/admin/media' },
+    {
+      title: 'Creators',
+      icon: UserCheck,
+      url: '/dashboard/admin/creator-applications',
+      children: [
+        { title: 'Applications', icon: FileCheck, url: '/dashboard/admin/creator-applications' },
+        { title: 'Itineraries', icon: Route, url: '/dashboard/admin/creator-itineraries' },
+      ],
+    },
     { title: 'Activities', icon: Map, url: '/dashboard/admin/activities' },
-    {
-      title: 'Taxonomies',
-      icon: Tags,
-      url: '/dashboard/admin/taxonomies',
-      children: [
-        {
-          title: 'Categories',
-          icon: Tag,
-          url: '/dashboard/admin/taxonomies/categories',
-        },
-        { title: 'Tags', icon: Tag, url: '/dashboard/admin/taxonomies/tags' },
-        {
-          title: 'Attributes',
-          icon: Tag,
-          url: '/dashboard/admin/taxonomies/attributes',
-        },
-      ],
-    },
-    {
-      title: 'Destinations',
-      icon: Globe,
-      url: '/dashboard/admin/destinations',
-      children: [
-        {
-          title: 'All Destination',
-          icon: MapPin,
-          url: '/dashboard/admin/destinations',
-        },
-        {
-          title: 'Regions',
-          icon: MapPin,
-          url: '/dashboard/admin/destinations/regions',
-        },
-      ],
-    },
-
     { title: 'Itineraries', icon: Route, url: '/dashboard/admin/itineraries' },
     {
       title: 'Transfers',
@@ -89,15 +64,44 @@ export const DashboardAdminNav = {
       ],
     },
     {
-      title: 'Package Builder',
-      icon: Box,
-      url: '/dashboard/admin/package-builder',
+      title: 'Destinations',
+      icon: Globe,
+      url: '/dashboard/admin/destinations',
+      children: [
+        {
+          title: 'All Destination',
+          icon: MapPin,
+          url: '/dashboard/admin/destinations',
+        },
+        {
+          title: 'Regions',
+          icon: MapPin,
+          url: '/dashboard/admin/destinations/regions',
+        },
+      ],
+    },
+    { title: 'Pages', icon: FileText, url: '/dashboard/admin/pages', comingSoon: true },
+    {
+      title: 'Taxonomies',
+      icon: Tags,
+      url: '/dashboard/admin/taxonomies',
+      children: [
+        {
+          title: 'Categories',
+          icon: Tag,
+          url: '/dashboard/admin/taxonomies/categories',
+        },
+        { title: 'Tags', icon: Tag, url: '/dashboard/admin/taxonomies/tags' },
+        {
+          title: 'Attributes',
+          icon: Tag,
+          url: '/dashboard/admin/taxonomies/attributes',
+        },
+      ],
     },
     { title: 'Orders', icon: ShoppingCart, url: '/dashboard/admin/orders' },
     { title: 'Reviews', icon: MessageSquare, url: '/dashboard/admin/reviews' },
     { title: 'Manage Add Ons', icon: Plus, url: '/dashboard/admin/addon' },
-    { title: 'Pages', icon: FileText, url: '/dashboard/admin/pages', comingSoon: true },
-    { title: 'Blogs', icon: FileText, url: '/dashboard/admin/blogs' },
     {
       title: 'Marketing',
       icon: Gift,
@@ -126,8 +130,6 @@ export const DashboardAdminNav = {
         },
       ],
     },
-    { title: 'Media', icon: BookImage, url: '/dashboard/admin/media' },
-
     {
       title: 'Reports',
       icon: ChartColumnIncreasing,
@@ -135,15 +137,12 @@ export const DashboardAdminNav = {
       comingSoon: true,
     },
     { title: 'Users', icon: Users, url: '/dashboard/admin/users' },
-    {
-      title: 'Creators',
-      icon: UserCheck,
-      url: '/dashboard/admin/creator-applications',
-      children: [
-        { title: 'Applications', icon: FileCheck, url: '/dashboard/admin/creator-applications' },
-        { title: 'Itineraries', icon: Route, url: '/dashboard/admin/creator-itineraries' },
-      ],
-    },
     { title: 'Settings', icon: Settings, url: '/dashboard/admin/settings' },
+    {
+      title: 'Package Builder',
+      icon: Box,
+      url: '/dashboard/admin/package-builder',
+      comingSoon: true,
+    },
   ],
 };
