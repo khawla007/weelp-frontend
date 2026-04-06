@@ -1,6 +1,6 @@
 'use server';
 
-import { getAuthApi } from '../axiosInstance';
+import { getAuthApi, publicApi } from '../axiosInstance';
 
 /**
  * Submit a creator itinerary
@@ -104,8 +104,7 @@ export const toggleItineraryLike = async (id) => {
  */
 export const recordItineraryView = async (id) => {
   try {
-    const api = await getAuthApi();
-    const res = await api.post(`/api/explore/creator-itineraries/${id}/view`);
+    const res = await publicApi.post(`/api/explore/creator-itineraries/${id}/view`);
     return { success: true, views_count: res.data?.views_count };
   } catch (err) {
     return { success: false, message: 'Failed to record view.' };

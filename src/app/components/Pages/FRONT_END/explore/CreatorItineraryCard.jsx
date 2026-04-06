@@ -31,8 +31,8 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn }) {
     .slice(0, 2)
     .toUpperCase();
 
-  const cityName = itinerary?.locations?.[0]?.city || '';
-  const citySlug = typeof cityName === 'string' ? cityName.toLowerCase().replace(/\s+/g, '-') : '';
+  const cityName = itinerary?.locations?.[0]?.city?.name || '';
+  const citySlug = cityName ? cityName.toLowerCase().replace(/\s+/g, '-') : '';
   const href = citySlug && slug ? `/cities/${citySlug}/itineraries/${slug}` : '#';
 
   const handleLike = async (e) => {

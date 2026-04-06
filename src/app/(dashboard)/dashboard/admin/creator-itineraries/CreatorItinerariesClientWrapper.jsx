@@ -9,7 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useToast } from '@/hooks/use-toast';
 import { approveCreatorItinerary, rejectCreatorItinerary } from '@/lib/actions/creatorItineraries';
 
-const STATUS_TABS = ['all', 'pending', 'approved', 'rejected'];
+const STATUS_TABS = ['all', 'pending_approval', 'approved', 'rejected'];
 
 const statusBadgeVariant = (status) => {
   switch (status) {
@@ -17,11 +17,16 @@ const statusBadgeVariant = (status) => {
       return 'success';
     case 'rejected':
       return 'destructive';
-    case 'pending':
+    case 'pending_approval':
       return 'warning';
     default:
       return 'secondary';
   }
+};
+
+const formatStatus = (status) => {
+  if (status === 'pending_approval') return 'Pending';
+  return status ? status.charAt(0).toUpperCase() + status.slice(1) : '-';
 };
 
 export default function CreatorItinerariesClientWrapper({ initialItineraries, initialLastPage }) {
@@ -31,7 +36,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
   const [activeTab, setActiveTab] = useState('all');
   const [processingId, setProcessingId] = useState(null);
 
-  const filtered = activeTab === 'all' ? itineraries : itineraries.filter((i) => i.status === activeTab);
+  const filtered = activeTab === 'all' ? itineraries : itineraries.filter((i) => i.approval_status === activeTab);
 
   const formatDate = (dateString) => {
     if (!dateString) return '-';
@@ -47,7 +52,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
     const result = await approveCreatorItinerary(id);
     if (result.success) {
       toast({ title: 'Itinerary approved', description: result.message || 'The creator itinerary has been approved.' });
-      setItineraries((prev) => prev.map((i) => (i.id === id ? { ...i, status: 'approved' } : i)));
+      setItineraries((prev) => prev.map((i) => (i.id === id ? { ...i, approval_status: 'approved' } : i)));
       router.refresh();
     } else {
       toast({ title: 'Error', description: result.message, variant: 'destructive' });
@@ -60,7 +65,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
     const result = await rejectCreatorItinerary(id);
     if (result.success) {
       toast({ title: 'Itinerary rejected', description: result.message || 'The creator itinerary has been rejected.' });
-      setItineraries((prev) => prev.map((i) => (i.id === id ? { ...i, status: 'rejected' } : i)));
+      setItineraries((prev) => prev.map((i) => (i.id === id ? { ...i, approval_status: 'rejected' } : i)));
       router.refresh();
     } else {
       toast({ title: 'Error', description: result.message, variant: 'destructive' });
@@ -86,7 +91,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
             onClick={() => setActiveTab(tab)}
             className={activeTab === tab ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#435a6742] text-[#435a67]'}
           >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            {formatStatus(tab)}
           </Button>
         ))}
       </div>
@@ -95,9 +100,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
       {filtered.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-lg text-[#142A38]">No itineraries found</p>
-          <p className="text-[#5A5A5A] mt-2">
-            {activeTab === 'all' ? 'No creator itineraries have been submitted yet.' : `No ${activeTab} itineraries.`}
-          </p>
+          <p className="text-[#5A5A5A] mt-2">{activeTab === 'all' ? 'No creator itineraries have been submitted yet.' : `No ${activeTab} itineraries.`}</p>
         </div>
       ) : (
         <div className="bg-white rounded-lg border border-[#435a6742]">
@@ -131,18 +134,12 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     </TableCell>
                     <TableCell>{formatDate(item.created_at)}</TableCell>
                     <TableCell>
-                      <Badge variant={statusBadgeVariant(item.status)}>{item.status}</Badge>
+                      <Badge variant={statusBadgeVariant(item.approval_status)}>{formatStatus(item.approval_status)}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      {item.status === 'pending' ? (
+                      {item.approval_status === 'pending_approval' ? (
                         <div className="flex gap-2 justify-end">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleReject(item.id)}
-                            disabled={processingId === item.id}
-                            className="border-red-300 text-red-600 hover:bg-red-50"
-                          >
+                          <Button variant="outline" size="sm" onClick={() => handleReject(item.id)} disabled={processingId === item.id} className="border-red-300 text-red-600 hover:bg-red-50">
                             <XCircle className="size-4 mr-1" />
                             Reject
                           </Button>

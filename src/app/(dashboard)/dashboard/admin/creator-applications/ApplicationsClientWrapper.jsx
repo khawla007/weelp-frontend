@@ -102,9 +102,7 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
       {filtered.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-lg text-[#142A38]">No applications found</p>
-          <p className="text-[#5A5A5A] mt-2">
-            {activeTab === 'all' ? 'No creator applications have been submitted yet.' : `No ${activeTab} applications.`}
-          </p>
+          <p className="text-[#5A5A5A] mt-2">{activeTab === 'all' ? 'No creator applications have been submitted yet.' : `No ${activeTab} applications.`}</p>
         </div>
       ) : (
         <div className="bg-white rounded-lg border border-[#435a6742]">
@@ -124,7 +122,7 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
                 <TableRow key={app.id}>
                   <TableCell className="font-medium">{app.user?.name || app.name || '-'}</TableCell>
                   <TableCell>{app.user?.email || app.email || '-'}</TableCell>
-                  <TableCell>{app.instagram_handle || '-'}</TableCell>
+                  <TableCell>{app.instagram || '-'}</TableCell>
                   <TableCell>{formatDate(app.created_at)}</TableCell>
                   <TableCell>
                     <Badge variant={statusBadgeVariant(app.status)}>{app.status}</Badge>
@@ -166,17 +164,25 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
                   <span className="font-medium text-[#142A38]">{selectedApp.instagram_handle || '-'}</span>
                 </div>
                 <div>
-                  <span className="text-[#5A5A5A] block">Followers</span>
-                  <span className="font-medium text-[#142A38]">{selectedApp.followers_count || '-'}</span>
+                  <span className="text-[#5A5A5A] block">Gender</span>
+                  <span className="font-medium text-[#142A38]">{selectedApp.gender || '-'}</span>
                 </div>
-                <div className="col-span-2">
-                  <span className="text-[#5A5A5A] block">Travel Niches</span>
-                  <span className="font-medium text-[#142A38]">{selectedApp.travel_niches || '-'}</span>
+                <div>
+                  <span className="text-[#5A5A5A] block">Phone</span>
+                  <span className="font-medium text-[#142A38]">{selectedApp.phone || '-'}</span>
                 </div>
-                <div className="col-span-2">
-                  <span className="text-[#5A5A5A] block">Why they want to be a creator</span>
-                  <span className="font-medium text-[#142A38]">{selectedApp.motivation || selectedApp.why_creator || '-'}</span>
-                </div>
+                {selectedApp.youtube && (
+                  <div>
+                    <span className="text-[#5A5A5A] block">YouTube</span>
+                    <span className="font-medium text-[#142A38]">{selectedApp.youtube}</span>
+                  </div>
+                )}
+                {selectedApp.facebook && (
+                  <div>
+                    <span className="text-[#5A5A5A] block">Facebook</span>
+                    <span className="font-medium text-[#142A38]">{selectedApp.facebook}</span>
+                  </div>
+                )}
                 <div>
                   <span className="text-[#5A5A5A] block">Status</span>
                   <Badge variant={statusBadgeVariant(selectedApp.status)}>{selectedApp.status}</Badge>
