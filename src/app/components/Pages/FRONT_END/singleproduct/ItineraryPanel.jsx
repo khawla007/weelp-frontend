@@ -30,8 +30,8 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
   const dayRefs = useRef({});
   const [activeDayIndex, setActiveDayIndex] = useState(0);
 
-  // Determine if edit mode is active: user is logged in AND itinerary is an original (no creator_id and no user_id)
-  const isEditing = !!(session?.user && itinerary && !itinerary.creator_id && !itinerary.user_id);
+  // Determine if edit mode is active: itinerary is an original (no creator_id and no user_id)
+  const isEditing = !!(itinerary && !itinerary.creator_id && !itinerary.user_id);
 
   // Initialize the edit store when in edit mode
   useEffect(() => {
@@ -39,9 +39,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
       useItineraryEditStore.getState().initializeEdit(itinerary);
     }
     return () => {
-      if (isEditing) {
-        useItineraryEditStore.getState().clearEdit();
-      }
+      useItineraryEditStore.getState().clearEdit();
     };
   }, [isEditing, itinerary]);
 
@@ -223,7 +221,7 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
                       onClick={() => setActiveModal({ type: 'changeTransfer', index: transferIndex })}
                       className="inline-flex items-center gap-1.5 text-sm text-[#5a5a5a] hover:text-[#0c2536] transition-colors"
                     >
-                      <Pencil size={13} /> Change
+                      <Pencil size={13} /> Edit
                     </button>
                     <button
                       onClick={() => useItineraryEditStore.getState().removeTransfer(dayIndex, transferIndex)}
@@ -292,7 +290,7 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
                       onClick={() => setActiveModal({ type: 'changeActivity', index: activityIndex })}
                       className="inline-flex items-center gap-1.5 text-sm text-[#5a5a5a] hover:text-[#0c2536] transition-colors"
                     >
-                      <Pencil size={13} /> Change
+                      <Pencil size={13} /> Edit
                     </button>
                     <button
                       onClick={() => useItineraryEditStore.getState().removeActivity(dayIndex, activityIndex)}
