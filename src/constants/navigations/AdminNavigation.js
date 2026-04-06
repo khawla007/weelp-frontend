@@ -5,6 +5,8 @@ import {
   Tag,
   Tags,
   Users,
+  UserCheck,
+  FileCheck,
   LayoutDashboard,
   Globe,
   MapPin,
@@ -133,6 +135,15 @@ export const DashboardAdminNav = {
       comingSoon: true,
     },
     { title: 'Users', icon: Users, url: '/dashboard/admin/users' },
+    {
+      title: 'Creators',
+      icon: UserCheck,
+      url: '/dashboard/admin/creator-applications',
+      children: [
+        { title: 'Applications', icon: FileCheck, url: '/dashboard/admin/creator-applications' },
+        { title: 'Itineraries', icon: Route, url: '/dashboard/admin/creator-itineraries' },
+      ],
+    },
     { title: 'Settings', icon: Settings, url: '/dashboard/admin/settings' },
   ],
 };
