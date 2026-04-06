@@ -12,12 +12,12 @@
 
 ## File Structure
 
-| File | Responsibility | Change Type |
-|------|----------------|-------------|
-| `src/app/(frontend)/explore/page.js` | Server component for /explore route | Modify - add session fetch |
-| `src/app/components/Pages/FRONT_END/explore/ExploreClientWrapper.jsx` | Client wrapper for explore page feed | Modify - accept session prop |
-| `src/app/(dashboard)/dashboard/admin/layout.js` | Admin dashboard layout | Modify - pass session to sidebar |
-| `src/app/components/Pages/DASHBOARD/admin/app-sidebar.jsx` | Admin sidebar component | Modify - accept session prop |
+| File                                                                  | Responsibility                       | Change Type                      |
+| --------------------------------------------------------------------- | ------------------------------------ | -------------------------------- |
+| `src/app/(frontend)/explore/page.js`                                  | Server component for /explore route  | Modify - add session fetch       |
+| `src/app/components/Pages/FRONT_END/explore/ExploreClientWrapper.jsx` | Client wrapper for explore page feed | Modify - accept session prop     |
+| `src/app/(dashboard)/dashboard/admin/layout.js`                       | Admin dashboard layout               | Modify - pass session to sidebar |
+| `src/app/components/Pages/DASHBOARD/admin/app-sidebar.jsx`            | Admin sidebar component              | Modify - accept session prop     |
 
 ---
 
@@ -65,12 +65,19 @@ Expected results: May find breadcrumb or navigation components. Check if `item` 
 - [ ] **Step 3: Fix if found**
 
 If a problematic render is found, change from:
+
 ```jsx
-{item}  // WRONG — renders entire object
+{
+  item;
+} // WRONG — renders entire object
 ```
+
 To:
+
 ```jsx
-{item.label}  // CORRECT — renders string property
+{
+  item.label;
+} // CORRECT — renders string property
 ```
 
 - [ ] **Step 4: Commit if fix applied**
@@ -93,6 +100,7 @@ If fix was applied, resolve JAVASCRIPT-NEXTJS-5 in Sentry with comment referenci
 **Issue:** Prepare session data on server for ExploreClientWrapper
 
 **Files:**
+
 - Modify: `src/app/(frontend)/explore/page.js`
 
 - [ ] **Step 1: Add auth import**
@@ -145,11 +153,13 @@ Prepares for fixing JAVASCRIPT-NEXTJS-6 - useSession SSR error"
 **Issue:** Remove useSession() hook and use passed session prop instead
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/explore/ExploreClientWrapper.jsx`
 
 - [ ] **Step 1: Remove useSession import**
 
 Remove this line from imports (line 4):
+
 ```javascript
 import { useSession } from 'next-auth/react';
 ```
@@ -228,6 +238,7 @@ Fixes JAVASCRIPT-NEXTJS-6 - useSession SSR error on /explore"
 **Issue:** Server component has session, needs to pass it to client sidebar
 
 **Files:**
+
 - Modify: `src/app/(dashboard)/dashboard/admin/layout.js`
 
 - [ ] **Step 1: Pass session prop to AppSidebar**
@@ -258,11 +269,13 @@ Prepares for fixing JAVASCRIPT-NEXTJS-7 - useSession SSR error"
 **Issue:** Remove useSession() hook and use passed session prop
 
 **Files:**
+
 - Modify: `src/app/components/Pages/DASHBOARD/admin/app-sidebar.jsx`
 
 - [ ] **Step 1: Remove useSession import**
 
 Remove this line from imports (line 8):
+
 ```javascript
 import { useSession } from 'next-auth/react';
 ```
@@ -369,6 +382,7 @@ git commit -m "test: verify Sentry error fixes - all tests passing"
 **Issue:** Update spec status and document completion
 
 **Files:**
+
 - Modify: `docs/superpowers/specs/2026-04-04-sentry-errors-fix-design.md`
 
 - [ ] **Step 1: Update spec status**
@@ -386,14 +400,14 @@ git commit -m "docs: mark Sentry errors fix spec as completed"
 
 ## Summary
 
-| Task | Description | Estimated Time |
-|------|-------------|----------------|
-| 1 | Resolve Error 1 in Sentry | 2 min |
-| 2 | Defensive search for Error 2 | 10 min |
-| 3 | Add auth() to explore page | 5 min |
-| 4 | Refactor ExploreClientWrapper | 10 min |
-| 5 | Pass session to AppSidebar | 2 min |
-| 6 | Refactor AppSidebar | 5 min |
-| 7 | Testing & verification | 10 min |
-| 8 | Documentation | 2 min |
-| **Total** | | **~46 minutes** |
+| Task      | Description                   | Estimated Time  |
+| --------- | ----------------------------- | --------------- |
+| 1         | Resolve Error 1 in Sentry     | 2 min           |
+| 2         | Defensive search for Error 2  | 10 min          |
+| 3         | Add auth() to explore page    | 5 min           |
+| 4         | Refactor ExploreClientWrapper | 10 min          |
+| 5         | Pass session to AppSidebar    | 2 min           |
+| 6         | Refactor AppSidebar           | 5 min           |
+| 7         | Testing & verification        | 10 min          |
+| 8         | Documentation                 | 2 min           |
+| **Total** |                               | **~46 minutes** |
