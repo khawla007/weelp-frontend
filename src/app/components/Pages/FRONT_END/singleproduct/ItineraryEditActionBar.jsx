@@ -8,17 +8,22 @@ import { useToast } from '@/hooks/use-toast';
 import { useItineraryEditStore } from '@/lib/store/useItineraryEditStore';
 import { submitCreatorItinerary } from '@/lib/actions/creatorItineraries';
 import { saveCustomerItinerary } from '@/lib/actions/customerItineraries';
+import useAuthModalStore from '@/lib/store/useAuthModalStore';
 
-export default function ItineraryEditActionBar({ isCreator, isLoggedIn }) {
+export default function ItineraryEditActionBar({ session }) {
   const router = useRouter();
   const { toast } = useToast();
   const [submitting, setSubmitting] = useState(false);
+  const openAuthModal = useAuthModalStore((s) => s.openAuthModal);
 
   const { modifiedSchedules, originalSchedules, itineraryId, resetChanges } = useItineraryEditStore();
 
   const hasChanges = JSON.stringify(originalSchedules) !== JSON.stringify(modifiedSchedules);
 
-  if (!hasChanges || !isLoggedIn) return null;
+  if (!hasChanges) return null;
+
+  const isLoggedIn = !!session?.user;
+  const isCreator = !!session?.user?.is_creator;
 
   const payload = {
     parent_itinerary_id: itineraryId,
@@ -46,13 +51,38 @@ export default function ItineraryEditActionBar({ isCreator, isLoggedIn }) {
     if (res.success) {
       toast({ title: res.message || 'Itinerary saved successfully!' });
       resetChanges();
-      // Redirect to the new copy's page
       if (res.data?.slug) {
         router.push(`/itineraries/${res.data.slug}`);
       }
     } else {
       toast({ variant: 'destructive', title: res.message || 'Failed to save.' });
     }
+  };
+
+  const handleGuestBookNow = () => {
+    // Persist edit state to sessionStorage before opening auth modal
+    sessionStorage.setItem(
+      'itinerary_edit_state',
+      JSON.stringify({ itineraryId, modifiedSchedules })
+    );
+
+    openAuthModal({
+      onSuccess: async () => {
+        // After auth, restore and submit
+        const saved = sessionStorage.getItem('itinerary_edit_state');
+        if (saved) {
+          const { itineraryId: savedId, modifiedSchedules: savedSchedules } = JSON.parse(saved);
+          sessionStorage.removeItem('itinerary_edit_state');
+          const res = await saveCustomerItinerary({
+            parent_itinerary_id: savedId,
+            schedules: savedSchedules,
+          });
+          if (res.success && res.data?.slug) {
+            router.push(`/itineraries/${res.data.slug}`);
+          }
+        }
+      },
+    });
   };
 
   return (
@@ -64,8 +94,13 @@ export default function ItineraryEditActionBar({ isCreator, isLoggedIn }) {
           Reset Changes
         </Button>
 
-        {/* Right: Submit */}
-        {isCreator ? (
+        {/* Right: Role-based action */}
+        {!isLoggedIn ? (
+          <Button onClick={handleGuestBookNow} className="bg-secondaryDark hover:bg-secondaryDark/90">
+            <ShoppingCart className="h-4 w-4 mr-2" />
+            Book Now
+          </Button>
+        ) : isCreator ? (
           <Button onClick={handleCreatorSubmit} disabled={submitting} className="bg-secondaryDark hover:bg-secondaryDark/90">
             {submitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Send className="h-4 w-4 mr-2" />}
             Apply for Approval

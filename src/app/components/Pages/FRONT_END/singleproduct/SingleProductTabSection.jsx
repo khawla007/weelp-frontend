@@ -205,7 +205,7 @@ const SingleProductTabSection = ({
       </div>
 
       {/* Edit Action Bar for logged-in users on itinerary pages */}
-      {session?.user && productType === 'itinerary' && <ItineraryEditActionBar isCreator={session.user.is_creator} isLoggedIn={true} />}
+      {productType === 'itinerary' && <ItineraryEditActionBar session={session} />}
     </section>
   );
 };
