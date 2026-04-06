@@ -71,12 +71,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
             <Label htmlFor="name" className="text-[#435A67] text-sm font-medium">
               Name <span className="text-red-500">*</span>
             </Label>
-            <Input
-              id="name"
-              placeholder="Your full name"
-              className="mt-1.5"
-              {...register('name', { required: 'Name is required' })}
-            />
+            <Input id="name" placeholder="Your full name" className="mt-1.5" {...register('name', { required: 'Name is required' })} />
             {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
           </div>
 
@@ -128,12 +123,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
             <Label htmlFor="instagram" className="text-[#435A67] text-sm font-medium">
               Instagram <span className="text-red-500">*</span>
             </Label>
-            <Input
-              id="instagram"
-              placeholder="@yourhandle"
-              className="mt-1.5"
-              {...register('instagram', { required: 'Instagram handle is required' })}
-            />
+            <Input id="instagram" placeholder="@yourhandle" className="mt-1.5" {...register('instagram', { required: 'Instagram handle is required' })} />
             {errors.instagram && <p className="text-red-500 text-xs mt-1">{errors.instagram.message}</p>}
           </div>
 
@@ -142,13 +132,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
             <Label htmlFor="phone" className="text-[#435A67] text-sm font-medium">
               Phone <span className="text-red-500">*</span>
             </Label>
-            <Input
-              id="phone"
-              type="tel"
-              placeholder="+1 234 567 890"
-              className="mt-1.5"
-              {...register('phone', { required: 'Phone number is required' })}
-            />
+            <Input id="phone" type="tel" placeholder="+1 234 567 890" className="mt-1.5" {...register('phone', { required: 'Phone number is required' })} />
             {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
           </div>
 
@@ -157,12 +141,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
             <Label htmlFor="youtube" className="text-[#435A67] text-sm font-medium">
               YouTube <span className="text-[#5A5A5A] text-xs font-normal">(optional)</span>
             </Label>
-            <Input
-              id="youtube"
-              placeholder="https://youtube.com/@yourchannel"
-              className="mt-1.5"
-              {...register('youtube')}
-            />
+            <Input id="youtube" placeholder="https://youtube.com/@yourchannel" className="mt-1.5" {...register('youtube')} />
           </div>
 
           {/* Facebook (optional) */}
@@ -170,12 +149,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
             <Label htmlFor="facebook" className="text-[#435A67] text-sm font-medium">
               Facebook <span className="text-[#5A5A5A] text-xs font-normal">(optional)</span>
             </Label>
-            <Input
-              id="facebook"
-              placeholder="https://facebook.com/yourprofile"
-              className="mt-1.5"
-              {...register('facebook')}
-            />
+            <Input id="facebook" placeholder="https://facebook.com/yourprofile" className="mt-1.5" {...register('facebook')} />
           </div>
 
           {/* Submit */}

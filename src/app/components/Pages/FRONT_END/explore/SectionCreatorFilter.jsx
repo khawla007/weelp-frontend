@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { CreatorCard } from '@/app/components/CreatorCard';
-import { ChevronDown, Plus, Check, UserPlus, Sparkles, TrendingUp, Home } from 'lucide-react';
+import CreatorItineraryCard from './CreatorItineraryCard';
+import { ChevronDown, Plus, Check, UserPlus, Sparkles, TrendingUp, Home, Clock } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
@@ -18,23 +18,26 @@ const SORT_OPTIONS = [
 ];
 
 const SOURCE_OPTIONS = [
-  { value: 'all', label: 'All Posts' },
-  { value: 'mine', label: 'My Posts' },
+  { value: 'all', label: 'All Itineraries' },
+  { value: 'mine', label: 'My Itineraries' },
 ];
 
-function getActionButton(isLoggedIn, isCreator, upgrading) {
+function getActionButton(isLoggedIn, isCreator, applicationStatus) {
   if (!isLoggedIn) {
     return { label: 'Join as Creator', icon: UserPlus };
   }
   if (!isCreator) {
-    return { label: upgrading ? 'Joining...' : 'Become Creator', icon: Sparkles };
+    if (applicationStatus === 'pending') {
+      return { label: 'Pending', icon: Clock };
+    }
+    return { label: 'Apply as Creator', icon: Sparkles };
   }
   return { label: 'Create', icon: Plus };
 }
 
-const CreatorFilter = ({ initialPosts, lastPage, activeTab, onTabChange, onActionClick, isLoggedIn, isCreator, upgrading }) => {
+const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, onActionClick, isLoggedIn, isCreator, applicationStatus }) => {
   const { data: session } = useSession();
-  const [posts, setPosts] = useState(initialPosts || []);
+  const [itineraries, setItineraries] = useState(initialItineraries || []);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(lastPage || 1);
   const [loading, setLoading] = useState(false);
@@ -44,17 +47,17 @@ const CreatorFilter = ({ initialPosts, lastPage, activeTab, onTabChange, onActio
   const isInitialMount = useRef(true);
   const isAuthenticated = !!session?.user;
 
-  // Sort posts for trending: by total engagement (likes + shares) descending
-  const displayPosts = useMemo(() => {
-    if (activeTab !== 'trending') return posts;
-    return [...posts].sort((a, b) => {
-      const scoreA = (a.likes_count || 0) + (a.shares_count || 0);
-      const scoreB = (b.likes_count || 0) + (b.shares_count || 0);
+  // Sort itineraries for trending: by total engagement (likes + views) descending
+  const displayItineraries = useMemo(() => {
+    if (activeTab !== 'trending') return itineraries;
+    return [...itineraries].sort((a, b) => {
+      const scoreA = (a.likes_count || 0) + (a.views_count || 0);
+      const scoreB = (b.likes_count || 0) + (b.views_count || 0);
       return scoreB - scoreA;
     });
-  }, [posts, activeTab]);
+  }, [itineraries, activeTab]);
 
-  const fetchPosts = useCallback(
+  const fetchItineraries = useCallback(
     async (pageNum, sort, source) => {
       const params = new URLSearchParams({ page: pageNum, sort });
       if (source === 'mine') params.set('source', 'mine');
@@ -64,35 +67,35 @@ const CreatorFilter = ({ initialPosts, lastPage, activeTab, onTabChange, onActio
         headers.Authorization = `Bearer ${session.access_token}`;
       }
 
-      const res = await fetch(`/api/posts?${params.toString()}`, { headers });
+      const res = await fetch(`/api/explore/creator-itineraries?${params.toString()}`, { headers });
       return res.json();
     },
     [session?.access_token],
   );
 
-  // Refetch when filters change (skip initial mount — we have initialPosts)
+  // Refetch when filters change (skip initial mount — we have initialItineraries)
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
     }
 
-    // Skip refetch when on trending tab — parent handles sort
+    // Skip refetch when on trending tab — client handles sort
     if (activeTab === 'trending') return;
 
     let cancelled = false;
     const refetch = async () => {
       setLoading(true);
-      setPosts([]);
+      setItineraries([]);
       try {
-        const data = await fetchPosts(1, activeSort, activeSource);
+        const data = await fetchItineraries(1, activeSort, activeSource);
         if (!cancelled) {
-          setPosts(data?.data || []);
+          setItineraries(data?.data || []);
           setPage(1);
           setMaxPage(data?.last_page || 1);
         }
       } catch (error) {
-        console.error('Error fetching posts:', error);
+        console.error('Error fetching itineraries:', error);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -102,9 +105,9 @@ const CreatorFilter = ({ initialPosts, lastPage, activeTab, onTabChange, onActio
     return () => {
       cancelled = true;
     };
-  }, [activeSort, activeSource, fetchPosts, activeTab]);
+  }, [activeSort, activeSource, fetchItineraries, activeTab]);
 
-  const loadMorePosts = useCallback(async () => {
+  const loadMoreItineraries = useCallback(async () => {
     // Disable infinite scroll on trending tab (client-side sort of existing data)
     if (activeTab === 'trending') return;
     if (loading || page >= maxPage) return;
@@ -112,25 +115,25 @@ const CreatorFilter = ({ initialPosts, lastPage, activeTab, onTabChange, onActio
     setLoading(true);
     try {
       const nextPage = page + 1;
-      const data = await fetchPosts(nextPage, activeSort, activeSource);
+      const data = await fetchItineraries(nextPage, activeSort, activeSource);
 
       if (data?.data?.length > 0) {
-        setPosts((prev) => [...prev, ...data.data]);
+        setItineraries((prev) => [...prev, ...data.data]);
         setPage(nextPage);
         setMaxPage(data.last_page);
       }
     } catch (error) {
-      console.error('Error loading more posts:', error);
+      console.error('Error loading more itineraries:', error);
     } finally {
       setLoading(false);
     }
-  }, [loading, page, maxPage, fetchPosts, activeSort, activeSource, activeTab]);
+  }, [loading, page, maxPage, fetchItineraries, activeSort, activeSource, activeTab]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          loadMorePosts();
+          loadMoreItineraries();
         }
       },
       { threshold: 0.1 },
@@ -141,7 +144,7 @@ const CreatorFilter = ({ initialPosts, lastPage, activeTab, onTabChange, onActio
     }
 
     return () => observer.disconnect();
-  }, [loadMorePosts]);
+  }, [loadMoreItineraries]);
 
   const handleSourceChange = (value) => {
     if (value === 'mine' && !isAuthenticated) return;
@@ -150,7 +153,7 @@ const CreatorFilter = ({ initialPosts, lastPage, activeTab, onTabChange, onActio
 
   const activeSortLabel = SORT_OPTIONS.find((o) => o.value === activeSort)?.label;
   const activeSourceLabel = SOURCE_OPTIONS.find((o) => o.value === activeSource)?.label;
-  const actionBtn = getActionButton(isLoggedIn, isCreator, upgrading);
+  const actionBtn = getActionButton(isLoggedIn, isCreator, applicationStatus);
   const ActionIcon = actionBtn.icon;
 
   return (
@@ -210,7 +213,7 @@ const CreatorFilter = ({ initialPosts, lastPage, activeTab, onTabChange, onActio
           {/* Dynamic Action Button */}
           <button
             onClick={onActionClick}
-            disabled={upgrading}
+            disabled={applicationStatus === 'pending'}
             className="flex items-center gap-1.5 text-[18px] font-medium text-white bg-secondaryDark hover:bg-secondaryDark/90 px-5 py-[7px] rounded-[8.5px] transition-colors disabled:opacity-60"
           >
             <ActionIcon size={16} />
@@ -249,20 +252,20 @@ const CreatorFilter = ({ initialPosts, lastPage, activeTab, onTabChange, onActio
 
       {/* Results Section */}
       <div className="flex flex-col gap-4 py-6">
-        {loading && displayPosts.length === 0 ? (
+        {loading && displayItineraries.length === 0 ? (
           <div className="flex justify-center py-12">
             <div className="w-8 h-8 border-2 border-secondaryDark border-t-transparent rounded-full animate-spin" />
           </div>
-        ) : displayPosts.length === 0 ? (
+        ) : displayItineraries.length === 0 ? (
           <div className="text-center py-12 text-grayDark">
-            <p className="text-lg font-medium">{activeSource === 'mine' ? "You haven't created any posts yet" : 'No posts yet'}</p>
+            <p className="text-lg font-medium">{activeSource === 'mine' ? "You haven't created any itineraries yet" : 'No itineraries yet'}</p>
             <p className="text-sm mt-2">{activeSource === 'mine' ? 'Share your travel experiences with the community!' : 'Be the first creator to share your travel experience!'}</p>
           </div>
         ) : (
           <ul className="w-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-            {displayPosts.map((post) => (
-              <li key={post.id}>
-                <CreatorCard post={post} isAuthenticated={isAuthenticated} />
+            {displayItineraries.map((itinerary) => (
+              <li key={itinerary.id}>
+                <CreatorItineraryCard itinerary={itinerary} isLoggedIn={isAuthenticated} />
               </li>
             ))}
           </ul>

@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { TrendingUp, DollarSign, MousePointerClick } from 'lucide-react';
-import { getCreatorStats } from '@/lib/actions/posts';
+import { TrendingUp, DollarSign, Eye } from 'lucide-react';
+import { getCreatorDashboardStats } from '@/lib/actions/creatorItineraries';
 
 export default function CreatorStatCards({ className = 'max-w-[95%] mx-auto px-6' }) {
   const [stats, setStats] = useState(null);
@@ -11,7 +11,7 @@ export default function CreatorStatCards({ className = 'max-w-[95%] mx-auto px-6
 
   useEffect(() => {
     const fetchStats = async () => {
-      const result = await getCreatorStats();
+      const result = await getCreatorDashboardStats();
       if (result.success) {
         setStats(result.data);
       }
@@ -34,22 +34,22 @@ export default function CreatorStatCards({ className = 'max-w-[95%] mx-auto px-6
 
   const statItems = [
     {
-      label: 'Total Clicks',
-      value: stats.total_clicks.toLocaleString(),
-      icon: MousePointerClick,
+      label: 'Total Views',
+      value: (stats.total_views || 0).toLocaleString(),
+      icon: Eye,
       color: 'text-blue-600',
       bg: 'bg-blue-50',
     },
     {
       label: 'Total Sales',
-      value: stats.total_sales.toLocaleString(),
+      value: (stats.total_sales || 0).toLocaleString(),
       icon: TrendingUp,
       color: 'text-secondaryDark',
       bg: 'bg-green-50',
     },
     {
       label: 'Total Earnings',
-      value: `$${stats.total_earnings.toLocaleString()}`,
+      value: `$${(stats.total_earnings || 0).toLocaleString()}`,
       icon: DollarSign,
       color: 'text-amber-600',
       bg: 'bg-amber-50',
