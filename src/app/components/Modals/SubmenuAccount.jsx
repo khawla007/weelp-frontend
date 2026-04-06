@@ -1,21 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { User, House, Heart, Settings, Tags, LogOut, PenSquare } from 'lucide-react';
+import { User, House, Heart, Settings, Tags, LogOut } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
-import CreatePostModal from './CreatePostModal';
 
 const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
   const { data: session, status } = useSession();
   const { openAuthModal } = useAuthModalStore();
-  const [createPostOpen, setCreatePostOpen] = useState(false);
-
-  const handlePostCreated = () => {
-    setCreatePostOpen(false);
-    setShowSubmenu(false);
-  };
 
   // Generate initials from name for fallback
   const getInitials = (name) => {
@@ -158,21 +151,6 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
                     Dashboard
                   </Link>
                 </li>
-                {is_creator && (
-                  <>
-                    <li className="p-4 px-8 border-b text-[#5A5A5A]">
-                      <button
-                        className="text-md leading-5 flex gap-x-2 w-full text-left"
-                        onClick={() => {
-                          setCreatePostOpen(true);
-                        }}
-                      >
-                        <PenSquare className="size-5" />
-                        Create Post
-                      </button>
-                    </li>
-                  </>
-                )}
                 <li className="p-4 px-8 border-b text-[#5A5A5A]">
                   <Link href="/dashboard/customer" onClick={closeDropdown} className="text-md leading-5 flex gap-x-2">
                     <Heart className="size-5" />
@@ -196,8 +174,6 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
           </>
         )}
       </ul>
-
-      {createPostOpen && <CreatePostModal open={createPostOpen} onOpenChange={setCreatePostOpen} onPostCreated={handlePostCreated} />}
     </div>
   );
 };

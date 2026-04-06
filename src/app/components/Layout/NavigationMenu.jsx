@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { ChevronDown, Globe, Headphones, MapPin, Plus, Search, ShoppingCart, Smartphone } from 'lucide-react';
+import { ChevronDown, Globe, Headphones, MapPin, Search, ShoppingCart, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
 import { useSession } from 'next-auth/react';
 import ModalForm from '../Modals/ModalForm';
-import CreatePostModal from '../Modals/CreatePostModal';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import MiniCartNew from '../Modals/MiniCartNew';
 import SubmenuAccount from '../Modals/SubmenuAccount';
 import { HEADER_NAV_ITEMS, HEADER_PRIMARY_META, HEADER_SECONDARY_META } from './shellContent';
@@ -92,7 +90,6 @@ export const HeaderAccount = () => {
   const cartItems = useMiniCartStore((state) => state.cartItems);
   const [showSubmenu, setShowSubmenu] = useState(null);
   const [showForm, setShowForm] = useState(null);
-  const [createPostModalOpen, setCreatePostModalOpen] = useState(false);
 
   // Extract user data
   const user = session?.user || {};
@@ -100,7 +97,6 @@ export const HeaderAccount = () => {
   const userInitials = getInitials(name);
   const avatarSrc = avatar || avatar_url;
   const isLoggedIn = !!session;
-  const isCreator = !!session?.user?.is_creator;
 
   // for handle Submenu
   const handleSubmenu = () => {
@@ -131,16 +127,6 @@ export const HeaderAccount = () => {
             <Search className="size-5" strokeWidth={1.5} />
           </button>
         </li>
-
-        {/* Create Post Button - Only for Creators */}
-        {isCreator && (
-          <li>
-            <Button onClick={() => setCreatePostModalOpen(true)} className="bg-secondaryDark hover:bg-secondaryDark/90 text-white h-9 px-4 text-sm font-medium rounded-full">
-              <Plus className="size-4 mr-1.5" strokeWidth={2} />
-              Create Post
-            </Button>
-          </li>
-        )}
 
         <li>
           <button
@@ -181,20 +167,6 @@ export const HeaderAccount = () => {
 
       {/* Mini Cart With React Portal */}
       {isMiniCartOpen && createPortal(<MiniCartNew />, document.body)}
-
-      {/* Create Post Modal - Only for Creators */}
-      {isCreator && (
-        <CreatePostModal
-          open={createPostModalOpen}
-          onOpenChange={setCreatePostModalOpen}
-          onPostCreated={(data) => {
-            // Optionally refresh or navigate after creating a post
-            if (data) {
-              window.location.reload();
-            }
-          }}
-        />
-      )}
     </div>
   );
 };
