@@ -73,7 +73,8 @@ export async function getAllCitiesAdminV2(search = '') {
  */
 export async function getAllCitiesOptionsAdmin() {
   try {
-    const response = await authApi.get(`/api/admin/cities/list`, {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get(`/api/admin/cities/list`, {
       headers: { Accept: 'application/json' },
     });
 
