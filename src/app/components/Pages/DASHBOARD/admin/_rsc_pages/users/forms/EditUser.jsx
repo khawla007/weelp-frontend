@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import AvatarUpload from '@/components/ui/AvatarUpload';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -58,6 +60,7 @@ export default function EditUserForm({ userData = {} }) {
   console.log(userData);
   const router = useRouter();
   const { toast } = useToast();
+  const [avatarUrl, setAvatarUrl] = useState(userData?.profile?.avatar || userData?.avatar || null);
 
   // Complete defaultValues matching the schema
   const defaultValues = {
@@ -78,6 +81,10 @@ export default function EditUserForm({ userData = {} }) {
 
   // const formstatus
   const { isSubmitting, isValid, isDirty } = form.formState;
+
+  const handleAvatarUpload = (url) => {
+    setAvatarUrl(url);
+  };
 
   // handle on submit
   async function onSubmit(data) {
@@ -127,6 +134,14 @@ export default function EditUserForm({ userData = {} }) {
             {/* Disblae Form on Submiting*/}
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <CardContent className="space-y-6">
+                <div className="space-y-4 pb-6 border-b">
+                  <h3 className="text-base font-medium">Profile Picture</h3>
+                  <AvatarUpload
+                    currentAvatar={avatarUrl}
+                    onUploadSuccess={handleAvatarUpload}
+                    endpoint={`/api/admin/users/${userData.id}/avatar`}
+                  />
+                </div>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <FormField
                     control={form.control}
