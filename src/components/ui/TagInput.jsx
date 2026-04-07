@@ -46,7 +46,16 @@ const TagInput = forwardRef(({ value = [], onChange, placeholder = 'Type and pre
           </button>
         </span>
       ))}
-      <input ref={ref} type="text" onKeyDown={handleKeyDown} onInput={handleInput} onBlur={handleBlur} placeholder={placeholder} maxLength={maxLength} className="flex-1 min-w-[120px] outline-none bg-transparent text-sm" />
+      <input
+        ref={ref}
+        type="text"
+        onKeyDown={handleKeyDown}
+        onInput={handleInput}
+        onBlur={handleBlur}
+        placeholder={placeholder}
+        maxLength={maxLength}
+        className="flex-1 min-w-[120px] outline-none bg-transparent text-sm"
+      />
     </div>
   );
 });

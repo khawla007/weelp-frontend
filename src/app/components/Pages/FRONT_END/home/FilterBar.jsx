@@ -203,7 +203,7 @@ export default function FilterBar() {
                 value={inputValue}
                 onChange={handleInputChange}
                 onClick={handleInputClick}
-                className="w-full bg-transparent focus:outline-none text-sm font-medium"
+                className="w-full bg-transparent border-0 focus:outline-none text-sm font-medium placeholder:text-[#5a5a5a]"
                 style={{ color: '#5a5a5a', fontFamily: 'inherit' }}
                 autoComplete="off"
               />
@@ -243,9 +243,13 @@ export default function FilterBar() {
           <div className="flex-1 relative">
             <div
               onClick={() => {
-                setShowCalendar(!showCalendar);
+                const opening = !showCalendar;
+                setShowCalendar(opening);
                 setShowLocation(false);
                 setShowHowMany(false);
+                if (opening) {
+                  setValue('dateRange', { from: null, to: null });
+                }
               }}
               className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
@@ -283,6 +287,7 @@ export default function FilterBar() {
                         }
                       }}
                       className="scale-90 origin-top-right"
+                      style={{ '--rdp-accent-color': '#558e7b', '--rdp-accent-background': '#558e7b' }}
                     />
                   )}
                 />

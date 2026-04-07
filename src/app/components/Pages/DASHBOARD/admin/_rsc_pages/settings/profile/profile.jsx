@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { AvatarUpload } from '@/components/ui/AvatarUpload';
 import { useToast } from '@/hooks/use-toast';
@@ -12,6 +12,17 @@ export default function AdminProfileSettings() {
   const { toast } = useToast();
   const user = session?.user || {};
   const [avatarUrl, setAvatarUrl] = useState(user.avatar || null);
+
+  // Fetch current avatar from backend (session may be stale)
+  useEffect(() => {
+    fetch('/api/user/profile')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        const backendAvatar = data?.user?.profile?.avatar;
+        if (backendAvatar) setAvatarUrl(backendAvatar);
+      })
+      .catch(() => {});
+  }, []);
 
   const handleAvatarUpload = async (url) => {
     try {
@@ -35,7 +46,7 @@ export default function AdminProfileSettings() {
       <div className="rounded-lg border bg-card p-6">
         <div className="space-y-4">
           <h3 className="text-base font-medium">Profile Picture</h3>
-          <AvatarUpload currentAvatar={avatarUrl} onUploadSuccess={handleAvatarUpload} />
+          <AvatarUpload currentAvatar={avatarUrl} onUploadSuccess={handleAvatarUpload} userName={user.name} />
         </div>
       </div>
 

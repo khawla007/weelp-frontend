@@ -507,7 +507,13 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
           {/* OTP Input */}
           <div className="py-4">
             <OtpInput length={6} value={otp} onChange={setOtp} onComplete={handleOtpComplete} error={otpError} disabled={isOtpSubmitting} />
-            {otpError && <p className="text-sm text-red-600 pt-4 text-center">{otpError}</p>}
+            {isOtpSubmitting && (
+              <div className="flex items-center justify-center gap-2 pt-4 text-[#568f7c]">
+                <LoaderCircle className="h-4 w-4 animate-spin" />
+                <span className="text-sm font-medium">Verifying your code...</span>
+              </div>
+            )}
+            {otpError && !isOtpSubmitting && <p className="text-sm text-red-600 pt-4 text-center">{otpError}</p>}
           </div>
 
           {/* Resend Button */}

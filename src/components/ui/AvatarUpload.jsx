@@ -2,9 +2,15 @@
 
 import { useState, useRef } from 'react';
 import { Upload, Loader2 } from 'lucide-react';
-import Image from 'next/image';
 
-export function AvatarUpload({ currentAvatar, onUploadSuccess, endpoint = '/api/user/avatar', className = '' }) {
+const getInitials = (name) => {
+  if (!name) return 'U';
+  const parts = name.trim().split(' ');
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+};
+
+export function AvatarUpload({ currentAvatar, onUploadSuccess, endpoint = '/api/user/avatar', userName = '', className = '' }) {
   const [preview, setPreview] = useState(currentAvatar || null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState(null);
@@ -88,10 +94,10 @@ export function AvatarUpload({ currentAvatar, onUploadSuccess, endpoint = '/api/
         {/* Preview */}
         <div className="relative w-24 h-24 rounded-full overflow-hidden bg-muted flex-shrink-0">
           {preview ? (
-            <Image src={preview} alt="Avatar preview" fill className="object-cover" />
+            <img src={preview} alt="Avatar preview" className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-              <span className="text-2xl">?</span>
+            <div className="w-full h-full flex items-center justify-center text-white font-semibold text-2xl" style={{ backgroundColor: '#568f7c' }}>
+              {getInitials(userName)}
             </div>
           )}
           {isUploading && (

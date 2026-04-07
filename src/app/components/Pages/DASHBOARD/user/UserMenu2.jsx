@@ -10,7 +10,20 @@ import { useUserProfile } from '@/hooks/api/customer/profile';
 export default function UserMenu2() {
   const { user, error, isLoading } = useUserProfile();
 
-  const { name = '', email = '', role = '' } = user; // destructure data
+  const { name = '', email = '', role = '', avatar } = user; // destructure data
+
+  // Generate initials from name for fallback
+  const getInitials = (name) => {
+    if (!name) return 'U';
+    const parts = name.trim().split(' ');
+    if (parts.length === 1) {
+      return parts[0].charAt(0).toUpperCase();
+    }
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+  };
+
+  const userInitials = getInitials(name);
+  const avatarSrc = avatar;
 
   return (
     <SidebarMenu>
@@ -18,12 +31,12 @@ export default function UserMenu2() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-              <Avatar className="h-8 w-8 rounded-full grayscale">
-                <AvatarImage src="https://github.com/shadcn.png" alt="user-alt" />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+              <Avatar className="h-8 w-8 rounded-full">
+                {avatarSrc && <AvatarImage src={avatarSrc} alt={name || 'user'} />}
+                <AvatarFallback className="rounded-full text-white font-semibold" style={{ backgroundColor: '#568f7c' }}>
+                  {userInitials}
+                </AvatarFallback>
               </Avatar>
-
-              {/* Display Based on Role */}
 
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{name}</span>
@@ -35,7 +48,10 @@ export default function UserMenu2() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-full">
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  {avatarSrc && <AvatarImage src={avatarSrc} alt={name || 'user'} />}
+                  <AvatarFallback className="rounded-full text-white font-semibold" style={{ backgroundColor: '#568f7c' }}>
+                    {userInitials}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{name}</span>
