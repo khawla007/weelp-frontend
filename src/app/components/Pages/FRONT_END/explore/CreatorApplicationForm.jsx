@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -10,10 +10,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Loader2 } from 'lucide-react';
 import { submitCreatorApplication } from '@/lib/actions/creatorApplications';
 import { useToast } from '@/hooks/use-toast';
+import { useUserProfile } from '@/hooks/api/customer/profile';
 
 export default function CreatorApplicationForm({ open, onOpenChange }) {
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
+  const { user } = useUserProfile();
 
   const {
     register,
@@ -32,6 +34,24 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
       facebook: '',
     },
   });
+
+  // Pre-fill form with user profile data when available
+  useEffect(() => {
+    if (!user) return;
+
+    const urls = user.profile?.urls || [];
+    const findUrl = (label) => urls.find((u) => u.label?.toLowerCase() === label)?.url || '';
+
+    reset({
+      name: user.name || '',
+      email: user.email || '',
+      gender: user.profile?.gender || '',
+      phone: user.profile?.phone || '',
+      instagram: findUrl('instagram'),
+      youtube: findUrl('youtube'),
+      facebook: findUrl('facebook'),
+    });
+  }, [user, reset]);
 
   const onSubmit = async (data) => {
     setSubmitting(true);

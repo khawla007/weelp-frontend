@@ -7,7 +7,8 @@ import CreatorApplicationForm from './CreatorApplicationForm';
 import { getApplicationStatus } from '@/lib/actions/creatorApplications';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Clock } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Sparkles, Clock, HelpCircle } from 'lucide-react';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
 import { useSession } from 'next-auth/react';
 
@@ -15,25 +16,32 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
   const [applicationFormOpen, setApplicationFormOpen] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(null);
   const [activeTab, setActiveTab] = useState('home');
+  const [guideOpen, setGuideOpen] = useState(false);
   const { toast } = useToast();
   const { openAuthModal } = useAuthModalStore();
-  const { data: session } = useSession();
-
-  const isCreator = !!session?.user?.is_creator;
+  const { data: session, update: updateSession } = useSession();
   const isLoggedIn = !!session?.user;
+  const [statusLoading, setStatusLoading] = useState(false);
+  const isCreator = !!session?.user?.is_creator || applicationStatus === 'approved';
 
-  // Check application status for non-creators on mount
+  // Check application status for logged-in non-creators on mount
   useEffect(() => {
-    if (!isLoggedIn || isCreator) return;
+    if (!isLoggedIn || session?.user?.is_creator) return;
 
     const checkStatus = async () => {
+      setStatusLoading(true);
       const result = await getApplicationStatus();
       if (result.success && result.data) {
         setApplicationStatus(result.data.status);
+        // Sync session if approved but session is stale
+        if (result.data.status === 'approved') {
+          updateSession({ is_creator: true });
+        }
       }
+      setStatusLoading(false);
     };
     checkStatus();
-  }, [isLoggedIn, isCreator]);
+  }, [isLoggedIn, session?.user?.is_creator, updateSession]);
 
   // Called when the dynamic action button is clicked
   const handleActionClick = useCallback(() => {
@@ -63,10 +71,21 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
       {/* Creator Stats */}
       {isCreator && <CreatorStatCards />}
 
-      {/* Apply as Creator / Pending Banner */}
-      {isLoggedIn && !isCreator && (
+      {/* Creator Welcome / Pending / Apply Banner */}
+      {isLoggedIn && !statusLoading && (
         <div className="relative z-10 max-w-[95%] mx-auto px-6 py-4">
-          {applicationStatus === 'pending' ? (
+          {isCreator ? (
+            <div className="flex items-center justify-between bg-gradient-to-r from-secondaryDark/10 to-secondaryDark/5 rounded-xl p-6">
+              <div>
+                <h3 className="text-lg font-semibold text-[#142A38]">Welcome, Creator!</h3>
+                <p className="text-sm text-[#5A5A5A] mt-1">Share your travel experiences and inspire the community.</p>
+              </div>
+              <Button onClick={() => setGuideOpen(true)} variant="outline" className="border-secondaryDark text-secondaryDark hover:bg-secondaryDark/10">
+                <HelpCircle className="size-4 mr-2" />
+                How to Create Itinerary
+              </Button>
+            </div>
+          ) : applicationStatus === 'pending' ? (
             <div className="flex items-center justify-between bg-gradient-to-r from-amber-100/60 to-amber-50/40 rounded-xl p-6">
               <div>
                 <h3 className="text-lg font-semibold text-[#142A38]">Application Pending</h3>
@@ -102,10 +121,38 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
         isLoggedIn={isLoggedIn}
         isCreator={isCreator}
         applicationStatus={applicationStatus}
+        statusLoading={statusLoading}
       />
 
       {/* Creator Application Form Modal */}
       {isLoggedIn && !isCreator && <CreatorApplicationForm open={applicationFormOpen} onOpenChange={setApplicationFormOpen} />}
+
+      {/* How to Create Itinerary Guide */}
+      <Dialog open={guideOpen} onOpenChange={setGuideOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold text-[#142A38]">How to Create an Itinerary</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 pt-2">
+            {[
+              { step: 1, title: 'Go to a Single Itinerary Page', desc: 'Browse the Explore page and open any itinerary that inspires you.' },
+              { step: 2, title: 'Add or Edit the Schedule', desc: 'Customize the itinerary by adding your own day-by-day schedule, activities, timings, and travel tips.' },
+              { step: 3, title: 'Submit for Approval', desc: 'Once your itinerary is ready, submit it for admin review. You\'ll be notified once it\'s approved and published on the Explore page.' },
+              { step: 4, title: 'Track in My Itineraries', desc: 'View and manage all your created itineraries from the My Itineraries section in your dashboard.' },
+            ].map((item) => (
+              <div key={item.step} className="flex gap-4">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-secondaryDark/10 flex items-center justify-center">
+                  <span className="text-sm font-semibold text-secondaryDark">{item.step}</span>
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold text-[#142A38]">{item.title}</h4>
+                  <p className="text-sm text-[#5A5A5A] mt-0.5">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

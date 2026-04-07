@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import CreatorItineraryCard from './CreatorItineraryCard';
-import { ChevronDown, Plus, Check, UserPlus, Sparkles, TrendingUp, Home, Clock } from 'lucide-react';
+import { ChevronDown, Check, UserPlus, Sparkles, TrendingUp, Home, Clock } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
@@ -22,20 +22,19 @@ const SOURCE_OPTIONS = [
   { value: 'mine', label: 'My Itineraries' },
 ];
 
-function getActionButton(isLoggedIn, isCreator, applicationStatus) {
+function getActionButton(isLoggedIn, isCreator, applicationStatus, statusLoading) {
   if (!isLoggedIn) {
     return { label: 'Join as Creator', icon: UserPlus };
   }
-  if (!isCreator) {
-    if (applicationStatus === 'pending') {
-      return { label: 'Pending', icon: Clock };
-    }
-    return { label: 'Apply as Creator', icon: Sparkles };
+  if (isCreator) return null;
+  if (statusLoading) return null;
+  if (applicationStatus === 'pending') {
+    return { label: 'Pending', icon: Clock };
   }
-  return { label: 'Create', icon: Plus };
+  return { label: 'Apply as Creator', icon: Sparkles };
 }
 
-const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, onActionClick, isLoggedIn, isCreator, applicationStatus }) => {
+const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, onActionClick, isLoggedIn, isCreator, applicationStatus, statusLoading }) => {
   const { data: session } = useSession();
   const [itineraries, setItineraries] = useState(initialItineraries || []);
   const [page, setPage] = useState(1);
@@ -153,8 +152,8 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
 
   const activeSortLabel = SORT_OPTIONS.find((o) => o.value === activeSort)?.label;
   const activeSourceLabel = SOURCE_OPTIONS.find((o) => o.value === activeSource)?.label;
-  const actionBtn = getActionButton(isLoggedIn, isCreator, applicationStatus);
-  const ActionIcon = actionBtn.icon;
+  const actionBtn = getActionButton(isLoggedIn, isCreator, applicationStatus, statusLoading);
+  const ActionIcon = actionBtn?.icon;
 
   return (
     <section className="relative max-w-[95%] mx-auto">
@@ -207,18 +206,20 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
             );
           })}
 
-          {/* Divider */}
-          <div className="w-px h-6 bg-[#435a6730]" />
-
-          {/* Dynamic Action Button */}
-          <button
-            onClick={onActionClick}
-            disabled={applicationStatus === 'pending'}
-            className="flex items-center gap-1.5 text-[18px] font-medium text-white bg-secondaryDark hover:bg-secondaryDark/90 px-5 py-[7px] rounded-[8.5px] transition-colors disabled:opacity-60"
-          >
-            <ActionIcon size={16} />
-            {actionBtn.label}
-          </button>
+          {/* Divider + Dynamic Action Button */}
+          {actionBtn && (
+            <>
+              <div className="w-px h-6 bg-[#435a6730]" />
+              <button
+                onClick={onActionClick}
+                disabled={applicationStatus === 'pending'}
+                className="flex items-center gap-1.5 text-[18px] font-medium text-white bg-secondaryDark hover:bg-secondaryDark/90 px-5 py-[7px] rounded-[8.5px] transition-colors disabled:opacity-60"
+              >
+                <ActionIcon size={16} />
+                {actionBtn.label}
+              </button>
+            </>
+          )}
         </div>
 
         {/* Source Filter Dropdown */}
