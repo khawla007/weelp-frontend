@@ -29,6 +29,7 @@ import { Medialibrary } from '../media/MediaLibrary'; // Handling Media Library
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import dynamic from 'next/dynamic';
 import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
+import { authApi } from '@/lib/axiosInstance';
 
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnActivity'), { ssr: false });
 
@@ -37,6 +38,25 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
   const [formData, setFormData] = useState({});
   const router = useRouter();
   const { toast } = useToast();
+
+  // State to store places fetched per location index (city → places cascading)
+  const [cityPlaces, setCityPlaces] = useState({});
+
+  const fetchPlacesForCity = async (cityId, locationIndex) => {
+    if (!cityId) {
+      setCityPlaces((prev) => ({ ...prev, [locationIndex]: [] }));
+      return;
+    }
+    try {
+      const res = await authApi.get(`/api/admin/places/by-city/${cityId}`);
+      if (res.data?.success) {
+        setCityPlaces((prev) => ({ ...prev, [locationIndex]: res.data.data }));
+      }
+    } catch (err) {
+      console.error('Failed to fetch places for city:', err);
+      setCityPlaces((prev) => ({ ...prev, [locationIndex]: [] }));
+    }
+  };
 
   // Ref to preserve scroll position during re-renders in step 6
   const scrollPositionRef = useRef(0);
@@ -293,7 +313,28 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
             <span className="block pb-2 text-sm font-medium text-gray-700">Primary Location</span>
             {methods.formState.errors?.locations && <span className="text-red-400">All Fields Required</span>}
 
-            <Controller name="locations.0.city_id" control={methods.control} render={({ field }) => <Combobox data={locations} value={field.value} onChange={field.onChange} />} />
+            <Controller
+              name="locations.0.city_id"
+              control={methods.control}
+              render={({ field }) => (
+                <Combobox
+                  data={locations}
+                  value={field.value}
+                  onChange={(val) => {
+                    field.onChange(val);
+                    methods.setValue('locations.0.place_id', null);
+                    fetchPlacesForCity(val, 0);
+                  }}
+                />
+              )}
+            />
+
+            {/* Place Dropdown (cascading from city) */}
+            <Controller
+              name="locations.0.place_id"
+              control={methods.control}
+              render={({ field }) => <Combobox data={cityPlaces[0] || []} value={field.value} onChange={field.onChange} placeholder="Select Place..." />}
+            />
 
             <Controller
               name="locations.0.location_label"
@@ -343,7 +384,28 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
               <div key={item.id} className="mt-4 py-4 px-8 space-y-4 bg-white">
                 <span className="block text-sm font-medium text-gray-700">Additional Location {index + 1}</span>
 
-                <Controller name={`locations[${index + 1}].city_id`} control={methods.control} render={({ field }) => <Combobox data={locations} value={field.value} onChange={field.onChange} />} />
+                <Controller
+                  name={`locations[${index + 1}].city_id`}
+                  control={methods.control}
+                  render={({ field }) => (
+                    <Combobox
+                      data={locations}
+                      value={field.value}
+                      onChange={(val) => {
+                        field.onChange(val);
+                        methods.setValue(`locations[${index + 1}].place_id`, null);
+                        fetchPlacesForCity(val, index + 1);
+                      }}
+                    />
+                  )}
+                />
+
+                {/* Place Dropdown (cascading from city) */}
+                <Controller
+                  name={`locations[${index + 1}].place_id`}
+                  control={methods.control}
+                  render={({ field }) => <Combobox data={cityPlaces[index + 1] || []} value={field.value} onChange={field.onChange} placeholder="Select Place..." />}
+                />
 
                 <div className="flex items-center gap-4">
                   <Controller
@@ -398,6 +460,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
             onClick={() =>
               appendLocation({
                 city_id: null,
+                place_id: null,
                 location_label: '',
                 location_type: 'additional', // Predefined as additional
                 duration: null,

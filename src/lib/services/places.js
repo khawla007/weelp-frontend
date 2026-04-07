@@ -2,6 +2,29 @@ import { createAuthenticatedServerApi } from '../axiosInstance';
 import { log } from '../utils';
 
 /**
+ * Get places that belong to a specific city (admin dropdown)
+ * @param {number|string} cityId - The city ID to filter places by
+ * @returns {Promise<{ success:boolean, data:Array<{id:number, name:string, type:string}> }>}
+ */
+export async function getPlacesByCityAdmin(cityId) {
+  try {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get(`/api/admin/places/by-city/${cityId}`, {
+      headers: { Accept: 'application/json' },
+    });
+
+    if (response.status === 200) {
+      return response?.data;
+    }
+
+    return { success: false, data: [] };
+  } catch (error) {
+    console.error('Service Error (getPlacesByCityAdmin):', error);
+    return { success: false, data: [] };
+  }
+}
+
+/**
  * Get Destination Places *** {dropdowns} Form Oriented ***
  * @returns {Promise<{ success:boolean,data:[] }>} -Api For For All Vendor driver list data for form handling form purpose e.g... {dropdowns, selects,etc}
  */
