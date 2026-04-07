@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import { Upload, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 
-export function AvatarUpload({ currentAvatar, onUploadSuccess, className = '' }) {
+export function AvatarUpload({ currentAvatar, onUploadSuccess, endpoint = '/api/user/avatar', className = '' }) {
   const [preview, setPreview] = useState(currentAvatar || null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState(null);
@@ -50,7 +50,7 @@ export function AvatarUpload({ currentAvatar, onUploadSuccess, className = '' })
     formData.append('file', file);
 
     try {
-      const response = await fetch('/api/customer/avatar', {
+      const response = await fetch(endpoint, {
         method: 'POST',
         body: formData,
       });
