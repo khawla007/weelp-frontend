@@ -185,9 +185,9 @@ const HeaderAccountMobile = () => {
 
   // Extract user data
   const user = session?.user || {};
-  const { name = '', role = '', avatar, avatar_url } = user;
+  const { name = '', role = '', avatar } = user;
   const userInitials = getInitials(name);
-  const avatarSrc = avatar || avatar_url;
+  const avatarSrc = avatar;
   const isLoggedIn = !!session;
   const isAdmin = role === 'super_admin';
   const accountLink = isAdmin ? '/dashboard/admin' : '/dashboard/customer';

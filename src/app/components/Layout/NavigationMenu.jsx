@@ -94,9 +94,9 @@ export const HeaderAccount = () => {
 
   // Extract user data
   const user = session?.user || {};
-  const { name = '', avatar, avatar_url } = user;
+  const { name = '', avatar } = user;
   const userInitials = getInitials(name);
-  const avatarSrc = avatar || avatar_url;
+  const avatarSrc = avatar;
   const isLoggedIn = !!session;
 
   // for handle Submenu

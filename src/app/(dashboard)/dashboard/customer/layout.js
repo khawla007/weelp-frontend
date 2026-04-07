@@ -18,7 +18,7 @@ export default function UserLayout({ children }) {
   const { data: session } = useSession();
   const user = session?.user || {};
 
-  const { name = '', avatar, avatar_url, is_creator } = user;
+  const { name = '', avatar, is_creator } = user;
 
   // Generate initials from name for fallback
   const getInitials = (name) => {
@@ -31,7 +31,7 @@ export default function UserLayout({ children }) {
   };
 
   const userInitials = getInitials(name);
-  const avatarSrc = avatar || avatar_url;
+  const avatarSrc = avatar;
 
   const isActive = (path) => {
     if (path === '/dashboard/customer') return pathname === path;

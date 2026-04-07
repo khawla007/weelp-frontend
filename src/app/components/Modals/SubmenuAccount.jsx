@@ -49,10 +49,10 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
 
   // Extract user data
   const user = session?.user || {};
-  const { name = '', email = '', role = '', avatar, avatar_url, is_creator: rawIsCreator = false } = user;
+  const { name = '', email = '', role = '', avatar, is_creator: rawIsCreator = false } = user;
   const is_creator = !!rawIsCreator;
   const userInitials = getInitials(name);
-  const avatarSrc = avatar || avatar_url;
+  const avatarSrc = avatar;
 
   const closeDropdown = () => setShowSubmenu(false);
 

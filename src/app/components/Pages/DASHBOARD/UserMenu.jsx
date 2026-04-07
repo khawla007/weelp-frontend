@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 export default function UserMenu({ session }) {
   const user = session?.user || {};
 
-  const { name = '', email = '', role = '', avatar, avatar_url } = user; // destructure data with default
+  const { name = '', email = '', role = '', avatar } = user; // destructure data with default
 
   // Generate initials from name for fallback
   const getInitials = (name) => {
@@ -23,7 +23,7 @@ export default function UserMenu({ session }) {
   };
 
   const userInitials = getInitials(name);
-  const avatarSrc = avatar || avatar_url;
+  const avatarSrc = avatar;
 
   // Format role for display
   const formatRole = (role) => {
