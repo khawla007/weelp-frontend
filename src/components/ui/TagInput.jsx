@@ -4,18 +4,32 @@ import { X } from 'lucide-react';
 import { forwardRef } from 'react';
 
 const TagInput = forwardRef(({ value = [], onChange, placeholder = 'Type and press Enter...', maxLength = 30, className = '' }, ref) => {
+  const addTag = (input) => {
+    const tag = input.value.trim().replace(/,+$/, '').trim();
+    if (tag && !value.includes(tag)) {
+      onChange([...value, tag]);
+    }
+    input.value = '';
+  };
+
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' || e.key === ',') {
       e.preventDefault();
-      const tag = e.target.value.trim();
-      if (tag && !value.includes(tag)) {
-        onChange([...value, tag]);
-        e.target.value = '';
-      }
+      addTag(e.target);
     }
     if (e.key === 'Backspace' && !e.target.value && value.length > 0) {
       onChange(value.slice(0, -1));
     }
+  };
+
+  const handleInput = (e) => {
+    if (e.target.value.includes(',')) {
+      addTag(e.target);
+    }
+  };
+
+  const handleBlur = (e) => {
+    addTag(e.target);
   };
 
   const removeTag = (tagToRemove) => {
@@ -32,7 +46,7 @@ const TagInput = forwardRef(({ value = [], onChange, placeholder = 'Type and pre
           </button>
         </span>
       ))}
-      <input ref={ref} type="text" onKeyDown={handleKeyDown} placeholder={placeholder} maxLength={maxLength} className="flex-1 min-w-[120px] outline-none bg-transparent text-sm" />
+      <input ref={ref} type="text" onKeyDown={handleKeyDown} onInput={handleInput} onBlur={handleBlur} placeholder={placeholder} maxLength={maxLength} className="flex-1 min-w-[120px] outline-none bg-transparent text-sm" />
     </div>
   );
 });

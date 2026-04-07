@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TagInput } from '@/components/ui/TagInput';
 import { EnhancedUrlInput } from '@/components/ui/EnhancedUrlInput';
 import { editUserProfileAction } from '@/lib/actions/userActions';
@@ -19,13 +20,14 @@ const profileSchema = z.object({
   name: z.string().min(1, 'Full name is required'),
   username: z.string().readonly(),
   email: z.string().email().readonly(),
+  gender: z.enum(['male', 'female', 'other', '']).optional(),
   bio: z.string().optional(),
   interest: z.array(z.string()).optional(),
   urls: z
     .array(
       z.object({
         label: z.string().optional(),
-        url: z.string().url().optional().or(z.literal('')),
+        url: z.string().optional(),
       }),
     )
     .optional(),
@@ -73,6 +75,7 @@ export function ProfileSettings({ user }) {
       name: name || '',
       username: meta?.username || user?.username || name?.toLowerCase()?.replace(/\s+/g, '') || '',
       email: email || '',
+      gender: profile?.gender || '',
       bio: meta?.bio || '',
       interest: parsedInterest,
       urls: profile?.urls?.length > 0 ? profile.urls : [{ label: '', url: '' }],
@@ -81,7 +84,7 @@ export function ProfileSettings({ user }) {
 
   const {
     handleSubmit,
-    formState: { isValid, isSubmitting },
+    formState: { isValid, isDirty, isSubmitting },
   } = form;
 
   const onSubmit = async (data) => {
@@ -89,6 +92,7 @@ export function ProfileSettings({ user }) {
       const result = await editUserProfileAction({
         name: data.name,
         bio: data.bio,
+        gender: data.gender || null,
         interest: JSON.stringify(data.interest),
         urls: data.urls.filter((u) => u.label || u.url),
       });
@@ -118,7 +122,7 @@ export function ProfileSettings({ user }) {
           {/* Avatar Upload */}
           <div className="space-y-4 pb-6 border-b">
             <h3 className="text-base font-medium">Profile Picture</h3>
-            <AvatarUpload currentAvatar={avatarUrl} onUploadSuccess={handleAvatarUpload} />
+            <AvatarUpload currentAvatar={avatarUrl} onUploadSuccess={handleAvatarUpload} userName={name} />
           </div>
 
           {/* Full Name */}
@@ -145,7 +149,7 @@ export function ProfileSettings({ user }) {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled className="bg-gray-100 text-gray-700 opacity-100 dark:bg-zinc-800 dark:text-gray-300 pointer-events-none" />
+                  <Input {...field} readOnly tabIndex={-1} className="bg-gray-100 text-gray-700 opacity-100 dark:bg-zinc-800 dark:text-gray-300 pointer-events-none cursor-default" />
                 </FormControl>
                 <FormDescription>Your unique username. Cannot be changed.</FormDescription>
                 <FormMessage />
@@ -161,9 +165,34 @@ export function ProfileSettings({ user }) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled className="bg-gray-100 text-gray-700 opacity-100 dark:bg-zinc-800 dark:text-gray-300 pointer-events-none" />
+                  <Input {...field} readOnly tabIndex={-1} className="bg-gray-100 text-gray-700 opacity-100 dark:bg-zinc-800 dark:text-gray-300 pointer-events-none cursor-default" />
                 </FormControl>
                 <FormDescription>Manage email in Account settings.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Gender */}
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Gender</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select gender" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>This helps personalize your experience.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -195,7 +224,7 @@ export function ProfileSettings({ user }) {
                 <FormControl>
                   <TagInput value={field.value || []} onChange={field.onChange} placeholder="Add interests (e.g., travel, photography, hiking)" />
                 </FormControl>
-                <FormDescription>Press Enter to add interests.</FormDescription>
+                <FormDescription>Type and press comma or Enter to add interests.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -217,7 +246,11 @@ export function ProfileSettings({ user }) {
             )}
           />
 
-          <Button type="submit" disabled={!isValid || isSubmitting} className="bg-secondaryDark">
+          <Button
+            type="submit"
+            disabled={!isDirty || !isValid || isSubmitting}
+            className="bg-secondaryDark border border-secondaryDark text-white hover:bg-white hover:text-black disabled:opacity-50 disabled:pointer-events-none"
+          >
             {isSubmitting ? 'Saving...' : 'Save Changes'}
           </Button>
         </fieldset>

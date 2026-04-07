@@ -25,8 +25,7 @@ export function EnhancedUrlInput({ value = [], onChange, className = '' }) {
   const [fields, setFields] = useState(value.length > 0 ? value : [{ label: '', url: '' }]);
 
   const updateField = (index, key, val) => {
-    const updated = [...fields];
-    updated[index][key] = val;
+    const updated = fields.map((f, i) => (i === index ? { ...f, [key]: val } : f));
     setFields(updated);
     onChange(updated);
   };
