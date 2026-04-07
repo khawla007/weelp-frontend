@@ -46,6 +46,7 @@ export const {
             email: data.email,
             role: data.role,
             is_creator: data.is_creator,
+            avatar: data.avatar || null,
             accessToken: data.accessToken,
             expiresAt: decodedToken.exp * 1000,
           };
@@ -67,6 +68,7 @@ export const {
         token.name = user.name;
         token.role = user.role;
         token.is_creator = user.is_creator;
+        token.avatar = user.avatar;
         token.accessToken = user.accessToken;
         token.expiresAt = user.expiresAt;
       }
@@ -75,6 +77,9 @@ export const {
       if (trigger === 'update' && session) {
         if (session.is_creator !== undefined) {
           token.is_creator = session.is_creator;
+        }
+        if (session.avatar !== undefined) {
+          token.avatar = session.avatar;
         }
       }
 
@@ -97,6 +102,7 @@ export const {
       session.user.name = token.name;
       session.user.role = token.role;
       session.user.is_creator = token.is_creator;
+      session.user.avatar = token.avatar;
       session.access_token = token.accessToken;
       session.expires = new Date(token.expiresAt).toISOString();
 
