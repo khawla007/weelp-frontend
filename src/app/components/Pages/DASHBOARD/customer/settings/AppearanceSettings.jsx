@@ -11,9 +11,6 @@ import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { useUIStore } from '@/lib/store/uiStore';
-import { AvatarUpload } from '@/components/ui/AvatarUpload';
-import { useState } from 'react';
-import { editUserProfileAction } from '@/lib/actions/userActions';
 
 const formSchema = z.object({
   font: z.string().min(1, 'Font selection is required'),
@@ -23,8 +20,6 @@ const formSchema = z.object({
 export function AppearanceSettings({ user }) {
   const { theme, setTheme, font, setFont } = useUIStore();
   const { toast } = useToast();
-  const [avatarUrl, setAvatarUrl] = useState(user?.profile?.avatar || null);
-  const [isSavingAvatar, setIsSavingAvatar] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -34,6 +29,7 @@ export function AppearanceSettings({ user }) {
     },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const selectedTheme = form.watch('theme');
   const { isDirty } = form.formState;
 
@@ -45,34 +41,11 @@ export function AppearanceSettings({ user }) {
     });
   };
 
-  const handleAvatarUpload = async (url) => {
-    setIsSavingAvatar(true);
-    try {
-      await editUserProfileAction({ avatar: url });
-      toast({
-        title: 'Avatar updated successfully',
-      });
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Failed to save avatar',
-      });
-    } finally {
-      setIsSavingAvatar(false);
-    }
-  };
-
   return (
     <Card className="shadow-none border-none bg-transparent space-y-8 dark:bg-black">
       <div className="space-y-2">
         <CardTitle className="text-black font-medium text-lg">Appearance</CardTitle>
         <CardDescription className="text-[#71717A] text-sm">Customize the appearance of the app.</CardDescription>
-      </div>
-
-      {/* Avatar Upload Section */}
-      <div className="space-y-4 pb-6 border-b">
-        <h3 className="text-base font-medium">Profile Picture</h3>
-        <AvatarUpload currentAvatar={avatarUrl} onUploadSuccess={handleAvatarUpload} />
       </div>
 
       <Form {...form}>

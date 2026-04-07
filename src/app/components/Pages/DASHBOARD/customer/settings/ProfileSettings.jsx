@@ -3,7 +3,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { useToast } from '@/hooks/use-toast';
+import { AvatarUpload } from '@/components/ui/AvatarUpload';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -29,8 +32,29 @@ const profileSchema = z.object({
 });
 
 export function ProfileSettings({ user }) {
+  const { update } = useSession();
   const { toast } = useToast();
+  const [avatarUrl, setAvatarUrl] = useState(user?.profile?.avatar || null);
+  const [isSavingAvatar, setIsSavingAvatar] = useState(false);
   const { name, email, meta, profile } = user;
+
+  const handleAvatarUpload = async (url) => {
+    setIsSavingAvatar(true);
+    try {
+      const result = await editUserProfileAction({ avatar: url });
+      if (result.success) {
+        setAvatarUrl(url);
+        await update({ avatar: url });
+        toast({ title: 'Avatar updated successfully' });
+      } else {
+        toast({ variant: 'destructive', title: 'Failed to save avatar' });
+      }
+    } catch (error) {
+      toast({ variant: 'destructive', title: 'Failed to save avatar' });
+    } finally {
+      setIsSavingAvatar(false);
+    }
+  };
 
   let parsedInterest = [];
   try {
@@ -91,6 +115,12 @@ export function ProfileSettings({ user }) {
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         <fieldset disabled={isSubmitting} className={`${isSubmitting ? 'cursor-wait' : ''}`}>
+          {/* Avatar Upload */}
+          <div className="space-y-4 pb-6 border-b">
+            <h3 className="text-base font-medium">Profile Picture</h3>
+            <AvatarUpload currentAvatar={avatarUrl} onUploadSuccess={handleAvatarUpload} />
+          </div>
+
           {/* Full Name */}
           <FormField
             control={form.control}
