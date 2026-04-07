@@ -532,11 +532,31 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
 
               {/* Handle Modal  for Creating */}
               {modalContext.type === 'activity' && modalContext.day == item.day && (
-                <ActivitySearchModal activities={allactivities} day={item?.day} addActivity={addActivity} onClose={handleCloseModal} />
+                <ActivitySearchModal
+                  activities={(allactivities || []).filter(a => {
+                    const selectedCityIds = methods.getValues('locations') || [];
+                    if (selectedCityIds.length === 0) return true;
+                    const primaryLoc = (a.locations || []).find(l => l.location_type === 'primary');
+                    return primaryLoc && selectedCityIds.includes(primaryLoc.city_id);
+                  })}
+                  day={item?.day}
+                  addActivity={addActivity}
+                  onClose={handleCloseModal}
+                />
               )}
               {/* Transfer Modal  */}
               {modalContext.type === 'transfer' && modalContext.day === item.day && (
-                <TransferSearchModal day={item?.day} onClose={handleCloseModal} addTransfer={addTransfer} transfers={alltransfers} />
+                <TransferSearchModal
+                  day={item?.day}
+                  onClose={handleCloseModal}
+                  addTransfer={addTransfer}
+                  transfers={(alltransfers || []).filter(t => {
+                    const selectedCityIds = methods.getValues('locations') || [];
+                    if (selectedCityIds.length === 0) return true;
+                    const pickupCityId = t.vendor_routes?.pickup_city_id;
+                    return pickupCityId && selectedCityIds.includes(pickupCityId);
+                  })}
+                />
               )}
             </div>
 
