@@ -128,7 +128,7 @@ const SingleProductTabSection = ({
   return (
     <section className="w-full bg-white mt-[70px]">
       {/* Sticky Tab Bar */}
-      <div className={`${fixedTab ? 'fixed' : 'relative'} z-[999] w-full bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]`} style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}>
+      <div className={`${fixedTab ? 'fixed' : 'relative'} z-40 w-full bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]`} style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}>
         <div className="flex items-center justify-center">
           {tabs.map((tab, index) => (
             <button

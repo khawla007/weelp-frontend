@@ -88,7 +88,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
       <h2 className="text-[28px] font-semibold text-[#273f4e] capitalize">{title}</h2>
 
       {/* Date Navigation Buttons + Schedule Detail - inline layout */}
-      {startDate && displaySchedules.length > 0 && (
+      {startDate && (displaySchedules.length > 0 || isEditing) && (
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left: Date Navigation Buttons - vertical column on desktop */}
           <div className="flex md:flex-col gap-2 flex-shrink-0 md:w-fit overflow-x-auto pb-2 md:pb-0">
@@ -312,7 +312,7 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
                 <div className="flex gap-4 flex-wrap mt-1">
                   {activity.tags?.map((tag, i) => (
                     <span key={i} className="text-[#5a5a5a] inline-flex gap-1.5 items-center text-sm">
-                      <Eye size={14} /> {tag}
+                      <Eye size={14} /> {typeof tag === 'object' ? tag.name : tag}
                     </span>
                   ))}
                   {duration_minutes && (
