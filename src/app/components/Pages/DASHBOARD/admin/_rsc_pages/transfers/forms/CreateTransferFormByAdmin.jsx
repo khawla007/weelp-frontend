@@ -64,8 +64,8 @@ export const CreateTransferFormByAdmin = ({}) => {
   const slugValue = useWatch({ control: methods.control, name: 'slug' });
   const transferTypeValue = useWatch({ control: methods.control, name: 'transfer_type' });
   const vehicleTypeValue = useWatch({ control: methods.control, name: 'vehicle_type' });
-  const pickupLocationValue = useWatch({ control: methods.control, name: 'pickup_location' });
-  const dropoffLocationValue = useWatch({ control: methods.control, name: 'dropoff_location' });
+  const pickupPlaceIdValue = useWatch({ control: methods.control, name: 'pickup_place_id' });
+  const dropoffPlaceIdValue = useWatch({ control: methods.control, name: 'dropoff_place_id' });
   const descriptionValue = useWatch({ control: methods.control, name: 'description' });
   const inclusionValue = useWatch({ control: methods.control, name: 'inclusion' });
 
@@ -75,14 +75,14 @@ export const CreateTransferFormByAdmin = ({}) => {
     slugValue?.trim() &&
     transferTypeValue?.trim() &&
     vehicleTypeValue?.trim() &&
-    pickupLocationValue?.trim() &&
-    dropoffLocationValue?.trim() &&
+    pickupPlaceIdValue?.trim() &&
+    dropoffPlaceIdValue?.trim() &&
     descriptionValue?.trim() &&
     inclusionValue?.trim()
   );
 
   // Step 1 required fields for validation
-  const step1Fields = ['name', 'slug', 'transfer_type', 'vehicle_type', 'pickup_location', 'dropoff_location', 'description', 'inclusion'];
+  const step1Fields = ['name', 'slug', 'transfer_type', 'vehicle_type', 'pickup_place_id', 'dropoff_place_id', 'description', 'inclusion'];
 
   // Handle Next button click - validates step 1 fields before proceeding
   const handleNext = async () => {

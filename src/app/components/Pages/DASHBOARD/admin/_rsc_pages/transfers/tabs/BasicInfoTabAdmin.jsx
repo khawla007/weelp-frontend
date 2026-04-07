@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -7,13 +8,24 @@ import { Controller, useFormContext } from 'react-hook-form';
 import useSWR from 'swr';
 import { fetcher } from '@/lib/fetchers';
 import { SelectInputTransfer, SelectInputTransfer2 } from '../components/SelectForm';
+import { Combobox } from '@/components/ui/combobox';
 import { VEHICLE_TYPES, TRANSFER_TYPES } from '@/constants/transfer'; // constants
 
 // Basic Information
-const BasicInfoTabAdmin = () => {
-  const { data, error, isLoading } = useSWR('/api/admin/places/list', fetcher); // fetch places
+const BasicInfoTabAdmin = ({ defaultPickupCityId = null, defaultDropoffCityId = null }) => {
+  const [pickupCityId, setPickupCityId] = useState(defaultPickupCityId);
+  const [dropoffCityId, setDropoffCityId] = useState(defaultDropoffCityId);
 
-  const places = data?.data || [];
+  // fetch all cities
+  const { data: citiesData, error: citiesError, isLoading: citiesLoading } = useSWR('/api/admin/cities/list', fetcher);
+  const cities = citiesData?.data || [];
+
+  // fetch places filtered by selected city
+  const { data: pickupPlacesData } = useSWR(pickupCityId ? `/api/admin/places/by-city/${pickupCityId}` : null, fetcher);
+  const { data: dropoffPlacesData } = useSWR(dropoffCityId ? `/api/admin/places/by-city/${dropoffCityId}` : null, fetcher);
+
+  const pickupPlaces = pickupPlacesData?.data || [];
+  const dropoffPlaces = dropoffPlacesData?.data || [];
 
   // intialize form
   const {
@@ -36,9 +48,9 @@ const BasicInfoTabAdmin = () => {
     }
   };
 
-  if (isLoading) return <div className="loader"></div>;
+  if (citiesLoading) return <div className="loader"></div>;
 
-  if (error) return <div className="text-red-500">Something went wrong: {error.message}</div>;
+  if (citiesError) return <div className="text-red-500">Something went wrong: {citiesError.message}</div>;
 
   return (
     <div className="space-y-4 py-6">
@@ -102,38 +114,70 @@ const BasicInfoTabAdmin = () => {
         {errors?.vehicle_type && <p className="text-red-500 text-sm mt-1">{errors?.vehicle_type?.message}</p>}
       </div>
 
-      {/* Pickup Location Dropoff Location */}
+      {/* Pickup City & Place */}
       <div className="flex w-full gap-4 flex-col sm:flex-row">
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="pickup_location" className={`block text-sm font-medium ${errors?.pickup_location ? 'text-red-400' : 'text-black'}`}>
-            Pickup Location <span className="text-red-500">*</span>
-          </Label>
-          <Controller
-            name="pickup_location"
-            control={control}
-            defaultValue=""
-            rules={{ required: 'Pickup location is required' }}
-            render={({ field }) => <SelectInputTransfer value={field.value} onChange={field.onChange} options={places} placeholder="Select pickup location..." />}
+          <Label className="block text-sm font-medium text-black">Pickup City</Label>
+          <Combobox
+            data={cities}
+            value={pickupCityId}
+            onChange={(id) => {
+              setPickupCityId(id);
+              setValue('pickup_place_id', ''); // reset place when city changes
+            }}
+            placeholder="Select pickup city..."
           />
-          {errors?.pickup_location && <p className="text-red-500 text-sm mt-1">{errors.pickup_location.message}</p>}
         </div>
 
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="dropoff_location" className={`block text-sm font-medium ${errors?.dropoff_location ? 'text-red-400' : 'text-black'}`}>
-            Dropoff Location <span className="text-red-500">*</span>
+          <Label htmlFor="pickup_place_id" className={`block text-sm font-medium ${errors?.pickup_place_id ? 'text-red-400' : 'text-black'}`}>
+            Pickup Place <span className="text-red-500">*</span>
           </Label>
           <Controller
-            name="dropoff_location"
+            name="pickup_place_id"
+            control={control}
+            defaultValue=""
+            rules={{ required: 'Pickup place is required' }}
+            render={({ field }) => (
+              <SelectInputTransfer value={field.value} onChange={field.onChange} options={pickupPlaces} placeholder={pickupCityId ? 'Select pickup place...' : 'Select a city first...'} />
+            )}
+          />
+          {errors?.pickup_place_id && <p className="text-red-500 text-sm mt-1">{errors.pickup_place_id.message}</p>}
+        </div>
+      </div>
+
+      {/* Dropoff City & Place */}
+      <div className="flex w-full gap-4 flex-col sm:flex-row">
+        <div className="pb-2 space-y-2 w-full">
+          <Label className="block text-sm font-medium text-black">Dropoff City</Label>
+          <Combobox
+            data={cities}
+            value={dropoffCityId}
+            onChange={(id) => {
+              setDropoffCityId(id);
+              setValue('dropoff_place_id', ''); // reset place when city changes
+            }}
+            placeholder="Select dropoff city..."
+          />
+        </div>
+
+        <div className="pb-2 space-y-2 w-full">
+          <Label htmlFor="dropoff_place_id" className={`block text-sm font-medium ${errors?.dropoff_place_id ? 'text-red-400' : 'text-black'}`}>
+            Dropoff Place <span className="text-red-500">*</span>
+          </Label>
+          <Controller
+            name="dropoff_place_id"
             control={control}
             defaultValue=""
             rules={{
-              required: 'Dropoff location is required',
-              validate: (value) => value !== watch('pickup_location') || 'Pickup and Dropoff location cannot be the same',
+              required: 'Dropoff place is required',
+              validate: (value) => value !== watch('pickup_place_id') || 'Pickup and Dropoff place cannot be the same',
             }}
-            render={({ field }) => <SelectInputTransfer value={field.value} onChange={field.onChange} options={places} placeholder="Select dropoff location..." />}
+            render={({ field }) => (
+              <SelectInputTransfer value={field.value} onChange={field.onChange} options={dropoffPlaces} placeholder={dropoffCityId ? 'Select dropoff place...' : 'Select a city first...'} />
+            )}
           />
-
-          {errors?.dropoff_location && <p className="text-red-500 text-sm mt-1">{errors.dropoff_location.message}</p>}
+          {errors?.dropoff_place_id && <p className="text-red-500 text-sm mt-1">{errors.dropoff_place_id.message}</p>}
         </div>
       </div>
 
