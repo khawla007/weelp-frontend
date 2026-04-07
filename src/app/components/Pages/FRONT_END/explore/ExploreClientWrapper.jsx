@@ -137,7 +137,7 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
             {[
               { step: 1, title: 'Go to a Single Itinerary Page', desc: 'Browse the Explore page and open any itinerary that inspires you.' },
               { step: 2, title: 'Add or Edit the Schedule', desc: 'Customize the itinerary by adding your own day-by-day schedule, activities, timings, and travel tips.' },
-              { step: 3, title: 'Submit for Approval', desc: 'Once your itinerary is ready, submit it for admin review. You\'ll be notified once it\'s approved and published on the Explore page.' },
+              { step: 3, title: 'Submit for Approval', desc: "Once your itinerary is ready, submit it for admin review. You'll be notified once it's approved and published on the Explore page." },
               { step: 4, title: 'Track in My Itineraries', desc: 'View and manage all your created itineraries from the My Itineraries section in your dashboard.' },
             ].map((item) => (
               <div key={item.step} className="flex gap-4">
