@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import AvatarUpload from '@/components/ui/AvatarUpload';
+import { AvatarUpload } from '@/components/ui/AvatarUpload';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -136,11 +136,7 @@ export default function EditUserForm({ userData = {} }) {
               <CardContent className="space-y-6">
                 <div className="space-y-4 pb-6 border-b">
                   <h3 className="text-base font-medium">Profile Picture</h3>
-                  <AvatarUpload
-                    currentAvatar={avatarUrl}
-                    onUploadSuccess={handleAvatarUpload}
-                    endpoint={`/api/admin/users/${userData.id}/avatar`}
-                  />
+                  <AvatarUpload currentAvatar={avatarUrl} onUploadSuccess={handleAvatarUpload} endpoint={`/api/admin/users/${userData.id}/avatar`} />
                 </div>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <FormField

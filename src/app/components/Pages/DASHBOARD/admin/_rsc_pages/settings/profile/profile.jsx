@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import AvatarUpload from '@/components/ui/AvatarUpload';
+import { AvatarUpload } from '@/components/ui/AvatarUpload';
 import { useToast } from '@/hooks/use-toast';
 import { editUserProfileAction } from '@/lib/actions/userActions';
 import { PageInfo } from '../settings_shared';
@@ -30,10 +30,7 @@ export default function AdminProfileSettings() {
 
   return (
     <div className="space-y-6">
-      <PageInfo
-        pageTitle="Profile Settings"
-        pageDescription="Manage your profile picture and personal information."
-      />
+      <PageInfo pageTitle="Profile Settings" pageDescription="Manage your profile picture and personal information." />
 
       <div className="rounded-lg border bg-card p-6">
         <div className="space-y-4">
