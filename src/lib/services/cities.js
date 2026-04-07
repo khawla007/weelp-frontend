@@ -87,6 +87,28 @@ export async function getAllCitiesOptionsAdmin() {
 }
 
 /**
+ * Get All Cities List for Admin (server-side, authenticated)
+ * @returns {Promise<{ success:boolean, data:Array<{id:number, name:string}> }>}
+ */
+export async function getCitiesListAdmin() {
+  try {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.get(`/api/admin/cities/list`, {
+      headers: { Accept: 'application/json' },
+    });
+
+    if (response.status === 200) {
+      return response?.data;
+    }
+
+    return { success: false, data: [] };
+  } catch (error) {
+    console.error('Service Error (getCitiesListAdmin):', error);
+    return { success: false, data: [] };
+  }
+}
+
+/**
  * Get All Featured Cities
  * @returns []
  */
