@@ -41,8 +41,7 @@ export const getEditData = async (slug) => {
  */
 export const getCityActivities = async (slug) => {
   try {
-    const api = await getAuthApi();
-    const res = await api.get(`/api/itineraries/${slug}/city-activities`);
+    const res = await publicApi.get(`/api/itineraries/${slug}/city-activities`);
     return { success: true, data: res.data?.data };
   } catch (err) {
     const message = err?.response?.data?.message || 'Failed to fetch city activities.';
@@ -57,8 +56,7 @@ export const getCityActivities = async (slug) => {
  */
 export const getCityTransfers = async (slug) => {
   try {
-    const api = await getAuthApi();
-    const res = await api.get(`/api/itineraries/${slug}/city-transfers`);
+    const res = await publicApi.get(`/api/itineraries/${slug}/city-transfers`);
     return { success: true, data: res.data?.data };
   } catch (err) {
     const message = err?.response?.data?.message || 'Failed to fetch city transfers.';
@@ -73,8 +71,7 @@ export const getCityTransfers = async (slug) => {
  */
 export const getCityPlaces = async (slug) => {
   try {
-    const api = await getAuthApi();
-    const res = await api.get(`/api/itineraries/${slug}/city-places`);
+    const res = await publicApi.get(`/api/itineraries/${slug}/city-places`);
     return { success: true, data: res.data?.data };
   } catch (err) {
     const message = err?.response?.data?.message || 'Failed to fetch city places.';

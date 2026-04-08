@@ -103,10 +103,16 @@ export default function ItineraryEditActionBar({ session }) {
             Book Now
           </Button>
         ) : isCreator ? (
-          <Button onClick={handleCreatorSubmit} disabled={submitting} className="bg-secondaryDark hover:bg-secondaryDark/90">
-            {submitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Send className="h-4 w-4 mr-2" />}
-            Apply for Approval
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button onClick={handleCustomerSave} disabled={submitting} variant="outline" className="border-secondaryDark text-secondaryDark hover:bg-secondaryDark/5">
+              {submitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <ShoppingCart className="h-4 w-4 mr-2" />}
+              Save &amp; Book
+            </Button>
+            <Button onClick={handleCreatorSubmit} disabled={submitting} className="bg-secondaryDark hover:bg-secondaryDark/90">
+              {submitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Send className="h-4 w-4 mr-2" />}
+              Apply for Approval
+            </Button>
+          </div>
         ) : (
           <Button onClick={handleCustomerSave} disabled={submitting} className="bg-secondaryDark hover:bg-secondaryDark/90">
             {submitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <ShoppingCart className="h-4 w-4 mr-2" />}

@@ -6,13 +6,13 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { getAllActivitesAdmin } from '@/lib/services/activites';
+import { authApi } from '@/lib/axiosInstance';
 import { log } from '@/lib/utils';
 import { isEmpty } from 'lodash';
-import { ArrowLeft, SearchIcon } from 'lucide-react';
+import { ArrowLeft, SearchIcon, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export const NavigationItinerary = ({ title, desciption }) => {
   const router = useRouter();
@@ -30,9 +30,50 @@ export const NavigationItinerary = ({ title, desciption }) => {
   return <div className="flex justify-between w-full py-4 font-extrabold"> Props Not Passed </div>;
 };
 
-export const ActivitySearchModal = ({ day, onClose, activities = [], addActivity }) => {
+export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity }) => {
   const [selectedActivity, setSelectedActivity] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false); // for
+  const [modalOpen, setModalOpen] = useState(false);
+  const [activities, setActivities] = useState([]);
+  const [filteredActivities, setFilteredActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Stable string for dependency to avoid infinite re-renders
+  const cityIdsKey = cityIds.join(',');
+
+  // Fetch activities from backend filtered by city_ids
+  useEffect(() => {
+    const fetchActivities = async () => {
+      setLoading(true);
+      try {
+        const response = await authApi.get(`/api/admin/activities?city_ids=${cityIdsKey}&all=true`);
+        const data = response?.data?.data?.data || [];
+        setActivities(data);
+        setFilteredActivities(data);
+      } catch (error) {
+        console.error('Error fetching activities:', error);
+        setActivities([]);
+        setFilteredActivities([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchActivities();
+  }, [cityIdsKey]);
+
+  // Client-side search filter on fetched activities
+  const handleSearch = useCallback(
+    (e) => {
+      const term = e.target.value.toLowerCase();
+      setSearchTerm(term);
+      if (!term) {
+        setFilteredActivities(activities);
+      } else {
+        setFilteredActivities(activities.filter((a) => a.name?.toLowerCase().includes(term)));
+      }
+    },
+    [activities],
+  );
 
   const [timing, setTiming] = useState({
     start_time: '',
@@ -47,13 +88,11 @@ export const ActivitySearchModal = ({ day, onClose, activities = [], addActivity
     setModalOpen(true);
   };
 
-  // close modal
   const closeModal = () => {
     setModalOpen(false);
     setSelectedActivity(null);
   };
 
-  // Handle Timing
   const handleAddActivity = () => {
     if (selectedActivity && timing.start_time && timing.end_time) {
       addActivity({
@@ -76,12 +115,9 @@ export const ActivitySearchModal = ({ day, onClose, activities = [], addActivity
     }));
   };
 
-  const handleSearch = () => {};
-
   return (
     <Dialog open onOpenChange={onClose}>
       <DialogContent>
-        {/* Your activity search form here */}
         <div className={`${!modalOpen ? 'block' : 'hidden'} space-y-4`}>
           <DialogHeader>
             <DialogTitle>Search Activity</DialogTitle>
@@ -90,21 +126,25 @@ export const ActivitySearchModal = ({ day, onClose, activities = [], addActivity
           </DialogHeader>
 
           <div className="w-full flex gap-4 items-center">
-            <Input type="text" placeholder="Search Activity..." className="w-full border p-2 focus-visible:ring-secondaryDark focus-visible:ring-1" onChange={handleSearch} />
+            <Input type="text" placeholder="Search Activity..." value={searchTerm} className="w-full border p-2 focus-visible:ring-secondaryDark focus-visible:ring-1" onChange={handleSearch} />
             <Button className="bg-white hover:bg-white border">
               <SearchIcon className="text-black" />
             </Button>
           </div>
-          <ul>
-            {activities.length > 0
-              ? activities.map((activity, index) => {
-                  return (
-                    <li className="list-none hover:bg-neutral-100 cursor-pointer p-2" onClick={() => handleSelectActivity(activity)} key={activity?.id}>
-                      {activity?.name}
-                    </li>
-                  );
-                })
-              : ''}
+          <ul className="max-h-60 overflow-y-auto">
+            {loading ? (
+              <li className="flex items-center justify-center p-4 text-muted-foreground">
+                <Loader2 className="animate-spin mr-2 h-4 w-4" /> Loading activities...
+              </li>
+            ) : filteredActivities.length > 0 ? (
+              filteredActivities.map((activity) => (
+                <li className="list-none hover:bg-neutral-100 cursor-pointer p-2" onClick={() => handleSelectActivity(activity)} key={activity?.id}>
+                  {activity?.name}
+                </li>
+              ))
+            ) : (
+              <li className="list-none p-2 text-muted-foreground">No activities found for selected cities.</li>
+            )}
           </ul>
         </div>
 

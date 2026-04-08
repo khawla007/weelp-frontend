@@ -26,12 +26,12 @@ const formatDayDate = (date) => {
   return `${day}${suffix} ${month}, ${weekday}`;
 };
 
-const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary', session = null, itinerary = null }) => {
+const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary', session = null, itinerary = null, readOnly = false }) => {
   const dayRefs = useRef({});
   const [activeDayIndex, setActiveDayIndex] = useState(0);
 
   // Determine if edit mode is active: itinerary is an original (no creator_id and no user_id)
-  const isEditing = !!(itinerary && !itinerary.creator_id && !itinerary.user_id);
+  const isEditing = !readOnly && !!(itinerary && !itinerary.creator_id && !itinerary.user_id);
 
   // Initialize the edit store when in edit mode
   useEffect(() => {
@@ -339,22 +339,6 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
               </div>
             </div>
 
-            {/* Activity Locations: Hotel -> City Name */}
-            {locationName && (
-              <div className="px-4 pb-4 flex items-center justify-between gap-2">
-                <span className="inline-flex items-center gap-2 border border-[#e5e5e5] rounded-lg py-2 px-4 text-sm text-[#0c2536]">
-                  <MapPin size={14} /> Hotel
-                </span>
-                <div className="flex items-center gap-2 flex-1 mx-2">
-                  <div className="flex-1 border-t border-dashed border-[#ccc]" />
-                  {duration_minutes && <span className="text-xs text-[#5a5a5a] whitespace-nowrap">{formatDuration(duration_minutes)}</span>}
-                  <div className="flex-1 border-t border-dashed border-[#ccc]" />
-                </div>
-                <span className="inline-flex items-center gap-2 border border-[#e5e5e5] rounded-lg py-2 px-4 text-sm text-[#0c2536]">
-                  <MapPin size={14} /> {locationName}
-                </span>
-              </div>
-            )}
           </div>
         );
       })}

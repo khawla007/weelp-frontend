@@ -46,7 +46,7 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
       season: '',
       sort_by: 'default',
       page: 1,
-      price: [50, 2000],
+      price: [0, 5000],
     },
   });
 

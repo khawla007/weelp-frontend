@@ -39,22 +39,23 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
   const router = useRouter();
   const { toast } = useToast();
 
-  // State to store places fetched per location index (city → places cascading)
-  const [cityPlaces, setCityPlaces] = useState({});
+  // Single city selection at top level — all locations share the same city's places
+  const [selectedCityId, setSelectedCityId] = useState(null);
+  const [cityPlaces, setCityPlaces] = useState([]);
 
-  const fetchPlacesForCity = async (cityId, locationIndex) => {
+  const fetchPlacesForCity = async (cityId) => {
     if (!cityId) {
-      setCityPlaces((prev) => ({ ...prev, [locationIndex]: [] }));
+      setCityPlaces([]);
       return;
     }
     try {
       const res = await authApi.get(`/api/admin/places/by-city/${cityId}`);
       if (res.data?.success) {
-        setCityPlaces((prev) => ({ ...prev, [locationIndex]: res.data.data }));
+        setCityPlaces(res.data.data);
       }
     } catch (err) {
       console.error('Failed to fetch places for city:', err);
-      setCityPlaces((prev) => ({ ...prev, [locationIndex]: [] }));
+      setCityPlaces([]);
     }
   };
 
@@ -301,39 +302,42 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
       name: 'locations', // Field array for locations
     });
 
+    const handleCityChange = (cityId) => {
+      setSelectedCityId(cityId);
+      fetchPlacesForCity(cityId);
+      // Clear all place_id values when city changes
+      const currentLocations = methods.getValues('locations') || [];
+      currentLocations.forEach((_, i) => {
+        methods.setValue(`locations.${i}.place_id`, null);
+        methods.setValue(`locations.${i}.city_id`, cityId);
+      });
+    };
+
     return (
       <div className="space-y-4">
-        {/* Min Group Size */}
-
         {/* Locations */}
         <div>
           <Label className="block py-2 text-sm font-medium text-gray-700">Locations</Label>
-          <p className="py-4 px-8 space-y-4 bg-white">
-            {/* Primary Location */}
+
+          {/* Single City Selection at the Top */}
+          <div className="py-4 px-8 space-y-2 bg-white">
+            <span className="block text-sm font-medium text-gray-700">Select City</span>
+            <Combobox data={locations} value={selectedCityId} onChange={handleCityChange} placeholder="Select City..." />
+          </div>
+
+          {methods.formState.errors?.locations && <span className="text-red-400">All Fields Required</span>}
+
+          {/* Primary Location */}
+          <p className="py-4 px-8 space-y-4 bg-white mt-2">
             <span className="block pb-2 text-sm font-medium text-gray-700">Primary Location</span>
-            {methods.formState.errors?.locations && <span className="text-red-400">All Fields Required</span>}
 
-            <Controller
-              name="locations.0.city_id"
-              control={methods.control}
-              render={({ field }) => (
-                <Combobox
-                  data={locations}
-                  value={field.value}
-                  onChange={(val) => {
-                    field.onChange(val);
-                    methods.setValue('locations.0.place_id', null);
-                    fetchPlacesForCity(val, 0);
-                  }}
-                />
-              )}
-            />
+            {/* Hidden city_id from selected city */}
+            <input type="hidden" {...methods.register('locations.0.city_id')} value={selectedCityId || ''} />
 
-            {/* Place Dropdown (cascading from city) */}
             <Controller
               name="locations.0.place_id"
               control={methods.control}
-              render={({ field }) => <Combobox data={cityPlaces[0] || []} value={field.value} onChange={field.onChange} placeholder="Select Place..." />}
+              render={({ field }) => <Combobox data={cityPlaces} value={field.value} onChange={field.onChange} placeholder="Select Place..." />}
             />
 
             <Controller
@@ -384,32 +388,18 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
               <div key={item.id} className="mt-4 py-4 px-8 space-y-4 bg-white">
                 <span className="block text-sm font-medium text-gray-700">Additional Location {index + 1}</span>
 
-                <Controller
-                  name={`locations[${index + 1}].city_id`}
-                  control={methods.control}
-                  render={({ field }) => (
-                    <Combobox
-                      data={locations}
-                      value={field.value}
-                      onChange={(val) => {
-                        field.onChange(val);
-                        methods.setValue(`locations[${index + 1}].place_id`, null);
-                        fetchPlacesForCity(val, index + 1);
-                      }}
-                    />
-                  )}
-                />
+                {/* Hidden city_id from selected city */}
+                <input type="hidden" {...methods.register(`locations.${index + 1}.city_id`)} value={selectedCityId || ''} />
 
-                {/* Place Dropdown (cascading from city) */}
                 <Controller
-                  name={`locations[${index + 1}].place_id`}
+                  name={`locations.${index + 1}.place_id`}
                   control={methods.control}
-                  render={({ field }) => <Combobox data={cityPlaces[index + 1] || []} value={field.value} onChange={field.onChange} placeholder="Select Place..." />}
+                  render={({ field }) => <Combobox data={cityPlaces} value={field.value} onChange={field.onChange} placeholder="Select Place..." />}
                 />
 
                 <div className="flex items-center gap-4">
                   <Controller
-                    name={`locations[${index + 1}].location_label`}
+                    name={`locations.${index + 1}.location_label`}
                     control={methods.control}
                     render={({ field }) => (
                       <Select onValueChange={field.onChange} value={field.value}>
@@ -427,9 +417,9 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                     )}
                   />
 
-                  {/* Addional Location Duration */}
+                  {/* Additional Location Duration */}
                   <Controller
-                    name={`locations[${index + 1}].duration`}
+                    name={`locations.${index + 1}.duration`}
                     control={methods.control}
                     defaultValue={1}
                     rules={{ required: 'Field Required' }}
@@ -446,7 +436,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                   />
 
                   {/* Hidden Input to Set Additional Type */}
-                  <Input type="hidden" {...methods.register(`locations[${index + 1}].location_type`)} value="additional" />
+                  <Input type="hidden" {...methods.register(`locations.${index + 1}.location_type`)} value="additional" />
 
                   <X onClick={() => removeLocation(index + 1)} className="hover:cursor-pointer" />
                 </div>
@@ -459,10 +449,10 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
             type="button"
             onClick={() =>
               appendLocation({
-                city_id: null,
+                city_id: selectedCityId,
                 place_id: null,
                 location_label: '',
-                location_type: 'additional', // Predefined as additional
+                location_type: 'additional',
                 duration: null,
               })
             }

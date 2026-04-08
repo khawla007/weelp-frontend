@@ -74,9 +74,10 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
   };
 
   const getOriginalLink = (item) => {
-    const slug = item.original_itinerary?.slug || item.original_slug;
-    if (!slug) return null;
-    return `/itineraries/${slug}`;
+    const slug = item.parent_itinerary?.slug;
+    const citySlug = item.parent_itinerary?.locations?.[0]?.city?.slug;
+    if (!slug || !citySlug) return null;
+    return `/cities/${citySlug}/itineraries/${slug}`;
   };
 
   return (
@@ -110,6 +111,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                 <TableHead>Creator</TableHead>
                 <TableHead>Itinerary Name</TableHead>
                 <TableHead>Original</TableHead>
+                <TableHead>Preview</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
@@ -125,12 +127,23 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     <TableCell>
                       {originalLink ? (
                         <a href={originalLink} target="_blank" rel="noopener noreferrer" className="text-secondaryDark hover:underline inline-flex items-center gap-1">
-                          View
+                          {item.parent_itinerary?.name || 'View'}
                           <ExternalLink className="size-3" />
                         </a>
                       ) : (
                         '-'
                       )}
+                    </TableCell>
+                    <TableCell>
+                      <a
+                        href={`/preview/itinerary/${item.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-secondaryDark hover:underline inline-flex items-center gap-1"
+                      >
+                        Preview
+                        <ExternalLink className="size-3" />
+                      </a>
                     </TableCell>
                     <TableCell>{formatDate(item.created_at)}</TableCell>
                     <TableCell>

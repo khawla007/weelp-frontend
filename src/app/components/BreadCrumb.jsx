@@ -12,7 +12,7 @@ const BreadCrumb = ({ className }) => {
   const pathArray = String(pathName).split('/');
 
   /** Slugs to remove from display */
-  const removedItems = ['', 'region', 'city', 'activity', itinerary];
+  const removedItems = ['', 'region', 'city', 'activity'];
 
   /** Build breadcrumb items with labels and hrefs */
   const items = [];
@@ -21,7 +21,7 @@ const BreadCrumb = ({ className }) => {
     if (segment === '') continue;
     cumulativePath += `/${segment}`;
     if (!removedItems.includes(segment)) {
-      items.push({ label: segment, href: cumulativePath });
+      items.push({ label: segment.replace(/-/g, ' '), href: cumulativePath });
     }
   }
 

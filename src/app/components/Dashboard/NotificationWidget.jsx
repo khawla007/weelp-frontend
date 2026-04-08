@@ -32,7 +32,7 @@ export default function NotificationWidget() {
     fetchNotifications(1).then((res) => {
       setNotifications(res?.data?.data?.slice(0, 5) || []);
     });
-  }, [session?.user]);
+  }, [session?.user?.id]);
 
   const loading = notifications === null;
 

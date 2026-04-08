@@ -527,12 +527,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
               {/* Handle Modal  for Creating */}
               {modalContext.type === 'activity' && modalContext.day == item.day && (
                 <ActivitySearchModal
-                  activities={(allactivities || []).filter((a) => {
-                    const selectedCityIds = methods.getValues('locations') || [];
-                    if (selectedCityIds.length === 0) return true;
-                    const primaryLoc = (a.locations || []).find((l) => l.location_type === 'primary');
-                    return primaryLoc && selectedCityIds.includes(primaryLoc.city_id);
-                  })}
+                  cityIds={methods.getValues('locations') || []}
                   day={item?.day}
                   addActivity={addActivity}
                   onClose={handleCloseModal}

@@ -197,26 +197,14 @@ const SeoTab = () => {
         <AccordionContent className="px-2 space-y-4">
           <div className="space-y-2">
             <Label className={`${errors?.seo?.meta_title?.message && 'text-red-400'}`}>Meta Title</Label>
-            <Input
-              type="text"
-              maxLength="60"
-              placeholder="Enter meta title"
-              className="focus-visible:ring-secondaryDark"
-              {...register('seo.meta_title')}
-            />
+            <Input type="text" maxLength="60" placeholder="Enter meta title" className="focus-visible:ring-secondaryDark" {...register('seo.meta_title')} />
             <span className="block text-xs p-1 text-gray-500">{`${String(metaTitle || '').length}/60`} Characters</span>
             {errors?.seo?.meta_title && <p className="text-red-400 text-sm">{errors?.seo?.meta_title?.message}</p>}
           </div>
 
           <div className="space-y-2">
             <Label className={`${errors?.seo?.meta_description?.message && 'text-red-400'}`}>Meta Description</Label>
-            <Input
-              type="text"
-              placeholder="Enter meta description"
-              maxLength="160"
-              className="focus-visible:ring-secondaryDark"
-              {...register('seo.meta_description')}
-            />
+            <Input type="text" placeholder="Enter meta description" maxLength="160" className="focus-visible:ring-secondaryDark" {...register('seo.meta_description')} />
             <span className="block text-xs p-1 text-gray-500">{`${String(metaDescription || '').length}/160`} Characters</span>
             {errors?.seo?.meta_description && <p className="text-red-400 text-sm">{errors?.seo?.meta_description.message}</p>}
           </div>
@@ -239,23 +227,13 @@ const SeoTab = () => {
 
           <div className="space-y-2">
             <Label className={`${errors?.seo?.og_image_url?.message && 'text-red-400'}`}>OG Image Url</Label>
-            <Input
-              type="url"
-              placeholder="Enter OG Image Url"
-              className="focus-visible:ring-secondaryDark"
-              {...register('seo.og_image_url')}
-            />
+            <Input type="url" placeholder="Enter OG Image Url" className="focus-visible:ring-secondaryDark" {...register('seo.og_image_url')} />
             {errors?.seo?.og_image_url && <p className="text-red-400 text-sm">{errors?.seo?.og_image_url?.message}</p>}
           </div>
 
           <div className="space-y-2">
             <Label className={`${errors?.seo?.canonical_url?.message && 'text-red-400'}`}>Canonical Url</Label>
-            <Input
-              type="url"
-              placeholder="Enter canonical URL"
-              className="focus-visible:ring-secondaryDark"
-              {...register('seo.canonical_url')}
-            />
+            <Input type="url" placeholder="Enter canonical URL" className="focus-visible:ring-secondaryDark" {...register('seo.canonical_url')} />
             {errors?.seo?.canonical_url && <p className="text-red-400 text-sm">{errors?.seo?.canonical_url?.message}</p>}
           </div>
         </AccordionContent>

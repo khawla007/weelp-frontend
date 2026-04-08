@@ -45,6 +45,7 @@ const SingleProductTabSection = ({
   sidebarBottomImage,
   session = null,
   itinerary = null,
+  readOnly = false,
 }) => {
   const [activeTab, setActiveTab] = useState('tab_1');
   const sectionRefs = useRef({});
@@ -128,7 +129,7 @@ const SingleProductTabSection = ({
   return (
     <section className="w-full bg-white mt-[70px]">
       {/* Sticky Tab Bar */}
-      <div className={`${fixedTab ? 'fixed' : 'relative'} z-40 w-full bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]`} style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}>
+      <div className={`${fixedTab ? 'fixed' : 'relative'} z-[11] w-full bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]`} style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}>
         <div className="flex items-center justify-center">
           {tabs.map((tab, index) => (
             <button
@@ -145,17 +146,18 @@ const SingleProductTabSection = ({
       </div>
 
       {/* Two-Column Content */}
-      <div className={`flex flex-col xl:flex-row ${fixedTab ? 'mt-[60px]' : ''}`}>
+      <div className={`max-w-[1480px] mx-auto px-4 ${fixedTab ? 'mt-[60px]' : ''}`}>
+        <div className="flex flex-col xl:flex-row">
         {/* Left Column — Content */}
         <div className="w-full xl:w-[58%]">
-          <div className="max-w-[838px] mx-auto xl:ml-auto xl:mr-0 px-4 lg:px-0 xl:pr-[15px]">
+          <div className="xl:pr-[15px]">
             {/* Tab 1: varies by productType */}
             <div id="tab_1" ref={(el) => (sectionRefs.current['tab_1'] = el)} className="pt-[70px] lg:mb-[35px]">
               {productType === 'activity' ? (
                 <OverViewPanel description={productData?.description} />
               ) : (
                 productData?.schedules?.length > 0 && (
-                  <ItineraryPanel schedules={productData.schedules} startDate={selectedStartDate} title={TAB_1_LABELS[productType]} session={session} itinerary={itinerary} />
+                  <ItineraryPanel schedules={productData.schedules} startDate={selectedStartDate} title={TAB_1_LABELS[productType]} session={session} itinerary={itinerary} readOnly={readOnly} />
                 )
               )}
             </div>
@@ -202,10 +204,11 @@ const SingleProductTabSection = ({
             scheduleCount={isScheduleType ? scheduleCount : 0}
           />
         </div>
+        </div>
       </div>
 
       {/* Edit Action Bar for logged-in users on itinerary pages */}
-      {productType === 'itinerary' && <ItineraryEditActionBar session={session} />}
+      {productType === 'itinerary' && !readOnly && <ItineraryEditActionBar session={session} />}
     </section>
   );
 };

@@ -42,7 +42,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
   const displayPrice = productData?.pricing?.regular_price ?? productData?.base_pricing?.variations?.[0]?.regular_price ?? '6,790.18';
 
   return (
-    <div className="p-6 lg:px-[60px] lg:pt-[60px] lg:pb-[70px] lg:sticky lg:top-[76px]">
+    <div className="p-6 lg:pl-[60px] lg:pr-0 lg:pt-[60px] lg:pb-[70px] lg:sticky lg:top-[76px]">
       {/* Base Price */}
       <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">From ${displayPrice}</h3>
 

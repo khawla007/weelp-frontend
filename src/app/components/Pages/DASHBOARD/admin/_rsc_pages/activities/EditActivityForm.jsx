@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useForm, FormProvider, Controller, useFieldArray, useWatch, useFormContext } from 'react-hook-form';
 import { useState } from 'react';
 import { CalendarIcon, Star, Tag, Trash2, Upload, Users, X } from 'lucide-react';
@@ -42,22 +42,23 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
   const router = useRouter();
   const { toast } = useToast();
 
-  // State to store places fetched per location index (city → places cascading)
-  const [cityPlaces, setCityPlaces] = useState({});
+  // Single city selection at top level — all locations share the same city's places
+  const [selectedCityId, setSelectedCityId] = useState(null);
+  const [cityPlaces, setCityPlaces] = useState([]);
 
-  const fetchPlacesForCity = async (cityId, locationIndex) => {
+  const fetchPlacesForCity = async (cityId) => {
     if (!cityId) {
-      setCityPlaces((prev) => ({ ...prev, [locationIndex]: [] }));
+      setCityPlaces([]);
       return;
     }
     try {
       const res = await authApi.get(`/api/admin/places/by-city/${cityId}`);
       if (res.data?.success) {
-        setCityPlaces((prev) => ({ ...prev, [locationIndex]: res.data.data }));
+        setCityPlaces(res.data.data);
       }
     } catch (err) {
       console.error('Failed to fetch places for city:', err);
-      setCityPlaces((prev) => ({ ...prev, [locationIndex]: [] }));
+      setCityPlaces([]);
     }
   };
 
@@ -226,13 +227,13 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
 
   const { errors, isValid, isSubmitting, isDirty } = methods?.formState;
 
-  // Pre-populate places for existing locations that already have a city_id
+  // Pre-populate selectedCityId from the first location's city_id
   useEffect(() => {
-    presetLocations.forEach((loc, index) => {
-      if (loc.city_id) {
-        fetchPlacesForCity(loc.city_id, index);
-      }
-    });
+    const firstCityId = presetLocations?.[0]?.city_id;
+    if (firstCityId) {
+      setSelectedCityId(firstCityId);
+      fetchPlacesForCity(firstCityId);
+    }
   }, []);
 
   /** Inline Actions Side Effects */
@@ -393,300 +394,287 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
   );
 
   // Locations Cities
-  const LocationsTab = useMemo(
-    // eslint-disable-next-line react/display-name
-    () => () => {
-      const {
-        register,
-        control,
-        watch,
-        getValues,
-        setValue,
-        formState: { errors },
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-      } = useFormContext();
+  const LocationsTab = () => {
+    const {
+      register,
+      control,
+      watch,
+      getValues,
+      setValue,
+      formState: { errors },
+    } = useFormContext();
 
-      const {
-        fields: locationFields,
-        append: appendLocation,
-        remove: removeLocation,
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-      } = useFieldArray({
-        control,
-        name: 'locations', // Field array for locations
-      });
+    const {
+      fields: locationFields,
+      append: appendLocation,
+      remove: removeLocation,
+    } = useFieldArray({
+      control,
+      name: 'locations', // Field array for locations
+    });
 
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const predefinedLocations = useWatch({
-        control: control,
-        name: 'locations',
-      }); // watches
+    const predefinedLocations = useWatch({
+      control: control,
+      name: 'locations',
+    }); // watches
 
-      // remove location handle
-      const handleRemoveLocation = async (item, activityId, index) => {
-        const { id } = item; // destructure data
+    // remove location handle
+    const handleRemoveLocation = async (item, activityId, index) => {
+      const { id } = item; // destructure data
 
-        // Remove Local Index
-        if (!id) {
-          removeLocation(index);
-          return;
-        }
+      // Remove Local Index
+      if (!id) {
+        removeLocation(index);
+        return;
+      }
 
-        // Remove With Api
-        let deleted_location_ids = [];
-        deleted_location_ids.push(id);
+      // Remove With Api
+      let deleted_location_ids = [];
+      deleted_location_ids.push(id);
 
-        try {
-          const res = await deleteActivityItems({
-            activityId,
-            deleted_location_ids,
-          });
+      try {
+        const res = await deleteActivityItems({
+          activityId,
+          deleted_location_ids,
+        });
 
-          console.log(res);
-          if (res.success) {
-            toast({ title: 'Activity Updated successfully!' });
+        console.log(res);
+        if (res.success) {
+          toast({ title: 'Activity Updated successfully!' });
 
-            setToggleUpdate((prev) => !prev); // update toggle listner
-          } else {
-            toast({
-              title: 'Error',
-              description: res.error || 'Please Try Again',
-              variant: 'destructive',
-            });
-          }
-        } catch (error) {
+          setToggleUpdate((prev) => !prev); // update toggle listner
+        } else {
           toast({
-            title: 'Unexpected Error',
-            description: 'Please try again later.',
+            title: 'Error',
+            description: res.error || 'Please Try Again',
             variant: 'destructive',
           });
         }
-      };
+      } catch (error) {
+        toast({
+          title: 'Unexpected Error',
+          description: 'Please try again later.',
+          variant: 'destructive',
+        });
+      }
+    };
 
-      return (
-        <div className="space-y-4">
-          {/* Min Group Size */}
-          <div className="hidden justify-between gap-4 py-2 ">
-            <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700">Minimum Age</label>
-              <Controller
-                name="minimum_age"
-                control={methods?.control}
-                // rules={{ required: "Field required" }}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="number"
-                    min={1}
-                    placeholder="Min Age"
-                    value={field.value || ''} // Ensure it's controlled
-                    onChange={(e) => field.onChange(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus-visible:focus:outline-secondaryDark"
-                  />
-                )}
-              />
+    return (
+      <div className="space-y-4">
+        {/* Min Group Size */}
+        <div className="hidden justify-between gap-4 py-2 ">
+          <div className="w-full">
+            <label className="block text-sm font-medium text-gray-700">Minimum Age</label>
+            <Controller
+              name="minimum_age"
+              control={methods?.control}
+              // rules={{ required: "Field required" }}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  type="number"
+                  min={1}
+                  placeholder="Min Age"
+                  value={field.value || ''} // Ensure it's controlled
+                  onChange={(e) => field.onChange(e.target.value)}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus-visible:focus:outline-secondaryDark"
+                />
+              )}
+            />
 
-              {errors.minimum_age && <p className="text-red-500 text-sm mt-1">{errors.minimum_age.message}</p>}
-            </div>
-
-            {/** Max Group Size */}
-            <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700">Max Group Size</label>
-              <Controller
-                name="maxgroup_size"
-                control={methods.control}
-                defaultValue=""
-                // rules={{ required: "Group Size Required" }}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="number"
-                    min={1}
-                    max={50}
-                    placeholder="Max group size"
-                    value={field.value || ''} // Ensure it's controlled
-                    onChange={(e) => field.onChange(e.target.value)}
-                    className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus-visible:outline-secondaryDark"
-                  />
-                )}
-              />
-              {errors?.maxgroup_size && <p className="text-red-500 text-sm mt-1">{errors.maxgroup_size.message}</p>}
-            </div>
+            {errors.minimum_age && <p className="text-red-500 text-sm mt-1">{errors.minimum_age.message}</p>}
           </div>
 
-          {/* Locations */}
-          <div>
-            <Label className="block py-2 text-sm font-medium text-gray-700">Locations</Label>
-            <p className="py-4 px-8 space-y-4 bg-white">
-              {/* Primary Location */}
-              <span className="block pb-2 text-sm font-medium text-gray-700">Primary Location</span>
-              {methods.formState.errors?.locations && <span className="text-red-400">All Fields Required</span>}
+          {/** Max Group Size */}
+          <div className="w-full">
+            <label className="block text-sm font-medium text-gray-700">Max Group Size</label>
+            <Controller
+              name="maxgroup_size"
+              control={methods.control}
+              defaultValue=""
+              // rules={{ required: "Group Size Required" }}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  type="number"
+                  min={1}
+                  max={50}
+                  placeholder="Max group size"
+                  value={field.value || ''} // Ensure it's controlled
+                  onChange={(e) => field.onChange(e.target.value)}
+                  className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus-visible:outline-secondaryDark"
+                />
+              )}
+            />
+            {errors?.maxgroup_size && <p className="text-red-500 text-sm mt-1">{errors.maxgroup_size.message}</p>}
+          </div>
+        </div>
 
-              <Controller
-                name="locations.0.city_id"
-                control={methods.control}
-                render={({ field }) => (
-                  <Combobox
-                    data={locations}
-                    value={field.value}
-                    onChange={(val) => {
-                      field.onChange(val);
-                      methods.setValue('locations.0.place_id', null);
-                      fetchPlacesForCity(val, 0);
-                    }}
+        {/* Locations */}
+        <div>
+          <Label className="block py-2 text-sm font-medium text-gray-700">Locations</Label>
+
+          {/* Single City Selection at the Top */}
+          <div className="py-4 px-8 space-y-2 bg-white">
+            <span className="block text-sm font-medium text-gray-700">Select City</span>
+            <Combobox
+              data={locations}
+              value={selectedCityId}
+              onChange={(cityId) => {
+                setSelectedCityId(cityId);
+                fetchPlacesForCity(cityId);
+                // Clear all place_id values and update city_id when city changes
+                const currentLocations = methods.getValues('locations') || [];
+                currentLocations.forEach((_, i) => {
+                  methods.setValue(`locations.${i}.place_id`, null);
+                  methods.setValue(`locations.${i}.city_id`, cityId);
+                });
+              }}
+              placeholder="Select City..."
+            />
+          </div>
+
+          {methods.formState.errors?.locations && <span className="text-red-400">All Fields Required</span>}
+
+          {/* Primary Location */}
+          <p className="py-4 px-8 space-y-4 bg-white mt-2">
+            <span className="block pb-2 text-sm font-medium text-gray-700">Primary Location</span>
+
+            {/* Hidden city_id from selected city */}
+            <input type="hidden" {...methods.register('locations.0.city_id')} value={selectedCityId || ''} />
+
+            <Controller
+              name="locations.0.place_id"
+              control={methods.control}
+              render={({ field }) => <Combobox data={cityPlaces} value={field.value} onChange={field.onChange} placeholder="Select Place..." />}
+            />
+
+            <Controller
+              name="locations.0.location_label"
+              control={methods.control}
+              rules={{ required: 'Type required' }}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className="w-full rounded-md text-start focus:outline-secondaryDark">
+                    <SelectValue placeholder="Location Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {['Starting Point', 'Main Location', 'End Point'].map((category, index) => (
+                      <SelectItem className="capitalize" key={index} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+
+            {/* Hidden Input to Set Primary Type */}
+            <input type="hidden" {...methods.register('locations.0.location_type')} value="primary" />
+
+            {/* Primary Location Duration */}
+            <Controller
+              name="locations.0.duration"
+              control={methods.control}
+              defaultValue={0}
+              rules={{ required: 'Field Required' }}
+              render={({ field }) => (
+                <Input
+                  type="number"
+                  min={1}
+                  placeholder="Duration (in minutes)"
+                  className="w-full p-2 mt-2 border rounded-md"
+                  value={field.value || ''}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+              )}
+            />
+          </p>
+
+          {/* Additional Locations */}
+          <div className="flex flex-col w-full">
+            {predefinedLocations.map((item, index) => {
+              if (index === 0) return null;
+
+              return (
+                <div key={index} className="mt-4 py-4 px-8 space-y-4 bg-white">
+                  <span className="block text-sm font-medium text-gray-700">Additional Location {index}</span>
+
+                  {/* Hidden city_id from selected city */}
+                  <input type="hidden" {...methods.register(`locations.${index}.city_id`)} value={selectedCityId || ''} />
+
+                  <Controller
+                    name={`locations.${index}.place_id`}
+                    control={methods.control}
+                    render={({ field }) => <Combobox data={cityPlaces} value={field.value} onChange={field.onChange} placeholder="Select Place..." />}
                   />
-                )}
-              />
 
-              {/* Place Dropdown (cascading from city) */}
-              <Controller
-                name="locations.0.place_id"
-                control={methods.control}
-                render={({ field }) => <Combobox data={cityPlaces[0] || []} value={field.value} onChange={field.onChange} placeholder="Select Place..." />}
-              />
-
-              <Controller
-                name="locations.0.location_label"
-                control={methods.control}
-                rules={{ required: 'Type required' }}
-                render={({ field }) => (
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="w-full rounded-md text-start focus:outline-secondaryDark">
-                      <SelectValue placeholder="Location Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {['Starting Point', 'Main Location', 'End Point'].map((category, index) => (
-                        <SelectItem className="capitalize" key={index} value={category}>
-                          {category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-
-              {/* Hidden Input to Set Primary Type */}
-              <input type="hidden" {...methods.register('locations.0.location_type')} value="primary" />
-
-              {/* Primary Location Duration */}
-              <Controller
-                name="locations.0.duration"
-                control={methods.control}
-                defaultValue={0}
-                rules={{ required: 'Field Required' }}
-                render={({ field }) => (
-                  <Input
-                    type="number"
-                    min={1}
-                    placeholder="Duration (in minutes)"
-                    className="w-full p-2 mt-2 border rounded-md"
-                    value={field.value || ''}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                )}
-              />
-            </p>
-
-            {/* Additional Locations */}
-            <div className="flex flex-col w-full">
-              {predefinedLocations.map((item, index) => {
-                if (index === 0) return null;
-
-                return (
-                  <div key={index} className="mt-4 py-4 px-8 space-y-4 bg-white">
-                    <span className="block text-sm font-medium text-gray-700">Additional Location {index}</span>
-
+                  <div className="flex items-center gap-4">
                     <Controller
-                      name={`locations[${index}].city_id`}
+                      name={`locations.${index}.location_label`}
                       control={methods.control}
                       render={({ field }) => (
-                        <Combobox
-                          data={locations}
-                          value={field.value}
-                          onChange={(val) => {
-                            field.onChange(val);
-                            methods.setValue(`locations[${index}].place_id`, null);
-                            fetchPlacesForCity(val, index);
-                          }}
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <SelectTrigger className="w-full rounded-md text-start focus:outline-secondaryDark">
+                            <SelectValue placeholder="Location Type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {['StopOver', 'Highlight', 'Optional'].map((category, idx) => (
+                              <SelectItem className="capitalize" key={idx} value={category}>
+                                {category}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+
+                    <Controller
+                      name={`locations.${index}.duration`}
+                      control={methods.control}
+                      defaultValue={1}
+                      rules={{ required: 'Field Required' }}
+                      render={({ field }) => (
+                        <Input
+                          type="number"
+                          min={1}
+                          placeholder="Duration (in minutes)"
+                          className="w-full p-2 mt-2 border rounded-md"
+                          value={field.value || ''}
+                          onChange={(e) => field.onChange(e.target.value)}
                         />
                       )}
                     />
 
-                    {/* Place Dropdown (cascading from city) */}
-                    <Controller
-                      name={`locations[${index}].place_id`}
-                      control={methods.control}
-                      render={({ field }) => <Combobox data={cityPlaces[index] || []} value={field.value} onChange={field.onChange} placeholder="Select Place..." />}
-                    />
+                    <Input type="hidden" {...methods.register(`locations.${index}.location_type`)} value="additional" />
 
-                    <div className="flex items-center gap-4">
-                      <Controller
-                        name={`locations[${index}].location_label`}
-                        control={methods.control}
-                        render={({ field }) => (
-                          <Select onValueChange={field.onChange} value={field.value}>
-                            <SelectTrigger className="w-full rounded-md text-start focus:outline-secondaryDark">
-                              <SelectValue placeholder="Location Type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {['StopOver', 'Highlight', 'Optional'].map((category, idx) => (
-                                <SelectItem className="capitalize" key={idx} value={category}>
-                                  {category}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        )}
-                      />
-
-                      <Controller
-                        name={`locations[${index}].duration`}
-                        control={methods.control}
-                        defaultValue={1}
-                        rules={{ required: 'Field Required' }}
-                        render={({ field }) => (
-                          <Input
-                            type="number"
-                            min={1}
-                            placeholder="Duration (in minutes)"
-                            className="w-full p-2 mt-2 border rounded-md"
-                            value={field.value || ''}
-                            onChange={(e) => field.onChange(e.target.value)}
-                          />
-                        )}
-                      />
-
-                      <Input type="hidden" {...methods.register(`locations[${index}].location_type`)} value="additional" />
-
-                      <X onClick={() => handleRemoveLocation(item, id, index)} className="hover:cursor-pointer" />
-                    </div>
+                    <X onClick={() => handleRemoveLocation(item, id, index)} className="hover:cursor-pointer" />
                   </div>
-                );
-              })}
-            </div>
-
-            {/* Add Additional Location Button */}
-            <Button
-              type="button"
-              onClick={() =>
-                appendLocation({
-                  city_id: null,
-                  place_id: null,
-                  location_label: '',
-                  location_type: 'additional', // Predefined as additional
-                  duration: null,
-                })
-              }
-              className="mt-4 w-full bg-white text-black hover:bg-inherit border shadow-sm"
-            >
-              Add Additional Location
-            </Button>
+                </div>
+              );
+            })}
           </div>
+
+          {/* Add Additional Location Button */}
+          <Button
+            type="button"
+            onClick={() =>
+              appendLocation({
+                city_id: selectedCityId,
+                place_id: null,
+                location_label: '',
+                location_type: 'additional',
+                duration: null,
+              })
+            }
+            className="mt-4 w-full bg-white text-black hover:bg-inherit border shadow-sm"
+          >
+            Add Additional Location
+          </Button>
         </div>
-      );
-    },
-    [],
-  );
+      </div>
+    );
+  };
 
   // Attributes and Taxonomies
   const TaxonomiesAttributesTab = useMemo(
@@ -818,7 +806,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       // Derive featured image ID from media_gallery
       const featuredImageId = media_gallery?.find((img) => img.is_featured)?.media_id ?? null;
 
-      //  Hydarte First if there is already media exist
+      //  Hydrate first if there is already media exist
       // eslint-disable-next-line react-hooks/rules-of-hooks
       useEffect(() => {
         if (media_gallery?.length > 0) {
@@ -843,10 +831,10 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
         }
       }, [selectedMedia]);
 
-      // sycn with form
+      // sync with form
       // eslint-disable-next-line react-hooks/rules-of-hooks
       useEffect(() => {
-        setValue('media_gallery', activityImages); // sync form
+        setValue('media_gallery', activityImages, { shouldDirty: true }); // sync form
       }, [activityImages, setValue]);
 
       // handleDelteImage
