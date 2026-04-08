@@ -130,7 +130,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
           <div className="flex flex-col gap-8 flex-1">
             {displaySchedules.map((schedule, index) => {
               const { day = '', activities = [], transfers = [] } = schedule;
-              const dayTitle = schedule.title || 'Arrival in Port Blair';
+              const dayTitle = schedule.title || `Day ${day}`;
 
               return (
                 <div key={index} ref={(el) => (dayRefs.current[index] = el)}>
@@ -194,12 +194,23 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
     <div className="flex flex-col gap-4">
       {/* Day Header */}
       <div className="flex items-center gap-3">
-        <p className="text-[#0c2536] text-lg font-semibold">
-          Day - {dayNumber} {dayTitle}
+        <p className="text-[#0c2536] text-lg font-semibold whitespace-nowrap">
+          Day - {dayNumber}
         </p>
-        {dateLabel && <span className="text-sm text-[#5a5a5a]">({dateLabel})</span>}
+        {isEditing ? (
+          <input
+            type="text"
+            value={dayTitle === `Day ${dayNumber}` ? '' : dayTitle}
+            onChange={(e) => useItineraryEditStore.getState().updateDayTitle(dayIndex, e.target.value)}
+            placeholder={`Day ${dayNumber}`}
+            className="text-[#0c2536] text-lg font-semibold bg-transparent border-b border-dashed border-[#ccc] focus:border-[#57947d] outline-none flex-1 min-w-0"
+          />
+        ) : (
+          <span className="text-[#0c2536] text-lg font-semibold">{dayTitle}</span>
+        )}
+        {dateLabel && <span className="text-sm text-[#5a5a5a] whitespace-nowrap">({dateLabel})</span>}
         {isEditing && (
-          <button onClick={() => useItineraryEditStore.getState().removeDay(dayIndex)} className="ml-auto text-red-400 hover:text-red-600 transition-colors p-1" title="Remove Day">
+          <button onClick={() => useItineraryEditStore.getState().removeDay(dayIndex)} className="ml-auto text-red-400 hover:text-red-600 transition-colors p-1 flex-shrink-0" title="Remove Day">
             <Trash2 size={16} />
           </button>
         )}

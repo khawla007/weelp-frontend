@@ -35,6 +35,13 @@ export const useItineraryEditStore = create((set, get) => ({
       };
     }),
 
+  updateDayTitle: (dayIndex, title) =>
+    set((state) => {
+      const schedules = JSON.parse(JSON.stringify(state.modifiedSchedules));
+      schedules[dayIndex].title = title;
+      return { modifiedSchedules: schedules };
+    }),
+
   // Activity operations
   changeActivity: (dayIndex, activityIndex, newActivity) =>
     set((state) => {
