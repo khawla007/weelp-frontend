@@ -412,8 +412,8 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
 
     // Add Day with auto-incrementing value
     const handleAddDay = () => {
-      const nextDay = dayFields.length + 1; //set to 1 default index
-      addDay({ day: nextDay });
+      const nextDay = dayFields.length + 1;
+      addDay({ day: nextDay, title: '' });
     };
 
     // Handle validation
@@ -602,10 +602,11 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                     type="number"
                     {...register(`schedules.${index}.day`)}
                     defaultValue={item?.day}
-                    className="max-w-xs focus-visible:ring-secondaryDark focus-visible:ring-1"
+                    className="w-20 focus-visible:ring-secondaryDark focus-visible:ring-1"
                     placeholder="Day"
                     readOnly
                   />
+                  <Input type="text" {...register(`schedules.${index}.title`)} className="flex-1 focus-visible:ring-secondaryDark focus-visible:ring-1" placeholder="e.g., Arrival in Port Blair" />
                   <Trash onClick={() => handleRemoveDay(item, id, index)} className=" cursor-pointer " size={20} />
                 </div>
 
@@ -722,10 +723,10 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                   {/* Handle Modal  for Creating */}
                   {modalContext.type === 'activity' && modalContext.day == item.day && (
                     <ActivitySearchModal
-                      activities={(allactivities || []).filter(a => {
+                      activities={(allactivities || []).filter((a) => {
                         const selectedCityIds = methods.getValues('locations') || [];
                         if (selectedCityIds.length === 0) return true;
-                        const primaryLoc = (a.locations || []).find(l => l.location_type === 'primary');
+                        const primaryLoc = (a.locations || []).find((l) => l.location_type === 'primary');
                         return primaryLoc && selectedCityIds.includes(primaryLoc.city_id);
                       })}
                       day={item?.day}
@@ -739,7 +740,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                       day={item?.day}
                       onClose={handleCloseModal}
                       addTransfer={addTransfer}
-                      transfers={(alltransfers || []).filter(t => {
+                      transfers={(alltransfers || []).filter((t) => {
                         const selectedCityIds = methods.getValues('locations') || [];
                         if (selectedCityIds.length === 0) return true;
                         const pickupCityId = t.vendor_routes?.pickup_city_id;
