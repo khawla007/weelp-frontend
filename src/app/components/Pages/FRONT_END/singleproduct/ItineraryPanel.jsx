@@ -194,9 +194,7 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
     <div className="flex flex-col gap-4">
       {/* Day Header */}
       <div className="flex items-center gap-3">
-        <p className="text-[#0c2536] text-lg font-semibold whitespace-nowrap">
-          Day - {dayNumber}
-        </p>
+        <p className="text-[#0c2536] text-lg font-semibold whitespace-nowrap">Day - {dayNumber}</p>
         {isEditing ? (
           <input
             type="text"
