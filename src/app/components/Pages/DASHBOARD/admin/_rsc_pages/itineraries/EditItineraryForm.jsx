@@ -1908,8 +1908,6 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
     switch (currentStep) {
       case 1:
         return <PersonalInfoTab />;
-      case 2:
-        return ScheduleTab();
       case 3:
         return <PricingTab />;
       case 4:
@@ -2023,7 +2021,10 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
             }
           >
             <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
-              {renderStep()}
+              <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>
+                <ScheduleTab />
+              </div>
+              {currentStep !== 2 && renderStep()}
               <div className="flex justify-between pt-4">
                 {currentStep > 1 && (
                   <Button
