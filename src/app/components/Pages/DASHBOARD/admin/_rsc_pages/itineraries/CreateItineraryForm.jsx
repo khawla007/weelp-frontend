@@ -420,20 +420,8 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
         {dayFields.map((item, index) => (
           <div key={item?.id} className="space-y-4">
             <div className="flex items-center gap-4 mt-4 justify-between">
-              <Input
-                type="number"
-                {...register(`schedules.${index}.day`)}
-                defaultValue={item?.day}
-                className="w-20 focus-visible:ring-secondaryDark focus-visible:ring-1"
-                placeholder="Day"
-                readOnly
-              />
-              <Input
-                type="text"
-                {...register(`schedules.${index}.title`)}
-                className="flex-1 focus-visible:ring-secondaryDark focus-visible:ring-1"
-                placeholder="e.g., Arrival in Port Blair"
-              />
+              <Input type="number" {...register(`schedules.${index}.day`)} defaultValue={item?.day} className="w-20 focus-visible:ring-secondaryDark focus-visible:ring-1" placeholder="Day" readOnly />
+              <Input type="text" {...register(`schedules.${index}.title`)} className="flex-1 focus-visible:ring-secondaryDark focus-visible:ring-1" placeholder="e.g., Arrival in Port Blair" />
               <Trash onClick={() => removeDay(index)} className=" cursor-pointer " size={20} />
             </div>
 
