@@ -1612,7 +1612,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
       case 1:
         return <PersonalInfoTab />;
       case 2:
-        return <ScheduleTab />;
+        return ScheduleTab();
       case 3:
         return <PricingTab />;
       case 4:
