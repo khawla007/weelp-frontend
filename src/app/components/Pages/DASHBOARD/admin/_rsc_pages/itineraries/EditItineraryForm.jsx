@@ -371,7 +371,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       setError,
       clearErrors,
       formState: { errors },
-    } = useFormContext();
+    } = methods;
 
     // Scheules Repeater
     const {
@@ -2021,9 +2021,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
             }
           >
             <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
-              <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>
-                {ScheduleTab()}
-              </div>
+              <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>{ScheduleTab()}</div>
               {currentStep !== 2 && renderStep()}
               <div className="flex justify-between pt-4">
                 {currentStep > 1 && (
