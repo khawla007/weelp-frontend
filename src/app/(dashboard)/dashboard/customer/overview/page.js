@@ -34,7 +34,7 @@ export default async function OverviewPage() {
       </section>
 
       <section className="mb-8">
-        <NotificationWidget />
+        <NotificationWidget session={session} />
       </section>
 
       <section>

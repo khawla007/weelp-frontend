@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { Bell, CheckCheck, CheckCircle, XCircle, ShoppingCart } from 'lucide-react';
 import { fetchNotifications, markAllAsRead } from '@/lib/services/notifications';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
@@ -23,8 +22,7 @@ const TYPE_COLORS = {
   new_booking: 'text-blue-500',
 };
 
-export default function NotificationWidget() {
-  const { data: session } = useSession();
+export default function NotificationWidget({ session }) {
   const [notifications, setNotifications] = useState(null);
 
   useEffect(() => {
