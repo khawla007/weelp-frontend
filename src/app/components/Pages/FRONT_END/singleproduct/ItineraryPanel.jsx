@@ -283,14 +283,15 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
 
       {/* Activity Cards */}
       {activities.map((activity, activityIndex) => {
-        const { name: activityName, main_location, duration_minutes, type: activityType, featured_image } = activity;
+        const { name: activityName, place_name, main_location, duration_minutes, type: activityType, featured_image } = activity;
+        const locationName = place_name || main_location;
         if (!activityName) return null;
 
         return (
           <div key={activityIndex} className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3 bg-[#f8f9f9] border-b border-[#e5e5e5]">
               <span className="text-sm font-semibold text-[#0c2536]">
-                Activity in {main_location || 'Unknown'} {formatDuration(duration_minutes) || ''}
+                Activity in {locationName || 'Unknown'} {formatDuration(duration_minutes) || ''}
               </span>
               <div className="flex items-center gap-3">
                 {isEditing && (
@@ -317,7 +318,7 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
               <img src={featured_image || 'https://picsum.photos/300/200?random=2'} alt={activityName} className="w-[140px] h-[100px] object-cover rounded-lg flex-shrink-0" />
               <div className="flex flex-col justify-center gap-2 flex-1">
                 <h3 className="text-[#0c2536] text-base font-semibold">{activityName}</h3>
-                {main_location && <p className="text-sm text-[#5a5a5a]">{main_location}</p>}
+                {locationName && <p className="text-sm text-[#5a5a5a]">{locationName}</p>}
                 <div className="flex gap-4 flex-wrap mt-1">
                   {activity.tags?.map((tag, i) => (
                     <span key={i} className="text-[#5a5a5a] inline-flex gap-1.5 items-center text-sm">
@@ -339,7 +340,7 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
             </div>
 
             {/* Activity Locations: Hotel -> City Name */}
-            {main_location && (
+            {locationName && (
               <div className="px-4 pb-4 flex items-center justify-between gap-2">
                 <span className="inline-flex items-center gap-2 border border-[#e5e5e5] rounded-lg py-2 px-4 text-sm text-[#0c2536]">
                   <MapPin size={14} /> Hotel
@@ -350,7 +351,7 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
                   <div className="flex-1 border-t border-dashed border-[#ccc]" />
                 </div>
                 <span className="inline-flex items-center gap-2 border border-[#e5e5e5] rounded-lg py-2 px-4 text-sm text-[#0c2536]">
-                  <MapPin size={14} /> {main_location}
+                  <MapPin size={14} /> {locationName}
                 </span>
               </div>
             )}

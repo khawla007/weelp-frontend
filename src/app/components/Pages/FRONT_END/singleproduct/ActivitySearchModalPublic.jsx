@@ -40,7 +40,7 @@ export default function ActivitySearchModalPublic({ open, onOpenChange, slug, on
       onSelect({
         activity_id: activity.id,
         name: activity.name,
-        main_location: activity.main_location,
+        place_name: activity.place_name,
         duration_minutes: activity.duration_minutes,
         type: activity.type,
         featured_image: activity.featured_image,
@@ -100,10 +100,10 @@ export default function ActivitySearchModalPublic({ open, onOpenChange, slug, on
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium truncate">{activity.name}</p>
-                    {activity.main_location && (
+                    {activity.place_name && (
                       <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                         <MapPin className="h-3 w-3" />
-                        <span className="truncate">{activity.main_location}</span>
+                        <span>Place: {activity.place_name}</span>
                       </p>
                     )}
                     {activity.duration_minutes && (

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { SearchIcon, Clock, Car, ArrowLeft, Loader2 } from 'lucide-react';
+import { SearchIcon, Clock, Car, MapPin, ArrowLeft, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -143,6 +143,12 @@ export default function TransferSearchModalPublic({ open, onOpenChange, slug, on
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{transfer.name}</p>
+                        {transfer.pickup_place_name && (
+                          <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                            <MapPin className="h-3 w-3" />
+                            <span>Place: {transfer.pickup_place_name}</span>
+                          </p>
+                        )}
                         {transfer.vehicle_type && (
                           <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                             <Car className="h-3 w-3" />
