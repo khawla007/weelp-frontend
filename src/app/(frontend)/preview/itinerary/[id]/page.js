@@ -69,26 +69,16 @@ export default async function CreatorItineraryPreviewPage({ params }) {
       <div className="bg-[#558e7b] text-white px-4 py-3 fixed top-0 left-0 right-0 z-50">
         <div className="max-w-[1480px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link
-              href="/dashboard/admin/creator-itineraries"
-              className="inline-flex items-center gap-2 text-sm text-white"
-            >
+            <Link href="/dashboard/admin/creator-itineraries" className="inline-flex items-center gap-2 text-sm text-white">
               <ArrowLeft className="size-4" />
               Back
             </Link>
             <span className="text-sm font-medium">Preview Mode</span>
             <span className="text-sm text-white">Creator: {itinerary.creator?.name || '-'}</span>
-            <Badge variant={statusBadgeVariant(itinerary.approval_status)}>
-              {formatStatus(itinerary.approval_status)}
-            </Badge>
+            <Badge variant={statusBadgeVariant(itinerary.approval_status)}>{formatStatus(itinerary.approval_status)}</Badge>
           </div>
           {originalLink && (
-            <a
-              href={originalLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-white inline-flex items-center gap-1"
-            >
+            <a href={originalLink} target="_blank" rel="noopener noreferrer" className="text-sm text-white inline-flex items-center gap-1">
               View Original
               <ExternalLink className="size-3" />
             </a>
@@ -100,23 +90,8 @@ export default async function CreatorItineraryPreviewPage({ params }) {
       <div className="h-[44px]" />
 
       {/* Same layout as real itinerary page */}
-      <BannerSection
-        activityName={name}
-        media_gallery={media_gallery}
-        reviewSummary={review_summary}
-        primaryLocation={primaryLocation}
-        city={citySlug}
-        scheduleDisplay={scheduleDisplay}
-      />
-      <SingleProductTabSection
-        productType="itinerary"
-        productId={itinerary.id}
-        productData={itinerary}
-        itinerarySlug={itinerary.slug}
-        session={session}
-        itinerary={itinerary}
-        readOnly={true}
-      />
+      <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} primaryLocation={primaryLocation} city={citySlug} scheduleDisplay={scheduleDisplay} />
+      <SingleProductTabSection productType="itinerary" productId={itinerary.id} productData={itinerary} itinerarySlug={itinerary.slug} session={session} itinerary={itinerary} readOnly={true} />
     </>
   );
 }

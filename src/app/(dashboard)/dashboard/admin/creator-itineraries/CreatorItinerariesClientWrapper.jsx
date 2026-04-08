@@ -135,12 +135,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                       )}
                     </TableCell>
                     <TableCell>
-                      <a
-                        href={`/preview/itinerary/${item.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-secondaryDark hover:underline inline-flex items-center gap-1"
-                      >
+                      <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer" className="text-secondaryDark hover:underline inline-flex items-center gap-1">
                         Preview
                         <ExternalLink className="size-3" />
                       </a>

@@ -722,12 +722,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
 
                   {/* Handle Modal  for Creating */}
                   {modalContext.type === 'activity' && modalContext.day == item.day && (
-                    <ActivitySearchModal
-                      cityIds={methods.getValues('locations') || []}
-                      day={item?.day}
-                      addActivity={addActivity}
-                      onClose={handleCloseModal}
-                    />
+                    <ActivitySearchModal cityIds={methods.getValues('locations') || []} day={item?.day} addActivity={addActivity} onClose={handleCloseModal} />
                   )}
                   {/* Transfer Modal  */}
                   {modalContext.type === 'transfer' && modalContext.day === item.day && (

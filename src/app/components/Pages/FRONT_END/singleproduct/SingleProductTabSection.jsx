@@ -148,62 +148,62 @@ const SingleProductTabSection = ({
       {/* Two-Column Content */}
       <div className={`max-w-[1480px] mx-auto px-4 ${fixedTab ? 'mt-[60px]' : ''}`}>
         <div className="flex flex-col xl:flex-row">
-        {/* Left Column — Content */}
-        <div className="w-full xl:w-[58%]">
-          <div className="xl:pr-[15px]">
-            {/* Tab 1: varies by productType */}
-            <div id="tab_1" ref={(el) => (sectionRefs.current['tab_1'] = el)} className="pt-[70px] lg:mb-[35px]">
-              {productType === 'activity' ? (
-                <OverViewPanel description={productData?.description} />
-              ) : (
-                productData?.schedules?.length > 0 && (
-                  <ItineraryPanel schedules={productData.schedules} startDate={selectedStartDate} title={TAB_1_LABELS[productType]} session={session} itinerary={itinerary} readOnly={readOnly} />
-                )
-              )}
-            </div>
-
-            {/* Tab 2: What's Included */}
-            <div id="tab_2" ref={(el) => (sectionRefs.current['tab_2'] = el)} className="pt-[35px] lg:mb-[35px]">
-              <WhatIncludedPanel />
-            </div>
-
-            {/* Tab 3: Reviews (conditional) */}
-            {hasReviews && (
-              <div id="tab_3" ref={(el) => (sectionRefs.current['tab_3'] = el)} className="pt-[35px] lg:mb-[35px]">
-                <ReviewPanel productData={productData} activitySlug={activitySlug} />
+          {/* Left Column — Content */}
+          <div className="w-full xl:w-[58%]">
+            <div className="xl:pr-[15px]">
+              {/* Tab 1: varies by productType */}
+              <div id="tab_1" ref={(el) => (sectionRefs.current['tab_1'] = el)} className="pt-[70px] lg:mb-[35px]">
+                {productType === 'activity' ? (
+                  <OverViewPanel description={productData?.description} />
+                ) : (
+                  productData?.schedules?.length > 0 && (
+                    <ItineraryPanel schedules={productData.schedules} startDate={selectedStartDate} title={TAB_1_LABELS[productType]} session={session} itinerary={itinerary} readOnly={readOnly} />
+                  )
+                )}
               </div>
-            )}
 
-            {/* Tab 4: FAQs */}
-            <div id="tab_4" ref={(el) => (sectionRefs.current['tab_4'] = el)} className="pt-[35px] lg:mb-[35px]">
-              <FaqPanel faqs={faqs} />
-            </div>
+              {/* Tab 2: What's Included */}
+              <div id="tab_2" ref={(el) => (sectionRefs.current['tab_2'] = el)} className="pt-[35px] lg:mb-[35px]">
+                <WhatIncludedPanel />
+              </div>
 
-            {/* Similar Experiences */}
-            <div className="lg:mb-[70px]">
-              <SimilarExperiences activities={similarActivities} />
+              {/* Tab 3: Reviews (conditional) */}
+              {hasReviews && (
+                <div id="tab_3" ref={(el) => (sectionRefs.current['tab_3'] = el)} className="pt-[35px] lg:mb-[35px]">
+                  <ReviewPanel productData={productData} activitySlug={activitySlug} />
+                </div>
+              )}
+
+              {/* Tab 4: FAQs */}
+              <div id="tab_4" ref={(el) => (sectionRefs.current['tab_4'] = el)} className="pt-[35px] lg:mb-[35px]">
+                <FaqPanel faqs={faqs} />
+              </div>
+
+              {/* Similar Experiences */}
+              <div className="lg:mb-[70px]">
+                <SimilarExperiences activities={similarActivities} />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Right Column — Booking Sidebar */}
-        <div className="w-full xl:w-[42%] relative" style={{ background: 'linear-gradient(180deg, #f5f9fa 0%, rgba(255, 255, 255, 0.4) 100%)' }}>
-          {/* Bottom decorative image */}
-          <div className="absolute bottom-0 left-0 w-full h-auto pointer-events-none">
-            <img src={bottomImage} alt="" className="w-full h-auto object-cover" style={{ maxHeight: '150px' }} />
-            <div className="absolute bottom-0 left-0 w-full h-24 backdrop-blur-3xl opacity-70" />
+          {/* Right Column — Booking Sidebar */}
+          <div className="w-full xl:w-[42%] relative" style={{ background: 'linear-gradient(180deg, #f5f9fa 0%, rgba(255, 255, 255, 0.4) 100%)' }}>
+            {/* Bottom decorative image */}
+            <div className="absolute bottom-0 left-0 w-full h-auto pointer-events-none">
+              <img src={bottomImage} alt="" className="w-full h-auto object-cover" style={{ maxHeight: '150px' }} />
+              <div className="absolute bottom-0 left-0 w-full h-24 backdrop-blur-3xl opacity-70" />
+            </div>
+            <ProductSidebar
+              productId={productId}
+              productData={productData}
+              productType={productType}
+              itinerarySlug={itinerarySlug}
+              packageSlug={packageSlug}
+              defaultDateRange={defaultDateRange}
+              onDateChange={isScheduleType ? handleDateChange : null}
+              scheduleCount={isScheduleType ? scheduleCount : 0}
+            />
           </div>
-          <ProductSidebar
-            productId={productId}
-            productData={productData}
-            productType={productType}
-            itinerarySlug={itinerarySlug}
-            packageSlug={packageSlug}
-            defaultDateRange={defaultDateRange}
-            onDateChange={isScheduleType ? handleDateChange : null}
-            scheduleCount={isScheduleType ? scheduleCount : 0}
-          />
-        </div>
         </div>
       </div>
 

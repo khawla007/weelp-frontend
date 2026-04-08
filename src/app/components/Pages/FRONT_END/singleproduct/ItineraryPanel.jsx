@@ -338,7 +338,6 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
                 </div>
               </div>
             </div>
-
           </div>
         );
       })}
