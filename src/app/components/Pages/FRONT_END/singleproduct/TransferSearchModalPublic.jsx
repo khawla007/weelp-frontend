@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
 import { SearchIcon, Clock, Car, MapPin, ArrowLeft, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -136,7 +135,7 @@ export default function TransferSearchModalPublic({ open, onOpenChange, slug, on
                     <li key={transfer.id} className="flex items-center gap-3 p-2 rounded-md hover:bg-neutral-100 cursor-pointer transition-colors" onClick={() => handleSelectTransfer(transfer)}>
                       <div className="relative h-14 w-14 rounded-md overflow-hidden bg-neutral-200 flex-shrink-0">
                         {transfer.featured_image ? (
-                          <Image src={transfer.featured_image} alt={transfer.name} fill className="object-cover" sizes="56px" />
+                          <img src={transfer.featured_image} alt={transfer.name} className="h-full w-full object-cover" />
                         ) : (
                           <div className="h-full w-full flex items-center justify-center text-xs text-muted-foreground">No img</div>
                         )}
@@ -177,7 +176,7 @@ export default function TransferSearchModalPublic({ open, onOpenChange, slug, on
             <div className="flex items-center gap-3 p-2 bg-neutral-50 rounded-md">
               <div className="relative h-10 w-10 rounded-md overflow-hidden bg-neutral-200 flex-shrink-0">
                 {selectedTransfer.featured_image ? (
-                  <Image src={selectedTransfer.featured_image} alt={selectedTransfer.name} fill className="object-cover" sizes="40px" />
+                  <img src={selectedTransfer.featured_image} alt={selectedTransfer.name} className="h-full w-full object-cover" />
                 ) : (
                   <div className="h-full w-full flex items-center justify-center text-xs text-muted-foreground">No img</div>
                 )}

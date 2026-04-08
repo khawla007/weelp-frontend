@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
 import { SearchIcon, Clock, MapPin, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -93,7 +92,7 @@ export default function ActivitySearchModalPublic({ open, onOpenChange, slug, on
                 <li key={activity.id} className="flex items-center gap-3 p-2 rounded-md hover:bg-neutral-100 cursor-pointer transition-colors" onClick={() => handleSelect(activity)}>
                   <div className="relative h-14 w-14 rounded-md overflow-hidden bg-neutral-200 flex-shrink-0">
                     {activity.featured_image ? (
-                      <Image src={activity.featured_image} alt={activity.name} fill className="object-cover" sizes="56px" />
+                      <img src={activity.featured_image} alt={activity.name} className="h-full w-full object-cover" />
                     ) : (
                       <div className="h-full w-full flex items-center justify-center text-xs text-muted-foreground">No img</div>
                     )}
