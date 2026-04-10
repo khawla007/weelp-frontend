@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 
-const STATUS_TABS = ['all', 'pending_approval', 'approved', 'rejected'];
+const STATUS_TABS = ['all', 'pending_approval', 'approved', 'rejected', 'removed'];
 
 const statusBadgeVariant = (status) => {
   switch (status) {
@@ -32,6 +32,8 @@ const statusBadgeVariant = (status) => {
       return 'destructive';
     case 'pending_approval':
       return 'warning';
+    case 'removed':
+      return 'destructive';
     default:
       return 'secondary';
   }
@@ -221,7 +223,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     <TableCell>{formatDate(item.created_at)}</TableCell>
                     <TableCell>
                       <div className="flex flex-col gap-1">
-                        <Badge variant={statusBadgeVariant(item.approval_status)}>{formatStatus(item.approval_status)}</Badge>
+                        <Badge variant={statusBadgeVariant(item.approval_status)} className="justify-center">{formatStatus(item.approval_status)}</Badge>
                         {item.draft_itinerary_id && <Badge variant="warning">Edit Pending</Badge>}
                         {item.removal_status === 'requested' && <Badge variant="destructive">Removal Requested</Badge>}
                       </div>
@@ -308,6 +310,32 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                               </AlertDialogContent>
                             </AlertDialog>
                           </>
+                        )}
+
+                        {item.approval_status === 'removed' && (
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="outline" size="icon" disabled={processingId === item.id} className="border-red-500 text-red-600 hover:bg-red-50 size-8">
+                                <Trash2 className="size-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent className="bg-white">
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete Permanently?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to permanently delete &quot;{item.name}&quot;? All related data will be erased from the database. This action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel className="border-[#558e7b] text-black hover:bg-[#558e7b] hover:text-white">
+                                  Cancel
+                                </AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDelete(item.id)} className="border-red-500 text-black bg-white hover:bg-red-500 hover:text-white">
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         )}
                       </div>
                     </TableCell>
