@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,16 +11,10 @@ import { Combobox } from '@/components/ui/combobox';
 import { VEHICLE_TYPES, TRANSFER_TYPES } from '@/constants/transfer'; // constants
 
 // Basic Information
-const BasicInfoTabAdmin = ({ defaultCityId = null }) => {
-  const [cityId, setCityId] = useState(defaultCityId);
-
+const BasicInfoTabAdmin = () => {
   // fetch all cities
   const { data: citiesData, error: citiesError, isLoading: citiesLoading } = useSWR('/api/admin/cities/list', fetcher);
   const cities = citiesData?.data || [];
-
-  // fetch places filtered by selected city
-  const { data: placesData } = useSWR(cityId ? `/api/admin/places/by-city/${cityId}` : null, fetcher);
-  const places = placesData?.data || [];
 
   // intialize form
   const {
@@ -32,6 +25,13 @@ const BasicInfoTabAdmin = ({ defaultCityId = null }) => {
     formState: { errors },
     control,
   } = useFormContext();
+
+  // city_id persisted in form state so it survives unmount/remount across steps
+  const cityId = watch('city_id') || null;
+
+  // fetch places filtered by selected city
+  const { data: placesData } = useSWR(cityId ? `/api/admin/places/by-city/${cityId}` : null, fetcher);
+  const places = placesData?.data || [];
 
   // handling value when blur
   const handleBlur = () => {
@@ -117,7 +117,7 @@ const BasicInfoTabAdmin = ({ defaultCityId = null }) => {
           data={cities}
           value={cityId}
           onChange={(id) => {
-            setCityId(id);
+            setValue('city_id', id);
             setValue('pickup_place_id', '');
             setValue('dropoff_place_id', '');
           }}
@@ -136,7 +136,18 @@ const BasicInfoTabAdmin = ({ defaultCityId = null }) => {
             control={control}
             defaultValue=""
             rules={{ required: 'Pickup place is required' }}
-            render={({ field }) => <SelectInputTransfer value={field.value} onChange={field.onChange} options={places} placeholder={cityId ? 'Select pickup place...' : 'Select a city first...'} />}
+            render={({ field }) => (
+              <SelectInputTransfer
+                value={field.value}
+                onChange={(id) => {
+                  field.onChange(id);
+                  const place = places.find((p) => String(p.id) === String(id));
+                  if (place) setValue('pickup_location', place.name);
+                }}
+                options={places}
+                placeholder={cityId ? 'Select pickup place...' : 'Select a city first...'}
+              />
+            )}
           />
           {errors?.pickup_place_id && <p className="text-red-500 text-sm mt-1">{errors.pickup_place_id.message}</p>}
         </div>
@@ -153,7 +164,18 @@ const BasicInfoTabAdmin = ({ defaultCityId = null }) => {
               required: 'Dropoff place is required',
               validate: (value) => value !== watch('pickup_place_id') || 'Pickup and Dropoff place cannot be the same',
             }}
-            render={({ field }) => <SelectInputTransfer value={field.value} onChange={field.onChange} options={places} placeholder={cityId ? 'Select dropoff place...' : 'Select a city first...'} />}
+            render={({ field }) => (
+              <SelectInputTransfer
+                value={field.value}
+                onChange={(id) => {
+                  field.onChange(id);
+                  const place = places.find((p) => String(p.id) === String(id));
+                  if (place) setValue('dropoff_location', place.name);
+                }}
+                options={places}
+                placeholder={cityId ? 'Select dropoff place...' : 'Select a city first...'}
+              />
+            )}
           />
           {errors?.dropoff_place_id && <p className="text-red-500 text-sm mt-1">{errors.dropoff_place_id.message}</p>}
         </div>

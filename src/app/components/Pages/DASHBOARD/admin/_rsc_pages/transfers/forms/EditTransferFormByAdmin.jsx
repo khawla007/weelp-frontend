@@ -46,7 +46,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
     media_gallery = [],
     addons = [],
   } = transferData;
-  const { vehicle_type = '', dropoff_place_id = '', pickup_place_id = '', pickup_city_id = null, dropoff_city_id = null, inclusion = '' } = vendor_routes || {}; // routes destructure
+  const { vehicle_type = '', dropoff_place_id = '', pickup_place_id = '', pickup_city_id = null, dropoff_city_id = null, inclusion = '', pickup_location = '', dropoff_location = '' } = vendor_routes || {}; // routes destructure
   const { base_price = '', currency = '', price_type = '', extra_luggage_charge = '', waiting_charge } = pricing_availability || {}; //pricing destructure
   const { availability_type, available_days = [], time_slots = [], blackout_dates = [], minimum_lead_time, maximum_passengers } = schedule || {}; // destructure schedule data
 
@@ -56,10 +56,13 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
   // intialize methods
   const methods = useForm({
     defaultValues: {
+      city_id: pickup_city_id ? pickup_city_id : '',
       name: name,
       slug: slug,
       transfer_type: transfer_type,
       is_vendor: false,
+      pickup_location: pickup_location,
+      dropoff_location: dropoff_location,
       vehicle_type: vehicle_type,
       dropoff_place_id: dropoff_place_id ? String(dropoff_place_id) : '',
       pickup_place_id: pickup_place_id ? String(pickup_place_id) : '',
@@ -116,7 +119,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <BasicInfoTabAdmin defaultCityId={pickup_city_id} />;
+        return <BasicInfoTabAdmin />;
       case 2:
         return <PricingTabAdmin />;
       case 3:

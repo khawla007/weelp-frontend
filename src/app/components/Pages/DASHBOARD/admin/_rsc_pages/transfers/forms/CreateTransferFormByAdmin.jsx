@@ -37,7 +37,10 @@ export const CreateTransferFormByAdmin = ({}) => {
   // intialize methods
   const methods = useForm({
     defaultValues: {
+      city_id: '',
       is_vendor: false,
+      pickup_location: '',
+      dropoff_location: '',
       media_gallery: [],
       availability_type: 'always_available',
       available_days: [],
