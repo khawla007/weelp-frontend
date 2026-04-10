@@ -8,15 +8,7 @@ import { requestEdit, requestRemoval } from '@/lib/actions/creatorItineraries';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 
 export default function MyItinerariesClientWrapper({ initialItineraries, lastPage }) {
@@ -152,22 +144,28 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
 
                   {approvalStatus === 'approved' && !item.draft_itinerary_id && item.removal_status !== 'requested' && (
                     <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleRequestEdit(item.id)}
-                        disabled={processingId === item.id}
-                        className="flex-1 border-[#435a6742] text-[#435a67] text-xs"
-                      >
+                      <Button variant="outline" size="sm" onClick={() => handleRequestEdit(item.id)} disabled={processingId === item.id} className="flex-1 border-[#435a6742] text-[#435a67] text-xs">
                         <Pencil className="size-3 mr-1" />
                         Request Edit
                       </Button>
-                      <Dialog open={removalDialogOpen && removalTargetId === item.id} onOpenChange={(open) => { setRemovalDialogOpen(open); if (!open) { setRemovalTargetId(null); setRemovalReason(''); } }}>
+                      <Dialog
+                        open={removalDialogOpen && removalTargetId === item.id}
+                        onOpenChange={(open) => {
+                          setRemovalDialogOpen(open);
+                          if (!open) {
+                            setRemovalTargetId(null);
+                            setRemovalReason('');
+                          }
+                        }}
+                      >
                         <DialogTrigger asChild>
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => { setRemovalTargetId(item.id); setRemovalDialogOpen(true); }}
+                            onClick={() => {
+                              setRemovalTargetId(item.id);
+                              setRemovalDialogOpen(true);
+                            }}
                             disabled={processingId === item.id}
                             className="flex-1 border-red-200 text-red-500 hover:bg-red-50 text-xs"
                           >
@@ -178,18 +176,17 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
                         <DialogContent>
                           <DialogHeader>
                             <DialogTitle>Request Itinerary Removal</DialogTitle>
-                            <DialogDescription>
-                              Your request will be reviewed by an admin. Optionally provide a reason.
-                            </DialogDescription>
+                            <DialogDescription>Your request will be reviewed by an admin. Optionally provide a reason.</DialogDescription>
                           </DialogHeader>
-                          <Textarea
-                            value={removalReason}
-                            onChange={(e) => setRemovalReason(e.target.value)}
-                            placeholder="Reason for removal (optional)"
-                            className="min-h-[80px]"
-                          />
+                          <Textarea value={removalReason} onChange={(e) => setRemovalReason(e.target.value)} placeholder="Reason for removal (optional)" className="min-h-[80px]" />
                           <DialogFooter>
-                            <Button variant="outline" onClick={() => { setRemovalDialogOpen(false); setRemovalReason(''); }}>
+                            <Button
+                              variant="outline"
+                              onClick={() => {
+                                setRemovalDialogOpen(false);
+                                setRemovalReason('');
+                              }}
+                            >
                               Cancel
                             </Button>
                             <Button onClick={handleRequestRemoval} disabled={processingId === item.id} className="bg-red-600 hover:bg-red-700 text-white">

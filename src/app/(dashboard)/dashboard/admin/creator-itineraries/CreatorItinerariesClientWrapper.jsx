@@ -8,13 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
 import { approveCreatorItinerary, rejectCreatorItinerary } from '@/lib/actions/creatorItineraries';
-import {
-  adminDeleteCreatorItinerary,
-  adminApproveEdit,
-  adminRejectEdit,
-  adminApproveRemoval,
-  adminRejectRemoval,
-} from '@/lib/actions/creatorItineraries';
+import { adminDeleteCreatorItinerary, adminApproveEdit, adminRejectEdit, adminApproveRemoval, adminRejectRemoval } from '@/lib/actions/creatorItineraries';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -228,12 +222,8 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     <TableCell>
                       <div className="flex flex-col gap-1">
                         <Badge variant={statusBadgeVariant(item.approval_status)}>{formatStatus(item.approval_status)}</Badge>
-                        {item.draft_itinerary_id && (
-                          <Badge variant="warning">Edit Pending</Badge>
-                        )}
-                        {item.removal_status === 'requested' && (
-                          <Badge variant="destructive">Removal Requested</Badge>
-                        )}
+                        {item.draft_itinerary_id && <Badge variant="warning">Edit Pending</Badge>}
+                        {item.removal_status === 'requested' && <Badge variant="destructive">Removal Requested</Badge>}
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
@@ -272,7 +262,13 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
 
                         {item.removal_status === 'requested' && (
                           <>
-                            <Button variant="outline" size="sm" onClick={() => handleRejectRemoval(item.id)} disabled={processingId === item.id} className="border-red-300 text-red-600 hover:bg-red-50">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleRejectRemoval(item.id)}
+                              disabled={processingId === item.id}
+                              className="border-red-300 text-red-600 hover:bg-red-50"
+                            >
                               <XCircle className="size-4 mr-1" />
                               Reject Removal
                             </Button>
@@ -301,9 +297,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                               <AlertDialogContent>
                                 <AlertDialogHeader>
                                   <AlertDialogTitle>Remove Itinerary</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    This will permanently remove &quot;{item.name}&quot; and all related data. This action cannot be undone.
-                                  </AlertDialogDescription>
+                                  <AlertDialogDescription>This will permanently remove &quot;{item.name}&quot; and all related data. This action cannot be undone.</AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                   <AlertDialogCancel>Cancel</AlertDialogCancel>

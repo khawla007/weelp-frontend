@@ -77,10 +77,7 @@ export default function DraftEditorClient({ draftId }) {
   };
 
   const addDay = () => {
-    setSchedules((prev) => [
-      ...prev,
-      { day: prev.length + 1, title: '', activities: [], transfers: [] },
-    ]);
+    setSchedules((prev) => [...prev, { day: prev.length + 1, title: '', activities: [], transfers: [] }]);
   };
 
   const removeDay = (dayIndex) => {
@@ -170,9 +167,7 @@ export default function DraftEditorClient({ draftId }) {
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Submit for Review</AlertDialogTitle>
-              <AlertDialogDescription>
-                Your changes will be sent to admin for approval. The current live version stays unchanged until approved.
-              </AlertDialogDescription>
+              <AlertDialogDescription>Your changes will be sent to admin for approval. The current live version stays unchanged until approved.</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>

@@ -22,15 +22,17 @@ const EditCreatorItinerary = async ({ params }) => {
 
   const { id } = await params;
 
-  const [{ data: tagsData }, { data: locationsData = {} }, { data: attributesData = {} }, { data: categoriesData = {} }, transfers, { data: activitiesData = [] }, itineraryResult] = await Promise.all([
-    getAllTagsAdmin('', { all: true }),
-    getAllCitiesAdmin(),
-    getAllAttributesAdmin(null, { all: true }),
-    getCategoriesAdmin(null, { all: true }),
-    getAllTransfersAdmin(),
-    getAllActivitesAdmin(),
-    getAdminCreatorItinerary(id),
-  ]);
+  const [{ data: tagsData }, { data: locationsData = {} }, { data: attributesData = {} }, { data: categoriesData = {} }, transfers, { data: activitiesData = [] }, itineraryResult] = await Promise.all(
+    [
+      getAllTagsAdmin('', { all: true }),
+      getAllCitiesAdmin(),
+      getAllAttributesAdmin(null, { all: true }),
+      getCategoriesAdmin(null, { all: true }),
+      getAllTransfersAdmin(),
+      getAllActivitesAdmin(),
+      getAdminCreatorItinerary(id),
+    ],
+  );
 
   const { data: tags = [] } = tagsData;
   const { data: locations = [] } = locationsData;
@@ -49,15 +51,7 @@ const EditCreatorItinerary = async ({ params }) => {
         <h1 className="text-2xl font-bold text-[#142A38]">Edit Creator Itinerary</h1>
         <p className="text-[#5A5A5A] mt-1">Editing: {itinerarydata.name}</p>
       </div>
-      <EditItineraryForm
-        tags={tags}
-        locations={locations}
-        attributes={attributes}
-        categories={categories}
-        alltransfers={transfers}
-        allactivities={activitiesData}
-        itineraryData={itinerarydata}
-      />
+      <EditItineraryForm tags={tags} locations={locations} attributes={attributes} categories={categories} alltransfers={transfers} allactivities={activitiesData} itineraryData={itinerarydata} />
     </div>
   );
 };

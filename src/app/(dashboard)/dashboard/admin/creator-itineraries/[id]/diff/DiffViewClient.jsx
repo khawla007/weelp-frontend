@@ -18,7 +18,12 @@ function DiffField({ label, approvedValue, draftValue }) {
       </div>
       <div>
         <p className="text-xs text-[#5A5A5A] mb-1">
-          {label} (Proposed){changed && <Badge variant="warning" className="ml-2 text-xs">Changed</Badge>}
+          {label} (Proposed)
+          {changed && (
+            <Badge variant="warning" className="ml-2 text-xs">
+              Changed
+            </Badge>
+          )}
         </p>
         <p className="text-sm text-[#142A38]">{draftValue || <span className="text-[#5A5A5A] italic">Empty</span>}</p>
       </div>
@@ -40,8 +45,16 @@ function ScheduleDiff({ approvedSchedules, draftSchedules }) {
           <div key={i} className="border border-[#435a6742] rounded-lg overflow-hidden">
             <div className="bg-[#CFDBE54D] px-4 py-2 font-medium text-sm text-[#142A38]">
               Day {dayNum}
-              {!approved && <Badge variant="success" className="ml-2 text-xs">New</Badge>}
-              {!draft && <Badge variant="destructive" className="ml-2 text-xs">Removed</Badge>}
+              {!approved && (
+                <Badge variant="success" className="ml-2 text-xs">
+                  New
+                </Badge>
+              )}
+              {!draft && (
+                <Badge variant="destructive" className="ml-2 text-xs">
+                  Removed
+                </Badge>
+              )}
             </div>
             <div className="grid grid-cols-2 gap-4 p-4">
               <div>
