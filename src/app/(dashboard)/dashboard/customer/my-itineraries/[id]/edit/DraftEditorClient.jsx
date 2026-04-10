@@ -170,8 +170,10 @@ export default function DraftEditorClient({ draftId }) {
               <AlertDialogDescription>Your changes will be sent to admin for approval. The current live version stays unchanged until approved.</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleSubmit} className="!bg-[#142A38] hover:!bg-[#142A38]/90 text-white">
+              <AlertDialogCancel className="bg-white border-[#558e7b] text-black hover:bg-[#558e7b] hover:text-white">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={handleSubmit} className="bg-[#558e7b] border-[#558e7b] text-white hover:bg-white hover:text-black">
                 Submit
               </AlertDialogAction>
             </AlertDialogFooter>
