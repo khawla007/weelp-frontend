@@ -136,9 +136,7 @@ const BasicInfoTabAdmin = ({ defaultCityId = null }) => {
             control={control}
             defaultValue=""
             rules={{ required: 'Pickup place is required' }}
-            render={({ field }) => (
-              <SelectInputTransfer value={field.value} onChange={field.onChange} options={places} placeholder={cityId ? 'Select pickup place...' : 'Select a city first...'} />
-            )}
+            render={({ field }) => <SelectInputTransfer value={field.value} onChange={field.onChange} options={places} placeholder={cityId ? 'Select pickup place...' : 'Select a city first...'} />}
           />
           {errors?.pickup_place_id && <p className="text-red-500 text-sm mt-1">{errors.pickup_place_id.message}</p>}
         </div>
@@ -155,9 +153,7 @@ const BasicInfoTabAdmin = ({ defaultCityId = null }) => {
               required: 'Dropoff place is required',
               validate: (value) => value !== watch('pickup_place_id') || 'Pickup and Dropoff place cannot be the same',
             }}
-            render={({ field }) => (
-              <SelectInputTransfer value={field.value} onChange={field.onChange} options={places} placeholder={cityId ? 'Select dropoff place...' : 'Select a city first...'} />
-            )}
+            render={({ field }) => <SelectInputTransfer value={field.value} onChange={field.onChange} options={places} placeholder={cityId ? 'Select dropoff place...' : 'Select a city first...'} />}
           />
           {errors?.dropoff_place_id && <p className="text-red-500 text-sm mt-1">{errors.dropoff_place_id.message}</p>}
         </div>
