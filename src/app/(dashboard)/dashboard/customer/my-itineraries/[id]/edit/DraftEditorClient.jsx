@@ -171,7 +171,7 @@ export default function DraftEditorClient({ draftId }) {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleSubmit} className="bg-secondaryDark hover:bg-secondaryDark/90">
+              <AlertDialogAction onClick={handleSubmit} className="!bg-[#142A38] hover:!bg-[#142A38]/90 text-white">
                 Submit
               </AlertDialogAction>
             </AlertDialogFooter>
