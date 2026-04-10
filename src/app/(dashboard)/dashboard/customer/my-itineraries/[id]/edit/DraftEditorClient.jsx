@@ -68,12 +68,11 @@ export default function DraftEditorClient({ draftId }) {
     const result = await submitDraft(draftId);
     if (result.success) {
       toast({ title: 'Submitted for review', description: result.message });
-      router.push('/dashboard/customer/my-itineraries');
-      router.refresh();
+      window.location.href = '/dashboard/customer/my-itineraries';
     } else {
       toast({ title: 'Error', description: result.message, variant: 'destructive' });
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
 
   const addDay = () => {
