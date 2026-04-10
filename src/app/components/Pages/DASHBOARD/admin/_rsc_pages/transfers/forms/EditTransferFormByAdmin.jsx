@@ -46,7 +46,16 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
     media_gallery = [],
     addons = [],
   } = transferData;
-  const { vehicle_type = '', dropoff_place_id = '', pickup_place_id = '', pickup_city_id = null, dropoff_city_id = null, inclusion = '', pickup_location = '', dropoff_location = '' } = vendor_routes || {}; // routes destructure
+  const {
+    vehicle_type = '',
+    dropoff_place_id = '',
+    pickup_place_id = '',
+    pickup_city_id = null,
+    dropoff_city_id = null,
+    inclusion = '',
+    pickup_location = '',
+    dropoff_location = '',
+  } = vendor_routes || {}; // routes destructure
   const { base_price = '', currency = '', price_type = '', extra_luggage_charge = '', waiting_charge } = pricing_availability || {}; //pricing destructure
   const { availability_type, available_days = [], time_slots = [], blackout_dates = [], minimum_lead_time, maximum_passengers } = schedule || {}; // destructure schedule data
 
