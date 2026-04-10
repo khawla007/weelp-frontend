@@ -34,12 +34,7 @@ export default function BrowseDestinationsSection({ cities = [] }) {
   return (
     <section className="container mx-auto flex flex-col gap-8 px-4 pb-[100px]">
       <div className="flex items-center justify-between">
-        <SectionHeader
-          superTitle="Plan where to next"
-          title="Browse standout destinations"
-          titleSize="lg"
-          subtitle="Start with cities and landmarks travelers save most, then let Weelp shape the rest of the journey."
-        />
+        <SectionHeader title="Top Destination" />
         <div className="flex items-center gap-2">
           <button
             type="button"
