@@ -28,7 +28,7 @@ export function Combobox({ data = [], value, onChange, placeholder = 'Select Loc
               {data.map((item) => (
                 <CommandItem
                   key={item.id}
-                  value={String(item.id)} // Ensure it's a string
+                  value={item.name}
                   onSelect={() => {
                     onChange(item.id); // Now storing city ID
                     setOpen(false);

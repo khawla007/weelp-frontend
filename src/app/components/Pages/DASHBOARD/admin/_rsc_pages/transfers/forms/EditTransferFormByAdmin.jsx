@@ -116,7 +116,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <BasicInfoTabAdmin defaultPickupCityId={pickup_city_id} defaultDropoffCityId={dropoff_city_id} />;
+        return <BasicInfoTabAdmin defaultCityId={pickup_city_id} />;
       case 2:
         return <PricingTabAdmin />;
       case 3:
