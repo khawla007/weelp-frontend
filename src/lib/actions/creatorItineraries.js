@@ -203,3 +203,204 @@ export const getAdminCreatorItineraryOriginal = async (id) => {
     return { success: false, message: 'Failed to fetch original itinerary.' };
   }
 };
+
+/**
+ * Request edit (creates a draft copy) for an approved creator itinerary
+ * @param {number} id - Itinerary ID
+ * @returns {object} { success, message, data }
+ */
+export const requestEdit = async (id) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post(`/api/creator/itineraries/${id}/request-edit`);
+    return { success: true, message: res.data?.message, data: res.data?.data };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to create edit draft.';
+    return { success: false, message };
+  }
+};
+
+/**
+ * Get a draft itinerary for editing
+ * @param {number} id - Draft itinerary ID
+ * @returns {object} { success, data }
+ */
+export const getDraftItinerary = async (id) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.get(`/api/creator/itineraries/drafts/${id}`);
+    return { success: true, data: res.data?.data };
+  } catch (err) {
+    return { success: false, message: 'Failed to fetch draft.' };
+  }
+};
+
+/**
+ * Save draft edits (name, description, schedules)
+ * @param {number} id - Draft itinerary ID
+ * @param {object} data - { name?, description?, schedules? }
+ * @returns {object} { success, message, data }
+ */
+export const updateDraft = async (id, data) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/creator/itineraries/drafts/${id}`, data);
+    return { success: true, message: res.data?.message, data: res.data?.data };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to update draft.';
+    return { success: false, message };
+  }
+};
+
+/**
+ * Submit a draft for admin review
+ * @param {number} id - Draft itinerary ID
+ * @returns {object} { success, message }
+ */
+export const submitDraft = async (id) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/creator/itineraries/drafts/${id}/submit`);
+    return { success: true, message: res.data?.message };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to submit draft.';
+    return { success: false, message };
+  }
+};
+
+/**
+ * Request removal of an approved creator itinerary
+ * @param {number} id - Itinerary ID
+ * @param {string|null} reason - Optional reason for removal
+ * @returns {object} { success, message }
+ */
+export const requestRemoval = async (id, reason = null) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post(`/api/creator/itineraries/${id}/request-removal`, { reason });
+    return { success: true, message: res.data?.message };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to request removal.';
+    return { success: false, message };
+  }
+};
+
+/**
+ * Admin: update a creator itinerary (full edit)
+ * @param {number} id - Itinerary ID
+ * @param {object} data - Full itinerary data
+ * @returns {object} { success, message }
+ */
+export const adminUpdateCreatorItinerary = async (id, data) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/creator-itineraries/${id}/update`, data);
+    return { success: true, message: res.data?.message };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to update itinerary.';
+    return { success: false, message };
+  }
+};
+
+/**
+ * Admin: delete a creator itinerary
+ * @param {number} id - Itinerary ID
+ * @returns {object} { success, message }
+ */
+export const adminDeleteCreatorItinerary = async (id) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.delete(`/api/admin/creator-itineraries/${id}`);
+    return { success: true, message: res.data?.message };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to delete itinerary.';
+    return { success: false, message };
+  }
+};
+
+/**
+ * Admin: approve an edit draft
+ * @param {number} id - Itinerary ID (the approved one, not the draft)
+ * @returns {object} { success, message }
+ */
+export const adminApproveEdit = async (id) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/creator-itineraries/${id}/approve-edit`);
+    return { success: true, message: res.data?.message };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to approve edit.';
+    return { success: false, message };
+  }
+};
+
+/**
+ * Admin: reject an edit draft
+ * @param {number} id - Itinerary ID (the approved one, not the draft)
+ * @returns {object} { success, message }
+ */
+export const adminRejectEdit = async (id) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/creator-itineraries/${id}/reject-edit`);
+    return { success: true, message: res.data?.message };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to reject edit.';
+    return { success: false, message };
+  }
+};
+
+/**
+ * Admin: approve a removal request
+ * @param {number} id - Itinerary ID
+ * @returns {object} { success, message }
+ */
+export const adminApproveRemoval = async (id) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/creator-itineraries/${id}/approve-removal`);
+    return { success: true, message: res.data?.message };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to approve removal.';
+    return { success: false, message };
+  }
+};
+
+/**
+ * Admin: reject a removal request
+ * @param {number} id - Itinerary ID
+ * @returns {object} { success, message }
+ */
+export const adminRejectRemoval = async (id) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/creator-itineraries/${id}/reject-removal`);
+    return { success: true, message: res.data?.message };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to reject removal.';
+    return { success: false, message };
+  }
+};
+
+/**
+ * Get diff data for admin review (approved + draft)
+ * @param {number} id - Approved itinerary ID
+ * @returns {object} { success, data: { approved, draft } }
+ */
+export const getCreatorItineraryDiff = async (id) => {
+  try {
+    const api = await getAuthApi();
+    const approvedRes = await api.get(`/api/admin/creator-itineraries/${id}`);
+    const approved = approvedRes.data?.data;
+    if (!approved?.draft_itinerary_id) {
+      return { success: false, message: 'No pending edit draft found.' };
+    }
+    const draftRes = await api.get(`/api/admin/creator-itineraries/${approved.draft_itinerary_id}`);
+    return {
+      success: true,
+      data: { approved, draft: draftRes.data?.data },
+    };
+  } catch (err) {
+    return { success: false, message: 'Failed to fetch diff data.' };
+  }
+};
