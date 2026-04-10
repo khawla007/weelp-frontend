@@ -63,20 +63,23 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
       {itineraries.map((item) => {
         const itinerary = item.itinerary || item;
-        const featuredImage = itinerary.featured_image || itinerary.image || '/assets/images/placeholder-itinerary.jpg';
+        const featuredMedia = itinerary.media_gallery?.find((m) => m.is_featured)?.media?.url || itinerary.media_gallery?.[0]?.media?.url;
+        const featuredImage = featuredMedia || itinerary.featured_image || '/assets/images/placeholder-itinerary.jpg';
         const name = itinerary.name || itinerary.title || 'Untitled Itinerary';
-        const city = itinerary.city?.name || itinerary.city_name || '';
+        const cityData = itinerary.locations?.[0]?.city;
+        const city = cityData?.name || itinerary.city?.name || itinerary.city_name || '';
+        const citySlug = cityData?.slug || itinerary.city?.slug || '';
         const dayCount = itinerary.day_count || itinerary.days_count || itinerary.schedules?.length || 0;
         const slug = itinerary.slug;
         const isCreatorCopy = !!item.creator_id;
         const approvalStatus = item.approval_status;
 
         return (
-          <div key={item.id || itinerary.id} className="bg-white rounded-lg border border-[#435a6742] overflow-hidden group">
-            <div className="aspect-video bg-[#CFDBE54D] relative overflow-hidden">
+          <div key={item.id || itinerary.id} className="bg-white rounded-xl border border-[#435a6742] overflow-hidden group">
+            <div className="h-[200px] bg-[#CFDBE54D] relative overflow-hidden">
               <img
                 src={featuredImage}
                 alt={name}
@@ -109,8 +112,8 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
                   </span>
                 )}
               </div>
-              {slug ? (
-                <NavigationLink href={`/itineraries/${slug}`} className="block">
+              {slug && citySlug ? (
+                <NavigationLink href={`/cities/${citySlug}/itineraries/${slug}`} className="block">
                   <Button variant="outline" size="sm" className="w-full border-[#435a6742] text-[#435a67] hover:bg-[#CFDBE54D]">
                     View & Book
                   </Button>
