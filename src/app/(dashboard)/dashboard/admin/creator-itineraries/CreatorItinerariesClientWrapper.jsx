@@ -223,7 +223,9 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     <TableCell>{formatDate(item.created_at)}</TableCell>
                     <TableCell>
                       <div className="flex flex-col gap-1">
-                        <Badge variant={statusBadgeVariant(item.approval_status)} className="justify-center">{formatStatus(item.approval_status)}</Badge>
+                        <Badge variant={statusBadgeVariant(item.approval_status)} className="justify-center">
+                          {formatStatus(item.approval_status)}
+                        </Badge>
                         {item.draft_itinerary_id && <Badge variant="warning">Edit Pending</Badge>}
                         {item.removal_status === 'requested' && <Badge variant="destructive">Removal Requested</Badge>}
                       </div>
@@ -327,9 +329,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel className="border-[#558e7b] text-black hover:bg-[#558e7b] hover:text-white">
-                                  Cancel
-                                </AlertDialogCancel>
+                                <AlertDialogCancel className="border-[#558e7b] text-black hover:bg-[#558e7b] hover:text-white">Cancel</AlertDialogCancel>
                                 <AlertDialogAction onClick={() => handleDelete(item.id)} className="border-red-500 text-black bg-white hover:bg-red-500 hover:text-white">
                                   Delete
                                 </AlertDialogAction>
