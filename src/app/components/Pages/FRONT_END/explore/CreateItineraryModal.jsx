@@ -13,8 +13,13 @@ import { getAllTransfersAdmin } from '@/lib/services/transfers';
 import { cn, generateSlug } from '@/lib/utils';
 
 // Reused PersonalInfoTab from dashboard (Step 1)
-const PersonalInfoTab = () => {
-  const { register, getValues, setValue, formState: { errors } } = useFormContext();
+const PersonalInfoTab = ({ locationsOptions }) => {
+  const {
+    register,
+    getValues,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
 
   const handleBlur = () => {
     const name = getValues('name');
@@ -78,9 +83,11 @@ const PersonalInfoTab = () => {
           Destinations <span className="text-red-500">*</span>
         </label>
         <select
+          id="locations"
           multiple
           {...register('locations', { required: 'Locations Required' })}
           className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark focus-visible:outline-none min-h-[100px]"
+          aria-label="Select destinations for itinerary"
         >
           {locationsOptions.map((city) => (
             <option key={city.id} value={city.id}>
@@ -93,13 +100,6 @@ const PersonalInfoTab = () => {
       </div>
     </div>
   );
-};
-
-// Global variable for locations (will be set by parent component)
-let locationsOptions = [];
-
-export const setLocationsOptions = (options) => {
-  locationsOptions = options;
 };
 
 // Reused ScheduleTab from dashboard (Step 2)
@@ -150,7 +150,7 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
 
   const schedules = useWatch({ control, name: 'schedules' });
   const activities = useWatch({ control, name: 'activities' });
-  const transferss = useWatch({ control, name: 'transfers' });
+  const transfers = useWatch({ control, name: 'transfers' });
   const selectedLocations = useWatch({ control, name: 'locations' });
 
   const handleAddDay = () => {
@@ -225,11 +225,7 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
 
       <div className="w-full flex justify-between items-center">
         <h3 className="text-base font-semibold text-[#09090B]">Daily Schedule</h3>
-        <button
-          type="button"
-          onClick={handleAddDay}
-          className="bg-secondaryDark hover:bg-secondaryDark text-white px-4 py-2 rounded-md text-sm font-medium"
-        >
+        <button type="button" onClick={handleAddDay} className="bg-secondaryDark hover:bg-secondaryDark text-white px-4 py-2 rounded-md text-sm font-medium">
           + Add Day
         </button>
       </div>
@@ -237,24 +233,9 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
       {dayFields.map((item, index) => (
         <div key={item.id} className="space-y-4 mt-4 border border-gray-200 rounded-lg p-4">
           <div className="flex items-center gap-4 justify-between">
-            <input
-              type="number"
-              {...register(`schedules.${index}.day`)}
-              value={item.day}
-              readOnly
-              className="w-20 p-2 border border-gray-300 rounded-md bg-gray-50"
-            />
-            <input
-              type="text"
-              {...register(`schedules.${index}.title`)}
-              placeholder="e.g., Arrival in Port Blair"
-              className="flex-1 p-2 border border-gray-300 rounded-md"
-            />
-            <button
-              type="button"
-              onClick={() => removeDay(index)}
-              className="text-red-500 hover:text-red-700 p-2"
-            >
+            <input type="number" {...register(`schedules.${index}.day`)} value={item.day} readOnly className="w-20 p-2 border border-gray-300 rounded-md bg-gray-50" />
+            <input type="text" {...register(`schedules.${index}.title`)} placeholder="e.g., Arrival in Port Blair" className="flex-1 p-2 border border-gray-300 rounded-md" />
+            <button type="button" onClick={() => removeDay(index)} className="text-red-500 hover:text-red-700 p-2">
               Remove
             </button>
           </div>
@@ -264,38 +245,38 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
               .filter((a) => a.day === item.day)
               .map((activity, aIdx) => {
                 const originalIndex = activities.indexOf(activity);
+                // Use a stable unique identifier combining day, type, and activity_id
+                const stableKey = `${activity.day}-activity-${activity.activity_id}-${aIdx}`;
                 return (
-                  <div key={originalIndex} className="p-3 flex items-center justify-between border rounded-md bg-gray-50">
+                  <div key={stableKey} className="p-3 flex items-center justify-between border rounded-md bg-gray-50">
                     <div className="flex-1">
                       <p className="font-medium text-sm">{activity.name || `Activity #${activity.activity_id}`}</p>
-                      <p className="text-xs text-gray-500">{activity.start_time} - {activity.end_time}</p>
+                      <p className="text-xs text-gray-500">
+                        {activity.start_time} - {activity.end_time}
+                      </p>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveActivity(originalIndex)}
-                      className="text-red-500 hover:text-red-700 p-1"
-                    >
+                    <button type="button" onClick={() => handleRemoveActivity(originalIndex)} className="text-red-500 hover:text-red-700 p-1">
                       Remove
                     </button>
                   </div>
                 );
               })}
 
-            {transferss
+            {transfers
               .filter((t) => t.day === item.day)
               .map((transfer, tIdx) => {
-                const originalIndex = transferss.indexOf(transfer);
+                const originalIndex = transfers.indexOf(transfer);
+                // Use a stable unique identifier combining day, type, and transfer_id
+                const stableKey = `${transfer.day}-transfer-${transfer.transfer_id}-${tIdx}`;
                 return (
-                  <div key={originalIndex} className="p-3 flex items-center justify-between border rounded-md bg-blue-50">
+                  <div key={stableKey} className="p-3 flex items-center justify-between border rounded-md bg-blue-50">
                     <div className="flex-1">
                       <p className="font-medium text-sm">{transfer.name || `Transfer #${transfer.transfer_id}`}</p>
-                      <p className="text-xs text-gray-500">{transfer.start_time} - {transfer.end_time}</p>
+                      <p className="text-xs text-gray-500">
+                        {transfer.start_time} - {transfer.end_time}
+                      </p>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveTransfer(originalIndex)}
-                      className="text-red-500 hover:text-red-700 p-1"
-                    >
+                    <button type="button" onClick={() => handleRemoveTransfer(originalIndex)} className="text-red-500 hover:text-red-700 p-1">
                       Remove
                     </button>
                   </div>
@@ -312,8 +293,11 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
                   e.target.value = '';
                 }}
                 className="bg-secondaryDark hover:bg-secondaryDark text-white px-4 py-2 rounded-full cursor-pointer"
+                aria-label="Add activity or transfer to schedule"
               >
-                <option value="" disabled>+ Add Item</option>
+                <option value="" disabled>
+                  + Add Item
+                </option>
                 <option value="activity">Add Activity</option>
                 <option value="transfer">Add Transfer</option>
               </select>
@@ -333,10 +317,7 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
                       <div
                         key={activity.id}
                         onClick={() => setSelectedActivity(activity)}
-                        className={cn(
-                          'p-3 border rounded-md cursor-pointer',
-                          selectedActivity?.id === activity.id ? 'bg-secondaryDark/10 border-secondaryDark' : 'hover:bg-gray-50'
-                        )}
+                        className={cn('p-3 border rounded-md cursor-pointer', selectedActivity?.id === activity.id ? 'bg-secondaryDark/10 border-secondaryDark' : 'hover:bg-gray-50')}
                       >
                         <p className="font-medium text-sm">{activity.name}</p>
                         <p className="text-xs text-gray-500">${activity.price || 0}</p>
@@ -345,19 +326,10 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
                   )}
                 </div>
                 <div className="flex justify-end gap-2 mt-4">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="px-4 py-2 border border-gray-300 rounded-md"
-                  >
+                  <button type="button" onClick={handleCloseModal} className="px-4 py-2 border border-gray-300 rounded-md">
                     Cancel
                   </button>
-                  <button
-                    type="button"
-                    onClick={handleAddActivity}
-                    disabled={!selectedActivity}
-                    className="px-4 py-2 bg-secondaryDark text-white rounded-md disabled:opacity-50"
-                  >
+                  <button type="button" onClick={handleAddActivity} disabled={!selectedActivity} className="px-4 py-2 bg-secondaryDark text-white rounded-md disabled:opacity-50">
                     Add
                   </button>
                 </div>
@@ -378,10 +350,7 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
                       <div
                         key={transfer.id}
                         onClick={() => setSelectedTransfer(transfer)}
-                        className={cn(
-                          'p-3 border rounded-md cursor-pointer',
-                          selectedTransfer?.id === transfer.id ? 'bg-secondaryDark/10 border-secondaryDark' : 'hover:bg-gray-50'
-                        )}
+                        className={cn('p-3 border rounded-md cursor-pointer', selectedTransfer?.id === transfer.id ? 'bg-secondaryDark/10 border-secondaryDark' : 'hover:bg-gray-50')}
                       >
                         <p className="font-medium text-sm">{transfer.name}</p>
                         <p className="text-xs text-gray-500">${transfer.price || 0}</p>
@@ -390,19 +359,10 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
                   )}
                 </div>
                 <div className="flex justify-end gap-2 mt-4">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="px-4 py-2 border border-gray-300 rounded-md"
-                  >
+                  <button type="button" onClick={handleCloseModal} className="px-4 py-2 border border-gray-300 rounded-md">
                     Cancel
                   </button>
-                  <button
-                    type="button"
-                    onClick={handleAddTransfer}
-                    disabled={!selectedTransfer}
-                    className="px-4 py-2 bg-secondaryDark text-white rounded-md disabled:opacity-50"
-                  >
+                  <button type="button" onClick={handleAddTransfer} disabled={!selectedTransfer} className="px-4 py-2 bg-secondaryDark text-white rounded-md disabled:opacity-50">
                     Add
                   </button>
                 </div>
@@ -445,27 +405,16 @@ export default function CreateItineraryModal({ open, onOpenChange, session }) {
   const descriptionValue = useWatch({ control: methods.control, name: 'description' });
   const locationsValue = useWatch({ control: methods.control, name: 'locations' });
 
-  const isStep1Valid = !!(
-    nameValue?.trim() &&
-    slugValue?.trim() &&
-    descriptionValue?.trim() &&
-    locationsValue &&
-    locationsValue.length > 0
-  );
+  const isStep1Valid = !!(nameValue?.trim() && slugValue?.trim() && descriptionValue?.trim() && locationsValue && locationsValue.length > 0);
 
   // Load initial data
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [locationsRes, activitiesRes, transfersRes] = await Promise.all([
-          getAllCitiesAdmin(),
-          getAllActivitesAdmin(),
-          getAllTransfersAdmin(),
-        ]);
+        const [locationsRes, activitiesRes, transfersRes] = await Promise.all([getAllCitiesAdmin(), getAllActivitesAdmin(), getAllTransfersAdmin()]);
 
         if (locationsRes.data?.data) {
           setLocations(locationsRes.data.data);
-          setLocationsOptions(locationsRes.data.data);
         }
         if (activitiesRes.data?.data) {
           setActivities(activitiesRes.data.data);
@@ -540,9 +489,7 @@ export default function CreateItineraryModal({ open, onOpenChange, session }) {
     // Convert locations array to numbers
     const cleanedData = {
       ...formData,
-      locations: Array.isArray(formData.locations)
-        ? formData.locations.map((l) => (typeof l === 'string' ? parseInt(l, 10) : l))
-        : [],
+      locations: Array.isArray(formData.locations) ? formData.locations.map((l) => (typeof l === 'string' ? parseInt(l, 10) : l)) : [],
     };
 
     const result = await submitCreatorItineraryDraft(cleanedData);
@@ -593,22 +540,9 @@ export default function CreateItineraryModal({ open, onOpenChange, session }) {
           <form onSubmit={(e) => e.preventDefault()}>
             {/* Step Indicator */}
             <div className="flex items-center justify-center gap-2 py-4">
-              <div className={cn(
-                'flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium',
-                currentStep >= 1 ? 'bg-secondaryDark text-white' : 'bg-gray-200 text-gray-600'
-              )}>
-                1
-              </div>
-              <div className={cn(
-                'w-12 h-1',
-                currentStep >= 2 ? 'bg-secondaryDark' : 'bg-gray-200'
-              )} />
-              <div className={cn(
-                'flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium',
-                currentStep >= 2 ? 'bg-secondaryDark text-white' : 'bg-gray-200 text-gray-600'
-              )}>
-                2
-              </div>
+              <div className={cn('flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium', currentStep >= 1 ? 'bg-secondaryDark text-white' : 'bg-gray-200 text-gray-600')}>1</div>
+              <div className={cn('w-12 h-1', currentStep >= 2 ? 'bg-secondaryDark' : 'bg-gray-200')} />
+              <div className={cn('flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium', currentStep >= 2 ? 'bg-secondaryDark text-white' : 'bg-gray-200 text-gray-600')}>2</div>
             </div>
 
             <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
@@ -618,7 +552,7 @@ export default function CreateItineraryModal({ open, onOpenChange, session }) {
             </div>
 
             {/* Step Content */}
-            {currentStep === 1 && <PersonalInfoTab />}
+            {currentStep === 1 && <PersonalInfoTab locationsOptions={locations} />}
             {currentStep === 2 && <ScheduleTab allactivities={activities} alltransfers={transfers} />}
 
             {/* Action Buttons */}
@@ -626,12 +560,7 @@ export default function CreateItineraryModal({ open, onOpenChange, session }) {
               {currentStep === 1 ? (
                 <div className="flex-1" />
               ) : (
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  disabled={submitting}
-                  className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
-                >
+                <button type="button" onClick={handleBack} disabled={submitting} className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50">
                   <ChevronLeft className="h-4 w-4" />
                   Back
                 </button>
