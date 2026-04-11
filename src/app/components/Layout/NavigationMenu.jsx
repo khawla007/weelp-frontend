@@ -10,6 +10,7 @@ import MiniCartNew from '../Modals/MiniCartNew';
 import SubmenuAccount from '../Modals/SubmenuAccount';
 import { HEADER_NAV_ITEMS, HEADER_PRIMARY_META, HEADER_SECONDARY_META } from './shellContent';
 import NotificationBell from './NotificationBell';
+import { getLogoUrl } from '@/lib/config/brand';
 
 // Helper function to generate initials from name
 const getInitials = (name) => {
@@ -52,7 +53,7 @@ const DesktopMenu = ({ stickyHeader }) => {
       <div className={`border-b border-[#ededed] ${stickyHeader ? 'bg-[#ffffffcc] shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] backdrop-blur-[47px]' : 'bg-[#ffffffcc] backdrop-blur-[47px]'}`}>
         <div className="grid h-[66px] w-full items-center px-[60px] py-[8px]" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
           <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start">
-            <img src="/assets/images/weelp-logo-icon.png" alt="" className="h-9 w-auto" />
+            <img src={getLogoUrl()} alt="Weelp" className="h-9 w-auto" />
             <span className="text-[18px] font-semibold text-[#142a38]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
               Weelp.
             </span>
