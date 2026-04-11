@@ -521,6 +521,9 @@ export default function CreateItineraryModal({ open, onOpenChange, session }) {
     return (
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Create Itinerary</DialogTitle>
+          </DialogHeader>
           <div className="flex items-center justify-center py-8">
             <Loader2 className="h-6 w-6 animate-spin text-secondaryDark" />
           </div>
