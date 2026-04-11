@@ -1,21 +1,26 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useForm, FormProvider, useFieldArray, useWatch, useFormContext } from 'react-hook-form';
+import { useForm, FormProvider, useFieldArray, useWatch, useFormContext, Controller } from 'react-hook-form';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { submitCreatorItineraryDraft } from '@/lib/actions/creatorItineraries';
 import { getAllCitiesAdmin } from '@/lib/services/global';
 import { getAllActivitesAdmin } from '@/lib/services/activites';
 import { getAllTransfersAdmin } from '@/lib/services/transfers';
+import { ComboboxMultiple } from '@/components/ui/combobox_multi';
 import { cn, generateSlug } from '@/lib/utils';
 
 // Reused PersonalInfoTab from dashboard (Step 1)
 const PersonalInfoTab = ({ locationsOptions }) => {
   const {
     register,
+    control,
     getValues,
     setValue,
     formState: { errors },
@@ -37,28 +42,28 @@ const PersonalInfoTab = ({ locationsOptions }) => {
 
       <div className="flex w-full gap-4">
         <div className="pb-2 space-y-2 w-full">
-          <label htmlFor="name" className={cn('block text-sm font-medium', errors?.name ? 'text-red-400' : 'text-black')}>
+          <Label htmlFor="name" className={errors?.name ? 'text-red-400' : 'text-black'}>
             Itinerary Name <span className="text-red-500">*</span>
-          </label>
-          <input
+          </Label>
+          <Input
             placeholder="Itinerary name"
             id="name"
             {...register('name', { required: 'Name is required' })}
-            className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark focus-visible:outline-none"
+            className="mt-1"
             onBlur={handleBlur}
           />
           {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
         </div>
 
         <div className="pb-2 space-y-2 w-full">
-          <label htmlFor="slug" className={cn('block text-sm font-medium', errors?.slug ? 'text-red-400' : 'text-black')}>
+          <Label htmlFor="slug" className={errors?.slug ? 'text-red-400' : 'text-black'}>
             Slug <span className="text-red-500">*</span>
-          </label>
-          <input
+          </Label>
+          <Input
             placeholder="Enter URL slug"
             id="slug"
             {...register('slug', { required: 'Slug is required' })}
-            className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark focus-visible:outline-none"
+            className="mt-1"
             onBlur={handleBlur}
           />
           {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
@@ -66,37 +71,39 @@ const PersonalInfoTab = ({ locationsOptions }) => {
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="description" className={cn('block text-sm font-medium', errors?.description ? 'text-red-400' : 'text-black')}>
+        <Label htmlFor="description" className={errors?.description ? 'text-red-400' : 'text-black'}>
           Description <span className="text-red-500">*</span>
-        </label>
-        <textarea
+        </Label>
+        <Textarea
           placeholder="Detailed description"
           id="description"
           {...register('description', { required: 'Description is required' })}
-          className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark focus-visible:outline-none min-h-[120px]"
+          className="mt-1 min-h-[120px]"
         />
         {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="locations" className={cn('block text-sm font-medium', errors?.locations ? 'text-red-400' : 'text-black')}>
+        <Label htmlFor="locations" className={errors?.locations ? 'text-red-400' : 'text-black'}>
           Destinations <span className="text-red-500">*</span>
-        </label>
-        <select
-          id="locations"
-          multiple
-          {...register('locations', { required: 'Locations Required' })}
-          className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark focus-visible:outline-none min-h-[100px]"
-          aria-label="Select destinations for itinerary"
-        >
-          {locationsOptions.map((city) => (
-            <option key={city.id} value={city.id}>
-              {city.name}
-            </option>
-          ))}
-        </select>
+        </Label>
+        <Controller
+          control={control}
+          name="locations"
+          defaultValue={[]}
+          rules={{ required: 'Locations Required' }}
+          render={({ field: { value, onChange } }) => (
+            <ComboboxMultiple
+              id="locations"
+              name="locations"
+              type="locations"
+              items={locationsOptions}
+              value={value ?? []}
+              onChange={onChange}
+            />
+          )}
+        />
         {errors?.locations && <span className="text-red-400">{errors?.locations?.message}</span>}
-        <p className="text-xs text-gray-500">Hold Ctrl/Cmd to select multiple cities</p>
       </div>
     </div>
   );
