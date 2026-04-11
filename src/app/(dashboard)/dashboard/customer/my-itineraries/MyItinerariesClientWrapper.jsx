@@ -75,7 +75,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
         const dayCount = itinerary.day_count || itinerary.days_count || itinerary.schedules?.length || 0;
         const slug = itinerary.slug;
         const isCreatorCopy = !!item.creator_id;
-        const approvalStatus = item.approval_status;
+        const approvalStatus = item.status;
 
         return (
           <div key={item.id || itinerary.id} className="bg-white rounded-xl border border-[#435a6742] overflow-hidden group">
@@ -91,7 +91,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
               {isCreatorCopy && approvalStatus && (
                 <div className="absolute top-2 right-2">
                   <Badge variant={approvalStatus === 'approved' ? 'success' : approvalStatus === 'rejected' ? 'destructive' : 'warning'}>
-                    {approvalStatus === 'pending_approval' ? 'Pending' : approvalStatus.charAt(0).toUpperCase() + approvalStatus.slice(1)}
+                    {approvalStatus === 'pending' ? 'Pending' : approvalStatus.charAt(0).toUpperCase() + approvalStatus.slice(1)}
                   </Badge>
                 </div>
               )}

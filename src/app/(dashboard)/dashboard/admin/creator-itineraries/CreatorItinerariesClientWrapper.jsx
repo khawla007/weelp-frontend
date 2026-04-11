@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 
-const STATUS_TABS = ['all', 'pending_approval', 'approved', 'rejected', 'removed'];
+const STATUS_TABS = ['all', 'pending', 'approved', 'rejected', 'deleted'];
 
 const statusBadgeVariant = (status) => {
   switch (status) {
@@ -30,9 +30,9 @@ const statusBadgeVariant = (status) => {
       return 'success';
     case 'rejected':
       return 'destructive';
-    case 'pending_approval':
+    case 'pending':
       return 'warning';
-    case 'removed':
+    case 'deleted':
       return 'destructive';
     default:
       return 'secondary';
@@ -40,7 +40,7 @@ const statusBadgeVariant = (status) => {
 };
 
 const formatStatus = (status) => {
-  if (status === 'pending_approval') return 'Pending';
+  if (status === 'pending') return 'Pending';
   return status ? status.charAt(0).toUpperCase() + status.slice(1) : '-';
 };
 
@@ -51,7 +51,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
   const [activeTab, setActiveTab] = useState('all');
   const [processingId, setProcessingId] = useState(null);
 
-  const filtered = activeTab === 'all' ? itineraries : itineraries.filter((i) => i.approval_status === activeTab);
+  const filtered = activeTab === 'all' ? itineraries : itineraries.filter((i) => i.status === activeTab);
 
   const formatDate = (dateString) => {
     if (!dateString) return '-';
@@ -67,7 +67,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
     const result = await approveCreatorItinerary(id);
     if (result.success) {
       toast({ title: 'Itinerary approved', description: result.message || 'The creator itinerary has been approved.' });
-      setItineraries((prev) => prev.map((i) => (i.id === id ? { ...i, approval_status: 'approved' } : i)));
+      setItineraries((prev) => prev.map((i) => (i.id === id ? { ...i, status: 'approved' } : i)));
       router.refresh();
     } else {
       toast({ title: 'Error', description: result.message, variant: 'destructive' });
@@ -80,7 +80,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
     const result = await rejectCreatorItinerary(id);
     if (result.success) {
       toast({ title: 'Itinerary rejected', description: result.message || 'The creator itinerary has been rejected.' });
-      setItineraries((prev) => prev.map((i) => (i.id === id ? { ...i, approval_status: 'rejected' } : i)));
+      setItineraries((prev) => prev.map((i) => (i.id === id ? { ...i, status: 'rejected' } : i)));
       router.refresh();
     } else {
       toast({ title: 'Error', description: result.message, variant: 'destructive' });
@@ -132,7 +132,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
     const result = await adminApproveRemoval(id);
     if (result.success) {
       toast({ title: 'Removal approved', description: result.message });
-      setItineraries((prev) => prev.map((i) => (i.id === id ? { ...i, approval_status: 'removed', removal_status: 'approved' } : i)));
+      setItineraries((prev) => prev.map((i) => (i.id === id ? { ...i, status: 'deleted', removal_status: 'approved' } : i)));
       router.refresh();
     } else {
       toast({ title: 'Error', description: result.message, variant: 'destructive' });
@@ -223,8 +223,8 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     <TableCell>{formatDate(item.created_at)}</TableCell>
                     <TableCell>
                       <div className="flex flex-col gap-1">
-                        <Badge variant={statusBadgeVariant(item.approval_status)} className="justify-center">
-                          {formatStatus(item.approval_status)}
+                        <Badge variant={statusBadgeVariant(item.status)} className="justify-center">
+                          {formatStatus(item.status)}
                         </Badge>
                         {item.draft_itinerary_id && <Badge variant="warning">Edit Pending</Badge>}
                         {item.removal_status === 'requested' && <Badge variant="destructive">Removal Requested</Badge>}
@@ -232,7 +232,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-2 justify-end flex-wrap">
-                        {item.approval_status === 'pending_approval' && (
+                        {item.status === 'pending' && (
                           <>
                             <Button variant="outline" size="sm" onClick={() => handleReject(item.id)} disabled={processingId === item.id} className="border-red-300 text-red-600 hover:bg-red-50">
                               <XCircle className="size-4 mr-1" />
@@ -283,7 +283,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                           </>
                         )}
 
-                        {item.approval_status !== 'removed' && (
+                        {item.status !== 'deleted' && (
                           <>
                             <NavigationLink href={`/dashboard/admin/creator-itineraries/${item.id}/edit`}>
                               <Button variant="outline" size="sm" className="border-[#435a6742] text-[#435a67]">
@@ -314,7 +314,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                           </>
                         )}
 
-                        {item.approval_status === 'removed' && (
+                        {item.status === 'deleted' && (
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <Button variant="outline" size="icon" disabled={processingId === item.id} className="border-red-500 text-red-600 hover:bg-red-50 size-8">

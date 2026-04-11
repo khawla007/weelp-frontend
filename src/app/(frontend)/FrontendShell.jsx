@@ -2,27 +2,20 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { useUIStore } from '@/lib/store/uiStore';
 
 export function FrontendShell({ header, footer, children }) {
   const pathname = usePathname();
-  const { stickyHeader } = useUIStore();
 
-  const shellStyle = {
-    '--weelp-header-height-mobile': stickyHeader ? '68px' : '118px',
-    '--weelp-header-height-desktop': stickyHeader ? '84px' : '142px',
-  };
-
-  // Scroll to top on route change (replaces old layout behavior)
+  // Scroll to top on route change
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'auto' });
   }, [pathname]);
 
   return (
-    <div style={shellStyle}>
+    <>
       {header}
-      <main className={`bg-mainBackground ${stickyHeader ? 'pt-[var(--weelp-header-height-mobile)] lg:pt-[var(--weelp-header-height-desktop)]' : ''} min-h-[90vh] relative`}>{children}</main>
+      <main className="bg-mainBackground min-h-[90vh] relative">{children}</main>
       {footer}
-    </div>
+    </>
   );
 }

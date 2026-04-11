@@ -7,10 +7,12 @@ export const useNavigationStore = create((set, get) => ({
   navigationKey: 0,
 
   setNavigating: (isNavigating) => {
-    set((state) => ({
+    const currentKey = get().navigationKey;
+    set({
       isNavigating,
-      navigationKey: isNavigating ? state.navigationKey + 1 : state.navigationKey,
-    }));
+      // Only increment key when starting navigation, not when stopping
+      navigationKey: isNavigating ? currentKey + 1 : currentKey,
+    });
   },
 
   checkAndClearNavigation: () => {

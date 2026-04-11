@@ -90,7 +90,7 @@ export default function CityFilterSection() {
                 const card = mapProductToItemCard(product, city);
                 return (
                   <ItemCard
-                    key={card.id || index}
+                    key={`${product.item_type}-${card.id}`}
                     href={card.href}
                     image={card.image}
                     title={card.title}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import NProgress from 'nprogress';
 import { useNavigationStore } from '@/lib/store/useNavigationStore';
 
@@ -14,12 +14,17 @@ NProgress.configure({
 export function NavigationProgressBar() {
   const isNavigating = useNavigationStore((state) => state.isNavigating);
   const navigationKey = useNavigationStore((state) => state.navigationKey);
+  const lastKeyRef = useRef(navigationKey);
 
   useEffect(() => {
-    if (isNavigating) {
-      NProgress.start();
-    } else {
-      NProgress.done();
+    // Only update when navigation key actually changes
+    if (navigationKey !== lastKeyRef.current) {
+      if (isNavigating) {
+        NProgress.start();
+      } else {
+        NProgress.done();
+      }
+      lastKeyRef.current = navigationKey;
     }
   }, [isNavigating, navigationKey]);
 

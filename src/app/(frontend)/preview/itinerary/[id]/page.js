@@ -19,7 +19,7 @@ const statusBadgeVariant = (status) => {
       return 'success';
     case 'rejected':
       return 'destructive';
-    case 'pending_approval':
+    case 'pending':
       return 'warning';
     default:
       return 'secondary';
@@ -27,7 +27,7 @@ const statusBadgeVariant = (status) => {
 };
 
 const formatStatus = (status) => {
-  if (status === 'pending_approval') return 'Pending';
+  if (status === 'pending') return 'Pending';
   return status ? status.charAt(0).toUpperCase() + status.slice(1) : '-';
 };
 
@@ -75,7 +75,7 @@ export default async function CreatorItineraryPreviewPage({ params }) {
             </Link>
             <span className="text-sm font-medium">Preview Mode</span>
             <span className="text-sm text-white">Creator: {itinerary.creator?.name || '-'}</span>
-            <Badge variant={statusBadgeVariant(itinerary.approval_status)}>{formatStatus(itinerary.approval_status)}</Badge>
+            <Badge variant={statusBadgeVariant(itinerary.status)}>{formatStatus(itinerary.status)}</Badge>
           </div>
           {originalLink && (
             <a href={originalLink} target="_blank" rel="noopener noreferrer" className="text-sm text-white inline-flex items-center gap-1">

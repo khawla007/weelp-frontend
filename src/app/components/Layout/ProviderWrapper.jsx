@@ -1,19 +1,12 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react';
 import { useIsClient } from '@/hooks/useIsClient';
 import { Toaster } from '@/components/ui/toaster';
 import AuthModalDialog from '@/app/components/Modals/AuthModalDialog';
 import { SWRConfig } from 'swr';
 import { fetcher } from '@/lib/fetchers';
-import { useNavigationEvents } from '@/hooks/useNavigationEvents';
-import { NavigationProgressBar } from '@/app/components/Navigation/NavigationProgressBar';
-
-function NavigationHandler() {
-  useNavigationEvents();
-  return null;
-}
 
 export default function AppProviders({ children, session }) {
   return (
@@ -21,14 +14,10 @@ export default function AppProviders({ children, session }) {
       <SWRConfig
         value={{
           fetcher,
-          revalidateOnFocus: true,
+          revalidateOnFocus: false,
           shouldRetryOnError: false,
         }}
       >
-        <Suspense fallback={null}>
-          <NavigationHandler />
-        </Suspense>
-        <NavigationProgressBar />
         {children}
         <Toaster />
         <AuthModalDialog />
