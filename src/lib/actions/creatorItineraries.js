@@ -413,7 +413,7 @@ export const getCreatorItineraryDiff = async (id) => {
 export const submitCreatorItineraryDraft = async (data) => {
   try {
     const api = await getAuthApi();
-    const res = await api.post('/creator/itineraries/create', data);
+    const res = await api.post('/api/creator/itineraries/create', data);
     return { success: true, message: res.data?.message, data: res.data?.data };
   } catch (err) {
     const message = err?.response?.data?.message || 'Failed to submit itinerary.';

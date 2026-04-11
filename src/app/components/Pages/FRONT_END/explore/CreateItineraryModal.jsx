@@ -10,8 +10,8 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { submitCreatorItineraryDraft } from '@/lib/actions/creatorItineraries';
-import { getAllCitiesAdmin } from '@/lib/services/global';
-import { getAllActivitesAdmin } from '@/lib/services/activites';
+import { getAllCitiesListClient } from '@/lib/services/cities';
+import { getAllActivitiesListClient } from '@/lib/services/activites';
 import { getAllTransfersAdmin } from '@/lib/services/transfers';
 import { ComboboxMultiple } from '@/components/ui/combobox_multi';
 import { cn, generateSlug } from '@/lib/utils';
@@ -45,13 +45,7 @@ const PersonalInfoTab = ({ locationsOptions }) => {
           <Label htmlFor="name" className={errors?.name ? 'text-red-400' : 'text-black'}>
             Itinerary Name <span className="text-red-500">*</span>
           </Label>
-          <Input
-            placeholder="Itinerary name"
-            id="name"
-            {...register('name', { required: 'Name is required' })}
-            className="mt-1"
-            onBlur={handleBlur}
-          />
+          <Input placeholder="Itinerary name" id="name" {...register('name', { required: 'Name is required' })} className="mt-1" onBlur={handleBlur} />
           {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
         </div>
 
@@ -59,13 +53,7 @@ const PersonalInfoTab = ({ locationsOptions }) => {
           <Label htmlFor="slug" className={errors?.slug ? 'text-red-400' : 'text-black'}>
             Slug <span className="text-red-500">*</span>
           </Label>
-          <Input
-            placeholder="Enter URL slug"
-            id="slug"
-            {...register('slug', { required: 'Slug is required' })}
-            className="mt-1"
-            onBlur={handleBlur}
-          />
+          <Input placeholder="Enter URL slug" id="slug" {...register('slug', { required: 'Slug is required' })} className="mt-1" onBlur={handleBlur} />
           {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
         </div>
       </div>
@@ -74,12 +62,7 @@ const PersonalInfoTab = ({ locationsOptions }) => {
         <Label htmlFor="description" className={errors?.description ? 'text-red-400' : 'text-black'}>
           Description <span className="text-red-500">*</span>
         </Label>
-        <Textarea
-          placeholder="Detailed description"
-          id="description"
-          {...register('description', { required: 'Description is required' })}
-          className="mt-1 min-h-[120px]"
-        />
+        <Textarea placeholder="Detailed description" id="description" {...register('description', { required: 'Description is required' })} className="mt-1 min-h-[120px]" />
         {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
       </div>
 
@@ -92,16 +75,7 @@ const PersonalInfoTab = ({ locationsOptions }) => {
           name="locations"
           defaultValue={[]}
           rules={{ required: 'Locations Required' }}
-          render={({ field: { value, onChange } }) => (
-            <ComboboxMultiple
-              id="locations"
-              name="locations"
-              type="locations"
-              items={locationsOptions}
-              value={value ?? []}
-              onChange={onChange}
-            />
-          )}
+          render={({ field: { value, onChange } }) => <ComboboxMultiple id="locations" name="locations" type="locations" items={locationsOptions} value={value ?? []} onChange={onChange} />}
         />
         {errors?.locations && <span className="text-red-400">{errors?.locations?.message}</span>}
       </div>
@@ -418,13 +392,13 @@ export default function CreateItineraryModal({ open, onOpenChange, session }) {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [locationsRes, activitiesRes, transfersRes] = await Promise.all([getAllCitiesAdmin(), getAllActivitesAdmin(), getAllTransfersAdmin()]);
+        const [locationsRes, activitiesRes, transfersRes] = await Promise.all([getAllCitiesListClient(), getAllActivitiesListClient(), getAllTransfersAdmin()]);
 
-        if (locationsRes.data?.data) {
-          setLocations(locationsRes.data.data);
+        if (locationsRes?.data) {
+          setLocations(locationsRes.data);
         }
-        if (activitiesRes.data?.data) {
-          setActivities(activitiesRes.data.data);
+        if (activitiesRes?.data) {
+          setActivities(activitiesRes.data);
         }
         if (transfersRes?.data) {
           setTransfers(transfersRes.data);

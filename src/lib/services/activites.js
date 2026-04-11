@@ -54,6 +54,25 @@ export async function getAllActivitesAdmin(search = '') {
 }
 
 /**
+ * Get All Activities Admin (client-side, authenticated)
+ * For use in client components that need to fetch activities list
+ * @param {string} search - Optional query string
+ * @returns {Promise<Object>}
+ */
+export async function getAllActivitiesListClient(search = '') {
+  try {
+    const { getAuthApi } = await import('../axiosInstance');
+    const api = await getAuthApi();
+    const response = await api.get(`/api/admin/activities/${search ? search : ''}`, {
+      headers: { Accept: 'application/json' },
+    });
+    return response?.data;
+  } catch (error) {
+    return [];
+  }
+}
+
+/**
  * Returns all Featured Activities
  * @returns []
  */

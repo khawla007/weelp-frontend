@@ -162,3 +162,20 @@ export async function getCityItemsByType(citySlug, itemType, page = 1, perPage =
     return { success: false, data: [], current_page: 1, last_page: 1, per_page: perPage, total: 0 };
   }
 }
+
+/**
+ * Get All Cities List (client-side, authenticated)
+ * For use in client components that need to fetch cities list
+ * @returns {Promise<{ data: Array<{id:number, name:string}> }>}
+ */
+export async function getAllCitiesListClient() {
+  try {
+    const response = await authApi.get(`/api/admin/cities/list`, {
+      headers: { Accept: 'application/json' },
+    });
+    return response?.data;
+  } catch (error) {
+    console.error('Service Error (getAllCitiesListClient):', error);
+    return { data: [] };
+  }
+}
