@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from 'react';
 import CreatorFilter from './SectionCreatorFilter';
 import CreatorStatCards from './CreatorStatCards';
 import CreatorApplicationForm from './CreatorApplicationForm';
+import CreateItineraryModal from './CreateItineraryModal';
 import { getApplicationStatus } from '@/lib/actions/creatorApplications';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -17,6 +18,7 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
   const [applicationStatus, setApplicationStatus] = useState(null);
   const [activeTab, setActiveTab] = useState('home');
   const [guideOpen, setGuideOpen] = useState(false);
+  const [createModalOpen, setCreateModalOpen] = useState(false);
   const { toast } = useToast();
   const { openAuthModal } = useAuthModalStore();
   const { data: session, update: updateSession } = useSession();
@@ -80,10 +82,16 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
                 <h3 className="text-lg font-semibold text-[#142A38]">Welcome, Creator!</h3>
                 <p className="text-sm text-[#5A5A5A] mt-1">Share your travel experiences and inspire the community.</p>
               </div>
-              <Button onClick={() => setGuideOpen(true)} variant="outline" className="border-secondaryDark text-secondaryDark hover:bg-secondaryDark/10">
-                <HelpCircle className="size-4 mr-2" />
-                How to Create Itinerary
-              </Button>
+              <div className="flex items-center gap-3">
+                <Button onClick={() => setCreateModalOpen(true)} className="bg-secondaryDark hover:bg-secondaryDark/90 text-white">
+                  <Sparkles className="size-4 mr-2" />
+                  Create Itinerary
+                </Button>
+                <Button onClick={() => setGuideOpen(true)} variant="outline" className="border-secondaryDark text-secondaryDark hover:bg-secondaryDark/10">
+                  <HelpCircle className="size-4 mr-2" />
+                  How to Create Itinerary
+                </Button>
+              </div>
             </div>
           ) : applicationStatus === 'pending' ? (
             <div className="flex items-center justify-between bg-gradient-to-r from-amber-100/60 to-amber-50/40 rounded-xl p-6">
@@ -153,6 +161,13 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Create Itinerary Modal */}
+      <CreateItineraryModal
+        open={createModalOpen}
+        onOpenChange={setCreateModalOpen}
+        session={session}
+      />
     </>
   );
 }
