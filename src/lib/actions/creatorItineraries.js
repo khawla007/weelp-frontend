@@ -404,3 +404,19 @@ export const getCreatorItineraryDiff = async (id) => {
     return { success: false, message: 'Failed to fetch diff data.' };
   }
 };
+
+/**
+ * Submit a new creator itinerary draft (from Explore page)
+ * @param {object} data - Itinerary draft data
+ * @returns {object} { success, message, data }
+ */
+export const submitCreatorItineraryDraft = async (data) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.post('/creator/itineraries/create', data);
+    return { success: true, message: res.data?.message, data: res.data?.data };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to submit itinerary.';
+    return { success: false, message };
+  }
+};
