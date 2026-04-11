@@ -471,8 +471,8 @@ export default function CreateItineraryModal({ open, onOpenChange, session }) {
     }
 
     const activities = methods.getValues('activities');
-    const transferss = methods.getValues('transfers');
-    const hasItems = (activities && activities.length > 0) || (transferss && transferss.length > 0);
+    const transfers = methods.getValues('transfers');
+    const hasItems = (activities && activities.length > 0) || (transfers && transfers.length > 0);
     if (!hasItems) {
       toast({
         variant: 'destructive',
