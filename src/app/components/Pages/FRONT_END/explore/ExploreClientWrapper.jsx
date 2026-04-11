@@ -143,10 +143,12 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
           </DialogHeader>
           <div className="space-y-4 pt-2">
             {[
-              { step: 1, title: 'Go to a Single Itinerary Page', desc: 'Browse the Explore page and open any itinerary that inspires you.' },
-              { step: 2, title: 'Add or Edit the Schedule', desc: 'Customize the itinerary by adding your own day-by-day schedule, activities, timings, and travel tips.' },
-              { step: 3, title: 'Submit for Approval', desc: "Once your itinerary is ready, submit it for admin review. You'll be notified once it's approved and published on the Explore page." },
-              { step: 4, title: 'Track in My Itineraries', desc: 'View and manage all your created itineraries from the My Itineraries section in your dashboard.' },
+              { step: 1, title: 'Go to Explore Page', desc: 'Navigate to the Explore page where you\'ll find the "Create Itinerary" button in the creator welcome banner.' },
+              { step: 2, title: 'Click Create Itinerary', desc: 'Click the "Create Itinerary" button to open a 2-step form where you can enter your itinerary details.' },
+              { step: 3, title: 'Fill Basic Information', desc: 'Enter your itinerary name, description, and select destinations. Click "Next" to proceed.' },
+              { step: 4, title: 'Build Your Schedule', desc: 'Add days to your itinerary and include activities and transfers from the selected destinations.' },
+              { step: 5, title: 'Submit for Approval', desc: 'Once complete, click "Apply for Approval" to submit your itinerary for admin review.' },
+              { step: 6, title: 'Track in My Itineraries', desc: 'View and manage all your created itineraries from the My Itineraries section in your dashboard.' },
             ].map((item) => (
               <div key={item.step} className="flex gap-4">
                 <div className="flex-shrink-0 w-8 h-8 rounded-full bg-secondaryDark/10 flex items-center justify-center">
@@ -163,11 +165,7 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
       </Dialog>
 
       {/* Create Itinerary Modal */}
-      <CreateItineraryModal
-        open={createModalOpen}
-        onOpenChange={setCreateModalOpen}
-        session={session}
-      />
+      <CreateItineraryModal open={createModalOpen} onOpenChange={setCreateModalOpen} session={session} />
     </>
   );
 }
