@@ -29,6 +29,7 @@ import { useMediaStore } from '@/lib/store/useMediaStore';
 import { Medialibrary } from '../media/MediaLibrary';
 import { Card } from '@/components/ui/card';
 import { deleteItineraryItems, editItinerary } from '@/lib/actions/itineraries'; // server actions for handling data
+import { updateAndApproveCreatorItinerary } from '@/lib/actions/creatorItineraries';
 import dynamic from 'next/dynamic';
 
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnItinerary'), { ssr: false });
@@ -38,6 +39,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
   const [toggleUpdate, setToggleUpdate] = useState(false);
+  const [isApproving, setIsApproving] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -63,6 +65,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
     tags: presetTags = [],
     attributes: presetAttributes = [],
     addons,
+    status,
   } = itineraryData;
 
   // destructure schema
@@ -1964,6 +1967,47 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
     }
   };
 
+  // Submit and Approve Data
+  const handleSubmitAndApprove = async (data) => {
+    const mergedData = { ...formData, ...data };
+
+    if (currentStep < 8) {
+      setFormData(mergedData);
+      setCurrentStep((prev) => prev + 1);
+      return;
+    }
+
+    // Cleaning of Data
+    const { activities: dirtyActivities, transfers: dirtyTransfers, inclusions_exclusions: dirty_inclusions_exclusions, media_gallery: dirtyMedia_gallery } = mergedData;
+
+    const activities = removeNestedKey(dirtyActivities, 'media_url');
+    const transfers = removeNestedKey(dirtyTransfers, 'media_url');
+    const inclusions_exclusions = removeNestedKey(dirty_inclusions_exclusions, ['created_at', 'updated_at']);
+    const media_gallery = removeNestedKey(dirtyMedia_gallery, ['name', 'url', 'alt_text', 'itinerary_id']);
+
+    let finalData = set(mergedData, 'activities', activities); // add new activites
+    finalData = set(mergedData, 'transfers', transfers); // add new transfers
+    finalData = set(finalData, 'inclusions_exclusions', inclusions_exclusions); // add new inclusion exclusion
+    finalData = set(finalData, 'media_gallery', media_gallery);
+
+    // Final step: submit and approve
+    setIsApproving(true);
+    try {
+      const result = await updateAndApproveCreatorItinerary(id, finalData);
+      if (result.success) {
+        toast({ title: 'Itinerary Approved', description: result.message });
+        router.push('/dashboard/admin/creator-itineraries');
+        router.refresh();
+      } else {
+        toast({ title: 'Error', description: result.message, variant: 'destructive' });
+      }
+    } catch (error) {
+      toast({ title: 'Unexpected Error', description: 'Please try again later.', variant: 'destructive' });
+    } finally {
+      setIsApproving(false);
+    }
+  };
+
   return (
     <div className="min-h-screen w-full bg-gray-50 py-12 sm:px-6 lg:px-8">
       <NavigationItinerary title={'Edit Itinerary'} desciption={'Build a new itinerary with schedule, pricing, and more'} backurl={'/dashboard/admin/itineraries/'} />
@@ -2010,7 +2054,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                   }
             }
           >
-            <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
+            <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${(isSubmitting || isApproving) && ' cursor-wait'}`} disabled={isSubmitting || isApproving}>
               <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>{ScheduleTab()}</div>
               {currentStep !== 2 && renderStep()}
               <div className="flex justify-between pt-4">
@@ -2042,9 +2086,23 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                   <>
                     {/* Step 8: Use FormActionButtons, Steps 1-7: Use Next button */}
                     {currentStep === 8 ? (
-                      <FormActionButtons mode="update" isSubmitting={isSubmitting} isDisabled={!isValid || !isDirty} cancelAlwaysEnabled={true} containerType="div" className="flex gap-4" />
+                      <div className="flex gap-4 ml-auto">
+                        {status === 'pending' && (
+                          <Button type="button" onClick={methods.handleSubmit(handleSubmitAndApprove)} disabled={isSubmitting || isApproving} className="bg-green-600 hover:bg-green-700">
+                            {isApproving ? 'Approving...' : 'Save & Approve'}
+                          </Button>
+                        )}
+                        <FormActionButtons
+                          mode="update"
+                          isSubmitting={isSubmitting || isApproving}
+                          isDisabled={!isValid || !isDirty}
+                          cancelAlwaysEnabled={true}
+                          containerType="div"
+                          className="flex gap-4"
+                        />
+                      </div>
                     ) : (
-                      <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
+                      <Button type="submit" disabled={isSubmitting || isApproving} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
                         {isSubmitting ? 'Next' : 'Next'}
                       </Button>
                     )}
