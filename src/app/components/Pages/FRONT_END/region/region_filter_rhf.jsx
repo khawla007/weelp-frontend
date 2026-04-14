@@ -9,7 +9,7 @@ import { Star } from 'lucide-react';
 import { useCategories } from '@/hooks/api/public/categories';
 import { useRegionItems } from '@/hooks/api/public/region';
 import { GlobalCard } from '@/app/components/SingleProductCard';
-import { LoadingPage } from '@/app/components/Animation/Cards';
+import { ProductCardSkelton } from '@/app/components/Animation/Cards';
 
 export const RegionFilterNew = () => {
   const ref = useRef();
@@ -186,21 +186,32 @@ export const RegionFilterNew = () => {
 
         {/* Products Grid */}
         <div className="w-full lg:flex-[4] sm:my-12 flex flex-col">
-          {isLoading && <LoadingPage />}
-          <div className="flex flex-wrap gap-4">
-            {!isLoading && products.length > 0
-              ? products.map((product) => (
-                  <GlobalCard
-                    key={product.slug}
-                    productTitle={product.name}
-                    productSlug={product.slug}
-                    item_type={product.item_type}
-                    productPrice={product?.pricing?.regular_price ?? product?.base_pricing?.variations?.[0]?.regular_price}
-                    citySlug={product?.city_slug}
-                  />
-                ))
-              : !isLoading && <p className="text-center w-full py-8 text-gray-500">Sorry, no products found.</p>}
-          </div>
+          {isLoading ? (
+            <div className="flex gap-4 flex-wrap justify-center">
+              {[...Array(6)].map((_, i) => (
+                <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
+              ))}
+            </div>
+          ) : (
+            <>
+              <div className="flex flex-wrap gap-4">
+                {products.length > 0 ? (
+                  products.map((product) => (
+                    <GlobalCard
+                      key={product.slug}
+                      productTitle={product.name}
+                      productSlug={product.slug}
+                      item_type={product.item_type}
+                      productPrice={product?.pricing?.regular_price ?? product?.base_pricing?.variations?.[0]?.regular_price}
+                      citySlug={product?.city_slug}
+                    />
+                  ))
+                ) : (
+                  <p className="text-center w-full py-8 text-gray-500">Sorry, no products found.</p>
+                )}
+              </div>
+            </>
+          )}
           {/* eslint-disable-next-line react-hooks/static-components */}
           <Pagination />
         </div>
