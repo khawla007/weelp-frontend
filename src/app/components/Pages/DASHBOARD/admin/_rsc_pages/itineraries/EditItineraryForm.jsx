@@ -120,29 +120,37 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
   const { errors, isValid, isSubmitting, isDirty } = methods?.formState;
 
   /** Inline Actions Side Effects */
+  // Only depend on toggleUpdate to avoid infinite loops
+  // The values (schedules, activities, etc.) are read fresh from form state when toggleUpdate changes
   useEffect(() => {
-    methods.setValue('schedules', [...schedules]); // update side effect for schedules
-  }, [toggleUpdate, schedules]);
+    const currentSchedules = methods.getValues('schedules');
+    methods.setValue('schedules', [...currentSchedules]); // update side effect for schedules
+  }, [toggleUpdate]);
 
   useEffect(() => {
-    methods.setValue('activities', [...activities]); // update side effect for activities
-  }, [toggleUpdate, activities]);
+    const currentActivities = methods.getValues('activities');
+    methods.setValue('activities', [...currentActivities]); // update side effect for activities
+  }, [toggleUpdate]);
 
   useEffect(() => {
-    methods.setValue('transfers', [...transfers]); // update side effect for transfers
-  }, [toggleUpdate, transfers]);
+    const currentTransfers = methods.getValues('transfers');
+    methods.setValue('transfers', [...currentTransfers]); // update side effect for transfers
+  }, [toggleUpdate]);
 
   useEffect(() => {
-    methods.setValue('price_variations', [...price_variations]); // update side effect for price variations
-  }, [toggleUpdate, price_variations]);
+    const currentPriceVariations = methods.getValues('price_variations');
+    methods.setValue('price_variations', [...currentPriceVariations]); // update side effect for price variations
+  }, [toggleUpdate]);
 
   useEffect(() => {
-    methods.setValue('blackout_dates', [...blackout_dates]); // update side effect for price variations
-  }, [toggleUpdate, blackout_dates]);
+    const currentBlackoutDates = methods.getValues('blackout_dates');
+    methods.setValue('blackout_dates', [...currentBlackoutDates]); // update side effect for blackout_dates
+  }, [toggleUpdate]);
 
   useEffect(() => {
-    methods.setValue('inclusions_exclusions', [...inclusions_exclusions]); // update side effect for inclusions_exclusions
-  }, [toggleUpdate, inclusions_exclusions]);
+    const currentInclusionsExclusions = methods.getValues('inclusions_exclusions');
+    methods.setValue('inclusions_exclusions', [...currentInclusionsExclusions]); // update side effect for inclusions_exclusions
+  }, [toggleUpdate]);
 
   //  Main Steps
   const steps = [
@@ -1367,7 +1375,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
   };
 
   // Media Tab
-  const MediaTab = () => {
+  const MediaTab = React.memo(() => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [activityImages, setActivityImages] = useState([]); // all images intialize
     const { selectedMedia, resetMedia } = useMediaStore(); // Retrive images From Media
@@ -1410,8 +1418,12 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
 
     // sycn with form
     useEffect(() => {
-      setValue('media_gallery', activityImages); // sync form
-    }, [activityImages, setValue]);
+      // Only update if values are actually different to prevent infinite loop
+      const currentMediaGallery = getValues('media_gallery');
+      if (JSON.stringify(currentMediaGallery) !== JSON.stringify(activityImages)) {
+        setValue('media_gallery', activityImages); // sync form
+      }
+    }, [activityImages, setValue, getValues]);
 
     // handleDelteImage
     const handleDeleteImage = (image) => {
@@ -1503,7 +1515,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
         )}
       </div>
     );
-  };
+  });
 
   // SEO Tab
   const SeoTab = () => {
