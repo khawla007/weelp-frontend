@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useParams } from 'next/navigation';
 import ItemCard from '@/app/components/ui/item-card';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
-import { LoadingPage } from '@/app/components/Animation/Cards';
+import { ProductCardSkelton } from '@/app/components/Animation/Cards';
 import Pagination from '@/app/components/ui/Pagination';
 import FilterSidebar from './FilterSidebar';
 
@@ -83,9 +83,15 @@ export default function CityFilterSection() {
 
         {/* Product Grid */}
         <div className="flex-1">
-          {isLoading && <LoadingPage />}
-          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ${isLoading ? 'opacity-50' : ''}`}>
-            {!isLoading && products.length > 0 ? (
+          {isLoading ? (
+            <div className="flex gap-4 flex-wrap justify-center">
+              {[...Array(6)].map((_, i) => (
+                <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {products.length > 0 ? (
               products.map((product, index) => {
                 const card = mapProductToItemCard(product, city);
                 return (
@@ -102,12 +108,13 @@ export default function CityFilterSection() {
                   />
                 );
               })
-            ) : !isLoading ? (
+            ) : (
               <div className="col-span-full flex items-center justify-center min-h-[300px]">
                 <span className="text-lg text-[#6b7b8d]">No items found</span>
               </div>
-            ) : null}
+            )}
           </div>
+          )}
 
           {/* Pagination */}
           <div className="mt-8">
