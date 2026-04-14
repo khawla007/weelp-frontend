@@ -329,6 +329,23 @@ export const adminUpdateCreatorItinerary = async (id, data) => {
 };
 
 /**
+ * Admin: update and approve a creator itinerary in one action
+ * @param {number} id - Itinerary ID
+ * @param {object} data - Full itinerary data
+ * @returns {object} { success, message }
+ */
+export const updateAndApproveCreatorItinerary = async (id, data) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.put(`/api/admin/creator-itineraries/${id}/update-and-approve`, data);
+    return { success: true, message: res.data?.message };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to update and approve itinerary.';
+    return { success: false, message };
+  }
+};
+
+/**
  * Admin: delete a creator itinerary
  * @param {number} id - Itinerary ID
  * @returns {object} { success, message }
