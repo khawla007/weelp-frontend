@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
 import set from 'lodash/set';
@@ -186,29 +186,30 @@ export const RegionFilter = () => {
       </div>
 
       <div className="w-full lg:flex-[4] sm:my-12 flex flex-col">
-        {isLoading && (
+        {isLoading ? (
           <div className="flex gap-4 flex-wrap justify-center">
             {[...Array(6)].map((_, i) => (
               <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
             ))}
           </div>
+        ) : (
+          <div className="flex gap-4 flex-wrap">
+            {products.length > 0 ? (
+              products.map((product, index) => (
+                <GlobalCard
+                  key={index}
+                  productTitle={product?.name}
+                  productSlug={product?.slug}
+                  item_type={product?.item_type}
+                  productPrice={product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price}
+                  citySlug={product?.city_slug}
+                />
+              ))
+            ) : (
+              <p className="w-full text-center py-8">Sorry No Product Found</p>
+            )}
+          </div>
         )}
-        <div className="flex  gap-4 flex-wrap">
-          {!isLoading && products.length > 0 ? (
-            products.map((product, index) => (
-              <GlobalCard
-                key={index}
-                productTitle={product?.name}
-                productSlug={product?.slug}
-                item_type={product?.item_type}
-                productPrice={product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price}
-                citySlug={product?.city_slug}
-              />
-            ))
-          ) : (
-            <p>Sorry No Product Found</p>
-          )}
-        </div>
 
         {/* eslint-disable-next-line react-hooks/static-components */}
         {pagination.last_page > 1 && <PaginationControls />}
