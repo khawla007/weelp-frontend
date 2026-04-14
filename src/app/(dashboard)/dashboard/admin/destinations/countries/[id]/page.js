@@ -4,7 +4,6 @@ import React from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import useSWR from 'swr';
 import CreateCountryForm from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/destinations/destinations_forms/CreateCountryForm';
-import { PageLoader } from '@/app/components/Loading/PageLoader';
 import { Button } from '@/components/ui/button';
 import { AlertCircle } from 'lucide-react';
 import { fetcher } from '@/lib/fetchers';
@@ -18,7 +17,11 @@ const EditCountryPage = () => {
   const { data: countryData, error, isLoading } = useSWR(id ? `/api/admin/destinations/countries/${id}` : null, fetcher);
 
   if (isLoading || !id) {
-    return <PageLoader />;
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-muted-foreground">Loading country data...</div>
+      </div>
+    );
   }
 
   // Show error state only if we have an ID and loading finished but data is invalid
