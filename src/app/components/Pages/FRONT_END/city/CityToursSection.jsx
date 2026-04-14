@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation';
 import axios from 'axios';
 import ItemCard from '@/app/components/ui/item-card';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
-import { LoadingPage } from '@/app/components/Animation/Cards';
+import { ProductCardSkelton } from '@/app/components/Animation/Cards';
 
 const SORT_OPTIONS = [
   { value: 'id_desc', label: 'Newest First' },
@@ -215,13 +215,16 @@ export default function CityToursSection({ cityName }) {
         </div>
       </div>
 
-      {/* Loading */}
-      {isLoading && <LoadingPage />}
-
       {/* Cards Grid */}
-      <div className={`grid grid-cols-1 gap-[18px] sm:grid-cols-2 xl:grid-cols-4 ${isLoading ? 'opacity-50' : ''}`}>
-        {!isLoading &&
-          cards.map((card, index) => (
+      {isLoading ? (
+        <div className="flex gap-4 flex-wrap justify-center">
+          {[...Array(6)].map((_, i) => (
+            <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
+          ))}
+        </div>
+      ) : cards.length > 0 ? (
+        <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 xl:grid-cols-4">
+          {cards.map((card, index) => (
             <ItemCard
               key={card.id || `${card.href}-${index}`}
               href={card.href}
@@ -234,10 +237,8 @@ export default function CityToursSection({ cityName }) {
               variant="full"
             />
           ))}
-      </div>
-
-      {/* Empty State */}
-      {!isLoading && cards.length === 0 && (
+        </div>
+      ) : (
         <div className="flex min-h-[220px] items-center justify-center">
           <span className="text-[16px] text-[#6b7b8d]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500 }}>
             No packages found for the selected tags
