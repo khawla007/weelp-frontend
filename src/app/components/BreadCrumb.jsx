@@ -1,12 +1,11 @@
 'use client';
 import React from 'react';
-import { useParams, usePathname, useSearchParams } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 
 const BreadCrumb = ({ className }) => {
   const pathName = usePathname();
-  const searchparams = useSearchParams();
   const { itinerary } = useParams();
 
   const pathArray = String(pathName).split('/');
