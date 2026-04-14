@@ -14,7 +14,7 @@ export function getItineraryFeaturedImage(itinerary) {
   }
 
   // 2. Fallback to media_gallery featured
-  const featured = itinerary.media_gallery?.find(m => m.is_featured);
+  const featured = itinerary.media_gallery?.find((m) => m.is_featured);
   if (featured?.url) return featured.url;
 
   // 3. First activity's first image
@@ -57,11 +57,11 @@ export function getItineraryGalleryImages(itinerary) {
   };
 
   // 1. Itinerary images
-  itinerary.media_gallery?.forEach(m => addImage(m));
+  itinerary.media_gallery?.forEach((m) => addImage(m));
 
   // 2. Activity images
-  itinerary.schedules?.forEach(schedule => {
-    schedule.activities?.forEach(activity => {
+  itinerary.schedules?.forEach((schedule) => {
+    schedule.activities?.forEach((activity) => {
       if (activity.featured_image) {
         addImage({ url: activity.featured_image, id: activity.activity_id });
       }
@@ -69,8 +69,8 @@ export function getItineraryGalleryImages(itinerary) {
   });
 
   // 3. Transfer images (if available)
-  itinerary.schedules?.forEach(schedule => {
-    schedule.transfers?.forEach(transfer => {
+  itinerary.schedules?.forEach((schedule) => {
+    schedule.transfers?.forEach((transfer) => {
       // Add transfer images if available in data structure
     });
   });
