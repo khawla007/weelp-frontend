@@ -8,7 +8,7 @@ import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { GlobalCard } from '@/app/components/SingleProductCard';
 import { Star } from 'lucide-react';
-import { LoadingPage } from '@/app/components/Animation/Cards';
+import { ProductCardSkelton } from '@/app/components/Animation/Cards';
 import { log } from '@/lib/utils';
 
 export const RegionFilter = () => {
@@ -186,7 +186,13 @@ export const RegionFilter = () => {
       </div>
 
       <div className="w-full lg:flex-[4] sm:my-12 flex flex-col">
-        {isLoading && <LoadingPage />}
+        {isLoading && (
+          <div className="flex gap-4 flex-wrap justify-center">
+            {[...Array(6)].map((_, i) => (
+              <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
+            ))}
+          </div>
+        )}
         <div className="flex  gap-4 flex-wrap">
           {!isLoading && products.length > 0 ? (
             products.map((product, index) => (
