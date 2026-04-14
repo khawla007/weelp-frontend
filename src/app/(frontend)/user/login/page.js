@@ -14,7 +14,10 @@ const LoginPage = async ({ searchParams }) => {
   const params = await searchParams;
   const defaultTab = params.tab === 'signup' ? 'signup' : 'login';
 
-  return <AuthPageClient defaultTab={defaultTab} />;
+  // Get return URL from query parameter (for redirect after login)
+  const returnUrl = params.return || null;
+
+  return <AuthPageClient defaultTab={defaultTab} returnUrl={returnUrl} />;
 };
 
 export default LoginPage;

@@ -6,7 +6,7 @@ import { LoginForm } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
 import { useIsClient } from '@/hooks/useIsClient';
 
-export function AuthPageClient({ defaultTab = 'login' }) {
+export function AuthPageClient({ defaultTab = 'login', returnUrl = null }) {
   const isClient = useIsClient();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(defaultTab);
@@ -60,7 +60,7 @@ export function AuthPageClient({ defaultTab = 'login' }) {
 
           {/* Form */}
           {isLogin ? (
-            <LoginForm showCloseButton={false} onSwitchToSignup={() => handleTabSwitch('signup')} />
+            <LoginForm showCloseButton={false} onSwitchToSignup={() => handleTabSwitch('signup')} customUrl={returnUrl} />
           ) : (
             <RegisterForm showCloseButton={false} onSwitchToLogin={() => handleTabSwitch('login')} />
           )}

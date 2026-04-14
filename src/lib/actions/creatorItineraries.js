@@ -35,47 +35,73 @@ export const getEditData = async (slug) => {
 };
 
 /**
- * Get city activities for an itinerary
- * @param {string} slug - Itinerary slug
+ * Get activities by city IDs with role-based API selection
+ * @param {number[]} cityIds - Array of city IDs to fetch activities for
+ * @param {string} role - User role: 'creator' or 'customer'
  * @returns {object} { success, data }
  */
-export const getCityActivities = async (slug) => {
+export const getActivitiesByCity = async (cityIds = [], role = 'customer') => {
   try {
-    const res = await publicApi.get(`/api/itineraries/${slug}/city-activities`);
-    return { success: true, data: res.data?.data };
+    const api = await getAuthApi();
+    const basePath = role === 'creator' ? '/api/creator' : '/api/customer';
+
+    // Fetch activities for all cities in parallel
+    const promises = cityIds.map((cityId) => api.get(`${basePath}/activities`, { params: { city_id: cityId } }));
+
+    const responses = await Promise.all(promises);
+    // Merge all activities from all cities
+    const allActivities = responses.flatMap((res) => res.data?.data || []);
+
+    return { success: true, data: allActivities };
   } catch (err) {
-    const message = err?.response?.data?.message || 'Failed to fetch city activities.';
-    return { success: false, message };
+    const message = err?.response?.data?.message || 'Failed to fetch activities.';
+    return { success: false, message, data: [] };
   }
 };
 
 /**
- * Get city transfers for an itinerary
- * @param {string} slug - Itinerary slug
+ * Get transfers by city IDs with role-based API selection
+ * @param {number[]} cityIds - Array of city IDs to fetch transfers for
+ * @param {string} role - User role: 'creator' or 'customer'
  * @returns {object} { success, data }
  */
-export const getCityTransfers = async (slug) => {
+export const getTransfersByCity = async (cityIds = [], role = 'customer') => {
   try {
-    const res = await publicApi.get(`/api/itineraries/${slug}/city-transfers`);
-    return { success: true, data: res.data?.data };
+    const api = await getAuthApi();
+    const basePath = role === 'creator' ? '/api/creator' : '/api/customer';
+
+    // Fetch transfers for all cities in parallel
+    const promises = cityIds.map((cityId) => api.get(`${basePath}/transfers`, { params: { city_id: cityId } }));
+
+    const responses = await Promise.all(promises);
+    // Merge all transfers from all cities
+    const allTransfers = responses.flatMap((res) => res.data?.data || []);
+
+    return { success: true, data: allTransfers };
   } catch (err) {
-    const message = err?.response?.data?.message || 'Failed to fetch city transfers.';
-    return { success: false, message };
+    const message = err?.response?.data?.message || 'Failed to fetch transfers.';
+    return { success: false, message, data: [] };
   }
 };
 
 /**
- * Get city places for an itinerary
- * @param {string} slug - Itinerary slug
+ * Get places by city IDs using public API
+ * @param {number[]} cityIds - Array of city IDs to fetch places for
  * @returns {object} { success, data }
  */
-export const getCityPlaces = async (slug) => {
+export const getPlacesByCity = async (cityIds = []) => {
   try {
-    const res = await publicApi.get(`/api/itineraries/${slug}/city-places`);
-    return { success: true, data: res.data?.data };
+    // Fetch places for all cities in parallel
+    const promises = cityIds.map((cityId) => publicApi.get('/api/places', { params: { city_id: cityId } }));
+
+    const responses = await Promise.all(promises);
+    // Merge all places from all cities
+    const allPlaces = responses.flatMap((res) => res.data?.data || []);
+
+    return { success: true, data: allPlaces };
   } catch (err) {
-    const message = err?.response?.data?.message || 'Failed to fetch city places.';
-    return { success: false, message };
+    const message = err?.response?.data?.message || 'Failed to fetch places.';
+    return { success: false, message, data: [] };
   }
 };
 
@@ -87,7 +113,7 @@ export const getCityPlaces = async (slug) => {
 export const toggleItineraryLike = async (id) => {
   try {
     const api = await getAuthApi();
-    const res = await api.post(`/api/explore/creator-itineraries/${id}/like`);
+    const res = await api.post(`/api/creator/explore/${id}/like`);
     return { success: true, liked: res.data?.liked, likes_count: res.data?.likes_count };
   } catch (err) {
     return { success: false, message: 'Failed to toggle like.' };
@@ -101,7 +127,7 @@ export const toggleItineraryLike = async (id) => {
  */
 export const recordItineraryView = async (id) => {
   try {
-    const res = await publicApi.post(`/api/explore/creator-itineraries/${id}/view`);
+    const res = await publicApi.post(`/api/creator/explore/${id}/view`);
     return { success: true, views_count: res.data?.views_count };
   } catch (err) {
     return { success: false, message: 'Failed to record view.' };

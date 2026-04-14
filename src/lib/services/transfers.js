@@ -19,6 +19,23 @@ export async function getAllTransfersAdmin() {
 }
 
 /**
+ * Get All Transfers List from Public API (for creators/guests)
+ * Uses the public endpoint which doesn't require admin authentication
+ * @returns {Promise<{ data: Array }>}
+ */
+export async function getAllTransfersPublic() {
+  try {
+    const response = await publicApi.get(`/api/transfers`, {
+      headers: { Accept: 'application/json' },
+    });
+    return response?.data;
+  } catch (error) {
+    console.error('Service Error (getAllTransfersPublic):', error);
+    return { success: false, data: [] };
+  }
+}
+
+/**
  * Fetches a list of admin transfers with optional query parameters.
  *
  * @function

@@ -4,21 +4,21 @@ import { useState, useEffect, useCallback } from 'react';
 import { SearchIcon, Clock, MapPin, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { getCityActivities } from '@/lib/actions/creatorItineraries';
+import { getActivitiesByCity } from '@/lib/actions/creatorItineraries';
 
-export default function ActivitySearchModalPublic({ open, onOpenChange, slug, onSelect }) {
+export default function ActivitySearchModalPublic({ open, onOpenChange, cityIds = [], userRole = 'customer', onSelect }) {
   const [activities, setActivities] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Fetch activities when modal opens
   useEffect(() => {
-    if (!open || !slug) return;
+    if (!open || !cityIds.length) return;
     let cancelled = false;
 
     const fetchActivities = async () => {
       setLoading(true);
-      const res = await getCityActivities(slug);
+      const res = await getActivitiesByCity(cityIds, userRole);
       if (!cancelled && res.success) {
         setActivities(res.data || []);
       }
@@ -29,7 +29,7 @@ export default function ActivitySearchModalPublic({ open, onOpenChange, slug, on
     return () => {
       cancelled = true;
     };
-  }, [open, slug]);
+  }, [open, cityIds, userRole]);
 
   // Client-side filter by name
   const filtered = activities.filter((a) => a.name?.toLowerCase().includes(search.toLowerCase()));
@@ -85,7 +85,9 @@ export default function ActivitySearchModalPublic({ open, onOpenChange, slug, on
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
             </div>
           ) : filtered.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-8">{search ? 'No activities match your search.' : 'No activities available.'}</p>
+            <p className="text-sm text-muted-foreground text-center py-8">
+              {search ? 'No activities match your search.' : cityIds.length === 0 ? 'No cities associated with this itinerary.' : 'No activities available for these cities.'}
+            </p>
           ) : (
             <ul className="space-y-1">
               {filtered.map((activity) => (

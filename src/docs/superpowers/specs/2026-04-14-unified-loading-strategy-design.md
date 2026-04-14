@@ -25,44 +25,44 @@ Unify all loading states across Weelp frontend and dashboard using a consistent,
 
 ### Navigation Routes - Progress Bar
 
-| Aspect | Detail |
-|--------|--------|
-| **Component** | `NavigationProgressBar` (NProgress) |
-| **Visual** | Green bar (#588f7a), 5px height, top of page |
-| **Behavior** | Appears on route change, disappears on complete |
-| **Scope** | All frontend routes + all dashboard routes |
+| Aspect             | Detail                                            |
+| ------------------ | ------------------------------------------------- |
+| **Component**      | `NavigationProgressBar` (NProgress)               |
+| **Visual**         | Green bar (#588f7a), 5px height, top of page      |
+| **Behavior**       | Appears on route change, disappears on complete   |
+| **Scope**          | All frontend routes + all dashboard routes        |
 | **Implementation** | `useNavigationEvents` hook intercepts link clicks |
 
 ### Content Areas - Skeleton Loaders
 
-| Aspect | Detail |
-|--------|--------|
-| **Component** | Existing `*CardSkelton` components |
-| **Visual** | Gray boxes matching content structure |
-| **Behavior** | Shows while data fetches, replaced with actual content |
-| **Scope** | Activity cards, destination cards, blog cards, testimonials |
-| **Implementation** | Keep existing skeletons, use in more places |
+| Aspect             | Detail                                                      |
+| ------------------ | ----------------------------------------------------------- |
+| **Component**      | Existing `*CardSkelton` components                          |
+| **Visual**         | Gray boxes matching content structure                       |
+| **Behavior**       | Shows while data fetches, replaced with actual content      |
+| **Scope**          | Activity cards, destination cards, blog cards, testimonials |
+| **Implementation** | Keep existing skeletons, use in more places                 |
 
 ### Forms - Button Loading States
 
-| Aspect | Detail |
-|--------|--------|
-| **Component** | Existing `FormActionButtons` patterns |
-| **Visual** | Disabled button with loading indicator |
-| **Behavior** | Button shows loading during async submission |
-| **Scope** | All form submissions |
-| **Implementation** | Keep existing patterns, no changes needed |
+| Aspect             | Detail                                       |
+| ------------------ | -------------------------------------------- |
+| **Component**      | Existing `FormActionButtons` patterns        |
+| **Visual**         | Disabled button with loading indicator       |
+| **Behavior**       | Button shows loading during async submission |
+| **Scope**          | All form submissions                         |
+| **Implementation** | Keep existing patterns, no changes needed    |
 
 ---
 
 ## Components to Remove
 
-| Component | File | Current Usage | Replacement |
-|-----------|------|---------------|-------------|
-| `PageLoader` | `components/Loading/PageLoader.jsx` | Full-screen 3 dots + message | **Delete** |
-| `NavigationLoader` | `components/Navigation/NavigationLoader.jsx` | Full-screen overlay wrapper | **Delete** |
-| `AdminLoading` | `dashboard/admin/loading.js` | Dashboard loading page | **Delete** |
-| `LoadingPage` (spinner) | `components/Animation/Cards.jsx` | CSS spinner in filters | Replace with skeleton |
+| Component               | File                                         | Current Usage                | Replacement           |
+| ----------------------- | -------------------------------------------- | ---------------------------- | --------------------- |
+| `PageLoader`            | `components/Loading/PageLoader.jsx`          | Full-screen 3 dots + message | **Delete**            |
+| `NavigationLoader`      | `components/Navigation/NavigationLoader.jsx` | Full-screen overlay wrapper  | **Delete**            |
+| `AdminLoading`          | `dashboard/admin/loading.js`                 | Dashboard loading page       | **Delete**            |
+| `LoadingPage` (spinner) | `components/Animation/Cards.jsx`             | CSS spinner in filters       | Replace with skeleton |
 
 ---
 
@@ -73,11 +73,13 @@ Unify all loading states across Weelp frontend and dashboard using a consistent,
 **File:** `src/app/(frontend)/FrontendShell.jsx`
 
 **Current State:**
+
 ```jsx
 <NavigationLoader />
 ```
 
 **Change To:**
+
 ```jsx
 // Already done - has NavigationProgressBar
 // Just need to remove any NavigationLoader references
@@ -88,6 +90,7 @@ Unify all loading states across Weelp frontend and dashboard using a consistent,
 **File:** `src/app/(dashboard)/dashboard/layout.js`
 
 **Current State:**
+
 ```jsx
 export default function DashboardLayout({ children }) {
   return (
@@ -99,6 +102,7 @@ export default function DashboardLayout({ children }) {
 ```
 
 **Change To:**
+
 ```jsx
 'use client';
 
@@ -128,29 +132,37 @@ export default function DashboardLayout({ children }) {
 ### Filter Sections - Replace LoadingPage Spinner
 
 **Files:**
+
 - `src/app/components/Pages/FRONT_END/region/region_filter.jsx`
 - `src/app/components/Pages/FRONT_END/region/region_filter_rhf.jsx`
 - `src/app/components/Pages/FRONT_END/city/CityFilterSection.jsx`
 - `src/app/components/Pages/FRONT_END/city/CityToursSection.jsx`
 
 **Change:**
+
 ```jsx
 // Before
-{isLoading && <LoadingPage />}
+{
+  isLoading && <LoadingPage />;
+}
 
 // After - use existing skeleton
-{isLoading && <ProductCardSkeleton count={6} />}
+{
+  isLoading && <ProductCardSkeleton count={6} />;
+}
 ```
 
 ### Admin Destination Pages - Remove PageLoader
 
 **Files:**
+
 - `src/app/(dashboard)/dashboard/admin/destinations/countries/[id]/page.js`
 - `src/app/(dashboard)/dashboard/admin/destinations/states/[id]/page.js`
 - `src/app/(dashboard)/dashboard/admin/destinations/cities/[id]/page.js`
 - `src/app/(dashboard)/dashboard/admin/destinations/places/[id]/page.js`
 
 **Change:**
+
 ```jsx
 // Before
 return <PageLoader />;
@@ -162,6 +174,7 @@ return <div>Loading...</div>; // or return null
 ### Delete Files
 
 **Delete completely:**
+
 - `src/app/components/Loading/PageLoader.jsx`
 - `src/app/components/Navigation/NavigationLoader.jsx`
 - `src/app/(dashboard)/dashboard/admin/loading.js`
@@ -181,12 +194,12 @@ return <div>Loading...</div>; // or return null
 
 ## Files Summary
 
-| Action | Count | Files |
-|--------|-------|-------|
-| Modify | 1 | Dashboard layout |
-| Modify | 5 | Filter sections (replace spinner) |
-| Modify | 4 | Admin destination pages (remove PageLoader) |
-| Delete | 3 | Unused loader components |
-| Keep | ~10 | Existing skeleton components |
+| Action | Count | Files                                       |
+| ------ | ----- | ------------------------------------------- |
+| Modify | 1     | Dashboard layout                            |
+| Modify | 5     | Filter sections (replace spinner)           |
+| Modify | 4     | Admin destination pages (remove PageLoader) |
+| Delete | 3     | Unused loader components                    |
+| Keep   | ~10   | Existing skeleton components                |
 
 **Total: 13 files to modify/delete**

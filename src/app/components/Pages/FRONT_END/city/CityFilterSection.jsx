@@ -91,29 +91,29 @@ export default function CityFilterSection() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {products.length > 0 ? (
-              products.map((product, index) => {
-                const card = mapProductToItemCard(product, city);
-                return (
-                  <ItemCard
-                    key={`${product.item_type}-${card.id}`}
-                    href={card.href}
-                    image={card.image}
-                    title={card.title}
-                    price={card.price}
-                    rating={card.rating}
-                    reviewCount={card.reviewCount}
-                    discount={card.discount}
-                    variant="full"
-                  />
-                );
-              })
-            ) : (
-              <div className="col-span-full flex items-center justify-center min-h-[300px]">
-                <span className="text-lg text-[#6b7b8d]">No items found</span>
-              </div>
-            )}
-          </div>
+              {products.length > 0 ? (
+                products.map((product, index) => {
+                  const card = mapProductToItemCard(product, city);
+                  return (
+                    <ItemCard
+                      key={`${product.item_type}-${card.id}`}
+                      href={card.href}
+                      image={card.image}
+                      title={card.title}
+                      price={card.price}
+                      rating={card.rating}
+                      reviewCount={card.reviewCount}
+                      discount={card.discount}
+                      variant="full"
+                    />
+                  );
+                })
+              ) : (
+                <div className="col-span-full flex items-center justify-center min-h-[300px]">
+                  <span className="text-lg text-[#6b7b8d]">No items found</span>
+                </div>
+              )}
+            </div>
           )}
 
           {/* Pagination */}

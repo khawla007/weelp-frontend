@@ -8,13 +8,15 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Loader2, Plus, ChevronDown } from 'lucide-react';
 import { submitCreatorItineraryDraft } from '@/lib/actions/creatorItineraries';
-import { getAllCitiesListClient } from '@/lib/services/cities';
-import { getAllActivitiesListClient } from '@/lib/services/activites';
-import { getAllTransfersAdmin } from '@/lib/services/transfers';
-import { ComboboxMultiple } from '@/components/ui/combobox_multi';
+import { getAllCitiesListPublic } from '@/lib/services/cities';
+import { getAllActivitiesListPublic } from '@/lib/services/activites';
+import { getAllTransfersPublic } from '@/lib/services/transfers';
+import { FrontendInlineSelect } from './FrontendInlineSelect';
 import { cn, generateSlug } from '@/lib/utils';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { authApi } from '@/lib/axiosInstance';
 
 // Reused PersonalInfoTab from dashboard (Step 1)
 const PersonalInfoTab = ({ locationsOptions }) => {
@@ -75,7 +77,7 @@ const PersonalInfoTab = ({ locationsOptions }) => {
           name="locations"
           defaultValue={[]}
           rules={{ required: 'Locations Required' }}
-          render={({ field: { value, onChange } }) => <ComboboxMultiple id="locations" name="locations" type="locations" items={locationsOptions} value={value ?? []} onChange={onChange} />}
+          render={({ field: { value, onChange } }) => <FrontendInlineSelect id="locations" name="locations" type="locations" items={locationsOptions} value={value ?? []} onChange={onChange} />}
         />
         {errors?.locations && <span className="text-red-400">{errors?.locations?.message}</span>}
       </div>
@@ -89,6 +91,10 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
   const [modalContext, setModalContext] = useState({ type: '', day: null });
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [selectedTransfer, setSelectedTransfer] = useState(null);
+  const [filteredActivities, setFilteredActivities] = useState([]);
+  const [filteredTransfers, setFilteredTransfers] = useState([]);
+  const [loadingActivities, setLoadingActivities] = useState(false);
+  const [loadingTransfers, setLoadingTransfers] = useState(false);
 
   const {
     register,
@@ -133,6 +139,71 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
   const activities = useWatch({ control, name: 'activities' });
   const transfers = useWatch({ control, name: 'transfers' });
   const selectedLocations = useWatch({ control, name: 'locations' });
+
+  // Fetch filtered activities based on selected cities
+  // Use creator API endpoint
+  useEffect(() => {
+    const fetchFilteredActivities = async () => {
+      if (!selectedLocations || selectedLocations.length === 0) {
+        setFilteredActivities([]);
+        setLoadingActivities(false);
+        return;
+      }
+
+      setLoadingActivities(true);
+
+      try {
+        // Use creator API endpoint for activities by city
+        const promises = selectedLocations.map((cityId) => authApi.get('/api/creator/activities', { params: { city_id: cityId } }));
+        const responses = await Promise.all(promises);
+        const allData = responses.flatMap((r) => r.data?.data || []);
+        setFilteredActivities(allData);
+      } catch (error) {
+        console.warn('Creator API error, using client-side filtering:', error.message);
+        const filtered = (allactivities || []).filter((a) => {
+          return selectedLocations.some((loc) => a.city_id === Number(loc));
+        });
+        setFilteredActivities(filtered);
+      } finally {
+        setLoadingActivities(false);
+      }
+    };
+
+    fetchFilteredActivities();
+  }, [selectedLocations, allactivities]);
+
+  // Fetch filtered transfers based on selected cities
+  // Use creator API endpoint
+  useEffect(() => {
+    const fetchFilteredTransfers = async () => {
+      if (!selectedLocations || selectedLocations.length === 0) {
+        setFilteredTransfers([]);
+        setLoadingTransfers(false);
+        return;
+      }
+
+      setLoadingTransfers(true);
+
+      try {
+        // Use creator API endpoint for transfers by city
+        const promises = selectedLocations.map((cityId) => authApi.get('/api/creator/transfers', { params: { city_id: cityId } }));
+        const responses = await Promise.all(promises);
+        const allData = responses.flatMap((r) => r.data?.data || []);
+        setFilteredTransfers(allData);
+      } catch (error) {
+        console.warn('Creator API error, using client-side filtering:', error.message);
+        const filtered = (alltransfers || []).filter((t) => {
+          const route = t.vendor_routes;
+          return route && (route.pickup_city_id === Number(selectedLocations[0]) || route.dropoff_city_id === Number(selectedLocations[0]));
+        });
+        setFilteredTransfers(filtered);
+      } finally {
+        setLoadingTransfers(false);
+      }
+    };
+
+    fetchFilteredTransfers();
+  }, [selectedLocations, alltransfers]);
 
   const handleAddDay = () => {
     const nextDay = dayFields.length + 1;
@@ -186,19 +257,6 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
   const handleRemoveTransfer = (index) => {
     removeTransfer(index);
   };
-
-  const filteredActivities = (allactivities || []).filter((a) => {
-    if (!selectedLocations || selectedLocations.length === 0) return true;
-    return selectedLocations.some((loc) => a.city_id === Number(loc));
-  });
-
-  const filteredTransfers = (alltransfers || []).filter((t) => {
-    if (!selectedLocations || selectedLocations.length === 0) return true;
-    return selectedLocations.some((loc) => {
-      const route = t.vendor_routes;
-      return route && (route.pickup_city_id === Number(loc) || route.dropoff_city_id === Number(loc));
-    });
-  });
 
   return (
     <div className="py-4 relative">
@@ -265,23 +323,23 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
               })}
 
             <div className="flex justify-center pt-2">
-              <select
-                value=""
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === 'activity') handleOpenModal('activity', item.day);
-                  else if (value === 'transfer') handleOpenModal('transfer', item.day);
-                  e.target.value = '';
-                }}
-                className="bg-secondaryDark hover:bg-secondaryDark text-white px-4 py-2 rounded-full cursor-pointer"
-                aria-label="Add activity or transfer to schedule"
-              >
-                <option value="" disabled>
-                  + Add Item
-                </option>
-                <option value="activity">Add Activity</option>
-                <option value="transfer">Add Transfer</option>
-              </select>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center justify-between gap-2 bg-secondaryDark hover:bg-secondaryDark/90 text-white px-4 py-2 rounded-lg outline-none min-w-[120px]">
+                    <Plus size={16} />
+                    Add Item
+                    <ChevronDown size={14} className="opacity-70" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center" className="min-w-[140px]">
+                  <DropdownMenuItem onClick={() => handleOpenModal('activity', item.day)} className="cursor-pointer">
+                    Add Activity
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleOpenModal('transfer', item.day)} className="cursor-pointer">
+                    Add Transfer
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
 
@@ -291,8 +349,14 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
               <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto">
                 <h3 className="text-lg font-semibold mb-4">Select Activity</h3>
                 <div className="space-y-2">
-                  {filteredActivities.length === 0 ? (
-                    <p className="text-gray-500">No activities available. Please select destinations first.</p>
+                  {loadingActivities ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="h-6 w-6 animate-spin text-secondaryDark" />
+                    </div>
+                  ) : filteredActivities.length === 0 ? (
+                    <p className="text-gray-500">
+                      {!selectedLocations || selectedLocations.length === 0 ? 'Please select destinations in Step 1 first.' : 'No activities available for the selected destinations.'}
+                    </p>
                   ) : (
                     filteredActivities.map((activity) => (
                       <div
@@ -324,8 +388,14 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
               <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto">
                 <h3 className="text-lg font-semibold mb-4">Select Transfer</h3>
                 <div className="space-y-2">
-                  {filteredTransfers.length === 0 ? (
-                    <p className="text-gray-500">No transfers available. Please select destinations first.</p>
+                  {loadingTransfers ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="h-6 w-6 animate-spin text-secondaryDark" />
+                    </div>
+                  ) : filteredTransfers.length === 0 ? (
+                    <p className="text-gray-500">
+                      {!selectedLocations || selectedLocations.length === 0 ? 'Please select destinations in Step 1 first.' : 'No transfers available for the selected destinations.'}
+                    </p>
                   ) : (
                     filteredTransfers.map((transfer) => (
                       <div
@@ -392,7 +462,7 @@ export default function CreateItineraryModal({ open, onOpenChange, session }) {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [locationsRes, activitiesRes, transfersRes] = await Promise.all([getAllCitiesListClient(), getAllActivitiesListClient(), getAllTransfersAdmin()]);
+        const [locationsRes, activitiesRes, transfersRes] = await Promise.all([getAllCitiesListPublic(), getAllActivitiesListPublic(), getAllTransfersPublic()]);
 
         if (locationsRes?.data) {
           setLocations(locationsRes.data);
@@ -500,8 +570,8 @@ export default function CreateItineraryModal({ open, onOpenChange, session }) {
 
   if (loading) {
     return (
-      <Dialog open={open} onOpenChange={handleOpenChange}>
-        <DialogContent className="sm:max-w-[600px]">
+      <Dialog open={open} onOpenChange={handleOpenChange} modal={false}>
+        <DialogContent className="sm:max-w-[600px]" onOpenAutoFocus={(e) => e.preventDefault()}>
           <DialogHeader>
             <DialogTitle>Create Itinerary</DialogTitle>
           </DialogHeader>
@@ -514,8 +584,8 @@ export default function CreateItineraryModal({ open, onOpenChange, session }) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
+    <Dialog open={open} onOpenChange={handleOpenChange} modal={false}>
+      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto" onOpenAutoFocus={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>Create Itinerary</DialogTitle>
         </DialogHeader>

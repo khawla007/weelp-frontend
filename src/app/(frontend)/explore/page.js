@@ -1,10 +1,10 @@
 import React from 'react';
-import { getExploreCreatorItineraries } from '@/lib/services/exploreCreatorItineraries';
+import { getExploreItineraries } from '@/lib/services/creatorItineraries';
 import BannerSectionSearchForm from '@/app/components/Pages/FRONT_END/Global/BannerSectionSearchForm';
 import ExploreClientWrapper from '@/app/components/Pages/FRONT_END/explore/ExploreClientWrapper';
 
 const ExplorePage = async () => {
-  const itinerariesData = await getExploreCreatorItineraries(1);
+  const itinerariesData = await getExploreItineraries(1);
   const initialItineraries = itinerariesData?.data || [];
   const lastPage = itinerariesData?.last_page || 1;
 

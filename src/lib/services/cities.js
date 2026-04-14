@@ -179,3 +179,20 @@ export async function getAllCitiesListClient() {
     return { data: [] };
   }
 }
+
+/**
+ * Get All Cities List from Public API (for creators/guests)
+ * Uses the public endpoint which doesn't require admin authentication
+ * @returns {Promise<{ data: Array<{id:number, name:string, slug:string}> }>}
+ */
+export async function getAllCitiesListPublic() {
+  try {
+    const response = await publicApi.get(`/api/cities?per_page=100`, {
+      headers: { Accept: 'application/json' },
+    });
+    return response?.data;
+  } catch (error) {
+    console.error('Service Error (getAllCitiesListPublic):', error);
+    return { success: false, data: [] };
+  }
+}

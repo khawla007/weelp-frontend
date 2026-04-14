@@ -73,6 +73,23 @@ export async function getAllActivitiesListClient(search = '') {
 }
 
 /**
+ * Get All Activities List from Public API (for creators/guests)
+ * Uses the public endpoint which doesn't require admin authentication
+ * @returns {Promise<{ data: Array }>}
+ */
+export async function getAllActivitiesListPublic() {
+  try {
+    const response = await publicApi.get(`/api/activities`, {
+      headers: { Accept: 'application/json' },
+    });
+    return response?.data;
+  } catch (error) {
+    console.error('Service Error (getAllActivitiesListPublic):', error);
+    return { success: false, data: [] };
+  }
+}
+
+/**
  * Returns all Featured Activities
  * @returns []
  */

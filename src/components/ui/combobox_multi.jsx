@@ -44,7 +44,7 @@ export function ComboboxMultipleAttribute({ attributes, value = [], onChange }) 
             <ChevronsUpDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[250px] p-0 h-[150px]">
+        <PopoverContent className="w-[250px] p-0 max-h-[350px]">
           <Command>
             <CommandInput placeholder="Search attributes..." className="h-9" />
             <CommandList>
@@ -125,7 +125,7 @@ export function ComboboxMultiple({ items, type, value = [], onChange }) {
             <ChevronsUpDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[250px] p-0 h-[150px]">
+        <PopoverContent className="w-[250px] p-0 max-h-[350px]">
           <Command>
             <CommandInput placeholder={`Search ${type}... `} className="h-9" />
             <CommandList>
@@ -134,7 +134,7 @@ export function ComboboxMultiple({ items, type, value = [], onChange }) {
                 {items.map((item) => {
                   const isSelected = value.includes(item.id);
                   return (
-                    <CommandItem key={item.id} onSelect={() => handleSelect(item)}>
+                    <CommandItem key={item.id} value={item.name} onSelect={() => handleSelect(item)}>
                       {item.name}
                       <Check className={`ml-auto ${isSelected ? 'opacity-100' : 'opacity-0'}`} />
                     </CommandItem>

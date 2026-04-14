@@ -7,9 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { getCityTransfers, getCityPlaces } from '@/lib/actions/creatorItineraries';
+import { getTransfersByCity, getPlacesByCity } from '@/lib/actions/creatorItineraries';
 
-export default function TransferSearchModalPublic({ open, onOpenChange, slug, onSelect }) {
+export default function TransferSearchModalPublic({ open, onOpenChange, cityIds = [], userRole = 'customer', onSelect }) {
   const [transfers, setTransfers] = useState([]);
   const [places, setPlaces] = useState([]);
   const [search, setSearch] = useState('');
@@ -26,12 +26,12 @@ export default function TransferSearchModalPublic({ open, onOpenChange, slug, on
 
   // Fetch transfers and places when modal opens
   useEffect(() => {
-    if (!open || !slug) return;
+    if (!open || !cityIds.length) return;
     let cancelled = false;
 
     const fetchData = async () => {
       setLoading(true);
-      const [transfersRes, placesRes] = await Promise.all([getCityTransfers(slug), getCityPlaces(slug)]);
+      const [transfersRes, placesRes] = await Promise.all([getTransfersByCity(cityIds, userRole), getPlacesByCity(cityIds)]);
       if (!cancelled) {
         if (transfersRes.success) setTransfers(transfersRes.data || []);
         if (placesRes.success) setPlaces(placesRes.data || []);
@@ -43,7 +43,7 @@ export default function TransferSearchModalPublic({ open, onOpenChange, slug, on
     return () => {
       cancelled = true;
     };
-  }, [open, slug]);
+  }, [open, cityIds, userRole]);
 
   // Client-side filter by name
   const filtered = transfers.filter((t) => t.name?.toLowerCase().includes(search.toLowerCase()));
@@ -128,7 +128,9 @@ export default function TransferSearchModalPublic({ open, onOpenChange, slug, on
                   <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                 </div>
               ) : filtered.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-8">{search ? 'No transfers match your search.' : 'No transfers available.'}</p>
+                <p className="text-sm text-muted-foreground text-center py-8">
+                  {search ? 'No transfers match your search.' : cityIds.length === 0 ? 'No cities associated with this itinerary.' : 'No transfers available for these cities.'}
+                </p>
               ) : (
                 <ul className="space-y-1">
                   {filtered.map((transfer) => (

@@ -5,12 +5,14 @@
 **Goal:** Replace all scattered loading states (bouncing dots, spinners, full-screen overlays) with a unified progress bar for navigation and skeleton loaders for content across frontend and dashboard.
 
 **Architecture:**
+
 - Progress bar (NProgress) handles all route navigation via `useNavigationEvents` hook
 - Existing skeleton loaders replace inline spinners in content areas
 - Dashboard layout adopts the same progress bar system as frontend
 - Unused loader components (PageLoader, NavigationLoader, AdminLoading) are removed
 
 **Tech Stack:**
+
 - NProgress (already installed)
 - React hooks (useEffect, useRef)
 - Zustand (useNavigationStore)
@@ -20,26 +22,27 @@
 
 ## File Structure
 
-| File | Action | Responsibility |
-|------|--------|-----------------|
-| `src/app/(dashboard)/dashboard/layout.js` | Modify | Add progress bar to dashboard |
-| `src/app/components/Pages/FRONT_END/region/region_filter.jsx` | Modify | Replace spinner with skeleton |
-| `src/app/components/Pages/FRONT_END/region/region_filter_rhf.jsx` | Modify | Replace spinner with skeleton |
-| `src/app/components/Pages/FRONT_END/city/CityFilterSection.jsx` | Modify | Replace spinner with skeleton |
-| `src/app/components/Pages/FRONT_END/city/CityToursSection.jsx` | Modify | Replace spinner with skeleton |
-| `src/app/(dashboard)/dashboard/admin/destinations/countries/[id]/page.js` | Modify | Remove PageLoader import |
-| `src/app/(dashboard)/dashboard/admin/destinations/states/[id]/page.js` | Modify | Remove PageLoader import |
-| `src/app/(dashboard)/dashboard/admin/destinations/cities/[id]/page.js` | Modify | Remove PageLoader import |
-| `src/app/(dashboard)/dashboard/admin/destinations/places/[id]/page.js` | Modify | Remove PageLoader import |
-| `src/app/components/Loading/PageLoader.jsx` | Delete | Remove unused component |
-| `src/app/components/Navigation/NavigationLoader.jsx` | Delete | Remove unused component |
-| `src/app/(dashboard)/dashboard/admin/loading.js` | Delete | Remove unused component |
+| File                                                                      | Action | Responsibility                |
+| ------------------------------------------------------------------------- | ------ | ----------------------------- |
+| `src/app/(dashboard)/dashboard/layout.js`                                 | Modify | Add progress bar to dashboard |
+| `src/app/components/Pages/FRONT_END/region/region_filter.jsx`             | Modify | Replace spinner with skeleton |
+| `src/app/components/Pages/FRONT_END/region/region_filter_rhf.jsx`         | Modify | Replace spinner with skeleton |
+| `src/app/components/Pages/FRONT_END/city/CityFilterSection.jsx`           | Modify | Replace spinner with skeleton |
+| `src/app/components/Pages/FRONT_END/city/CityToursSection.jsx`            | Modify | Replace spinner with skeleton |
+| `src/app/(dashboard)/dashboard/admin/destinations/countries/[id]/page.js` | Modify | Remove PageLoader import      |
+| `src/app/(dashboard)/dashboard/admin/destinations/states/[id]/page.js`    | Modify | Remove PageLoader import      |
+| `src/app/(dashboard)/dashboard/admin/destinations/cities/[id]/page.js`    | Modify | Remove PageLoader import      |
+| `src/app/(dashboard)/dashboard/admin/destinations/places/[id]/page.js`    | Modify | Remove PageLoader import      |
+| `src/app/components/Loading/PageLoader.jsx`                               | Delete | Remove unused component       |
+| `src/app/components/Navigation/NavigationLoader.jsx`                      | Delete | Remove unused component       |
+| `src/app/(dashboard)/dashboard/admin/loading.js`                          | Delete | Remove unused component       |
 
 ---
 
 ## Task 1: Add Progress Bar to Dashboard Layout
 
 **Files:**
+
 - Modify: `src/app/(dashboard)/dashboard/layout.js`
 
 - [ ] **Step 1: Read current dashboard layout**
@@ -98,6 +101,7 @@ git commit -m "feat: add progress bar to dashboard layout"
 ## Task 2: Replace Spinner with Skeleton in region_filter.jsx
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/region/region_filter.jsx`
 
 - [ ] **Step 1: Read the file to find LoadingPage usage**
@@ -111,6 +115,7 @@ Expected: Line ~189 with `{isLoading && <LoadingPage />}`
 - [ ] **Step 2: Import skeleton component**
 
 Add at top with other imports:
+
 ```javascript
 import { ProductCardSkelton } from '@/app/components/Animation/Cards';
 ```
@@ -118,18 +123,23 @@ import { ProductCardSkelton } from '@/app/components/Animation/Cards';
 - [ ] **Step 3: Replace LoadingPage with skeleton**
 
 Find and replace:
+
 ```javascript
 // Before
-{isLoading && <LoadingPage />}
+{
+  isLoading && <LoadingPage />;
+}
 
 // After
-{isLoading && (
-  <div className="flex gap-4 flex-wrap justify-center">
-    {[...Array(6)].map((_, i) => (
-      <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
-    ))}
-  </div>
-)}
+{
+  isLoading && (
+    <div className="flex gap-4 flex-wrap justify-center">
+      {[...Array(6)].map((_, i) => (
+        <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
+      ))}
+    </div>
+  );
+}
 ```
 
 - [ ] **Step 4: Remove unused LoadingPage import**
@@ -159,6 +169,7 @@ git commit -m "refactor: replace spinner with skeleton in region_filter"
 ## Task 3: Replace Spinner with Skeleton in region_filter_rhf.jsx
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/region/region_filter_rhf.jsx`
 
 - [ ] **Step 1: Read the file to find LoadingPage usage**
@@ -172,6 +183,7 @@ Expected: Line ~189 with loading state.
 - [ ] **Step 2: Import skeleton component**
 
 Add at top:
+
 ```javascript
 import { ProductCardSkelton } from '@/app/components/Animation/Cards';
 ```
@@ -180,16 +192,20 @@ import { ProductCardSkelton } from '@/app/components/Animation/Cards';
 
 ```javascript
 // Before
-{isLoading && <LoadingPage />}
+{
+  isLoading && <LoadingPage />;
+}
 
 // After
-{isLoading && (
-  <div className="flex gap-4 flex-wrap justify-center">
-    {[...Array(6)].map((_, i) => (
-      <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
-    ))}
-  </div>
-)}
+{
+  isLoading && (
+    <div className="flex gap-4 flex-wrap justify-center">
+      {[...Array(6)].map((_, i) => (
+        <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
+      ))}
+    </div>
+  );
+}
 ```
 
 - [ ] **Step 4: Remove unused LoadingPage import**
@@ -212,6 +228,7 @@ git commit -m "refactor: replace spinner with skeleton in region_filter_rhf"
 ## Task 4: Replace Spinner with Skeleton in CityFilterSection
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/city/CityFilterSection.jsx`
 
 - [ ] **Step 1: Find LoadingPage usage**
@@ -232,16 +249,20 @@ import { ProductCardSkelton } from '@/app/components/Animation/Cards';
 
 ```javascript
 // Before
-{isLoading && <LoadingPage />}
+{
+  isLoading && <LoadingPage />;
+}
 
 // After
-{isLoading && (
-  <div className="flex gap-4 flex-wrap justify-center">
-    {[...Array(6)].map((_, i) => (
-      <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
-    ))}
-  </div>
-)}
+{
+  isLoading && (
+    <div className="flex gap-4 flex-wrap justify-center">
+      {[...Array(6)].map((_, i) => (
+        <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
+      ))}
+    </div>
+  );
+}
 ```
 
 - [ ] **Step 4: Remove unused LoadingPage import**
@@ -264,6 +285,7 @@ git commit -m "refactor: replace spinner with skeleton in CityFilterSection"
 ## Task 5: Replace Spinner with Skeleton in CityToursSection
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/city/CityToursSection.jsx`
 
 - [ ] **Step 1: Find LoadingPage usage**
@@ -284,16 +306,20 @@ import { ProductCardSkelton } from '@/app/components/Animation/Cards';
 
 ```javascript
 // Before
-{isLoading && <LoadingPage />}
+{
+  isLoading && <LoadingPage />;
+}
 
 // After
-{isLoading && (
-  <div className="flex gap-4 flex-wrap justify-center">
-    {[...Array(6)].map((_, i) => (
-      <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
-    ))}
-  </div>
-)}
+{
+  isLoading && (
+    <div className="flex gap-4 flex-wrap justify-center">
+      {[...Array(6)].map((_, i) => (
+        <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
+      ))}
+    </div>
+  );
+}
 ```
 
 - [ ] **Step 4: Remove unused LoadingPage import**
@@ -316,6 +342,7 @@ git commit -m "refactor: replace spinner with skeleton in CityToursSection"
 ## Task 6: Remove PageLoader from countries/[id]/page.js
 
 **Files:**
+
 - Modify: `src/app/(dashboard)/dashboard/admin/destinations/countries/[id]/page.js`
 
 - [ ] **Step 1: Read the file**
@@ -329,6 +356,7 @@ Expected: Has PageLoader import and usage.
 - [ ] **Step 2: Remove PageLoader import**
 
 Remove this line:
+
 ```javascript
 import { PageLoader } from '@/app/components/Loading/PageLoader';
 ```
@@ -348,6 +376,7 @@ return (
 ```
 
 Or simply let the progress bar handle it:
+
 ```javascript
 return null;
 ```
@@ -370,11 +399,13 @@ git commit -m "refactor: remove PageLoader from countries page"
 ## Task 7: Remove PageLoader from states/[id]/page.js
 
 **Files:**
+
 - Modify: `src/app/(dashboard)/dashboard/admin/destinations/states/[id]/page.js`
 
 - [ ] **Step 1: Remove PageLoader import**
 
 Remove:
+
 ```javascript
 import { PageLoader } from '@/app/components/Loading/PageLoader';
 ```
@@ -411,11 +442,13 @@ git commit -m "refactor: remove PageLoader from states page"
 ## Task 8: Remove PageLoader from cities/[id]/page.js
 
 **Files:**
+
 - Modify: `src/app/(dashboard)/dashboard/admin/destinations/cities/[id]/page.js`
 
 - [ ] **Step 1: Remove PageLoader import**
 
 Remove:
+
 ```javascript
 import { PageLoader } from '@/app/components/Loading/PageLoader';
 ```
@@ -452,11 +485,13 @@ git commit -m "refactor: remove PageLoader from cities page"
 ## Task 9: Remove PageLoader from places/[id]/page.js
 
 **Files:**
+
 - Modify: `src/app/(dashboard)/dashboard/admin/destinations/places/[id]/page.js`
 
 - [ ] **Step 1: Remove PageLoader import**
 
 Remove:
+
 ```javascript
 import { PageLoader } from '@/app/components/Loading/PageLoader';
 ```
@@ -493,6 +528,7 @@ git commit -m "refactor: remove PageLoader from places page"
 ## Task 10: Delete Unused Loader Components
 
 **Files:**
+
 - Delete: `src/app/components/Loading/PageLoader.jsx`
 - Delete: `src/app/components/Navigation/NavigationLoader.jsx`
 - Delete: `src/app/(dashboard)/dashboard/admin/loading.js`
@@ -551,6 +587,7 @@ git commit -m "refactor: remove unused loader components"
 ## Task 11: Final Verification
 
 **Files:**
+
 - No modifications (verification only)
 
 - [ ] **Step 1: Verify no more LoadingPage imports**

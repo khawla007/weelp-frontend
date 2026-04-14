@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { MapPin, LifeBuoy, User, Wind, Clock4, Eye, Plus, Trash2, Pencil, X } from 'lucide-react';
 import { useItineraryEditStore } from '@/lib/store/useItineraryEditStore';
 import ActivitySearchModalPublic from './ActivitySearchModalPublic';
@@ -27,11 +28,49 @@ const formatDayDate = (date) => {
 };
 
 const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary', session = null, itinerary = null, readOnly = false }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const dayRefs = useRef({});
   const [activeDayIndex, setActiveDayIndex] = useState(0);
+  const [userStartedEdit, setUserStartedEdit] = useState(false);
 
-  // Determine if edit mode is active: itinerary is an original (no creator_id and no user_id)
-  const isEditing = !readOnly && !!(itinerary && !itinerary.creator_id && !itinerary.user_id);
+  // Determine if user can edit (authenticated + itinerary is original)
+  const canEdit = !readOnly && !!(itinerary && !itinerary.creator_id && !itinerary.user_id);
+  const isLoggedIn = !!session?.user;
+
+  // Check if user was redirected back after login with edit=true
+  const shouldAutoEnterEdit = searchParams.get('edit') === 'true';
+
+  // Edit mode is active if:
+  // 1. User clicked "Customize" and is logged in (userStartedEdit), OR
+  // 2. User was redirected back from login with edit=true
+  const isEditing = canEdit && isLoggedIn && (userStartedEdit || shouldAutoEnterEdit);
+
+  // Extract city IDs from itinerary locations for search modals
+  const cityIds = itinerary?.locations?.map((location) => location.city_id).filter(Boolean) || [];
+
+  // Determine user role for API calls
+  const userRole = session?.user?.is_creator ? 'creator' : 'customer';
+
+  // Handle start editing - redirect guests to login
+  const handleStartEdit = () => {
+    if (!isLoggedIn) {
+      // Guest: redirect to login with return URL to current page (will enter edit mode after login)
+      const currentPath = window.location.pathname + '?edit=true';
+      const returnUrl = encodeURIComponent(currentPath);
+      router.push(`/user/login?return=${returnUrl}`);
+      return;
+    }
+    // Logged-in user: enable edit mode
+    setUserStartedEdit(true);
+  };
+
+  // Clean up URL after auto-entering edit mode (remove ?edit=true)
+  useEffect(() => {
+    if (shouldAutoEnterEdit && isEditing) {
+      router.replace(window.location.pathname, { scroll: false });
+    }
+  }, [shouldAutoEnterEdit, isEditing]);
 
   // Initialize the edit store when in edit mode
   useEffect(() => {
@@ -85,7 +124,30 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
 
   return (
     <div className="flex flex-col gap-6">
-      <h2 className="text-[28px] font-semibold text-[#273f4e] capitalize">{title}</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-[28px] font-semibold text-[#273f4e] capitalize">{title}</h2>
+
+        {/* Action buttons */}
+        {canEdit && !isEditing && (
+          <button onClick={handleStartEdit} className="px-6 py-2.5 bg-[#57947d] hover:bg-[#4a7d6a] text-white font-medium rounded-lg transition-colors flex items-center gap-2">
+            <Pencil size={16} />
+            {isLoggedIn ? 'Customize This Itinerary' : 'Login to Customize'}
+          </button>
+        )}
+
+        {/* Exit Edit button - shows when in edit mode */}
+        {isEditing && (
+          <button
+            onClick={() => {
+              setUserStartedEdit(false);
+              useItineraryEditStore.getState().resetChanges();
+            }}
+            className="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-colors"
+          >
+            Exit Edit Mode
+          </button>
+        )}
+      </div>
 
       {/* Date Navigation Buttons + Schedule Detail - inline layout */}
       {startDate && (displaySchedules.length > 0 || isEditing) && (
@@ -143,6 +205,8 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
                     dayIndex={index}
                     isEditing={isEditing}
                     slug={itinerary?.slug}
+                    cityIds={cityIds}
+                    userRole={userRole}
                   />
                 </div>
               );
@@ -154,7 +218,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
   );
 };
 
-const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate, dayIndex, isEditing = false, slug = null }) => {
+const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate, dayIndex, isEditing = false, slug = null, cityIds = [], userRole = 'customer' }) => {
   // Modal state: null, { type: 'changeActivity', index }, { type: 'changeTransfer', index }, { type: 'addActivity' }, { type: 'addTransfer' }
   const [activeModal, setActiveModal] = useState(null);
 
@@ -363,8 +427,8 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
       {/* Modals */}
       {isEditing && (
         <>
-          <ActivitySearchModalPublic open={isActivityModal} onOpenChange={(open) => !open && setActiveModal(null)} slug={slug} onSelect={handleModalSelect} />
-          <TransferSearchModalPublic open={isTransferModal} onOpenChange={(open) => !open && setActiveModal(null)} slug={slug} onSelect={handleModalSelect} />
+          <ActivitySearchModalPublic open={isActivityModal} onOpenChange={(open) => !open && setActiveModal(null)} cityIds={cityIds} userRole={userRole} onSelect={handleModalSelect} />
+          <TransferSearchModalPublic open={isTransferModal} onOpenChange={(open) => !open && setActiveModal(null)} cityIds={cityIds} userRole={userRole} onSelect={handleModalSelect} />
         </>
       )}
     </div>
