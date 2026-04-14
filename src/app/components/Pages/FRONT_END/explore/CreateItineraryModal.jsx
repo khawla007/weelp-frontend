@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { ChevronLeft, ChevronRight, Loader2, Plus, ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Loader2, Plus, ChevronDown, Search } from 'lucide-react';
 import { submitCreatorItineraryDraft } from '@/lib/actions/creatorItineraries';
 import { getAllCitiesListPublic } from '@/lib/services/cities';
 import { getAllActivitiesListPublic } from '@/lib/services/activites';
@@ -95,6 +95,8 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
   const [filteredTransfers, setFilteredTransfers] = useState([]);
   const [loadingActivities, setLoadingActivities] = useState(false);
   const [loadingTransfers, setLoadingTransfers] = useState(false);
+  const [activitySearchQuery, setActivitySearchQuery] = useState('');
+  const [transferSearchQuery, setTransferSearchQuery] = useState('');
 
   const {
     register,
@@ -218,6 +220,8 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
     setModalContext({ type: '', day: null });
     setSelectedActivity(null);
     setSelectedTransfer(null);
+    setActivitySearchQuery('');
+    setTransferSearchQuery('');
   };
 
   const handleAddActivity = () => {
@@ -272,7 +276,7 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
       {dayFields.map((item, index) => (
         <div key={item.id} className="space-y-4 mt-4 border border-gray-200 rounded-lg p-4">
           <div className="flex items-center gap-4 justify-between">
-            <input type="number" {...register(`schedules.${index}.day`)} value={item.day} readOnly className="w-20 p-2 border border-gray-300 rounded-md bg-gray-50" />
+            <input type="number" value={item.day} readOnly className="w-20 p-2 border border-gray-300 rounded-md bg-gray-50" />
             <input type="text" {...register(`schedules.${index}.title`)} placeholder="e.g., Arrival in Port Blair" className="flex-1 p-2 border border-gray-300 rounded-md" />
             <button type="button" onClick={() => removeDay(index)} className="text-red-500 hover:text-red-700 p-2">
               Remove
@@ -346,35 +350,52 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
           {/* Activity Selection Modal */}
           {modalContext.type === 'activity' && modalContext.day === item.day && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto">
-                <h3 className="text-lg font-semibold mb-4">Select Activity</h3>
-                <div className="space-y-2">
+              <div className="bg-white rounded-lg shadow-lg max-w-md w-full flex flex-col max-h-[380px]">
+                <div className="p-4 border-b border-gray-200">
+                  <h3 className="text-lg font-semibold mb-3">Select Activity</h3>
+                  {/* Search Input */}
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Input type="text" placeholder="Search activities..." value={activitySearchQuery} onChange={(e) => setActivitySearchQuery(e.target.value)} className="pl-9 h-9" />
+                  </div>
+                </div>
+                <div className="overflow-y-auto flex-1 p-4">
                   {loadingActivities ? (
                     <div className="flex items-center justify-center py-8">
                       <Loader2 className="h-6 w-6 animate-spin text-secondaryDark" />
                     </div>
-                  ) : filteredActivities.length === 0 ? (
-                    <p className="text-gray-500">
-                      {!selectedLocations || selectedLocations.length === 0 ? 'Please select destinations in Step 1 first.' : 'No activities available for the selected destinations.'}
-                    </p>
+                  ) : filteredActivities.filter((a) => activitySearchQuery.trim() === '' || a.name?.toLowerCase().includes(activitySearchQuery.toLowerCase())).length === 0 ? (
+                    <p className="text-gray-500 text-center py-4">{!selectedLocations || selectedLocations.length === 0 ? 'Please select destinations in Step 1 first.' : 'No activities found.'}</p>
                   ) : (
-                    filteredActivities.map((activity) => (
-                      <div
-                        key={activity.id}
-                        onClick={() => setSelectedActivity(activity)}
-                        className={cn('p-3 border rounded-md cursor-pointer', selectedActivity?.id === activity.id ? 'bg-secondaryDark/10 border-secondaryDark' : 'hover:bg-gray-50')}
-                      >
-                        <p className="font-medium text-sm">{activity.name}</p>
-                        <p className="text-xs text-gray-500">${activity.price || 0}</p>
-                      </div>
-                    ))
+                    <div className="space-y-2">
+                      {filteredActivities
+                        .filter((a) => activitySearchQuery.trim() === '' || a.name?.toLowerCase().includes(activitySearchQuery.toLowerCase()))
+                        .map((activity) => (
+                          <div
+                            key={activity.id}
+                            onClick={() => setSelectedActivity(activity)}
+                            className={cn(
+                              'p-3 border border-gray-200 rounded-md cursor-pointer transition-colors',
+                              selectedActivity?.id === activity.id ? 'bg-secondaryDark/10 border-secondaryDark' : 'hover:bg-gray-50',
+                            )}
+                          >
+                            <p className="font-medium text-sm">{activity.name}</p>
+                            <p className="text-xs text-gray-500">${activity.price || 0}</p>
+                          </div>
+                        ))}
+                    </div>
                   )}
                 </div>
-                <div className="flex justify-end gap-2 mt-4">
-                  <button type="button" onClick={handleCloseModal} className="px-4 py-2 border border-gray-300 rounded-md">
+                <div className="p-4 border-t border-gray-200 flex justify-end gap-2">
+                  <button type="button" onClick={handleCloseModal} className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
                     Cancel
                   </button>
-                  <button type="button" onClick={handleAddActivity} disabled={!selectedActivity} className="px-4 py-2 bg-secondaryDark text-white rounded-md disabled:opacity-50">
+                  <button
+                    type="button"
+                    onClick={handleAddActivity}
+                    disabled={!selectedActivity}
+                    className="px-4 py-2 bg-secondaryDark text-white rounded-md disabled:opacity-50 hover:bg-secondaryDark/90"
+                  >
                     Add
                   </button>
                 </div>
@@ -385,35 +406,52 @@ const ScheduleTab = ({ allactivities, alltransfers }) => {
           {/* Transfer Selection Modal */}
           {modalContext.type === 'transfer' && modalContext.day === item.day && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto">
-                <h3 className="text-lg font-semibold mb-4">Select Transfer</h3>
-                <div className="space-y-2">
+              <div className="bg-white rounded-lg shadow-lg max-w-md w-full flex flex-col max-h-[380px]">
+                <div className="p-4 border-b border-gray-200">
+                  <h3 className="text-lg font-semibold mb-3">Select Transfer</h3>
+                  {/* Search Input */}
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Input type="text" placeholder="Search transfers..." value={transferSearchQuery} onChange={(e) => setTransferSearchQuery(e.target.value)} className="pl-9 h-9" />
+                  </div>
+                </div>
+                <div className="overflow-y-auto flex-1 p-4">
                   {loadingTransfers ? (
                     <div className="flex items-center justify-center py-8">
                       <Loader2 className="h-6 w-6 animate-spin text-secondaryDark" />
                     </div>
-                  ) : filteredTransfers.length === 0 ? (
-                    <p className="text-gray-500">
-                      {!selectedLocations || selectedLocations.length === 0 ? 'Please select destinations in Step 1 first.' : 'No transfers available for the selected destinations.'}
-                    </p>
+                  ) : filteredTransfers.filter((t) => transferSearchQuery.trim() === '' || t.name?.toLowerCase().includes(transferSearchQuery.toLowerCase())).length === 0 ? (
+                    <p className="text-gray-500 text-center py-4">{!selectedLocations || selectedLocations.length === 0 ? 'Please select destinations in Step 1 first.' : 'No transfers found.'}</p>
                   ) : (
-                    filteredTransfers.map((transfer) => (
-                      <div
-                        key={transfer.id}
-                        onClick={() => setSelectedTransfer(transfer)}
-                        className={cn('p-3 border rounded-md cursor-pointer', selectedTransfer?.id === transfer.id ? 'bg-secondaryDark/10 border-secondaryDark' : 'hover:bg-gray-50')}
-                      >
-                        <p className="font-medium text-sm">{transfer.name}</p>
-                        <p className="text-xs text-gray-500">${transfer.price || 0}</p>
-                      </div>
-                    ))
+                    <div className="space-y-2">
+                      {filteredTransfers
+                        .filter((t) => transferSearchQuery.trim() === '' || t.name?.toLowerCase().includes(transferSearchQuery.toLowerCase()))
+                        .map((transfer) => (
+                          <div
+                            key={transfer.id}
+                            onClick={() => setSelectedTransfer(transfer)}
+                            className={cn(
+                              'p-3 border border-gray-200 rounded-md cursor-pointer transition-colors',
+                              selectedTransfer?.id === transfer.id ? 'bg-secondaryDark/10 border-secondaryDark' : 'hover:bg-gray-50',
+                            )}
+                          >
+                            <p className="font-medium text-sm">{transfer.name}</p>
+                            <p className="text-xs text-gray-500">${transfer.price || 0}</p>
+                          </div>
+                        ))}
+                    </div>
                   )}
                 </div>
-                <div className="flex justify-end gap-2 mt-4">
-                  <button type="button" onClick={handleCloseModal} className="px-4 py-2 border border-gray-300 rounded-md">
+                <div className="p-4 border-t border-gray-200 flex justify-end gap-2">
+                  <button type="button" onClick={handleCloseModal} className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
                     Cancel
                   </button>
-                  <button type="button" onClick={handleAddTransfer} disabled={!selectedTransfer} className="px-4 py-2 bg-secondaryDark text-white rounded-md disabled:opacity-50">
+                  <button
+                    type="button"
+                    onClick={handleAddTransfer}
+                    disabled={!selectedTransfer}
+                    className="px-4 py-2 bg-secondaryDark text-white rounded-md disabled:opacity-50 hover:bg-secondaryDark/90"
+                  >
                     Add
                   </button>
                 </div>
@@ -491,12 +529,13 @@ export default function CreateItineraryModal({ open, onOpenChange, session }) {
   }, [open, toast]);
 
   // Reset form when modal opens
+  // Note: 'methods' is stable from useForm and should not be in dependencies
   useEffect(() => {
     if (open) {
       methods.reset();
       setCurrentStep(1);
     }
-  }, [open, methods]);
+  }, [open]);
 
   const handleNext = async () => {
     if (currentStep === 1) {

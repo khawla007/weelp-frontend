@@ -199,15 +199,9 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     <TableCell>{item.name || item.title || '-'}</TableCell>
                     <TableCell>
                       {getItineraryDisplayImage(item) ? (
-                        <img
-                          src={getItineraryDisplayImage(item)}
-                          alt={item.name || 'Itinerary'}
-                          className="w-12 h-12 object-cover rounded"
-                        />
+                        <img src={getItineraryDisplayImage(item)} alt={item.name || 'Itinerary'} className="w-12 h-12 object-cover rounded" />
                       ) : (
-                        <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">
-                          No img
-                        </div>
+                        <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">No img</div>
                       )}
                     </TableCell>
                     <TableCell>

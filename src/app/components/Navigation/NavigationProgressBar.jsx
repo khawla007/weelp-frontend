@@ -15,10 +15,17 @@ export function NavigationProgressBar() {
   const isNavigating = useNavigationStore((state) => state.isNavigating);
   const navigationKey = useNavigationStore((state) => state.navigationKey);
   const lastKeyRef = useRef(navigationKey);
+  const wasNavigatingRef = useRef(false);
 
   useEffect(() => {
-    // Only update when navigation key actually changes
-    if (navigationKey !== lastKeyRef.current) {
+    // Detect key changes (navigation start)
+    const keyChanged = navigationKey !== lastKeyRef.current;
+
+    // Detect navigation state transitions
+    const justStarted = isNavigating && !wasNavigatingRef.current;
+    const justEnded = !isNavigating && wasNavigatingRef.current;
+
+    if (keyChanged || justStarted || justEnded) {
       if (isNavigating) {
         NProgress.start();
       } else {
@@ -26,6 +33,7 @@ export function NavigationProgressBar() {
       }
       lastKeyRef.current = navigationKey;
     }
+    wasNavigatingRef.current = isNavigating;
   }, [isNavigating, navigationKey]);
 
   return null;

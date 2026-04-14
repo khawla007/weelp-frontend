@@ -25,7 +25,7 @@ const getInitials = (name) => {
 
 const MobileMenu = ({ stickyHeader }) => {
   return (
-    <div className="lg:hidden">
+    <div className="lg:hidden w-full">
       <div className={`${stickyHeader ? 'hidden' : 'block'} border-b border-[#E5E4E1] bg-[#ecf2f4]`}>
         <div className="flex items-center justify-between gap-3 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1A1918]">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#f0c76d] bg-[#fff4d8] px-3 py-1.5">
@@ -42,7 +42,7 @@ const MobileMenu = ({ stickyHeader }) => {
         </div>
       </div>
 
-      <div className="border-b border-[#E5E4E1] bg-[#f8f9f9] px-4 py-3">
+      <div className={`${stickyHeader ? 'fixed top-0 left-0 right-0 z-[99999] shadow-md' : ''} border-b border-[#E5E4E1] bg-[#f8f9f9] px-4 py-3`}>
         <MobileMenuSlider />
       </div>
     </div>

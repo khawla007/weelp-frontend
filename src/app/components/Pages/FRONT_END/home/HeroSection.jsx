@@ -16,7 +16,7 @@ const HeroSection = () => {
       }}
     >
       {/* Centered content */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 w-full max-w-4xl mx-auto">
+      <div className="relative z-0 flex flex-col items-center justify-center text-center px-4 w-full max-w-4xl mx-auto">
         <h1
           className="text-[38px] mb-3"
           style={{

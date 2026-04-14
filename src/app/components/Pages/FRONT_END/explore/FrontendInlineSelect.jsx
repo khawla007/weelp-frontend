@@ -20,6 +20,7 @@ export function FrontendInlineSelect({ items, type, value = [], onChange }) {
   const inputRef = React.useRef(null);
   const scrollContainerRef = React.useRef(null);
   const [dropdownStyle, setDropdownStyle] = React.useState({});
+  const [positionCalculated, setPositionCalculated] = React.useState(false);
 
   // Calculate dropdown position when opening
   React.useEffect(() => {
@@ -44,6 +45,9 @@ export function FrontendInlineSelect({ items, type, value = [], onChange }) {
         width: `${rect.width}px`,
         zIndex: 9999,
       });
+      setPositionCalculated(true);
+    } else {
+      setPositionCalculated(false);
     }
   }, [open]);
 
@@ -68,7 +72,7 @@ export function FrontendInlineSelect({ items, type, value = [], onChange }) {
 
   // Update position on scroll/resize
   React.useEffect(() => {
-    if (!open) return;
+    if (!open || !positionCalculated) return;
 
     const handleUpdatePosition = () => {
       if (buttonRef.current) {
@@ -100,7 +104,7 @@ export function FrontendInlineSelect({ items, type, value = [], onChange }) {
       window.removeEventListener('scroll', handleUpdatePosition, true);
       window.removeEventListener('resize', handleUpdatePosition);
     };
-  }, [open]);
+  }, [open, positionCalculated]);
 
   // Focus search input when dropdown opens
   React.useEffect(() => {
@@ -173,6 +177,7 @@ export function FrontendInlineSelect({ items, type, value = [], onChange }) {
 
       {/* Dropdown Menu - renders via Portal outside modal's overflow context */}
       {open &&
+        positionCalculated &&
         createPortal(
           <div data-portal-dropdown style={dropdownStyle} className="pointer-events-auto bg-white border border-gray-200 rounded-md shadow-lg max-h-[280px] overflow-hidden flex flex-col">
             {/* Search Input */}
