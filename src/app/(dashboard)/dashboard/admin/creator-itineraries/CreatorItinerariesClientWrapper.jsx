@@ -21,6 +21,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
+import { getItineraryDisplayImage } from '@/lib/utils/itineraryImages';
 
 const STATUS_TABS = ['all', 'pending', 'approved', 'rejected', 'deleted'];
 
@@ -153,13 +154,6 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
     setProcessingId(null);
   };
 
-  const getOriginalLink = (item) => {
-    const slug = item.parent_itinerary?.slug;
-    const citySlug = item.parent_itinerary?.locations?.[0]?.city?.slug;
-    if (!slug || !citySlug) return null;
-    return `/cities/${citySlug}/itineraries/${slug}`;
-  };
-
   return (
     <>
       {/* Filter Tabs */}
@@ -190,7 +184,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
               <TableRow>
                 <TableHead>Creator</TableHead>
                 <TableHead>Itinerary Name</TableHead>
-                <TableHead>Original</TableHead>
+                <TableHead>Image</TableHead>
                 <TableHead>Preview</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>Status</TableHead>
@@ -199,19 +193,21 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
             </TableHeader>
             <TableBody>
               {filtered.map((item) => {
-                const originalLink = getOriginalLink(item);
                 return (
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{item.creator?.name || item.user?.name || '-'}</TableCell>
                     <TableCell>{item.name || item.title || '-'}</TableCell>
                     <TableCell>
-                      {originalLink ? (
-                        <a href={originalLink} target="_blank" rel="noopener noreferrer" className="text-secondaryDark hover:underline inline-flex items-center gap-1">
-                          {item.parent_itinerary?.name || 'View'}
-                          <ExternalLink className="size-3" />
-                        </a>
+                      {getItineraryDisplayImage(item) ? (
+                        <img
+                          src={getItineraryDisplayImage(item)}
+                          alt={item.name || 'Itinerary'}
+                          className="w-12 h-12 object-cover rounded"
+                        />
                       ) : (
-                        '-'
+                        <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">
+                          No img
+                        </div>
                       )}
                     </TableCell>
                     <TableCell>
