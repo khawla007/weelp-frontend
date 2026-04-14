@@ -4,7 +4,6 @@ import React from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import useSWR from 'swr';
 import CreatePlaceForm from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/destinations/destinations_forms/CreatePlaceForm';
-import { PageLoader } from '@/app/components/Loading/PageLoader';
 import { Button } from '@/components/ui/button';
 import { AlertCircle } from 'lucide-react';
 import { fetcher } from '@/lib/fetchers';
@@ -18,7 +17,13 @@ const EditPlacePage = () => {
   const { data: placeData, error, isLoading } = useSWR(id ? `/api/admin/destinations/places/${id}` : null, fetcher);
 
   if (isLoading || !id) {
-    return <PageLoader />;
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <p className="text-muted-foreground">Loading place details...</p>
+        </div>
+      </div>
+    );
   }
 
   // Show error state only if we have an ID and loading finished but data is invalid
