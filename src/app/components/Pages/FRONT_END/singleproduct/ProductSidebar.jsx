@@ -38,8 +38,8 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
   };
 
   const addonsTotal = selectedAddons.reduce((sum, a) => sum + Number(a.addon_sale_price ?? a.addon_price), 0);
-  const basePrice = Number(productData?.pricing?.regular_price ?? productData?.base_pricing?.variations?.[0]?.regular_price ?? 0);
-  const displayPrice = productData?.pricing?.regular_price ?? productData?.base_pricing?.variations?.[0]?.regular_price ?? '6,790.18';
+  const basePrice = Number(productData?.schedule_total_price ?? productData?.pricing?.regular_price ?? productData?.base_pricing?.variations?.[0]?.regular_price ?? 0);
+  const displayPrice = productData?.schedule_total_price ?? productData?.pricing?.regular_price ?? productData?.base_pricing?.variations?.[0]?.regular_price ?? '6,790.18';
 
   return (
     <div className="p-6 lg:pl-[60px] lg:pr-0 lg:pt-[60px] lg:pb-[70px] lg:sticky lg:top-[76px]">
