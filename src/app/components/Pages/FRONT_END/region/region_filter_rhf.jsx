@@ -202,7 +202,7 @@ export const RegionFilterNew = () => {
                       productTitle={product.name}
                       productSlug={product.slug}
                       item_type={product.item_type}
-                      productPrice={product?.pricing?.regular_price ?? product?.base_pricing?.variations?.[0]?.regular_price}
+                      productPrice={product?.schedule_total_price ?? product?.pricing?.regular_price ?? product?.base_pricing?.variations?.[0]?.regular_price}
                       citySlug={product?.city_slug}
                     />
                   ))

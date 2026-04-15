@@ -45,15 +45,15 @@ const Tours = ({ items, taglist }) => {
     if (sortValue === '5000') {
       // Sort by Price: Low to High
       sortedData.sort((a, b) => {
-        const priceA = parseFloat(a.base_pricing.variations[0].regular_price);
-        const priceB = parseFloat(b.base_pricing.variations[0].regular_price);
+        const priceA = parseFloat(a.schedule_total_price ?? a.base_pricing?.variations?.[0]?.regular_price);
+        const priceB = parseFloat(b.schedule_total_price ?? b.base_pricing?.variations?.[0]?.regular_price);
         return priceA - priceB;
       });
     } else if (sortValue === '0') {
       // Sort by Price: High to Low
       sortedData.sort((a, b) => {
-        const priceA = parseFloat(a.base_pricing.variations[0].sale_price);
-        const priceB = parseFloat(b.base_pricing.variations[0].regular_price);
+        const priceA = parseFloat(a.schedule_total_price ?? a.base_pricing?.variations?.[0]?.sale_price);
+        const priceB = parseFloat(b.schedule_total_price ?? b.base_pricing?.variations?.[0]?.regular_price);
         return priceB - priceA;
       });
     }
@@ -133,7 +133,7 @@ const Tours = ({ items, taglist }) => {
                   imgsrc={val?.image}
                   productRating={val?.rating}
                   productTitle={val?.name}
-                  productPrice={val?.base_pricing?.variations[0]?.regular_price}
+                  productPrice={val?.schedule_total_price ?? val?.base_pricing?.variations?.[0]?.regular_price}
                   productId={val?.id}
                   productSlug={val?.slug}
                   citySlug={val?.city_slug}
