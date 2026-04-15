@@ -34,7 +34,8 @@ import dynamic from 'next/dynamic';
 
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnItinerary'), { ssr: false });
 
-export const EditItineraryForm = ({ categories, attributes, tags, locations = [], allactivities, alltransfers, itineraryData }) => {
+export const EditItineraryForm = ({ categories, attributes, tags, locations = [], allactivities, alltransfers, itineraryData, isCreatorItinerary = false }) => {
+  const listBackUrl = isCreatorItinerary ? '/dashboard/admin/creator-itineraries' : '/dashboard/admin/itineraries';
   const hasResetRef = useRef(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
@@ -69,7 +70,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
   } = itineraryData;
 
   // destructure schema
-  const { schema_data } = seo;
+  const { schema_data } = seo || {};
 
   // set attributes preselected
   const initialAttributes = presetAttributes?.length
@@ -618,7 +619,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                     readOnly
                   />
                   <Input type="text" {...register(`schedules.${index}.title`)} className="flex-1 focus-visible:ring-secondaryDark focus-visible:ring-1" placeholder="e.g., Arrival in Port Blair" />
-                  <Trash onClick={() => handleRemoveDay(item, id, index)} className=" cursor-pointer " size={20} />
+                  <Trash2 onClick={() => handleRemoveDay(item, id, index)} className="text-red-400 cursor-pointer" size={16} />
                 </div>
 
                 <div className="flex flex-col space-y-4">
@@ -638,10 +639,11 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
 
                           <div className="space-y-2">
                             <p className="font-bold text-base">{filteredActivity?.activitydata?.name ?? filteredActivity?.activity_name}</p>
-                            <div className="flex gap-2 flex-wrap">
+                            <div className="flex gap-2 flex-wrap items-center">
                               <Clock /> {`${filteredActivity?.start_time} - ${filteredActivity?.end_time}`}
                               <Activity /> <b>Activity</b>
                               <Settings
+                                size={16}
                                 onClick={() =>
                                   setHandleEdit({
                                     type: 'activity',
@@ -651,7 +653,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                                 }
                               />
                               {/* <Trash onClick={() => removeActivityHandle(filteredActivity)} className=" cursor-pointer " size={20} /> */}
-                              <Trash onClick={() => removeActivityHandle(filteredActivity, id)} className=" cursor-pointer " size={20} />
+                              <Trash2 onClick={() => removeActivityHandle(filteredActivity, id)} className="text-red-400 cursor-pointer" size={16} />
                             </div>
                           </div>
                         </div>
@@ -674,11 +676,12 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
 
                             <div className="space-y-2">
                               <p className="font-bold text-base">{filteredTransfer?.transferData?.name ?? filteredTransfer?.transfer_name}</p>
-                              <div className="flex gap-2 flex-wrap">
+                              <div className="flex gap-2 flex-wrap items-center">
                                 <Clock /> {`${filteredTransfer?.start_time} - ${filteredTransfer?.end_time}`}
                                 <Car />
                                 <b>Transfer</b>
                                 <Settings
+                                  size={16}
                                   onClick={() =>
                                     setHandleEdit({
                                       type: 'transfer',
@@ -687,7 +690,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                                     })
                                   }
                                 />
-                                <Trash onClick={() => removeTransferHandle(filteredTransfer, id)} className=" cursor-pointer " size={20} />
+                                <Trash2 onClick={() => removeTransferHandle(filteredTransfer, id)} className="text-red-400 cursor-pointer" size={16} />
                               </div>
                             </div>
                           </div>
@@ -1963,7 +1966,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
 
         // success reset
         reset();
-        router.push('/dashboard/admin/itineraries');
+        router.push(listBackUrl);
       } else {
         toast({
           title: 'Error',
@@ -2009,8 +2012,8 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       const result = await updateAndApproveCreatorItinerary(id, finalData);
       if (result.success) {
         toast({ title: 'Itinerary Approved', description: result.message });
+        reset();
         router.push('/dashboard/admin/creator-itineraries');
-        router.refresh();
       } else {
         toast({ title: 'Error', description: result.message, variant: 'destructive' });
       }
@@ -2023,7 +2026,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
 
   return (
     <div className="min-h-screen w-full bg-gray-50 py-12 sm:px-6 lg:px-8">
-      <NavigationItinerary title={'Edit Itinerary'} desciption={'Build a new itinerary with schedule, pricing, and more'} backurl={'/dashboard/admin/itineraries/'} />
+      <NavigationItinerary title={isCreatorItinerary ? 'Edit Creator Itinerary' : 'Edit Itinerary'} desciption={'Build a new itinerary with schedule, pricing, and more'} backurl={`${listBackUrl}/`} />
       <div className="w-full space-y-4">
         <FormProvider {...methods}>
           <div className="w-full">
@@ -2100,19 +2103,20 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                     {/* Step 8: Use FormActionButtons, Steps 1-7: Use Next button */}
                     {currentStep === 8 ? (
                       <div className="flex gap-4 ml-auto">
-                        {status === 'pending' && (
-                          <Button type="button" onClick={methods.handleSubmit(handleSubmitAndApprove)} disabled={isSubmitting || isApproving} className="bg-green-600 hover:bg-green-700">
-                            {isApproving ? 'Approving...' : 'Save & Approve'}
+                        {isCreatorItinerary && status === 'pending' ? (
+                          <Button type="button" onClick={methods.handleSubmit(handleSubmitAndApprove)} disabled={isSubmitting || isApproving} className="bg-[#558e7b] hover:bg-[#558e7b]/90 text-white">
+                            {isApproving ? 'Approving...' : 'Approve'}
                           </Button>
+                        ) : (
+                          <FormActionButtons
+                            mode="update"
+                            isSubmitting={isSubmitting || isApproving}
+                            isDisabled={!isValid || !isDirty}
+                            cancelAlwaysEnabled={true}
+                            containerType="div"
+                            className="flex gap-4"
+                          />
                         )}
-                        <FormActionButtons
-                          mode="update"
-                          isSubmitting={isSubmitting || isApproving}
-                          isDisabled={!isValid || !isDirty}
-                          cancelAlwaysEnabled={true}
-                          containerType="div"
-                          className="flex gap-4"
-                        />
                       </div>
                     ) : (
                       <Button type="submit" disabled={isSubmitting || isApproving} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>

@@ -5,6 +5,7 @@ import CreatorItineraryCard from './CreatorItineraryCard';
 import { ChevronDown, Check, UserPlus, Sparkles, TrendingUp, Home, Clock } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { getExploreItineraries } from '@/lib/services/creatorItineraries';
 
 const CONTENT_TABS = [
   { value: 'home', label: 'Home', icon: Home },
@@ -57,19 +58,8 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
   }, [itineraries, activeTab]);
 
   const fetchItineraries = useCallback(
-    async (pageNum, sort, source) => {
-      const params = new URLSearchParams({ page: pageNum, sort });
-      if (source === 'mine') params.set('source', 'mine');
-
-      const headers = { Accept: 'application/json' };
-      if (source === 'mine' && session?.access_token) {
-        headers.Authorization = `Bearer ${session.access_token}`;
-      }
-
-      const res = await fetch(`/api/explore/creator-itineraries?${params.toString()}`, { headers });
-      return res.json();
-    },
-    [session?.access_token],
+    (pageNum, sort, source) => getExploreItineraries(pageNum, sort, source === 'mine' ? 'mine' : null),
+    [],
   );
 
   // Refetch when filters change (skip initial mount — we have initialItineraries)

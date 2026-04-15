@@ -266,7 +266,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
 
                         {item.status !== 'deleted' && (
                           <>
-                            <NavigationLink href={`/dashboard/admin/creator-itineraries/${item.id}/edit`}>
+                            <NavigationLink href={`/dashboard/admin/creator-itineraries/${item.id}`}>
                               <Button variant="outline" size="sm" className="border-[#435a6742] text-[#435a67]">
                                 <Pencil className="size-4 mr-1" />
                                 Edit
@@ -279,7 +279,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                                   Remove
                                 </Button>
                               </AlertDialogTrigger>
-                              <AlertDialogContent>
+                              <AlertDialogContent className="bg-white">
                                 <AlertDialogHeader>
                                   <AlertDialogTitle>Remove Itinerary</AlertDialogTitle>
                                   <AlertDialogDescription>This will permanently remove &quot;{item.name}&quot; and all related data. This action cannot be undone.</AlertDialogDescription>

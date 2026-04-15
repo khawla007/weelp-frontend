@@ -30,7 +30,7 @@ export const NavigationItinerary = ({ title, desciption }) => {
   return <div className="flex justify-between w-full py-4 font-extrabold"> Props Not Passed </div>;
 };
 
-export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity }) => {
+export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity, apiPrefix = 'admin' }) => {
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [activities, setActivities] = useState([]);
@@ -46,10 +46,11 @@ export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity })
     const fetchActivities = async () => {
       setLoading(true);
       try {
-        const response = await authApi.get(`/api/admin/activities?city_ids=${cityIdsKey}&all=true`);
-        const data = response?.data?.data?.data || [];
-        setActivities(data);
-        setFilteredActivities(data);
+        const response = await authApi.get(`/api/${apiPrefix}/activities?city_ids=${cityIdsKey}&all=true`);
+        const body = response?.data;
+        const data = body?.data?.data || body?.data || [];
+        setActivities(Array.isArray(data) ? data : []);
+        setFilteredActivities(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error('Error fetching activities:', error);
         setActivities([]);
@@ -59,7 +60,7 @@ export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity })
       }
     };
     fetchActivities();
-  }, [cityIdsKey]);
+  }, [cityIdsKey, apiPrefix]);
 
   // Client-side search filter on fetched activities
   const handleSearch = useCallback(
@@ -294,15 +295,17 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
           </div>
 
           {/* Transfers Items */}
-          {transfers.length > 0
-            ? transfers.map((transfer, val) => {
-                return (
-                  <li className="list-none hover:bg-neutral-100 cursor-pointer p-2" onClick={() => handleSelectTransfer(transfer)} key={transfer?.id}>
-                    {transfer?.name}
-                  </li>
-                );
-              })
-            : ''}
+          <ul className="max-h-60 overflow-y-auto">
+            {transfers.length > 0 ? (
+              transfers.map((transfer) => (
+                <li className="list-none hover:bg-neutral-100 cursor-pointer p-2" onClick={() => handleSelectTransfer(transfer)} key={transfer?.id}>
+                  {transfer?.name}
+                </li>
+              ))
+            ) : (
+              <li className="list-none p-2 text-muted-foreground">No transfers found for selected cities.</li>
+            )}
+          </ul>
         </div>
 
         {!isEmpty(selectedTransfer) && (

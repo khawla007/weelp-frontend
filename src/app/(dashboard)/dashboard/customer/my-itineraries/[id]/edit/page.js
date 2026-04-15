@@ -1,27 +1,45 @@
 import { auth } from '@/lib/auth/auth';
-import { redirect } from 'next/navigation';
-import DraftEditorClient from './DraftEditorClient';
+import { redirect, notFound } from 'next/navigation';
+import { getDraftItinerary } from '@/lib/actions/creatorItineraries';
+import { getAllCitiesListPublic } from '@/lib/services/cities';
+import { getAllTransfersCreator } from '@/lib/services/transfers';
+import CreatorItineraryFormShell from '@/app/components/Pages/FRONT_END/creator-itinerary-form/CreatorItineraryFormShell';
+import { reshapeDraftForForm } from '@/app/components/Pages/FRONT_END/creator-itinerary-form/reshapeDraftForForm';
 
 export const metadata = {
-  title: 'Edit Itinerary Draft - Weelp',
-  description: 'Edit your itinerary draft before submitting for review',
+  title: 'Edit Itinerary - Weelp',
+  description: 'Edit your itinerary draft',
 };
 
-export default async function DraftEditPage({ params }) {
+export default async function EditItineraryDraftPage({ params }) {
   const session = await auth();
+
   if (!session?.user) {
     redirect('/user/login');
   }
 
   const { id } = await params;
 
+  const [draftResult, citiesRes, transfers] = await Promise.all([
+    getDraftItinerary(id),
+    getAllCitiesListPublic(),
+    getAllTransfersCreator(),
+  ]);
+
+  if (!draftResult.success || !draftResult.data) {
+    notFound();
+  }
+
+  const initialData = reshapeDraftForForm(draftResult.data);
+  const locations = citiesRes?.data || [];
+
   return (
-    <div className="p-6 sm:p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#142A38]">Edit Draft</h1>
-        <p className="text-[#5A5A5A] mt-1">Modify your itinerary and submit for admin review.</p>
-      </div>
-      <DraftEditorClient draftId={id} />
-    </div>
+    <CreatorItineraryFormShell
+      mode="edit"
+      draftId={id}
+      initialData={initialData}
+      locations={locations}
+      alltransfers={transfers}
+    />
   );
 }

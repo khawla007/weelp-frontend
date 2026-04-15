@@ -422,7 +422,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
             <div className="flex items-center gap-4 mt-4 justify-between">
               <Input type="number" {...register(`schedules.${index}.day`)} defaultValue={item?.day} className="w-20 focus-visible:ring-secondaryDark focus-visible:ring-1" placeholder="Day" readOnly />
               <Input type="text" {...register(`schedules.${index}.title`)} className="flex-1 focus-visible:ring-secondaryDark focus-visible:ring-1" placeholder="e.g., Arrival in Port Blair" />
-              <Trash onClick={() => removeDay(index)} className=" cursor-pointer " size={20} />
+              <Trash2 onClick={() => removeDay(index)} className="text-red-400 cursor-pointer" size={16} />
             </div>
 
             <div className="flex flex-col space-y-4">
@@ -435,10 +435,11 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                       <img className="size-24" src={filteredActivity?.activitydata?.media_gallery?.[0]?.url ?? 'https://picsum.photos/100/100'} alt="random" />
                       <div className="space-y-2">
                         <p className="font-bold text-base">{filteredActivity?.activitydata?.name}</p>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 items-center">
                           <Clock /> {`${filteredActivity?.start_time} - ${filteredActivity?.end_time}`}
                           <Activity /> <b>Activity</b>
                           <Settings
+                            size={16}
                             onClick={() =>
                               setHandleEdit({
                                 type: 'activity',
@@ -447,7 +448,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                               })
                             }
                           />
-                          <Trash onClick={() => handleRemoveActivity(filteredActivity, item?.day)} className=" cursor-pointer " size={20} />
+                          <Trash2 onClick={() => handleRemoveActivity(filteredActivity, item?.day)} className="text-red-400 cursor-pointer" size={16} />
                         </div>
                       </div>
                     </div>
@@ -465,11 +466,12 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                       <img className="size-24" src={filteredTransfer?.transferData?.media_gallery?.[0]?.url ?? 'https://picsum.photos/100/100'} alt="transfer_image" />
                       <div className="space-y-2">
                         <p className="font-bold text-base">{filteredTransfer?.transferData?.name}</p>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 items-center">
                           <Clock /> {`${filteredTransfer?.start_time} - ${filteredTransfer?.end_time}`}
                           <Car />
                           <b>Transfer</b>
                           <Settings
+                            size={16}
                             onClick={() =>
                               setHandleEdit({
                                 type: 'transfer',
@@ -478,7 +480,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                               })
                             }
                           />
-                          <Trash onClick={() => handleRemoveTransfer(filteredTransfer, item?.day)} className=" cursor-pointer " size={20} />
+                          <Trash2 onClick={() => handleRemoveTransfer(filteredTransfer, item?.day)} className="text-red-400 cursor-pointer" size={16} />
                         </div>
                       </div>
                     </div>

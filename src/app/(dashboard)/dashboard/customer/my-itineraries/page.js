@@ -19,6 +19,8 @@ export default async function MyItinerariesPage() {
   const itineraries = result.success ? result.data?.data || [] : [];
   const lastPage = result.success ? result.data?.last_page || 1 : 1;
 
+  const isCreator = !!session?.user?.is_creator;
+
   return (
     <div className="p-6 sm:p-8">
       <div className="flex justify-between items-center mb-8">
@@ -28,7 +30,11 @@ export default async function MyItinerariesPage() {
         </div>
       </div>
 
-      <MyItinerariesClientWrapper initialItineraries={itineraries} lastPage={lastPage} />
+      <MyItinerariesClientWrapper
+        initialItineraries={itineraries}
+        lastPage={lastPage}
+        isCreator={isCreator}
+      />
     </div>
   );
 }

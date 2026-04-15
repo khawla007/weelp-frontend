@@ -9,11 +9,31 @@ import { log } from '../utils';
 export async function getAllTransfersAdmin() {
   try {
     const api = await getAuthApi();
-    const response = await api.get(`/api/admin/transfers`, {
+    const response = await api.get(`/api/admin/transfers?all=true`, {
       headers: { Accept: 'application/json' },
     });
-    return response?.data?.data;
+    return response?.data?.data ?? [];
   } catch (error) {
+    return [];
+  }
+}
+
+/**
+ * Get All Transfers for Creator role
+ * Uses the creator endpoint (auth + creator middleware) which returns
+ * transfers shaped like the admin endpoint (with vendor_routes.pickup_city_id)
+ * so the shared ActivitySearchModal/TransferSearchModal markup works unchanged.
+ * @returns {Promise<Array>}
+ */
+export async function getAllTransfersCreator() {
+  try {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/creator/transfers`, {
+      headers: { Accept: 'application/json' },
+    });
+    return response?.data?.data ?? [];
+  } catch (error) {
+    console.error('Service Error (getAllTransfersCreator):', error);
     return [];
   }
 }

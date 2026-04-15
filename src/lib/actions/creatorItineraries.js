@@ -262,9 +262,12 @@ export const getDraftItinerary = async (id) => {
 };
 
 /**
- * Save draft edits (name, description, schedules)
+ * Save draft edits. Accepts the same payload shape as submitCreatorItineraryDraft:
+ *   { name, slug?, description, locations: number[], schedules: [{day, title}],
+ *     activities: [{day, activity_id, start_time, end_time, price, included, notes?}],
+ *     transfers:  [{day, transfer_id, start_time, end_time, price, included, ...}] }
  * @param {number} id - Draft itinerary ID
- * @param {object} data - { name?, description?, schedules? }
+ * @param {object} data - Full or partial form payload
  * @returns {object} { success, message, data }
  */
 export const updateDraft = async (id, data) => {

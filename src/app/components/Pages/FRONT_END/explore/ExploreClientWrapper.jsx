@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from 'react';
 import CreatorFilter from './SectionCreatorFilter';
 import CreatorStatCards from './CreatorStatCards';
 import CreatorApplicationForm from './CreatorApplicationForm';
-import CreateItineraryModal from './CreateItineraryModal';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { getApplicationStatus } from '@/lib/actions/creatorApplications';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,6 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
   const [applicationStatus, setApplicationStatus] = useState(null);
   const [activeTab, setActiveTab] = useState('home');
   const [guideOpen, setGuideOpen] = useState(false);
-  const [createModalOpen, setCreateModalOpen] = useState(false);
   const { toast } = useToast();
   const { openAuthModal } = useAuthModalStore();
   const { data: session, update: updateSession } = useSession();
@@ -83,10 +82,12 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
                 <p className="text-sm text-[#5A5A5A] mt-1">Share your travel experiences and inspire the community.</p>
               </div>
               <div className="flex items-center gap-3">
-                <Button onClick={() => setCreateModalOpen(true)} className="bg-secondaryDark hover:bg-secondaryDark/90 text-white">
-                  <Sparkles className="size-4 mr-2" />
-                  Create Itinerary
-                </Button>
+                <NavigationLink href="/dashboard/customer/my-itineraries/new">
+                  <Button className="bg-secondaryDark hover:bg-secondaryDark/90 text-white">
+                    <Sparkles className="size-4 mr-2" />
+                    Create Itinerary
+                  </Button>
+                </NavigationLink>
                 <Button onClick={() => setGuideOpen(true)} variant="outline" className="border-secondaryDark text-secondaryDark hover:bg-secondaryDark/10">
                   <HelpCircle className="size-4 mr-2" />
                   How to Create Itinerary
@@ -163,9 +164,6 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Create Itinerary Modal */}
-      <CreateItineraryModal open={createModalOpen} onOpenChange={setCreateModalOpen} session={session} />
     </>
   );
 }

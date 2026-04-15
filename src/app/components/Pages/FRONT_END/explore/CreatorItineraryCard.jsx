@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Heart, Eye } from 'lucide-react';
-import Image from 'next/image';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { toggleItineraryLike, recordItineraryView } from '@/lib/actions/creatorItineraries';
 
@@ -16,7 +15,8 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn }) {
   const [likesCount, setLikesCount] = useState(itinerary?.likes_count || 0);
   const [viewsCount, setViewsCount] = useState(itinerary?.views_count || 0);
 
-  const featuredImage = itinerary?.featured_image || itinerary?.media_gallery?.[0]?.url || '/assets/Card.webp';
+  const featuredMedia = itinerary?.media_gallery?.find((m) => m.is_featured)?.media?.url || itinerary?.media_gallery?.[0]?.media?.url;
+  const featuredImage = featuredMedia || itinerary?.featured_image || '/assets/Card.webp';
   const price = itinerary?.display_price;
   const currency = itinerary?.currency || 'USD';
   const title = itinerary?.name || 'Untitled Itinerary';
@@ -24,12 +24,12 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn }) {
 
   const creatorName = itinerary?.creator?.name || '';
   const creatorAvatar = itinerary?.creator?.avatar_media?.url || itinerary?.creator?.profile?.avatar || '';
-  const creatorInitials = creatorName
-    .split(' ')
-    .map((w) => w[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
+  const creatorInitials = (() => {
+    if (!creatorName) return 'U';
+    const parts = creatorName.trim().split(' ');
+    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+  })();
 
   const cityName = itinerary?.locations?.[0]?.city?.name || '';
   const citySlug = cityName ? cityName.toLowerCase().replace(/\s+/g, '-') : '';
@@ -70,7 +70,14 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn }) {
       {/* Image with price overlay */}
       <NavigationLink href={href} onClick={handleCardClick}>
         <div className="group relative w-full aspect-[93/100] overflow-hidden rounded-lg">
-          <Image src={featuredImage} alt={title} fill className="object-cover" />
+          <img
+            src={featuredImage}
+            alt={title}
+            className="absolute inset-0 w-full h-full object-cover"
+            onError={(e) => {
+              e.target.src = '/assets/Card.webp';
+            }}
+          />
 
           {/* Price overlay - slides up on hover */}
           {price && (
@@ -99,11 +106,14 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn }) {
       <div className="px-2 pt-1 flex items-center justify-between">
         <h3 className="text-[#142A38] text-lg font-medium line-clamp-1 flex-1 mr-2">{title}</h3>
         {creatorAvatar ? (
-          <Image src={creatorAvatar} className="size-9 rounded-full object-cover flex-shrink-0" width={36} height={36} alt={creatorName} />
+          <img src={creatorAvatar} alt={creatorName || 'creator'} className="size-9 rounded-full object-cover flex-shrink-0" />
         ) : (
-          <div className="size-9 rounded-full bg-[#CFDBE54D] flex items-center justify-center flex-shrink-0">
-            <span className="text-xs font-medium text-[#435A67]">{creatorInitials}</span>
-          </div>
+          <span
+            className="size-9 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0"
+            style={{ backgroundColor: '#568f7c' }}
+          >
+            {creatorInitials}
+          </span>
         )}
       </div>
     </div>
