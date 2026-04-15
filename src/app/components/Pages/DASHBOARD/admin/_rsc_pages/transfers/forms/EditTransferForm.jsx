@@ -47,7 +47,7 @@ export const EditTransferForm = ({ transferData }) => {
       media_gallery: media_gallery,
       addons: initialAddons,
       seo: {
-        ...seo,
+        ...(seo || {}),
         schema_data: seo?.schema_data ? (typeof seo.schema_data === 'string' ? JSON.parse(seo.schema_data) : seo.schema_data) : {},
       },
     },

@@ -91,10 +91,10 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
       minimum_lead_time: minimum_lead_time,
       maximum_passengers: maximum_passengers,
 
-      // seo
+      // seo - handle null case from API
       seo: {
-        ...seo,
-        schema_data: seo.schema_data ? (typeof seo.schema_data === 'string' ? JSON.parse(seo.schema_data) : seo.schema_data) : {},
+        ...(seo || {}),
+        schema_data: seo?.schema_data ? (typeof seo.schema_data === 'string' ? JSON.parse(seo.schema_data) : seo.schema_data) : {},
       },
       media_gallery: media_gallery,
       addons: initialAddons,

@@ -107,7 +107,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       blackout_dates: blackout_dates,
       inclusions_exclusions: inclusions_exclusions,
       media_gallery: media_gallery,
-      seo: { ...seo, schema_data: JSON.parse(schema_data) },
+      seo: { ...(seo || {}), schema_data: JSON.parse(schema_data || '{}') },
       categories: presetCategories?.length ? presetCategories.map(({ category_id }) => category_id) : [],
       tags: presetTags?.length ? presetTags.map(({ tag_id }) => tag_id) : [],
       attributes: initialAttributes,
@@ -1516,6 +1516,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       </div>
     );
   });
+  MediaTab.displayName = 'MediaTab';
 
   // SEO Tab
   const SeoTab = () => {

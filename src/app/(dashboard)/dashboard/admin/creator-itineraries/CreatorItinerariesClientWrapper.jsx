@@ -21,7 +21,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
-import { getItineraryDisplayImage } from '@/lib/utils/itineraryImages';
 
 const STATUS_TABS = ['all', 'pending', 'approved', 'rejected', 'deleted'];
 
@@ -184,7 +183,6 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
               <TableRow>
                 <TableHead>Creator</TableHead>
                 <TableHead>Itinerary Name</TableHead>
-                <TableHead>Image</TableHead>
                 <TableHead>Preview</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>Status</TableHead>
@@ -197,13 +195,6 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{item.creator?.name || item.user?.name || '-'}</TableCell>
                     <TableCell>{item.name || item.title || '-'}</TableCell>
-                    <TableCell>
-                      {getItineraryDisplayImage(item) ? (
-                        <img src={getItineraryDisplayImage(item)} alt={item.name || 'Itinerary'} className="w-12 h-12 object-cover rounded" />
-                      ) : (
-                        <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">No img</div>
-                      )}
-                    </TableCell>
                     <TableCell>
                       <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer" className="text-secondaryDark hover:underline inline-flex items-center gap-1">
                         Preview
