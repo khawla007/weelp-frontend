@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { ThemeWrapper } from './theme-wrapper';
 import AppProviders from '@/app/components/Layout/ProviderWrapper';
 import { useNavigationEvents } from '@/hooks/useNavigationEvents';
@@ -14,7 +15,9 @@ export default function DashboardLayout({ children }) {
   return (
     <ThemeWrapper>
       <AppProviders>
-        <DashboardNavigationHandler />
+        <Suspense fallback={null}>
+          <DashboardNavigationHandler />
+        </Suspense>
         <NavigationProgressBar />
         {children}
       </AppProviders>
