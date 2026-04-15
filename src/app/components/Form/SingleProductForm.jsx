@@ -95,7 +95,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     // compute combined price with add-ons
     const addonsTotal = selectedAddons.reduce((sum, a) => sum + Number(a.addon_sale_price ?? a.addon_price), 0);
 
-    const basePrice = Number(productData?.pricing?.regular_price ?? productData?.base_pricing?.variations?.[0]?.regular_price ?? 0);
+    const basePrice = Number(productData?.schedule_total_price ?? productData?.pricing?.regular_price ?? productData?.base_pricing?.variations?.[0]?.regular_price ?? 0);
 
     // add item to cart
     addItem({
