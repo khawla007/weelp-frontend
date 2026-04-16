@@ -2,7 +2,12 @@ import useSWR from 'swr';
 import { fetcher } from '@/lib/fetchers';
 
 export function useMegaMenu() {
-  const { data = {}, error, isLoading, isValidating } = useSWR('/api/mega-menu', fetcher, {
+  const {
+    data = {},
+    error,
+    isLoading,
+    isValidating,
+  } = useSWR('/api/mega-menu', fetcher, {
     revalidateOnFocus: false,
     dedupingInterval: 60000,
   });

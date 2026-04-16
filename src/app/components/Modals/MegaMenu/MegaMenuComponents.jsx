@@ -37,24 +37,9 @@ export const MenuList = ({ items = [], hoveredId, onHover }) => (
 export const CityCards = ({ cities = [] }) => (
   <div className="flex gap-3 border-b border-[#cccccc80] px-[17px] pt-[17px] pb-[15px]">
     {cities.slice(0, 3).map((city, idx) => (
-      <Link
-        key={city.id}
-        href={`/cities/${city.slug}`}
-        className="group relative block h-[96px] w-[154px] shrink-0 overflow-hidden rounded-[6px] transition hover:opacity-95"
-      >
-        {city.featured_image ? (
-          <img
-            src={city.featured_image}
-            alt={city.name}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        ) : (
-          <div className="absolute inset-0 bg-[#c9c9c9]" />
-        )}
-        <div
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%)' }}
-        />
+      <Link key={city.id} href={`/cities/${city.slug}`} className="group relative block h-[96px] w-[154px] shrink-0 overflow-hidden rounded-[6px] transition hover:opacity-95">
+        {city.featured_image ? <img src={city.featured_image} alt={city.name} className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-[#c9c9c9]" />}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%)' }} />
         <div className="absolute inset-x-[13px] bottom-[13px] flex flex-col gap-[1px]">
           <span
             className="leading-tight"

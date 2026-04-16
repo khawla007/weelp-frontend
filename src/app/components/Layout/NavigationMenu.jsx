@@ -127,11 +127,7 @@ const NavMenuDesktop = () => {
       </ul>
 
       {megaOpen && (
-        <div
-          className="absolute left-1/2 top-full z-[9999] mt-3 -translate-x-1/2"
-          onMouseEnter={scheduleOpen}
-          onMouseLeave={scheduleClose}
-        >
+        <div className="absolute left-1/2 top-full z-[9999] mt-3 -translate-x-1/2" onMouseEnter={scheduleOpen} onMouseLeave={scheduleClose}>
           <MegaMenu />
         </div>
       )}

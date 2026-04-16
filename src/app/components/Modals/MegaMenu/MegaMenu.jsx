@@ -9,18 +9,9 @@ const MegaMenu = () => {
   const { regions, trending, isLoading, error } = useMegaMenu();
   const [activeId, setActiveId] = useState(TRENDING_ID);
 
-  const items = useMemo(
-    () => [
-      { id: TRENDING_ID, name: 'Trending Destinations', cities: trending },
-      ...regions.map((r) => ({ id: r.id, name: r.name, cities: r.cities })),
-    ],
-    [regions, trending],
-  );
+  const items = useMemo(() => [{ id: TRENDING_ID, name: 'Trending Destinations', cities: trending }, ...regions.map((r) => ({ id: r.id, name: r.name, cities: r.cities }))], [regions, trending]);
 
-  const activeItem = useMemo(
-    () => items.find((i) => i.id === activeId) ?? items[0],
-    [items, activeId],
-  );
+  const activeItem = useMemo(() => items.find((i) => i.id === activeId) ?? items[0], [items, activeId]);
 
   const handleListLeave = useCallback(() => {
     setActiveId(TRENDING_ID);
@@ -44,10 +35,7 @@ const MegaMenu = () => {
 
   return (
     <div className="flex h-[417px] w-[769px] overflow-hidden rounded-[12px] border border-[#eee] bg-white shadow-xl">
-      <aside
-        className="flex w-[244px] flex-col border-r border-[#cccccc80]"
-        onMouseLeave={handleListLeave}
-      >
+      <aside className="flex w-[244px] flex-col border-r border-[#cccccc80]" onMouseLeave={handleListLeave}>
         <MenuList items={items} hoveredId={activeId} onHover={setActiveId} />
       </aside>
 
