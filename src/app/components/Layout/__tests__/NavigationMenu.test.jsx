@@ -54,6 +54,5 @@ describe('DesktopMenu', () => {
     expect(screen.getByRole('link', { name: /tours & experiences/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^transfers$/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^trips$/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /^explore$/i })).toBeInTheDocument();
   });
 });

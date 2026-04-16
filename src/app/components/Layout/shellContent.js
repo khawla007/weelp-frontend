@@ -1,9 +1,9 @@
 export const HEADER_NAV_ITEMS = [
-  { title: 'Explore Creators', href: '/explore' },
+  { title: 'Explore Destinations', hasMegaMenu: true },
   { title: 'Tours & Experiences', href: '/' },
   { title: 'Transfers', href: '/transfers' },
   { title: 'Trips', href: '/holiday' },
-  { title: 'Explore', href: '/blogs' },
+  { title: 'Explore Creators', href: '/explore-creators' },
 ];
 
 export const HEADER_PRIMARY_META = [
@@ -31,7 +31,7 @@ export const FOOTER_COLUMNS = [
   },
   {
     title: 'About Weelp',
-    links: [{ label: 'About us', href: '/about-us' }, { label: 'Career' }, { label: 'Contact us' }, { label: 'Become a Partner' }],
+    links: [{ label: 'About us', href: '/about-us' }, { label: 'Career' }, { label: 'Contact us' }, { label: 'Blog', href: '/blogs' }],
   },
   {
     title: 'Partner with us',

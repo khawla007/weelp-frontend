@@ -8,20 +8,8 @@ import { requestEdit, requestRemoval } from '@/lib/actions/creatorItineraries';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 
 export default function MyItinerariesClientWrapper({ initialItineraries, lastPage, isCreator = false }) {
@@ -57,11 +45,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
     const result = await requestRemoval(removalTargetId, removalReason || null);
     if (result.success) {
       toast({ title: 'Removal requested', description: result.message });
-      setItineraries((prev) =>
-        prev.map((i) =>
-          i.id === removalTargetId ? { ...i, removal_status: 'requested', removal_reason: removalReason } : i
-        )
-      );
+      setItineraries((prev) => prev.map((i) => (i.id === removalTargetId ? { ...i, removal_status: 'requested', removal_reason: removalReason } : i)));
       router.refresh();
     } else {
       toast({ title: 'Error', description: result.message, variant: 'destructive' });
@@ -107,7 +91,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
       <div className="text-center py-16">
         <p className="text-lg text-[#142A38]">No itineraries yet</p>
         <p className="text-[#5A5A5A] mt-2">Browse and save itineraries from the explore page to see them here.</p>
-        <NavigationLink href="/explore">
+        <NavigationLink href="/explore-creators">
           <Button className="mt-4 bg-secondaryDark hover:bg-secondaryDark/90">Explore Itineraries</Button>
         </NavigationLink>
       </div>
@@ -162,30 +146,19 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
                   <div className="absolute top-2 right-2">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="bg-white/90 hover:bg-white h-8 w-8 rounded-full"
-                          disabled={processingId === item.id}
-                        >
+                        <Button variant="ghost" size="icon" className="bg-white/90 hover:bg-white h-8 w-8 rounded-full" disabled={processingId === item.id}>
                           <MoreHorizontal className="size-4" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" offset={10}>
                         {canRequestEdit && (
-                          <DropdownMenuItem
-                            onClick={() => handleRequestEdit(item.id)}
-                            className="cursor-pointer"
-                          >
+                          <DropdownMenuItem onClick={() => handleRequestEdit(item.id)} className="cursor-pointer">
                             <Pencil className="size-3.5 mr-2" />
                             Request Edit
                           </DropdownMenuItem>
                         )}
                         {canRequestRemoval && (
-                          <DropdownMenuItem
-                            onClick={() => openRemovalDialog(item.id)}
-                            className="cursor-pointer text-red-600 focus:text-red-600"
-                          >
+                          <DropdownMenuItem onClick={() => openRemovalDialog(item.id)} className="cursor-pointer text-red-600 focus:text-red-600">
                             <Trash2 className="size-3.5 mr-2" />
                             Request Removal
                           </DropdownMenuItem>
@@ -262,12 +235,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
             <DialogTitle>Request Itinerary Removal</DialogTitle>
             <DialogDescription>Your request will be reviewed by an admin. Optionally provide a reason.</DialogDescription>
           </DialogHeader>
-          <Textarea
-            value={removalReason}
-            onChange={(e) => setRemovalReason(e.target.value)}
-            placeholder="Reason for removal (optional)"
-            className="min-h-[80px]"
-          />
+          <Textarea value={removalReason} onChange={(e) => setRemovalReason(e.target.value)} placeholder="Reason for removal (optional)" className="min-h-[80px]" />
           <DialogFooter>
             <Button
               variant="outline"
@@ -278,11 +246,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
             >
               Cancel
             </Button>
-            <Button
-              onClick={handleRequestRemoval}
-              disabled={processingId === removalTargetId}
-              className="bg-red-600 hover:bg-red-700 text-white"
-            >
+            <Button onClick={handleRequestRemoval} disabled={processingId === removalTargetId} className="bg-red-600 hover:bg-red-700 text-white">
               Submit Request
             </Button>
           </DialogFooter>

@@ -28,13 +28,7 @@ const STEPS = [
   { id: 2, title: 'Schedule' },
 ];
 
-export default function CreatorItineraryFormShell({
-  mode = 'create',
-  draftId = null,
-  initialData = null,
-  locations = [],
-  alltransfers = [],
-}) {
+export default function CreatorItineraryFormShell({ mode = 'create', draftId = null, initialData = null, locations = [], alltransfers = [] }) {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -60,12 +54,7 @@ export default function CreatorItineraryFormShell({
   const descriptionValue = useWatch({ control: methods.control, name: 'description' });
   const locationsValue = useWatch({ control: methods.control, name: 'locations' });
 
-  const isStep1Valid = !!(
-    nameValue?.trim() &&
-    slugValue?.trim() &&
-    descriptionValue?.trim() &&
-    locationsValue?.length > 0
-  );
+  const isStep1Valid = !!(nameValue?.trim() && slugValue?.trim() && descriptionValue?.trim() && locationsValue?.length > 0);
 
   const validateCurrentStep = async () => {
     if (currentStep === 1) {
@@ -87,9 +76,7 @@ export default function CreatorItineraryFormShell({
     const data = methods.getValues();
     return {
       ...data,
-      locations: Array.isArray(data.locations)
-        ? data.locations.map((l) => (typeof l === 'string' ? parseInt(l, 10) : l))
-        : [],
+      locations: Array.isArray(data.locations) ? data.locations.map((l) => (typeof l === 'string' ? parseInt(l, 10) : l)) : [],
     };
   };
 
@@ -127,10 +114,7 @@ export default function CreatorItineraryFormShell({
 
   return (
     <div className="min-h-screen w-full bg-gray-50 py-12 px-[140px]">
-      <NavigationItinerary
-        title={mode === 'edit' ? 'Edit Itinerary Draft' : 'Create New Itinerary'}
-        desciption={'Build an itinerary with destinations and schedule'}
-      />
+      <NavigationItinerary title={mode === 'edit' ? 'Edit Itinerary Draft' : 'Create New Itinerary'} desciption={'Build an itinerary with destinations and schedule'} />
       <div className="w-full space-y-4">
         <FormProvider {...methods}>
           <div className="w-full">
@@ -167,12 +151,7 @@ export default function CreatorItineraryFormShell({
           >
             <fieldset className={`bg-white p-2 px-8 border shadow rounded-lg ${submitting && ' cursor-wait'}`} disabled={submitting}>
               <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>
-                <Step2Schedule
-                  alltransfers={alltransfers}
-                  onSubmit={onStep2Submit}
-                  submitLabel={mode === 'edit' ? 'Save & Submit for Review' : 'Submit for Review'}
-                  submitting={submitting}
-                />
+                <Step2Schedule alltransfers={alltransfers} onSubmit={onStep2Submit} submitLabel={mode === 'edit' ? 'Save & Submit for Review' : 'Submit for Review'} submitting={submitting} />
               </div>
               {currentStep === 1 && <Step1BasicInfo locations={locations} />}
 
@@ -198,11 +177,7 @@ export default function CreatorItineraryFormShell({
                 )}
 
                 {currentStep === 2 ? null : (
-                  <Button
-                    type="submit"
-                    disabled={submitting}
-                    className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}
-                  >
+                  <Button type="submit" disabled={submitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
                     Next
                   </Button>
                 )}

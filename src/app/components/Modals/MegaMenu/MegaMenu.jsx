@@ -1,57 +1,60 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { useNavigationMenu } from '@/hooks/api/public/menu/menu';
-import dynamic from 'next/dynamic';
+'use client';
+import { useCallback, useMemo, useState } from 'react';
+import { useMegaMenu } from '@/hooks/api/public/menu/megaMenu';
+import { MenuList, CityCards, PlaceGrid } from './MegaMenuComponents';
 
-const RegionList = dynamic(() => import('./MegaMenuComponents').then((module) => module.RegionList), { ssr: false });
-const MegaMenuContent = dynamic(() => import('./MegaMenuComponents').then((module) => module.MegaMenuContent), { ssr: false });
+const TRENDING_ID = 'trending';
 
 const MegaMenu = () => {
-  const { data: menuData, isLoading, isValidating, error } = useNavigationMenu(); // menu list
-  const navItems = menuData?.data || []; // navigationItems
+  const { regions, trending, isLoading, error } = useMegaMenu();
+  const [activeId, setActiveId] = useState(TRENDING_ID);
 
-  // Derive initial selected continent from navItems (no state sync needed)
-  const [selectedContinent, setSelectedContinent] = useState(() => {
-    if (navItems.length > 0) {
-      return {
-        name: navItems[0].region,
-        cities: navItems[0]?.cities || [],
-      };
-    }
-    return { name: '', cities: [] };
-  });
+  const items = useMemo(
+    () => [
+      { id: TRENDING_ID, name: 'Trending Destinations', cities: trending },
+      ...regions.map((r) => ({ id: r.id, name: r.name, cities: r.cities })),
+    ],
+    [regions, trending],
+  );
 
-  // Handle continent selection
-  const handleContinent = (name, cities) => {
-    setSelectedContinent((prev) => {
-      return { ...prev, name, cities };
-    });
-  };
+  const activeItem = useMemo(
+    () => items.find((i) => i.id === activeId) ?? items[0],
+    [items, activeId],
+  );
 
-  // Handling Error
+  const handleListLeave = useCallback(() => {
+    setActiveId(TRENDING_ID);
+  }, []);
+
   if (error) {
     return (
-      <div className="w-[768px] !h-52 rounded-xl grid place-items-center">
-        <span className="text-red-400">Something went Wrong.. {JSON.stringify(error)}</span>
+      <div className="flex h-[417px] w-[769px] items-center justify-center rounded-[12px] border border-[#eee] bg-white shadow-xl">
+        <span className="text-sm text-red-500">Couldn&rsquo;t load destinations. Try again.</span>
       </div>
     );
   }
 
-  // Initial Loading
-  if (isValidating && isLoading) {
+  if (isLoading || !regions.length) {
     return (
-      <div className="w-[768px] !h-52 rounded-lg grid place-items-center">
-        <span className="loader"></span>
+      <div className="flex h-[417px] w-[769px] items-center justify-center rounded-[12px] border border-[#eee] bg-white shadow-xl">
+        <span className="loader" />
       </div>
     );
   }
 
   return (
-    <div className="bg-white text-black w-[768px] h-fit rounded-lg flex">
-      <div className="flex w-full flex-row">
-        <RegionList selectedContinent={selectedContinent} navItems={navItems} handleContinent={handleContinent} />
-        <MegaMenuContent selectedContinent={selectedContinent.name} citiesList={selectedContinent.cities} />
-      </div>
+    <div className="flex h-[417px] w-[769px] overflow-hidden rounded-[12px] border border-[#eee] bg-white shadow-xl">
+      <aside
+        className="flex w-[244px] flex-col border-r border-[#cccccc80]"
+        onMouseLeave={handleListLeave}
+      >
+        <MenuList items={items} hoveredId={activeId} onHover={setActiveId} />
+      </aside>
+
+      <section className="flex flex-1 flex-col overflow-y-auto">
+        <CityCards cities={activeItem?.cities ?? []} />
+        <PlaceGrid cities={activeItem?.cities ?? []} />
+      </section>
     </div>
   );
 };

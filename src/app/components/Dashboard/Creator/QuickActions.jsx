@@ -9,7 +9,7 @@ export default function QuickActions() {
 
   return (
     <div className="flex gap-4">
-      <Button onClick={() => router.push('/explore')} className="bg-secondaryDark hover:bg-secondaryDark/90 text-white">
+      <Button onClick={() => router.push('/explore-creators')} className="bg-secondaryDark hover:bg-secondaryDark/90 text-white">
         <Compass className="size-4 mr-2" />
         Explore Itineraries
       </Button>

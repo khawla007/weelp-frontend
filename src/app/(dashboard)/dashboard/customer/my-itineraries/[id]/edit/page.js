@@ -20,11 +20,7 @@ export default async function EditItineraryDraftPage({ params }) {
 
   const { id } = await params;
 
-  const [draftResult, citiesRes, transfers] = await Promise.all([
-    getDraftItinerary(id),
-    getAllCitiesListPublic(),
-    getAllTransfersCreator(),
-  ]);
+  const [draftResult, citiesRes, transfers] = await Promise.all([getDraftItinerary(id), getAllCitiesListPublic(), getAllTransfersCreator()]);
 
   if (!draftResult.success || !draftResult.data) {
     notFound();
@@ -33,13 +29,5 @@ export default async function EditItineraryDraftPage({ params }) {
   const initialData = reshapeDraftForForm(draftResult.data);
   const locations = citiesRes?.data || [];
 
-  return (
-    <CreatorItineraryFormShell
-      mode="edit"
-      draftId={id}
-      initialData={initialData}
-      locations={locations}
-      alltransfers={transfers}
-    />
-  );
+  return <CreatorItineraryFormShell mode="edit" draftId={id} initialData={initialData} locations={locations} alltransfers={transfers} />;
 }

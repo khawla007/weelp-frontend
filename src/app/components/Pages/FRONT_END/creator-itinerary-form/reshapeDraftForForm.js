@@ -27,9 +27,7 @@ export function reshapeDraftForForm(draft) {
     };
   }
 
-  const locations = Array.isArray(draft.locations)
-    ? draft.locations.map((loc) => loc.city_id ?? loc.city?.id).filter(Boolean)
-    : [];
+  const locations = Array.isArray(draft.locations) ? draft.locations.map((loc) => loc.city_id ?? loc.city?.id).filter(Boolean) : [];
 
   const schedules = [];
   const activities = [];

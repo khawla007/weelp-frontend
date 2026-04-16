@@ -126,8 +126,8 @@ const NAV_MENU_ITEMS = [
     href: '/holiday',
   },
   {
-    title: 'Explore',
-    href: '/explore',
+    title: 'Explore Creators',
+    href: '/explore-creators',
   },
 ];
 

@@ -140,7 +140,7 @@ const NavigationMenuMobile = () => {
           <UserRound className="size-4" />
           Account
         </Link>
-        <Link href="/explore" className="flex h-12 w-12 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918]" aria-label="Search trips">
+        <Link href="/explore-creators" className="flex h-12 w-12 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918]" aria-label="Search trips">
           <Search className="size-4" />
         </Link>
       </div>

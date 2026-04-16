@@ -108,10 +108,7 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn }) {
         {creatorAvatar ? (
           <img src={creatorAvatar} alt={creatorName || 'creator'} className="size-9 rounded-full object-cover flex-shrink-0" />
         ) : (
-          <span
-            className="size-9 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0"
-            style={{ backgroundColor: '#568f7c' }}
-          >
+          <span className="size-9 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0" style={{ backgroundColor: '#568f7c' }}>
             {creatorInitials}
           </span>
         )}

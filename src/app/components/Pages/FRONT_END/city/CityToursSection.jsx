@@ -24,7 +24,7 @@ export default function CityToursSection({ cityName }) {
   const [sortBy, setSortBy] = useState('id_desc');
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [allTags, setAllTags] = useState([]);
-  const [packages, setPackages] = useState([]);
+  const [itineraries, setItineraries] = useState([]);
   const [pagination, setPagination] = useState({ last_page: 1, total: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const sortRef = useRef(null);
@@ -51,7 +51,7 @@ export default function CityToursSection({ cityName }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Fetch packages from API
+  // Fetch itineraries from API
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(true);
@@ -64,10 +64,10 @@ export default function CityToursSection({ cityName }) {
       query.set('city', city);
 
       axios
-        .get(`/api/public/packages/featured?${query.toString()}`)
+        .get(`/api/public/itineraries/featured?${query.toString()}`)
         .then((res) => {
           if (res.data?.success) {
-            setPackages(res.data.data || []);
+            setItineraries(res.data.data || []);
             setAllTags(res.data.all_tags || []);
             setPagination({
               last_page: res.data.last_page || 1,
@@ -76,7 +76,7 @@ export default function CityToursSection({ cityName }) {
           }
         })
         .catch(() => {
-          setPackages([]);
+          setItineraries([]);
           setAllTags([]);
           setPagination({ last_page: 1, total: 0 });
         })
@@ -97,11 +97,11 @@ export default function CityToursSection({ cityName }) {
     setShowSortDropdown(false);
   };
 
-  const cards = packages.map((item) => mapProductToItemCard(item, city));
+  const cards = itineraries.map((item) => mapProductToItemCard(item, city));
   const totalPages = pagination.last_page;
 
-  // Don't render section if initial load returns no packages and no tags
-  if (!isLoading && packages.length === 0 && allTags.length === 0 && selectedTags.length === 0) return null;
+  // Don't render section if initial load returns no itineraries and no tags
+  if (!isLoading && itineraries.length === 0 && allTags.length === 0 && selectedTags.length === 0) return null;
 
   return (
     <section ref={sectionRef} className="mx-auto flex w-full max-w-[1480px] flex-col gap-8 px-4 sm:px-6 xl:px-0 py-[70px]">
@@ -241,7 +241,7 @@ export default function CityToursSection({ cityName }) {
       ) : (
         <div className="flex min-h-[220px] items-center justify-center">
           <span className="text-[16px] text-[#6b7b8d]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500 }}>
-            No packages found for the selected tags
+            No itineraries found for the selected tags
           </span>
         </div>
       )}

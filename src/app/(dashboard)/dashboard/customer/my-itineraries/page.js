@@ -30,11 +30,7 @@ export default async function MyItinerariesPage() {
         </div>
       </div>
 
-      <MyItinerariesClientWrapper
-        initialItineraries={itineraries}
-        lastPage={lastPage}
-        isCreator={isCreator}
-      />
+      <MyItinerariesClientWrapper initialItineraries={itineraries} lastPage={lastPage} isCreator={isCreator} />
     </div>
   );
 }

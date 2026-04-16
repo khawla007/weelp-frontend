@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ChevronDown, Globe, Headphones, MapPin, Search, ShoppingCart, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
@@ -11,6 +11,9 @@ import SubmenuAccount from '../Modals/SubmenuAccount';
 import { HEADER_NAV_ITEMS, HEADER_PRIMARY_META, HEADER_SECONDARY_META } from './shellContent';
 import NotificationBell from './NotificationBell';
 import { getLogoUrl } from '@/lib/config/brand';
+import dynamic from 'next/dynamic';
+
+const MegaMenu = dynamic(() => import('../Modals/MegaMenu/MegaMenu'), { ssr: false });
 
 // Helper function to generate initials from name
 const getInitials = (name) => {
@@ -71,18 +74,67 @@ const DesktopMenu = ({ stickyHeader }) => {
 };
 
 const NavMenuDesktop = () => {
+  const [megaOpen, setMegaOpen] = useState(false);
+  const closeTimer = useRef(null);
+  const openTimer = useRef(null);
+
+  const scheduleOpen = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    openTimer.current = setTimeout(() => setMegaOpen(true), 100);
+  };
+
+  const scheduleClose = () => {
+    if (openTimer.current) clearTimeout(openTimer.current);
+    closeTimer.current = setTimeout(() => setMegaOpen(false), 150);
+  };
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') setMegaOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   return (
-    <nav aria-label="Primary" className="flex items-center justify-center">
+    <nav aria-label="Primary" className="relative flex items-center justify-center">
       <ul className="flex items-center gap-[36px]">
-        {HEADER_NAV_ITEMS.map((nav, index) => (
-          <li key={nav.title}>
-            <Link className="flex items-center gap-2 text-[16px] font-medium text-[#142a38]/70 transition hover:text-[#142a38]" href={nav.href}>
-              {index === 0 && <MapPin className="size-[15px] text-[#142a38]/70" strokeWidth={1.24} />}
-              {nav.title}
-            </Link>
-          </li>
-        ))}
+        {HEADER_NAV_ITEMS.map((nav, index) => {
+          if (nav.hasMegaMenu) {
+            return (
+              <li key={nav.title} onMouseEnter={scheduleOpen} onMouseLeave={scheduleClose}>
+                <button
+                  type="button"
+                  className="flex items-center gap-2 text-[16px] font-medium text-[#142a38]/70 transition hover:text-[#142a38]"
+                  onClick={() => setMegaOpen((v) => !v)}
+                  aria-expanded={megaOpen}
+                >
+                  {index === 0 && <MapPin className="size-[15px] text-[#142a38]/70" strokeWidth={1.24} />}
+                  {nav.title}
+                </button>
+              </li>
+            );
+          }
+          return (
+            <li key={nav.title}>
+              <Link className="flex items-center gap-2 text-[16px] font-medium text-[#142a38]/70 transition hover:text-[#142a38]" href={nav.href}>
+                {index === 0 && <MapPin className="size-[15px] text-[#142a38]/70" strokeWidth={1.24} />}
+                {nav.title}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
+
+      {megaOpen && (
+        <div
+          className="absolute left-1/2 top-full z-[9999] mt-3 -translate-x-1/2"
+          onMouseEnter={scheduleOpen}
+          onMouseLeave={scheduleClose}
+        >
+          <MegaMenu />
+        </div>
+      )}
     </nav>
   );
 };

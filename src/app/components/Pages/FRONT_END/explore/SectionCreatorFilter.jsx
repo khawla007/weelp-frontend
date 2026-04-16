@@ -57,10 +57,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
     });
   }, [itineraries, activeTab]);
 
-  const fetchItineraries = useCallback(
-    (pageNum, sort, source) => getExploreItineraries(pageNum, sort, source === 'mine' ? 'mine' : null),
-    [],
-  );
+  const fetchItineraries = useCallback((pageNum, sort, source) => getExploreItineraries(pageNum, sort, source === 'mine' ? 'mine' : null), []);
 
   // Refetch when filters change (skip initial mount — we have initialItineraries)
   useEffect(() => {

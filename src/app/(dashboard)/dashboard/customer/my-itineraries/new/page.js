@@ -17,18 +17,9 @@ export default async function CreateItineraryPage() {
     redirect('/user/login');
   }
 
-  const [citiesRes, transfers] = await Promise.all([
-    getAllCitiesListPublic(),
-    getAllTransfersCreator(),
-  ]);
+  const [citiesRes, transfers] = await Promise.all([getAllCitiesListPublic(), getAllTransfersCreator()]);
 
   const locations = citiesRes?.data || [];
 
-  return (
-    <CreatorItineraryFormShell
-      mode="create"
-      locations={locations}
-      alltransfers={transfers}
-    />
-  );
+  return <CreatorItineraryFormShell mode="create" locations={locations} alltransfers={transfers} />;
 }

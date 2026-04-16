@@ -7,12 +7,7 @@ import { Activity, Car, Clock, MapPin, Settings, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import {
-  ActivitySearchModal,
-  CustomizedEditActivityForm,
-  CustomizedEditTransferForm,
-  TransferSearchModal,
-} from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/itineraries/itinerary_shared';
+import { ActivitySearchModal, CustomizedEditActivityForm, CustomizedEditTransferForm, TransferSearchModal } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/itineraries/itinerary_shared';
 
 export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel = 'Submit for Review', submitting = false }) {
   const [openDropdownForDay, setOpenDropdownForDay] = useState(null);
@@ -253,13 +248,7 @@ export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel
 
             {/* Activity Search Modal */}
             {modalContext.type === 'activity' && modalContext.day == item.day && (
-              <ActivitySearchModal
-                cityIds={getValues('locations') || []}
-                day={item?.day}
-                addActivity={addActivity}
-                onClose={handleCloseModal}
-                apiPrefix="creator"
-              />
+              <ActivitySearchModal cityIds={getValues('locations') || []} day={item?.day} addActivity={addActivity} onClose={handleCloseModal} apiPrefix="creator" />
             )}
             {/* Transfer Search Modal */}
             {modalContext.type === 'transfer' && modalContext.day === item.day && (
