@@ -28,8 +28,8 @@ export default function CarouselShell({ items = [], navigationPrefix, renderSlid
             swiper.navigation.update();
           }
         }}
-        watchOverflow={false}
-        rewind={true}
+        watchOverflow={true}
+        rewind={false}
         slidesPerView={1.08}
         spaceBetween={18}
         breakpoints={breakpoints}

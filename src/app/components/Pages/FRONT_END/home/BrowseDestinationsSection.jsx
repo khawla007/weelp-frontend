@@ -21,31 +21,38 @@ const STATIC_DESTINATIONS = [
   { id: 5, name: 'Tokyo', slug: 'tokyo', image: '/assets/Card.webp', activitiesCount: 175 },
 ];
 
-export default function BrowseDestinationsSection({ cities = [] }) {
+export default function BrowseDestinationsSection({
+  cities = [],
+  title = 'Top Destination',
+  subtitleMode = 'count',
+  navigationPrefix = 'browse-destinations',
+}) {
   const apiCities = cities.map((c) => ({
     id: c.id,
     name: c.name,
     slug: c.slug,
-    image: c.featured_image || c.image || '/assets/Card.webp',
+    image: c.featured_image || c.feature_image || c.image || '/assets/Card.webp',
     activitiesCount: c.activities_count ?? 0,
+    starting_price: c.starting_price ?? null,
+    currency: c.currency ?? null,
   }));
   const items = apiCities.length > 0 ? apiCities : STATIC_DESTINATIONS;
 
   return (
     <section className="container mx-auto flex flex-col gap-8 px-4 pb-[100px]">
       <div className="flex items-center justify-between">
-        <SectionHeader title="Top Destination" />
+        <SectionHeader title={title} />
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="browse-destinations-prev flex size-9 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918] shadow-sm transition hover:bg-gray-50"
+            className={`${navigationPrefix}-prev flex size-9 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918] shadow-sm transition hover:bg-gray-50`}
             aria-label="Previous destination"
           >
             <ChevronLeft className="size-4" />
           </button>
           <button
             type="button"
-            className="browse-destinations-next flex size-9 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918] shadow-sm transition hover:bg-gray-50"
+            className={`${navigationPrefix}-next flex size-9 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918] shadow-sm transition hover:bg-gray-50`}
             aria-label="Next destination"
           >
             <ChevronRight className="size-4" />
@@ -53,7 +60,7 @@ export default function BrowseDestinationsSection({ cities = [] }) {
         </div>
       </div>
 
-      <CarouselShell items={items} navigationPrefix="browse-destinations" breakpoints={DESTINATION_BREAKPOINTS} slideClassName="!h-auto" renderSlide={(city) => <CityCard city={city} />} />
+      <CarouselShell items={items} navigationPrefix={navigationPrefix} breakpoints={DESTINATION_BREAKPOINTS} slideClassName="!h-auto" renderSlide={(city) => <CityCard city={city} subtitleMode={subtitleMode} />} />
     </section>
   );
 }

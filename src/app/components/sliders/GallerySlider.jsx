@@ -28,7 +28,8 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff' }) => {
             '--swiper-navigation-color': navColor,
             '--swiper-pagination-color': navColor,
           }}
-          loop={true}
+          loop={false}
+          watchOverflow={true}
           spaceBetween={6} // Adjust the spacing between slides
           navigation={true}
           // thumbs={thumbsSwiper ? { swiper: thumbsSwiper } : undefined}
@@ -67,7 +68,8 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff' }) => {
         {/* Thumbnail Slider */}
         <Swiper
           onSwiper={setThumbsSwiper}
-          loop={true}
+          loop={false}
+          watchOverflow={true}
           spaceBetween={7}
           slidesPerView={5}
           freeMode={true}

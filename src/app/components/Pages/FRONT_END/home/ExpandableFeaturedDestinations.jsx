@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { formatCurrency } from '@/lib/utils';
 import { CornerDecorations } from './CornerDecorations';
 
 // Helper function to construct full image URL
@@ -18,7 +19,7 @@ const getImgUrl = (imgPath) => {
 // Inner card component - matching reference layout exactly
 // MOVED OUTSIDE to prevent unmounting/remounting on state changes
 // This fixes the "jerk" by preserving DOM nodes during state updates.
-const DestinationCard = ({ city, isActive, onClick }) => {
+const DestinationCard = ({ city, isActive, onClick, priceMode = 'count' }) => {
   const imageUrl = getImgUrl(city.feature_image || city.featured_image || city.image);
 
   return (
@@ -93,18 +94,33 @@ const DestinationCard = ({ city, isActive, onClick }) => {
               </Link>
             </h4>
 
-            {/* Listing Count */}
-            <span
-              className="destination-subtitle text-white block opacity-90"
-              style={{
-                fontSize: '16px',
-                margin: '0',
-                fontWeight: '500',
-                fontFamily: 'var(--font-interTight), sans-serif',
-              }}
-            >
-              15 Listing
-            </span>
+            {/* Listing Count or Price */}
+            {priceMode === 'count' && (
+              <span
+                className="destination-subtitle text-white block opacity-90"
+                style={{
+                  fontSize: '16px',
+                  margin: '0',
+                  fontWeight: '500',
+                  fontFamily: 'var(--font-interTight), sans-serif',
+                }}
+              >
+                {city.activities_count ?? city.activity_count ?? 0} Listings
+              </span>
+            )}
+            {priceMode === 'price' && city.starting_price != null && (
+              <span
+                className="destination-subtitle text-white block opacity-90"
+                style={{
+                  fontSize: '16px',
+                  margin: '0',
+                  fontWeight: '500',
+                  fontFamily: 'var(--font-interTight), sans-serif',
+                }}
+              >
+                Starting at {formatCurrency(city.starting_price, city.currency)}
+              </span>
+            )}
           </div>
         </div>
 
@@ -141,7 +157,7 @@ const DestinationCard = ({ city, isActive, onClick }) => {
   );
 };
 
-const ExpandableFeaturedDestinations = ({ data = [], title = 'Top Destinations' }) => {
+const ExpandableFeaturedDestinations = ({ data = [], title = 'Top Destinations', priceMode = 'count' }) => {
   // State: track clicked (locked) card - NO hover state per reference requirement
   // Default: 4th card (index 3) active like reference website
   const [activeIndex, setActiveIndex] = useState(3);
@@ -197,6 +213,7 @@ const ExpandableFeaturedDestinations = ({ data = [], title = 'Top Destinations' 
                   onClick={() => {
                     setActiveIndex(index);
                   }}
+                  priceMode={priceMode}
                 />
               </div>
             );
@@ -207,7 +224,7 @@ const ExpandableFeaturedDestinations = ({ data = [], title = 'Top Destinations' 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
           {cities.map((city, index) => (
             <div key={city.id || index} className="destination-list-wrap">
-              <DestinationCard city={city} isActive={false} onClick={() => setActiveIndex(activeIndex === index ? null : index)} />
+              <DestinationCard city={city} isActive={false} onClick={() => setActiveIndex(activeIndex === index ? null : index)} priceMode={priceMode} />
             </div>
           ))}
         </div>

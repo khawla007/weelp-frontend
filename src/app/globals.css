@@ -335,7 +335,7 @@ body {
 
 .swiper-button-prev,
 .swiper-button-next {
-  @apply bg-white rounded-[10px] size-10 border border-gray-100 flex items-center justify-center transition-all duration-300 opacity-100 !important;
+  @apply bg-white rounded-[10px] size-10 border border-gray-100 flex items-center justify-center transition-all duration-300 !important;
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1) !important;
   /* Stronger visibility */
   margin-top: 0 !important;
@@ -348,10 +348,21 @@ body {
   box-shadow: 4px 4px 15px rgba(88, 143, 122, 0.3) !important;
 }
 
-/* Hide navigation if not enough slides */
-.swiper-button-disabled,
-.swiper-button-lock {
-  display: none !important;
+/* Carousel navigation state: fade on desktop/tablet, hide on mobile */
+@media (min-width: 768px) {
+  .swiper-button-disabled,
+  .swiper-button-lock {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .swiper-button-disabled,
+  .swiper-button-lock {
+    display: none !important;
+  }
 }
 
 /* Target SVG icons specifically if they exist and force 50% size */

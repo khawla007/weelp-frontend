@@ -63,7 +63,7 @@ export default function FeaturedPackagesSlider() {
           <button
             onClick={prevSlide}
             disabled={currentIndex === 0}
-            className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none flex items-center justify-center transition-colors"
             aria-label="Previous packages"
           >
             <ChevronLeft size={18} className="text-white" />
@@ -71,7 +71,7 @@ export default function FeaturedPackagesSlider() {
           <button
             onClick={nextSlide}
             disabled={currentIndex >= maxIndex}
-            className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none flex items-center justify-center transition-colors"
             aria-label="Next packages"
           >
             <ChevronRight size={18} className="text-white" />

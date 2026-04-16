@@ -13,7 +13,8 @@ const PostSlider = ({ data }) => {
         modules={[Navigation]}
         spaceBetween={20}
         navigation={true}
-        loop={true}
+        loop={false}
+        watchOverflow={true}
         breakpoints={{
           450: {
             slidesPerView: 1,

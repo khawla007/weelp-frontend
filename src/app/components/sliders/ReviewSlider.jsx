@@ -17,7 +17,8 @@ const ReviewSlider = ({ reviews = [] }) => {
           prevEl: '.review-prev',
           nextEl: '.review-next',
         }}
-        loop={reviews.length > 3}
+        loop={false}
+        watchOverflow={true}
         autoplay={{
           delay: 4000,
           disableOnInteraction: false,

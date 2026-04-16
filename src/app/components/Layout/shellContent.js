@@ -1,6 +1,6 @@
 export const HEADER_NAV_ITEMS = [
   { title: 'Explore Destinations', hasMegaMenu: true },
-  { title: 'Tours & Experiences', href: '/' },
+  { title: 'Tours & Experiences', href: '/tours-experiences' },
   { title: 'Transfers', href: '/transfers' },
   { title: 'Trips', href: '/holiday' },
   { title: 'Explore Creators', href: '/explore-creators' },
