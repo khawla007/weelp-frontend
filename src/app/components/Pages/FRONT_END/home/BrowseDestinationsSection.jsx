@@ -21,12 +21,7 @@ const STATIC_DESTINATIONS = [
   { id: 5, name: 'Tokyo', slug: 'tokyo', image: '/assets/Card.webp', activitiesCount: 175 },
 ];
 
-export default function BrowseDestinationsSection({
-  cities = [],
-  title = 'Top Destination',
-  subtitleMode = 'count',
-  navigationPrefix = 'browse-destinations',
-}) {
+export default function BrowseDestinationsSection({ cities = [], title = 'Top Destination', subtitleMode = 'count', navigationPrefix = 'browse-destinations' }) {
   const apiCities = cities.map((c) => ({
     id: c.id,
     name: c.name,
@@ -60,7 +55,13 @@ export default function BrowseDestinationsSection({
         </div>
       </div>
 
-      <CarouselShell items={items} navigationPrefix={navigationPrefix} breakpoints={DESTINATION_BREAKPOINTS} slideClassName="!h-auto" renderSlide={(city) => <CityCard city={city} subtitleMode={subtitleMode} />} />
+      <CarouselShell
+        items={items}
+        navigationPrefix={navigationPrefix}
+        breakpoints={DESTINATION_BREAKPOINTS}
+        slideClassName="!h-auto"
+        renderSlide={(city) => <CityCard city={city} subtitleMode={subtitleMode} />}
+      />
     </section>
   );
 }

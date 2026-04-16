@@ -49,13 +49,7 @@ export const CityCards = ({ cities = [], selectedCityId, onSelect }) => (
         >
           {city.featured_image ? <img src={city.featured_image} alt={city.name} className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-[#c9c9c9]" />}
           <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%)' }} />
-          {isSelected && (
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0 rounded-[6px]"
-              style={{ boxShadow: `inset 0 0 0 2px #ffffff, inset 0 0 0 4px ${GREEN}` }}
-            />
-          )}
+          {isSelected && <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[6px]" style={{ boxShadow: `inset 0 0 0 2px #ffffff, inset 0 0 0 4px ${GREEN}` }} />}
           <div className="absolute inset-x-[13px] bottom-[13px] flex flex-col items-start gap-[1px] text-left">
             <span
               className="leading-tight"

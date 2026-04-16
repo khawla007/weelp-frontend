@@ -85,8 +85,7 @@ export default function ToursFilterBar() {
 
   // Debounced search effect
   useEffect(() => {
-    const hasAny = from || to || dateRange.from || dateRange.to ||
-                   guests.adults + guests.children + guests.infants > 0;
+    const hasAny = from || to || dateRange.from || dateRange.to || guests.adults + guests.children + guests.infants > 0;
 
     if (!hasAny) {
       setResults([]);
@@ -137,9 +136,7 @@ export default function ToursFilterBar() {
       setFilteredFromCities(cities);
       setFromHasTyped(false);
     } else {
-      const filtered = cities.filter((city) =>
-        city.name.toLowerCase().startsWith(value.toLowerCase())
-      );
+      const filtered = cities.filter((city) => city.name.toLowerCase().startsWith(value.toLowerCase()));
       setFilteredFromCities(filtered);
     }
   };
@@ -165,9 +162,7 @@ export default function ToursFilterBar() {
       setFilteredToCities(cities);
       setToHasTyped(false);
     } else {
-      const filtered = cities.filter((city) =>
-        city.name.toLowerCase().startsWith(value.toLowerCase())
-      );
+      const filtered = cities.filter((city) => city.name.toLowerCase().startsWith(value.toLowerCase()));
       setFilteredToCities(filtered);
     }
   };
@@ -280,9 +275,7 @@ export default function ToursFilterBar() {
                       <MapPin size={14} className="text-gray-400 flex-shrink-0" />
                       <span className="whitespace-nowrap">{city.name}</span>
                     </div>
-                    <span className="text-[10px] uppercase tracking-wider text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded whitespace-nowrap">
-                      {city.type || 'city'}
-                    </span>
+                    <span className="text-[10px] uppercase tracking-wider text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
                   </div>
                 ))
               ) : (
@@ -330,9 +323,7 @@ export default function ToursFilterBar() {
                       <MapPin size={14} className="text-gray-400 flex-shrink-0" />
                       <span className="whitespace-nowrap">{city.name}</span>
                     </div>
-                    <span className="text-[10px] uppercase tracking-wider text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded whitespace-nowrap">
-                      {city.type || 'city'}
-                    </span>
+                    <span className="text-[10px] uppercase tracking-wider text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
                   </div>
                 ))
               ) : (
@@ -374,10 +365,7 @@ export default function ToursFilterBar() {
 
           {/* Calendar Dropdown */}
           {showCalendar && (
-            <div
-              onMouseLeave={() => setShowCalendar(false)}
-              className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-2 z-[110]"
-            >
+            <div onMouseLeave={() => setShowCalendar(false)} className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-2 z-[110]">
               <DayPicker
                 mode="range"
                 selected={dateRange}
@@ -415,32 +403,19 @@ export default function ToursFilterBar() {
 
           {/* Guests Dropdown */}
           {showGuests && (
-            <div
-              onMouseLeave={() => setShowGuests(false)}
-              className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-4 z-[110] w-64"
-            >
+            <div onMouseLeave={() => setShowGuests(false)} className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-4 z-[110] w-64">
               {['adults', 'children', 'infants'].map((type) => (
                 <div key={type} className="flex justify-between items-center mb-3 last:mb-0">
                   <div>
                     <span className="font-medium capitalize text-sm">{type}</span>
-                    <span className="text-xs text-gray-500 block">
-                      {type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}
-                    </span>
+                    <span className="text-xs text-gray-500 block">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => handleGuestDecrement(type)}
-                      className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-gray-100"
-                    >
+                    <button type="button" onClick={() => handleGuestDecrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-gray-100">
                       -
                     </button>
                     <span className="w-6 text-center">{guests[type]}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleGuestIncrement(type)}
-                      className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-gray-100"
-                    >
+                    <button type="button" onClick={() => handleGuestIncrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-gray-100">
                       +
                     </button>
                   </div>
@@ -480,15 +455,9 @@ export default function ToursFilterBar() {
                   href={buildResultUrl(item)}
                   className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-b-0 pr-10"
                 >
-                  <span className="text-sm font-semibold text-[#142a38] truncate text-left">
-                    {item.name || item.title}
-                  </span>
-                  <span className="rounded-md bg-[#759c8d]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#759c8d]">
-                    {item.type || 'item'}
-                  </span>
-                  <span className="text-sm font-medium text-[#5a5a5a] text-right">
-                    {item.price ? `$${item.price}` : ''}
-                  </span>
+                  <span className="text-sm font-semibold text-[#142a38] truncate text-left">{item.name || item.title}</span>
+                  <span className="rounded-md bg-[#759c8d]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#759c8d]">{item.type || 'item'}</span>
+                  <span className="text-sm font-medium text-[#5a5a5a] text-right">{item.price ? `$${item.price}` : ''}</span>
                 </NavigationLink>
               ))}
             </>

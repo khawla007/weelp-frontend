@@ -7,10 +7,7 @@ export default function ToursHero() {
         <img alt="" className="absolute -top-8 right-0 scale-90" src="/assets/Group5.png" />
       </div>
       <div className="w-full max-w-xl sm:max-w-3xl flex flex-col items-center gap-2 relative z-[60]">
-        <h1
-          className="text-xl sm:text-5xl font-semibold text-[#143042] text-center"
-          style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
-        >
+        <h1 className="text-xl sm:text-5xl font-semibold text-[#143042] text-center" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
           Plan your Holiday.
         </h1>
         <p className="max-w-xl text-sm sm:text-lg font-medium text-[#435a67] text-center">
