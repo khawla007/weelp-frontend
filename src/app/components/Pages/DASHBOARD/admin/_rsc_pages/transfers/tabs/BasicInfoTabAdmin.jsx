@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { generateSlug } from '@/lib/utils';
 import { Controller, useFormContext } from 'react-hook-form';
 import useSWR from 'swr';
-import { fetcher } from '@/lib/fetchers';
+import { fetcher, authFetcher } from '@/lib/fetchers';
 import { SelectInputTransfer, SelectInputTransfer2 } from '../components/SelectForm';
 import { Combobox } from '@/components/ui/combobox';
 import { VEHICLE_TYPES, TRANSFER_TYPES } from '@/constants/transfer'; // constants
@@ -15,6 +15,18 @@ const BasicInfoTabAdmin = () => {
   // fetch all cities
   const { data: citiesData, error: citiesError, isLoading: citiesLoading } = useSWR('/api/admin/cities/list', fetcher);
   const cities = citiesData?.data || [];
+
+  // fetch active routes for selector
+  const { data: routesData } = useSWR('/api/admin/transfer-routes?per_page=200&status=active', authFetcher);
+  const routes = (routesData?.data || []).map((r) => ({
+    id: r.id,
+    name: `${r.name} — ${r.origin?.name ?? '?'} → ${r.destination?.name ?? '?'}`,
+    raw: r,
+  }));
+
+  // fetch zone price matrix cells (small payload) for resolving preview
+  const { data: matrixData } = useSWR('/api/admin/transfer-zone-prices', authFetcher);
+  const cells = matrixData?.cells || [];
 
   // intialize form
   const {
@@ -108,6 +120,50 @@ const BasicInfoTabAdmin = () => {
           render={({ field }) => <SelectInputTransfer2 value={field.value} onChange={field.onChange} options={VEHICLE_TYPES} placeholder="Select pickup location..." />}
         />
         {errors?.vehicle_type && <p className="text-red-500 text-sm mt-1">{errors?.vehicle_type?.message}</p>}
+      </div>
+
+      {/* Route (optional) */}
+      <div className="pb-2 space-y-2 w-full">
+        <Label className="block text-sm font-medium text-black">Route (optional)</Label>
+        <Controller
+          name="transfer_route_id"
+          control={control}
+          render={({ field }) => (
+            <Combobox
+              data={routes}
+              value={field.value}
+              onChange={(id) => {
+                field.onChange(id);
+                const picked = routes.find((r) => String(r.id) === String(id))?.raw;
+                if (!picked) {
+                  setValue('resolved_route_price', null);
+                  return;
+                }
+                // auto-fill pickup/dropoff if route endpoints are Places
+                if (picked.origin_type === 'place') {
+                  setValue('pickup_place_id', String(picked.origin_id));
+                  setValue('pickup_location', picked.origin?.name || '');
+                  if (picked.origin?.city_id) setValue('city_id', picked.origin.city_id);
+                }
+                if (picked.destination_type === 'place') {
+                  setValue('dropoff_place_id', String(picked.destination_id));
+                  setValue('dropoff_location', picked.destination?.name || '');
+                }
+                // resolve price from matrix cell
+                if (picked.from_zone_id && picked.to_zone_id) {
+                  const cell = cells.find(
+                    (c) => c.from_zone_id === picked.from_zone_id && c.to_zone_id === picked.to_zone_id,
+                  );
+                  setValue('resolved_route_price', cell ? { price: cell.price, currency: cell.currency } : null);
+                } else {
+                  setValue('resolved_route_price', null);
+                }
+              }}
+              placeholder="Select route..."
+            />
+          )}
+        />
+        <p className="text-xs text-gray-500">Picking a route auto-fills pickup/dropoff and previews the zone price.</p>
       </div>
 
       {/* City */}

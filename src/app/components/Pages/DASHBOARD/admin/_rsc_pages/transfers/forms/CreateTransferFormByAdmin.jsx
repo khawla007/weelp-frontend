@@ -39,6 +39,8 @@ export const CreateTransferFormByAdmin = ({}) => {
     defaultValues: {
       city_id: '',
       is_vendor: false,
+      transfer_route_id: '',
+      resolved_route_price: null,
       pickup_location: '',
       dropoff_location: '',
       media_gallery: [],
@@ -159,16 +161,16 @@ export const CreateTransferFormByAdmin = ({}) => {
       return;
     }
 
-    const { media_gallery = [] } = mergedData; // destructure media
+    const { media_gallery = [], resolved_route_price: _rrp, ...rest } = mergedData; // strip UI-only resolved_route_price
 
     // change media data
     const finalData = {
-      ...mergedData,
+      ...rest,
       media_gallery: media_gallery.map((val) => ({
         media_id: val.media_id,
         is_featured: val.is_featured ?? false,
       })),
-      seo: mergedData.seo || {},
+      seo: rest.seo || {},
     };
 
     // submit full data

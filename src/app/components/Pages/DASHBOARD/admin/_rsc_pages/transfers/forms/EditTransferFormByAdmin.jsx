@@ -45,6 +45,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
     schedule = {},
     media_gallery = [],
     addons = [],
+    transfer_route_id: transferRouteIdValue = '',
   } = transferData;
   const {
     vehicle_type = '',
@@ -70,6 +71,8 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
       slug: slug,
       transfer_type: transfer_type,
       is_vendor: false,
+      transfer_route_id: transferRouteIdValue || '',
+      resolved_route_price: null,
       pickup_location: pickup_location,
       dropoff_location: dropoff_location,
       vehicle_type: vehicle_type,
@@ -154,17 +157,17 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
       return;
     }
 
-    const { media_gallery = [] } = mergedData; // destructure media
+    const { media_gallery = [], resolved_route_price: _rrp, ...rest } = mergedData; // strip UI-only resolved_route_price
 
     // change media data
     const finalData = {
-      ...mergedData,
+      ...rest,
       media_gallery: media_gallery.map((val) => ({
         id: val.id ?? undefined,
         media_id: val.media_id,
         is_featured: val.is_featured ?? false,
       })),
-      seo: mergedData.seo || {},
+      seo: rest.seo || {},
     };
 
     // submit full data

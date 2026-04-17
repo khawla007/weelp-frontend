@@ -13,6 +13,7 @@ import {
   ArrowRightLeft,
   Box,
   Route,
+  Grid3x3,
   ShoppingCart,
   FileText,
   Gift,
@@ -54,6 +55,16 @@ export const DashboardAdminNav = {
           title: 'All Transfers',
           icon: ArrowRightLeft,
           url: '/dashboard/admin/transfers',
+        },
+        {
+          title: 'Zones',
+          icon: Grid3x3,
+          url: '/dashboard/admin/transfers/zones',
+        },
+        {
+          title: 'Routes',
+          icon: Route,
+          url: '/dashboard/admin/transfers/routes',
         },
         {
           title: 'Vendors',

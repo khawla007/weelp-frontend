@@ -39,7 +39,14 @@ const PricingTabAdmin = () => {
         <div className="flex flex-col sm:flex-row">
           {/* Pricing Tier Data */}
           <div className="flex flex-col space-y-4 w-full p-2 border-none">
-            <Label htmlFor="base_price">Base Price</Label>
+            <div className="flex items-center gap-2">
+              <Label htmlFor="base_price">Base Price</Label>
+              {watch('resolved_route_price')?.price != null && (
+                <span className="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 rounded px-2 py-0.5">
+                  Route: {watch('resolved_route_price').currency || 'USD'} {watch('resolved_route_price').price}
+                </span>
+              )}
+            </div>
             <Input
               type="number"
               min="1"
