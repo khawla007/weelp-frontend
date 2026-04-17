@@ -39,67 +39,34 @@ export default function LocationCombobox({ value, onChange, placeholder = 'Searc
     setOpen(false);
   };
 
-  const displayLabel = value
-    ? value.name
-      ? `${value.name}${value.city_name ? `, ${value.city_name}` : ''}`
-      : placeholder
-    : placeholder;
+  const displayLabel = value ? (value.name ? `${value.name}${value.city_name ? `, ${value.city_name}` : ''}` : placeholder) : placeholder;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-full justify-between font-normal"
-        >
+        <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between font-normal">
           <span className="truncate">{displayLabel}</span>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[420px] p-0" align="start">
         <Command shouldFilter={false}>
-          <CommandInput
-            placeholder={placeholder}
-            value={query}
-            onValueChange={handleInput}
-          />
+          <CommandInput placeholder={placeholder} value={query} onValueChange={handleInput} />
           <CommandList>
-            {loading && (
-              <div className="py-6 text-center text-sm text-muted-foreground">Searching...</div>
-            )}
-            {!loading && query && results.length === 0 && (
-              <CommandEmpty>No locations found.</CommandEmpty>
-            )}
+            {loading && <div className="py-6 text-center text-sm text-muted-foreground">Searching...</div>}
+            {!loading && query && results.length === 0 && <CommandEmpty>No locations found.</CommandEmpty>}
             {!loading && results.length > 0 && (
               <CommandGroup>
                 {results.map((item) => (
-                  <CommandItem
-                    key={`${item.locatable_type}-${item.locatable_id}`}
-                    value={`${item.locatable_type}-${item.locatable_id}`}
-                    onSelect={() => handleSelect(item)}
-                  >
+                  <CommandItem key={`${item.locatable_type}-${item.locatable_id}`} value={`${item.locatable_type}-${item.locatable_id}`} onSelect={() => handleSelect(item)}>
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                       <span className="truncate">{item.name}</span>
                       <Badge variant="secondary" className="shrink-0 text-xs capitalize">
                         {item.type}
                       </Badge>
-                      {(item.city_name || item.country_name) && (
-                        <span className="text-muted-foreground text-xs truncate">
-                          {[item.city_name, item.country_name].filter(Boolean).join(', ')}
-                        </span>
-                      )}
+                      {(item.city_name || item.country_name) && <span className="text-muted-foreground text-xs truncate">{[item.city_name, item.country_name].filter(Boolean).join(', ')}</span>}
                     </div>
-                    <Check
-                      className={cn(
-                        'ml-2 h-4 w-4 shrink-0',
-                        value?.locatable_id === item.locatable_id &&
-                          value?.locatable_type === item.locatable_type
-                          ? 'opacity-100'
-                          : 'opacity-0',
-                      )}
-                    />
+                    <Check className={cn('ml-2 h-4 w-4 shrink-0', value?.locatable_id === item.locatable_id && value?.locatable_type === item.locatable_type ? 'opacity-100' : 'opacity-0')} />
                   </CommandItem>
                 ))}
               </CommandGroup>

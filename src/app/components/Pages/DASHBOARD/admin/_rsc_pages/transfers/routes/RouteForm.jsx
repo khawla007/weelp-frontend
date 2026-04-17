@@ -38,7 +38,11 @@ const RouteFormSchema = z.object({
   origin: locationShape.refine((v) => v !== null, { message: 'Origin is required' }),
   destination: locationShape.refine((v) => v !== null, { message: 'Destination is required' }),
   name: z.string().min(1, 'Name is required').max(255),
-  slug: z.string().max(255).optional().transform((v) => (v ? v.trim() : v)),
+  slug: z
+    .string()
+    .max(255)
+    .optional()
+    .transform((v) => (v ? v.trim() : v)),
   distance_km: z.coerce.number().min(0).optional().nullable(),
   duration_minutes: z.coerce.number().int().min(0).optional().nullable(),
   is_active: z.boolean().default(true),
@@ -84,9 +88,7 @@ export default function RouteForm({ initialData = null }) {
       is_popular: data.is_popular,
     };
 
-    const res = id
-      ? await updateTransferRoute(id, payload)
-      : await createTransferRoute(payload);
+    const res = id ? await updateTransferRoute(id, payload) : await createTransferRoute(payload);
 
     if (!res.success) {
       toast({ title: res.message || 'Failed to save route', variant: 'destructive' });
@@ -106,9 +108,7 @@ export default function RouteForm({ initialData = null }) {
         </Link>
         <CardTitle>{id ? 'Edit Route' : 'Create Route'}</CardTitle>
       </div>
-      <CardDescription>
-        {id ? 'Update transfer route details below.' : 'Define a new transfer route between locations.'}
-      </CardDescription>
+      <CardDescription>{id ? 'Update transfer route details below.' : 'Define a new transfer route between locations.'}</CardDescription>
       <CardContent className="p-0 py-8">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -121,11 +121,7 @@ export default function RouteForm({ initialData = null }) {
                     <FormItem>
                       <FormLabel className={FORMSTYLE.formLabel}>Origin</FormLabel>
                       <FormControl>
-                        <LocationCombobox
-                          value={field.value}
-                          onChange={field.onChange}
-                          placeholder="Search origin location..."
-                        />
+                        <LocationCombobox value={field.value} onChange={field.onChange} placeholder="Search origin location..." />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -139,11 +135,7 @@ export default function RouteForm({ initialData = null }) {
                     <FormItem>
                       <FormLabel className={FORMSTYLE.formLabel}>Destination</FormLabel>
                       <FormControl>
-                        <LocationCombobox
-                          value={field.value}
-                          onChange={field.onChange}
-                          placeholder="Search destination location..."
-                        />
+                        <LocationCombobox value={field.value} onChange={field.onChange} placeholder="Search destination location..." />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -188,14 +180,7 @@ export default function RouteForm({ initialData = null }) {
                     <FormItem>
                       <FormLabel className={FORMSTYLE.formLabel}>Distance (km)</FormLabel>
                       <FormControl>
-                        <Input
-                          type="number"
-                          min="0"
-                          step="0.1"
-                          placeholder="e.g. 35.5"
-                          {...field}
-                          value={field.value ?? ''}
-                        />
+                        <Input type="number" min="0" step="0.1" placeholder="e.g. 35.5" {...field} value={field.value ?? ''} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -209,13 +194,7 @@ export default function RouteForm({ initialData = null }) {
                     <FormItem>
                       <FormLabel className={FORMSTYLE.formLabel}>Duration (minutes)</FormLabel>
                       <FormControl>
-                        <Input
-                          type="number"
-                          min="0"
-                          placeholder="e.g. 45"
-                          {...field}
-                          value={field.value ?? ''}
-                        />
+                        <Input type="number" min="0" placeholder="e.g. 45" {...field} value={field.value ?? ''} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -233,11 +212,7 @@ export default function RouteForm({ initialData = null }) {
                       <FormDescription>Enable this route for booking.</FormDescription>
                     </div>
                     <FormControl>
-                      <Switch
-                        checked={Boolean(field.value)}
-                        onCheckedChange={(checked) => field.onChange(Boolean(checked))}
-                        className="data-[state=checked]:bg-secondaryDark"
-                      />
+                      <Switch checked={Boolean(field.value)} onCheckedChange={(checked) => field.onChange(Boolean(checked))} className="data-[state=checked]:bg-secondaryDark" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -254,11 +229,7 @@ export default function RouteForm({ initialData = null }) {
                       <FormDescription>Mark this route as a featured/popular route.</FormDescription>
                     </div>
                     <FormControl>
-                      <Switch
-                        checked={Boolean(field.value)}
-                        onCheckedChange={(checked) => field.onChange(Boolean(checked))}
-                        className="data-[state=checked]:bg-secondaryDark"
-                      />
+                      <Switch checked={Boolean(field.value)} onCheckedChange={(checked) => field.onChange(Boolean(checked))} className="data-[state=checked]:bg-secondaryDark" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

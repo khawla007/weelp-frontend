@@ -151,9 +151,7 @@ const BasicInfoTabAdmin = () => {
                 }
                 // resolve price from matrix cell
                 if (picked.from_zone_id && picked.to_zone_id) {
-                  const cell = cells.find(
-                    (c) => c.from_zone_id === picked.from_zone_id && c.to_zone_id === picked.to_zone_id,
-                  );
+                  const cell = cells.find((c) => c.from_zone_id === picked.from_zone_id && c.to_zone_id === picked.to_zone_id);
                   setValue('resolved_route_price', cell ? { price: cell.price, currency: cell.currency } : null);
                 } else {
                   setValue('resolved_route_price', null);

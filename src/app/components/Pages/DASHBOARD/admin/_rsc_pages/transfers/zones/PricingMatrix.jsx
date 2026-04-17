@@ -48,9 +48,7 @@ export default function PricingMatrix() {
     }
 
     const previousData = data;
-    const optimisticCells = cells.filter(
-      (c) => !(c.from_zone_id === fromId && c.to_zone_id === toId),
-    );
+    const optimisticCells = cells.filter((c) => !(c.from_zone_id === fromId && c.to_zone_id === toId));
     optimisticCells.push({ from_zone_id: fromId, to_zone_id: toId, price: parsed, currency: 'USD' });
 
     mutate({ ...data, cells: optimisticCells }, false);
@@ -78,9 +76,7 @@ export default function PricingMatrix() {
     return (
       <div className="space-y-6">
         <Header />
-        <div className="grid place-items-center text-gray-400 py-16">
-          Create zones first before setting prices.
-        </div>
+        <div className="grid place-items-center text-gray-400 py-16">Create zones first before setting prices.</div>
       </div>
     );
   }
@@ -93,14 +89,9 @@ export default function PricingMatrix() {
         <table className="w-full text-sm border-collapse">
           <thead>
             <tr>
-              <th className="text-left p-3 bg-muted font-medium border-b border-r min-w-[140px]">
-                From \ To
-              </th>
+              <th className="text-left p-3 bg-muted font-medium border-b border-r min-w-[140px]">From \ To</th>
               {zones.map((z) => (
-                <th
-                  key={z.id}
-                  className="p-3 bg-muted font-medium border-b border-r text-center min-w-[110px]"
-                >
+                <th key={z.id} className="p-3 bg-muted font-medium border-b border-r text-center min-w-[110px]">
                   {z.name}
                 </th>
               ))}
@@ -116,11 +107,7 @@ export default function PricingMatrix() {
                   const isEditing = editingKey === key;
 
                   return (
-                    <td
-                      key={toZone.id}
-                      className="border-b border-r text-center p-1 cursor-pointer"
-                      onClick={() => !isEditing && startEdit(fromZone.id, toZone.id, price)}
-                    >
+                    <td key={toZone.id} className="border-b border-r text-center p-1 cursor-pointer" onClick={() => !isEditing && startEdit(fromZone.id, toZone.id, price)}>
                       {isEditing ? (
                         <Input
                           ref={inputRef}
@@ -135,9 +122,7 @@ export default function PricingMatrix() {
                           onClick={(e) => e.stopPropagation()}
                         />
                       ) : (
-                        <span className="px-2 py-1 rounded hover:bg-muted transition-colors">
-                          {price != null ? `$${parseFloat(price).toFixed(2)}` : '—'}
-                        </span>
+                        <span className="px-2 py-1 rounded hover:bg-muted transition-colors">{price != null ? `$${parseFloat(price).toFixed(2)}` : '—'}</span>
                       )}
                     </td>
                   );
@@ -148,9 +133,7 @@ export default function PricingMatrix() {
         </table>
       </div>
 
-      <p className="text-xs text-muted-foreground">
-        Click any cell to edit. Diagonal = same-zone transfer.
-      </p>
+      <p className="text-xs text-muted-foreground">Click any cell to edit. Diagonal = same-zone transfer.</p>
     </div>
   );
 }
@@ -164,9 +147,7 @@ function Header() {
         </Link>
         <h1 className="text-2xl font-semibold">Zone Pricing Matrix</h1>
       </div>
-      <p className="text-sm text-muted-foreground">
-        Set base prices for transfers between zones
-      </p>
+      <p className="text-sm text-muted-foreground">Set base prices for transfers between zones</p>
     </div>
   );
 }

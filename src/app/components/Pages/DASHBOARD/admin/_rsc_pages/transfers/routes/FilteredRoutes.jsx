@@ -10,25 +10,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Plus } from 'lucide-react';
 import RouteListTable from './RouteListTable';
 import { CustomPagination } from '@/app/components/Pagination';
-import {
-  bulkDeleteTransferRoutes,
-  deleteTransferRoute,
-  toggleTransferRouteStatus,
-  toggleTransferRoutePopular,
-} from '@/lib/actions/transferRoute';
+import { bulkDeleteTransferRoutes, deleteTransferRoute, toggleTransferRouteStatus, toggleTransferRoutePopular } from '@/lib/actions/transferRoute';
 
 export default function FilteredRoutes() {
   const { toast } = useToast();
@@ -59,10 +45,7 @@ export default function FilteredRoutes() {
     return params.toString();
   }, [debouncedSearch, statusFilter, popularFilter, page]);
 
-  const { data, isValidating, error, mutate } = useSWR(
-    `/api/admin/transfer-routes?${query}`,
-    authFetcher,
-  );
+  const { data, isValidating, error, mutate } = useSWR(`/api/admin/transfer-routes?${query}`, authFetcher);
 
   const routes = data?.data ?? [];
   const total = data?.total ?? 0;
@@ -132,9 +115,7 @@ export default function FilteredRoutes() {
       <div className="flex flex-col sm:flex-row justify-between gap-4 sm:items-center">
         <div>
           <h1 className="text-2xl font-semibold">Transfer Routes</h1>
-          <p className="text-sm text-muted-foreground">
-            Manage fixed routes between pickup and drop-off locations.
-          </p>
+          <p className="text-sm text-muted-foreground">Manage fixed routes between pickup and drop-off locations.</p>
         </div>
         <Button asChild>
           <Link href="/dashboard/admin/transfers/routes/new">
@@ -150,13 +131,14 @@ export default function FilteredRoutes() {
       </Card>
 
       <div className="flex flex-wrap items-center gap-3">
-        <Input
-          value={search}
-          onChange={handleSearchChange}
-          placeholder="Search routes..."
-          className="max-w-xs"
-        />
-        <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v === 'all' ? '' : v); setPage(1); }}>
+        <Input value={search} onChange={handleSearchChange} placeholder="Search routes..." className="max-w-xs" />
+        <Select
+          value={statusFilter}
+          onValueChange={(v) => {
+            setStatusFilter(v === 'all' ? '' : v);
+            setPage(1);
+          }}
+        >
           <SelectTrigger className="w-36">
             <SelectValue placeholder="All statuses" />
           </SelectTrigger>
@@ -166,7 +148,13 @@ export default function FilteredRoutes() {
             <SelectItem value="inactive">Inactive</SelectItem>
           </SelectContent>
         </Select>
-        <Select value={popularFilter} onValueChange={(v) => { setPopularFilter(v === 'all' ? '' : v); setPage(1); }}>
+        <Select
+          value={popularFilter}
+          onValueChange={(v) => {
+            setPopularFilter(v === 'all' ? '' : v);
+            setPage(1);
+          }}
+        >
           <SelectTrigger className="w-36">
             <SelectValue placeholder="All routes" />
           </SelectTrigger>
@@ -199,9 +187,7 @@ export default function FilteredRoutes() {
               onDelete={requestDelete}
             />
           ) : (
-            <div className="grid place-items-center text-gray-400 py-12">
-              No routes found. Create your first one.
-            </div>
+            <div className="grid place-items-center text-gray-400 py-12">No routes found. Create your first one.</div>
           )}
           <CustomPagination
             totalItems={total}

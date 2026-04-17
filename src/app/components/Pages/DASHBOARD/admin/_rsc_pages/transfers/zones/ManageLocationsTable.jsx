@@ -12,13 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CustomPagination } from '@/app/components/Pagination';
 import { assignLocationsToZone, unassignLocationsFromZone } from '@/lib/actions/transferZoneLocations';
 
@@ -59,10 +53,7 @@ export default function ManageLocationsTable({ zone }) {
     return params.toString();
   }, [debouncedSearch, typeFilter, assignFilter, page]);
 
-  const { data, isValidating, error, mutate } = useSWR(
-    `/api/admin/transfer-zones/${zone.id}/locations?${query}`,
-    authFetcher,
-  );
+  const { data, isValidating, error, mutate } = useSWR(`/api/admin/transfer-zones/${zone.id}/locations?${query}`, authFetcher);
 
   const rows = data?.data ?? [];
   const total = data?.total ?? 0;
@@ -144,21 +135,17 @@ export default function ManageLocationsTable({ zone }) {
           </Link>
           <h1 className="text-2xl font-semibold">Zone: {zone.name} — Location Assignment</h1>
         </div>
-        <p className="text-sm text-muted-foreground">
-          Assign or remove locations from this pricing zone.
-        </p>
+        <p className="text-sm text-muted-foreground">Assign or remove locations from this pricing zone.</p>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <Input
-          value={search}
-          onChange={handleSearchChange}
-          placeholder="Search by location name..."
-          className="max-w-xs"
-        />
+        <Input value={search} onChange={handleSearchChange} placeholder="Search by location name..." className="max-w-xs" />
         <Select
           value={typeFilter}
-          onValueChange={(v) => { setTypeFilter(v); setPage(1); }}
+          onValueChange={(v) => {
+            setTypeFilter(v);
+            setPage(1);
+          }}
         >
           <SelectTrigger className="w-40">
             <SelectValue placeholder="All Types" />
@@ -174,7 +161,10 @@ export default function ManageLocationsTable({ zone }) {
         </Select>
         <Select
           value={assignFilter}
-          onValueChange={(v) => { setAssignFilter(v); setPage(1); }}
+          onValueChange={(v) => {
+            setAssignFilter(v);
+            setPage(1);
+          }}
         >
           <SelectTrigger className="w-44">
             <SelectValue placeholder="All" />
@@ -208,11 +198,7 @@ export default function ManageLocationsTable({ zone }) {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-10">
-                    <Checkbox
-                      checked={allSelected}
-                      onCheckedChange={(v) => handleToggleSelectAll(Boolean(v))}
-                      aria-label="Select all"
-                    />
+                    <Checkbox checked={allSelected} onCheckedChange={(v) => handleToggleSelectAll(Boolean(v))} aria-label="Select all" />
                   </TableHead>
                   <TableHead>Location</TableHead>
                   <TableHead>City</TableHead>
@@ -235,10 +221,7 @@ export default function ManageLocationsTable({ zone }) {
                   return (
                     <TableRow key={key}>
                       <TableCell>
-                        <Checkbox
-                          checked={selectedKeys.includes(key)}
-                          onCheckedChange={(v) => handleToggleSelect(key, Boolean(v))}
-                        />
+                        <Checkbox checked={selectedKeys.includes(key)} onCheckedChange={(v) => handleToggleSelect(key, Boolean(v))} />
                       </TableCell>
                       <TableCell className="font-medium">{row.name}</TableCell>
                       <TableCell className="text-muted-foreground">{row.city_name || '—'}</TableCell>
@@ -250,22 +233,19 @@ export default function ManageLocationsTable({ zone }) {
                       </TableCell>
                       <TableCell>
                         <div className="flex flex-wrap gap-1">
-                          {row.current_zones?.length > 0
-                            ? row.current_zones.map((z) => (
-                                <Badge key={z.id} variant="secondary" className="text-xs">
-                                  {z.name}
-                                </Badge>
-                              ))
-                            : <span className="text-muted-foreground text-sm">—</span>}
+                          {row.current_zones?.length > 0 ? (
+                            row.current_zones.map((z) => (
+                              <Badge key={z.id} variant="secondary" className="text-xs">
+                                {z.name}
+                              </Badge>
+                            ))
+                          ) : (
+                            <span className="text-muted-foreground text-sm">—</span>
+                          )}
                         </div>
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button
-                          size="sm"
-                          variant={row.assigned_to_current ? 'destructive' : 'default'}
-                          disabled={loading}
-                          onClick={() => handleSingleAction(row)}
-                        >
+                        <Button size="sm" variant={row.assigned_to_current ? 'destructive' : 'default'} disabled={loading} onClick={() => handleSingleAction(row)}>
                           {row.assigned_to_current ? 'Remove' : 'Assign'}
                         </Button>
                       </TableCell>

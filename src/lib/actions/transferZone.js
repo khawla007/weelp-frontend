@@ -64,11 +64,7 @@ export async function bulkDeleteTransferZones(ids = []) {
 export async function toggleTransferZoneStatus(id, is_active) {
   try {
     const api = await getAuthApi();
-    await api.put(
-      `/api/admin/transfer-zones/${id}`,
-      { is_active: !!is_active },
-      { headers: { 'Content-Type': 'application/json' } },
-    );
+    await api.put(`/api/admin/transfer-zones/${id}`, { is_active: !!is_active }, { headers: { 'Content-Type': 'application/json' } });
     revalidatePath('/dashboard/admin/transfers/zones');
     return { success: true };
   } catch (err) {

@@ -12,11 +12,7 @@ import { Card } from '@/components/ui/card';
 import { Plus, Grid3x3, Map } from 'lucide-react';
 import ZoneListTable from './ZoneListTable';
 import { CustomPagination } from '@/app/components/Pagination';
-import {
-  bulkDeleteTransferZones,
-  deleteTransferZone,
-  toggleTransferZoneStatus,
-} from '@/lib/actions/transferZone';
+import { bulkDeleteTransferZones, deleteTransferZone, toggleTransferZoneStatus } from '@/lib/actions/transferZone';
 
 export default function FilteredZones() {
   const { toast } = useToast();
@@ -42,10 +38,7 @@ export default function FilteredZones() {
     return params.toString();
   }, [debouncedSearch, page]);
 
-  const { data, isValidating, error, mutate } = useSWR(
-    `/api/admin/transfer-zones?${query}`,
-    authFetcher,
-  );
+  const { data, isValidating, error, mutate } = useSWR(`/api/admin/transfer-zones?${query}`, authFetcher);
 
   const zones = data?.data ?? [];
   const total = data?.total ?? 0;
@@ -98,9 +91,7 @@ export default function FilteredZones() {
       <div className="flex flex-col sm:flex-row justify-between gap-4 sm:items-center">
         <div>
           <h1 className="text-2xl font-semibold">Zones</h1>
-          <p className="text-sm text-muted-foreground">
-            Manage pricing zones for location-based fare calculation.
-          </p>
+          <p className="text-sm text-muted-foreground">Manage pricing zones for location-based fare calculation.</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" asChild>
@@ -128,12 +119,7 @@ export default function FilteredZones() {
       </Card>
 
       <div className="flex items-center gap-4">
-        <Input
-          value={search}
-          onChange={handleSearchChange}
-          placeholder="Search zone by name or slug..."
-          className="max-w-sm"
-        />
+        <Input value={search} onChange={handleSearchChange} placeholder="Search zone by name or slug..." className="max-w-sm" />
         {selectedIds.length > 0 && (
           <Button variant="destructive" onClick={handleBulkDelete}>
             Delete {selectedIds.length} selected
@@ -156,9 +142,7 @@ export default function FilteredZones() {
               onDelete={handleDelete}
             />
           ) : (
-            <div className="grid place-items-center text-gray-400 py-12">
-              No zones found. Create your first one.
-            </div>
+            <div className="grid place-items-center text-gray-400 py-12">No zones found. Create your first one.</div>
           )}
           <CustomPagination
             totalItems={total}
