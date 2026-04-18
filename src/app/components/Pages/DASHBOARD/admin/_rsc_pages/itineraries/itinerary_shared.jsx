@@ -164,20 +164,12 @@ export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity, a
                 <div className="flex w-full gap-4">
                   <Label htmlFor="start_time" className="flex flex-col w-full space-y-4 ">
                     <span>Start Time</span>
-                    <TimeSelector
-                      id="start_time"
-                      value={timing.start_time}
-                      onChange={(v) => handleTimeChange({ target: { name: 'start_time', value: v } })}
-                    />
+                    <TimeSelector id="start_time" value={timing.start_time} onChange={(v) => handleTimeChange({ target: { name: 'start_time', value: v } })} />
                   </Label>
 
                   <Label htmlFor="end_time" className="flex flex-col w-full space-y-4 ">
                     <span>End Time</span>
-                    <TimeSelector
-                      id="end_time"
-                      value={timing.end_time}
-                      onChange={(v) => handleTimeChange({ target: { name: 'end_time', value: v } })}
-                    />
+                    <TimeSelector id="end_time" value={timing.end_time} onChange={(v) => handleTimeChange({ target: { name: 'end_time', value: v } })} />
                   </Label>
                 </div>
                 <Label htmlFor="notes" className="flex flex-col w-full space-y-4 ">
@@ -470,20 +462,12 @@ export const CustomizedEditActivityForm = ({ isEditOn, updateActivity, day, sele
               <div className="flex w-full gap-4">
                 <Label htmlFor="start_time" className="flex flex-col w-full space-y-4 ">
                   <span>Start Time</span>
-                  <TimeSelector
-                    id="start_time"
-                    value={timing.start_time}
-                    onChange={(v) => handleTimeChange({ target: { name: 'start_time', value: v } })}
-                  />
+                  <TimeSelector id="start_time" value={timing.start_time} onChange={(v) => handleTimeChange({ target: { name: 'start_time', value: v } })} />
                 </Label>
 
                 <Label htmlFor="end_time" className="flex flex-col w-full space-y-4 ">
                   <span>End Time</span>
-                  <TimeSelector
-                    id="end_time"
-                    value={timing.end_time}
-                    onChange={(v) => handleTimeChange({ target: { name: 'end_time', value: v } })}
-                  />
+                  <TimeSelector id="end_time" value={timing.end_time} onChange={(v) => handleTimeChange({ target: { name: 'end_time', value: v } })} />
                 </Label>
               </div>
               <Label htmlFor="notes" className="flex flex-col w-full space-y-4 ">

@@ -40,10 +40,8 @@ export default function TimeSelector({ id, value, onChange }) {
     onChange(to24h(next.hour, next.minute, next.ampm));
   };
 
-  const triggerCls =
-    'h-8 rounded-full border-0 bg-[#558e7b] px-3 text-sm font-medium text-white focus:ring-2 focus:ring-[#558e7b]/40 [&>svg]:text-white [&>svg]:opacity-100';
-  const itemCls =
-    'text-sm focus:bg-[#558e7b] focus:text-white data-[state=checked]:bg-[#558e7b] data-[state=checked]:text-white';
+  const triggerCls = 'h-8 rounded-full border-0 bg-[#558e7b] px-3 text-sm font-medium text-white focus:ring-2 focus:ring-[#558e7b]/40 [&>svg]:text-white [&>svg]:opacity-100';
+  const itemCls = 'text-sm focus:bg-[#558e7b] focus:text-white data-[state=checked]:bg-[#558e7b] data-[state=checked]:text-white';
 
   return (
     <div className="flex items-center gap-1">
