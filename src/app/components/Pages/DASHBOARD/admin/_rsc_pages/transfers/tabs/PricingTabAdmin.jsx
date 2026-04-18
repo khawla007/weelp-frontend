@@ -37,12 +37,7 @@ const PricingTabAdmin = () => {
             <Label htmlFor="transfer_price" className={errors?.transfer_price ? 'text-red-400' : 'text-black'}>
               Transfer Price <span className="text-red-500">*</span>
             </Label>
-            <Input
-              type="number"
-              min="0"
-              id="transfer_price"
-              {...register('transfer_price', { required: 'Transfer price is required', valueAsNumber: true })}
-            />
+            <Input type="number" min="0" id="transfer_price" {...register('transfer_price', { required: 'Transfer price is required', valueAsNumber: true })} />
             {errors?.transfer_price && <p className="text-red-500 text-sm mt-1">{errors.transfer_price.message}</p>}
           </div>
 
@@ -54,9 +49,7 @@ const PricingTabAdmin = () => {
               name="currency"
               control={control}
               rules={{ required: 'Currency is required' }}
-              render={({ field }) => (
-                <SelectInputTransfer2 placeholder="Select Currency" options={currency} value={field.value} onChange={field.onChange} />
-              )}
+              render={({ field }) => <SelectInputTransfer2 placeholder="Select Currency" options={currency} value={field.value} onChange={field.onChange} />}
             />
             {errors?.currency && <p className="text-red-500 text-sm mt-1">{errors.currency.message}</p>}
           </div>
@@ -70,9 +63,7 @@ const PricingTabAdmin = () => {
             name="price_type"
             control={control}
             rules={{ required: 'Price type is required' }}
-            render={({ field }) => (
-              <SelectInputTransfer2 placeholder="Select Price Type" options={priceType} value={field.value} onChange={field.onChange} />
-            )}
+            render={({ field }) => <SelectInputTransfer2 placeholder="Select Price Type" options={priceType} value={field.value} onChange={field.onChange} />}
           />
           {errors?.price_type && <p className="text-red-500 text-sm mt-1">{errors.price_type.message}</p>}
         </div>

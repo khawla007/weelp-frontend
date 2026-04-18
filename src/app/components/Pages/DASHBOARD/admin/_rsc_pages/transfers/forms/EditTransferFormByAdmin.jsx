@@ -47,10 +47,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
     addons = [],
     transfer_route_id: transferRouteIdValue = '',
   } = transferData;
-  const {
-    vehicle_type = '',
-    inclusion = '',
-  } = vendor_routes || {}; // routes destructure
+  const { vehicle_type = '', inclusion = '' } = vendor_routes || {}; // routes destructure
   const { transfer_price = '', currency = '', price_type = '', extra_luggage_charge = '', waiting_charge } = pricing_availability || {}; //pricing destructure
   const { availability_type, available_days = [], time_slots = [], blackout_dates = [], minimum_lead_time, maximum_passengers } = schedule || {}; // destructure schedule data
 

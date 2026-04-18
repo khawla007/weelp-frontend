@@ -121,34 +121,14 @@ const FilterTransfer = () => {
   // reset page to 1 when filters change
   useEffect(() => {
     if (filters.page > 1) setValue('page', 1);
-  }, [
-    filters.search,
-    filters.vehicle_type,
-    filters.availability_type,
-    availableDaysKey,
-    filters.time_slot_start,
-    filters.time_slot_end,
-    filters.capacity,
-    filters.sort_by,
-    setValue,
-  ]);
+  }, [filters.search, filters.vehicle_type, filters.availability_type, availableDaysKey, filters.time_slot_start, filters.time_slot_end, filters.capacity, filters.sort_by, setValue]);
 
   // side effect for if fiilter change
   useEffect(() => {
     const { page, ...otherFilters } = filters;
     debouncedUpdate(otherFilters);
     return () => debouncedUpdate.cancel();
-  }, [
-    filters.search,
-    filters.vehicle_type,
-    filters.availability_type,
-    availableDaysKey,
-    filters.time_slot_start,
-    filters.time_slot_end,
-    filters.capacity,
-    filters.sort_by,
-    debouncedUpdate,
-  ]);
+  }, [filters.search, filters.vehicle_type, filters.availability_type, availableDaysKey, filters.time_slot_start, filters.time_slot_end, filters.capacity, filters.sort_by, debouncedUpdate]);
 
   // Memoized query string
   const queryParams = useMemo(() => {
@@ -360,7 +340,6 @@ const FilterTransfer = () => {
               </div>
             </AccordionContent>
           </AccordionItem>
-
         </Accordion>
       </div>
 
@@ -434,15 +413,7 @@ const FilterTransfer = () => {
                       itemId={itemId}
                     />
                     <ListingCardContent>
-                      <ListingCardTitle
-                        actions={
-                          <ListingCardActions
-                            itemId={itemId}
-                            editHref={`/dashboard/admin/transfers/edit/${itemId}`}
-                            onDelete={() => handleDeleteClick(itemId)}
-                          />
-                        }
-                      >
+                      <ListingCardTitle actions={<ListingCardActions itemId={itemId} editHref={`/dashboard/admin/transfers/edit/${itemId}`} onDelete={() => handleDeleteClick(itemId)} />}>
                         {name}
                       </ListingCardTitle>
                       <span className="text-gray-500 text-sm">{is_vendor ? 'Vendor Route' : 'Admin Route'}</span>

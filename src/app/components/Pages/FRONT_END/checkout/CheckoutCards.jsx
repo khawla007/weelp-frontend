@@ -310,8 +310,7 @@ const TransferCheckoutItemCard = ({ item }) => {
   const { adults = 0, children = 0, infants = 0 } = howMany;
   const { from } = dateRange;
 
-  const routeTitle =
-    routeName || (originName && destinationName ? `${originName} → ${destinationName}` : name || 'Transfer');
+  const routeTitle = routeName || (originName && destinationName ? `${originName} → ${destinationName}` : name || 'Transfer');
   const durationHours = durationMinutes ? Math.round((durationMinutes / 60) * 10) / 10 : null;
   const pickupFormatted = formatPickupDateTime(from);
   const formattedPrice = Number(price || 0).toLocaleString('en-US', {
@@ -326,13 +325,7 @@ const TransferCheckoutItemCard = ({ item }) => {
           <span className="text-xs text-[#5A5A5A] font-medium uppercase tracking-wide">Private Transfer</span>
           <h3 className="text-Blueish font-semibold text-lg">{name || routeTitle}</h3>
         </div>
-        {image && (
-          <img
-            src={image}
-            alt={name || 'Transfer'}
-            className="rounded-md object-cover h-16 w-20 shrink-0"
-          />
-        )}
+        {image && <img src={image} alt={name || 'Transfer'} className="rounded-md object-cover h-16 w-20 shrink-0" />}
       </div>
 
       <div className="flex items-center gap-2 text-[#5A5A5A] text-sm">
@@ -364,7 +357,8 @@ const TransferCheckoutItemCard = ({ item }) => {
       <div className="flex items-center gap-2 text-[#5A5A5A] text-sm">
         <User size={18} className="shrink-0" />
         <span className="font-medium capitalize">
-          {adults} adults{children ? `, ${children} children` : ''}{infants ? `, ${infants} infants` : ''}
+          {adults} adults{children ? `, ${children} children` : ''}
+          {infants ? `, ${infants} infants` : ''}
         </span>
       </div>
 

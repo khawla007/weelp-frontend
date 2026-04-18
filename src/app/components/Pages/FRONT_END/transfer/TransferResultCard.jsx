@@ -14,15 +14,11 @@ import { Card } from '@/components/ui/card';
  *  - onSelect: callback(transfer) fired when user clicks Select
  */
 export default function TransferResultCard({ transfer, onSelect, pickupAt }) {
-  const vehicleType =
-    transfer?.vehicle_type
-    ?? transfer?.vendorRoutes?.vehicle_type
-    ?? null;
+  const vehicleType = transfer?.vehicle_type ?? transfer?.vendorRoutes?.vehicle_type ?? null;
   const originName = transfer?.origin_name ?? transfer?.route?.origin?.name ?? null;
   const destinationName = transfer?.destination_name ?? transfer?.route?.destination?.name ?? null;
   const routeName = transfer?.route_name ?? transfer?.route?.name ?? null;
-  const routeTitle = routeName
-    ?? (originName && destinationName ? `${originName} → ${destinationName}` : (transfer?.name ?? 'Transfer'));
+  const routeTitle = routeName ?? (originName && destinationName ? `${originName} → ${destinationName}` : (transfer?.name ?? 'Transfer'));
   const featuredImage = transfer?.featured_image || transfer?.media?.[0]?.url || '/assets/images/Car.png';
   const price = Number(transfer?.route_price ?? 0).toLocaleString('en-US', {
     minimumFractionDigits: 2,
@@ -68,12 +64,7 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt }) {
           </p>
         </div>
 
-        <div
-          style={{ backgroundImage: `url('${featuredImage}')` }}
-          className="flex-[3] h-40 bg-cover bg-left"
-          role="img"
-          aria-label={routeTitle}
-        />
+        <div style={{ backgroundImage: `url('${featuredImage}')` }} className="flex-[3] h-40 bg-cover bg-left" role="img" aria-label={routeTitle} />
       </div>
 
       <div className="bg-[#f3f5f5] py-4 px-8 flex flex-wrap gap-2 sm:gap-4">
@@ -92,11 +83,7 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt }) {
           <span className="text-[#273f4e] font-semibold text-lg">${price}</span>
           <span className="text-[#5a5a5a] text-xs">Detailed Breakdown</span>
         </div>
-        <Button
-          type="button"
-          onClick={() => onSelect?.(transfer)}
-          className="bg-[#57947d] hover:bg-[#57947d]/90 text-white px-10"
-        >
+        <Button type="button" onClick={() => onSelect?.(transfer)} className="bg-[#57947d] hover:bg-[#57947d]/90 text-white px-10">
           Select
         </Button>
       </div>

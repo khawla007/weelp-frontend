@@ -44,13 +44,7 @@ function SectionGroup({ section, pathname, showSeparator }) {
         <SidebarGroupLabel>{section.section}</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            {section.items.map((item) =>
-              item.children?.length ? (
-                <ParentItem key={item.title} item={item} pathname={pathname} />
-              ) : (
-                <LeafItem key={item.title} item={item} pathname={pathname} />
-              ),
-            )}
+            {section.items.map((item) => (item.children?.length ? <ParentItem key={item.title} item={item} pathname={pathname} /> : <LeafItem key={item.title} item={item} pathname={pathname} />))}
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>

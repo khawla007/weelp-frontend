@@ -19,23 +19,11 @@ const SWR_OPTIONS = {
 };
 
 export function AdminDashboardPage() {
-  const {
-    data: metricsData,
-    error: metricsError,
-    isLoading: metricsLoading,
-  } = useSWR('/admin/dashboard/metrics', getDashboardMetrics, SWR_OPTIONS);
+  const { data: metricsData, error: metricsError, isLoading: metricsLoading } = useSWR('/admin/dashboard/metrics', getDashboardMetrics, SWR_OPTIONS);
 
-  const {
-    data: chartData,
-    error: chartError,
-    isLoading: chartLoading,
-  } = useSWR('/admin/dashboard/overview-chart', getOverviewChart, SWR_OPTIONS);
+  const { data: chartData, error: chartError, isLoading: chartLoading } = useSWR('/admin/dashboard/overview-chart', getOverviewChart, SWR_OPTIONS);
 
-  const {
-    data: salesResponse,
-    error: salesError,
-    isLoading: salesLoading,
-  } = useSWR('/admin/dashboard/recent-sales', getRecentSales, SWR_OPTIONS);
+  const { data: salesResponse, error: salesError, isLoading: salesLoading } = useSWR('/admin/dashboard/recent-sales', getRecentSales, SWR_OPTIONS);
 
   const salesData = salesResponse?.data ?? [];
   const monthlyTotal = salesResponse?.monthly_total ?? 0;
@@ -51,11 +39,7 @@ export function AdminDashboardPage() {
         </div>
       </div>
 
-      {hasError && (
-        <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          Couldn&apos;t load some dashboard data. Showing placeholders where possible.
-        </div>
-      )}
+      {hasError && <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">Couldn&apos;t load some dashboard data. Showing placeholders where possible.</div>}
 
       <MetricCards loading={metricsLoading} data={metricsError ? null : metricsData} />
 

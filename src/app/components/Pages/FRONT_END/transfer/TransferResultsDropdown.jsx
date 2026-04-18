@@ -56,9 +56,7 @@ export default function TransferResultsDropdown({ open, loading, transfers = [],
     return (
       <div className="relative">
         {CloseButton}
-        <div className="bg-white rounded-xl shadow-xl p-8 text-center text-[#5a5a5a]">
-          No transfers found for this route. Try different locations.
-        </div>
+        <div className="bg-white rounded-xl shadow-xl p-8 text-center text-[#5a5a5a]">No transfers found for this route. Try different locations.</div>
       </div>
     );
   }

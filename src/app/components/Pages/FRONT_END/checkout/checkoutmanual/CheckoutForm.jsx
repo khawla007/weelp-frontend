@@ -47,14 +47,7 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
   const item = cartItems.at(0) || {}; // retrieve item
 
   // prepare item data
-  const {
-    price = 0,
-    currency = '',
-    howMany: { adults = 1, children = 0 } = {},
-    dateRange = {},
-    type = '',
-    id: orderable_id = 0,
-  } = item;
+  const { price = 0, currency = '', howMany: { adults = 1, children = 0 } = {}, dateRange = {}, type = '', id: orderable_id = 0 } = item;
 
   const { from = '', to = '' } = dateRange; // extract dates
 

@@ -57,11 +57,7 @@ const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, it
           )}
         </div>
         <div className="flex">
-          <img
-            src={productImage || '/assets/images/placeholder.png'}
-            className="max-w-32 min-h-28 object-cover w-full h-full rounded-md"
-            alt={productName || 'product'}
-          />
+          <img src={productImage || '/assets/images/placeholder.png'} className="max-w-32 min-h-28 object-cover w-full h-full rounded-md" alt={productName || 'product'} />
         </div>
       </div>
     </div>

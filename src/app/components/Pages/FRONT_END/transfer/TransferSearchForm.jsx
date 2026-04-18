@@ -168,18 +168,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
       <div className="relative flex items-stretch bg-white rounded-xl border border-[#cccccc80] shadow-[0_3.39px_8.89px_#0000000a]">
         {/* Pickup */}
         <div className="flex-1 min-w-0 border-r border-[#cccccc80]">
-          <Controller
-            name="pickup"
-            control={control}
-            render={({ field }) => (
-              <LocationComboboxPublic
-                value={field.value}
-                onChange={field.onChange}
-                placeholder="Pickup Location"
-                icon={MapPin}
-              />
-            )}
-          />
+          <Controller name="pickup" control={control} render={({ field }) => <LocationComboboxPublic value={field.value} onChange={field.onChange} placeholder="Pickup Location" icon={MapPin} />} />
         </div>
 
         {/* Swap button - absolute between pickup & destination */}
@@ -194,18 +183,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
 
         {/* Destination */}
         <div className="flex-1 min-w-0 border-r border-[#cccccc80]">
-          <Controller
-            name="destination"
-            control={control}
-            render={({ field }) => (
-              <LocationComboboxPublic
-                value={field.value}
-                onChange={field.onChange}
-                placeholder="Destination"
-                icon={MapPin}
-              />
-            )}
-          />
+          <Controller name="destination" control={control} render={({ field }) => <LocationComboboxPublic value={field.value} onChange={field.onChange} placeholder="Destination" icon={MapPin} />} />
         </div>
 
         {/* Date */}
@@ -239,8 +217,8 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                       const next = { ...parts, [key]: v };
                       field.onChange(to24h(next.hour, next.minute, next.ampm));
                     };
-                    const triggerCls = "h-8 rounded-full border-0 bg-[#558e7b] px-3 text-sm font-medium text-white focus:ring-2 focus:ring-[#558e7b]/40 [&>svg]:text-white [&>svg]:opacity-100";
-                    const itemCls = "text-sm focus:bg-[#558e7b] focus:text-white data-[state=checked]:bg-[#558e7b] data-[state=checked]:text-white";
+                    const triggerCls = 'h-8 rounded-full border-0 bg-[#558e7b] px-3 text-sm font-medium text-white focus:ring-2 focus:ring-[#558e7b]/40 [&>svg]:text-white [&>svg]:opacity-100';
+                    const itemCls = 'text-sm focus:bg-[#558e7b] focus:text-white data-[state=checked]:bg-[#558e7b] data-[state=checked]:text-white';
                     return (
                       <div className="flex items-center gap-1 flex-1">
                         <Select value={parts.hour} onValueChange={(v) => setPart('hour', v)}>
@@ -361,7 +339,6 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
           </Popover>
         </div>
       </div>
-
     </div>
   );
 }

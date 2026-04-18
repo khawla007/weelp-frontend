@@ -92,11 +92,7 @@ const SucceceedPageContent = () => {
                 {isTransfer && (item?.origin_name || item?.destination_name || item?.route_name) && (
                   <TableRow>
                     <TableCell className="font-semibold">Route</TableCell>
-                    <TableCell>
-                      {item?.origin_name && item?.destination_name
-                        ? `${item.origin_name} → ${item.destination_name}`
-                        : item?.route_name}
-                    </TableCell>
+                    <TableCell>{item?.origin_name && item?.destination_name ? `${item.origin_name} → ${item.destination_name}` : item?.route_name}</TableCell>
                   </TableRow>
                 )}
 

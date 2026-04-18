@@ -74,11 +74,7 @@ export default function LocationComboboxPublic({ value, onChange, placeholder = 
             {!loading && results.length > 0 && (
               <CommandGroup>
                 {results.map((item) => (
-                  <CommandItem
-                    key={`${item.locatable_type}-${item.locatable_id}`}
-                    value={`${item.locatable_type}-${item.locatable_id}`}
-                    onSelect={() => handleSelect(item)}
-                  >
+                  <CommandItem key={`${item.locatable_type}-${item.locatable_id}`} value={`${item.locatable_type}-${item.locatable_id}`} onSelect={() => handleSelect(item)}>
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                       <span className="truncate text-[#273f4e]">{item.name}</span>
                       {item.type && (
@@ -86,9 +82,7 @@ export default function LocationComboboxPublic({ value, onChange, placeholder = 
                           {item.type}
                         </Badge>
                       )}
-                      {(item.city_name || item.country_name) && (
-                        <span className="text-[11px] text-[#5a5a5a] truncate">{[item.city_name, item.country_name].filter(Boolean).join(', ')}</span>
-                      )}
+                      {(item.city_name || item.country_name) && <span className="text-[11px] text-[#5a5a5a] truncate">{[item.city_name, item.country_name].filter(Boolean).join(', ')}</span>}
                     </div>
                   </CommandItem>
                 ))}

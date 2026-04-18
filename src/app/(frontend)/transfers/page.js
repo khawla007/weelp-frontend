@@ -66,14 +66,7 @@ const TransfersPage = () => {
           </div>
 
           <div className="w-full mx-auto md:w-[735px] mt-4">
-            <TransferResultsDropdown
-              open={open}
-              loading={loading}
-              transfers={results}
-              onSelect={handleSelect}
-              onClose={() => setOpen(false)}
-              pickupAt={meta?.pickupAt}
-            />
+            <TransferResultsDropdown open={open} loading={loading} transfers={results} onSelect={handleSelect} onClose={() => setOpen(false)} pickupAt={meta?.pickupAt} />
           </div>
         </div>
 
