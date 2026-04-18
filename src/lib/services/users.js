@@ -5,7 +5,7 @@ import { createAuthenticatedServerApi } from '../axiosInstance';
 export const getUserProfile = async () => {
   try {
     const api = await createAuthenticatedServerApi();
-    const response = await api.get('/api/customer/profile');
+    const response = await api.get('/api/user/profile');
 
     if (response.status === 200) {
       return { user: response?.data?.user, error: null };

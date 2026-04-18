@@ -62,11 +62,18 @@ export async function checkoutCreateOrder(orderDetail = {}) {
       error: `Unexpected status code: ${response?.status}`,
     };
   } catch (error) {
-    // log(error?.response);
     const status = error?.response?.status || 500;
+    const backendMsg = error?.response?.data?.message || error?.response?.data?.error;
+    if (status === 404) {
+      return {
+        success: false,
+        error: 'The selected item is no longer available. Please refresh your cart.',
+        code: 'ORDERABLE_NOT_FOUND',
+      };
+    }
     return {
       success: false,
-      error: `Server Error Pleaease Try Again: ${status}`,
+      error: backendMsg || `Server Error. Please Try Again (${status}).`,
     };
   }
 }
@@ -84,9 +91,12 @@ export const createPaymentIntent = async (payload = {}) => {
       name: payload.name,
     });
 
+    // Stripe expects amount in smallest currency unit (cents)
+    const amountInCents = Math.round(Number(payload.amount) * 100);
+
     // Create Intent — card only, no Link/wallets
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: payload.amount,
+      amount: amountInCents,
       currency: payload.currency || 'usd',
       receipt_email: payload.email,
       customer: customer.id,

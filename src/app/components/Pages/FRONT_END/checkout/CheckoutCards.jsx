@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Calendar, MessageCircleMore, Phone, Star, Truck, User } from 'lucide-react';
+import { Calendar, Clock, MapPin, MessageCircleMore, Phone, Star, Truck, User } from 'lucide-react';
 import { actualDate } from '@/lib/utils';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
@@ -34,7 +34,7 @@ export const CheckoutItems = () => {
     <div className="flex flex-col gap-4 justify-between">
       {cartItems && cartItems.length > 0 ? (
         cartItems.map((val, index) => {
-          return <CheckoutItemCard key={index} itemName={val?.name} totalPassenger={val?.howMany} date={val?.dateRange} addons={val?.addons || []} />;
+          return <CheckoutItemCard key={index} item={val} itemName={val?.name} totalPassenger={val?.howMany} date={val?.dateRange} addons={val?.addons || []} />;
         })
       ) : (
         <p>Sorry No items in cart</p>
@@ -275,7 +275,112 @@ export const CheckoutFields = () => {
   );
 };
 
-export const CheckoutItemCard = ({ itemName, totalPassenger, date, addons = [] }) => {
+const formatPickupDateTime = (value) => {
+  if (!value) return null;
+  try {
+    const d = value instanceof Date ? value : new Date(value);
+    if (Number.isNaN(d.getTime())) return null;
+    return d.toLocaleString('en-US', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+  } catch {
+    return null;
+  }
+};
+
+const TransferCheckoutItemCard = ({ item }) => {
+  const {
+    name,
+    image,
+    price = 0,
+    origin_name: originName,
+    destination_name: destinationName,
+    route_name: routeName,
+    vehicle_type: vehicleType,
+    route_duration_minutes: durationMinutes,
+    howMany = {},
+    dateRange = {},
+  } = item || {};
+
+  const { adults = 0, children = 0, infants = 0 } = howMany;
+  const { from } = dateRange;
+
+  const routeTitle =
+    routeName || (originName && destinationName ? `${originName} → ${destinationName}` : name || 'Transfer');
+  const durationHours = durationMinutes ? Math.round((durationMinutes / 60) * 10) / 10 : null;
+  const pickupFormatted = formatPickupDateTime(from);
+  const formattedPrice = Number(price || 0).toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  return (
+    <div className="bg-white max-w-md flex flex-col rounded-xl p-6 gap-3">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-col gap-1">
+          <span className="text-xs text-[#5A5A5A] font-medium uppercase tracking-wide">Private Transfer</span>
+          <h3 className="text-Blueish font-semibold text-lg">{name || routeTitle}</h3>
+        </div>
+        {image && (
+          <img
+            src={image}
+            alt={name || 'Transfer'}
+            className="rounded-md object-cover h-16 w-20 shrink-0"
+          />
+        )}
+      </div>
+
+      <div className="flex items-center gap-2 text-[#5A5A5A] text-sm">
+        <MapPin size={18} className="shrink-0" />
+        <span className="font-medium truncate">{routeTitle}</span>
+      </div>
+
+      {vehicleType && (
+        <div className="flex items-center gap-2 text-[#5A5A5A] text-sm">
+          <Truck size={18} className="shrink-0" />
+          <span className="font-medium capitalize">{vehicleType}</span>
+        </div>
+      )}
+
+      {pickupFormatted && (
+        <div className="flex items-center gap-2 text-[#5A5A5A] text-sm">
+          <Calendar size={18} className="shrink-0" />
+          <span className="font-medium">{pickupFormatted}</span>
+        </div>
+      )}
+
+      {durationHours !== null && (
+        <div className="flex items-center gap-2 text-[#5A5A5A] text-sm">
+          <Clock size={18} className="shrink-0" />
+          <span className="font-medium">Duration - {durationHours} Hours</span>
+        </div>
+      )}
+
+      <div className="flex items-center gap-2 text-[#5A5A5A] text-sm">
+        <User size={18} className="shrink-0" />
+        <span className="font-medium capitalize">
+          {adults} adults{children ? `, ${children} children` : ''}{infants ? `, ${infants} infants` : ''}
+        </span>
+      </div>
+
+      <div className="flex items-center justify-between pt-2 border-t border-[#eee]">
+        <span className="text-[#273f4e] text-lg font-bold">Total</span>
+        <span className="text-Blueish font-bold text-lg">${formattedPrice}</span>
+      </div>
+    </div>
+  );
+};
+
+export const CheckoutItemCard = ({ item, itemName, totalPassenger, date, addons = [] }) => {
+  if (item?.type === 'transfer') {
+    return <TransferCheckoutItemCard item={item} />;
+  }
+
   const { adults = '', children = '' } = totalPassenger;
   const { from } = date;
   return (

@@ -44,6 +44,7 @@ const SucceceedPageContent = () => {
   }
 
   const { emergency_contact = {}, item = {}, payment = {}, user = {} } = order || {}; // destructure order data
+  const isTransfer = order?.order_type === 'transfer' || item?.item_type === 'transfer';
   const addons = order?.addons || [];
   const baseAmount = order?.base_amount;
   const addonsAmount = order?.addons_amount || 0;
@@ -87,6 +88,38 @@ const SucceceedPageContent = () => {
                   <TableCell className="font-semibold">Item</TableCell>
                   <TableCell>{item?.name}</TableCell>
                 </TableRow>
+
+                {isTransfer && (item?.origin_name || item?.destination_name || item?.route_name) && (
+                  <TableRow>
+                    <TableCell className="font-semibold">Route</TableCell>
+                    <TableCell>
+                      {item?.origin_name && item?.destination_name
+                        ? `${item.origin_name} → ${item.destination_name}`
+                        : item?.route_name}
+                    </TableCell>
+                  </TableRow>
+                )}
+
+                {isTransfer && item?.vehicle_type && (
+                  <TableRow>
+                    <TableCell className="font-semibold">Vehicle</TableCell>
+                    <TableCell className="capitalize">{item.vehicle_type}</TableCell>
+                  </TableRow>
+                )}
+
+                {isTransfer && item?.transfer_type && (
+                  <TableRow>
+                    <TableCell className="font-semibold">Transfer Type</TableCell>
+                    <TableCell className="capitalize">{String(item.transfer_type).replace(/_/g, ' ')}</TableCell>
+                  </TableRow>
+                )}
+
+                {isTransfer && item?.inclusion && (
+                  <TableRow>
+                    <TableCell className="font-semibold">Inclusion</TableCell>
+                    <TableCell>{item.inclusion}</TableCell>
+                  </TableRow>
+                )}
 
                 {addons.length > 0 && (
                   <TableRow>

@@ -14,12 +14,12 @@ const Footer = () => {
     <footer>
       {/* ── Main Footer ── */}
       <div className="w-full bg-white">
-        <div className="w-full px-[60px] pt-[71px]">
+        <div className="w-full px-4 pt-10 sm:px-6 sm:pt-14 md:px-10 md:pt-[71px] lg:px-[60px]">
           {/* Columns + watermark behind */}
           <div className="relative">
             {/* Watermark behind columns — bottom-left */}
             <p
-              className="absolute bottom-0 left-0 select-none pointer-events-none text-[120px] md:text-[217px] leading-none text-[#142a38]"
+              className="absolute bottom-0 left-0 select-none pointer-events-none text-[64px] sm:text-[96px] md:text-[140px] lg:text-[217px] leading-none text-[#142a38]"
               style={{ fontFamily: fontIT, fontWeight: 700, opacity: 0.04 }}
             >
               Weelp.

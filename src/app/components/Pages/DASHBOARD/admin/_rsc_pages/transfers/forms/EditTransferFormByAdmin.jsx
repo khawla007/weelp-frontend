@@ -49,15 +49,9 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
   } = transferData;
   const {
     vehicle_type = '',
-    dropoff_place_id = '',
-    pickup_place_id = '',
-    pickup_city_id = null,
-    dropoff_city_id = null,
     inclusion = '',
-    pickup_location = '',
-    dropoff_location = '',
   } = vendor_routes || {}; // routes destructure
-  const { base_price = '', currency = '', price_type = '', extra_luggage_charge = '', waiting_charge } = pricing_availability || {}; //pricing destructure
+  const { transfer_price = '', currency = '', price_type = '', extra_luggage_charge = '', waiting_charge } = pricing_availability || {}; //pricing destructure
   const { availability_type, available_days = [], time_slots = [], blackout_dates = [], minimum_lead_time, maximum_passengers } = schedule || {}; // destructure schedule data
 
   // Transform addons to array of IDs (matching Activity pattern)
@@ -65,26 +59,22 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
 
   // intialize methods
   const methods = useForm({
+    shouldUnregister: false,
     defaultValues: {
-      city_id: pickup_city_id ? pickup_city_id : '',
       name: name,
       slug: slug,
       transfer_type: transfer_type,
       is_vendor: false,
       transfer_route_id: transferRouteIdValue || '',
       resolved_route_price: null,
-      pickup_location: pickup_location,
-      dropoff_location: dropoff_location,
       vehicle_type: vehicle_type,
-      dropoff_place_id: dropoff_place_id ? String(dropoff_place_id) : '',
-      pickup_place_id: pickup_place_id ? String(pickup_place_id) : '',
       description: description,
       inclusion: inclusion,
-      base_price: base_price,
+      transfer_price: transfer_price === '' || transfer_price == null ? '' : Number(transfer_price),
       currency: currency,
       price_type: price_type,
-      extra_luggage_charge: extra_luggage_charge,
-      waiting_charge: waiting_charge,
+      extra_luggage_charge: extra_luggage_charge === '' || extra_luggage_charge == null ? 0 : Number(extra_luggage_charge),
+      waiting_charge: waiting_charge === '' || waiting_charge == null ? 0 : Number(waiting_charge),
 
       // schedule field data
       availability_type: availability_type,
@@ -105,7 +95,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
   });
 
   // Handle Global State
-  const { errors, isValid, isSubmitting, isDirty } = methods?.formState;
+  const { errors, isSubmitting, isDirty } = methods?.formState;
 
   // Handle Next button for steps 1-4 (no validation)
   const handleNext = () => {
@@ -267,7 +257,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
                   <FormActionButtons
                     mode="update"
                     isSubmitting={isSubmitting}
-                    isDisabled={!isValid || !isDirty}
+                    isDisabled={!isDirty}
                     cancelAlwaysEnabled={true}
                     cancelHref="/dashboard/admin/transfers"
                     containerType="div"

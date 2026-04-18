@@ -20,7 +20,7 @@ export function Combobox({ data = [], value, onChange, placeholder = 'Select Loc
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent align="start" className="w-[var(--radix-popover-trigger-width)] min-w-max p-0">
         <Command>
           <CommandInput placeholder={placeholder} />
           <CommandList>

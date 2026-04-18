@@ -50,6 +50,7 @@ const MiniCartNew = () => {
                         itemId={val?.id}
                         itemType={val?.type}
                         productName={val?.name}
+                        productImage={val?.image || val?.featured_image}
                         howMany={val?.howMany}
                         dateRange={val?.dateRange}
                         addons={val?.addons || []}

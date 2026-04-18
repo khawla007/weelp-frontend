@@ -56,6 +56,37 @@ export async function getAllTransfersPublic() {
 }
 
 /**
+ * Get public transfers filtered by pickup/destination/passengers.
+ * Powers the transfers-page search form. Hits GET /api/transfers with a
+ * URLSearchParams query built from the supplied params object.
+ *
+ * @param {Object} [params] - Filter params. Only truthy values are sent.
+ *   Typical shape: {
+ *     origin_type, origin_id, destination_type, destination_id,
+ *     passengers, date, ...any-other-supported-backend-filter
+ *   }
+ * @returns {Promise<{ success: boolean, data: Array, meta?: Object }>}
+ */
+export async function getPublicTransfersFiltered(params = {}) {
+  try {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === undefined || value === null || value === '') return;
+      searchParams.append(key, value);
+    });
+    const qs = searchParams.toString();
+    const url = qs ? `/api/transfers?${qs}` : `/api/transfers`;
+    const response = await publicApi.get(url, {
+      headers: { Accept: 'application/json' },
+    });
+    return response?.data ?? { success: false, data: [] };
+  } catch (error) {
+    console.error('Service Error (getPublicTransfersFiltered):', error);
+    return { success: false, data: [] };
+  }
+}
+
+/**
  * Fetches a list of admin transfers with optional query parameters.
  *
  * @function

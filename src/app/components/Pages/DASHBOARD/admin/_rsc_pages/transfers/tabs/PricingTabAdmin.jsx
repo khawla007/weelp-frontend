@@ -1,33 +1,29 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { useFormContext, Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { SelectInputTransfer2 } from '../components/SelectForm';
 
-const PricingTabAdmin = () => {
-  // Form Pricing
-  const methods = useFormContext(); // intialize context
+const currency = [
+  { label: 'USD', value: 'USD' },
+  { label: 'EUR', value: 'EUR' },
+  { label: 'INR', value: 'INR' },
+  { label: 'AED', value: 'AED' },
+  { label: 'GBP', value: 'GBP' },
+];
 
+const priceType = [
+  { label: 'Per Person', value: 'per_person' },
+  { label: 'Per Vehicle', value: 'per_vehicle' },
+];
+
+const PricingTabAdmin = () => {
+  const methods = useFormContext();
   const {
-    control,
     register,
-    getValues,
-    watch,
+    control,
     formState: { errors },
   } = methods;
-
-  // select currency
-  const currency = [
-    { label: 'USD', value: 'usd' },
-    { label: 'EUR', value: 'eur' },
-    { label: 'GBP', value: 'gbp' },
-  ];
-
-  // price type
-  const priceType = [
-    { label: 'Per Person', value: 'per_person' },
-    { label: 'Per Vehicle', value: 'per_vehicle' },
-  ];
 
   return (
     <Card className="border-none shadow-none">
@@ -37,54 +33,50 @@ const PricingTabAdmin = () => {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex flex-col sm:flex-row">
-          {/* Pricing Tier Data */}
-          <div className="flex flex-col space-y-4 w-full p-2 border-none">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="base_price">Base Price</Label>
-              {watch('resolved_route_price')?.price != null && (
-                <span className="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 rounded px-2 py-0.5">
-                  Route: {watch('resolved_route_price').currency || 'USD'} {watch('resolved_route_price').price}
-                </span>
-              )}
-            </div>
+          <div className="flex flex-col space-y-2 w-full p-2 border-none">
+            <Label htmlFor="transfer_price" className={errors?.transfer_price ? 'text-red-400' : 'text-black'}>
+              Transfer Price <span className="text-red-500">*</span>
+            </Label>
             <Input
               type="number"
-              min="1"
-              placeholder="Enter Base Price"
-              {...register('base_price', {
-                required: 'Field Required',
-                valueAsNumber: true,
-              })}
+              min="0"
+              id="transfer_price"
+              {...register('transfer_price', { required: 'Transfer price is required', valueAsNumber: true })}
             />
-            {errors?.base_price && <p className="text-red-500 text-sm mt-1">{errors?.base_price?.message}</p>}
+            {errors?.transfer_price && <p className="text-red-500 text-sm mt-1">{errors.transfer_price.message}</p>}
           </div>
 
-          {/* Pricing Tier Data */}
-          <div className="flex flex-col space-y-4 w-full p-2 border-none">
-            <Label htmlFor="currency">Currency</Label>
+          <div className="flex flex-col space-y-2 w-full p-2 border-none">
+            <Label htmlFor="currency" className={errors?.currency ? 'text-red-400' : 'text-black'}>
+              Currency <span className="text-red-500">*</span>
+            </Label>
             <Controller
-              control={control}
-              rules={{ required: 'Currency Required' }}
               name="currency"
-              render={({ field }) => <SelectInputTransfer2 options={currency} onChange={field.onChange} value={field.value} placeholder="Select Currency" />}
+              control={control}
+              rules={{ required: 'Currency is required' }}
+              render={({ field }) => (
+                <SelectInputTransfer2 placeholder="Select Currency" options={currency} value={field.value} onChange={field.onChange} />
+              )}
             />
-            {errors?.currency && <p className="text-red-500 text-sm mt-1">{errors?.currency?.message}</p>}
+            {errors?.currency && <p className="text-red-500 text-sm mt-1">{errors.currency.message}</p>}
           </div>
         </div>
 
-        {/* Price Type */}
-        <div className="flex flex-col space-y-4 w-full p-2 border-none">
-          <Label htmlFor="price_type">Price Type</Label>
+        <div className="flex flex-col space-y-2 w-full p-2 border-none">
+          <Label htmlFor="price_type" className={errors?.price_type ? 'text-red-400' : 'text-black'}>
+            Price Type <span className="text-red-500">*</span>
+          </Label>
           <Controller
-            control={control}
-            rules={{ required: 'Price Type Required' }}
             name="price_type"
-            render={({ field }) => <SelectInputTransfer2 options={priceType} onChange={field.onChange} value={field.value} placeholder="Select Price Type" />}
+            control={control}
+            rules={{ required: 'Price type is required' }}
+            render={({ field }) => (
+              <SelectInputTransfer2 placeholder="Select Price Type" options={priceType} value={field.value} onChange={field.onChange} />
+            )}
           />
-          {errors?.currency && <p className="text-red-500 text-sm mt-1">{errors?.currency?.message}</p>}
+          {errors?.price_type && <p className="text-red-500 text-sm mt-1">{errors.price_type.message}</p>}
         </div>
 
-        {/* Additional Charges Fields */}
         <div className="flex flex-col sm:flex-row">
           <div className="flex flex-col space-y-4 w-full p-2 border-none">
             <Label htmlFor="extra_luggage_charge">Extra Luggage Charge</Label>

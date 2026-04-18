@@ -1,91 +1,143 @@
 'use client';
-import { Badge } from '@/components/ui/badge';
-import { useSidebar } from '@/components/ui/sidebar';
+
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import {
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarSeparator,
+} from '@/components/ui/sidebar';
 
-export function NavMain({ items }) {
-  const { state, open } = useSidebar();
+const COMING_SOON_LABEL = 'Soon';
+const COMING_SOON_BADGE_CLASS = 'text-[8px] animate-pulse bg-emerald-100 text-emerald-700';
+
+const isLeafActive = (pathname, url) => pathname === url;
+const isParentActive = (pathname, item) => item.children?.some((c) => pathname === c.url || pathname.startsWith(c.url + '/'));
+
+export function NavMain({ items: sections }) {
   const pathname = usePathname();
 
-  const getActiveParentIndex = () => {
-    const index = items.findIndex((item) => item.children?.some((child) => pathname.startsWith(child.url)));
-    return index !== -1 ? index : null;
-  };
+  return (
+    <>
+      {sections.map((section) => (
+        <SectionGroup key={section.section} section={section} pathname={pathname} showSeparator={section.section === 'COMING SOON'} />
+      ))}
+    </>
+  );
+}
 
-  const [showchildLink, setShowChildLink] = useState(getActiveParentIndex);
-  const [prevPathname, setPrevPathname] = useState(pathname);
-  if (pathname !== prevPathname) {
-    setPrevPathname(pathname);
-    setShowChildLink(getActiveParentIndex());
+function SectionGroup({ section, pathname, showSeparator }) {
+  return (
+    <>
+      {showSeparator && <SidebarSeparator />}
+      <SidebarGroup>
+        <SidebarGroupLabel>{section.section}</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            {section.items.map((item) =>
+              item.children?.length ? (
+                <ParentItem key={item.title} item={item} pathname={pathname} />
+              ) : (
+                <LeafItem key={item.title} item={item} pathname={pathname} />
+              ),
+            )}
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    </>
+  );
+}
+
+function LeafItem({ item, pathname }) {
+  const Icon = item.icon;
+
+  if (item.comingSoon) {
+    return (
+      <SidebarMenuItem>
+        <SidebarMenuButton tooltip={item.title} disabled>
+          <Icon />
+          <span>{item.title}</span>
+        </SidebarMenuButton>
+        <SidebarMenuBadge className={COMING_SOON_BADGE_CLASS}>{COMING_SOON_LABEL}</SidebarMenuBadge>
+      </SidebarMenuItem>
+    );
   }
 
-  // handleChild Links
-  const handleChildLinks = (index) => {
-    setShowChildLink((prevIndex) => (prevIndex === index ? null : index));
-  };
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton asChild isActive={isLeafActive(pathname, item.url)} tooltip={item.title}>
+        <Link href={item.url}>
+          <Icon />
+          <span>{item.title}</span>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  );
+}
+
+function ParentItem({ item, pathname }) {
+  const parentActive = isParentActive(pathname, item);
+  const [open, setOpen] = useState(parentActive);
+  const [prevActive, setPrevActive] = useState(parentActive);
+  if (parentActive !== prevActive) {
+    setPrevActive(parentActive);
+    if (parentActive) setOpen(true);
+  }
+
+  const Icon = item.icon;
 
   return (
-    <ul className="space-y-2 py-4">
-      {items.map((item, index) => (
-        <li key={index}>
-          {item.children && item.children.length > 0 ? (
-            state === 'collapsed' ? (
-              <Link className={`px-4 py-2 cursor-pointer hover:bg-gray-100 flex items-center justify-start gap-4 font-medium text-sm leading-5 text-[#474748]`} href={item.url}>
-                <item.icon className="size-4" />
-              </Link>
-            ) : (
-              <div className={`px-4 py-2 font-medium text-sm leading-5 text-black ${open ? 'mx-4' : ''}`}>
-                <p className="flex gap-4 items-center cursor-pointer" onClick={() => handleChildLinks(index)}>
-                  <item.icon />
-                  <span className="flex justify-between w-full">
-                    {item.title}
-                    <ChevronDown className={`ease duration-300 size-5 ${showchildLink === index && '-rotate-180'}`} />
-                  </span>
-                </p>
-                {showchildLink === index && (
-                  <ul className="p-2">
-                    {item.children.map((child, childIndex) => (
-                      <li key={childIndex}>
-                        {child.comingSoon ? (
-                          <div className="px-4 py-2 flex items-center justify-start gap-4 font-medium text-sm leading-5 text-[#474748] opacity-60 cursor-not-allowed">
-                            <child.icon className="size-4" />
-                            {child.title}
-                          </div>
-                        ) : (
-                          <Link className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex items-center justify-start gap-4 font-medium text-sm leading-5 text-[#474748]" href={child.url}>
-                            <child.icon className="size-4" />
-                            {child.title}
-                          </Link>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            )
-          ) : (
-            // Normal Link for items without children
-            <Link className={`px-4 py-2 cursor-pointer hover:bg-gray-100 flex items-center justify-start gap-4 font-medium text-sm leading-5 text-[#474748] ${open ? 'mx-4' : ''}`} href={item.url}>
-              {state === 'collapsed' ? (
-                <item.icon className="size-4" />
-              ) : (
-                <>
-                  <item.icon />
-                  <span className="text-black">{item.title}</span>
-                  {item.comingSoon && (
-                    <Badge variant="success" className="text-[8px] animate-pulse">
-                      Coming Soon
-                    </Badge>
-                  )}
-                </>
-              )}
-            </Link>
-          )}
-        </li>
-      ))}
-    </ul>
+    <SidebarMenuItem>
+      <SidebarMenuButton onClick={() => setOpen((o) => !o)} isActive={parentActive} tooltip={item.title}>
+        <Icon />
+        <span>{item.title}</span>
+        {!item.comingSoon && <ChevronDown className={`ml-auto size-4 transition-transform duration-200 ${open ? '-rotate-180' : ''}`} />}
+      </SidebarMenuButton>
+      {item.comingSoon && <SidebarMenuBadge className={COMING_SOON_BADGE_CLASS}>{COMING_SOON_LABEL}</SidebarMenuBadge>}
+      {open && (
+        <SidebarMenuSub>
+          {item.children.map((child) => (
+            <ChildItem key={child.title} child={child} pathname={pathname} />
+          ))}
+        </SidebarMenuSub>
+      )}
+    </SidebarMenuItem>
+  );
+}
+
+function ChildItem({ child, pathname }) {
+  const Icon = child.icon;
+
+  if (child.comingSoon) {
+    return (
+      <SidebarMenuSubItem>
+        <SidebarMenuSubButton aria-disabled="true" tabIndex={-1} className="opacity-60 pointer-events-none">
+          <Icon className="size-4" />
+          <span>{child.title}</span>
+        </SidebarMenuSubButton>
+        <SidebarMenuBadge className={COMING_SOON_BADGE_CLASS}>{COMING_SOON_LABEL}</SidebarMenuBadge>
+      </SidebarMenuSubItem>
+    );
+  }
+
+  return (
+    <SidebarMenuSubItem>
+      <SidebarMenuSubButton asChild isActive={isLeafActive(pathname, child.url)}>
+        <Link href={child.url}>
+          <Icon className="size-4" />
+          <span>{child.title}</span>
+        </Link>
+      </SidebarMenuSubButton>
+    </SidebarMenuSubItem>
   );
 }

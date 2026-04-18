@@ -16,7 +16,7 @@ function priceKey(fromId, toId) {
 function buildPriceMap(cells = []) {
   const map = {};
   for (const cell of cells) {
-    map[priceKey(cell.from_zone_id, cell.to_zone_id)] = cell.price;
+    map[priceKey(cell.from_zone_id, cell.to_zone_id)] = cell.base_price;
   }
   return map;
 }
@@ -49,7 +49,7 @@ export default function PricingMatrix() {
 
     const previousData = data;
     const optimisticCells = cells.filter((c) => !(c.from_zone_id === fromId && c.to_zone_id === toId));
-    optimisticCells.push({ from_zone_id: fromId, to_zone_id: toId, price: parsed, currency: 'USD' });
+    optimisticCells.push({ from_zone_id: fromId, to_zone_id: toId, base_price: parsed, currency: 'USD' });
 
     mutate({ ...data, cells: optimisticCells }, false);
     setEditingKey(null);
@@ -57,7 +57,7 @@ export default function PricingMatrix() {
     const res = await upsertTransferZonePrice({
       from_zone_id: fromId,
       to_zone_id: toId,
-      price: parsed,
+      base_price: parsed,
       currency: 'USD',
     });
 

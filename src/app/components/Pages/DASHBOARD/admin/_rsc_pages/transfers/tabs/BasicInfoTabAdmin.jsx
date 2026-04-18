@@ -1,26 +1,21 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { generateSlug } from '@/lib/utils';
 import { Controller, useFormContext } from 'react-hook-form';
 import useSWR from 'swr';
-import { fetcher, authFetcher } from '@/lib/fetchers';
-import { SelectInputTransfer, SelectInputTransfer2 } from '../components/SelectForm';
+import { authFetcher } from '@/lib/fetchers';
+import { SelectInputTransfer2 } from '../components/SelectForm';
 import { Combobox } from '@/components/ui/combobox';
 import { VEHICLE_TYPES, TRANSFER_TYPES } from '@/constants/transfer'; // constants
 
 // Basic Information
 const BasicInfoTabAdmin = () => {
-  // fetch all cities
-  const { data: citiesData, error: citiesError, isLoading: citiesLoading } = useSWR('/api/admin/cities/list', fetcher);
-  const cities = citiesData?.data || [];
-
   // fetch active routes for selector
-  const { data: routesData } = useSWR('/api/admin/transfer-routes?per_page=200&status=active', authFetcher);
+  const { data: routesData } = useSWR('/api/admin/transfer-routes/dropdown', authFetcher);
   const routes = (routesData?.data || []).map((r) => ({
     id: r.id,
-    name: `${r.name} — ${r.origin?.name ?? '?'} → ${r.destination?.name ?? '?'}`,
+    name: r.name,
     raw: r,
   }));
 
@@ -31,19 +26,11 @@ const BasicInfoTabAdmin = () => {
   // intialize form
   const {
     register,
-    watch,
     getValues,
     setValue,
     formState: { errors },
     control,
   } = useFormContext();
-
-  // city_id persisted in form state so it survives unmount/remount across steps
-  const cityId = watch('city_id') || null;
-
-  // fetch places filtered by selected city
-  const { data: placesData } = useSWR(cityId ? `/api/admin/places/by-city/${cityId}` : null, fetcher);
-  const places = placesData?.data || [];
 
   // handling value when blur
   const handleBlur = () => {
@@ -55,10 +42,6 @@ const BasicInfoTabAdmin = () => {
       setValue('slug', newSlug);
     }
   };
-
-  if (citiesLoading) return <div className="loader"></div>;
-
-  if (citiesError) return <div className="text-red-500">Something went wrong: {citiesError.message}</div>;
 
   return (
     <div className="space-y-4 py-6">
@@ -122,12 +105,15 @@ const BasicInfoTabAdmin = () => {
         {errors?.vehicle_type && <p className="text-red-500 text-sm mt-1">{errors?.vehicle_type?.message}</p>}
       </div>
 
-      {/* Route (optional) */}
+      {/* Route */}
       <div className="pb-2 space-y-2 w-full">
-        <Label className="block text-sm font-medium text-black">Route (optional)</Label>
+        <Label className={`block text-sm font-medium ${errors?.transfer_route_id ? 'text-red-400' : 'text-black'}`}>
+          Route <span className="text-red-500">*</span>
+        </Label>
         <Controller
           name="transfer_route_id"
           control={control}
+          rules={{ required: 'Route is required' }}
           render={({ field }) => (
             <Combobox
               data={routes}
@@ -138,16 +124,6 @@ const BasicInfoTabAdmin = () => {
                 if (!picked) {
                   setValue('resolved_route_price', null);
                   return;
-                }
-                // auto-fill pickup/dropoff if route endpoints are Places
-                if (picked.origin_type === 'place') {
-                  setValue('pickup_place_id', String(picked.origin_id));
-                  setValue('pickup_location', picked.origin?.name || '');
-                  if (picked.origin?.city_id) setValue('city_id', picked.origin.city_id);
-                }
-                if (picked.destination_type === 'place') {
-                  setValue('dropoff_place_id', String(picked.destination_id));
-                  setValue('dropoff_location', picked.destination?.name || '');
                 }
                 // resolve price from matrix cell
                 if (picked.from_zone_id && picked.to_zone_id) {
@@ -161,78 +137,7 @@ const BasicInfoTabAdmin = () => {
             />
           )}
         />
-        <p className="text-xs text-gray-500">Picking a route auto-fills pickup/dropoff and previews the zone price.</p>
-      </div>
-
-      {/* City */}
-      <div className="pb-2 space-y-2 w-full">
-        <Label className="block text-sm font-medium text-black">City</Label>
-        <Combobox
-          data={cities}
-          value={cityId}
-          onChange={(id) => {
-            setValue('city_id', id);
-            setValue('pickup_place_id', '');
-            setValue('dropoff_place_id', '');
-          }}
-          placeholder="Select city..."
-        />
-      </div>
-
-      {/* Pickup Place & Dropoff Place */}
-      <div className="flex w-full gap-4 flex-col sm:flex-row">
-        <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="pickup_place_id" className={`block text-sm font-medium ${errors?.pickup_place_id ? 'text-red-400' : 'text-black'}`}>
-            Pickup Place <span className="text-red-500">*</span>
-          </Label>
-          <Controller
-            name="pickup_place_id"
-            control={control}
-            defaultValue=""
-            rules={{ required: 'Pickup place is required' }}
-            render={({ field }) => (
-              <SelectInputTransfer
-                value={field.value}
-                onChange={(id) => {
-                  field.onChange(id);
-                  const place = places.find((p) => String(p.id) === String(id));
-                  if (place) setValue('pickup_location', place.name);
-                }}
-                options={places}
-                placeholder={cityId ? 'Select pickup place...' : 'Select a city first...'}
-              />
-            )}
-          />
-          {errors?.pickup_place_id && <p className="text-red-500 text-sm mt-1">{errors.pickup_place_id.message}</p>}
-        </div>
-
-        <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="dropoff_place_id" className={`block text-sm font-medium ${errors?.dropoff_place_id ? 'text-red-400' : 'text-black'}`}>
-            Dropoff Place <span className="text-red-500">*</span>
-          </Label>
-          <Controller
-            name="dropoff_place_id"
-            control={control}
-            defaultValue=""
-            rules={{
-              required: 'Dropoff place is required',
-              validate: (value) => value !== watch('pickup_place_id') || 'Pickup and Dropoff place cannot be the same',
-            }}
-            render={({ field }) => (
-              <SelectInputTransfer
-                value={field.value}
-                onChange={(id) => {
-                  field.onChange(id);
-                  const place = places.find((p) => String(p.id) === String(id));
-                  if (place) setValue('dropoff_location', place.name);
-                }}
-                options={places}
-                placeholder={cityId ? 'Select dropoff place...' : 'Select a city first...'}
-              />
-            )}
-          />
-          {errors?.dropoff_place_id && <p className="text-red-500 text-sm mt-1">{errors.dropoff_place_id.message}</p>}
-        </div>
+        {errors?.transfer_route_id && <p className="text-red-500 text-sm mt-1">{errors.transfer_route_id.message}</p>}
       </div>
 
       {/* Description */}

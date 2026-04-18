@@ -7,56 +7,40 @@ import { QuickActions } from './quick-actions';
 import { MetricCards } from './metric-cards';
 import { RecentSales } from './recent-sales';
 import useSWR from 'swr';
-import { fetcher } from '@/lib/fetchers';
 import { getDashboardMetrics, getOverviewChart, getRecentSales } from '@/lib/services/dashboard';
 
-/**
- * Admin Dashboard Page
- * Uses SWR for data fetching with loading and error states
- */
+const SWR_OPTIONS = {
+  revalidateOnFocus: false,
+  shouldRetryOnError: false,
+  errorRetryCount: 2,
+  refreshInterval: 60000,
+  keepPreviousData: true,
+  dedupingInterval: 5000,
+};
+
 export function AdminDashboardPage() {
-  // Fetch dashboard metrics with SWR
   const {
     data: metricsData,
     error: metricsError,
-    isValidating: metricsLoading,
-  } = useSWR('/admin/dashboard/metrics', () => getDashboardMetrics(), {
-    revalidateOnFocus: true,
-    refreshInterval: 60000, // Refresh every minute
-  });
+    isLoading: metricsLoading,
+  } = useSWR('/admin/dashboard/metrics', getDashboardMetrics, SWR_OPTIONS);
 
-  // Fetch overview chart data with SWR
   const {
     data: chartData,
     error: chartError,
-    isValidating: chartLoading,
-  } = useSWR('/admin/dashboard/overview-chart', () => getOverviewChart(), {
-    revalidateOnFocus: true,
-    refreshInterval: 60000,
-  });
+    isLoading: chartLoading,
+  } = useSWR('/admin/dashboard/overview-chart', getOverviewChart, SWR_OPTIONS);
 
-  // Fetch recent sales with SWR
   const {
     data: salesResponse,
     error: salesError,
-    isValidating: salesLoading,
-  } = useSWR('/admin/dashboard/recent-sales', () => getRecentSales(), {
-    revalidateOnFocus: true,
-    refreshInterval: 60000,
-  });
+    isLoading: salesLoading,
+  } = useSWR('/admin/dashboard/recent-sales', getRecentSales, SWR_OPTIONS);
 
-  // Extract sales data and monthly total from response
   const salesData = salesResponse?.data ?? [];
   const monthlyTotal = salesResponse?.monthly_total ?? 0;
 
-  // Aggregate loading states
-  const loading = metricsLoading || chartLoading || salesLoading;
-
-  // Aggregate errors
   const hasError = metricsError || chartError || salesError;
-
-  // Get recent sales count for description
-  const salesCount = salesData?.length || 0;
 
   return (
     <div className="flex-1 space-y-4">
@@ -67,13 +51,17 @@ export function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* Role-specific metrics */}
-      <MetricCards loading={loading} data={metricsData} />
+      {hasError && (
+        <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          Couldn&apos;t load some dashboard data. Showing placeholders where possible.
+        </div>
+      )}
 
-      {/* Quick Actions */}
+      <MetricCards loading={metricsLoading} data={metricsError ? null : metricsData} />
+
       <div className="space-y-4">
         <h3 className="text-lg font-medium">Quick Actions</h3>
-        <QuickActions loading={loading} />
+        <QuickActions loading={false} />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
@@ -82,7 +70,7 @@ export function AdminDashboardPage() {
             <CardTitle>Overview</CardTitle>
           </CardHeader>
           <CardContent className="pl-2">
-            <Overview loading={chartLoading} data={chartData} />
+            <Overview loading={chartLoading} data={chartError ? null : chartData} />
           </CardContent>
         </Card>
         <Card className="col-span-3">

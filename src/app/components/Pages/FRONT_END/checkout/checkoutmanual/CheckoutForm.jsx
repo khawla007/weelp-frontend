@@ -22,10 +22,10 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { user } = useUserProfile(); // client side fetch user
-  const { cartItems = [] } = useMiniCartStore(); // store items
+  const { cartItems = [], clearCart } = useMiniCartStore(); // store items
   const { toast } = useToast(); // intialize toast
 
-  const { name, id: user_id = '', email: customer_email = '' } = user; // destructure user detail
+  const { name = '', id: user_id = '', email: customer_email = '' } = user ?? {}; // destructure user detail
   const { country = '', state = '', city = '', post_code = '', address_line_1 = '', phone = '' } = user?.profile ?? {}; // destructure safely profile data
 
   // intialize form
@@ -50,7 +50,7 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
   const {
     price = 0,
     currency = '',
-    howMany: { adults = 1, children = 0 },
+    howMany: { adults = 1, children = 0 } = {},
     dateRange = {},
     type = '',
     id: orderable_id = 0,
@@ -101,7 +101,7 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
         special_requirements: profileData.special_requirements || '',
         user_id: user_id,
         amount: parseInt(price),
-        currency: String(currency).toLowerCase(),
+        currency: String(currency || 'usd').toLowerCase(),
         is_custom_amount: false,
         custom_amount: 0,
         customer_email: customer_email || '',
@@ -124,10 +124,15 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
 
       // Check response
       if (!orderResponse.data?.success) {
+        const errMsg = orderResponse.data?.error || 'Failed to create order. Please try again.';
         toast({
-          title: 'Failed to create order. Please try again.',
+          title: errMsg,
           variant: 'destructive',
         });
+        // Stale cart item — clear so user can re-add fresh selection
+        if (orderResponse.data?.code === 'ORDERABLE_NOT_FOUND') {
+          clearCart?.();
+        }
         return;
       }
 
@@ -404,7 +409,7 @@ export const CheckoutFields = () => {
             name="phone"
             control={control}
             rules={{ required: 'Phone Field Required' }}
-            render={({ field }) => <Input {...field} type="number" min="0" placeholder="Enter Phone Number" className={errors?.phone?.message ? 'border-red-400' : ''} />}
+            render={({ field }) => <Input {...field} type="tel" placeholder="Enter Phone Number" className={errors?.phone?.message ? 'border-red-400' : ''} />}
           />
           {/* Error Message */}
           {errors?.phone?.message && <span className="text-red-400 px-2">{errors?.phone?.message}</span>}

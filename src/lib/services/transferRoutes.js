@@ -26,6 +26,19 @@ export async function getSingleTransferRouteAdmin(id) {
   }
 }
 
+export async function getTransferRoutesDropdown() {
+  try {
+    const api = await getAuthApi();
+    const response = await api.get('/api/admin/transfer-routes/dropdown', {
+      headers: { Accept: 'application/json' },
+    });
+    return response?.data?.data ?? [];
+  } catch (error) {
+    console.error('Service Error (getTransferRoutesDropdown):', error?.message || error);
+    return [];
+  }
+}
+
 export async function searchAdminLocations(q = '', types = 'city,place', limit = 20) {
   try {
     const api = await getAuthApi();

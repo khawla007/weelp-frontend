@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import { CheckoutItems, CheckoutUserDetailCard } from '../CheckoutCards';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { useUserProfile } from '@/hooks/api/customer/profile';
+import { useNavigationStore } from '@/lib/store/useNavigationStore';
 import { createPaymentIntent } from '@/lib/actions/checkout'; // action for intent
 import axios from 'axios';
 const stripePromise = getStripe(); // import stripe promise
@@ -15,7 +16,7 @@ const stripePromise = getStripe(); // import stripe promise
 export default function CheckoutMainManual() {
   const { data: session } = useSession(); // session retrieve
   const { cartItems = [] } = useMiniCartStore(); // store items
-  const { user } = useUserProfile(); // client side fetch user
+  const { user, isLoading: isUserLoading } = useUserProfile(); // client side fetch user
   const item = cartItems.at(0) || {}; // item destructure
   const { price, currency = 'usd' } = item;
 
@@ -60,7 +61,7 @@ export default function CheckoutMainManual() {
       // POST request to your test API route
       const res = await axios.post('/api/payments/create-intent', {
         amount, // from cart item
-        currency: String(currency).toLowerCase(),
+        currency: String(currency || 'usd').toLowerCase(),
         email: email,
         name: name,
       });
@@ -95,13 +96,16 @@ export default function CheckoutMainManual() {
     initializePaymentIntent();
   }, []);
 
-  // Show loading
-  if (loading) {
-    return (
-      <div className="h-screen flex justify-center place-items-center">
-        <span className="loader"></span>
-      </div>
-    );
+  // Drive top progress bar while checkout is preparing (payment intent + user profile)
+  const isPreparing = loading || isUserLoading || !user;
+  const setNavigating = useNavigationStore((s) => s.setNavigating);
+  useEffect(() => {
+    setNavigating(isPreparing);
+    return () => setNavigating(false);
+  }, [isPreparing, setNavigating]);
+
+  if (isPreparing) {
+    return null;
   }
 
   //  Show error

@@ -37,6 +37,7 @@ export const EditTransferForm = ({ transferData }) => {
 
   // intialize methods
   const methods = useForm({
+    shouldUnregister: false,
     defaultValues: {
       name: name,
       slug: slug,
@@ -55,7 +56,7 @@ export const EditTransferForm = ({ transferData }) => {
 
   // Handle Global Level Error
   const { reset } = methods;
-  const { errors, isValid, isSubmitting, isDirty } = methods?.formState;
+  const { errors, isSubmitting, isDirty } = methods?.formState;
 
   // Handle Next button for steps 1-4 (no validation)
   const handleNext = () => {
@@ -234,7 +235,7 @@ export const EditTransferForm = ({ transferData }) => {
                   <FormActionButtons
                     mode="update"
                     isSubmitting={isSubmitting}
-                    isDisabled={!isValid || !isDirty}
+                    isDisabled={!isDirty}
                     cancelAlwaysEnabled={true}
                     cancelHref="/dashboard/admin/transfers"
                     containerType="div"

@@ -16,8 +16,8 @@ import {
 import { actualDate } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, itemId, itemType, onClose, addons = [] }) => {
-  const { adults, children } = howMany;
-  const { from } = dateRange;
+  const { adults, children } = howMany ?? {};
+  const { from } = dateRange ?? {};
   return (
     <div className="flex flex-col gap-2 px-6 py-4 items-center border rounded-lg shadow-sm justify-between bg-white">
       <div className="flex justify-between w-full p-4 py-2">
@@ -57,7 +57,11 @@ const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, it
           )}
         </div>
         <div className="flex">
-          <img src="https://picsum.photos/300/200?random" className="max-w-32 min-h-28 object-cover w-full h-full rounded-md" alt="logo" />
+          <img
+            src={productImage || '/assets/images/placeholder.png'}
+            className="max-w-32 min-h-28 object-cover w-full h-full rounded-md"
+            alt={productName || 'product'}
+          />
         </div>
       </div>
     </div>

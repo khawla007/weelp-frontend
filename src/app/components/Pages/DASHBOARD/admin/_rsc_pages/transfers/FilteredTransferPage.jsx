@@ -5,13 +5,11 @@ import { useForm, Controller, useWatch } from 'react-hook-form';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Calendar, Car, Clock, Plus, Star, Tag, User, Users } from 'lucide-react';
+import { Calendar, Car, Clock, Plus, Star, User, Users } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import debounce from 'lodash.debounce';
 import { Badge } from '@/components/ui/badge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import ReactRangeSliderInput from 'react-range-slider-input';
-import 'react-range-slider-input/dist/style.css';
 import { CustomPagination } from '@/app/components/Pagination';
 import Link from 'next/link';
 import useSWR from 'swr'; // for states cache and ui management
@@ -54,7 +52,6 @@ const FilterTransfer = () => {
       time_slot_start: '',
       time_slot_end: '',
       capacity: '',
-      price: [50, 5000],
       sort_by: 'default',
       page: 1,
     },
@@ -118,9 +115,8 @@ const FilterTransfer = () => {
     [],
   );
 
-  // Memoize price array to prevent infinite re-renders
-  // eslint-disable-next-line react-hooks/preserve-manual-memoization
-  const priceMemoized = useMemo(() => filters.price, [filters.price?.[0], filters.price?.[1]]);
+  // Stable primitive key for available_days array
+  const availableDaysKey = filters.available_days?.join(',') || '';
 
   // reset page to 1 when filters change
   useEffect(() => {
@@ -129,11 +125,10 @@ const FilterTransfer = () => {
     filters.search,
     filters.vehicle_type,
     filters.availability_type,
-    filters.available_days,
+    availableDaysKey,
     filters.time_slot_start,
     filters.time_slot_end,
     filters.capacity,
-    priceMemoized,
     filters.sort_by,
     setValue,
   ]);
@@ -147,11 +142,10 @@ const FilterTransfer = () => {
     filters.search,
     filters.vehicle_type,
     filters.availability_type,
-    filters.available_days,
+    availableDaysKey,
     filters.time_slot_start,
     filters.time_slot_end,
     filters.capacity,
-    priceMemoized,
     filters.sort_by,
     debouncedUpdate,
   ]);
@@ -168,8 +162,6 @@ const FilterTransfer = () => {
     if (debouncedFilters.availability_type === 'custom_schedule' && debouncedFilters.time_slot_end) params.append('time_slot_end', debouncedFilters.time_slot_end);
     if (debouncedFilters.capacity) params.append('capacity', debouncedFilters.capacity);
     if (debouncedFilters.sort_by) params.append('sort_by', debouncedFilters.sort_by);
-    if (debouncedFilters.price?.[0] && debouncedFilters.price[0] !== 50) params.append('min_price', debouncedFilters.price[0]);
-    if (debouncedFilters.price?.[1] && debouncedFilters.price[1] !== 5000) params.append('max_price', debouncedFilters.price[1]);
     if (debouncedFilters.page)
       params.append('page', filters.page); // use live page, debounced search
     else if (filters.page) params.append('page', filters.page);
@@ -369,28 +361,6 @@ const FilterTransfer = () => {
             </AccordionContent>
           </AccordionItem>
 
-          {/* Price Range */}
-          <AccordionItem value="price">
-            <AccordionTrigger>
-              <p className="flex items-center gap-4">
-                <Tag size={18} /> Price
-              </p>
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="py-4">
-                <Controller
-                  name="price"
-                  control={control}
-                  render={({ field }) => <ReactRangeSliderInput {...field} min={50} max={5000} step={100} value={field.value} onInput={field.onChange} className="w-full" />}
-                />
-
-                <div className="w-full flex justify-between text-sm text-gray-600 mt-2">
-                  <span>${filters?.price?.[0]}</span>
-                  <span>${filters?.price?.[1]}</span>
-                </div>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
         </Accordion>
       </div>
 
@@ -468,7 +438,7 @@ const FilterTransfer = () => {
                         actions={
                           <ListingCardActions
                             itemId={itemId}
-                            editHref={is_vendor ? `/dashboard/admin/transfers/edit/${itemId}/vendor` : `/dashboard/admin/transfers/edit/${itemId}/admin`}
+                            editHref={`/dashboard/admin/transfers/edit/${itemId}`}
                             onDelete={() => handleDeleteClick(itemId)}
                           />
                         }
