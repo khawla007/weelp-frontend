@@ -13,6 +13,7 @@ import { ArrowLeft, SearchIcon, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect, useCallback } from 'react';
+import TimeSelector from './TimeSelector';
 
 export const NavigationItinerary = ({ title, desciption }) => {
   const router = useRouter();
@@ -81,7 +82,7 @@ export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity, a
     end_time: '',
     notes: '',
     price: '',
-    included: true,
+    included: false,
   });
 
   const handleSelectActivity = (activity) => {
@@ -120,10 +121,10 @@ export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity, a
     <Dialog open onOpenChange={onClose}>
       <DialogContent>
         <div className={`${!modalOpen ? 'block' : 'hidden'} space-y-4`}>
-          <DialogHeader>
+          <DialogHeader className="space-y-4">
             <DialogTitle>Search Activity</DialogTitle>
             <DialogDescription className="sr-only">Search and add an activity to your schedule.</DialogDescription>
-            Day is {day}
+            <p className="text-sm text-muted-foreground">Day {day}</p>
           </DialogHeader>
 
           <div className="w-full flex gap-4 items-center">
@@ -163,25 +164,19 @@ export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity, a
                 <div className="flex w-full gap-4">
                   <Label htmlFor="start_time" className="flex flex-col w-full space-y-4 ">
                     <span>Start Time</span>
-                    <Input
+                    <TimeSelector
                       id="start_time"
-                      name="start_time" // Name is used to dynamically update the state
-                      type="time"
                       value={timing.start_time}
-                      onChange={handleTimeChange}
-                      className="p-2 border"
+                      onChange={(v) => handleTimeChange({ target: { name: 'start_time', value: v } })}
                     />
                   </Label>
 
                   <Label htmlFor="end_time" className="flex flex-col w-full space-y-4 ">
                     <span>End Time</span>
-                    <Input
+                    <TimeSelector
                       id="end_time"
-                      name="end_time" // Name is used to dynamically update the state
-                      type="time"
                       value={timing.end_time}
-                      onChange={handleTimeChange}
-                      className="p-2 border"
+                      onChange={(v) => handleTimeChange({ target: { name: 'end_time', value: v } })}
                     />
                   </Label>
                 </div>
@@ -197,19 +192,21 @@ export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity, a
                   </Label>
 
                   <Label htmlFor="included" className="flex flex-col w-full space-y-4 flex-1">
-                    <span className="text-nowrap">Include in Package</span>
-                    <Switch
-                      id="included"
-                      name="included" // Name is used to dynamically update the state
-                      checked={timing?.included}
-                      onCheckedChange={(checked) =>
-                        setTiming((prevTiming) => ({
-                          ...prevTiming,
-                          included: checked,
-                        }))
-                      }
-                      className="data-[state=checked]:bg-secondaryDark ease-in-out duration-500"
-                    />
+                    <span className="text-nowrap">Include in Itinerary</span>
+                    <div className="flex items-center h-10">
+                      <Switch
+                        id="included"
+                        name="included"
+                        checked={timing?.included}
+                        onCheckedChange={(checked) =>
+                          setTiming((prevTiming) => ({
+                            ...prevTiming,
+                            included: checked,
+                          }))
+                        }
+                        className="data-[state=checked]:bg-secondaryDark ease-in-out duration-500"
+                      />
+                    </div>
                   </Label>
                 </div>
               </div>
@@ -355,7 +352,7 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
                   </Label>
 
                   <Label htmlFor="included" className="flex flex-col w-full space-y-4 flex-1">
-                    <span className="text-nowrap">Include in Package</span>
+                    <span className="text-nowrap">Include in Itinerary</span>
                     <Switch
                       id="included"
                       name="included" // Name is used to dynamically update the state
@@ -473,25 +470,19 @@ export const CustomizedEditActivityForm = ({ isEditOn, updateActivity, day, sele
               <div className="flex w-full gap-4">
                 <Label htmlFor="start_time" className="flex flex-col w-full space-y-4 ">
                   <span>Start Time</span>
-                  <Input
+                  <TimeSelector
                     id="start_time"
-                    name="start_time" // Name is used to dynamically update the state
-                    type="time"
                     value={timing.start_time}
-                    onChange={handleTimeChange}
-                    className="p-2 border"
+                    onChange={(v) => handleTimeChange({ target: { name: 'start_time', value: v } })}
                   />
                 </Label>
 
                 <Label htmlFor="end_time" className="flex flex-col w-full space-y-4 ">
                   <span>End Time</span>
-                  <Input
+                  <TimeSelector
                     id="end_time"
-                    name="end_time" // Name is used to dynamically update the state
-                    type="time"
                     value={timing.end_time}
-                    onChange={handleTimeChange}
-                    className="p-2 border"
+                    onChange={(v) => handleTimeChange({ target: { name: 'end_time', value: v } })}
                   />
                 </Label>
               </div>
@@ -507,10 +498,10 @@ export const CustomizedEditActivityForm = ({ isEditOn, updateActivity, day, sele
                 </Label>
 
                 <Label htmlFor="included" className="flex flex-col w-full space-y-4 flex-1">
-                  <span className="text-nowrap">Include in Package</span>
+                  <span className="text-nowrap">Include in Itinerary</span>
                   <Switch
                     id="included"
-                    name="included" // Name is used to dynamically update the state
+                    name="included"
                     checked={timing?.included}
                     onCheckedChange={(checked) =>
                       setTiming((prevTiming) => ({
@@ -635,7 +626,7 @@ export const CustomizedEditTransferForm = ({ isEditOn, updateTransfer, day, sele
                   <Input id="price" name="price" type="number" min="1" value={timing.price} onChange={handleTimeChange} className="p-2 border" />
                 </Label>
                 <Label htmlFor="included" className="flex flex-col w-full space-y-4 flex-1">
-                  <span className="text-nowrap">Include in Package</span>
+                  <span className="text-nowrap">Include in Itinerary</span>
                   <Switch
                     id="included"
                     name="included" // Name is used to dynamically update the state

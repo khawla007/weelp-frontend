@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useFormContext, useFieldArray, useWatch } from 'react-hook-form';
 import { isEmpty } from 'lodash';
-import { Activity, Car, Clock, MapPin, Settings, Trash2 } from 'lucide-react';
+import { Activity, Car, Clock, Map, Settings, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -229,7 +229,7 @@ export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel
                       handleOpenModal('activity', item.day);
                     }}
                   >
-                    <Car /> Add Activity
+                    <Map /> Add Activity
                   </DropdownMenuItem>
 
                   <DropdownMenuItem
@@ -240,7 +240,7 @@ export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel
                       handleOpenModal('transfer', item.day);
                     }}
                   >
-                    <MapPin /> Add Transfer
+                    <Car /> Add Transfer
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

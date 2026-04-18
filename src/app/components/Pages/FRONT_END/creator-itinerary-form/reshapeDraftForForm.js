@@ -5,7 +5,6 @@
  * Form shape mirrors the admin itinerary form (PersonalInfoTab + ScheduleTab):
  *   {
  *     name, slug, description,
- *     featured_itinerary, private_itinerary,
  *     locations: [cityId, ...],
  *     schedules:  [{ day, title }],
  *     activities: [{ day, activity_id, activitydata, start_time, end_time, ... }],
@@ -18,8 +17,6 @@ export function reshapeDraftForForm(draft) {
       name: '',
       slug: '',
       description: '',
-      featured_itinerary: false,
-      private_itinerary: false,
       locations: [],
       schedules: [],
       activities: [],
@@ -79,8 +76,6 @@ export function reshapeDraftForForm(draft) {
     name: draft.name ?? '',
     slug: draft.slug ?? '',
     description: draft.description ?? '',
-    featured_itinerary: !!draft.featured_itinerary,
-    private_itinerary: !!draft.private_itinerary,
     locations,
     schedules,
     activities,

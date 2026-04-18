@@ -15,8 +15,6 @@ const EMPTY_FORM = {
   name: '',
   slug: '',
   description: '',
-  featured_itinerary: false,
-  private_itinerary: false,
   locations: [],
   schedules: [],
   activities: [],
@@ -155,7 +153,7 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
               </div>
               {currentStep === 1 && <Step1BasicInfo locations={locations} />}
 
-              <div className="flex justify-between pt-4">
+              <div className="flex justify-between pt-4 pb-6">
                 {currentStep > 1 && (
                   <Button
                     type="button"

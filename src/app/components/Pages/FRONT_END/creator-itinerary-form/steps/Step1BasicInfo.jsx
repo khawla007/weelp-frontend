@@ -4,7 +4,6 @@ import { useFormContext, Controller } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { ComboboxMultiple } from '@/components/ui/combobox_multi';
 import { generateSlug } from '@/lib/utils';
 
@@ -89,45 +88,6 @@ export default function Step1BasicInfo({ locations = [] }) {
           render={({ field: { value, onChange } }) => <ComboboxMultiple id={'locations'} name="locations" type={'locations'} items={locations} value={value ?? []} onChange={onChange} />}
         />
         {errors?.locations && <span className="text-red-400">{errors?.locations?.message}</span>}
-      </div>
-
-      <div className="flex items-center space-x-2">
-        <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" htmlFor="featured_itinerary">
-          <Controller
-            name="featured_itinerary"
-            defaultValue={false}
-            control={control}
-            render={({ field }) => (
-              <Switch
-                id="featured_itinerary"
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-gray-300 data-[state=checked]:bg-secondaryDark"
-              >
-                <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
-              </Switch>
-            )}
-          />
-          Featured
-        </Label>
-        <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" htmlFor="private_itinerary">
-          <Controller
-            name="private_itinerary"
-            defaultValue={false}
-            control={control}
-            render={({ field }) => (
-              <Switch
-                id="private_itinerary"
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-gray-300 data-[state=checked]:bg-secondaryDark"
-              >
-                <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
-              </Switch>
-            )}
-          />
-          Private
-        </Label>
       </div>
     </div>
   );
