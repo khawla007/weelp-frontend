@@ -64,42 +64,6 @@ const adminRoutes = [
     ],
   },
   {
-    section: 'BOOKINGS',
-    items: [
-      { title: 'Orders', icon: ShoppingCart, url: '/dashboard/admin/orders' },
-      { title: 'Reviews', icon: MessageSquare, url: '/dashboard/admin/reviews' },
-    ],
-  },
-  {
-    section: 'CATALOG',
-    items: [
-      { title: 'Activities', icon: Map, url: '/dashboard/admin/activities' },
-      { title: 'Itineraries', icon: Route, url: '/dashboard/admin/itineraries' },
-      {
-        title: 'Transfers',
-        icon: ArrowRightLeft,
-        url: '/dashboard/admin/transfers',
-        children: [
-          { title: 'All Transfers', icon: ArrowRightLeft, url: '/dashboard/admin/transfers' },
-          { title: 'Zones', icon: Grid3x3, url: '/dashboard/admin/transfers/zones' },
-          { title: 'Routes', icon: Route, url: '/dashboard/admin/transfers/routes' },
-          { title: 'Vendors', icon: Box, url: '/dashboard/admin/transfers/vendors', comingSoon: true },
-        ],
-      },
-      { title: 'Manage Add Ons', icon: Plus, url: '/dashboard/admin/addon' },
-      {
-        title: 'Taxonomies',
-        icon: Tags,
-        url: '/dashboard/admin/taxonomies',
-        children: [
-          { title: 'Categories', icon: FolderTree, url: '/dashboard/admin/taxonomies/categories' },
-          { title: 'Tags', icon: Tag, url: '/dashboard/admin/taxonomies/tags' },
-          { title: 'Attributes', icon: Settings2, url: '/dashboard/admin/taxonomies/attributes' },
-        ],
-      },
-    ],
-  },
-  {
     section: 'DESTINATIONS',
     items: [
       {
@@ -111,6 +75,42 @@ const adminRoutes = [
           { title: 'Regions', icon: MapPin, url: '/dashboard/admin/destinations/regions' },
         ],
       },
+    ],
+  },
+  {
+    section: 'BOOKINGS',
+    items: [
+      { title: 'Orders', icon: ShoppingCart, url: '/dashboard/admin/orders' },
+      { title: 'Reviews', icon: MessageSquare, url: '/dashboard/admin/reviews' },
+    ],
+  },
+  {
+    section: 'CATALOG',
+    items: [
+      {
+        title: 'Taxonomies',
+        icon: Tags,
+        url: '/dashboard/admin/taxonomies',
+        children: [
+          { title: 'Categories', icon: FolderTree, url: '/dashboard/admin/taxonomies/categories' },
+          { title: 'Tags', icon: Tag, url: '/dashboard/admin/taxonomies/tags' },
+          { title: 'Attributes', icon: Settings2, url: '/dashboard/admin/taxonomies/attributes' },
+        ],
+      },
+      { title: 'Activities', icon: Map, url: '/dashboard/admin/activities' },
+      {
+        title: 'Transfers',
+        icon: ArrowRightLeft,
+        url: '/dashboard/admin/transfers',
+        children: [
+          { title: 'All Transfers', icon: ArrowRightLeft, url: '/dashboard/admin/transfers' },
+          { title: 'Zones', icon: Grid3x3, url: '/dashboard/admin/transfers/zones' },
+          { title: 'Routes', icon: Route, url: '/dashboard/admin/transfers/routes' },
+          { title: 'Vendors', icon: Box, url: '/dashboard/admin/transfers/vendors', comingSoon: true },
+        ],
+      },
+      { title: 'Itineraries', icon: Route, url: '/dashboard/admin/itineraries' },
+      { title: 'Manage Add Ons', icon: Plus, url: '/dashboard/admin/addon' },
     ],
   },
   {
