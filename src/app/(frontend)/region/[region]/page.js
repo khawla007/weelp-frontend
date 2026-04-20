@@ -8,7 +8,7 @@ import { getCitiesByRegion } from '@/lib/services/region';
 import { getPackageDataByRegion } from '@/lib/services/package';
 
 const ReviewSectionRegion = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/ReviewSection').then((mod) => mod.ReviewSectionRegion));
-const DestinationSliderSection = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/DestinationSection'));
+const BrowseDestinationsSection = dynamic(() => import('@/app/components/Pages/FRONT_END/home/BrowseDestinationsSection'));
 const TourSection = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/TourSection').then((mod) => mod.TourSection));
 const GuideSection = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/GuideSection'));
 const RegionFilterNew = dynamic(() => import('@/app/components/Pages/FRONT_END/region/region_filter_rhf').then((mod) => mod.RegionFilterNew));
@@ -82,7 +82,14 @@ export default async function Region({ params }) {
       <BannerSection />
       {/* <CitySection data={whiteCardData} /> */}
 
-      {cityData.length > 0 && <DestinationSliderSection sliderTitle="Must Visit Cities" data={cityData} />}
+      {cityData.length > 0 && (
+        <BrowseDestinationsSection
+          cities={cityData}
+          title="Must Visit Cities"
+          subtitleMode="count"
+          navigationPrefix="region-must-visit"
+        />
+      )}
 
       <BreakSection />
 
