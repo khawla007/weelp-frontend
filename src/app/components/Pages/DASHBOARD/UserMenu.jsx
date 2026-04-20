@@ -62,7 +62,7 @@ export default function UserMenu({ session }) {
           <DropdownMenuContent className="w-56 rounded-lg shadow-lg border-gray-200 dark:border-gray-700" side="bottom" align="end" sideOffset={8}>
             <DropdownMenuGroup>
               <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800">
-                <Link href="/" className="flex items-center gap-2">
+                <Link href="/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <Home className="h-4 w-4" />
                   <span>Back to Site</span>
                 </Link>
