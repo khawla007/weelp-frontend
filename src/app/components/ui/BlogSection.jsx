@@ -30,12 +30,12 @@ const BLOG_BREAKPOINTS = {
  * @param {string}   navigationId - Unique prefix for carousel nav buttons
  * @param {string}   className - Optional wrapper class overrides
  */
-export default function BlogSection({ blogs = [], title = 'Your Guide', navigationId = 'blog-section', className = '' }) {
+export default function BlogSection({ blogs = [], title = 'Your Guide', navigationId = 'blog-section', className = 'pb-12 md:pb-16 lg:pb-[100px]' }) {
   const apiItems = blogs.map((b) => mapBlogToItemCard(b));
   const items = apiItems.length > 0 ? apiItems : STATIC_BLOGS;
 
   return (
-    <section className={`container mx-auto flex flex-col gap-6 md:gap-8 px-4 pb-12 md:pb-16 lg:pb-[100px] ${className}`}>
+    <section className={`container mx-auto flex flex-col gap-6 md:gap-8 px-4 ${className}`}>
       <div className="flex items-center justify-between">
         <SectionHeader title={title} />
         <div className="hidden sm:flex items-center gap-2">

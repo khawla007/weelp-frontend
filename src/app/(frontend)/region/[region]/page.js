@@ -4,14 +4,13 @@ import BannerSection from '@/app/components/Pages/FRONT_END/region/BannerSection
 import { fakeData } from '@/app/Data/ShopData';
 import BreakSection from '@/app/components/BreakSection';
 import { notFound } from 'next/navigation';
-import { getCitiesByRegion } from '@/lib/services/region';
-import { getPackageDataByRegion } from '@/lib/services/package';
+import { getCitiesByRegion, getRegionDetails } from '@/lib/services/region';
+import SharedToursSection from '@/app/components/Pages/FRONT_END/shared/SharedToursSection';
 
 const ReviewSectionRegion = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/ReviewSection').then((mod) => mod.ReviewSectionRegion));
 const BrowseDestinationsSection = dynamic(() => import('@/app/components/Pages/FRONT_END/home/BrowseDestinationsSection'));
-const TourSection = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/TourSection').then((mod) => mod.TourSection));
 const GuideSection = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/GuideSection'));
-const RegionFilterNew = dynamic(() => import('@/app/components/Pages/FRONT_END/region/region_filter_rhf').then((mod) => mod.RegionFilterNew));
+const SharedFilterSection = dynamic(() => import('@/app/components/Pages/FRONT_END/shared/SharedFilterSection'));
 
 //  Region Page Component
 export default async function Region({ params }) {
@@ -19,8 +18,8 @@ export default async function Region({ params }) {
 
   // Fetch data before rendering
   const { data: cityData = [] } = await getCitiesByRegion(region);
-
-  const { data: packageData = [], tag_list = [] } = await getPackageDataByRegion(region);
+  const { data: regionDetails = null } = await getRegionDetails(region);
+  const regionName = regionDetails?.name || region;
 
   // Handle 404 Not Found (Prevent Rendering)
   if (!cityData || cityData.length === 0) {
@@ -82,21 +81,19 @@ export default async function Region({ params }) {
       <BannerSection />
       {/* <CitySection data={whiteCardData} /> */}
 
-      {cityData.length > 0 && <BrowseDestinationsSection cities={cityData} title="Must Visit Cities" subtitleMode="count" navigationPrefix="region-must-visit" />}
+      {cityData.length > 0 && <BrowseDestinationsSection cities={cityData} title="Must Visit Cities" subtitleMode="count" navigationPrefix="region-must-visit" className="py-[70px]" />}
 
-      <BreakSection />
+      <BreakSection marginTop="m-0 p-0" />
 
-      {packageData?.length > 0 && <TourSection items={packageData} taglist={tag_list} />}
+      <SharedToursSection scope="region" slug={region} title={regionName} />
 
-      <BreakSection />
+      <BreakSection marginTop="m-0" />
 
-      {/* Region Based Filter */}
-      {/* <RegionFilter /> */}
-      <RegionFilterNew />
+      <SharedFilterSection scope="region" slug={region} />
 
       <ReviewSectionRegion />
       {/* Blog Section */}
-      <GuideSection sectionTitle="Blogs" data={fakeData} />
+      <GuideSection sectionTitle="Blogs" data={fakeData} className="py-[70px]" />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={schemaJsonSample()} key="product-jsonld" />
     </>

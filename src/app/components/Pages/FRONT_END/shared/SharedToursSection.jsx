@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, ChevronDown } from 'lucide-react';
 import Pagination from '@/app/components/ui/Pagination';
-import { useParams } from 'next/navigation';
 import axios from 'axios';
 import ItemCard from '@/app/components/ui/item-card';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
@@ -17,8 +16,7 @@ const SORT_OPTIONS = [
   { value: 'price_desc', label: 'Price: High to Low' },
 ];
 
-export default function CityToursSection({ cityName }) {
-  const { city } = useParams();
+export default function SharedToursSection({ scope, slug, title }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTags, setSelectedTags] = useState([]);
   const [sortBy, setSortBy] = useState('id_desc');
@@ -61,10 +59,16 @@ export default function CityToursSection({ cityName }) {
       if (selectedTags.length > 0) query.set('tags', selectedTags.join(','));
       if (sortBy) query.set('sort_by', sortBy);
 
-      query.set('city', city);
+      let endpoint;
+      if (scope === 'region') {
+        endpoint = `/api/public/region/${slug}/itineraries?${query.toString()}`;
+      } else {
+        query.set('city', slug);
+        endpoint = `/api/public/itineraries/featured?${query.toString()}`;
+      }
 
       axios
-        .get(`/api/public/itineraries/featured?${query.toString()}`)
+        .get(endpoint)
         .then((res) => {
           if (res.data?.success) {
             setItineraries(res.data.data || []);
@@ -84,7 +88,7 @@ export default function CityToursSection({ cityName }) {
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [city, currentPage, selectedTags, sortBy]);
+  }, [scope, slug, currentPage, selectedTags, sortBy]);
 
   const handleTagToggle = (tagName) => {
     setCurrentPage(1);
@@ -97,7 +101,8 @@ export default function CityToursSection({ cityName }) {
     setShowSortDropdown(false);
   };
 
-  const cards = itineraries.map((item) => mapProductToItemCard(item, city));
+  const fallbackCity = scope === 'city' ? slug : undefined;
+  const cards = itineraries.map((item) => mapProductToItemCard(item, item?.city_slug || fallbackCity));
   const totalPages = pagination.last_page;
 
   // Don't render section if initial load returns no itineraries and no tags
@@ -106,7 +111,7 @@ export default function CityToursSection({ cityName }) {
   return (
     <section ref={sectionRef} className="mx-auto flex w-full max-w-[1480px] flex-col gap-8 px-4 md:px-6 xl:px-0 py-10 md:py-14 lg:py-[70px]">
       <h2 className="text-xl md:text-2xl lg:text-[28px] font-semibold text-pretty text-[#273f4e] capitalize" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
-        {cityName} Tours
+        {title} Tours
       </h2>
 
       <div className="flex flex-wrap items-center gap-4">
@@ -118,7 +123,7 @@ export default function CityToursSection({ cityName }) {
               setSelectedTags([]);
               setCurrentPage(1);
             }}
-            className="rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
+            className="min-h-[44px] sm:min-h-0 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
             style={{
               backgroundColor: '#f2f2f2',
               borderColor: 'rgba(67, 90, 103, 0.26)',
@@ -139,7 +144,7 @@ export default function CityToursSection({ cityName }) {
                   key={tag.id || tag.name}
                   type="button"
                   onClick={() => handleTagToggle(tag.name)}
-                  className="rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
+                  className="min-h-[44px] sm:min-h-0 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
                   style={{
                     backgroundColor: '#f2f2f2',
                     borderColor: 'rgba(67, 90, 103, 0.26)',
@@ -162,7 +167,7 @@ export default function CityToursSection({ cityName }) {
             <button
               type="button"
               onClick={() => setShowSortDropdown((prev) => !prev)}
-              className="flex items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
+              className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
               style={{
                 backgroundColor: '#f2f2f2',
                 borderColor: 'rgba(67, 90, 103, 0.26)',
@@ -195,7 +200,7 @@ export default function CityToursSection({ cityName }) {
           {/* View on Map — static */}
           <button
             type="button"
-            className="flex items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
+            className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
             style={{
               backgroundColor: '#f2f2f2',
               borderColor: 'rgba(67, 90, 103, 0.26)',

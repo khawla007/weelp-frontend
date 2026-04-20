@@ -6,7 +6,7 @@ import { whiteCardData } from '@/app/Data/ShopData';
 import { getAllBlogs } from '@/lib/services/blogs';
 import BreakSection from '@/app/components/BreakSection';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
-import CityToursSection from '@/app/components/Pages/FRONT_END/city/CityToursSection';
+import SharedToursSection from '@/app/components/Pages/FRONT_END/shared/SharedToursSection';
 import { notFound } from 'next/navigation';
 import { getCityData } from '@/lib/services/cities';
 import { getAllFeaturedActivities } from '@/lib/services/activites';
@@ -15,7 +15,7 @@ import { getFeaturedReviews } from '@/lib/services/reviews';
 
 const ReviewSectionCity = dynamic(() => import('@/app/components/Pages/FRONT_END/Global/ReviewSection').then((mod) => mod.ReviewSectionCity));
 const ProductSliderSection = dynamic(() => import('@/app/components/ui/ProductSliderSection'));
-const CityFilterSection = dynamic(() => import('@/app/components/Pages/FRONT_END/city/CityFilterSection'));
+const SharedFilterSection = dynamic(() => import('@/app/components/Pages/FRONT_END/shared/SharedFilterSection'));
 const BlogSection = dynamic(() => import('@/app/components/ui/BlogSection'));
 
 export async function generateMetadata({ params }) {
@@ -81,19 +81,19 @@ export default async function CityPage({ params }) {
       {activitesData?.length > 0 && <BreakSection marginTop="m-0 p-0" />}
 
       {/* Tours grid section — fetches its own data with pagination, tag filter, sort */}
-      <CityToursSection cityName={citydata?.name || city} />
+      <SharedToursSection scope="city" slug={city} title={citydata?.name || city} />
 
       {/* Divider before filter section */}
       {hasAnyProducts && <BreakSection marginTop="m-0" />}
 
       {/* Filter Section (tabs, sort, sidebar, grid, pagination) — only if any product data */}
-      {hasAnyProducts && <CityFilterSection />}
+      {hasAnyProducts && <SharedFilterSection scope="city" slug={city} />}
 
       {/* Reviews + What About + FAQ — only if city data is a valid object */}
       {typeof citydata === 'object' && citydata?.location_details && <ReviewSectionCity cityData={citydata} reviews={featuredReviews} />}
 
       {/* Blogs Slider — only if blogs exist */}
-      {blogsData.length > 0 && <BlogSection blogs={blogsData} title="Blogs" navigationId="city-blogs" />}
+      {blogsData.length > 0 && <BlogSection blogs={blogsData} title="Blogs" navigationId="city-blogs" className="py-[70px]" />}
 
       {/* JSON-LD Schema */}
       {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}

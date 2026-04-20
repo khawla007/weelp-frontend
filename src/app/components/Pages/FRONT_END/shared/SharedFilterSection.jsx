@@ -2,16 +2,19 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
-import { useParams } from 'next/navigation';
 import ItemCard from '@/app/components/ui/item-card';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import { ProductCardSkelton } from '@/app/components/Animation/Cards';
 import Pagination from '@/app/components/ui/Pagination';
 import FilterSidebar from './FilterSidebar';
+import FilterDrawer from './FilterDrawer';
 
-export default function CityFilterSection() {
-  const { city } = useParams();
-
+/**
+ * Shared filter + listing section used by both city and region pages.
+ *
+ * @param {{ scope: 'city' | 'region', slug: string }} props
+ */
+export default function SharedFilterSection({ scope, slug }) {
   const sectionRef = useRef(null);
 
   const [products, setProducts] = useState([]);
@@ -39,8 +42,13 @@ export default function CityFilterSection() {
       if (selectedItemType) query += `&item_type=${selectedItemType}`;
       if (selectedCategories.length > 0) query += `&categories=${selectedCategories.join(',')}`;
 
+      const endpoint =
+        scope === 'region'
+          ? `/api/public/region/${slug}/all-items${query}`
+          : `/api/public/cities/${slug}/all-items${query}`;
+
       axios
-        .get(`/api/public/cities/${city}/all-items${query}`)
+        .get(endpoint)
         .then((res) => {
           if (res.status === 200) {
             setProducts(res?.data?.data || []);
@@ -55,34 +63,57 @@ export default function CityFilterSection() {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [priceRange, selectedItemType, selectedCategories, currentPage, city, ratingFilter]);
+  }, [priceRange, selectedItemType, selectedCategories, currentPage, slug, ratingFilter, scope]);
 
   return (
     <div ref={sectionRef} className="mx-auto max-w-[1480px] px-4 sm:px-6 xl:px-0 py-10 md:py-14 lg:py-[70px]">
       {/* Sidebar + Grid */}
       <div className="flex flex-col lg:flex-row gap-6">
-        <FilterSidebar
-          selectedItemType={selectedItemType}
-          onItemTypeChange={(type) => {
-            setSelectedItemType(type);
-            setCurrentPage(1);
-          }}
-          selectedCategories={selectedCategories}
-          onCategoryChange={(cats) => {
-            setSelectedCategories(cats);
-            setCurrentPage(1);
-          }}
-          priceRange={priceRange}
-          onPriceChange={setPriceRange}
-          ratingFilter={ratingFilter}
-          onRatingChange={(r) => {
-            setRatingFilter(r);
-            setCurrentPage(1);
-          }}
-        />
+        <div className="hidden lg:block">
+          <FilterSidebar
+            selectedItemType={selectedItemType}
+            onItemTypeChange={(type) => {
+              setSelectedItemType(type);
+              setCurrentPage(1);
+            }}
+            selectedCategories={selectedCategories}
+            onCategoryChange={(cats) => {
+              setSelectedCategories(cats);
+              setCurrentPage(1);
+            }}
+            priceRange={priceRange}
+            onPriceChange={setPriceRange}
+            ratingFilter={ratingFilter}
+            onRatingChange={(r) => {
+              setRatingFilter(r);
+              setCurrentPage(1);
+            }}
+          />
+        </div>
 
         {/* Product Grid */}
         <div className="flex-1">
+          <div className="mb-4 lg:hidden">
+            <FilterDrawer
+              selectedItemType={selectedItemType}
+              onItemTypeChange={(type) => {
+                setSelectedItemType(type);
+                setCurrentPage(1);
+              }}
+              selectedCategories={selectedCategories}
+              onCategoryChange={(cats) => {
+                setSelectedCategories(cats);
+                setCurrentPage(1);
+              }}
+              priceRange={priceRange}
+              onPriceChange={setPriceRange}
+              ratingFilter={ratingFilter}
+              onRatingChange={(r) => {
+                setRatingFilter(r);
+                setCurrentPage(1);
+              }}
+            />
+          </div>
           {isLoading ? (
             <div className="flex gap-4 flex-wrap justify-center">
               {[...Array(6)].map((_, i) => (
@@ -92,8 +123,9 @@ export default function CityFilterSection() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
               {products.length > 0 ? (
-                products.map((product, index) => {
-                  const card = mapProductToItemCard(product, city);
+                products.map((product) => {
+                  const fallbackCity = scope === 'city' ? slug : undefined;
+                  const card = mapProductToItemCard(product, product?.city_slug || fallbackCity);
                   return (
                     <ItemCard
                       key={`${product.item_type}-${card.id}`}

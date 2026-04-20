@@ -67,7 +67,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
           <h3 className="text-base md:text-[17px] lg:text-[18px] text-[#143042] mb-4" style={{ ...FONT, fontWeight: 500 }}>
             Categories
           </h3>
-          <div className="flex flex-col space-y-3 max-h-40 md:max-h-48 overflow-auto">
+          <div className="flex flex-col space-y-3 max-h-56 md:max-h-64 lg:max-h-72 overflow-auto">
             <label className={`flex items-center gap-2 cursor-pointer ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
               <input
                 type="checkbox"

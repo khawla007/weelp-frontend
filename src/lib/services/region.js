@@ -67,22 +67,51 @@ export const getCitiesByRegion = async (region) => {
 };
 
 /**
- * Get Region All Items
- * @param {string} region region of the items
- * @param {string} query query params
- * @return {}
+ * Get all itineraries for a region
+ * @param {string} region region slug
+ * @param {string} query query params (optional, with or without ?)
+ * @returns {{success: boolean, data: [], all_tags: [], last_page: number, total: number, current_page: number}}
  */
-
-export const getItemsByRegion = async (region, query = '') => {
+export const getItinerariesByRegion = async (region, query = '') => {
   try {
-    const response = await publicApi.get(`/api/region/${region}/region-all-items${query}/`, {
+    // Normalize query string: prepend ? if non-empty and not already prefixed
+    let normalizedQuery = query;
+    if (query && !query.startsWith('?')) {
+      normalizedQuery = `?${query}`;
+    }
+    const response = await publicApi.get(`/api/region/${region}/region-itineraries${normalizedQuery}`, {
       headers: { 'Content-Type': 'application/json' },
     });
     return response.data;
   } catch (error) {
-    console.error('Error fetching city data:');
+    console.error('Error fetching region itineraries:', error);
+    return {
+      success: false,
+      data: [],
+      all_tags: [],
+      last_page: 1,
+      total: 0,
+    };
+  }
+};
 
-    return {};
+/**
+ * Get region details
+ * @param {string} region region slug
+ * @returns {{success: boolean, data: {id: number, name: string, slug: string, description: string, image_url: string, countries: []} | null}}
+ */
+export const getRegionDetails = async (region) => {
+  try {
+    const response = await publicApi.get(`/api/region/${region}`, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching region details:', error);
+    return {
+      success: false,
+      data: null,
+    };
   }
 };
 

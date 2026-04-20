@@ -70,26 +70,6 @@ export async function getAllPackagesAdmin(search = '') {
 }
 
 /**
- * Get Citites BY Region Public Api
- * @param {string} region region required
- * @returns
- */
-export const getPackageDataByRegion = async (region) => {
-  try {
-    const response = await publicApi.get(`/api/region/${region}/region-packages`, {
-      headers: { Accept: 'application/json' },
-    });
-
-    if (response.status === 200) {
-      return response?.data;
-    }
-    return {}; // Return empty object if not 200
-  } catch (error) {
-    return {}; // Return empty object on error
-  }
-};
-
-/**
  * Fetch city packages (client-side) with pagination, tag filter, and sorting
  * @param {string} city City slug
  * @param {object} params Query parameters { tags, sort_by, page, per_page }

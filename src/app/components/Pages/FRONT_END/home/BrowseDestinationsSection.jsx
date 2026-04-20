@@ -21,7 +21,7 @@ const STATIC_DESTINATIONS = [
   { id: 5, name: 'Tokyo', slug: 'tokyo', image: '/assets/Card.webp', activitiesCount: 175 },
 ];
 
-export default function BrowseDestinationsSection({ cities = [], title = 'Top Destination', subtitleMode = 'count', navigationPrefix = 'browse-destinations' }) {
+export default function BrowseDestinationsSection({ cities = [], title = 'Top Destination', subtitleMode = 'count', navigationPrefix = 'browse-destinations', className = 'pb-[100px]' }) {
   const apiCities = cities.map((c) => ({
     id: c.id,
     name: c.name,
@@ -34,7 +34,7 @@ export default function BrowseDestinationsSection({ cities = [], title = 'Top De
   const items = apiCities.length > 0 ? apiCities : STATIC_DESTINATIONS;
 
   return (
-    <section className="container mx-auto flex flex-col gap-8 px-4 pb-[100px]">
+    <section className={`container mx-auto flex flex-col gap-8 px-4 ${className}`}>
       <div className="flex items-center justify-between">
         <SectionHeader title={title} />
         <div className="flex items-center gap-2">
