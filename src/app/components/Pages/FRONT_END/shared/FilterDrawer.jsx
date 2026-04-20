@@ -15,10 +15,7 @@ export default function FilterDrawer(props) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <button
-          type="button"
-          className="flex min-h-[44px] items-center gap-2 rounded-[11.5px] border border-[#E5E4E1] bg-white px-4 py-2.5 text-[15px] font-medium text-[#143042] shadow-sm"
-        >
+        <button type="button" className="flex min-h-[44px] items-center gap-2 rounded-[11.5px] border border-[#E5E4E1] bg-white px-4 py-2.5 text-[15px] font-medium text-[#143042] shadow-sm">
           <SlidersHorizontal className="size-4" />
           Filters
         </button>

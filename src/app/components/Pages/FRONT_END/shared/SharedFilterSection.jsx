@@ -42,10 +42,7 @@ export default function SharedFilterSection({ scope, slug }) {
       if (selectedItemType) query += `&item_type=${selectedItemType}`;
       if (selectedCategories.length > 0) query += `&categories=${selectedCategories.join(',')}`;
 
-      const endpoint =
-        scope === 'region'
-          ? `/api/public/region/${slug}/all-items${query}`
-          : `/api/public/cities/${slug}/all-items${query}`;
+      const endpoint = scope === 'region' ? `/api/public/region/${slug}/all-items${query}` : `/api/public/cities/${slug}/all-items${query}`;
 
       axios
         .get(endpoint)
