@@ -82,14 +82,7 @@ export default async function Region({ params }) {
       <BannerSection />
       {/* <CitySection data={whiteCardData} /> */}
 
-      {cityData.length > 0 && (
-        <BrowseDestinationsSection
-          cities={cityData}
-          title="Must Visit Cities"
-          subtitleMode="count"
-          navigationPrefix="region-must-visit"
-        />
-      )}
+      {cityData.length > 0 && <BrowseDestinationsSection cities={cityData} title="Must Visit Cities" subtitleMode="count" navigationPrefix="region-must-visit" />}
 
       <BreakSection />
 
