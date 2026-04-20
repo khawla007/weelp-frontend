@@ -32,7 +32,15 @@ const CreatePlaceForm = ({ apiFormData = {} }) => {
   const [formData, setFormData] = useState({}); // form data
   const params = useParams(); // intialize params hook
 
-  const cleanCountryData = omit(apiFormData, ['created_at', 'updated_at']);
+  const stripNullish = (obj) => {
+    if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return obj;
+    return Object.fromEntries(
+      Object.entries(obj)
+        .filter(([, v]) => v !== null && v !== undefined)
+        .map(([k, v]) => [k, typeof v === 'object' && !Array.isArray(v) ? stripNullish(v) : v]),
+    );
+  };
+  const cleanCountryData = stripNullish(omit(apiFormData, ['created_at', 'updated_at']));
 
   const { id } = params; // destructure id if exist or in edit route page
 

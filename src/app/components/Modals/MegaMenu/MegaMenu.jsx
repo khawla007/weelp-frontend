@@ -1,31 +1,31 @@
 'use client';
 import { useCallback, useMemo, useState } from 'react';
 import { useMegaMenu } from '@/hooks/api/public/menu/megaMenu';
-import { MenuList, CityCards, PlaceGrid } from './MegaMenuComponents';
+import { MenuList, CountryCards, CityGrid } from './MegaMenuComponents';
 
 const TRENDING_ID = 'trending';
 
 const MegaMenu = () => {
   const { regions, trending, isLoading, error } = useMegaMenu();
   const [activeId, setActiveId] = useState(TRENDING_ID);
-  const [selectedCityId, setSelectedCityId] = useState(null);
+  const [selectedCountryId, setSelectedCountryId] = useState(null);
 
-  const items = useMemo(() => [{ id: TRENDING_ID, name: 'Trending Destinations', cities: trending }, ...regions.map((r) => ({ id: r.id, name: r.name, cities: r.cities }))], [regions, trending]);
+  const items = useMemo(() => [{ id: TRENDING_ID, name: 'Trending Destinations', countries: trending }, ...regions.map((r) => ({ id: r.id, name: r.name, countries: r.countries }))], [regions, trending]);
 
   const activeItem = useMemo(() => items.find((i) => i.id === activeId) ?? items[0], [items, activeId]);
-  const displayedCities = useMemo(() => (activeItem?.cities ?? []).slice(0, 3), [activeItem]);
+  const displayedCountries = useMemo(() => (activeItem?.countries ?? []).slice(0, 3), [activeItem]);
 
-  const places = useMemo(() => {
-    if (selectedCityId) {
-      const city = displayedCities.find((c) => c.id === selectedCityId);
-      return (city?.places ?? []).slice(0, 20).map((p) => ({ ...p, citySlug: city.slug }));
+  const cities = useMemo(() => {
+    if (selectedCountryId) {
+      const country = displayedCountries.find((c) => c.id === selectedCountryId);
+      return (country?.cities ?? []).slice(0, 20);
     }
-    return displayedCities.flatMap((city) => (city.places ?? []).map((p) => ({ ...p, citySlug: city.slug }))).slice(0, 20);
-  }, [displayedCities, selectedCityId]);
+    return displayedCountries.flatMap((country) => country.cities ?? []).slice(0, 20);
+  }, [displayedCountries, selectedCountryId]);
 
   const handleSelectRegion = useCallback((id) => {
     setActiveId(id);
-    setSelectedCityId(null);
+    setSelectedCountryId(null);
   }, []);
 
   if (error) {
@@ -51,8 +51,8 @@ const MegaMenu = () => {
       </aside>
 
       <section className="flex flex-1 flex-col overflow-y-auto">
-        <CityCards cities={displayedCities} selectedCityId={selectedCityId} onSelect={(id) => setSelectedCityId((prev) => (prev === id ? null : id))} />
-        <PlaceGrid places={places} />
+        <CountryCards countries={displayedCountries} selectedCountryId={selectedCountryId} onSelect={(id) => setSelectedCountryId((prev) => (prev === id ? null : id))} />
+        <CityGrid cities={cities} />
       </section>
     </div>
   );

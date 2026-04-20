@@ -10,6 +10,7 @@ import debounce from 'lodash.debounce';
 import { authFetcher } from '@/lib/fetchers';
 import { DashboardSearch } from '@/app/components/DashboardShared';
 import { CustomPagination } from '@/app/components/Pagination';
+import { AddNewButton } from '@/app/components/Button/AddNewButton';
 import { Ellipsis, Pencil, Trash2, Globe } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useSWRConfig } from 'swr';
@@ -25,7 +26,7 @@ const RegionCard = ({ id, name, type, description, image_url, countries_count = 
   const { toast } = useToast();
 
   const handleRoute = () => {
-    router.push(`${id}`);
+    router.push(`/dashboard/admin/destinations/regions/${id}/edit`);
   };
 
   const handleDelete = async () => {
@@ -122,7 +123,10 @@ export const FilterRegions = () => {
     <FormProvider {...methods}>
       <div className="space-y-4">
         {/* Search */}
-        <DashboardSearch control={control} placeholder="Search Regions" className="max-w-sm" />
+        <div className="flex justify-between items-center">
+          <DashboardSearch control={control} name="query" placeholder="Search Regions" className="max-w-sm" />
+          <AddNewButton label="Add New" href="/dashboard/admin/destinations/regions/new" />
+        </div>
 
         {/* RESULT Found */}
         <div className="flex flex-col gap-4 h-full">

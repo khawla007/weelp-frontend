@@ -7,6 +7,18 @@ const TEXT_DARK = '#1e1e1e';
 const TEXT_MUTED = '#5a5a5a';
 const FONT_FAMILY = 'var(--font-interTight), Inter Tight, sans-serif';
 
+const CONNECTORS = new Set(['of', 'and', 'the', 'de', 'la', 'le', 'el', 'y']);
+
+const shortenCountryName = (name) => {
+  if (!name) return '';
+  const words = name.trim().split(/\s+/);
+  if (words.length <= 2) return name;
+  return words
+    .filter((w) => !CONNECTORS.has(w.toLowerCase()))
+    .map((w) => w[0]?.toUpperCase() ?? '')
+    .join('');
+};
+
 export const MenuList = ({ items = [], activeId, onSelect }) => (
   <ul className="flex flex-1 flex-col py-2">
     {items.map((item) => {
@@ -35,19 +47,19 @@ export const MenuList = ({ items = [], activeId, onSelect }) => (
   </ul>
 );
 
-export const CityCards = ({ cities = [], selectedCityId, onSelect }) => (
+export const CountryCards = ({ countries = [], selectedCountryId, onSelect }) => (
   <div className="flex gap-3 border-b border-[#cccccc80] px-[17px] pt-[17px] pb-[15px]">
-    {cities.slice(0, 3).map((city, idx) => {
-      const isSelected = city.id === selectedCityId;
+    {countries.slice(0, 3).map((country, idx) => {
+      const isSelected = country.id === selectedCountryId;
       return (
         <button
-          key={city.id}
+          key={country.id}
           type="button"
-          onClick={() => onSelect(city.id)}
+          onClick={() => onSelect(country.id)}
           aria-pressed={isSelected}
           className="group relative block h-[96px] w-[154px] shrink-0 overflow-hidden rounded-[6px] transition-all duration-150 hover:opacity-95 focus:outline-none"
         >
-          {city.featured_image ? <img src={city.featured_image} alt={city.name} className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-[#c9c9c9]" />}
+          {country.featured_image ? <img src={country.featured_image} alt={country.name} className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-[#c9c9c9]" />}
           <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%)' }} />
           {isSelected && <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[6px]" style={{ boxShadow: `inset 0 0 0 2px #ffffff, inset 0 0 0 4px ${GREEN}` }} />}
           <div className="absolute inset-x-[13px] bottom-[13px] flex flex-col items-start gap-[1px] text-left">
@@ -60,7 +72,7 @@ export const CityCards = ({ cities = [], selectedCityId, onSelect }) => (
                 fontWeight: 600,
               }}
             >
-              {idx + 1}. {city.name}
+              {idx + 1}. {shortenCountryName(country.name)}
             </span>
             <span
               className="leading-tight"
@@ -71,29 +83,29 @@ export const CityCards = ({ cities = [], selectedCityId, onSelect }) => (
                 fontWeight: 500,
               }}
             >
-              {city.activities_count ?? 0} Activities
+              {country.cities_count ?? 0} Cities
             </span>
           </div>
         </button>
       );
     })}
-    {cities.length === 0 && (
+    {countries.length === 0 && (
       <div className="w-full py-6 text-center text-sm" style={{ color: TEXT_MUTED }}>
-        No cities available.
+        No countries available.
       </div>
     )}
   </div>
 );
 
-export const PlaceGrid = ({ places = [] }) => {
-  if (places.length === 0) return null;
+export const CityGrid = ({ cities = [] }) => {
+  if (cities.length === 0) return null;
 
   return (
     <ul className="grid grid-cols-4 gap-x-4 gap-y-[18px] px-[19px] pt-[18px] pb-4">
-      {places.map((place) => (
-        <li key={`${place.citySlug}-${place.id}`}>
+      {cities.map((city) => (
+        <li key={city.id}>
           <Link
-            href={`/cities/${place.citySlug}`}
+            href={`/cities/${city.slug}`}
             className="transition hover:text-[color:var(--green,#57947d)]"
             style={{
               color: TEXT_MUTED,
@@ -102,7 +114,7 @@ export const PlaceGrid = ({ places = [] }) => {
               fontWeight: 500,
             }}
           >
-            {place.name}
+            {city.name}
           </Link>
         </li>
       ))}

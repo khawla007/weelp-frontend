@@ -1,6 +1,6 @@
 'use client';
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState, useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -10,11 +10,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2 } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Loader2, ArrowLeft, Upload, Trash2 } from 'lucide-react';
 import { createRegion, editRegion } from '@/lib/actions/regionActions';
 import useSWR from 'swr';
-import { fetcher } from '@/lib/fetchers';
-import { Checkbox } from '@/components/ui/checkbox';
+import { authFetcher } from '@/lib/fetchers';
+import { ComboboxMultiple } from '@/components/ui/combobox_multi';
+import { Medialibrary } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/media/MediaLibrary';
+import { useMediaStore } from '@/lib/store/useMediaStore';
 
 const FORM_REGION_VALUES_DEFAULT = {
   name: '',
@@ -29,9 +32,11 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
   const router = useRouter();
   const params = useParams();
   const { id } = params;
+  const [mediaDialogOpen, setMediaDialogOpen] = useState(false);
+  const { selectedMedia, resetMedia } = useMediaStore();
 
   // Fetch countries for multi-select
-  const { data: countriesData } = useSWR('/api/admin/countries/list', fetcher);
+  const { data: countriesData } = useSWR('/api/admin/countries/list', authFetcher);
   const countries = countriesData?.data || [];
 
   // Initialize Form
@@ -49,23 +54,19 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
     formState: { isSubmitting, errors },
     setValue,
     watch,
+    control,
   } = methods;
 
   // eslint-disable-next-line react-hooks/incompatible-library
-  const watchedCountries = watch('countries', []);
+  const image_url = watch('image_url');
 
-  // Handle country selection (multi-select via checkboxes)
-  const handleCountryToggle = (countryId) => {
-    const currentCountries = watchedCountries || [];
-    if (currentCountries.includes(countryId)) {
-      setValue(
-        'countries',
-        currentCountries.filter((id) => id !== countryId),
-      );
-    } else {
-      setValue('countries', [...currentCountries, countryId]);
+  useEffect(() => {
+    if (selectedMedia.length > 0) {
+      setValue('image_url', selectedMedia[0].url, { shouldDirty: true });
+      resetMedia();
+      setMediaDialogOpen(false);
     }
-  };
+  }, [selectedMedia, setValue, resetMedia]);
 
   // Form Submit
   const onSubmit = async (data) => {
@@ -100,12 +101,15 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
 
   return (
     <div className="min-h-screen w-full bg-gray-50 py-4 sm:px-6 lg:px-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">{id ? 'Edit Region' : 'New Region'}</h1>
-        <p className="text-sm text-gray-600 mt-1">{`${id ? 'Edit' : 'Create a new'} region with detailed information`}</p>
+      <div className="mb-6 flex items-center gap-3">
+        <ArrowLeft className="cursor-pointer" onClick={() => router.back()} />
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">{id ? 'Edit Region' : 'New Region'}</h1>
+          <p className="text-sm text-gray-600 mt-1">{`${id ? 'Edit' : 'Create a new'} region with detailed information`}</p>
+        </div>
       </div>
 
-      <Card className="max-w-3xl mx-auto">
+      <Card>
         <CardHeader>
           <CardTitle>{id ? 'Edit Region' : 'Create New Region'}</CardTitle>
         </CardHeader>
@@ -143,32 +147,47 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
               <Textarea id="description" placeholder="Enter region description..." rows={4} {...register('description')} />
             </div>
 
-            {/* Image URL */}
-            <div className="space-y-2">
-              <Label htmlFor="image_url">Image URL</Label>
-              <Input id="image_url" type="url" placeholder="https://example.com/image.jpg" {...register('image_url')} />
+            {/* Image */}
+            <div className="flex flex-col gap-3">
+              <Label>Image</Label>
+              {image_url ? (
+                <div className="relative inline-block">
+                  <img src={image_url} alt="region" className="h-40 w-auto rounded-md border" />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    onClick={() => setValue('image_url', '', { shouldDirty: true })}
+                    className="absolute top-2 right-2"
+                  >
+                    <Trash2 size={14} />
+                  </Button>
+                </div>
+              ) : null}
+              <Dialog open={mediaDialogOpen} onOpenChange={setMediaDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button type="button" variant="outline" className="w-fit">
+                    <Upload size={14} className="mr-2" />
+                    Select Media
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-screen-xl">
+                  <DialogTitle className="sr-only">Select Region Image</DialogTitle>
+                  <DialogDescription className="invisible">Pick a region image</DialogDescription>
+                  <Medialibrary closeDialog={() => setMediaDialogOpen(false)} alreadySelectedImages={image_url ? [{ url: image_url }] : []} />
+                </DialogContent>
+              </Dialog>
             </div>
 
-            {/* Countries - Multi-select via checkboxes */}
             <div className="space-y-2">
               <Label>Countries</Label>
-              <div className="border rounded-lg p-4 max-h-60 overflow-y-auto">
-                {countries.length === 0 ? (
-                  <p className="text-gray-500 text-sm">No countries available</p>
-                ) : (
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {countries.map((country) => (
-                      <div key={country.id} className="flex items-center space-x-2">
-                        <Checkbox id={`country-${country.id}`} checked={watchedCountries?.includes(country.id)} onCheckedChange={() => handleCountryToggle(country.id)} />
-                        <Label htmlFor={`country-${country.id}`} className="cursor-pointer text-sm font-normal">
-                          {country.name}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
+              <Controller
+                control={control}
+                name="countries"
+                render={({ field: { value, onChange } }) => (
+                  <ComboboxMultiple id="countries" type="Countries" items={countries} value={value || []} onChange={onChange} />
                 )}
-              </div>
-              <p className="text-xs text-gray-500">{watchedCountries?.length || 0} country(s) selected</p>
+              />
             </div>
 
             {/* Submit Button */}
