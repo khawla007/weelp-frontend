@@ -32,18 +32,17 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
   );
 
   return (
-    <div className="w-full sm:max-w-xs bg-white h-fit rounded-[11.5px] p-6 px-7" style={{ boxShadow: '0 2.22px 5.63px rgba(0,0,0,0.05)' }}>
-      <div className="flex flex-col gap-10">
+    <div className="w-full lg:max-w-xs bg-white h-fit rounded-[11.5px] p-4 sm:p-5 lg:p-6 lg:px-7" style={{ boxShadow: '0 2.22px 5.63px rgba(0,0,0,0.05)' }}>
+      <div className="flex flex-col gap-6 md:gap-8 lg:gap-10">
         {/* Item Type */}
         <div>
-          <h3 className="text-[18px] text-[#143042] mb-4" style={{ ...FONT, fontWeight: 500 }}>
+          <h3 className="text-base md:text-[17px] lg:text-[18px] text-[#143042] mb-4" style={{ ...FONT, fontWeight: 500 }}>
             Item Type
           </h3>
           <div className={`flex flex-col gap-3 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
             {[
               { value: '', label: 'All' },
               { value: 'activity', label: 'Activity' },
-              { value: 'package', label: 'Package' },
               { value: 'itinerary', label: 'Itinerary' },
             ].map((type) => (
               <label key={type.value} className="flex items-center gap-2 cursor-pointer">
@@ -65,10 +64,10 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
 
         {/* Categories */}
         <div>
-          <h3 className="text-[18px] text-[#143042] mb-4" style={{ ...FONT, fontWeight: 500 }}>
+          <h3 className="text-base md:text-[17px] lg:text-[18px] text-[#143042] mb-4" style={{ ...FONT, fontWeight: 500 }}>
             Categories
           </h3>
-          <div className="flex flex-col space-y-3 max-h-48 overflow-auto">
+          <div className="flex flex-col space-y-3 max-h-40 md:max-h-48 overflow-auto">
             <label className={`flex items-center gap-2 cursor-pointer ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
               <input
                 type="checkbox"
@@ -100,7 +99,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
 
         {/* Price Range */}
         <div>
-          <h3 className="text-[18px] text-[#143042] mb-4" style={{ ...FONT, fontWeight: 500 }}>
+          <h3 className="text-base md:text-[17px] lg:text-[18px] text-[#143042] mb-4" style={{ ...FONT, fontWeight: 500 }}>
             Price
           </h3>
           <div className={disabled ? 'opacity-50 pointer-events-none' : ''}>
@@ -118,7 +117,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
 
         {/* Ratings */}
         <div>
-          <h3 className="text-[18px] text-[#143042] mb-4" style={{ ...FONT, fontWeight: 500 }}>
+          <h3 className="text-base md:text-[17px] lg:text-[18px] text-[#143042] mb-4" style={{ ...FONT, fontWeight: 500 }}>
             Ratings
           </h3>
           <div className={`flex flex-col gap-3 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>

@@ -104,8 +104,8 @@ export default function CityToursSection({ cityName }) {
   if (!isLoading && itineraries.length === 0 && allTags.length === 0 && selectedTags.length === 0) return null;
 
   return (
-    <section ref={sectionRef} className="mx-auto flex w-full max-w-[1480px] flex-col gap-8 px-4 sm:px-6 xl:px-0 py-[70px]">
-      <h2 className="text-[28px] text-[#273f4e] capitalize" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
+    <section ref={sectionRef} className="mx-auto flex w-full max-w-[1480px] flex-col gap-8 px-4 md:px-6 xl:px-0 py-10 md:py-14 lg:py-[70px]">
+      <h2 className="text-xl md:text-2xl lg:text-[28px] font-semibold text-pretty text-[#273f4e] capitalize" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
         {cityName} Tours
       </h2>
 
@@ -118,13 +118,12 @@ export default function CityToursSection({ cityName }) {
               setSelectedTags([]);
               setCurrentPage(1);
             }}
-            className="rounded-[7.86px] border px-4 py-2 text-[#435a67] transition"
+            className="rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
             style={{
               backgroundColor: '#f2f2f2',
               borderColor: 'rgba(67, 90, 103, 0.26)',
               fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
               fontWeight: selectedTags.length === 0 ? 600 : 500,
-              fontSize: '16px',
             }}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f2f2f2')}
@@ -140,13 +139,12 @@ export default function CityToursSection({ cityName }) {
                   key={tag.id || tag.name}
                   type="button"
                   onClick={() => handleTagToggle(tag.name)}
-                  className="rounded-[7.86px] border px-4 py-2 text-[#435a67] transition"
+                  className="rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
                   style={{
                     backgroundColor: '#f2f2f2',
                     borderColor: 'rgba(67, 90, 103, 0.26)',
                     fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
                     fontWeight: isActive ? 600 : 500,
-                    fontSize: '16px',
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
                   onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f2f2f2')}
@@ -158,19 +156,18 @@ export default function CityToursSection({ cityName }) {
         </div>
 
         {/* Sort + View on Map — Always on right */}
-        <div className="flex shrink-0 items-center gap-3 ml-auto">
+        <div className="flex shrink-0 items-center gap-3 w-full md:w-auto md:ml-auto">
           {/* Sort Dropdown */}
           <div className="relative" ref={sortRef}>
             <button
               type="button"
               onClick={() => setShowSortDropdown((prev) => !prev)}
-              className="flex items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition"
+              className="flex items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
               style={{
                 backgroundColor: '#f2f2f2',
                 borderColor: 'rgba(67, 90, 103, 0.26)',
                 fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
                 fontWeight: 500,
-                fontSize: '16px',
               }}
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f2f2f2')}
@@ -198,13 +195,12 @@ export default function CityToursSection({ cityName }) {
           {/* View on Map — static */}
           <button
             type="button"
-            className="flex items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition"
+            className="flex items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
             style={{
               backgroundColor: '#f2f2f2',
               borderColor: 'rgba(67, 90, 103, 0.26)',
               fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
               fontWeight: 500,
-              fontSize: '16px',
             }}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f2f2f2')}
@@ -223,7 +219,7 @@ export default function CityToursSection({ cityName }) {
           ))}
         </div>
       ) : cards.length > 0 ? (
-        <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-[18px]">
           {cards.map((card, index) => (
             <ItemCard
               key={card.id || `${card.href}-${index}`}
@@ -240,7 +236,7 @@ export default function CityToursSection({ cityName }) {
         </div>
       ) : (
         <div className="flex min-h-[220px] items-center justify-center">
-          <span className="text-[16px] text-[#6b7b8d]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500 }}>
+          <span className="text-sm md:text-base text-[#6b7b8d]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500 }}>
             No itineraries found for the selected tags
           </span>
         </div>

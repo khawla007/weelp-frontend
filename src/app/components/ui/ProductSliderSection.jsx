@@ -29,12 +29,12 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
   if (!items.length) return null;
 
   return (
-    <section className={`container mx-auto flex flex-col gap-8 px-4 py-[100px] ${className}`}>
+    <section className={`container mx-auto flex flex-col gap-6 md:gap-8 px-4 py-12 md:py-16 lg:py-[100px] ${className}`}>
       <div className="flex items-center justify-between">
         <SectionHeader title={title} />
 
         {headerAction === 'navigation' && (
-          <div className="flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-2">
             <button
               type="button"
               className={`${navigationId}-prev flex size-9 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918] shadow-sm transition hover:bg-gray-50`}

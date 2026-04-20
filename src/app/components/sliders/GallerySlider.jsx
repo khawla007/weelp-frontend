@@ -52,13 +52,18 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff' }) => {
         >
           {imageData.map((val, index) => (
             <SwiperSlide key={index}>
-              <img loading="lazy" src={val?.url || val?.image} alt={val?.alt_text || `Slide ${index + 1}`} className="max-w-full xs:max-w-80 w-full h-[400px] object-cover" />
+              <img
+                loading="lazy"
+                src={val?.url || val?.image}
+                alt={val?.alt_text || `Slide ${index + 1}`}
+                className="max-w-full xs:max-w-80 w-full h-[240px] sm:h-[300px] md:h-[360px] lg:h-[400px] object-cover"
+              />
             </SwiperSlide>
           ))}
 
           {/* Show Gallery Button */}
           <button
-            className="sm:block absolute bottom-4 right-4 text-grayDark text-sm font-medium z-10 capitalize bg-white py-3 px-6 rounded-lg active:bg-grayDark active:text-white gallery_slider_toggle_btn"
+            className="md:block absolute bottom-4 right-4 text-grayDark text-sm font-medium z-10 capitalize bg-white py-3 px-6 rounded-lg active:bg-grayDark active:text-white gallery_slider_toggle_btn"
             onClick={toggleGallery}
           >
             View Gallery
@@ -79,7 +84,12 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff' }) => {
         >
           {imageData.map((val, index) => (
             <SwiperSlide key={index}>
-              <img loading="lazy" src={val?.url || val?.image} alt={`Thumbnail ${index + 1}`} className="max-w-80 w-full max-h-[70px] h-20 object-cover rounded-md cursor-pointer" />
+              <img
+                loading="lazy"
+                src={val?.url || val?.image}
+                alt={`Thumbnail ${index + 1}`}
+                className="max-w-80 w-full max-h-[56px] h-14 sm:max-h-[70px] sm:h-20 object-cover rounded-md cursor-pointer"
+              />
             </SwiperSlide>
           ))}
         </Swiper>

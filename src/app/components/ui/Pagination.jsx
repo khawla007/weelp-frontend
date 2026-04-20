@@ -33,12 +33,12 @@ export default function Pagination({ currentPage, totalPages, onPageChange, alig
   const pages = buildPageList(currentPage, totalPages);
 
   return (
-    <div className={`flex gap-2 ${align === 'center' ? 'justify-center' : 'justify-end'}`}>
+    <div className={`flex gap-1 md:gap-2 justify-center md:justify-end flex-wrap ${align === 'center' ? 'justify-center' : ''}`}>
       <button
         type="button"
         onClick={() => onPageChange(Math.max(1, currentPage - 1))}
         disabled={currentPage === 1}
-        className="flex size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#4f566b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition disabled:opacity-45"
+        className="flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#4f566b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition disabled:opacity-45"
         style={{ borderColor: '#e0e6eb' }}
         aria-label="Previous page"
       >
@@ -47,7 +47,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, alig
 
       {pages.map((page, index) =>
         page === '...' ? (
-          <span key={`ellipsis-${index}`} className="flex size-[35px] items-center justify-center text-[#435a67]" style={BTN_STYLE}>
+          <span key={`ellipsis-${index}`} className="flex size-10 md:size-[35px] items-center justify-center text-[#435a67]" style={BTN_STYLE}>
             ...
           </span>
         ) : (
@@ -55,7 +55,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, alig
             key={page}
             type="button"
             onClick={() => onPageChange(page)}
-            className={`flex size-[35px] items-center justify-center rounded-[7.68px] border text-[#435a67] transition ${
+            className={`flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border text-[#435a67] transition ${
               currentPage === page ? 'bg-white opacity-100 shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)]' : 'bg-white opacity-45'
             }`}
             style={BTN_STYLE}
@@ -69,7 +69,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, alig
         type="button"
         onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
         disabled={currentPage === totalPages}
-        className="flex size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#4f566b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition disabled:opacity-45"
+        className="flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#4f566b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition disabled:opacity-45"
         style={{ borderColor: '#e0e6eb' }}
         aria-label="Next page"
       >

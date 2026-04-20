@@ -7,8 +7,8 @@ import Link from 'next/link';
 
 const ReviewCard = ({ title, rating, comment }) => {
   return (
-    <div className="bg-white p-8 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 flex flex-col gap-1 sm:w-[360px] w-full h-[200px] ">
-      <h5 className="text-black font-medium text-base">{title}</h5>
+    <div className="w-full sm:w-[360px] bg-white border rounded-2xl p-5 sm:p-6 md:p-8 min-h-[200px] shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 flex flex-col gap-2 overflow-hidden">
+      <h5 className="text-black font-medium text-sm md:text-base font-semibold line-clamp-1">{title}</h5>
       <div className="flex">
         {Array(rating)
           .fill()
@@ -16,7 +16,7 @@ const ReviewCard = ({ title, rating, comment }) => {
             <Star key={index} className="fill-[#fed141ff] stroke-none" size={16} />
           ))}
       </div>
-      <p className="text-base text-black overflow-x-hidden tfc_scroll">{comment}</p>
+      <p className="text-sm md:text-base text-black line-clamp-4 text-pretty">{comment}</p>
     </div>
   );
 };

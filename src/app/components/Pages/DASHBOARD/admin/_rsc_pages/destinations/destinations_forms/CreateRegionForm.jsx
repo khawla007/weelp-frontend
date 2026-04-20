@@ -153,13 +153,7 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
               {image_url ? (
                 <div className="relative inline-block">
                   <img src={image_url} alt="region" className="h-40 w-auto rounded-md border" />
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="icon"
-                    onClick={() => setValue('image_url', '', { shouldDirty: true })}
-                    className="absolute top-2 right-2"
-                  >
+                  <Button type="button" variant="destructive" size="icon" onClick={() => setValue('image_url', '', { shouldDirty: true })} className="absolute top-2 right-2">
                     <Trash2 size={14} />
                   </Button>
                 </div>
@@ -184,9 +178,7 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
               <Controller
                 control={control}
                 name="countries"
-                render={({ field: { value, onChange } }) => (
-                  <ComboboxMultiple id="countries" type="Countries" items={countries} value={value || []} onChange={onChange} />
-                )}
+                render={({ field: { value, onChange } }) => <ComboboxMultiple id="countries" type="Countries" items={countries} value={value || []} onChange={onChange} />}
               />
             </div>
 

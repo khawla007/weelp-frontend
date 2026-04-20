@@ -58,9 +58,9 @@ export default function CityFilterSection() {
   }, [priceRange, selectedItemType, selectedCategories, currentPage, city, ratingFilter]);
 
   return (
-    <div ref={sectionRef} className="mx-auto max-w-[1480px] px-4 sm:px-6 xl:px-0 py-[70px]">
+    <div ref={sectionRef} className="mx-auto max-w-[1480px] px-4 sm:px-6 xl:px-0 py-10 md:py-14 lg:py-[70px]">
       {/* Sidebar + Grid */}
-      <div className="flex flex-col sm:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         <FilterSidebar
           selectedItemType={selectedItemType}
           onItemTypeChange={(type) => {
@@ -90,7 +90,7 @@ export default function CityFilterSection() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
               {products.length > 0 ? (
                 products.map((product, index) => {
                   const card = mapProductToItemCard(product, city);

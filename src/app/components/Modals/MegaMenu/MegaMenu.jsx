@@ -10,7 +10,10 @@ const MegaMenu = () => {
   const [activeId, setActiveId] = useState(TRENDING_ID);
   const [selectedCountryId, setSelectedCountryId] = useState(null);
 
-  const items = useMemo(() => [{ id: TRENDING_ID, name: 'Trending Destinations', countries: trending }, ...regions.map((r) => ({ id: r.id, name: r.name, countries: r.countries }))], [regions, trending]);
+  const items = useMemo(
+    () => [{ id: TRENDING_ID, name: 'Trending Destinations', countries: trending }, ...regions.map((r) => ({ id: r.id, name: r.name, countries: r.countries }))],
+    [regions, trending],
+  );
 
   const activeItem = useMemo(() => items.find((i) => i.id === activeId) ?? items[0], [items, activeId]);
   const displayedCountries = useMemo(() => (activeItem?.countries ?? []).slice(0, 3), [activeItem]);
