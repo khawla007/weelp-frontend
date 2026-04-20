@@ -22,7 +22,7 @@ const WeelpRecommendations = async () => {
 
   return (
     <div className="w-full bg-[#f3f5f6]">
-      <div className="w-full px-[60px] py-10">
+      <div className="w-full px-4 py-10 lg:px-[60px]">
         <h3 className="text-[18px] text-[#243141] mb-2" style={{ fontFamily: fontIT, fontWeight: 600, letterSpacing: '-0.38px' }}>
           Weelp Recommendations
         </h3>

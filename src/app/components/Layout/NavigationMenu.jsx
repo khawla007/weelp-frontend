@@ -29,7 +29,7 @@ const DesktopMenu = ({ stickyHeader }) => {
   return (
     <div className="hidden lg:block w-full">
       <div className={`${stickyHeader ? 'hidden' : 'block'} border-b border-[#ededed] bg-[linear-gradient(180deg,#eaeaea_0%,#ffffff66_100%)]`}>
-        <div className="mx-auto flex h-[46px] w-full items-center justify-between px-[60px]">
+        <div className="mx-auto flex h-[46px] w-full items-center justify-between gap-4 px-4 md:px-8 xl:px-[60px]">
           <div className="flex items-center gap-4">
             <div className="inline-flex items-center gap-2 text-[14px] text-[#273f4e]">
               <Smartphone className="size-[18px] text-[#273f4e]" />
@@ -56,7 +56,7 @@ const DesktopMenu = ({ stickyHeader }) => {
       <div
         className={`border-b border-[#ededed] ${stickyHeader ? 'fixed top-0 left-0 right-0 z-[99999] bg-[#ffffffcc] shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] backdrop-blur-[47px]' : 'bg-[#ffffffcc] backdrop-blur-[47px]'}`}
       >
-        <div className="grid h-[66px] w-full items-center px-[60px] py-[8px]" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
+        <div className="grid h-[66px] w-full items-center gap-4 px-4 py-[8px] md:px-8 xl:px-[60px]" style={{ gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)' }}>
           <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start focus:outline-none">
             <img src={getLogoUrl()} alt="Weelp" className="h-9 w-auto" />
             <span className="text-[18px] font-semibold text-[#142a38]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
@@ -98,16 +98,19 @@ const NavMenuDesktop = () => {
 
   return (
     <nav aria-label="Primary" className="relative flex items-center justify-center">
-      <ul className="flex items-center gap-[36px]">
+      <ul className="flex items-center gap-5 xl:gap-9">
         {HEADER_NAV_ITEMS.map((nav, index) => {
           if (nav.hasMegaMenu) {
             return (
               <li key={nav.title} onMouseEnter={scheduleOpen} onMouseLeave={scheduleClose}>
                 <button
                   type="button"
-                  className="flex items-center gap-2 text-[16px] font-medium text-[#142a38]/70 transition hover:text-[#142a38]"
+                  className="flex items-center gap-2 whitespace-nowrap text-[15px] font-medium text-[#142a38]/70 transition hover:text-[#142a38] focus-visible:outline-none focus-visible:text-[#142a38] xl:text-[16px]"
                   onClick={() => setMegaOpen((v) => !v)}
+                  onFocus={scheduleOpen}
+                  onBlur={scheduleClose}
                   aria-expanded={megaOpen}
+                  aria-haspopup="menu"
                 >
                   {index === 0 && <MapPin className="size-[15px] text-[#142a38]/70" strokeWidth={1.24} />}
                   {nav.title}
@@ -117,7 +120,7 @@ const NavMenuDesktop = () => {
           }
           return (
             <li key={nav.title}>
-              <Link className="flex items-center gap-2 text-[16px] font-medium text-[#142a38]/70 transition hover:text-[#142a38]" href={nav.href}>
+              <Link className="flex items-center gap-2 whitespace-nowrap text-[15px] font-medium text-[#142a38]/70 transition hover:text-[#142a38] xl:text-[16px]" href={nav.href}>
                 {index === 0 && <MapPin className="size-[15px] text-[#142a38]/70" strokeWidth={1.24} />}
                 {nav.title}
               </Link>
@@ -167,7 +170,7 @@ export const HeaderAccount = () => {
 
   return (
     <div className="relative justify-self-end">
-      <ul className="flex items-center gap-[24px]">
+      <ul className="flex items-center gap-5 xl:gap-[24px]">
         <li>
           <button type="button" className="relative flex items-center justify-center text-[#0c2536] transition hover:text-[#142a38]" onClick={handleShowCart}>
             <ShoppingCart className="size-5" strokeWidth={1.5} />

@@ -14,37 +14,37 @@ const Footer = () => {
     <footer>
       {/* ── Main Footer ── */}
       <div className="w-full bg-white">
-        <div className="w-full px-4 pt-10 sm:px-6 sm:pt-14 md:px-10 md:pt-[71px] lg:px-[60px]">
+        <div className="w-full px-4 pt-10 sm:pt-14 md:pt-[71px] lg:px-[60px]">
           {/* Columns + watermark behind */}
-          <div className="relative">
+          <div className="relative overflow-hidden">
             {/* Watermark behind columns — bottom-left */}
             <p
-              className="absolute bottom-0 left-0 select-none pointer-events-none text-[64px] sm:text-[96px] md:text-[140px] lg:text-[217px] leading-none text-[#142a38]"
+              className="absolute bottom-0 left-0 select-none pointer-events-none text-[56px] sm:text-[96px] md:text-[140px] lg:text-[180px] xl:text-[217px] leading-none text-[#142a38]"
               style={{ fontFamily: fontIT, fontWeight: 700, opacity: 0.04 }}
             >
               Weelp.
             </p>
 
-            <div className="relative z-10 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-5">
+            <div className="relative z-10 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 md:grid-cols-4 md:gap-8 lg:grid-cols-5">
               {FOOTER_COLUMNS.map((column) => (
                 <div key={column.title} className="space-y-4">
-                  <h3 className="text-[18px] text-[#243141]" style={{ fontFamily: fontIT, fontWeight: 600, letterSpacing: '-0.38px' }}>
+                  <h3 className="text-[15px] md:text-[16px] lg:text-[18px] text-[#243141]" style={{ fontFamily: fontIT, fontWeight: 600, letterSpacing: '-0.38px' }}>
                     {column.title}
                   </h3>
                   <div className="space-y-3">
                     {column.links.map((link) => (
                       <div key={link.label} className="flex items-center gap-2">
                         {link.href ? (
-                          <Link href={link.href} className="text-[18px] text-[#6f7680] transition hover:text-[#243141]" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
+                          <Link href={link.href} className="text-[14px] md:text-[15px] lg:text-[18px] text-[#6f7680] transition hover:text-[#243141]" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
                             {link.label}
                           </Link>
                         ) : (
-                          <span className="text-[18px] text-[#6f7680]" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
+                          <span className="text-[14px] md:text-[15px] lg:text-[18px] text-[#6f7680]" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
                             {link.label}
                           </span>
                         )}
                         {link.label === 'Career' && (
-                          <span className="rounded-[9px] border-2 border-[#759c8d1a] px-2.5 py-1 text-[15px] text-[#759c8d]" style={{ fontFamily: fontIT, fontWeight: 600, letterSpacing: '0.17px' }}>
+                          <span className="rounded-[9px] border-2 border-[#759c8d1a] px-2 py-0.5 text-[11px] md:px-2.5 md:py-1 md:text-[13px] lg:text-[15px] text-[#759c8d]" style={{ fontFamily: fontIT, fontWeight: 600, letterSpacing: '0.17px' }}>
                             We are hiring
                           </span>
                         )}
@@ -55,8 +55,8 @@ const Footer = () => {
               ))}
 
               {/* Payment Partners column */}
-              <div className="space-y-4">
-                <h3 className="text-[18px] text-[#243141]" style={{ fontFamily: fontIT, fontWeight: 600, letterSpacing: '-0.38px' }}>
+              <div className="col-span-2 space-y-4 sm:col-span-1">
+                <h3 className="text-[15px] md:text-[16px] lg:text-[18px] text-[#243141]" style={{ fontFamily: fontIT, fontWeight: 600, letterSpacing: '-0.38px' }}>
                   Payment Partners
                 </h3>
                 <img src="/assets/images/payment-partners.png" alt="Payment Partners - Visa, Mastercard, PayPal, Apple Pay, Google Pay" className="w-full max-w-[355px] h-auto" />
@@ -64,7 +64,7 @@ const Footer = () => {
             </div>
 
             {/* Social icons — bottom right */}
-            <div className="relative z-10 mt-6 flex justify-end gap-6 pb-4">
+            <div className="relative z-10 mt-6 flex flex-wrap justify-end gap-5 pb-4 sm:gap-6">
               <a href="#" aria-label="Instagram" className="text-[#8f8f8f] hover:text-[#243141] transition">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="2" width="20" height="20" rx="5" />
@@ -90,15 +90,15 @@ const Footer = () => {
           <div className="pt-[20px] pb-[20px]">
             <div className="mb-[20px]" style={{ borderTop: '1.3px solid #e3e3e3a6' }} />
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-              <p className="text-[18px] text-[#6f7680]" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
+              <p className="text-[13px] md:text-[15px] lg:text-[18px] text-[#6f7680]" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
                 &copy; 2024 - Weelp. All rights reserved.
               </p>
-              <div className="flex items-center gap-6">
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6">
                 {FOOTER_LEGAL_ITEMS.map((item) => (
                   <Link
                     key={item.label}
                     href={item.href}
-                    className="text-[18px] text-[#6f7680] cursor-pointer transition hover:text-[#243141]"
+                    className="text-[13px] md:text-[15px] lg:text-[18px] text-[#6f7680] cursor-pointer transition hover:text-[#243141]"
                     style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}
                   >
                     {item.label}

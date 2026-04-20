@@ -11,7 +11,7 @@ const recommendationColumns = [
 
 const WeelpRecommendations = () => {
   return (
-    <section className="bg-[#f3f5f6] w-full px-[60px] py-8">
+    <section className="bg-[#f3f5f6] w-full px-4 py-8 lg:px-[60px]">
       <h2 className="text-[#243141] text-lg font-semibold mb-4">Weelp Recommendations</h2>
       <div className="border-t border-[#e3e3e3a6] mb-6" />
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-6">
