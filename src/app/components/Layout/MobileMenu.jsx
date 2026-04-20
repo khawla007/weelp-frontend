@@ -189,17 +189,19 @@ const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error }) => (
       <div className="mt-3 overflow-hidden rounded-[18px] border border-[#E5E4E1] bg-white">
         {isLoading && <div className="px-4 py-6 text-sm text-[#6D6C6A]">Loading…</div>}
         {error && <div className="px-4 py-6 text-sm text-red-500">Couldn&rsquo;t load destinations.</div>}
-        {!isLoading && !error && regionItems.map((region, i) => (
-          <button
-            key={region.id}
-            type="button"
-            onClick={() => onOpenRegion(region)}
-            className={`flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-[15px] font-medium text-[#1A1918] active:bg-[#f0f0f0] ${i > 0 ? 'border-t border-[#E5E4E1]' : ''}`}
-          >
-            <span className="truncate">{region.name}</span>
-            <ChevronRight className="size-4 shrink-0 text-[#6D6C6A]" />
-          </button>
-        ))}
+        {!isLoading &&
+          !error &&
+          regionItems.map((region, i) => (
+            <button
+              key={region.id}
+              type="button"
+              onClick={() => onOpenRegion(region)}
+              className={`flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-[15px] font-medium text-[#1A1918] active:bg-[#f0f0f0] ${i > 0 ? 'border-t border-[#E5E4E1]' : ''}`}
+            >
+              <span className="truncate">{region.name}</span>
+              <ChevronRight className="size-4 shrink-0 text-[#6D6C6A]" />
+            </button>
+          ))}
       </div>
     </div>
   </div>

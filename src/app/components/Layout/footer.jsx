@@ -35,7 +35,11 @@ const Footer = () => {
                     {column.links.map((link) => (
                       <div key={link.label} className="flex items-center gap-2">
                         {link.href ? (
-                          <Link href={link.href} className="text-[14px] md:text-[15px] lg:text-[18px] text-[#6f7680] transition hover:text-[#243141]" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
+                          <Link
+                            href={link.href}
+                            className="text-[14px] md:text-[15px] lg:text-[18px] text-[#6f7680] transition hover:text-[#243141]"
+                            style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}
+                          >
                             {link.label}
                           </Link>
                         ) : (
@@ -44,7 +48,10 @@ const Footer = () => {
                           </span>
                         )}
                         {link.label === 'Career' && (
-                          <span className="rounded-[9px] border-2 border-[#759c8d1a] px-2 py-0.5 text-[11px] md:px-2.5 md:py-1 md:text-[13px] lg:text-[15px] text-[#759c8d]" style={{ fontFamily: fontIT, fontWeight: 600, letterSpacing: '0.17px' }}>
+                          <span
+                            className="rounded-[9px] border-2 border-[#759c8d1a] px-2 py-0.5 text-[11px] md:px-2.5 md:py-1 md:text-[13px] lg:text-[15px] text-[#759c8d]"
+                            style={{ fontFamily: fontIT, fontWeight: 600, letterSpacing: '0.17px' }}
+                          >
                             We are hiring
                           </span>
                         )}
