@@ -126,6 +126,12 @@ const Tours = ({ items, taglist }) => {
       <ul className="grid grid-col-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-16">
         {filteredData &&
           filteredData.map((val, index) => {
+            const productPrice = val?.item_type === 'itinerary'
+              ? val?.schedule_total_price
+              : (val?.pricing?.regular_price ?? val?.base_pricing?.variations?.[0]?.regular_price);
+            const productCurrency = val?.item_type === 'itinerary'
+              ? val?.schedule_total_currency
+              : val?.base_pricing?.currency;
             return (
               <li key={index}>
                 <GlobalCard
@@ -133,7 +139,8 @@ const Tours = ({ items, taglist }) => {
                   imgsrc={val?.image}
                   productRating={val?.rating}
                   productTitle={val?.name}
-                  productPrice={val?.schedule_total_price ?? val?.base_pricing?.variations?.[0]?.regular_price}
+                  productPrice={productPrice}
+                  currency={productCurrency}
                   productId={val?.id}
                   productSlug={val?.slug}
                   citySlug={val?.city_slug}

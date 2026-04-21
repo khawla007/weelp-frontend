@@ -195,16 +195,25 @@ export const RegionFilter = () => {
         ) : (
           <div className="flex gap-4 flex-wrap">
             {products.length > 0 ? (
-              products.map((product, index) => (
-                <GlobalCard
-                  key={index}
-                  productTitle={product?.name}
-                  productSlug={product?.slug}
-                  item_type={product?.item_type}
-                  productPrice={product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price}
-                  citySlug={product?.city_slug}
-                />
-              ))
+              products.map((product, index) => {
+                const productPrice = product?.item_type === 'itinerary'
+                  ? product?.schedule_total_price
+                  : (product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price);
+                const productCurrency = product?.item_type === 'itinerary'
+                  ? product?.schedule_total_currency
+                  : product?.pricing?.currency;
+                return (
+                  <GlobalCard
+                    key={index}
+                    productTitle={product?.name}
+                    productSlug={product?.slug}
+                    item_type={product?.item_type}
+                    productPrice={productPrice}
+                    currency={productCurrency}
+                    citySlug={product?.city_slug}
+                  />
+                );
+              })
             ) : (
               <p className="w-full text-center py-8">Sorry No Product Found</p>
             )}
