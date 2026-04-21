@@ -54,8 +54,8 @@ const ProductSlider = ({ data }) => {
                 productTitle={product?.name}
                 productSlug={product?.slug}
                 item_type={product?.item_type}
-                productPrice={product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price}
-                currency={product?.pricing?.currency}
+                productPrice={product?.item_type === 'itinerary' ? product?.schedule_total_price : (product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price)}
+                currency={product?.item_type === 'itinerary' ? product?.schedule_total_currency : product?.pricing?.currency}
                 productRating={product?.rating}
                 imgsrc={product?.featured_image || product?.media_gallery?.[0]?.media?.url || product?.image}
                 citySlug={product?.city_slug}
