@@ -109,7 +109,7 @@ export default function SharedToursSection({ scope, slug, title }) {
   if (!isLoading && itineraries.length === 0 && allTags.length === 0 && selectedTags.length === 0) return null;
 
   return (
-    <section ref={sectionRef} className="mx-auto flex w-full max-w-[1480px] flex-col gap-8 px-4 md:px-6 xl:px-0 py-10 md:py-14 lg:py-[70px]">
+    <section ref={sectionRef} className="mx-auto flex w-full max-w-[1480px] flex-col gap-8 px-4 md:px-6 xl:px-0 py-10 md:py-14 lg:py-[100px]">
       <h2 className="text-xl md:text-2xl lg:text-[28px] font-semibold text-pretty text-[#273f4e] capitalize" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
         {title} Tours
       </h2>

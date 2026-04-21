@@ -63,7 +63,7 @@ export default function SharedFilterSection({ scope, slug }) {
   }, [priceRange, selectedItemType, selectedCategories, currentPage, slug, ratingFilter, scope]);
 
   return (
-    <div ref={sectionRef} className="mx-auto max-w-[1480px] px-4 sm:px-6 xl:px-0 py-10 md:py-14 lg:py-[70px]">
+    <div ref={sectionRef} className="mx-auto max-w-[1480px] px-4 sm:px-6 xl:px-0 py-10 md:py-14 lg:py-[100px]">
       {/* Sidebar + Grid */}
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="hidden lg:block">

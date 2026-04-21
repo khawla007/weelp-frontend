@@ -81,7 +81,7 @@ export default async function Region({ params }) {
       <BannerSection />
       {/* <CitySection data={whiteCardData} /> */}
 
-      {cityData.length > 0 && <BrowseDestinationsSection cities={cityData} title="Must Visit Cities" subtitleMode="count" navigationPrefix="region-must-visit" className="py-[70px]" />}
+      {cityData.length > 0 && <BrowseDestinationsSection cities={cityData} title="Must Visit Cities" subtitleMode="count" navigationPrefix="region-must-visit" className="py-[100px]" />}
 
       <BreakSection marginTop="m-0 p-0" />
 
@@ -93,7 +93,7 @@ export default async function Region({ params }) {
 
       <ReviewSectionRegion />
       {/* Blog Section */}
-      <GuideSection sectionTitle="Blogs" data={fakeData} className="py-[70px]" />
+      <GuideSection sectionTitle="Blogs" data={fakeData} className="py-[100px]" />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={schemaJsonSample()} key="product-jsonld" />
     </>

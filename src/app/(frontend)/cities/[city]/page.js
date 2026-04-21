@@ -93,7 +93,7 @@ export default async function CityPage({ params }) {
       {typeof citydata === 'object' && citydata?.location_details && <ReviewSectionCity cityData={citydata} reviews={featuredReviews} />}
 
       {/* Blogs Slider — only if blogs exist */}
-      {blogsData.length > 0 && <BlogSection blogs={blogsData} title="Blogs" navigationId="city-blogs" className="py-[70px]" />}
+      {blogsData.length > 0 && <BlogSection blogs={blogsData} title="Blogs" navigationId="city-blogs" className="py-[100px]" />}
 
       {/* JSON-LD Schema */}
       {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}
