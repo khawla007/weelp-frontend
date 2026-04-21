@@ -30,6 +30,7 @@ import { Medialibrary } from '../media/MediaLibrary';
 import { Card } from '@/components/ui/card';
 import { deleteItineraryItems, editItinerary } from '@/lib/actions/itineraries'; // server actions for handling data
 import { updateAndApproveCreatorItinerary } from '@/lib/actions/creatorItineraries';
+import { ConfirmRemoveScheduleItemDialog } from './ConfirmRemoveScheduleItemDialog';
 import dynamic from 'next/dynamic';
 
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnItinerary'), { ssr: false });
@@ -82,6 +83,10 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
 
   // addons modify
   const initialAdd = Array.isArray(addons) ? addons.map((item) => item.addon_id) : [];
+
+  // Dialog state for removing schedule items
+  const [pendingRemoval, setPendingRemoval] = useState(null); // { kind: 'day'|'activity'|'transfer', payload: <args> }
+  const [isRemoving, setIsRemoving] = useState(false);
 
   // intial states
   const methods = useForm({
@@ -619,7 +624,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                     readOnly
                   />
                   <Input type="text" {...register(`schedules.${index}.title`)} className="flex-1 focus-visible:ring-secondaryDark focus-visible:ring-1" placeholder="e.g., Arrival in Port Blair" />
-                  <Trash2 onClick={() => handleRemoveDay(item, id, index)} className="text-red-400 cursor-pointer" size={16} />
+                  <Trash2 onClick={() => setPendingRemoval({ kind: 'day', payload: { item, itineraryId: id, dayIndex: index } })} className="text-red-400 cursor-pointer" size={16} />
                 </div>
 
                 <div className="flex flex-col space-y-4">
@@ -653,7 +658,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                                 }
                               />
                               {/* <Trash onClick={() => removeActivityHandle(filteredActivity)} className=" cursor-pointer " size={20} /> */}
-                              <Trash2 onClick={() => removeActivityHandle(filteredActivity, id)} className="text-red-400 cursor-pointer" size={16} />
+                              <Trash2 onClick={() => setPendingRemoval({ kind: 'activity', payload: { filteredActivity, itineraryId: id } })} className="text-red-400 cursor-pointer" size={16} />
                             </div>
                           </div>
                         </div>
@@ -690,7 +695,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                                     })
                                   }
                                 />
-                                <Trash2 onClick={() => removeTransferHandle(filteredTransfer, id)} className="text-red-400 cursor-pointer" size={16} />
+                                <Trash2 onClick={() => setPendingRemoval({ kind: 'transfer', payload: { filteredTransfer, itineraryId: id } })} className="text-red-400 cursor-pointer" size={16} />
                               </div>
                             </div>
                           </div>
@@ -2130,6 +2135,36 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
           </form>
         </FormProvider>
       </div>
+
+      {/* Confirm Remove Schedule Item Dialog */}
+      <ConfirmRemoveScheduleItemDialog
+        open={!!pendingRemoval}
+        onOpenChange={(v) => {
+          if (!v) setPendingRemoval(null);
+        }}
+        itemLabel={pendingRemoval?.kind ?? 'item'}
+        isRemoving={isRemoving}
+        onConfirm={async () => {
+          if (!pendingRemoval) return;
+          setIsRemoving(true);
+          try {
+            const { kind, payload } = pendingRemoval;
+            if (kind === 'day') {
+              const { item, itineraryId, dayIndex } = payload;
+              await handleRemoveDay(item, itineraryId, dayIndex);
+            } else if (kind === 'activity') {
+              const { filteredActivity, itineraryId } = payload;
+              await removeActivityHandle(filteredActivity, itineraryId);
+            } else if (kind === 'transfer') {
+              const { filteredTransfer, itineraryId } = payload;
+              await removeTransferHandle(filteredTransfer, itineraryId);
+            }
+          } finally {
+            setIsRemoving(false);
+            setPendingRemoval(null);
+          }
+        }}
+      />
     </div>
   );
 };
