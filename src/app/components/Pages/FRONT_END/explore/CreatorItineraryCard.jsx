@@ -18,7 +18,7 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn }) {
   const featuredMedia = itinerary?.media_gallery?.find((m) => m.is_featured)?.media?.url || itinerary?.media_gallery?.[0]?.media?.url;
   const featuredImage = featuredMedia || itinerary?.featured_image || '/assets/Card.webp';
   const price = itinerary?.display_price;
-  const currency = itinerary?.currency || 'USD';
+  const currency = itinerary?.display_currency ?? '';
   const title = itinerary?.name || 'Untitled Itinerary';
   const slug = itinerary?.slug;
 
@@ -83,7 +83,7 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn }) {
           {price && (
             <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/70 to-transparent px-3 py-2">
               <span className="text-white text-sm font-semibold">
-                {currency} {price}
+                {currency} {Number(price).toFixed(2)}
               </span>
             </div>
           )}
