@@ -45,23 +45,15 @@ const Tours = ({ items, taglist }) => {
     if (sortValue === '5000') {
       // Sort by Price: Low to High
       sortedData.sort((a, b) => {
-        const priceA = a.item_type === 'itinerary'
-          ? parseFloat(a.schedule_total_price ?? 0)
-          : parseFloat(a.schedule_total_price ?? a.base_pricing?.variations?.[0]?.regular_price ?? 0);
-        const priceB = b.item_type === 'itinerary'
-          ? parseFloat(b.schedule_total_price ?? 0)
-          : parseFloat(b.schedule_total_price ?? b.base_pricing?.variations?.[0]?.regular_price ?? 0);
+        const priceA = a.item_type === 'itinerary' ? parseFloat(a.schedule_total_price ?? 0) : parseFloat(a.schedule_total_price ?? a.base_pricing?.variations?.[0]?.regular_price ?? 0);
+        const priceB = b.item_type === 'itinerary' ? parseFloat(b.schedule_total_price ?? 0) : parseFloat(b.schedule_total_price ?? b.base_pricing?.variations?.[0]?.regular_price ?? 0);
         return priceA - priceB;
       });
     } else if (sortValue === '0') {
       // Sort by Price: High to Low
       sortedData.sort((a, b) => {
-        const priceA = a.item_type === 'itinerary'
-          ? parseFloat(a.schedule_total_price ?? 0)
-          : parseFloat(a.schedule_total_price ?? a.base_pricing?.variations?.[0]?.sale_price ?? 0);
-        const priceB = b.item_type === 'itinerary'
-          ? parseFloat(b.schedule_total_price ?? 0)
-          : parseFloat(b.schedule_total_price ?? b.base_pricing?.variations?.[0]?.regular_price ?? 0);
+        const priceA = a.item_type === 'itinerary' ? parseFloat(a.schedule_total_price ?? 0) : parseFloat(a.schedule_total_price ?? a.base_pricing?.variations?.[0]?.sale_price ?? 0);
+        const priceB = b.item_type === 'itinerary' ? parseFloat(b.schedule_total_price ?? 0) : parseFloat(b.schedule_total_price ?? b.base_pricing?.variations?.[0]?.regular_price ?? 0);
         return priceB - priceA;
       });
     }

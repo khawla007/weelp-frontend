@@ -30,12 +30,8 @@ export function mapProductToItemCard(product, citySlug) {
     product.image ||
     '/assets/Card.webp';
 
-  const rawPrice = product.item_type === 'itinerary'
-    ? (product.schedule_total_price ?? null)
-    : (product.pricing?.regular_price ?? product.base_pricing?.variations?.[0]?.regular_price ?? null);
-  const currency = product.item_type === 'itinerary'
-    ? product.schedule_total_currency
-    : (product.pricing?.currency ?? product.base_pricing?.currency ?? null);
+  const rawPrice = product.item_type === 'itinerary' ? (product.schedule_total_price ?? null) : (product.pricing?.regular_price ?? product.base_pricing?.variations?.[0]?.regular_price ?? null);
+  const currency = product.item_type === 'itinerary' ? product.schedule_total_currency : (product.pricing?.currency ?? product.base_pricing?.currency ?? null);
   const price = rawPrice && currency ? formatCurrency(parseInt(rawPrice), currency) : rawPrice ? `$${rawPrice}` : '';
 
   const category = product.item_type ? product.item_type.charAt(0).toUpperCase() + product.item_type.slice(1) : '';

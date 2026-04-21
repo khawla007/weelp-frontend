@@ -96,13 +96,12 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     const addonsTotal = selectedAddons.reduce((sum, a) => sum + Number(a.addon_sale_price ?? a.addon_price), 0);
 
     // For itinerary items, use only schedule_total_price; for activity/package, use pricing fallback chain
-    const basePrice = productData?.item_type === 'itinerary'
-      ? Number(productData?.schedule_total_price ?? 0)
-      : Number(productData?.schedule_total_price ?? productData?.pricing?.regular_price ?? productData?.base_pricing?.variations?.[0]?.regular_price ?? 0);
+    const basePrice =
+      productData?.item_type === 'itinerary'
+        ? Number(productData?.schedule_total_price ?? 0)
+        : Number(productData?.schedule_total_price ?? productData?.pricing?.regular_price ?? productData?.base_pricing?.variations?.[0]?.regular_price ?? 0);
 
-    const currency = productData?.item_type === 'itinerary'
-      ? (productData?.schedule_total_currency || 'usd')
-      : (productData?.pricing?.currency || productData?.base_pricing?.currency || 'usd');
+    const currency = productData?.item_type === 'itinerary' ? productData?.schedule_total_currency || 'usd' : productData?.pricing?.currency || productData?.base_pricing?.currency || 'usd';
 
     // add item to cart
     addItem({

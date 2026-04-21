@@ -196,12 +196,8 @@ export const RegionFilter = () => {
           <div className="flex gap-4 flex-wrap">
             {products.length > 0 ? (
               products.map((product, index) => {
-                const productPrice = product?.item_type === 'itinerary'
-                  ? product?.schedule_total_price
-                  : (product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price);
-                const productCurrency = product?.item_type === 'itinerary'
-                  ? product?.schedule_total_currency
-                  : product?.pricing?.currency;
+                const productPrice = product?.item_type === 'itinerary' ? product?.schedule_total_price : (product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price);
+                const productCurrency = product?.item_type === 'itinerary' ? product?.schedule_total_currency : product?.pricing?.currency;
                 return (
                   <GlobalCard
                     key={index}
