@@ -1,10 +1,4 @@
-import {
-  calculateActivityPrice,
-  pickGroupDiscount,
-  computeGroupDiscount,
-  matchSeason,
-  applyDiscount,
-} from './calculateActivityPrice';
+import { calculateActivityPrice, pickGroupDiscount, computeGroupDiscount, matchSeason, applyDiscount } from './calculateActivityPrice';
 
 describe('calculateActivityPrice helpers', () => {
   describe('pickGroupDiscount', () => {
@@ -22,9 +16,7 @@ describe('calculateActivityPrice helpers', () => {
     });
 
     it('returns null if no discounts qualify', () => {
-      const discounts = [
-        { min_people: 10, discount_amount: '10', discount_type: 'percentage' },
-      ];
+      const discounts = [{ min_people: 10, discount_amount: '10', discount_type: 'percentage' }];
       expect(pickGroupDiscount(discounts, 4)).toBeNull();
     });
 
@@ -40,9 +32,7 @@ describe('calculateActivityPrice helpers', () => {
     });
 
     it('handles string min_people by coercing to number', () => {
-      const discounts = [
-        { min_people: '4', discount_amount: '10', discount_type: 'percentage' },
-      ];
+      const discounts = [{ min_people: '4', discount_amount: '10', discount_type: 'percentage' }];
       const result = pickGroupDiscount(discounts, 5);
       expect(result).not.toBeNull();
     });
@@ -494,7 +484,7 @@ describe('calculateActivityPrice', () => {
       expect(result.discountedQty).toBe(10);
       expect(result.fullQty).toBe(0);
       // 35% of (10 * 133) = 0.35 * 1330 = 465.50
-      expect(result.amount).toBeCloseTo(465.50);
+      expect(result.amount).toBeCloseTo(465.5);
       expect(result.hint).not.toBeNull();
       expect(result.hint.type).toBe('upgrade');
       expect(result.hint.needed).toBe(3); // 13 - 10
@@ -505,7 +495,7 @@ describe('calculateActivityPrice', () => {
       expect(result.bundles).toBe(2);
       expect(result.discountedQty).toBe(10);
       expect(result.fullQty).toBe(2);
-      expect(result.amount).toBeCloseTo(465.50);
+      expect(result.amount).toBeCloseTo(465.5);
       expect(result.hint).not.toBeNull();
       expect(result.hint.type).toBe('upgrade');
       expect(result.hint.needed).toBe(1); // 13 - 12

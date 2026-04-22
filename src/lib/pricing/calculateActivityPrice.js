@@ -19,17 +19,13 @@ export function pickGroupDiscount(groupDiscounts, headcount) {
   }
 
   // Filter to qualifying discounts and pick the one with highest min_people
-  const qualifying = groupDiscounts.filter(
-    d => Number(d.min_people) <= headcount
-  );
+  const qualifying = groupDiscounts.filter((d) => Number(d.min_people) <= headcount);
 
   if (qualifying.length === 0) {
     return null;
   }
 
-  return qualifying.reduce((best, current) =>
-    Number(current.min_people) > Number(best.min_people) ? current : best
-  );
+  return qualifying.reduce((best, current) => (Number(current.min_people) > Number(best.min_people) ? current : best));
 }
 
 /**
@@ -63,9 +59,7 @@ export function computeGroupDiscount(groupDiscounts, headcount, pricePerHead) {
   if (!groupDiscounts || groupDiscounts.length === 0 || headcount === 0) {
     // Below-lowest-tier special case: hint toward lowest tier
     if (groupDiscounts && groupDiscounts.length > 0) {
-      const sorted = groupDiscounts
-        .map(d => ({ ...d, min_people: Number(d.min_people) }))
-        .sort((a, b) => a.min_people - b.min_people);
+      const sorted = groupDiscounts.map((d) => ({ ...d, min_people: Number(d.min_people) })).sort((a, b) => a.min_people - b.min_people);
       const lowestTier = sorted[0];
       result.hint = {
         needed: lowestTier.min_people - headcount,
@@ -78,7 +72,7 @@ export function computeGroupDiscount(groupDiscounts, headcount, pricePerHead) {
 
   // Sort tiers ascending by min_people
   const sorted = groupDiscounts
-    .map(d => ({
+    .map((d) => ({
       ...d,
       min_people: Number(d.min_people),
       discount_amount: Number(d.discount_amount),
@@ -86,10 +80,8 @@ export function computeGroupDiscount(groupDiscounts, headcount, pricePerHead) {
     .sort((a, b) => a.min_people - b.min_people);
 
   // Find active tier: highest min_people where min_people <= headcount
-  const qualifying = sorted.filter(t => t.min_people <= headcount);
-  const activeTier = qualifying.length > 0
-    ? qualifying[qualifying.length - 1]
-    : null;
+  const qualifying = sorted.filter((t) => t.min_people <= headcount);
+  const activeTier = qualifying.length > 0 ? qualifying[qualifying.length - 1] : null;
 
   if (!activeTier) {
     // No qualifying tier: hint toward lowest
@@ -125,7 +117,7 @@ export function computeGroupDiscount(groupDiscounts, headcount, pricePerHead) {
   // Hint logic
   const bundleRemainder = headcount % minPeople;
   const bundleNeeds = bundleRemainder === 0 ? 0 : minPeople - bundleRemainder;
-  const nextTier = sorted.find(t => t.min_people > headcount) || null;
+  const nextTier = sorted.find((t) => t.min_people > headcount) || null;
   const tierNeeds = nextTier ? nextTier.min_people - headcount : Infinity;
 
   if (nextTier && (bundleNeeds === 0 || tierNeeds <= bundleNeeds)) {
@@ -227,13 +219,7 @@ export function applyDiscount(amount, discount, people) {
  *     currency: string
  *   }
  */
-export function calculateActivityPrice({
-  activity,
-  dateRange,
-  people,
-  selectedAddons = [],
-  today = new Date(),
-}) {
+export function calculateActivityPrice({ activity, dateRange, people, selectedAddons = [], today = new Date() }) {
   // Defaults
   const defaultCurrency = activity?.pricing?.currency ?? 'USD';
   const headcount = Number(people?.adults ?? 0) + Number(people?.children ?? 0);
@@ -245,9 +231,7 @@ export function calculateActivityPrice({
 
   // Step 2: Calculate subtotal
   const subtotal = pricePerHead * headcount;
-  const seasonalSavings = matchedSeason
-    ? Math.max(0, (regularPrice - pricePerHead) * headcount)
-    : 0;
+  const seasonalSavings = matchedSeason ? Math.max(0, (regularPrice - pricePerHead) * headcount) : 0;
 
   // Step 3: Apply group discount (bundle-based)
   const groupInfo = computeGroupDiscount(activity?.groupDiscounts, headcount, pricePerHead);
@@ -265,10 +249,7 @@ export function calculateActivityPrice({
 
     // Check early bird first
     const earlyBird = activity?.earlyBirdDiscount;
-    if (
-      earlyBird?.enabled &&
-      daysUntil >= Number(earlyBird.days_before_start)
-    ) {
+    if (earlyBird?.enabled && daysUntil >= Number(earlyBird.days_before_start)) {
       const beforeEBAmount = afterGroup;
       afterTime = applyDiscount(afterGroup, earlyBird, headcount);
       timeSavings = Math.max(0, beforeEBAmount - afterTime);
@@ -279,11 +260,7 @@ export function calculateActivityPrice({
     } else {
       // Check last minute (only if EB didn't qualify)
       const lastMinute = activity?.lastMinuteDiscount;
-      if (
-        lastMinute?.enabled &&
-        daysUntil >= 0 &&
-        daysUntil <= Number(lastMinute.days_before_start)
-      ) {
+      if (lastMinute?.enabled && daysUntil >= 0 && daysUntil <= Number(lastMinute.days_before_start)) {
         const beforeLMAmount = afterGroup;
         afterTime = applyDiscount(afterGroup, lastMinute, headcount);
         timeSavings = Math.max(0, beforeLMAmount - afterTime);

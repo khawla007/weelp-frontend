@@ -15,8 +15,8 @@ export async function generateMetadata({ params }) {
   const { name, description } = activityData;
 
   // Compute canonical city slug for metadata
-  const citySlugs = (activityData?.locations || []).map(l => l?.city_slug).filter(Boolean);
-  const primary = activityData?.locations?.find(l => l?.location_type === 'primary' && l?.city_slug);
+  const citySlugs = (activityData?.locations || []).map((l) => l?.city_slug).filter(Boolean);
+  const primary = activityData?.locations?.find((l) => l?.location_type === 'primary' && l?.city_slug);
   const canonicalCitySlug = primary?.city_slug ?? citySlugs[0];
 
   return {
@@ -42,7 +42,7 @@ export default async function SingleActivityPage({ params, searchParams }) {
   }
 
   // Enforce city-activity binding: validate that activity exists in the requested city
-  const citySlugs = (activityData?.locations || []).map(l => l?.city_slug).filter(Boolean);
+  const citySlugs = (activityData?.locations || []).map((l) => l?.city_slug).filter(Boolean);
 
   // If activity has no bindable cities, return 404
   if (citySlugs.length === 0) {
@@ -50,7 +50,7 @@ export default async function SingleActivityPage({ params, searchParams }) {
   }
 
   // Compute canonical city slug (primary location or first available)
-  const primary = activityData.locations.find(l => l?.location_type === 'primary' && l?.city_slug);
+  const primary = activityData.locations.find((l) => l?.location_type === 'primary' && l?.city_slug);
   const canonicalCitySlug = primary?.city_slug ?? citySlugs[0];
 
   // If the URL city param does not match any of the activity's cities, redirect to canonical URL
