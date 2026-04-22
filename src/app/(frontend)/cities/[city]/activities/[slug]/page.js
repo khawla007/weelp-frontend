@@ -2,7 +2,7 @@
 
 import BannerSection from '@/app/components/Pages/FRONT_END/singleproduct/BannerSection';
 import SingleProductTabSection from '@/app/components/Pages/FRONT_END/singleproduct/SingleProductTabSection';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { getSingleActivity, getRandomSimilarActivities } from '@/lib/services/activites';
 import { isEmpty } from 'lodash';
 import AffiliateTracker from '@/app/components/AffiliateTracker';
@@ -14,9 +14,19 @@ export async function generateMetadata({ params }) {
 
   const { name, description } = activityData;
 
+  // Compute canonical city slug for metadata
+  const citySlugs = (activityData?.locations || []).map(l => l?.city_slug).filter(Boolean);
+  const primary = activityData?.locations?.find(l => l?.location_type === 'primary' && l?.city_slug);
+  const canonicalCitySlug = primary?.city_slug ?? citySlugs[0];
+
   return {
     title: name || '',
     description: description || '',
+    ...(canonicalCitySlug && {
+      alternates: {
+        canonical: `/cities/${canonicalCitySlug}/activities/${slug}`,
+      },
+    }),
   };
 }
 
@@ -29,6 +39,23 @@ export default async function SingleActivityPage({ params, searchParams }) {
   // if activity not found
   if (isEmpty(activityData)) {
     notFound();
+  }
+
+  // Enforce city-activity binding: validate that activity exists in the requested city
+  const citySlugs = (activityData?.locations || []).map(l => l?.city_slug).filter(Boolean);
+
+  // If activity has no bindable cities, return 404
+  if (citySlugs.length === 0) {
+    notFound();
+  }
+
+  // Compute canonical city slug (primary location or first available)
+  const primary = activityData.locations.find(l => l?.location_type === 'primary' && l?.city_slug);
+  const canonicalCitySlug = primary?.city_slug ?? citySlugs[0];
+
+  // If the URL city param does not match any of the activity's cities, redirect to canonical URL
+  if (!citySlugs.includes(city)) {
+    permanentRedirect(`/cities/${canonicalCitySlug}/activities/${slug}`);
   }
 
   const {

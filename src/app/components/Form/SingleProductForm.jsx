@@ -3,30 +3,14 @@
 // This Form Is Used in Single Product Page
 import React, { useEffect, useRef, useState } from 'react';
 import { Calendar, Users, Minus, Plus } from 'lucide-react';
-import { useForm, Controller } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useFormContext, Controller } from 'react-hook-form';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { useRouter } from 'next/navigation';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { log } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
-
-// Zod Schema
-const bookingSchema = z.object({
-  dateRange: z
-    .object({
-      from: z.date().refine(Boolean, 'Start date is required'),
-      to: z.date().refine(Boolean, 'End date is required'),
-    })
-    .refine((data) => data.from && data.to && data.from <= data.to, 'Please Select Date'),
-  howMany: z.object({
-    adults: z.number().min(1, 'At least 1 adult is required').max(10, 'Maximum 10 adults allowed'),
-    children: z.number().min(0).max(10, 'Maximum 10 children allowed'),
-    infants: z.number().min(0).max(5, 'Maximum 5 infants allowed'),
-  }),
-});
+import { calculateActivityPrice } from '@/lib/pricing/calculateActivityPrice';
 
 // activity
 export default function SingleProductForm({ productId, productData, selectedAddons = [], formId, defaultDateRange = null, onDateChange = null, scheduleCount = 0 }) {
@@ -39,7 +23,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
 
   const router = useRouter(); // intialize router
 
-  // React Hook Form setup with Zod
+  // Get form from parent ProductSidebar via FormProvider
   const {
     register,
     control,
@@ -48,13 +32,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     watch,
     clearErrors,
     formState: { errors, isValid },
-  } = useForm({
-    resolver: zodResolver(bookingSchema),
-    defaultValues: {
-      dateRange: defaultDateRange ?? { from: null, to: null },
-      howMany: { adults: 1, children: 0, infants: 0 },
-    },
-  });
+  } = useFormContext();
 
   const [selectedDates, setSelectedDates] = useState(defaultDateRange ?? { from: null, to: null });
   const previousRangeRef = useRef(null);
@@ -67,11 +45,10 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     return end;
   };
 
-  const [howMany, setHowMany] = useState({
-    adults: 1,
-    children: 0,
-    infants: 0,
-  });
+  // RHF is the single source of truth for howMany — read via watch().
+  // Previously this was a parallel useState, which caused a cross-component
+  // update during render when setValue fired inside the setHowMany updater.
+  const howMany = watch('howMany') ?? { adults: 1, children: 0, infants: 0 };
 
   // Handle validation errors — toast limit is 1, so show only the first error
   const onError = (formErrors) => {
@@ -95,19 +72,33 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     // compute combined price with add-ons
     const addonsTotal = selectedAddons.reduce((sum, a) => sum + Number(a.addon_sale_price ?? a.addon_price), 0);
 
-    // For itinerary items, use only schedule_total_price; for activity/package, use pricing fallback chain
-    const basePrice =
-      productData?.item_type === 'itinerary'
-        ? Number(productData?.schedule_total_price ?? 0)
-        : Number(productData?.schedule_total_price ?? productData?.pricing?.regular_price ?? productData?.base_pricing?.variations?.[0]?.regular_price ?? 0);
+    // For activities: use calculateActivityPrice utility; for itinerary/package: use schedule_total_price
+    let price;
+    let currency;
+    let basePrice;
 
-    const currency = productData?.item_type === 'itinerary' ? productData?.schedule_total_currency || 'usd' : productData?.pricing?.currency || productData?.base_pricing?.currency || 'usd';
+    if (productData?.item_type === 'activity') {
+      const pricing = calculateActivityPrice({
+        activity: productData,
+        dateRange: data.dateRange,
+        people: data.howMany,
+        selectedAddons,
+      });
+      price = pricing.final;
+      basePrice = pricing.subtotal;
+      currency = pricing.currency;
+    } else {
+      // For itinerary/package: use schedule_total_price
+      basePrice = Number(productData?.schedule_total_price ?? 0);
+      price = basePrice + addonsTotal;
+      currency = productData?.schedule_total_currency || 'usd';
+    }
 
     // add item to cart
     addItem({
       id: productData?.id,
       base_price: basePrice,
-      price: basePrice + addonsTotal,
+      price: price,
       name: productData?.name,
       currency: currency,
       ...data,
@@ -132,21 +123,15 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     setShowHowMany(false);
   };
 
-  // Increment/Decrement Handlers
+  // Increment/Decrement Handlers — RHF is source of truth, no local state
   const handleIncrement = (type) => {
-    setHowMany((prev) => {
-      const updated = { ...prev, [type]: prev[type] + 1 };
-      setValue(`howMany.${type}`, updated[type]); // Update React Hook Form value
-      return updated;
-    });
+    const current = Number(howMany?.[type] ?? 0);
+    setValue(`howMany.${type}`, current + 1);
   };
 
   const handleDecrement = (type) => {
-    setHowMany((prev) => {
-      const updated = { ...prev, [type]: Math.max(prev[type] - 1, 0) };
-      setValue(`howMany.${type}`, updated[type]); // Update React Hook Form value
-      return updated;
-    });
+    const current = Number(howMany?.[type] ?? 0);
+    setValue(`howMany.${type}`, Math.max(current - 1, 0));
   };
 
   // Toggle Calendar
@@ -219,7 +204,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                 <div
                   onMouseLeave={() => {
                     // If user leaves without completing a range, restore the previous one
-                    const current = watch('dateRange'); // eslint-disable-line react-hooks/incompatible-library
+                    const current = watch('dateRange');
                     if ((!current?.from || !current?.to) && previousRangeRef.current?.from) {
                       setValue('dateRange', previousRangeRef.current);
                       setSelectedDates(previousRangeRef.current);
@@ -295,7 +280,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                           >
                             <Minus size={14} />
                           </button>
-                          <span className="font-semibold">{howMany[type]}</span>
+                          <span className="font-semibold">{howMany?.[type] ?? 0}</span>
                           <button
                             type="button"
                             onClick={() => handleIncrement(type)}

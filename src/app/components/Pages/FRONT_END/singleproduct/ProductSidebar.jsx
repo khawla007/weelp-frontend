@@ -1,16 +1,30 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Check } from 'lucide-react';
+import { useForm, FormProvider, useWatch } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import useSWR from 'swr';
 import SingleProductForm from '@/app/components/Form/SingleProductForm';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { getItineraryAddons, getPackageAddons } from '@/lib/services/addOn';
+import { bookingSchema } from '@/lib/validation/bookingSchema';
+import { calculateActivityPrice } from '@/lib/pricing/calculateActivityPrice';
+import { formatCurrency } from '@/lib/utils';
 
 const ProductSidebar = ({ productId, productData, productType = 'activity', itinerarySlug, packageSlug, defaultDateRange = null, onDateChange = null, scheduleCount = 0 }) => {
   const [selectedAddons, setSelectedAddons] = useState([]);
   const { cartItems, setMiniCartOpen } = useMiniCartStore();
   const isInCart = cartItems.some((item) => item.id === productData?.id);
+
+  // Lift form state to sidebar for live pricing updates
+  const methods = useForm({
+    resolver: zodResolver(bookingSchema),
+    defaultValues: {
+      dateRange: defaultDateRange ?? { from: null, to: null },
+      howMany: { adults: 1, children: 0, infants: 0 },
+    },
+  });
 
   // Fetch addons via SWR for itinerary/package (activity addons come from productData)
   const addonSlug = productType === 'itinerary' ? itinerarySlug : productType === 'package' ? packageSlug : null;
@@ -30,6 +44,12 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
   // Use addons from API response (activity) or fetched data (itinerary/package)
   const addons = productType === 'activity' ? productData?.addons || [] : addonsResponse?.data || [];
 
+  // Subscribe to form changes for live pricing updates
+  const [dateRange, howMany] = useWatch({
+    control: methods.control,
+    name: ['dateRange', 'howMany'],
+  });
+
   const toggleAddon = (addon) => {
     setSelectedAddons((prev) => {
       const exists = prev.some((a) => a.addon_id === addon.addon_id);
@@ -38,6 +58,19 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
   };
 
   const addonsTotal = selectedAddons.reduce((sum, a) => sum + Number(a.addon_sale_price ?? a.addon_price), 0);
+
+  // Compute live pricing for activities
+  const pricing = useMemo(() => {
+    if (productType === 'activity') {
+      return calculateActivityPrice({
+        activity: productData,
+        dateRange: dateRange ?? { from: null, to: null },
+        people: howMany ?? { adults: 1, children: 0, infants: 0 },
+        selectedAddons,
+      });
+    }
+    return null;
+  }, [productData, dateRange, howMany, selectedAddons, productType]);
 
   // For itinerary: use schedule_total_price only (no fallback to base_pricing)
   // For activity/package: use existing fallback chain
@@ -54,27 +87,129 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
     displayPrice = productData?.pricing?.regular_price ?? productData?.base_pricing?.variations?.[0]?.regular_price ?? '6,790.18';
   }
 
-  return (
-    <div className="p-6 lg:pl-[60px] lg:pr-0 lg:pt-[60px] lg:pb-[70px] lg:sticky lg:top-[76px]">
-      {/* Base Price */}
-      {productType === 'itinerary' ? (
-        <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
-          From {productData?.schedule_total_currency ?? ''} {displayPrice}
-        </h3>
-      ) : (
-        <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">From ${displayPrice}</h3>
-      )}
+  // Build list of applicable-but-not-yet-active discount hints for activities
+  const eb = productData?.earlyBirdDiscount;
+  const lm = productData?.lastMinuteDiscount;
+  const hasDate = Boolean(dateRange?.from);
+  const showEbHint = productType === 'activity' && eb?.enabled && (!pricing?.timeDiscount || pricing.timeDiscount.type !== 'early_bird');
+  const showLmHint = productType === 'activity' && lm?.enabled && (!pricing?.timeDiscount || pricing.timeDiscount.type !== 'last_minute');
 
-      {/* Actual Form with Inputs */}
-      <SingleProductForm
-        productId={productId}
-        productData={productData}
-        selectedAddons={selectedAddons}
-        formId={`booking-form-${productId}`}
-        defaultDateRange={defaultDateRange}
-        onDateChange={onDateChange}
-        scheduleCount={scheduleCount}
-      />
+  return (
+    <FormProvider {...methods}>
+      <div className="p-6 lg:pl-[60px] lg:pr-0 lg:pt-[60px] lg:pb-[70px] lg:sticky lg:top-[76px]">
+        {/* Base Price */}
+        {productType === 'itinerary' ? (
+          <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
+            From {productData?.schedule_total_currency ?? ''} {displayPrice}
+          </h3>
+        ) : (
+          <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
+            From {formatCurrency(Number(productData?.pricing?.regular_price ?? 0), productData?.pricing?.currency ?? 'USD')} / person
+          </h3>
+        )}
+
+        {/* Pricing Breakdown for Activities — renders as soon as headcount >= 1 */}
+        {productType === 'activity' && pricing && pricing.headcount >= 1 && (() => {
+          const regularPrice = pricing.season?.regularPrice ?? pricing.pricePerHead;
+          const regularSubtotal = regularPrice * pricing.headcount;
+          return (
+            <div className="mt-4 bg-white rounded-xl border border-[#ccc]/50 shadow-[0_3px_9px_rgba(0,0,0,0.04)] p-4 text-sm text-[#5a5a5a]">
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span>{formatCurrency(regularPrice, pricing.currency)} × {pricing.headcount}</span>
+                  <span className="text-[#0c2536]">{formatCurrency(regularSubtotal, pricing.currency)}</span>
+                </div>
+                {pricing.season && pricing.season.savings > 0 && (
+                  <div className="flex justify-between text-green-700">
+                    <span>Seasonal rate{pricing.season.name ? ` (${pricing.season.name})` : ''} applied</span>
+                    <span>-{formatCurrency(pricing.season.savings, pricing.currency)}</span>
+                  </div>
+                )}
+                {pricing.groupDiscount && (() => {
+                  const rule = pricing.groupDiscount.rule;
+                  const discountLabel =
+                    rule.discount_type === 'percentage'
+                      ? `${Number(rule.discount_amount)}% off ${pricing.groupDiscount.discountedQty} travelers`
+                      : `flat ${formatCurrency(Number(rule.discount_amount), pricing.currency)} × ${pricing.groupDiscount.bundles} bundle${pricing.groupDiscount.bundles === 1 ? '' : 's'}`;
+                  return (
+                    <div className="flex justify-between text-green-700">
+                      <span>Group discount ({discountLabel})</span>
+                      <span>-{formatCurrency(pricing.groupDiscount.amount, pricing.currency)}</span>
+                    </div>
+                  );
+                })()}
+                {pricing.groupHint && (() => {
+                  const needed = pricing.groupHint.needed;
+                  const min = Number(pricing.groupHint.rule.min_people);
+                  const discountLabel =
+                    pricing.groupHint.rule.discount_type === 'percentage'
+                      ? `${Number(pricing.groupHint.rule.discount_amount)}% off`
+                      : `flat ${formatCurrency(Number(pricing.groupHint.rule.discount_amount), pricing.currency)} off the group`;
+                  const hintText =
+                    pricing.groupHint.type === 'upgrade'
+                      ? `Add ${needed} more to unlock ${min}-person group discount (${discountLabel}).`
+                      : `Add ${needed} more to bundle another ${min}-person group discount.`;
+                  return (
+                    <div className="text-xs text-[#57947d]">
+                      {hintText}
+                    </div>
+                  );
+                })()}
+                {pricing.timeDiscount && (
+                  <div className="flex justify-between text-green-700">
+                    <span>{pricing.timeDiscount.type === 'early_bird' ? 'Early bird' : 'Last minute'} discount</span>
+                    <span>-{formatCurrency(pricing.timeDiscount.amount, pricing.currency)}</span>
+                  </div>
+                )}
+                {pricing.addonsTotal > 0 && (
+                  <div className="flex justify-between">
+                    <span>Add-ons</span>
+                    <span>+{formatCurrency(pricing.addonsTotal, pricing.currency)}</span>
+                  </div>
+                )}
+                <div className="border-t border-[#ccc]/50 pt-2 flex justify-between text-[#0c2536]">
+                  <span>Total</span>
+                  <span>{formatCurrency(pricing.final, pricing.currency)}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* Discount rule hints for activities */}
+        {productType === 'activity' && (showEbHint || showLmHint) && (
+          <div className="mt-3 flex flex-col gap-1 text-xs text-[#57947d]">
+            {showEbHint && (
+              <span>
+                Early bird: book {Number(eb.days_before_start)}+ days ahead for{' '}
+                {eb.discount_type === 'percentage'
+                  ? `${Number(eb.discount_amount)}% off`
+                  : `${formatCurrency(Number(eb.discount_amount), pricing?.currency ?? 'USD')} off per person`}
+                .
+              </span>
+            )}
+            {showLmHint && (
+              <span>
+                Last minute: book within {Number(lm.days_before_start)} days for{' '}
+                {lm.discount_type === 'percentage'
+                  ? `${Number(lm.discount_amount)}% off`
+                  : `${formatCurrency(Number(lm.discount_amount), pricing?.currency ?? 'USD')} off per person`}
+                .
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Actual Form with Inputs */}
+        <SingleProductForm
+          productId={productId}
+          productData={productData}
+          selectedAddons={selectedAddons}
+          formId={`booking-form-${productId}`}
+          defaultDateRange={defaultDateRange}
+          onDateChange={onDateChange}
+          scheduleCount={scheduleCount}
+        />
 
       {/* Select Addon */}
       {addons.length > 0 && (
@@ -136,7 +271,9 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
         ) : (
           <>
             <div className="flex flex-col">
-              {selectedAddons.length > 0 ? (
+              {productType === 'activity' && pricing && pricing.headcount >= 1 ? (
+                <p className="text-lg font-bold text-[#0c2536]">Total: {formatCurrency(pricing.final, pricing.currency)}</p>
+              ) : selectedAddons.length > 0 ? (
                 <>
                   <p className="text-sm font-medium text-[#57947d]">+ Add-ons: ${addonsTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                   <p className="text-lg font-bold text-[#0c2536]">Total: ${(basePrice + addonsTotal).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
@@ -167,7 +304,8 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
           <button className="px-6 py-3 border border-black rounded-lg text-sm font-medium text-black whitespace-nowrap hover:bg-gray-50 transition-colors">Help Center</button>
         </div>
       </div>
-    </div>
+      </div>
+    </FormProvider>
   );
 };
 
