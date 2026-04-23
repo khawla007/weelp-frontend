@@ -133,3 +133,25 @@ export async function getRandomSimilarActivities(city, excludeId) {
     return [];
   }
 }
+
+// Throws on error (vs. the pattern of swallowing above) so SWR can surface validation/pricing errors in the quote UI.
+export async function getActivityQuote(slug, { adults, children = 0 } = {}) {
+  const params = new URLSearchParams();
+  if (Number.isFinite(adults)) params.append('adults', adults);
+  if (Number.isFinite(children)) params.append('children', children);
+
+  try {
+    const response = await publicApi.get(`/api/activities/${slug}/quote?${params.toString()}`, {
+      headers: { Accept: 'application/json' },
+    });
+    return response?.data;
+  } catch (error) {
+    if (error.response?.status === 404) {
+      throw new Error('Activity not found');
+    }
+    if (error.response?.status === 422) {
+      throw new Error(error.response?.data?.message || 'Invalid quote parameters');
+    }
+    throw error;
+  }
+}

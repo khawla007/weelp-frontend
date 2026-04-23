@@ -6,41 +6,87 @@
 
 /**
  * Pick the best matching group discount for the given headcount.
- * Returns the discount rule with the highest min_people threshold, or null if none qualify.
- * DEPRECATED: Use computeGroupDiscount instead. Kept for back-compat with existing tests.
+ * Implements the backend ActivityDiscountService algorithm: maximise discount_total,
+ * with tie-breaks: percentage > fixed, higher discount_amount (%), smaller min_people (fixed), smaller id.
  *
- * @param {Array} groupDiscounts - Array of { min_people, discount_amount, discount_type }
+ * @param {Array} groupDiscounts - Array of { min_people, discount_amount, discount_type, id }
  * @param {number} headcount - Adult + children count (excludes infants)
- * @returns {Object|null}
+ * @param {number} pricePerHead - Price per person for discount calculation
+ * @returns {Object|null} The best tier, or null if none qualify
  */
-export function pickGroupDiscount(groupDiscounts, headcount) {
+export function pickGroupDiscount(groupDiscounts, headcount, pricePerHead = 0) {
   if (!groupDiscounts || groupDiscounts.length === 0 || headcount === 0) {
     return null;
   }
 
-  // Filter to qualifying discounts and pick the one with highest min_people
-  const qualifying = groupDiscounts.filter((d) => Number(d.min_people) <= headcount);
+  const qualifying = groupDiscounts
+    .map((d) => ({
+      ...d,
+      min_people: Number(d.min_people),
+      discount_amount: Number(d.discount_amount),
+      id: d.id || 0,
+    }))
+    .filter((t) => t.min_people <= headcount)
+    .map((tier) => ({ ...tier, discountTotal: discountTotalFor(tier, headcount, pricePerHead) }));
 
   if (qualifying.length === 0) {
     return null;
   }
 
-  return qualifying.reduce((best, current) => (Number(current.min_people) > Number(best.min_people) ? current : best));
+  qualifying.sort(compareTiers);
+  const { discountTotal: _ignored, ...best } = qualifying[0];
+  return best;
+}
+
+function discountTotalFor(tier, headcount, pricePerHead) {
+  if (tier.discount_type === 'percentage') {
+    const clamped = Math.min(tier.discount_amount, 100);
+    return roundCents((clamped / 100) * pricePerHead * headcount);
+  }
+  const completeGroups = Math.floor(headcount / tier.min_people);
+  return roundCents(tier.discount_amount * completeGroups);
+}
+
+function compareTiers(a, b) {
+  if (a.discountTotal !== b.discountTotal) {
+    return b.discountTotal - a.discountTotal;
+  }
+  const aPct = a.discount_type === 'percentage';
+  const bPct = b.discount_type === 'percentage';
+  if (aPct !== bPct) {
+    return aPct ? -1 : 1;
+  }
+  if (aPct) {
+    const aAmount = Math.min(a.discount_amount, 100);
+    const bAmount = Math.min(b.discount_amount, 100);
+    if (aAmount !== bAmount) {
+      return bAmount - aAmount;
+    }
+  }
+  if (a.min_people !== b.min_people) {
+    return a.min_people - b.min_people;
+  }
+  return a.id - b.id;
+}
+
+function roundCents(n) {
+  return Math.round(n * 100) / 100;
 }
 
 /**
- * Compute bundle-based group discount with hint logic.
+ * Compute group discount aligned with backend ActivityDiscountService algorithm.
+ * Maximises total discount amount and applies correct math for fixed vs percentage.
  *
- * @param {Array} groupDiscounts - Array of { min_people, discount_amount, discount_type }
+ * @param {Array} groupDiscounts - Array of { min_people, discount_amount, discount_type, id }
  * @param {number} headcount - Adult + children count (excludes infants)
  * @param {number} pricePerHead - Active price per person (seasonal if matched, else regular)
  * @returns {Object} { amount, rule, bundles, discountedQty, fullQty, minPeople, hint }
- *   - amount: Discount amount in currency units
- *   - rule: The active tier rule (or null if no tier qualifies)
- *   - bundles: Number of complete bundles (floor(headcount / minPeople))
- *   - discountedQty: People covered by discount (bundles * minPeople)
- *   - fullQty: People paying full price (headcount - discountedQty)
- *   - minPeople: Minimum group size for active tier
+ *   - amount: Discount total in currency units (matches backend discount_total)
+ *   - rule: The selected tier rule (or null if no tier qualifies)
+ *   - bundles: For fixed: floor(headcount/min_people); for percentage: 1 (flat, virtual bundle)
+ *   - discountedQty: For fixed: bundles*min_people; for percentage: headcount
+ *   - fullQty: For fixed: headcount - discountedQty; for percentage: 0
+ *   - minPeople: Minimum group size for selected tier
  *   - hint: Upgrade/complete hint for sidebar, or null
  */
 export function computeGroupDiscount(groupDiscounts, headcount, pricePerHead) {
@@ -70,21 +116,14 @@ export function computeGroupDiscount(groupDiscounts, headcount, pricePerHead) {
     return result;
   }
 
-  // Sort tiers ascending by min_people
-  const sorted = groupDiscounts
-    .map((d) => ({
-      ...d,
-      min_people: Number(d.min_people),
-      discount_amount: Number(d.discount_amount),
-    }))
-    .sort((a, b) => a.min_people - b.min_people);
+  // Use pickGroupDiscount to select the best tier (backend-aligned)
+  const selectedTier = pickGroupDiscount(groupDiscounts, headcount, pricePerHead);
 
-  // Find active tier: highest min_people where min_people <= headcount
-  const qualifying = sorted.filter((t) => t.min_people <= headcount);
-  const activeTier = qualifying.length > 0 ? qualifying[qualifying.length - 1] : null;
-
-  if (!activeTier) {
+  if (!selectedTier) {
     // No qualifying tier: hint toward lowest
+    const sorted = groupDiscounts
+      .map((d) => ({ ...d, min_people: Number(d.min_people) }))
+      .sort((a, b) => a.min_people - b.min_people);
     const lowestTier = sorted[0];
     result.hint = {
       needed: lowestTier.min_people - headcount,
@@ -94,46 +133,71 @@ export function computeGroupDiscount(groupDiscounts, headcount, pricePerHead) {
     return result;
   }
 
-  // Bundle math
-  const minPeople = activeTier.min_people;
-  const bundles = Math.floor(headcount / minPeople);
-  const discountedQty = bundles * minPeople;
-  const fullQty = headcount - discountedQty;
-
-  result.rule = activeTier;
-  result.bundles = bundles;
-  result.discountedQty = discountedQty;
-  result.fullQty = fullQty;
+  const minPeople = selectedTier.min_people;
+  result.rule = selectedTier;
   result.minPeople = minPeople;
 
-  // Calculate discount amount
-  if (activeTier.discount_type === 'percentage') {
-    result.amount = pricePerHead * discountedQty * (activeTier.discount_amount / 100);
-  } else if (activeTier.discount_type === 'fixed') {
-    // Flat per bundle, NOT per-head
-    result.amount = activeTier.discount_amount * bundles;
+  // Calculate discount and bundle math based on type
+  if (selectedTier.discount_type === 'percentage') {
+    // Percentage: flat discount applied to entire subtotal once triggered
+    const clamped = Math.min(selectedTier.discount_amount, 100);
+    result.amount = (clamped / 100) * pricePerHead * headcount;
+    result.bundles = 1; // Virtual "1 bundle" for percentage (flat, applies once)
+    result.discountedQty = headcount; // All people benefit
+    result.fullQty = 0;
+  } else {
+    // Fixed: stacks per complete group
+    const bundles = Math.floor(headcount / minPeople);
+    const discountedQty = bundles * minPeople;
+    result.amount = selectedTier.discount_amount * bundles;
+    result.bundles = bundles;
+    result.discountedQty = discountedQty;
+    result.fullQty = headcount - discountedQty;
   }
 
-  // Hint logic
-  const bundleRemainder = headcount % minPeople;
-  const bundleNeeds = bundleRemainder === 0 ? 0 : minPeople - bundleRemainder;
-  const nextTier = sorted.find((t) => t.min_people > headcount) || null;
-  const tierNeeds = nextTier ? nextTier.min_people - headcount : Infinity;
+  // Round to 2 decimals
+  result.amount = Math.round(result.amount * 100) / 100;
 
-  if (nextTier && (bundleNeeds === 0 || tierNeeds <= bundleNeeds)) {
-    // Upgrade hint
-    result.hint = {
-      needed: tierNeeds,
-      type: 'upgrade',
-      rule: nextTier,
-    };
-  } else if (bundleNeeds > 0) {
-    // Complete hint
-    result.hint = {
-      needed: bundleNeeds,
-      type: 'complete',
-      rule: activeTier,
-    };
+  // Hint logic
+  const sorted = groupDiscounts
+    .map((d) => ({
+      ...d,
+      min_people: Number(d.min_people),
+    }))
+    .sort((a, b) => a.min_people - b.min_people);
+
+  if (selectedTier.discount_type === 'fixed') {
+    // For fixed tiers: hint about completing next bundle or upgrading
+    const bundleRemainder = headcount % minPeople;
+    const bundleNeeds = bundleRemainder === 0 ? 0 : minPeople - bundleRemainder;
+    const nextTier = sorted.find((t) => t.min_people > headcount) || null;
+    const tierNeeds = nextTier ? nextTier.min_people - headcount : Infinity;
+
+    if (nextTier && (bundleNeeds === 0 || tierNeeds <= bundleNeeds)) {
+      // Upgrade hint
+      result.hint = {
+        needed: tierNeeds,
+        type: 'upgrade',
+        rule: nextTier,
+      };
+    } else if (bundleNeeds > 0) {
+      // Complete hint
+      result.hint = {
+        needed: bundleNeeds,
+        type: 'complete',
+        rule: selectedTier,
+      };
+    }
+  } else {
+    // For percentage tiers: hint about upgrading to next tier
+    const nextTier = sorted.find((t) => t.min_people > headcount) || null;
+    if (nextTier) {
+      result.hint = {
+        needed: nextTier.min_people - headcount,
+        type: 'upgrade',
+        rule: nextTier,
+      };
+    }
   }
 
   return result;
