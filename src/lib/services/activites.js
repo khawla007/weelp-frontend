@@ -135,10 +135,11 @@ export async function getRandomSimilarActivities(city, excludeId) {
 }
 
 // Throws on error (vs. the pattern of swallowing above) so SWR can surface validation/pricing errors in the quote UI.
-export async function getActivityQuote(slug, { adults, children = 0 } = {}) {
+export async function getActivityQuote(slug, { adults, children = 0, startDate = null } = {}) {
   const params = new URLSearchParams();
   if (Number.isFinite(adults)) params.append('adults', adults);
   if (Number.isFinite(children)) params.append('children', children);
+  if (startDate) params.append('start_date', startDate);
 
   try {
     const response = await publicApi.get(`/api/activities/${slug}/quote?${params.toString()}`, {
