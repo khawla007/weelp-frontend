@@ -26,13 +26,13 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
         week: 'flex w-full mt-2',
         day: 'h-9 w-9 p-0 font-normal aria-selected:opacity-100 rounded-none first:aria-selected:rounded-l-md last:aria-selected:rounded-r-md',
         day_button: cn(buttonVariants({ variant: 'ghost' }), 'h-9 w-9 text-center text-sm p-0 relative focus-within:relative focus-within:z-20'),
-        range_start: 'day-range-start !bg-accent rounded-l-md [&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:bg-primary [&>button]:hover:text-primary-foreground',
-        range_end: 'day-range-end !bg-accent rounded-r-md [&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:bg-primary [&>button]:hover:text-primary-foreground',
-        range_middle: 'aria-selected:bg-accent aria-selected:text-accent-foreground',
+        range_start: 'day-range-start !bg-[#558e7b]/25 rounded-l-md [&>button]:!bg-[#558e7b] [&>button]:!text-white [&>button]:hover:!bg-[#558e7b] [&>button]:hover:!text-white',
+        range_end: 'day-range-end !bg-[#558e7b]/25 rounded-r-md [&>button]:!bg-[#558e7b] [&>button]:!text-white [&>button]:hover:!bg-[#558e7b] [&>button]:hover:!text-white',
+        range_middle: 'day-range-middle aria-selected:!bg-[#558e7b]/25 aria-selected:!text-gray-900',
         selected: cn(
           props.mode === 'range'
-            ? 'bg-primary hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground'
-            : '[&>button]:focus:bg-primary [&>button]:focus:text-primary-foreground',
+            ? 'day-selected'
+            : '[&>button]:focus:bg-[#558e7b] [&>button]:focus:text-white',
         ),
         today: 'bg-accent text-accent-foreground !rounded-md',
         outside: 'day-outside text-muted-foreground opacity-50 !aria-selected:bg-accent/50 !aria-selected:text-muted-foreground !aria-selected:opacity-30',

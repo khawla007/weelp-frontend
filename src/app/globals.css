@@ -474,6 +474,23 @@ body {
   @apply bg-[#51927a] border-none rounded-lg;
 }
 
+/* Activity seasonal date range picker (tfc_calendar) */
+.tfc_calendar .day-selected:not(.day-range-middle) > button {
+  background-color: #558e7b !important;
+  color: #fff !important;
+  border-radius: 0.375rem !important;
+}
+.tfc_calendar .day-selected:not(.day-range-middle) > button:hover,
+.tfc_calendar .day-selected:not(.day-range-middle) > button:focus {
+  background-color: #558e7b !important;
+  color: #fff !important;
+}
+.tfc_calendar .day-range-middle > button:hover,
+.tfc_calendar .day-range-middle > button:focus {
+  background-color: rgba(85, 142, 123, 0.4) !important;
+  color: #111827 !important;
+}
+
 .bannerForm .rdp-day_button,
 .bannerForm .rdp-range_middle .rdp-day_button .singleProducform .rdp-day_button,
 .singleProducform .rdp-range_middle .rdp-day_button {

@@ -846,22 +846,19 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
 
             {isSeasonPricing && (
               <div className="seasonal_pricing_main py-4">
-                {!isValid && <span className="text-red-500 text-sm mb-4">Fields Required</span>}
-                {isDateError && (
-                  <p className="text-sm text-red-500 mt-1">
-                    {/* Custom error message */}
-                    Please select both start and end dates.
-                  </p>
-                )}
-
                 {seasonFields.map((season, index) => {
                   const dateRange = watchedSeasons?.[index]?.dateRange || null;
                   return (
                     <div key={season.id} className="w-full flex gap-4 items-center">
                       <div className="grid gap-4 grid-cols-1 sm:grid-cols-3 flex-[2]">
                         {/* Season Date Range Picker */}
-                        <div className="w-full">
-                          <Label>Season Date Range</Label>
+                        <div className="w-full relative">
+                          <div className="relative inline-block">
+                            <Label>Season Date Range</Label>
+                            {(!dateRange?.from || !dateRange?.to) && (
+                              <span className="absolute left-full top-[60%] -translate-y-1/2 ml-2 whitespace-nowrap text-xs font-normal text-red-500">{!dateRange?.from ? 'This field is required' : 'Please select end date'}</span>
+                            )}
+                          </div>
                           <div className="text-sm text-muted-foreground mb-2"></div>
                           <Popover>
                             <PopoverTrigger asChild>
@@ -881,7 +878,11 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                                 name={`seasonal_pricing.${index}.dateRange`}
                                 control={methods.control}
                                 rules={{
-                                  validate: (value) => (value?.from && value?.to ? true : 'Please select a valid date range'),
+                                  validate: (value) => {
+                                    if (!value?.from && !value?.to) return 'This field is required';
+                                    if (value?.from && !value?.to) return 'Please select end date';
+                                    return true;
+                                  },
                                 }}
                                 render={({ field }) => (
                                   <Calendar
@@ -891,11 +892,18 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                                       before: new Date(new Date().setHours(0, 0, 0, 0)),
                                     }}
                                     selected={field.value}
-                                    onSelect={(range) => {
-                                      field.onChange(range);
+                                    onSelect={(range, triggerDate) => {
+                                      // react-day-picker v9 default: clicking after a complete range
+                                      // updates whichever boundary is nearer, making the start date
+                                      // effectively unreachable. Restart range on every click once
+                                      // both ends are set.
+                                      const prev = field.value;
+                                      const next = prev?.from && prev?.to ? { from: triggerDate, to: undefined } : range;
 
-                                      methods.setValue(`seasonal_pricing.${index}.season_start`, range?.from ? new Date(range.from).toISOString().split('T')[0] : '');
-                                      methods.setValue(`seasonal_pricing.${index}.season_end`, range?.to ? new Date(range.to).toISOString().split('T')[0] : '');
+                                      field.onChange(next);
+
+                                      methods.setValue(`seasonal_pricing.${index}.season_start`, next?.from ? format(new Date(next.from), 'yyyy-MM-dd') : '');
+                                      methods.setValue(`seasonal_pricing.${index}.season_end`, next?.to ? format(new Date(next.to), 'yyyy-MM-dd') : '');
                                     }}
                                   />
                                 )}
@@ -972,6 +980,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                       season_start: '',
                       season_end: '',
                       season_price: 0,
+                      enable_seasonal_pricing: true,
                     })
                   }
                   className="mt-4 bg-secondaryDark"
