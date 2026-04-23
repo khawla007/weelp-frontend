@@ -411,4 +411,17 @@ describe('EB/LM stacking on regular subtotal', () => {
     expect(result.lastMinuteDiscount).toBeNull();
     expect(result.final).toBe(200);
   });
+
+  test('LM triggers on same-day booking (days_ahead === 0)', () => {
+    const result = calculateActivityPrice({
+      activity: activity({
+        lastMinuteDiscount: { enabled: true, days_before_start: 7, discount_amount: 10, discount_type: 'percentage' },
+      }),
+      dateRange: { from: addDays(today, 0), to: null },
+      people: peopleOf(2),
+      today,
+    });
+    expect(result.lastMinuteDiscount.amount).toBe(20);
+    expect(result.final).toBe(180);
+  });
 });
