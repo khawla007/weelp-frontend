@@ -91,8 +91,8 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
   const eb = productData?.earlyBirdDiscount;
   const lm = productData?.lastMinuteDiscount;
   const hasDate = Boolean(dateRange?.from);
-  const showEbHint = productType === 'activity' && eb?.enabled && (!pricing?.timeDiscount || pricing.timeDiscount.type !== 'early_bird');
-  const showLmHint = productType === 'activity' && lm?.enabled && (!pricing?.timeDiscount || pricing.timeDiscount.type !== 'last_minute');
+  const showEbHint = productType === 'activity' && eb?.enabled && !pricing?.earlyBirdDiscount;
+  const showLmHint = productType === 'activity' && lm?.enabled && !pricing?.lastMinuteDiscount;
 
   return (
     <FormProvider {...methods}>
@@ -158,10 +158,16 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                           : `Add ${needed} more to bundle another ${min}-person group discount.`;
                       return <div className="text-xs text-[#57947d]">{hintText}</div>;
                     })()}
-                  {pricing.timeDiscount && (
+                  {pricing.earlyBirdDiscount && (
                     <div className="flex justify-between text-green-700">
-                      <span>{pricing.timeDiscount.type === 'early_bird' ? 'Early bird' : 'Last minute'} discount</span>
-                      <span>-{formatCurrency(pricing.timeDiscount.amount, pricing.currency)}</span>
+                      <span>Early bird discount</span>
+                      <span>-{formatCurrency(pricing.earlyBirdDiscount.amount, pricing.currency)}</span>
+                    </div>
+                  )}
+                  {pricing.lastMinuteDiscount && (
+                    <div className="flex justify-between text-green-700">
+                      <span>Last minute discount</span>
+                      <span>-{formatCurrency(pricing.lastMinuteDiscount.amount, pricing.currency)}</span>
                     </div>
                   )}
                   {pricing.addonsTotal > 0 && (
