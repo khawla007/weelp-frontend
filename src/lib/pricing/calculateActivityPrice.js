@@ -39,11 +39,12 @@ export function pickGroupDiscount(groupDiscounts, headcount, pricePerHead = 0) {
 }
 
 function discountTotalFor(tier, headcount, pricePerHead) {
+  const completeGroups = Math.floor(headcount / tier.min_people);
+  const discountedPax = completeGroups * tier.min_people;
   if (tier.discount_type === 'percentage') {
     const clamped = Math.min(tier.discount_amount, 100);
-    return roundCents((clamped / 100) * pricePerHead * headcount);
+    return roundCents((clamped / 100) * pricePerHead * discountedPax);
   }
-  const completeGroups = Math.floor(headcount / tier.min_people);
   return roundCents(tier.discount_amount * completeGroups);
 }
 
@@ -83,9 +84,9 @@ function roundCents(n) {
  * @returns {Object} { amount, rule, bundles, discountedQty, fullQty, minPeople, hint }
  *   - amount: Discount total in currency units (matches backend discount_total)
  *   - rule: The selected tier rule (or null if no tier qualifies)
- *   - bundles: For fixed: floor(headcount/min_people); for percentage: 1 (flat, virtual bundle)
- *   - discountedQty: For fixed: bundles*min_people; for percentage: headcount
- *   - fullQty: For fixed: headcount - discountedQty; for percentage: 0
+ *   - bundles: floor(headcount / min_people) for both fixed and percentage
+ *   - discountedQty: bundles * min_people (pax inside complete groups)
+ *   - fullQty: headcount - discountedQty (leftover pax pay regular price)
  *   - minPeople: Minimum group size for selected tier
  *   - hint: Upgrade/complete hint for sidebar, or null
  */
@@ -121,9 +122,7 @@ export function computeGroupDiscount(groupDiscounts, headcount, pricePerHead) {
 
   if (!selectedTier) {
     // No qualifying tier: hint toward lowest
-    const sorted = groupDiscounts
-      .map((d) => ({ ...d, min_people: Number(d.min_people) }))
-      .sort((a, b) => a.min_people - b.min_people);
+    const sorted = groupDiscounts.map((d) => ({ ...d, min_people: Number(d.min_people) })).sort((a, b) => a.min_people - b.min_people);
     const lowestTier = sorted[0];
     result.hint = {
       needed: lowestTier.min_people - headcount,
@@ -137,22 +136,17 @@ export function computeGroupDiscount(groupDiscounts, headcount, pricePerHead) {
   result.rule = selectedTier;
   result.minPeople = minPeople;
 
-  // Calculate discount and bundle math based on type
+  const bundles = Math.floor(headcount / minPeople);
+  const discountedQty = bundles * minPeople;
+  result.bundles = bundles;
+  result.discountedQty = discountedQty;
+  result.fullQty = headcount - discountedQty;
+
   if (selectedTier.discount_type === 'percentage') {
-    // Percentage: flat discount applied to entire subtotal once triggered
     const clamped = Math.min(selectedTier.discount_amount, 100);
-    result.amount = (clamped / 100) * pricePerHead * headcount;
-    result.bundles = 1; // Virtual "1 bundle" for percentage (flat, applies once)
-    result.discountedQty = headcount; // All people benefit
-    result.fullQty = 0;
+    result.amount = (clamped / 100) * pricePerHead * discountedQty;
   } else {
-    // Fixed: stacks per complete group
-    const bundles = Math.floor(headcount / minPeople);
-    const discountedQty = bundles * minPeople;
     result.amount = selectedTier.discount_amount * bundles;
-    result.bundles = bundles;
-    result.discountedQty = discountedQty;
-    result.fullQty = headcount - discountedQty;
   }
 
   // Round to 2 decimals

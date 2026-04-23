@@ -146,23 +146,34 @@ describe('computeGroupDiscount', () => {
       { id: 2, min_people: 13, discount_amount: 10, discount_type: 'percentage' },
     ];
 
-    test('N=15, $100/head: should compute 10% flat discount ($150)', () => {
+    test('N=15, $100/head, both tiers: 13-tier wins with 13 discounted + 2 regular', () => {
       const result = computeGroupDiscount(percentageTiers, 15, 100);
 
       expect(result.rule.min_people).toBe(13);
-      expect(result.amount).toBe(150); // 10% of 15 * 100
-      expect(result.bundles).toBe(1); // Virtual 1 bundle for percentage
-      expect(result.discountedQty).toBe(15); // All heads benefit
-      expect(result.fullQty).toBe(0);
+      expect(result.amount).toBe(130); // 10% × 100 × 13
+      expect(result.bundles).toBe(1);
+      expect(result.discountedQty).toBe(13);
+      expect(result.fullQty).toBe(2);
     });
 
-    test('N=5, $100/head: should compute 3% flat discount ($15)', () => {
+    test('N=5, $100/head: 3% applies to all 5 pax (exact multiple)', () => {
       const result = computeGroupDiscount(percentageTiers, 5, 100);
 
-      expect(result.amount).toBe(15); // 3% of 5 * 100
+      expect(result.amount).toBe(15);
       expect(result.bundles).toBe(1);
       expect(result.discountedQty).toBe(5);
       expect(result.fullQty).toBe(0);
+    });
+
+    test('N=6, $211/head, 5-tier 35%: 5 pax discounted + 1 regular', () => {
+      const tiers = [{ id: 1, min_people: 5, discount_amount: 35, discount_type: 'percentage' }];
+      const result = computeGroupDiscount(tiers, 6, 211);
+
+      expect(result.rule.min_people).toBe(5);
+      expect(result.amount).toBe(369.25); // 35% × 211 × 5
+      expect(result.bundles).toBe(1);
+      expect(result.discountedQty).toBe(5);
+      expect(result.fullQty).toBe(1);
     });
   });
 
