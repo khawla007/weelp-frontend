@@ -14,15 +14,11 @@ import { getActivityQuote } from '@/lib/services/activites';
 export function useActivityQuote(slug, { adults, children = 0 } = {}) {
   const shouldFetch = Boolean(slug) && Number.isFinite(adults) && adults + children > 0;
 
-  const { data, error, isLoading, mutate } = useSWR(
-    shouldFetch ? ['activity-quote', slug, adults, children] : null,
-    () => getActivityQuote(slug, { adults, children }),
-    {
-      dedupingInterval: 500,
-      revalidateOnFocus: false,
-      keepPreviousData: true,
-    },
-  );
+  const { data, error, isLoading, mutate } = useSWR(shouldFetch ? ['activity-quote', slug, adults, children] : null, () => getActivityQuote(slug, { adults, children }), {
+    dedupingInterval: 500,
+    revalidateOnFocus: false,
+    keepPreviousData: true,
+  });
 
   return { quote: data, error, isLoading, refresh: mutate };
 }
