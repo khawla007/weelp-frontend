@@ -4,7 +4,7 @@
  * Backend algorithm alignment verified against ActivityDiscountService.php logic.
  */
 
-import { pickGroupDiscount, computeGroupDiscount } from './calculateActivityPrice';
+import { pickGroupDiscount, computeGroupDiscount, calculateActivityPrice } from './calculateActivityPrice';
 
 describe('pickGroupDiscount', () => {
   describe('Fixed discount tiers', () => {
@@ -282,5 +282,133 @@ describe('computeGroupDiscount', () => {
       const result = computeGroupDiscount(tiers, 15, 100);
       expect(result.fullQty).toBe(15 - result.discountedQty);
     });
+  });
+});
+
+describe('EB/LM stacking on regular subtotal', () => {
+  const activity = (overrides = {}) => ({
+    pricing: { regular_price: 100, currency: 'USD' },
+    seasonalPricing: [],
+    groupDiscounts: [],
+    earlyBirdDiscount: null,
+    lastMinuteDiscount: null,
+    ...overrides,
+  });
+  const peopleOf = (adults) => ({ adults, children: 0, infants: 0 });
+  const dayAt = (y, m, d) => new Date(Date.UTC(y, m - 1, d));
+  const addDays = (date, n) => new Date(date.getTime() + n * 86400000);
+
+  const today = dayAt(2026, 4, 23);
+
+  test('EB percent triggers at threshold and applies to regular subtotal', () => {
+    const result = calculateActivityPrice({
+      activity: activity({
+        earlyBirdDiscount: { enabled: true, days_before_start: 30, discount_amount: 10, discount_type: 'percentage' },
+      }),
+      dateRange: { from: addDays(today, 30), to: null },
+      people: peopleOf(2),
+      today,
+    });
+    expect(result.subtotal).toBe(200);
+    expect(result.earlyBirdDiscount.amount).toBe(20);
+    expect(result.final).toBe(180);
+  });
+
+  test('EB fixed stays flat regardless of headcount', () => {
+    const base = {
+      activity: activity({
+        earlyBirdDiscount: { enabled: true, days_before_start: 30, discount_amount: 10, discount_type: 'fixed' },
+      }),
+      dateRange: { from: addDays(today, 45), to: null },
+      today,
+    };
+    expect(calculateActivityPrice({ ...base, people: peopleOf(1) }).earlyBirdDiscount.amount).toBe(10);
+    expect(calculateActivityPrice({ ...base, people: peopleOf(5) }).earlyBirdDiscount.amount).toBe(10);
+  });
+
+  test('LM percent triggers within window', () => {
+    const result = calculateActivityPrice({
+      activity: activity({
+        lastMinuteDiscount: { enabled: true, days_before_start: 7, discount_amount: 10, discount_type: 'percentage' },
+      }),
+      dateRange: { from: addDays(today, 3), to: null },
+      people: peopleOf(2),
+      today,
+    });
+    expect(result.lastMinuteDiscount.amount).toBe(20);
+    expect(result.final).toBe(180);
+  });
+
+  test('EB + LM stack when both trigger', () => {
+    const result = calculateActivityPrice({
+      activity: activity({
+        earlyBirdDiscount: { enabled: true, days_before_start: 1, discount_amount: 10, discount_type: 'percentage' },
+        lastMinuteDiscount: { enabled: true, days_before_start: 14, discount_amount: 10, discount_type: 'percentage' },
+      }),
+      dateRange: { from: addDays(today, 5), to: null },
+      people: peopleOf(2),
+      today,
+    });
+    expect(result.earlyBirdDiscount.amount).toBe(20);
+    expect(result.lastMinuteDiscount.amount).toBe(20);
+    expect(result.final).toBe(160);
+  });
+
+  test('EB + group discount stack on regular subtotal (not post-group)', () => {
+    const result = calculateActivityPrice({
+      activity: activity({
+        groupDiscounts: [{ id: 1, min_people: 5, discount_amount: 20, discount_type: 'percentage' }],
+        earlyBirdDiscount: { enabled: true, days_before_start: 30, discount_amount: 10, discount_type: 'percentage' },
+      }),
+      dateRange: { from: addDays(today, 90), to: null },
+      people: peopleOf(6),
+      today,
+    });
+    expect(result.groupDiscount.amount).toBe(100);
+    expect(result.earlyBirdDiscount.amount).toBe(60);
+    expect(result.final).toBe(440);
+  });
+
+  test('fixed EB + percent LM mix', () => {
+    const result = calculateActivityPrice({
+      activity: activity({
+        earlyBirdDiscount: { enabled: true, days_before_start: 1, discount_amount: 15, discount_type: 'fixed' },
+        lastMinuteDiscount: { enabled: true, days_before_start: 14, discount_amount: 10, discount_type: 'percentage' },
+      }),
+      dateRange: { from: addDays(today, 5), to: null },
+      people: peopleOf(4),
+      today,
+    });
+    expect(result.earlyBirdDiscount.amount).toBe(15);
+    expect(result.lastMinuteDiscount.amount).toBe(40);
+    expect(result.final).toBe(345);
+  });
+
+  test('over-discount clamps final to 0', () => {
+    const result = calculateActivityPrice({
+      activity: activity({
+        earlyBirdDiscount: { enabled: true, days_before_start: 1, discount_amount: 60, discount_type: 'fixed' },
+        lastMinuteDiscount: { enabled: true, days_before_start: 14, discount_amount: 50, discount_type: 'fixed' },
+      }),
+      dateRange: { from: addDays(today, 3), to: null },
+      people: peopleOf(1),
+      today,
+    });
+    expect(result.final).toBe(0);
+  });
+
+  test('null date: no time discounts', () => {
+    const result = calculateActivityPrice({
+      activity: activity({
+        earlyBirdDiscount: { enabled: true, days_before_start: 30, discount_amount: 10, discount_type: 'percentage' },
+        lastMinuteDiscount: { enabled: true, days_before_start: 7, discount_amount: 10, discount_type: 'percentage' },
+      }),
+      dateRange: { from: null, to: null },
+      people: peopleOf(2),
+      today,
+    });
+    expect(result.earlyBirdDiscount).toBeNull();
+    expect(result.lastMinuteDiscount).toBeNull();
+    expect(result.final).toBe(200);
   });
 });

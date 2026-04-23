@@ -228,32 +228,6 @@ export function matchSeason(seasonalPricing, fromDate) {
 }
 
 /**
- * Apply a discount to an amount.
- *
- * @param {number} amount - The subtotal or intermediate amount
- * @param {Object|null} discount - Discount rule { discount_type, discount_amount }
- * @param {number} people - Headcount for fixed discounts
- * @returns {number} - Amount after discount, clamped to >= 0
- */
-export function applyDiscount(amount, discount, people) {
-  if (!discount) {
-    return amount;
-  }
-
-  const discountAmount = Number(discount.discount_amount);
-
-  if (discount.discount_type === 'percentage') {
-    return Math.max(0, amount * (1 - discountAmount / 100));
-  }
-
-  if (discount.discount_type === 'fixed') {
-    return Math.max(0, amount - discountAmount * people);
-  }
-
-  return amount;
-}
-
-/**
  * Calculate the final booking price for an activity with all discounts applied.
  *
  * @param {Object} params
@@ -271,7 +245,9 @@ export function applyDiscount(amount, discount, people) {
  *     season: { name: string, savings: number, regularPrice: number } | null,
  *     groupDiscount: { amount: number, rule: Object, bundles: number, discountedQty: number, fullQty: number, minPeople: number } | null,
  *     groupHint: { needed: number, type: 'upgrade' | 'complete', rule: Object } | null,
- *     timeDiscount: { type: 'early_bird' | 'last_minute', amount: number, rule: Object } | null,
+ *     earlyBirdDiscount: { amount: number, rule: Object } | null,
+ *     lastMinuteDiscount: { amount: number, rule: Object } | null,
+ *     combinedDiscount: number,
  *     addonsTotal: number,
  *     final: number,
  *     currency: string
@@ -294,49 +270,22 @@ export function calculateActivityPrice({ activity, dateRange, people, selectedAd
   // Step 3: Apply group discount (bundle-based)
   const groupInfo = computeGroupDiscount(activity?.groupDiscounts, headcount, pricePerHead);
   const groupDiscountAmount = Math.max(0, Math.min(groupInfo?.amount ?? 0, subtotal));
-  const afterGroup = Math.max(0, subtotal - groupDiscountAmount);
 
-  // Step 4: Apply time discount (early bird or last minute)
-  let timeDiscount = null;
-  let afterTime = afterGroup;
-  let timeSavings = 0;
+  // Step 4: Time discounts — both compute on regular `subtotal` and stack additively
+  const ebAmount = computeEarlyBirdDiscount(activity?.earlyBirdDiscount, subtotal, dateRange?.from, today);
+  const lmAmount = computeLastMinuteDiscount(activity?.lastMinuteDiscount, subtotal, dateRange?.from, today);
 
-  if (dateRange?.from) {
-    const daysDiff = dateRange.from.getTime() - today.getTime();
-    const daysUntil = Math.floor(daysDiff / (1000 * 60 * 60 * 24));
+  // Step 5: Combined discount applied once against subtotal, clamp at 0
+  const combinedDiscount = roundCents(groupDiscountAmount + ebAmount + lmAmount);
+  const afterDiscounts = Math.max(0, roundCents(subtotal - combinedDiscount));
 
-    // Check early bird first
-    const earlyBird = activity?.earlyBirdDiscount;
-    if (earlyBird?.enabled && daysUntil >= Number(earlyBird.days_before_start)) {
-      const beforeEBAmount = afterGroup;
-      afterTime = applyDiscount(afterGroup, earlyBird, headcount);
-      timeSavings = Math.max(0, beforeEBAmount - afterTime);
-      timeDiscount = {
-        type: 'early_bird',
-        rule: earlyBird,
-      };
-    } else {
-      // Check last minute (only if EB didn't qualify)
-      const lastMinute = activity?.lastMinuteDiscount;
-      if (lastMinute?.enabled && daysUntil >= 0 && daysUntil <= Number(lastMinute.days_before_start)) {
-        const beforeLMAmount = afterGroup;
-        afterTime = applyDiscount(afterGroup, lastMinute, headcount);
-        timeSavings = Math.max(0, beforeLMAmount - afterTime);
-        timeDiscount = {
-          type: 'last_minute',
-          rule: lastMinute,
-        };
-      }
-    }
-  }
-
-  // Step 5: Add addons
+  // Step 6: Add addons
   const addonsTotal = selectedAddons.reduce((sum, addon) => {
     return sum + Number(addon.addon_sale_price ?? addon.addon_price ?? 0);
   }, 0);
 
-  // Step 6: Final price
-  const final = Math.max(0, afterTime + addonsTotal);
+  // Step 7: Final price
+  const final = Math.max(0, afterDiscounts + addonsTotal);
 
   return {
     pricePerHead,
@@ -361,15 +310,45 @@ export function calculateActivityPrice({ activity, dateRange, people, selectedAd
           }
         : null,
     groupHint: groupInfo?.hint ?? null,
-    timeDiscount:
-      timeSavings > 0
-        ? {
-            amount: timeSavings,
-            ...timeDiscount,
-          }
-        : null,
+    earlyBirdDiscount: ebAmount > 0 ? { amount: ebAmount, rule: activity?.earlyBirdDiscount ?? null } : null,
+    lastMinuteDiscount: lmAmount > 0 ? { amount: lmAmount, rule: activity?.lastMinuteDiscount ?? null } : null,
+    combinedDiscount,
     addonsTotal,
     final,
     currency: defaultCurrency,
   };
+}
+
+function dateKey(d) {
+  // Normalise a Date to UTC midnight ms so frontend math matches backend CarbonImmutable::today()/startOfDay().
+  return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+}
+
+function daysAheadOf(fromDate, today) {
+  if (!fromDate) return null;
+  const ms = dateKey(fromDate) - dateKey(today);
+  return Math.floor(ms / 86400000);
+}
+
+function timeDiscountAmount(rule, subtotal) {
+  const amt = Number(rule.discount_amount);
+  if (rule.discount_type === 'percentage') {
+    const pct = Math.min(amt, 100);
+    return roundCents((pct / 100) * subtotal);
+  }
+  return roundCents(amt);
+}
+
+export function computeEarlyBirdDiscount(rule, subtotal, fromDate, today = new Date()) {
+  if (!rule?.enabled) return 0;
+  const daysAhead = daysAheadOf(fromDate, today);
+  if (daysAhead === null || daysAhead < Number(rule.days_before_start)) return 0;
+  return timeDiscountAmount(rule, subtotal);
+}
+
+export function computeLastMinuteDiscount(rule, subtotal, fromDate, today = new Date()) {
+  if (!rule?.enabled) return 0;
+  const daysAhead = daysAheadOf(fromDate, today);
+  if (daysAhead === null || daysAhead < 0 || daysAhead > Number(rule.days_before_start)) return 0;
+  return timeDiscountAmount(rule, subtotal);
 }
