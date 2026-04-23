@@ -29,11 +29,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
         range_start: 'day-range-start !bg-[#558e7b]/25 rounded-l-md [&>button]:!bg-[#558e7b] [&>button]:!text-white [&>button]:hover:!bg-[#558e7b] [&>button]:hover:!text-white',
         range_end: 'day-range-end !bg-[#558e7b]/25 rounded-r-md [&>button]:!bg-[#558e7b] [&>button]:!text-white [&>button]:hover:!bg-[#558e7b] [&>button]:hover:!text-white',
         range_middle: 'day-range-middle aria-selected:!bg-[#558e7b]/25 aria-selected:!text-gray-900',
-        selected: cn(
-          props.mode === 'range'
-            ? 'day-selected'
-            : '[&>button]:focus:bg-[#558e7b] [&>button]:focus:text-white',
-        ),
+        selected: cn(props.mode === 'range' ? 'day-selected' : '[&>button]:focus:bg-[#558e7b] [&>button]:focus:text-white'),
         today: 'bg-accent text-accent-foreground !rounded-md',
         outside: 'day-outside text-muted-foreground opacity-50 !aria-selected:bg-accent/50 !aria-selected:text-muted-foreground !aria-selected:opacity-30',
         disabled: 'text-muted-foreground opacity-50',

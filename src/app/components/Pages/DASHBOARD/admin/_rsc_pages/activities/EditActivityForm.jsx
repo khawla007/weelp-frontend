@@ -1204,7 +1204,9 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                             <div className="relative inline-block">
                               <Label>Season Date Range</Label>
                               {(!dateRange?.from || !dateRange?.to) && (
-                                <span className="absolute left-full top-[60%] -translate-y-1/2 ml-2 whitespace-nowrap text-xs font-normal text-red-500">{!dateRange?.from ? 'This field is required' : 'Please select end date'}</span>
+                                <span className="absolute left-full top-[60%] -translate-y-1/2 ml-2 whitespace-nowrap text-xs font-normal text-red-500">
+                                  {!dateRange?.from ? 'This field is required' : 'Please select end date'}
+                                </span>
                               )}
                             </div>
                             <div className="text-sm text-muted-foreground mb-2"></div>
