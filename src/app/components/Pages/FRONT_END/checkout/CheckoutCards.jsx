@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Calendar, Clock, MapPin, MessageCircleMore, Phone, Star, Truck, User } from 'lucide-react';
-import { actualDate } from '@/lib/utils';
+import { actualDate, formatCurrency } from '@/lib/utils';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -298,6 +298,14 @@ const TransferCheckoutItemCard = ({ item }) => {
     name,
     image,
     price = 0,
+    base_price: basePrice = 0,
+    currency = 'USD',
+    luggage_per_bag_rate: luggageRate = 0,
+    waiting_per_minute_rate: waitingRate = 0,
+    bag_count: bagCount = 0,
+    waiting_minutes: waitingMinutes = 0,
+    luggage_amount: luggageAmount = 0,
+    waiting_amount: waitingAmount = 0,
     origin_name: originName,
     destination_name: destinationName,
     route_name: routeName,
@@ -313,10 +321,6 @@ const TransferCheckoutItemCard = ({ item }) => {
   const routeTitle = routeName || (originName && destinationName ? `${originName} → ${destinationName}` : name || 'Transfer');
   const durationHours = durationMinutes ? Math.round((durationMinutes / 60) * 10) / 10 : null;
   const pickupFormatted = formatPickupDateTime(from);
-  const formattedPrice = Number(price || 0).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
 
   return (
     <div className="bg-white max-w-md flex flex-col rounded-xl p-6 gap-3">
@@ -362,13 +366,41 @@ const TransferCheckoutItemCard = ({ item }) => {
         </span>
       </div>
 
+      <div className="flex flex-col gap-2 pt-3 border-t border-[#eee]">
+        <BreakdownRow label="Base (zone + transfer)" amount={basePrice} currency={currency} />
+        {bagCount > 0 && (
+          <BreakdownRow
+            label={`Extra luggage (${bagCount} × ${formatCurrency(luggageRate, currency)})`}
+            amount={luggageAmount}
+            currency={currency}
+          />
+        )}
+        {waitingMinutes > 0 && (
+          <BreakdownRow
+            label={`Waiting time (${waitingMinutes} min × ${formatCurrency(waitingRate, currency)})`}
+            amount={waitingAmount}
+            currency={currency}
+          />
+        )}
+        <p className="text-[#9a9a9a] text-xs italic">
+          To change extras, edit on the search results before adding to cart.
+        </p>
+      </div>
+
       <div className="flex items-center justify-between pt-2 border-t border-[#eee]">
         <span className="text-[#273f4e] text-lg font-bold">Total</span>
-        <span className="text-Blueish font-bold text-lg">${formattedPrice}</span>
+        <span className="text-Blueish font-bold text-lg">{formatCurrency(price, currency)}</span>
       </div>
     </div>
   );
 };
+
+const BreakdownRow = ({ label, amount, currency }) => (
+  <div className="flex items-center justify-between text-sm">
+    <span className="text-[#5A5A5A]">{label}</span>
+    <span className="text-[#273f4e] font-medium">{formatCurrency(amount, currency)}</span>
+  </div>
+);
 
 export const CheckoutItemCard = ({ item, itemName, totalPassenger, date, addons = [] }) => {
   if (item?.type === 'transfer') {

@@ -1,18 +1,13 @@
 'use client';
 
-import { Calendar, CircleCheckBig, Clock, MapPin, Truck } from 'lucide-react';
+import { useState } from 'react';
+import { Calendar, ChevronDown, CircleCheckBig, Clock, MapPin, Minus, Plus, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { formatCurrency } from '@/lib/utils';
 
-/**
- * Single transfer result card used inside TransferResultsDropdown.
- * Matches pen design Frame 1707479560.
- *
- * Props:
- *  - transfer: transfer object from /api/transfers response
- *  - pickupAt: Date | string (optional) — pickup datetime selected by user
- *  - onSelect: callback(transfer) fired when user clicks Select
- */
+const WAITING_STEP_MINUTES = 5;
+
 export default function TransferResultCard({ transfer, onSelect, pickupAt }) {
   const vehicleType = transfer?.vehicle_type ?? transfer?.vendorRoutes?.vehicle_type ?? null;
   const originName = transfer?.origin_name ?? transfer?.route?.origin?.name ?? null;
@@ -20,11 +15,22 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt }) {
   const routeName = transfer?.route_name ?? transfer?.route?.name ?? null;
   const routeTitle = routeName ?? (originName && destinationName ? `${originName} → ${destinationName}` : (transfer?.name ?? 'Transfer'));
   const featuredImage = transfer?.featured_image || transfer?.media?.[0]?.url || '/assets/images/Car.png';
-  const price = Number(transfer?.route_price ?? 0).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+
+  const currency = transfer?.route_currency ?? transfer?.currency ?? 'USD';
+  const basePrice = Number(transfer?.route_price ?? 0);
+  const luggageRate = Number(transfer?.luggage_per_bag_rate ?? 0);
+  const waitingRate = Number(transfer?.waiting_per_minute_rate ?? 0);
+
   const durationHours = Math.round(((transfer?.route_duration_minutes ?? 0) / 60) * 10) / 10;
+
+  const [expanded, setExpanded] = useState(false);
+  const [bagCount, setBagCount] = useState(0);
+  const [waitingMinutes, setWaitingMinutes] = useState(0);
+
+  const luggageAmount = Math.round(luggageRate * bagCount * 100) / 100;
+  const waitingAmount = Math.round(waitingRate * waitingMinutes * 100) / 100;
+  const lineTotal = Math.round((basePrice + luggageAmount + waitingAmount) * 100) / 100;
+  const hasExtras = bagCount > 0 || waitingMinutes > 0;
 
   const formatPickup = () => {
     if (!pickupAt) return 'Select date';
@@ -41,6 +47,19 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt }) {
     } catch {
       return 'Select date';
     }
+  };
+
+  const handleSelectClick = () => {
+    onSelect?.(transfer, {
+      bag_count: bagCount,
+      waiting_minutes: waitingMinutes,
+      luggage_per_bag_rate: luggageRate,
+      waiting_per_minute_rate: waitingRate,
+      luggage_amount: luggageAmount,
+      waiting_amount: waitingAmount,
+      base_price: basePrice,
+      line_total: lineTotal,
+    });
   };
 
   return (
@@ -78,15 +97,98 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt }) {
         </span>
       </div>
 
-      <div className="py-4 px-8 flex justify-between items-center">
-        <div className="flex flex-col">
-          <span className="text-[#273f4e] font-semibold text-lg">${price}</span>
-          <span className="text-[#5a5a5a] text-xs">Detailed Breakdown</span>
+      {expanded && (
+        <div className="py-4 px-8 border-t border-b border-[#eaeaea] flex flex-col gap-4 bg-[#fafbfb]">
+          <ExtraRow
+            label="Extra luggage"
+            sublabel={luggageRate > 0 ? `${formatCurrency(luggageRate, currency)} per bag` : 'Not available'}
+            value={bagCount}
+            onChange={setBagCount}
+            disabled={luggageRate <= 0}
+            min={0}
+            step={1}
+            amount={luggageAmount}
+            currency={currency}
+          />
+          <ExtraRow
+            label="Waiting time"
+            sublabel={waitingRate > 0 ? `${formatCurrency(waitingRate, currency)} per minute` : 'Not available'}
+            value={waitingMinutes}
+            onChange={setWaitingMinutes}
+            disabled={waitingRate <= 0}
+            min={0}
+            step={WAITING_STEP_MINUTES}
+            amount={waitingAmount}
+            currency={currency}
+            unit="min"
+          />
         </div>
-        <Button type="button" onClick={() => onSelect?.(transfer)} className="bg-[#57947d] hover:bg-[#57947d]/90 text-white px-10">
+      )}
+
+      <div className="py-4 px-8 flex justify-between items-center gap-4">
+        <div className="flex flex-col">
+          <span className="text-[#273f4e] font-semibold text-lg">{formatCurrency(basePrice, currency)}</span>
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            className="text-[#5a5a5a] text-xs flex items-center gap-1 hover:text-[#273f4e] transition-colors"
+            aria-expanded={expanded}
+          >
+            <span>Detailed Breakdown</span>
+            <ChevronDown className={`h-3 w-3 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+          </button>
+          {hasExtras && (
+            <span className="text-[#273f4e] text-xs font-medium mt-1">
+              Total: {formatCurrency(lineTotal, currency)}
+            </span>
+          )}
+        </div>
+        <Button type="button" onClick={handleSelectClick} className="bg-[#57947d] hover:bg-[#57947d]/90 text-white px-10">
           Select
         </Button>
       </div>
     </Card>
+  );
+}
+
+function ExtraRow({ label, sublabel, value, onChange, disabled, min, step, amount, currency, unit }) {
+  const decrement = () => onChange(Math.max(min, value - step));
+  const increment = () => onChange(value + step);
+
+  return (
+    <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col">
+        <span className="text-[#273f4e] text-sm font-medium">{label}</span>
+        <span className="text-[#5a5a5a] text-xs">{sublabel}</span>
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="text-[#273f4e] text-sm font-medium min-w-[5rem] text-right">
+          + {formatCurrency(amount, currency)}
+        </span>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={decrement}
+            disabled={disabled || value <= min}
+            className="h-7 w-7 rounded-full border border-[#cccccc] flex items-center justify-center text-[#273f4e] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#f3f5f5]"
+            aria-label={`Decrease ${label}`}
+          >
+            <Minus className="h-3 w-3" />
+          </button>
+          <span className="text-[#273f4e] text-sm font-medium min-w-[2.5rem] text-center">
+            {value}{unit ? ` ${unit}` : ''}
+          </span>
+          <button
+            type="button"
+            onClick={increment}
+            disabled={disabled}
+            className="h-7 w-7 rounded-full border border-[#cccccc] flex items-center justify-center text-[#273f4e] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#f3f5f5]"
+            aria-label={`Increase ${label}`}
+          >
+            <Plus className="h-3 w-3" />
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

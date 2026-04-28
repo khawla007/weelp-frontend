@@ -47,7 +47,18 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
   const item = cartItems.at(0) || {}; // retrieve item
 
   // prepare item data
-  const { price = 0, currency = '', howMany: { adults = 1, children = 0 } = {}, dateRange = {}, type = '', id: orderable_id = 0 } = item;
+  const {
+    price = 0,
+    currency = '',
+    howMany: { adults = 1, children = 0 } = {},
+    dateRange = {},
+    type = '',
+    id: orderable_id = 0,
+    bag_count = 0,
+    waiting_minutes = 0,
+    luggage_per_bag_rate = 0,
+    waiting_per_minute_rate = 0,
+  } = item;
 
   const { from = '', to = '' } = dateRange; // extract dates
 
@@ -93,7 +104,7 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
         number_of_children: children,
         special_requirements: profileData.special_requirements || '',
         user_id: user_id,
-        amount: parseInt(price),
+        amount: Number(price) || 0,
         currency: String(currency || 'usd').toLowerCase(),
         is_custom_amount: false,
         custom_amount: 0,
@@ -102,6 +113,14 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
         addons: item.addons || [],
         base_amount: item.base_price || item.price,
         addons_amount: (item.addons || []).reduce((sum, a) => sum + Number(a.price), 0),
+        ...(type === 'transfer'
+          ? {
+              bag_count: Number(bag_count) || 0,
+              waiting_minutes: Number(waiting_minutes) || 0,
+              luggage_per_bag_rate: Number(luggage_per_bag_rate) || 0,
+              waiting_per_minute_rate: Number(waiting_per_minute_rate) || 0,
+            }
+          : {}),
         emergency_contact: {
           name: profileData.emergency_contact_name || name || '',
           phone: profileData.emergency_contact_phone || profileData.phone || '',

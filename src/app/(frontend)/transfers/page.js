@@ -17,17 +17,27 @@ const TransfersPage = () => {
   const addItem = useMiniCartStore((s) => s.addItem);
   const setMiniCartOpen = useMiniCartStore((s) => s.setMiniCartOpen);
 
-  const handleSelect = (transfer) => {
+  const handleSelect = (transfer, extras = {}) => {
     const originName = transfer?.origin_name ?? transfer?.route?.origin?.name ?? null;
     const destinationName = transfer?.destination_name ?? transfer?.route?.destination?.name ?? null;
     const routeName = transfer?.route_name ?? transfer?.route?.name ?? null;
     const vehicleType = transfer?.vehicle_type ?? transfer?.vendorRoutes?.vehicle_type ?? null;
 
+    const basePrice = Number(extras.base_price ?? transfer.route_price ?? 0);
+    const luggageRate = Number(extras.luggage_per_bag_rate ?? transfer.luggage_per_bag_rate ?? 0);
+    const waitingRate = Number(extras.waiting_per_minute_rate ?? transfer.waiting_per_minute_rate ?? 0);
+    const bagCount = Number(extras.bag_count ?? 0);
+    const waitingMinutes = Number(extras.waiting_minutes ?? 0);
+    const luggageAmount = Math.round(luggageRate * bagCount * 100) / 100;
+    const waitingAmount = Math.round(waitingRate * waitingMinutes * 100) / 100;
+    const linePrice = Math.round((basePrice + luggageAmount + waitingAmount) * 100) / 100;
+
     addItem({
       type: 'transfer',
       id: transfer.id ?? transfer.transfer_id,
       name: transfer.name ?? vehicleType ?? 'Transfer',
-      price: transfer.route_price ?? 0,
+      base_price: basePrice,
+      price: linePrice,
       currency: transfer.route_currency ?? transfer.currency ?? 'USD',
       image: transfer.featured_image || transfer?.media?.[0]?.url || '/assets/images/Car.png',
       route_duration_minutes: transfer.route_duration_minutes,
@@ -35,6 +45,12 @@ const TransfersPage = () => {
       destination_name: destinationName,
       route_name: routeName,
       vehicle_type: vehicleType,
+      luggage_per_bag_rate: luggageRate,
+      waiting_per_minute_rate: waitingRate,
+      bag_count: bagCount,
+      waiting_minutes: waitingMinutes,
+      luggage_amount: luggageAmount,
+      waiting_amount: waitingAmount,
       howMany: {
         adults: meta?.adults ?? 1,
         children: meta?.children ?? 0,

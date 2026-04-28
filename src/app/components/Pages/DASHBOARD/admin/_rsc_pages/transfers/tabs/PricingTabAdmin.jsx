@@ -70,13 +70,15 @@ const PricingTabAdmin = () => {
 
         <div className="flex flex-col sm:flex-row">
           <div className="flex flex-col space-y-4 w-full p-2 border-none">
-            <Label htmlFor="extra_luggage_charge">Extra Luggage Charge</Label>
-            <Input type="number" min="0" defaultValue="0" {...register('extra_luggage_charge', { valueAsNumber: true })} />
+            <Label htmlFor="extra_luggage_charge">Per-Bag Luggage Rate</Label>
+            <Input type="number" min="0" step="0.01" defaultValue="0" {...register('extra_luggage_charge', { valueAsNumber: true })} />
+            <p className="text-xs text-[#5a5a5a]">Charged per extra bag selected by the customer.</p>
           </div>
 
           <div className="flex flex-col space-y-4 w-full p-2 border-none">
-            <Label htmlFor="waiting_charge">Waiting Charge</Label>
-            <Input type="number" min="0" defaultValue="0" {...register('waiting_charge', { valueAsNumber: true })} />
+            <Label htmlFor="waiting_charge">Per-Minute Waiting Rate</Label>
+            <Input type="number" min="0" step="0.01" defaultValue="0" {...register('waiting_charge', { valueAsNumber: true })} />
+            <p className="text-xs text-[#5a5a5a]">Charged per minute of waiting requested by the customer.</p>
           </div>
         </div>
       </CardContent>

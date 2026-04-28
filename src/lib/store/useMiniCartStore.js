@@ -1,60 +1,109 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+const safeAmount = (value, fallback = 0) => {
+  const num = Number(value);
+  return Number.isFinite(num) && num >= 0 ? num : fallback;
+};
+
+const round2 = (value) => Math.round(safeAmount(value) * 100) / 100;
+
+const sumLinePrices = (items) =>
+  round2(items.reduce((acc, item) => acc + safeAmount(item.price), 0));
+
+const recomputeTransferLine = (item, patch) => {
+  const bagCount = Math.max(0, Math.trunc(safeAmount(patch.bag_count ?? item.bag_count)));
+  const waitingMinutes = Math.max(
+    0,
+    Math.trunc(safeAmount(patch.waiting_minutes ?? item.waiting_minutes)),
+  );
+
+  const luggageRate = safeAmount(item.luggage_per_bag_rate);
+  const waitingRate = safeAmount(item.waiting_per_minute_rate);
+  const basePrice = safeAmount(item.base_price ?? item.price);
+
+  const luggageAmount = round2(luggageRate * bagCount);
+  const waitingAmount = round2(waitingRate * waitingMinutes);
+  const price = round2(basePrice + luggageAmount + waitingAmount);
+
+  return {
+    ...item,
+    bag_count: bagCount,
+    waiting_minutes: waitingMinutes,
+    luggage_amount: luggageAmount,
+    waiting_amount: waitingAmount,
+    price,
+  };
+};
+
 const useMiniCartStore = create(
   persist(
     (set) => ({
       isMiniCartOpen: false,
-      cartItems: [], // Store cart items
-      totalPrice: 0, // Store total price
+      cartItems: [],
+      totalPrice: 0,
 
-      // Toggle MiniCart
       toggleMiniCart: () => set((state) => ({ isMiniCartOpen: !state.isMiniCartOpen })),
       setMiniCartOpen: (value) => set({ isMiniCartOpen: value }),
 
-      // Add item to cart with quantity handling
       addItem: (newItem) =>
         set((state) => {
-          const existingItemIndex = state.cartItems.findIndex((item) => item.id === newItem.id);
+          if (!Number.isFinite(Number(newItem?.price)) || Number(newItem.price) < 0) {
+            return state;
+          }
+
+          const normalized = { ...newItem, price: round2(newItem.price) };
+          const existingItemIndex = state.cartItems.findIndex((item) => item.id === normalized.id);
 
           let updatedCart;
-
           if (existingItemIndex !== -1) {
-            // Merge variations (adults, children, etc.), but do not change price
             updatedCart = [...state.cartItems];
             updatedCart[existingItemIndex] = {
               ...updatedCart[existingItemIndex],
-              ...newItem, // Merge new data
-              price: updatedCart[existingItemIndex].price, // Keep original price
+              ...normalized,
+              price: updatedCart[existingItemIndex].price,
             };
           } else {
-            // Add new item to cart
-            updatedCart = [...state.cartItems, { ...newItem }];
+            updatedCart = [...state.cartItems, normalized];
           }
 
-          // Calculate new total price correctly by converting price to a number
-          const updatedTotalPrice = updatedCart.reduce(
-            (acc, item) => acc + Number(item.price), // Convert to number before adding
-            0,
-          );
-
-          return { cartItems: updatedCart, totalPrice: updatedTotalPrice };
+          return { cartItems: updatedCart, totalPrice: sumLinePrices(updatedCart) };
         }),
 
-      // Remove item from cart
+      // Update fields on an existing cart line. For transfers, accepts only
+      // { bag_count, waiting_minutes } and recomputes price from stored rates so
+      // the caller cannot inject arbitrary amounts. For other types, performs a
+      // plain merge (price-driving logic lives in the relevant product flow).
+      updateItem: (id, patch = {}) =>
+        set((state) => {
+          const index = state.cartItems.findIndex((item) => item.id === id);
+          if (index === -1) return state;
+
+          const existing = state.cartItems[index];
+          let updated;
+
+          if (existing.type === 'transfer') {
+            updated = recomputeTransferLine(existing, patch);
+          } else {
+            const merged = { ...existing, ...patch };
+            updated = { ...merged, price: round2(merged.price) };
+          }
+
+          if (!Number.isFinite(updated.price) || updated.price < 0) {
+            return state;
+          }
+
+          const updatedCart = [...state.cartItems];
+          updatedCart[index] = updated;
+          return { cartItems: updatedCart, totalPrice: sumLinePrices(updatedCart) };
+        }),
+
       removeItem: (id) =>
         set((state) => {
           const updatedCart = state.cartItems.filter((item) => item.id !== id);
-          // Calculate new total price correctly by converting price to a number
-          const updatedTotalPrice = updatedCart.reduce(
-            (acc, item) => acc + Number(item.price), // Convert to number before adding
-            0,
-          );
-
-          return { cartItems: updatedCart, totalPrice: updatedTotalPrice };
+          return { cartItems: updatedCart, totalPrice: sumLinePrices(updatedCart) };
         }),
 
-      // Clear cart
       clearCart: () => set({ cartItems: [], totalPrice: 0 }),
     }),
     {

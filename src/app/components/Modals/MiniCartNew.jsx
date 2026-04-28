@@ -9,10 +9,12 @@ import { MinicartReviewcontent } from '../MiniCartReviewCard';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { buttonVariants } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { formatCurrency } from '@/lib/utils';
 
 const MiniCartNew = () => {
   const router = useRouter(); // intialize route
   const { cartItems, totalPrice, isMiniCartOpen, setMiniCartOpen } = useMiniCartStore();
+  const cartCurrency = cartItems?.[0]?.currency || 'USD';
 
   return (
     <Sheet open={isMiniCartOpen} onOpenChange={setMiniCartOpen}>
@@ -74,7 +76,7 @@ const MiniCartNew = () => {
                   <BreakSection marginTop={'my-4'} />
                   <div className="flex justify-between">
                     <div className="flex flex-col gap-1 w-full">
-                      <h3 className="capitalize text-lg font-semibold text-Blueish">$ {totalPrice ?? 0}</h3>
+                      <h3 className="capitalize text-lg font-semibold text-Blueish">{formatCurrency(totalPrice ?? 0, cartCurrency)}</h3>
                       <span className="capitalize underline text-[#5a5a5a]">Detailed Breakdown</span>
                     </div>
                     <button

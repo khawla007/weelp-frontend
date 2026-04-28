@@ -20,7 +20,7 @@ export default function CheckoutMainManual() {
   const item = cartItems.at(0) || {}; // item destructure
   const { price, currency = 'usd' } = item;
 
-  const amount = parseInt(price); // convert to number
+  const amount = Number(price) || 0; // preserve decimals; Stripe rounding happens server-side
   const [clientSecret, setClientSecret] = useState('');
   const [paymentIntent, setPayMentIntent] = useState('');
   const [loading, setLoading] = useState(true);
