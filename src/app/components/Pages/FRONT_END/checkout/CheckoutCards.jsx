@@ -367,24 +367,10 @@ const TransferCheckoutItemCard = ({ item }) => {
       </div>
 
       <div className="flex flex-col gap-2 pt-3 border-t border-[#eee]">
-        <BreakdownRow label="Base (zone + transfer)" amount={basePrice} currency={currency} />
-        {bagCount > 0 && (
-          <BreakdownRow
-            label={`Extra luggage (${bagCount} × ${formatCurrency(luggageRate, currency)})`}
-            amount={luggageAmount}
-            currency={currency}
-          />
-        )}
-        {waitingMinutes > 0 && (
-          <BreakdownRow
-            label={`Waiting time (${waitingMinutes} min × ${formatCurrency(waitingRate, currency)})`}
-            amount={waitingAmount}
-            currency={currency}
-          />
-        )}
-        <p className="text-[#9a9a9a] text-xs italic">
-          To change extras, edit on the search results before adding to cart.
-        </p>
+        <BreakdownRow label="Price" amount={basePrice} currency={currency} />
+        {bagCount > 0 && <BreakdownRow label={`Extra luggage (${bagCount} × ${formatCurrency(luggageRate, currency)})`} amount={luggageAmount} currency={currency} />}
+        {waitingMinutes > 0 && <BreakdownRow label={`Waiting time (${waitingMinutes} min × ${formatCurrency(waitingRate, currency)})`} amount={waitingAmount} currency={currency} />}
+        <p className="text-[#9a9a9a] text-xs italic">To change extras, edit on the search results before adding to cart.</p>
       </div>
 
       <div className="flex items-center justify-between pt-2 border-t border-[#eee]">
