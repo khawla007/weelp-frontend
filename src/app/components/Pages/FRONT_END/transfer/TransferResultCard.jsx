@@ -8,7 +8,7 @@ import { formatCurrency } from '@/lib/utils';
 
 const WAITING_STEP_MINUTES = 5;
 
-export default function TransferResultCard({ transfer, onSelect, pickupAt }) {
+export default function TransferResultCard({ transfer, onSelect, pickupAt, passengers }) {
   const vehicleType = transfer?.vehicle_type ?? transfer?.vendorRoutes?.vehicle_type ?? null;
   const originName = transfer?.origin_name ?? transfer?.route?.origin?.name ?? null;
   const destinationName = transfer?.destination_name ?? transfer?.route?.destination?.name ?? null;
@@ -17,7 +17,11 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt }) {
   const featuredImage = transfer?.featured_image || transfer?.media?.[0]?.url || '/assets/images/Car.png';
 
   const currency = transfer?.route_currency ?? transfer?.currency ?? 'USD';
-  const basePrice = Number(transfer?.route_price ?? 0);
+  const unitPrice = Number(transfer?.route_price ?? 0);
+  const priceType = transfer?.price_type ?? transfer?.pricingAvailability?.price_type ?? 'per_vehicle';
+  const headcount = Math.max(1, Number(passengers?.adults ?? 1) + Number(passengers?.children ?? 0));
+  const isPerPerson = priceType === 'per_person';
+  const basePrice = isPerPerson ? Math.round(unitPrice * headcount * 100) / 100 : unitPrice;
   const luggageRate = Number(transfer?.luggage_per_bag_rate ?? 0);
   const waitingRate = Number(transfer?.waiting_per_minute_rate ?? 0);
 
@@ -58,6 +62,9 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt }) {
       luggage_amount: luggageAmount,
       waiting_amount: waitingAmount,
       base_price: basePrice,
+      unit_price: unitPrice,
+      price_type: priceType,
+      headcount,
       line_total: lineTotal,
     });
   };
@@ -134,6 +141,9 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt }) {
             </>
           ) : (
             <span className="text-[#273f4e] font-semibold text-lg">{formatCurrency(basePrice, currency)}</span>
+          )}
+          {isPerPerson && (
+            <span className="text-[#5a5a5a] text-xs">{formatCurrency(unitPrice, currency)} × {headcount} pax</span>
           )}
           <button type="button" onClick={() => setExpanded((v) => !v)} className="text-[#5a5a5a] text-xs flex items-center gap-1 hover:text-[#273f4e] transition-colors mt-1" aria-expanded={expanded}>
             <span>Detailed Breakdown</span>

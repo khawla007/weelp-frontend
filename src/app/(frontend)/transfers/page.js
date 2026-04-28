@@ -37,6 +37,9 @@ const TransfersPage = () => {
       id: transfer.id ?? transfer.transfer_id,
       name: transfer.name ?? vehicleType ?? 'Transfer',
       base_price: basePrice,
+      unit_price: Number(extras.unit_price ?? transfer.route_price ?? 0),
+      price_type: extras.price_type ?? transfer.price_type ?? 'per_vehicle',
+      headcount: Number(extras.headcount ?? 1),
       price: linePrice,
       currency: transfer.route_currency ?? transfer.currency ?? 'USD',
       image: transfer.featured_image || transfer?.media?.[0]?.url || '/assets/images/Car.png',
@@ -82,7 +85,7 @@ const TransfersPage = () => {
           </div>
 
           <div className="w-full mx-auto md:w-[735px] mt-4">
-            <TransferResultsDropdown open={open} loading={loading} transfers={results} onSelect={handleSelect} onClose={() => setOpen(false)} pickupAt={meta?.pickupAt} />
+            <TransferResultsDropdown open={open} loading={loading} transfers={results} onSelect={handleSelect} onClose={() => setOpen(false)} pickupAt={meta?.pickupAt} passengers={meta} />
           </div>
         </div>
 

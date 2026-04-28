@@ -15,7 +15,7 @@ import TransferResultCard from './TransferResultCard';
  *  - onClose: callback fired when the user clicks the close (X) button
  *  - pickupAt: Date | string (optional) — pickup datetime, passed to each card
  */
-export default function TransferResultsDropdown({ open, loading, transfers = [], onSelect, onClose, pickupAt }) {
+export default function TransferResultsDropdown({ open, loading, transfers = [], onSelect, onClose, pickupAt, passengers }) {
   if (!open) return null;
 
   const CloseButton = onClose ? (
@@ -66,7 +66,7 @@ export default function TransferResultsDropdown({ open, loading, transfers = [],
       {CloseButton}
       <div className="bg-white rounded-xl shadow-xl max-h-[520px] overflow-y-auto flex flex-col gap-4 p-4">
         {transfers.map((transfer, idx) => (
-          <TransferResultCard key={transfer.id ?? transfer.transfer_id ?? `transfer-${idx}`} transfer={transfer} onSelect={onSelect} pickupAt={pickupAt} />
+          <TransferResultCard key={transfer.id ?? transfer.transfer_id ?? `transfer-${idx}`} transfer={transfer} onSelect={onSelect} pickupAt={pickupAt} passengers={passengers} />
         ))}
       </div>
     </div>
