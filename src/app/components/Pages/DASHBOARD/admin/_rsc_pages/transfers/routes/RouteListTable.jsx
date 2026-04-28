@@ -46,13 +46,19 @@ export default function RouteListTable({ routes = [], selectedIds = [], onToggle
                 <div className="text-sm">{r.distance_km != null ? `${r.distance_km} km` : '—'}</div>
                 <div className="text-xs text-muted-foreground">{r.duration_minutes != null ? `${r.duration_minutes} min` : '—'}</div>
               </TableCell>
-              <TableCell>
-                <div className="text-xs text-muted-foreground">
-                  {r.fromZone?.name && <div>From: {r.fromZone.name}</div>}
-                  {r.toZone?.name && <div>To: {r.toZone.name}</div>}
-                  {!r.fromZone && !r.toZone && '—'}
-                </div>
-              </TableCell>
+              {(() => {
+                const fromZone = r.from_zone ?? r.fromZone;
+                const toZone = r.to_zone ?? r.toZone;
+                return (
+                  <TableCell>
+                    <div className="text-xs text-muted-foreground">
+                      {fromZone?.name && <div>From: {fromZone.name}</div>}
+                      {toZone?.name && <div>To: {toZone.name}</div>}
+                      {!fromZone && !toZone && '—'}
+                    </div>
+                  </TableCell>
+                );
+              })()}
               <TableCell>
                 <Button size="icon" variant="ghost" onClick={() => onTogglePopular?.(r.id)} aria-label="Toggle popular">
                   <Star className={`h-4 w-4 ${r.is_popular ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`} />
