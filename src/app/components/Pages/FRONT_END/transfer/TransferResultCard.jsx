@@ -23,7 +23,7 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt }) {
 
   const durationHours = Math.round(((transfer?.route_duration_minutes ?? 0) / 60) * 10) / 10;
 
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const [bagCount, setBagCount] = useState(0);
   const [waitingMinutes, setWaitingMinutes] = useState(0);
 
@@ -127,21 +127,18 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt }) {
 
       <div className="py-4 px-8 flex justify-between items-center gap-4">
         <div className="flex flex-col">
-          <span className="text-[#273f4e] font-semibold text-lg">{formatCurrency(basePrice, currency)}</span>
-          <button
-            type="button"
-            onClick={() => setExpanded((v) => !v)}
-            className="text-[#5a5a5a] text-xs flex items-center gap-1 hover:text-[#273f4e] transition-colors"
-            aria-expanded={expanded}
-          >
+          {hasExtras ? (
+            <>
+              <span className="text-[#5a5a5a] text-xs">Base {formatCurrency(basePrice, currency)}</span>
+              <span className="text-[#273f4e] font-semibold text-lg">{formatCurrency(lineTotal, currency)}</span>
+            </>
+          ) : (
+            <span className="text-[#273f4e] font-semibold text-lg">{formatCurrency(basePrice, currency)}</span>
+          )}
+          <button type="button" onClick={() => setExpanded((v) => !v)} className="text-[#5a5a5a] text-xs flex items-center gap-1 hover:text-[#273f4e] transition-colors mt-1" aria-expanded={expanded}>
             <span>Detailed Breakdown</span>
             <ChevronDown className={`h-3 w-3 transition-transform ${expanded ? 'rotate-180' : ''}`} />
           </button>
-          {hasExtras && (
-            <span className="text-[#273f4e] text-xs font-medium mt-1">
-              Total: {formatCurrency(lineTotal, currency)}
-            </span>
-          )}
         </div>
         <Button type="button" onClick={handleSelectClick} className="bg-[#57947d] hover:bg-[#57947d]/90 text-white px-10">
           Select
@@ -162,9 +159,7 @@ function ExtraRow({ label, sublabel, value, onChange, disabled, min, step, amoun
         <span className="text-[#5a5a5a] text-xs">{sublabel}</span>
       </div>
       <div className="flex items-center gap-3">
-        <span className="text-[#273f4e] text-sm font-medium min-w-[5rem] text-right">
-          + {formatCurrency(amount, currency)}
-        </span>
+        <span className="text-[#273f4e] text-sm font-medium min-w-[5rem] text-right">+ {formatCurrency(amount, currency)}</span>
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -176,7 +171,8 @@ function ExtraRow({ label, sublabel, value, onChange, disabled, min, step, amoun
             <Minus className="h-3 w-3" />
           </button>
           <span className="text-[#273f4e] text-sm font-medium min-w-[2.5rem] text-center">
-            {value}{unit ? ` ${unit}` : ''}
+            {value}
+            {unit ? ` ${unit}` : ''}
           </span>
           <button
             type="button"
