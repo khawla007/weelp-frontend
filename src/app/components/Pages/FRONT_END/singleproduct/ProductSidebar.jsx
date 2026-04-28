@@ -197,7 +197,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             {showLmHint && (
               <span>
                 Last minute: book within {Number(lm.days_before_start)} days for{' '}
-                {lm.discount_type === 'percentage' ? `${Number(lm.discount_amount)}% off` : `${formatCurrency(Number(lm.discount_amount), pricing?.currency ?? 'USD')} off per person`}.
+                {lm.discount_type === 'percentage' ? `${Number(lm.discount_amount)}% off` : `${formatCurrency(Number(lm.discount_amount), pricing?.currency ?? 'USD')} off`}.
               </span>
             )}
           </div>
