@@ -252,7 +252,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       };
 
       return (
-        <div className="space-y-4 py-6">
+        <div className="space-y-4 pb-6">
           <h2 className="text-base font-semibold text-[#09090B]">Basic Information</h2>
 
           <div className="flex w-full gap-4">
@@ -596,7 +596,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
     };
 
     return (
-      <div className="py-4 relative">
+      <div className="pb-4 relative">
         {errors?.schedules && <p className="text-sm text-red-500">{errors?.schedules?.message}</p>}
 
         <div className="w-full flex justify-between items-center">
@@ -1303,10 +1303,10 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
     };
 
     return (
-      <div className="flex flex-col justify-between py-2 rounded-md space-y-8">
+      <div className="flex flex-col justify-between pb-2 rounded-md space-y-8">
         <div className="flex justify-between">
           <h3 className="text-base font-bold text-gray-900 ">Inclusion & Exclusions</h3>
-          <Button className="bg-white text-black border hover:bg-accent hover:accent-black" onClick={handleAddInclustionField}>
+          <Button className="bg-[#558e7b] text-white border hover:bg-[#558e7b]/90" onClick={handleAddInclustionField}>
             + Add Item
           </Button>
         </div>
@@ -1705,10 +1705,10 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
         }}
       >
         <AccordionItem value="item-1">
-          <AccordionTrigger className="hover:bg-gray-50 px-4">
-            <h2 className="text-black font-semibold text-xl">Basic Settings</h2>
+          <AccordionTrigger className="hover:bg-gray-50 pl-0 pr-4 pt-0 pb-8">
+            <h2 className="text-black font-semibold text-base">Basic Settings</h2>
           </AccordionTrigger>
-          <AccordionContent className="px-2 space-y-4">
+          <AccordionContent className="pr-2 space-y-4">
             <div className="space-y-2">
               <Label className={`${errors?.seo?.meta_title?.message && 'text-red-400'}`}>Meta Title</Label>
               <Input
@@ -1784,11 +1784,11 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2">
-          <AccordionTrigger className="hover:bg-gray-50 px-4">
-            <h2 className="text-black font-semibold text-xl">Schema Markup</h2>
+          <AccordionTrigger className="hover:bg-gray-50 pl-0 pr-4 pt-8 pb-8">
+            <h2 className="text-black font-semibold text-base">Schema Markup</h2>
             {errors?.schema_data?.message && <div className="bg-red-100 text-red-800">{errors?.schema_data?.message}</div>}
           </AccordionTrigger>
-          <AccordionContent className="px-2 flex flex-col">
+          <AccordionContent className="pr-2 flex flex-col">
             <Card className="p-8 space-y-4">
               <div>
                 <Label>Select Schema Type</Label>
@@ -2075,7 +2075,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                   }
             }
           >
-            <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${(isSubmitting || isApproving) && ' cursor-wait'}`} disabled={isSubmitting || isApproving}>
+            <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-8 border shadow rounded-lg'} ${(isSubmitting || isApproving) && ' cursor-wait'}`} disabled={isSubmitting || isApproving}>
               <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>{ScheduleTab()}</div>
               {currentStep !== 2 && renderStep()}
               <div className="flex justify-between pt-4">
