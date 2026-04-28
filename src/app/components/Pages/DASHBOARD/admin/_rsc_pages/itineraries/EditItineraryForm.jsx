@@ -482,6 +482,10 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       // prevent delete if not come from server side
       if (!id) {
         removeDay(dayIndex);
+        const remainingActivities = (activities || []).filter((a) => a?.day !== item?.day);
+        const remainingTransfers = (transferss || []).filter((t) => t?.day !== item?.day);
+        setValue('activities', remainingActivities);
+        setValue('transfers', remainingTransfers);
         return;
       }
 
@@ -499,6 +503,11 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
             title: 'Updated succesfully',
           });
 
+          removeDay(dayIndex);
+          const remainingActivities = (activities || []).filter((a) => a?.day !== item?.day);
+          const remainingTransfers = (transferss || []).filter((t) => t?.day !== item?.day);
+          setValue('activities', remainingActivities);
+          setValue('transfers', remainingTransfers);
           setToggleUpdate((prev) => !prev);
         } else {
           console.log('Failed to delete schedule:', res.error);
@@ -538,6 +547,8 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
             title: 'Updated succesfully',
           });
 
+          const updatedActivitys = activities.filter((activity) => !(activity?.id == filteredActivity?.id && activity?.day == filteredActivity?.day));
+          setValue('activities', updatedActivitys);
           setToggleUpdate((prev) => !prev);
         } else {
           console.log('Failed to delete schedule:', res.error);
@@ -577,8 +588,9 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
             title: 'Transfer removed successfully',
           });
 
-          // Refresh local state
-          setToggleUpdate((prev) => !prev); // Assuming you're using this for refetch or `useEffect` sync
+          const updatedTransfers = transferss.filter((transfer) => !(transfer?.id === filteredTransfer?.id && transfer?.day === filteredTransfer?.day));
+          setValue('transfers', updatedTransfers);
+          setToggleUpdate((prev) => !prev);
         } else {
           toast({
             title: 'Failed to remove transfer',
@@ -795,6 +807,36 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
         >
           Next
         </Button>
+
+        {/* Confirm Remove Schedule Item Dialog */}
+        <ConfirmRemoveScheduleItemDialog
+          open={!!pendingRemoval}
+          onOpenChange={(v) => {
+            if (!v) setPendingRemoval(null);
+          }}
+          itemLabel={pendingRemoval?.kind ?? 'item'}
+          isRemoving={isRemoving}
+          onConfirm={async () => {
+            if (!pendingRemoval) return;
+            setIsRemoving(true);
+            try {
+              const { kind, payload } = pendingRemoval;
+              if (kind === 'day') {
+                const { item, itineraryId, dayIndex } = payload;
+                await handleRemoveDay(item, itineraryId, dayIndex);
+              } else if (kind === 'activity') {
+                const { filteredActivity, itineraryId } = payload;
+                await removeActivityHandle(filteredActivity, itineraryId);
+              } else if (kind === 'transfer') {
+                const { filteredTransfer, itineraryId } = payload;
+                await removeTransferHandle(filteredTransfer, itineraryId);
+              }
+            } finally {
+              setIsRemoving(false);
+              setPendingRemoval(null);
+            }
+          }}
+        />
       </div>
     );
   };
@@ -2136,35 +2178,6 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
         </FormProvider>
       </div>
 
-      {/* Confirm Remove Schedule Item Dialog */}
-      <ConfirmRemoveScheduleItemDialog
-        open={!!pendingRemoval}
-        onOpenChange={(v) => {
-          if (!v) setPendingRemoval(null);
-        }}
-        itemLabel={pendingRemoval?.kind ?? 'item'}
-        isRemoving={isRemoving}
-        onConfirm={async () => {
-          if (!pendingRemoval) return;
-          setIsRemoving(true);
-          try {
-            const { kind, payload } = pendingRemoval;
-            if (kind === 'day') {
-              const { item, itineraryId, dayIndex } = payload;
-              await handleRemoveDay(item, itineraryId, dayIndex);
-            } else if (kind === 'activity') {
-              const { filteredActivity, itineraryId } = payload;
-              await removeActivityHandle(filteredActivity, itineraryId);
-            } else if (kind === 'transfer') {
-              const { filteredTransfer, itineraryId } = payload;
-              await removeTransferHandle(filteredTransfer, itineraryId);
-            }
-          } finally {
-            setIsRemoving(false);
-            setPendingRemoval(null);
-          }
-        }}
-      />
     </div>
   );
 };
