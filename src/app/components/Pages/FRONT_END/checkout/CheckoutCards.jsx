@@ -370,11 +370,7 @@ const TransferCheckoutItemCard = ({ item }) => {
       </div>
 
       <div className="flex flex-col gap-2 pt-3 border-t border-[#eee]">
-        <BreakdownRow
-          label={priceType === 'per_person' ? `Price (${formatCurrency(unitPrice, currency)} × ${headcount} pax)` : 'Price'}
-          amount={basePrice}
-          currency={currency}
-        />
+        <BreakdownRow label={priceType === 'per_person' ? `Price (${formatCurrency(unitPrice, currency)} × ${headcount} pax)` : 'Price'} amount={basePrice} currency={currency} />
         {bagCount > 0 && <BreakdownRow label={`Extra luggage (${bagCount} × ${formatCurrency(luggageRate, currency)})`} amount={luggageAmount} currency={currency} />}
         {waitingMinutes > 0 && <BreakdownRow label={`Waiting time (${waitingMinutes} min × ${formatCurrency(waitingRate, currency)})`} amount={waitingAmount} currency={currency} />}
         <p className="text-[#9a9a9a] text-xs italic">To add extra luggage and waiting minute edit on the search results before adding to cart.</p>

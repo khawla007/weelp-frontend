@@ -143,7 +143,9 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
             <span className="text-[#273f4e] font-semibold text-lg">{formatCurrency(basePrice, currency)}</span>
           )}
           {isPerPerson && (
-            <span className="text-[#5a5a5a] text-xs">{formatCurrency(unitPrice, currency)} × {headcount} pax</span>
+            <span className="text-[#5a5a5a] text-xs">
+              {formatCurrency(unitPrice, currency)} × {headcount} pax
+            </span>
           )}
           <button type="button" onClick={() => setExpanded((v) => !v)} className="text-[#5a5a5a] text-xs flex items-center gap-1 hover:text-[#273f4e] transition-colors mt-1" aria-expanded={expanded}>
             <span>Detailed Breakdown</span>
