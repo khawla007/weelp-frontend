@@ -8,15 +8,11 @@ const safeAmount = (value, fallback = 0) => {
 
 const round2 = (value) => Math.round(safeAmount(value) * 100) / 100;
 
-const sumLinePrices = (items) =>
-  round2(items.reduce((acc, item) => acc + safeAmount(item.price), 0));
+const sumLinePrices = (items) => round2(items.reduce((acc, item) => acc + safeAmount(item.price), 0));
 
 const recomputeTransferLine = (item, patch) => {
   const bagCount = Math.max(0, Math.trunc(safeAmount(patch.bag_count ?? item.bag_count)));
-  const waitingMinutes = Math.max(
-    0,
-    Math.trunc(safeAmount(patch.waiting_minutes ?? item.waiting_minutes)),
-  );
+  const waitingMinutes = Math.max(0, Math.trunc(safeAmount(patch.waiting_minutes ?? item.waiting_minutes)));
 
   const luggageRate = safeAmount(item.luggage_per_bag_rate);
   const waitingRate = safeAmount(item.waiting_per_minute_rate);
