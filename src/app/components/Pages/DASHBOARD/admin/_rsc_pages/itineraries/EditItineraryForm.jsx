@@ -2177,7 +2177,6 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
           </form>
         </FormProvider>
       </div>
-
     </div>
   );
 };
