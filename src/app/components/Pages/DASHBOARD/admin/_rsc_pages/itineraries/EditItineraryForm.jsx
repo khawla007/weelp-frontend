@@ -35,6 +35,15 @@ import dynamic from 'next/dynamic';
 
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnItinerary'), { ssr: false });
 
+// Pick the featured image from a gallery, falling back to the first entry.
+// Galleries come in two shapes here:
+//  - `media_url` (rows from PUT/GET admin itinerary) — { name, alt_text, url, is_featured }
+//  - `activitydata.media_gallery` / `transferData.media_gallery` (catalog) — { url, alt_text, is_featured, ... }
+const pickFeatured = (gallery) => {
+  if (!Array.isArray(gallery) || gallery.length === 0) return null;
+  return gallery.find((m) => m?.is_featured) ?? gallery[0];
+};
+
 export const EditItineraryForm = ({ categories, attributes, tags, locations = [], allactivities, alltransfers, itineraryData, isCreatorItinerary = false }) => {
   const listBackUrl = isCreatorItinerary ? '/dashboard/admin/creator-itineraries' : '/dashboard/admin/itineraries';
   const hasResetRef = useRef(false);
@@ -686,14 +695,14 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                   {!isEmpty(activities) ? (
                     activities
                       .filter((activity) => activity?.day == item.day) //
-                      .map((filteredActivity, activityIndex) => (
+                      .map((filteredActivity, activityIndex) => {
+                        const featuredMedia = pickFeatured(filteredActivity?.activitydata?.media_gallery) ?? pickFeatured(filteredActivity?.media_url);
+                        return (
                         <div key={activityIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
                           <img
                             className="size-24"
-                            src={
-                              filteredActivity?.activitydata?.media_gallery?.[0]?.url ?? filteredActivity?.media_url?.[0]?.url ?? 'https://picsum.photos/100/100' // fallback image
-                            }
-                            alt={filteredActivity?.activitydata?.media_gallery?.[0]?.alt_text ?? filteredActivity?.media_url?.[0]?.alt_text ?? 'selectedschedule_image'}
+                            src={featuredMedia?.url ?? 'https://picsum.photos/100/100'}
+                            alt={featuredMedia?.alt_text ?? 'selectedschedule_image'}
                           />
 
                           <div className="space-y-2">
@@ -716,7 +725,8 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                             </div>
                           </div>
                         </div>
-                      ))
+                        );
+                      })
                   ) : (
                     <p>No activities available for this day.</p>
                   )}
@@ -725,12 +735,14 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                   {!isEmpty(transferss)
                     ? transferss
                         .filter((transfer) => transfer?.day == item.day)
-                        .map((filteredTransfer, transferIndex) => (
+                        .map((filteredTransfer, transferIndex) => {
+                          const featuredMedia = pickFeatured(filteredTransfer?.transferData?.media_gallery) ?? pickFeatured(filteredTransfer?.media_url);
+                          return (
                           <div key={transferIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
                             <img
                               className="size-24"
-                              src={filteredTransfer?.media_url?.[0]?.url ?? filteredTransfer?.transferData?.media_gallery?.[0]?.url ?? 'https://picsum.photos/100/100'}
-                              alt={filteredTransfer?.media_url?.[0]?.url ?? filteredTransfer?.transferData?.media_gallery?.[0]?.url ?? 'itinerary_image'}
+                              src={featuredMedia?.url ?? 'https://picsum.photos/100/100'}
+                              alt={featuredMedia?.alt_text ?? 'itinerary_image'}
                             />
 
                             <div className="space-y-2">
@@ -753,7 +765,8 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                               </div>
                             </div>
                           </div>
-                        ))
+                          );
+                        })
                     : 'No Transfer this day'}
 
                   {/* Booking Type */}

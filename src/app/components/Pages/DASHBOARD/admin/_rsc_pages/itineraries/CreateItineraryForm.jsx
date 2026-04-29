@@ -33,6 +33,12 @@ import dynamic from 'next/dynamic';
 
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnItinerary'), { ssr: false });
 
+// Pick the featured image from a gallery; fall back to the first entry.
+const pickFeatured = (gallery) => {
+  if (!Array.isArray(gallery) || gallery.length === 0) return null;
+  return gallery.find((m) => m?.is_featured) ?? gallery[0];
+};
+
 export const CreateItineraryForm = ({ categories, attributes, tags, locations = [], allactivities, alltransfers }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
@@ -430,9 +436,11 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
               {!isEmpty(activities) ? (
                 activities
                   .filter((activity) => activity?.day == item.day) //
-                  .map((filteredActivity, activityIndex) => (
+                  .map((filteredActivity, activityIndex) => {
+                    const featuredMedia = pickFeatured(filteredActivity?.activitydata?.media_gallery);
+                    return (
                     <div key={activityIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
-                      <img className="size-24" src={filteredActivity?.activitydata?.media_gallery?.[0]?.url ?? 'https://picsum.photos/100/100'} alt="random" />
+                      <img className="size-24" src={featuredMedia?.url ?? 'https://picsum.photos/100/100'} alt={featuredMedia?.alt_text ?? 'activity'} />
                       <div className="space-y-2">
                         <p className="font-bold text-base">{filteredActivity?.activitydata?.name}</p>
                         <div className="flex gap-2 items-center">
@@ -452,7 +460,8 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                         </div>
                       </div>
                     </div>
-                  ))
+                    );
+                  })
               ) : (
                 <p>No activities available for this day.</p>
               )}
@@ -461,9 +470,11 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
               {!isEmpty(transferss) ? (
                 transferss
                   .filter((transfer) => transfer?.day == item.day)
-                  .map((filteredTransfer, transferIndex) => (
+                  .map((filteredTransfer, transferIndex) => {
+                    const featuredMedia = pickFeatured(filteredTransfer?.transferData?.media_gallery);
+                    return (
                     <div key={transferIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
-                      <img className="size-24" src={filteredTransfer?.transferData?.media_gallery?.[0]?.url ?? 'https://picsum.photos/100/100'} alt="transfer_image" />
+                      <img className="size-24" src={featuredMedia?.url ?? 'https://picsum.photos/100/100'} alt={featuredMedia?.alt_text ?? 'transfer_image'} />
                       <div className="space-y-2">
                         <p className="font-bold text-base">{filteredTransfer?.transferData?.name}</p>
                         <div className="flex gap-2 items-center">
@@ -484,7 +495,8 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                         </div>
                       </div>
                     </div>
-                  ))
+                    );
+                  })
               ) : (
                 <p>No Transfer this day</p>
               )}
