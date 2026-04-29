@@ -44,7 +44,7 @@ const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, it
               {addons.map((addon, i) => (
                 <span key={i} className="flex gap-2 capitalize text-[#5a5a5a] text-sm font-medium">
                   <Sparkles size={20} className="text-[#5a5a5a]" />
-                  {addon.addon_name}
+                  + {addon.addon_name}
                 </span>
               ))}
             </div>
