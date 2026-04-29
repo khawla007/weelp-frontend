@@ -233,9 +233,7 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
 
-  const filteredTransfers = !searchTerm
-    ? transfers
-    : transfers.filter((t) => t?.name?.toLowerCase().includes(searchTerm));
+  const filteredTransfers = !searchTerm ? transfers : transfers.filter((t) => t?.name?.toLowerCase().includes(searchTerm));
 
   const handleSearch = useCallback((e) => {
     setSearchTerm(e.target.value.toLowerCase());
@@ -308,13 +306,7 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
 
           {/* Your activity search form here */}
           <div className="w-full flex gap-4 items-center">
-            <Input
-              type="text"
-              placeholder="Search transfers..."
-              value={searchTerm}
-              onChange={handleSearch}
-              className="w-full border p-2 focus-visible:ring-secondaryDark focus-visible:ring-1"
-            />
+            <Input type="text" placeholder="Search transfers..." value={searchTerm} onChange={handleSearch} className="w-full border p-2 focus-visible:ring-secondaryDark focus-visible:ring-1" />
             <Button className="bg-white hover:bg-white border">
               <SearchIcon className="text-black" />
             </Button>
