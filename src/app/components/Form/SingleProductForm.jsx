@@ -123,9 +123,20 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     setShowHowMany(false);
   };
 
-  // Increment/Decrement Handlers — RHF is source of truth, no local state
+  // Increment/Decrement Handlers — RHF is source of truth, no local state.
+  // Itineraries cap adults+children at productData.max_guests (smallest
+  // transfer capacity); infants are excluded from the cap.
   const handleIncrement = (type) => {
     const current = Number(howMany?.[type] ?? 0);
+    const maxGuests = Number(productData?.max_guests) || null;
+    if (maxGuests !== null && type !== 'infants') {
+      const adults = Number(howMany?.adults ?? 0);
+      const children = Number(howMany?.children ?? 0);
+      const totalGuests = adults + children;
+      if (totalGuests >= maxGuests) {
+        return;
+      }
+    }
     setValue(`howMany.${type}`, current + 1);
   };
 

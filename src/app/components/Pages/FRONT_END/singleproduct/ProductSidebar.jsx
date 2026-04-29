@@ -72,14 +72,23 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
     return null;
   }, [productData, dateRange, howMany, selectedAddons, productType]);
 
-  // For itinerary: use schedule_total_price only (no fallback to base_pricing)
-  // For activity/package: use existing fallback chain
+  // For itinerary: total = per_pax × (adults+children) + flat. Per-person preview
+  // value comes from schedule_total_price; pricing_breakdown enables live pax recompute.
+  // For activity/package: existing fallback chain.
   let basePrice = 0;
   let displayPrice = '—';
+  let itineraryTotal = 0;
 
   if (productType === 'itinerary') {
+    const headcount = Math.max(1, (Number(howMany?.adults) || 1) + (Number(howMany?.children) || 0));
+    const breakdown = productData?.pricing_breakdown;
+    if (breakdown) {
+      itineraryTotal = Math.round(((Number(breakdown.per_pax_total) || 0) * headcount + (Number(breakdown.flat_total) || 0)) * 100) / 100;
+    } else if (productData?.schedule_total_price != null) {
+      itineraryTotal = Math.round(Number(productData.schedule_total_price) * headcount * 100) / 100;
+    }
+    basePrice = itineraryTotal;
     if (productData?.schedule_total_price != null) {
-      basePrice = Number(productData.schedule_total_price);
       displayPrice = Number(productData.schedule_total_price).toFixed(2);
     }
   } else {
@@ -99,9 +108,17 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
       <div className="p-6 lg:pl-[60px] lg:pr-0 lg:pt-[60px] lg:pb-[70px] lg:sticky lg:top-[76px]">
         {/* Base Price */}
         {productType === 'itinerary' ? (
-          <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
-            From {productData?.schedule_total_currency ?? ''} {displayPrice}
-          </h3>
+          <div>
+            <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
+              From {productData?.schedule_total_currency ?? ''} {displayPrice} <span className="text-base font-medium text-[#5a5a5a]">/ person</span>
+            </h3>
+            {itineraryTotal > 0 && (
+              <p className="text-sm text-[#5a5a5a] mt-1">
+                {Math.max(1, (Number(howMany?.adults) || 1) + (Number(howMany?.children) || 0))} guest
+                {Math.max(1, (Number(howMany?.adults) || 1) + (Number(howMany?.children) || 0)) === 1 ? '' : 's'}: {productData?.schedule_total_currency ?? ''} {itineraryTotal.toFixed(2)}
+              </p>
+            )}
+          </div>
         ) : (
           <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
             From {formatCurrency(Number(productData?.pricing?.regular_price ?? 0), productData?.pricing?.currency ?? 'USD')} / person
