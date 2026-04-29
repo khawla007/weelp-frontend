@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { PlusIcon, Heart, X } from 'lucide-react';
+import { Heart, X } from 'lucide-react';
 import BreakSection from '../BreakSection';
 import MiniCartProductCard from '../MiniCartProductCard';
 import { MinicartReviewcontent } from '../MiniCartReviewCard';
@@ -56,6 +56,13 @@ const MiniCartNew = () => {
                         howMany={val?.howMany}
                         dateRange={val?.dateRange}
                         addons={val?.addons || []}
+                        currency={val?.currency}
+                        perPersonPrice={val?.per_person_price}
+                        perPaxTotal={val?.per_pax_total}
+                        flatTotal={val?.flat_total}
+                        headcount={val?.headcount}
+                        addonsTotal={val?.addons_total}
+                        totalPrice={val?.price}
                         onClose={() => setMiniCartOpen(false)}
                       />
                     );
@@ -65,14 +72,6 @@ const MiniCartNew = () => {
 
                 {/* Payments */}
                 <div className="flex flex-col">
-                  <h3 className="text-2xl font-bold capitalize text-black">your gangs</h3>
-                  <div className="flex justify-between my-2">
-                    <label htmlFor="splitPayments" className="flex items-center font-medium gap-4 cursor-pointer">
-                      <input type="checkbox" name="splitPayments" id="splitPayments" className="accent-secondaryDark size-5" />
-                      Split Your Payments
-                    </label>
-                    <PlusIcon className="bg-[#f4f5f7] size-10 text-grayDark rounded-full p-2 border cursor-pointer" />
-                  </div>
                   <BreakSection marginTop={'my-4'} />
                   <div className="flex justify-between">
                     <div className="flex flex-col gap-1 w-full">

@@ -72,10 +72,13 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     // compute combined price with add-ons
     const addonsTotal = selectedAddons.reduce((sum, a) => sum + Number(a.addon_sale_price ?? a.addon_price), 0);
 
-    // For activities: use calculateActivityPrice utility; for itinerary/package: use schedule_total_price
+    // For activities: use calculateActivityPrice utility.
+    // For itinerary: per_pax_total × headcount + flat_total + addons.
+    // For package: schedule_total_price + addons (legacy path).
     let price;
     let currency;
     let basePrice;
+    const itineraryExtras = {};
 
     if (productData?.item_type === 'activity') {
       const pricing = calculateActivityPrice({
@@ -87,8 +90,22 @@ export default function SingleProductForm({ productId, productData, selectedAddo
       price = pricing.final;
       basePrice = pricing.subtotal;
       currency = pricing.currency;
+    } else if (productData?.item_type === 'itinerary') {
+      const headcount = Math.max(1, Number(data?.howMany?.adults ?? 1) + Number(data?.howMany?.children ?? 0));
+      const breakdown = productData?.pricing_breakdown ?? null;
+      const perPax = Number(breakdown?.per_pax_total ?? 0);
+      const flat = Number(breakdown?.flat_total ?? 0);
+      basePrice = breakdown ? Math.round((perPax * headcount + flat) * 100) / 100 : Number(productData?.schedule_total_price ?? 0) * headcount;
+      price = Math.round((basePrice + addonsTotal) * 100) / 100;
+      currency = productData?.schedule_total_currency || 'usd';
+      itineraryExtras.headcount = headcount;
+      itineraryExtras.per_pax_total = perPax;
+      itineraryExtras.flat_total = flat;
+      itineraryExtras.per_person_price = Number(productData?.schedule_total_price ?? perPax) || perPax;
+      itineraryExtras.slug = productData?.slug;
+      itineraryExtras.city_slug = productData?.city_slug;
     } else {
-      // For itinerary/package: use schedule_total_price
+      // Package fallback — same legacy behavior as before.
       basePrice = Number(productData?.schedule_total_price ?? 0);
       price = basePrice + addonsTotal;
       currency = productData?.schedule_total_currency || 'usd';
@@ -99,10 +116,12 @@ export default function SingleProductForm({ productId, productData, selectedAddo
       id: productData?.id,
       base_price: basePrice,
       price: price,
+      addons_total: Math.round(addonsTotal * 100) / 100,
       name: productData?.name,
       currency: currency,
       ...data,
-      featured_image: 'https://picsum.photos/200/300',
+      ...itineraryExtras,
+      featured_image: productData?.featured_image || 'https://picsum.photos/200/300',
       type: productData?.item_type,
       addons: selectedAddons.map((a) => ({
         addon_id: a.addon_id,

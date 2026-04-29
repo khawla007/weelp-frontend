@@ -115,7 +115,10 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
               <div>
                 {itineraryTotal > 0 ? (
                   <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
-                    {currency} {itineraryTotal.toFixed(2)} <span className="text-base font-medium text-[#5a5a5a]">total for {guests} guest{guests === 1 ? '' : 's'}</span>
+                    {currency} {itineraryTotal.toFixed(2)}{' '}
+                    <span className="text-base font-medium text-[#5a5a5a]">
+                      total for {guests} guest{guests === 1 ? '' : 's'}
+                    </span>
                   </h3>
                 ) : (
                   <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
