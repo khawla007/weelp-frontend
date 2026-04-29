@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
-import { Calendar, SquarePen, Trash2, User } from 'lucide-react';
+import { Calendar, Sparkles, SquarePen, Trash2, User } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,10 +40,11 @@ const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, it
             {from && actualDate(from)}
           </span>
           {addons.length > 0 && (
-            <div className="flex flex-col mt-2">
+            <div className="flex flex-col mt-2 gap-1">
               {addons.map((addon, i) => (
-                <span key={i} className="text-[#5a5a5a] text-xs font-medium ml-7">
-                  + {addon.addon_name}
+                <span key={i} className="flex gap-2 capitalize text-[#5a5a5a] text-sm font-medium">
+                  <Sparkles size={20} className="text-[#5a5a5a]" />
+                  {addon.addon_name}
                 </span>
               ))}
             </div>

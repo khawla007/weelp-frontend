@@ -81,7 +81,7 @@ const MiniCartNew = () => {
                         const cur = item?.currency || cartCurrency;
                         const isItin = item?.type === 'itinerary';
                         const perPerson = Number(item?.per_person_price ?? item?.per_pax_total ?? 0);
-                        const guests = Number(item?.headcount ?? (Number(item?.howMany?.adults || 0) + Number(item?.howMany?.children || 0))) || 1;
+                        const guests = Number(item?.headcount ?? Number(item?.howMany?.adults || 0) + Number(item?.howMany?.children || 0)) || 1;
                         const flat = Number(item?.flat_total ?? 0);
                         const addonsSum = Number(item?.addons_total ?? 0);
                         const subtotal = Number(item?.price ?? 0);
