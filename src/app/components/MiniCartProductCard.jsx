@@ -13,36 +13,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { actualDate, formatCurrency } from '@/lib/utils';
+import { actualDate } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
-const MiniCartProductCard = ({
-  productName,
-  howMany,
-  dateRange,
-  productImage,
-  itemId,
-  itemType,
-  onClose,
-  addons = [],
-  currency,
-  perPersonPrice,
-  perPaxTotal,
-  flatTotal,
-  headcount,
-  addonsTotal,
-  totalPrice,
-}) => {
+const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, itemId, itemType, onClose, addons = [] }) => {
   const { adults, children } = howMany ?? {};
   const { from } = dateRange ?? {};
-
-  const isItinerary = itemType === 'itinerary';
-  const cur = currency || 'USD';
-  const perPersonDisplay = Number(perPersonPrice ?? perPaxTotal ?? 0);
-  const guests = Number(headcount ?? Number(adults || 0) + Number(children || 0)) || 1;
-  const flat = Number(flatTotal ?? 0);
-  const addonsSum = Number(addonsTotal ?? 0);
-  const total = Number(totalPrice ?? 0);
-
   return (
     <div className="flex flex-col gap-2 px-6 py-4 items-center border rounded-lg shadow-sm justify-between bg-white">
       <div className="flex justify-between w-full p-4 py-2">
@@ -78,35 +53,6 @@ const MiniCartProductCard = ({
           <img src={productImage || '/assets/images/placeholder.png'} className="max-w-32 min-h-28 object-cover w-full h-full rounded-md" alt={productName || 'product'} />
         </div>
       </div>
-
-      {isItinerary && total > 0 && (
-        <div className="w-full text-sm text-[#5a5a5a] border-t pt-3 px-2 space-y-1">
-          {perPersonDisplay > 0 && (
-            <div className="flex justify-between">
-              <span>
-                {formatCurrency(perPersonDisplay, cur)} × {guests} {guests === 1 ? 'guest' : 'guests'}
-              </span>
-              <span>{formatCurrency(perPersonDisplay * guests, cur)}</span>
-            </div>
-          )}
-          {flat > 0 && (
-            <div className="flex justify-between">
-              <span>Flat fees (per-vehicle / extras)</span>
-              <span>{formatCurrency(flat, cur)}</span>
-            </div>
-          )}
-          {addonsSum > 0 && (
-            <div className="flex justify-between">
-              <span>Add-ons</span>
-              <span>+{formatCurrency(addonsSum, cur)}</span>
-            </div>
-          )}
-          <div className="flex justify-between border-t pt-2 mt-1 text-[#0c2536] font-semibold">
-            <span>Total</span>
-            <span>{formatCurrency(total, cur)}</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
