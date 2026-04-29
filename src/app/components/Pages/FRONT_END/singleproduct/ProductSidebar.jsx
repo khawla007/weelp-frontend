@@ -108,17 +108,28 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
       <div className="p-6 lg:pl-[60px] lg:pr-0 lg:pt-[60px] lg:pb-[70px] lg:sticky lg:top-[76px]">
         {/* Base Price */}
         {productType === 'itinerary' ? (
-          <div>
-            <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
-              From {productData?.schedule_total_currency ?? ''} {displayPrice} <span className="text-base font-medium text-[#5a5a5a]">/ person</span>
-            </h3>
-            {itineraryTotal > 0 && (
-              <p className="text-sm text-[#5a5a5a] mt-1">
-                {Math.max(1, (Number(howMany?.adults) || 1) + (Number(howMany?.children) || 0))} guest
-                {Math.max(1, (Number(howMany?.adults) || 1) + (Number(howMany?.children) || 0)) === 1 ? '' : 's'}: {productData?.schedule_total_currency ?? ''} {itineraryTotal.toFixed(2)}
-              </p>
-            )}
-          </div>
+          (() => {
+            const guests = Math.max(1, (Number(howMany?.adults) || 1) + (Number(howMany?.children) || 0));
+            const currency = productData?.schedule_total_currency ?? '';
+            return (
+              <div>
+                {itineraryTotal > 0 ? (
+                  <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
+                    {currency} {itineraryTotal.toFixed(2)} <span className="text-base font-medium text-[#5a5a5a]">total for {guests} guest{guests === 1 ? '' : 's'}</span>
+                  </h3>
+                ) : (
+                  <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
+                    From {currency} {displayPrice} <span className="text-base font-medium text-[#5a5a5a]">/ person</span>
+                  </h3>
+                )}
+                {itineraryTotal > 0 && (
+                  <p className="text-sm text-[#5a5a5a] mt-1">
+                    {currency} {displayPrice} / person
+                  </p>
+                )}
+              </div>
+            );
+          })()
         ) : (
           <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
             From {formatCurrency(Number(productData?.pricing?.regular_price ?? 0), productData?.pricing?.currency ?? 'USD')} / person

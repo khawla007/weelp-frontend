@@ -698,33 +698,29 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                       .map((filteredActivity, activityIndex) => {
                         const featuredMedia = pickFeatured(filteredActivity?.activitydata?.media_gallery) ?? pickFeatured(filteredActivity?.media_url);
                         return (
-                        <div key={activityIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
-                          <img
-                            className="size-24"
-                            src={featuredMedia?.url ?? 'https://picsum.photos/100/100'}
-                            alt={featuredMedia?.alt_text ?? 'selectedschedule_image'}
-                          />
+                          <div key={activityIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
+                            <img className="size-24" src={featuredMedia?.url ?? 'https://picsum.photos/100/100'} alt={featuredMedia?.alt_text ?? 'selectedschedule_image'} />
 
-                          <div className="space-y-2">
-                            <p className="font-bold text-base">{filteredActivity?.activitydata?.name ?? filteredActivity?.activity_name}</p>
-                            <div className="flex gap-2 flex-wrap items-center">
-                              <Clock /> {`${filteredActivity?.start_time} - ${filteredActivity?.end_time}`}
-                              <Activity /> <b>Activity</b>
-                              <Settings
-                                size={16}
-                                onClick={() =>
-                                  setHandleEdit({
-                                    type: 'activity',
-                                    isEditOn: true,
-                                    item: filteredActivity,
-                                  })
-                                }
-                              />
-                              {/* <Trash onClick={() => removeActivityHandle(filteredActivity)} className=" cursor-pointer " size={20} /> */}
-                              <Trash2 onClick={() => setPendingRemoval({ kind: 'activity', payload: { filteredActivity, itineraryId: id } })} className="text-red-400 cursor-pointer" size={16} />
+                            <div className="space-y-2">
+                              <p className="font-bold text-base">{filteredActivity?.activitydata?.name ?? filteredActivity?.activity_name}</p>
+                              <div className="flex gap-2 flex-wrap items-center">
+                                <Clock /> {`${filteredActivity?.start_time} - ${filteredActivity?.end_time}`}
+                                <Activity /> <b>Activity</b>
+                                <Settings
+                                  size={16}
+                                  onClick={() =>
+                                    setHandleEdit({
+                                      type: 'activity',
+                                      isEditOn: true,
+                                      item: filteredActivity,
+                                    })
+                                  }
+                                />
+                                {/* <Trash onClick={() => removeActivityHandle(filteredActivity)} className=" cursor-pointer " size={20} /> */}
+                                <Trash2 onClick={() => setPendingRemoval({ kind: 'activity', payload: { filteredActivity, itineraryId: id } })} className="text-red-400 cursor-pointer" size={16} />
+                              </div>
                             </div>
                           </div>
-                        </div>
                         );
                       })
                   ) : (
@@ -738,33 +734,29 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                         .map((filteredTransfer, transferIndex) => {
                           const featuredMedia = pickFeatured(filteredTransfer?.transferData?.media_gallery) ?? pickFeatured(filteredTransfer?.media_url);
                           return (
-                          <div key={transferIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
-                            <img
-                              className="size-24"
-                              src={featuredMedia?.url ?? 'https://picsum.photos/100/100'}
-                              alt={featuredMedia?.alt_text ?? 'itinerary_image'}
-                            />
+                            <div key={transferIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
+                              <img className="size-24" src={featuredMedia?.url ?? 'https://picsum.photos/100/100'} alt={featuredMedia?.alt_text ?? 'itinerary_image'} />
 
-                            <div className="space-y-2">
-                              <p className="font-bold text-base">{filteredTransfer?.transferData?.name ?? filteredTransfer?.transfer_name}</p>
-                              <div className="flex gap-2 flex-wrap items-center">
-                                <Clock /> {`${filteredTransfer?.start_time} - ${filteredTransfer?.end_time}`}
-                                <Car />
-                                <b>Transfer</b>
-                                <Settings
-                                  size={16}
-                                  onClick={() =>
-                                    setHandleEdit({
-                                      type: 'transfer',
-                                      isEditOn: true,
-                                      item: filteredTransfer,
-                                    })
-                                  }
-                                />
-                                <Trash2 onClick={() => setPendingRemoval({ kind: 'transfer', payload: { filteredTransfer, itineraryId: id } })} className="text-red-400 cursor-pointer" size={16} />
+                              <div className="space-y-2">
+                                <p className="font-bold text-base">{filteredTransfer?.transferData?.name ?? filteredTransfer?.transfer_name}</p>
+                                <div className="flex gap-2 flex-wrap items-center">
+                                  <Clock /> {`${filteredTransfer?.start_time} - ${filteredTransfer?.end_time}`}
+                                  <Car />
+                                  <b>Transfer</b>
+                                  <Settings
+                                    size={16}
+                                    onClick={() =>
+                                      setHandleEdit({
+                                        type: 'transfer',
+                                        isEditOn: true,
+                                        item: filteredTransfer,
+                                      })
+                                    }
+                                  />
+                                  <Trash2 onClick={() => setPendingRemoval({ kind: 'transfer', payload: { filteredTransfer, itineraryId: id } })} className="text-red-400 cursor-pointer" size={16} />
+                                </div>
                               </div>
                             </div>
-                          </div>
                           );
                         })
                     : 'No Transfer this day'}

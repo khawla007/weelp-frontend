@@ -439,27 +439,27 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   .map((filteredActivity, activityIndex) => {
                     const featuredMedia = pickFeatured(filteredActivity?.activitydata?.media_gallery);
                     return (
-                    <div key={activityIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
-                      <img className="size-24" src={featuredMedia?.url ?? 'https://picsum.photos/100/100'} alt={featuredMedia?.alt_text ?? 'activity'} />
-                      <div className="space-y-2">
-                        <p className="font-bold text-base">{filteredActivity?.activitydata?.name}</p>
-                        <div className="flex gap-2 items-center">
-                          <Clock /> {`${filteredActivity?.start_time} - ${filteredActivity?.end_time}`}
-                          <Activity /> <b>Activity</b>
-                          <Settings
-                            size={16}
-                            onClick={() =>
-                              setHandleEdit({
-                                type: 'activity',
-                                isEditOn: true,
-                                item: filteredActivity,
-                              })
-                            }
-                          />
-                          <Trash2 onClick={() => handleRemoveActivity(filteredActivity, item?.day)} className="text-red-400 cursor-pointer" size={16} />
+                      <div key={activityIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
+                        <img className="size-24" src={featuredMedia?.url ?? 'https://picsum.photos/100/100'} alt={featuredMedia?.alt_text ?? 'activity'} />
+                        <div className="space-y-2">
+                          <p className="font-bold text-base">{filteredActivity?.activitydata?.name}</p>
+                          <div className="flex gap-2 items-center">
+                            <Clock /> {`${filteredActivity?.start_time} - ${filteredActivity?.end_time}`}
+                            <Activity /> <b>Activity</b>
+                            <Settings
+                              size={16}
+                              onClick={() =>
+                                setHandleEdit({
+                                  type: 'activity',
+                                  isEditOn: true,
+                                  item: filteredActivity,
+                                })
+                              }
+                            />
+                            <Trash2 onClick={() => handleRemoveActivity(filteredActivity, item?.day)} className="text-red-400 cursor-pointer" size={16} />
+                          </div>
                         </div>
                       </div>
-                    </div>
                     );
                   })
               ) : (
@@ -473,28 +473,28 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   .map((filteredTransfer, transferIndex) => {
                     const featuredMedia = pickFeatured(filteredTransfer?.transferData?.media_gallery);
                     return (
-                    <div key={transferIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
-                      <img className="size-24" src={featuredMedia?.url ?? 'https://picsum.photos/100/100'} alt={featuredMedia?.alt_text ?? 'transfer_image'} />
-                      <div className="space-y-2">
-                        <p className="font-bold text-base">{filteredTransfer?.transferData?.name}</p>
-                        <div className="flex gap-2 items-center">
-                          <Clock /> {`${filteredTransfer?.start_time} - ${filteredTransfer?.end_time}`}
-                          <Car />
-                          <b>Transfer</b>
-                          <Settings
-                            size={16}
-                            onClick={() =>
-                              setHandleEdit({
-                                type: 'transfer',
-                                isEditOn: true,
-                                item: filteredTransfer,
-                              })
-                            }
-                          />
-                          <Trash2 onClick={() => handleRemoveTransfer(filteredTransfer, item?.day)} className="text-red-400 cursor-pointer" size={16} />
+                      <div key={transferIndex} className="p-4 flex w-full border rounded-md items-center gap-4">
+                        <img className="size-24" src={featuredMedia?.url ?? 'https://picsum.photos/100/100'} alt={featuredMedia?.alt_text ?? 'transfer_image'} />
+                        <div className="space-y-2">
+                          <p className="font-bold text-base">{filteredTransfer?.transferData?.name}</p>
+                          <div className="flex gap-2 items-center">
+                            <Clock /> {`${filteredTransfer?.start_time} - ${filteredTransfer?.end_time}`}
+                            <Car />
+                            <b>Transfer</b>
+                            <Settings
+                              size={16}
+                              onClick={() =>
+                                setHandleEdit({
+                                  type: 'transfer',
+                                  isEditOn: true,
+                                  item: filteredTransfer,
+                                })
+                              }
+                            />
+                            <Trash2 onClick={() => handleRemoveTransfer(filteredTransfer, item?.day)} className="text-red-400 cursor-pointer" size={16} />
+                          </div>
                         </div>
                       </div>
-                    </div>
                     );
                   })
               ) : (
