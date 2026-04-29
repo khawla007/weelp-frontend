@@ -38,7 +38,7 @@ const MiniCartProductCard = ({
   const isItinerary = itemType === 'itinerary';
   const cur = currency || 'USD';
   const perPersonDisplay = Number(perPersonPrice ?? perPaxTotal ?? 0);
-  const guests = Number(headcount ?? (Number(adults || 0) + Number(children || 0))) || 1;
+  const guests = Number(headcount ?? Number(adults || 0) + Number(children || 0)) || 1;
   const flat = Number(flatTotal ?? 0);
   const addonsSum = Number(addonsTotal ?? 0);
   const total = Number(totalPrice ?? 0);
