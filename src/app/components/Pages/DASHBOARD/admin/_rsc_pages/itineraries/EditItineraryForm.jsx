@@ -54,6 +54,10 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
     locations: presetLocation = [],
     featured_itinerary,
     private_itinerary,
+    travel_date,
+    adults,
+    children,
+    infants,
     schedules = [],
     activities = [],
     transfers = [],
@@ -96,9 +100,12 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       name: name,
       slug: slug,
       description: description,
-      locations: presetLocation,
       featured_itinerary: featured_itinerary || false,
       private_itinerary: private_itinerary || false,
+      travel_date: travel_date || '',
+      adults: adults ?? 1,
+      children: children ?? 0,
+      infants: infants ?? 0,
       locations: presetLocation?.length ? presetLocation.map(({ city_id }) => city_id) : [],
       schedules: schedules,
       transfers: transfers,
@@ -361,6 +368,56 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
               Private
             </Label>
           </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+            <div className="space-y-2">
+              <Label htmlFor="travel_date" className="block text-sm font-medium text-black">
+                Travel date
+              </Label>
+              <Input
+                id="travel_date"
+                type="date"
+                {...register('travel_date')}
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="adults" className="block text-sm font-medium text-black">
+                Adults
+              </Label>
+              <Input
+                id="adults"
+                type="number"
+                min={1}
+                {...register('adults', { valueAsNumber: true, min: 1 })}
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="children" className="block text-sm font-medium text-black">
+                Children
+              </Label>
+              <Input
+                id="children"
+                type="number"
+                min={0}
+                {...register('children', { valueAsNumber: true, min: 0 })}
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="infants" className="block text-sm font-medium text-black">
+                Infants
+              </Label>
+              <Input
+                id="infants"
+                type="number"
+                min={0}
+                {...register('infants', { valueAsNumber: true, min: 0 })}
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+              />
+            </div>
+          </div>
         </div>
       );
     },
@@ -426,6 +483,43 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
     const schedules = useWatch({ control, name: 'schedules' }); //prefix s to diffrentiate
     const activities = useWatch({ control, name: 'activities' }); //prefix s to diffrentiate
     const transferss = useWatch({ control, name: 'transfers' }); //prefix s to diffrentiate
+    const adultsCount = useWatch({ control, name: 'adults' });
+    const childrenCount = useWatch({ control, name: 'children' });
+
+    // Live preview — activity portion is recomputed against the catalog's base
+    // price × headcount. Transfer portion uses stored manual overrides + extras
+    // because zone-based per-person rates require server-side computation.
+    // Final price (with discounts) is computed at checkout.
+    const previewBreakdown = useMemo(() => {
+      const headcount = Math.max(1, (Number(adultsCount) || 1) + (Number(childrenCount) || 0));
+      const activityCatalog = new Map((allactivities || []).map((a) => [a.id, a]));
+      const transferCatalog = new Map((alltransfers || []).map((t) => [t.id, t]));
+
+      const activityTotal = (activities || []).reduce((sum, row) => {
+        const cat = activityCatalog.get(row?.activity_id);
+        const regular = Number(cat?.pricing?.regular_price);
+        if (!Number.isNaN(regular) && regular > 0) {
+          return sum + regular * headcount;
+        }
+        return sum + (Number(row?.price) || 0);
+      }, 0);
+
+      const transferTotal = (transferss || []).reduce((sum, row) => {
+        const stored = Number(row?.price) || 0;
+        const cat = transferCatalog.get(row?.transfer_id);
+        const luggageRate = Number(cat?.luggage_per_bag_rate ?? cat?.pricing?.extra_luggage_charge) || 0;
+        const waitingRate = Number(cat?.waiting_per_minute_rate ?? cat?.pricing?.waiting_charge) || 0;
+        const luggage = (Number(row?.bag_count) || 0) * luggageRate;
+        const waiting = (Number(row?.waiting_minutes) || 0) * waitingRate;
+        return sum + stored + luggage + waiting;
+      }, 0);
+
+      return {
+        activities: Math.round(activityTotal * 100) / 100,
+        transfers: Math.round(transferTotal * 100) / 100,
+        headcount,
+      };
+    }, [activities, transferss, adultsCount, childrenCount]);
 
     // Add Day with auto-incrementing value
     const handleAddDay = () => {
@@ -616,6 +710,20 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
           <Button type="button" onClick={handleAddDay} className="bg-secondaryDark hover:bg-secondaryDark">
             + Add Day
           </Button>
+        </div>
+
+        <div className="mt-3 mb-4 rounded-md border border-dashed border-gray-300 px-4 py-2 text-sm space-y-1">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-500">Activities (× {previewBreakdown.headcount} pax)</span>
+            <span className="font-semibold text-[#09090B]">{previewBreakdown.activities.toFixed(2)}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-500">Transfers (configured + extras)</span>
+            <span className="font-semibold text-[#09090B]">{previewBreakdown.transfers.toFixed(2)}</span>
+          </div>
+          <div className="text-[11px] text-gray-400">
+            Estimate only. Per-person zone pricing and discounts apply at checkout.
+          </div>
         </div>
 
         {/* Days Repeater */}

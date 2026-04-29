@@ -230,6 +230,9 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
     included: true,
     pickup_location: '',
     dropoff_location: '',
+    pax: '',
+    bag_count: 0,
+    waiting_minutes: 0,
   });
 
   /** close modal handle  */
@@ -251,6 +254,9 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
         transfer_id: selectedTransfer?.id,
         transferData: selectedTransfer,
         ...timing,
+        pax: timing.pax === '' ? null : Number(timing.pax),
+        bag_count: Number(timing.bag_count) || 0,
+        waiting_minutes: Number(timing.waiting_minutes) || 0,
       });
       closeModal();
     } else {
@@ -372,8 +378,19 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
 
                 <Label htmlFor="pax" className="flex flex-col w-full space-y-4 ">
                   <span>Pax</span>
-                  <Input id="pax" name="pax" value={timing.pax || ''} onChange={handleTimeChange} className="p-2 border" />
+                  <Input id="pax" name="pax" type="number" min="1" value={timing.pax || ''} onChange={handleTimeChange} className="p-2 border" />
                 </Label>
+
+                <div className="flex w-full gap-4">
+                  <Label htmlFor="bag_count" className="flex flex-col w-full space-y-4 ">
+                    <span>Extra bags</span>
+                    <Input id="bag_count" name="bag_count" type="number" min="0" value={timing.bag_count} onChange={handleTimeChange} className="p-2 border" />
+                  </Label>
+                  <Label htmlFor="waiting_minutes" className="flex flex-col w-full space-y-4 ">
+                    <span>Waiting (minutes)</span>
+                    <Input id="waiting_minutes" name="waiting_minutes" type="number" min="0" value={timing.waiting_minutes} onChange={handleTimeChange} className="p-2 border" />
+                  </Label>
+                </div>
               </div>
 
               <div className="flex flex-col gap-4 mt-4">
@@ -522,6 +539,8 @@ export const CustomizedEditTransferForm = ({ isEditOn, updateTransfer, day, sele
     pickup_location: selectedTransfer?.pickup_location ?? '',
     dropoff_location: selectedTransfer?.dropoff_location ?? '',
     pax: selectedTransfer?.pax ?? '',
+    bag_count: selectedTransfer?.bag_count ?? 0,
+    waiting_minutes: selectedTransfer?.waiting_minutes ?? 0,
   });
   /** handle for input timing change */
   const handleTimeChange = (e) => {
@@ -551,6 +570,9 @@ export const CustomizedEditTransferForm = ({ isEditOn, updateTransfer, day, sele
           included: timing?.included,
           pickup_location: timing?.pickup_location,
           dropoff_location: timing?.dropoff_location,
+          pax: timing.pax === '' ? null : Number(timing.pax),
+          bag_count: Number(timing.bag_count) || 0,
+          waiting_minutes: Number(timing.waiting_minutes) || 0,
         });
       } else {
         alert('Activity not found.');
@@ -635,8 +657,18 @@ export const CustomizedEditTransferForm = ({ isEditOn, updateTransfer, day, sele
               </Label>
               <Label htmlFor="pax" className="flex flex-col w-full space-y-4 ">
                 <span>Pax</span>
-                <Input id="pax" name="pax" value={timing.pax || ''} onChange={handleTimeChange} className="p-2 border" />
+                <Input id="pax" name="pax" type="number" min="1" value={timing.pax || ''} onChange={handleTimeChange} className="p-2 border" />
               </Label>
+              <div className="flex w-full gap-4">
+                <Label htmlFor="bag_count" className="flex flex-col w-full space-y-4 ">
+                  <span>Extra bags</span>
+                  <Input id="bag_count" name="bag_count" type="number" min="0" value={timing.bag_count} onChange={handleTimeChange} className="p-2 border" />
+                </Label>
+                <Label htmlFor="waiting_minutes" className="flex flex-col w-full space-y-4 ">
+                  <span>Waiting (minutes)</span>
+                  <Input id="waiting_minutes" name="waiting_minutes" type="number" min="0" value={timing.waiting_minutes} onChange={handleTimeChange} className="p-2 border" />
+                </Label>
+              </div>
             </div>
             <div className="flex flex-col gap-4 mt-4">
               <Button onClick={handleUpdateTransfer} className="p-2 rounded-md w-full bg-secondaryDark">
