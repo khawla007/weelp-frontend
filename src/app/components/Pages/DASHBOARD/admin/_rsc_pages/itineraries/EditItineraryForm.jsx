@@ -374,12 +374,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
               <Label htmlFor="travel_date" className="block text-sm font-medium text-black">
                 Travel date
               </Label>
-              <Input
-                id="travel_date"
-                type="date"
-                {...register('travel_date')}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
-              />
+              <Input id="travel_date" type="date" {...register('travel_date')} className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="adults" className="block text-sm font-medium text-black">
@@ -721,9 +716,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
             <span className="text-gray-500">Transfers (configured + extras)</span>
             <span className="font-semibold text-[#09090B]">{previewBreakdown.transfers.toFixed(2)}</span>
           </div>
-          <div className="text-[11px] text-gray-400">
-            Estimate only. Per-person zone pricing and discounts apply at checkout.
-          </div>
+          <div className="text-[11px] text-gray-400">Estimate only. Per-person zone pricing and discounts apply at checkout.</div>
         </div>
 
         {/* Days Repeater */}
