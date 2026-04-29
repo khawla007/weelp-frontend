@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { authApi } from '@/lib/axiosInstance';
+import { useToast } from '@/hooks/use-toast';
 import { log } from '@/lib/utils';
 import { isEmpty } from 'lodash';
 import { ArrowLeft, SearchIcon, Loader2 } from 'lucide-react';
@@ -38,6 +39,7 @@ export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity, a
   const [filteredActivities, setFilteredActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const { toast } = useToast();
 
   // Stable string for dependency to avoid infinite re-renders
   const cityIdsKey = cityIds.join(',');
@@ -78,8 +80,8 @@ export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity, a
   );
 
   const [timing, setTiming] = useState({
-    start_time: '',
-    end_time: '',
+    start_time: '10:00',
+    end_time: '10:00',
     notes: '',
     price: '',
     included: false,
@@ -96,17 +98,23 @@ export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity, a
   };
 
   const handleAddActivity = () => {
-    if (selectedActivity && timing.start_time && timing.end_time) {
-      addActivity({
-        day,
-        activity_id: selectedActivity?.id,
-        activitydata: selectedActivity,
-        ...timing,
-      });
-      closeModal();
-    } else {
-      alert('Please provide both start and end times.');
+    if (!selectedActivity) return;
+    if (!timing.start_time || !timing.end_time) {
+      toast({ variant: 'destructive', title: 'Missing time', description: 'Please provide both start and end times.' });
+      return;
     }
+    if (timing.start_time === timing.end_time) {
+      toast({ variant: 'destructive', title: 'Invalid time range', description: 'Start and end time cannot be the same.' });
+      return;
+    }
+    addActivity({
+      day,
+      activity_id: selectedActivity?.id,
+      activitydata: selectedActivity,
+      ...timing,
+    });
+    toast({ title: 'Activity added', description: `${selectedActivity?.name} added to day ${day}.` });
+    closeModal();
   };
 
   const handleTimeChange = (e) => {
@@ -222,9 +230,20 @@ export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity, a
 export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer }) => {
   const [selectedTransfer, setSelectedTransfer] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const { toast } = useToast();
+
+  const filteredTransfers = !searchTerm
+    ? transfers
+    : transfers.filter((t) => t?.name?.toLowerCase().includes(searchTerm));
+
+  const handleSearch = useCallback((e) => {
+    setSearchTerm(e.target.value.toLowerCase());
+  }, []);
+
   const [timing, setTiming] = useState({
-    start_time: '',
-    end_time: '',
+    start_time: '10:00',
+    end_time: '10:00',
     notes: '',
     price: '',
     included: true,
@@ -248,20 +267,26 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
 
   /** Handle Timing */
   const handleAddTransfer = () => {
-    if (selectedTransfer && timing.start_time && timing.end_time) {
-      addTransfer({
-        day,
-        transfer_id: selectedTransfer?.id,
-        transferData: selectedTransfer,
-        ...timing,
-        pax: timing.pax === '' ? null : Number(timing.pax),
-        bag_count: Number(timing.bag_count) || 0,
-        waiting_minutes: Number(timing.waiting_minutes) || 0,
-      });
-      closeModal();
-    } else {
-      alert('Please provide both start and end times.');
+    if (isEmpty(selectedTransfer)) return;
+    if (!timing.start_time || !timing.end_time) {
+      toast({ variant: 'destructive', title: 'Missing time', description: 'Please provide both start and end times.' });
+      return;
     }
+    if (timing.start_time === timing.end_time) {
+      toast({ variant: 'destructive', title: 'Invalid time range', description: 'Start and end time cannot be the same.' });
+      return;
+    }
+    addTransfer({
+      day,
+      transfer_id: selectedTransfer?.id,
+      transferData: selectedTransfer,
+      ...timing,
+      pax: timing.pax === '' ? null : Number(timing.pax),
+      bag_count: Number(timing.bag_count) || 0,
+      waiting_minutes: Number(timing.waiting_minutes) || 0,
+    });
+    toast({ title: 'Transfer added', description: `${selectedTransfer?.name} added to day ${day}.` });
+    closeModal();
   };
 
   const handleTimeChange = (e) => {
@@ -283,7 +308,13 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
 
           {/* Your activity search form here */}
           <div className="w-full flex gap-4 items-center">
-            <Input type="text" placeholder="Search transfers..." className="w-full border p-2 focus-visible:ring-secondaryDark focus-visible:ring-1" />
+            <Input
+              type="text"
+              placeholder="Search transfers..."
+              value={searchTerm}
+              onChange={handleSearch}
+              className="w-full border p-2 focus-visible:ring-secondaryDark focus-visible:ring-1"
+            />
             <Button className="bg-white hover:bg-white border">
               <SearchIcon className="text-black" />
             </Button>
@@ -291,8 +322,8 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
 
           {/* Transfers Items */}
           <ul className="max-h-60 overflow-y-auto">
-            {transfers.length > 0 ? (
-              transfers.map((transfer) => (
+            {filteredTransfers.length > 0 ? (
+              filteredTransfers.map((transfer) => (
                 <li className="list-none hover:bg-neutral-100 cursor-pointer p-2" onClick={() => handleSelectTransfer(transfer)} key={transfer?.id}>
                   {transfer?.name}
                 </li>
@@ -411,9 +442,10 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
 
 /** Edit Form Activity Schedules  */
 export const CustomizedEditActivityForm = ({ isEditOn, updateActivity, day, selectedActivity, onClose, activities }) => {
+  const { toast } = useToast();
   const [timing, setTiming] = useState({
-    start_time: selectedActivity?.start_time ?? '',
-    end_time: selectedActivity?.end_time ?? '',
+    start_time: selectedActivity?.start_time || '10:00',
+    end_time: selectedActivity?.end_time || '10:00',
     notes: selectedActivity?.notes ?? '',
     price: selectedActivity?.price ?? '',
     included: selectedActivity?.included ?? false,
@@ -430,28 +462,32 @@ export const CustomizedEditActivityForm = ({ isEditOn, updateActivity, day, sele
 
   /**  Updating Activity */
   const handleUpdateActivity = () => {
-    if (selectedActivity && timing.start_time && timing.end_time) {
-      const activityIndex = activities.findIndex((activity) => activity.activity_id === selectedActivity.activity_id && activity.day === selectedActivity.day);
-
-      if (activityIndex !== -1) {
-        const updatedActivities = [...activities];
-        updatedActivities[activityIndex] = {
-          ...updatedActivities[activityIndex],
-          activitydata: selectedActivity.activitydata,
-          start_time: timing.start_time,
-          end_time: timing.end_time,
-          notes: timing.notes,
-          price: timing.price,
-          included: timing.included,
-        };
-
-        updateActivity(updatedActivities); // Assuming you're using useState
-      } else {
-        alert('Activity not found for the selected day.');
-      }
-    } else {
-      alert('Please provide both start and end times.');
+    if (!selectedActivity) return;
+    if (!timing.start_time || !timing.end_time) {
+      toast({ variant: 'destructive', title: 'Missing time', description: 'Please provide both start and end times.' });
+      return;
     }
+    if (timing.start_time === timing.end_time) {
+      toast({ variant: 'destructive', title: 'Invalid time range', description: 'Start and end time cannot be the same.' });
+      return;
+    }
+    const activityIndex = activities.findIndex((activity) => activity.activity_id === selectedActivity.activity_id && activity.day === selectedActivity.day);
+    if (activityIndex === -1) {
+      toast({ variant: 'destructive', title: 'Activity not found', description: 'Activity not found for the selected day.' });
+      return;
+    }
+    const updatedActivities = [...activities];
+    updatedActivities[activityIndex] = {
+      ...updatedActivities[activityIndex],
+      activitydata: selectedActivity.activitydata,
+      start_time: timing.start_time,
+      end_time: timing.end_time,
+      notes: timing.notes,
+      price: timing.price,
+      included: timing.included,
+    };
+    updateActivity(updatedActivities);
+    toast({ title: 'Activity updated', description: `${selectedActivity?.activitydata?.name ?? 'Activity'} updated.` });
   };
 
   return (
@@ -530,9 +566,10 @@ export const CustomizedEditActivityForm = ({ isEditOn, updateActivity, day, sele
 
 /** Edit Form Transfer Schedules  */
 export const CustomizedEditTransferForm = ({ isEditOn, updateTransfer, day, selectedTransfer, onClose, transfers }) => {
+  const { toast } = useToast();
   const [timing, setTiming] = useState({
-    start_time: selectedTransfer?.start_time ?? '',
-    end_time: selectedTransfer?.end_time ?? '',
+    start_time: selectedTransfer?.start_time || '10:00',
+    end_time: selectedTransfer?.end_time || '10:00',
     notes: selectedTransfer?.notes ?? '',
     price: selectedTransfer?.price ?? '',
     included: selectedTransfer.included ?? false,
@@ -550,36 +587,38 @@ export const CustomizedEditTransferForm = ({ isEditOn, updateTransfer, day, sele
       [name]: value,
     }));
   };
-  /**  Adding New Activity */
+  /**  Updating Transfer */
   const handleUpdateTransfer = () => {
-    // Check if the required data (selected activity, start time, and end time) are available
-    if (selectedTransfer && timing.start_time && timing.end_time) {
-      // Find the index of the activity to update
-      const transferIndex = transfers.findIndex((transfer) => transfer?.transfer_id == selectedTransfer?.transfer_id);
-      // check day also
-      const dayIndex = transfers.findIndex((transfer) => transfer?.day == selectedTransfer?.day);
-      // If the transfer is found, update it
-      if (transferIndex !== -1 && dayIndex !== -1) {
-        updateTransfer(transferIndex, {
-          ...transfers[transferIndex], // Preserve other existing data
-          transferData: selectedTransfer?.transferData, // Update selected activity data
-          start_time: timing.start_time, // Update the start time
-          end_time: timing.end_time, // Update the end time
-          notes: timing?.notes,
-          price: timing?.price,
-          included: timing?.included,
-          pickup_location: timing?.pickup_location,
-          dropoff_location: timing?.dropoff_location,
-          pax: timing.pax === '' ? null : Number(timing.pax),
-          bag_count: Number(timing.bag_count) || 0,
-          waiting_minutes: Number(timing.waiting_minutes) || 0,
-        });
-      } else {
-        alert('Activity not found.');
-      }
-    } else {
-      alert('Please provide both start and end times.');
+    if (!selectedTransfer) return;
+    if (!timing.start_time || !timing.end_time) {
+      toast({ variant: 'destructive', title: 'Missing time', description: 'Please provide both start and end times.' });
+      return;
     }
+    if (timing.start_time === timing.end_time) {
+      toast({ variant: 'destructive', title: 'Invalid time range', description: 'Start and end time cannot be the same.' });
+      return;
+    }
+    const transferIndex = transfers.findIndex((transfer) => transfer?.transfer_id == selectedTransfer?.transfer_id);
+    const dayIndex = transfers.findIndex((transfer) => transfer?.day == selectedTransfer?.day);
+    if (transferIndex === -1 || dayIndex === -1) {
+      toast({ variant: 'destructive', title: 'Transfer not found', description: 'Transfer not found for the selected day.' });
+      return;
+    }
+    updateTransfer(transferIndex, {
+      ...transfers[transferIndex],
+      transferData: selectedTransfer?.transferData,
+      start_time: timing.start_time,
+      end_time: timing.end_time,
+      notes: timing?.notes,
+      price: timing?.price,
+      included: timing?.included,
+      pickup_location: timing?.pickup_location,
+      dropoff_location: timing?.dropoff_location,
+      pax: timing.pax === '' ? null : Number(timing.pax),
+      bag_count: Number(timing.bag_count) || 0,
+      waiting_minutes: Number(timing.waiting_minutes) || 0,
+    });
+    toast({ title: 'Transfer updated', description: `${selectedTransfer?.transferData?.name ?? 'Transfer'} updated.` });
   };
   return (
     <Dialog

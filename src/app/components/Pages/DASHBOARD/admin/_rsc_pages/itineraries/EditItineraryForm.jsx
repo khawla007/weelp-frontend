@@ -803,12 +803,14 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                       day={item?.day}
                       onClose={handleCloseModal}
                       addTransfer={addTransfer}
-                      transfers={(alltransfers || []).filter((t) => {
-                        const selectedCityIds = methods.getValues('locations') || [];
-                        if (selectedCityIds.length === 0) return true;
-                        const pickupCityId = t.vendor_routes?.pickup_city_id;
-                        return pickupCityId && selectedCityIds.includes(pickupCityId);
-                      })}
+                      transfers={(alltransfers || [])
+                        .filter((t) => t?.vendor_routes?.is_vendor === false)
+                        .filter((t) => {
+                          const selectedCityIds = methods.getValues('locations') || [];
+                          if (selectedCityIds.length === 0) return true;
+                          const pickupCityId = t.vendor_routes?.pickup_city_id;
+                          return pickupCityId && selectedCityIds.includes(pickupCityId);
+                        })}
                     />
                   )}
                 </div>
