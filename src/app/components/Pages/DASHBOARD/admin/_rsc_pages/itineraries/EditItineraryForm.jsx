@@ -2055,9 +2055,9 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       if (res.success) {
         toast({ title: 'Itinerary Updated successfully!' });
 
-        // success reset
-        reset();
-        router.push(listBackUrl);
+        // Stay on the edit page; treat saved values as the new clean baseline
+        // so the form doesn't read as dirty.
+        reset(finalData);
       } else {
         toast({
           title: 'Error',
