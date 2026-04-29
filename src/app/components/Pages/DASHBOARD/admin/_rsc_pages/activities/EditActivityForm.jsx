@@ -1010,27 +1010,31 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       const discountFieldsWatched = useWatch({ name: 'group_discounts' });
 
       const handleRemoveSeason = async (seasonfield, activityId, index) => {
-        const { id } = seasonfield;
+        // RHF v7 stomps DB `id` in the fields array via keyName='id'. Read from form values instead.
+        const dbId = getValues(`seasonal_pricing.${index}.id`);
 
-        // check season have id or not
-        if (!id) {
+        const isLast = seasonFields.length <= 1;
+        const dropLocal = () => {
           removeSeason(index);
+          if (isLast) setSeasonPricing(false);
+        };
+
+        // local-only entry: drop without server call
+        if (!dbId) {
+          dropLocal();
           return;
         }
-
-        let deleted_seasonal_pricing_ids = [];
-        deleted_seasonal_pricing_ids.push(id);
 
         try {
           const res = await deleteActivityItems({
             activityId,
-            deleted_seasonal_pricing_ids,
+            deleted_seasonal_pricing_ids: [dbId],
           });
 
           if (res.success) {
+            // Drop locally instead of relying on toggleUpdate -> stale RSC prop reset
+            dropLocal();
             toast({ title: 'Activity Updated successfully!' });
-
-            setToggleUpdate((prev) => !prev); // update toggle listner
           } else {
             toast({
               title: 'Error',
