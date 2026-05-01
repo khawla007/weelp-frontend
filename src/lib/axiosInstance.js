@@ -28,10 +28,7 @@ if (typeof window !== 'undefined') {
   let forceSignOutToLoginRef;
 
   const loadDeps = (async () => {
-    const [{ getSession }, refreshMod] = await Promise.all([
-      import('next-auth/react'),
-      import('./auth/clientRefresh'),
-    ]);
+    const [{ getSession }, refreshMod] = await Promise.all([import('next-auth/react'), import('./auth/clientRefresh')]);
     getSessionRef = getSession;
     refreshSessionOnceRef = refreshMod.refreshSessionOnce;
     forceSignOutToLoginRef = refreshMod.forceSignOutToLogin;
@@ -41,10 +38,7 @@ if (typeof window !== 'undefined') {
     async (config) => {
       try {
         await loadDeps;
-        const session = await Promise.race([
-          getSessionRef(),
-          new Promise((resolve) => setTimeout(() => resolve(null), 8000)),
-        ]);
+        const session = await Promise.race([getSessionRef(), new Promise((resolve) => setTimeout(() => resolve(null), 8000))]);
 
         // If a prior refresh failed, don't attach a likely-stale token; let the
         // request 401 and the response interceptor terminal-handle it.

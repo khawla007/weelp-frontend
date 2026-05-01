@@ -3,12 +3,7 @@
 import { cookies } from 'next/headers';
 import { decode } from 'next-auth/jwt';
 
-const COOKIE_BASES = [
-  'authjs.session-token',
-  '__Secure-authjs.session-token',
-  'next-auth.session-token',
-  '__Secure-next-auth.session-token',
-];
+const COOKIE_BASES = ['authjs.session-token', '__Secure-authjs.session-token', 'next-auth.session-token', '__Secure-next-auth.session-token'];
 
 // Auth.js v5 chunks the session cookie when the encrypted JWT exceeds ~4 KB,
 // emitting `<base>.0`, `<base>.1`, ... in numeric order. Reassemble before

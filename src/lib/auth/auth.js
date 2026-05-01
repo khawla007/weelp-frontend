@@ -131,8 +131,7 @@ export const {
       }
 
       const forcedRefresh = trigger === 'update' && session?.refresh === true;
-      const accessNearExpiry =
-        token.accessExpiresAt && now >= token.accessExpiresAt - ACCESS_REFRESH_LEEWAY_MS;
+      const accessNearExpiry = token.accessExpiresAt && now >= token.accessExpiresAt - ACCESS_REFRESH_LEEWAY_MS;
       const needsRefresh = token.refreshToken && (forcedRefresh || accessNearExpiry);
 
       if (needsRefresh) {

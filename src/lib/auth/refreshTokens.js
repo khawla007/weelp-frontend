@@ -1,14 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 
-const TERMINAL_ERRORS = new Set([
-  'refresh_token_reused',
-  'refresh_token_expired',
-  'refresh_token_missing',
-  'invalid_token',
-  'invalid_token_type',
-  'token_revoked',
-  'user_not_found',
-]);
+const TERMINAL_ERRORS = new Set(['refresh_token_reused', 'refresh_token_expired', 'refresh_token_missing', 'invalid_token', 'invalid_token_type', 'token_revoked', 'user_not_found']);
 
 export async function refreshTokens(refreshToken) {
   if (!refreshToken) {
