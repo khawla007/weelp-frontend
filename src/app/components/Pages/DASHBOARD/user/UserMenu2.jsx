@@ -1,7 +1,7 @@
 'use client';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { LogOut, UserIcon, Settings, Users, ArrowBigLeftDash, Home } from 'lucide-react';
-import { signOut } from 'next-auth/react';
+import { logout } from '@/lib/auth/logout';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import Link from 'next/link';
@@ -78,7 +78,7 @@ export default function UserMenu2() {
             <DropdownMenuItem
               className="text-red-400"
               onClick={() => {
-                signOut();
+                logout();
               }}
             >
               <LogOut />

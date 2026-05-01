@@ -20,22 +20,39 @@ export const authApi = axios.create({
   },
 });
 
-// Client-side interceptor - only attaches token in browser
 if (typeof window !== 'undefined') {
+  // Hoist client-only modules so the 401 path doesn't pay an import await.
+  // Top-level await is fine in modern bundlers; fall back to dynamic if needed.
+  let getSessionRef;
+  let refreshSessionOnceRef;
+  let forceSignOutToLoginRef;
+
+  const loadDeps = (async () => {
+    const [{ getSession }, refreshMod] = await Promise.all([
+      import('next-auth/react'),
+      import('./auth/clientRefresh'),
+    ]);
+    getSessionRef = getSession;
+    refreshSessionOnceRef = refreshMod.refreshSessionOnce;
+    forceSignOutToLoginRef = refreshMod.forceSignOutToLogin;
+  })();
+
   authApi.interceptors.request.use(
     async (config) => {
       try {
-        const { getSession } = await import('next-auth/react');
-        // Add timeout to prevent hanging on session fetch
-        const session = await Promise.race([getSession(), new Promise((resolve) => setTimeout(() => resolve(null), 2000))]);
+        await loadDeps;
+        const session = await Promise.race([
+          getSessionRef(),
+          new Promise((resolve) => setTimeout(() => resolve(null), 8000)),
+        ]);
 
-        if (session?.access_token) {
-          config.headers.Authorization = `Bearer ${session?.access_token}`;
+        // If a prior refresh failed, don't attach a likely-stale token; let the
+        // request 401 and the response interceptor terminal-handle it.
+        if (session?.access_token && !session.error) {
+          config.headers.Authorization = `Bearer ${session.access_token}`;
         }
       } catch (error) {
         console.error('Error fetching session:', error);
-        // Continue with request even if session fetch fails
-        // The server will return 401 if auth is required
       }
 
       return config;
@@ -45,15 +62,34 @@ if (typeof window !== 'undefined') {
 
   authApi.interceptors.response.use(
     (response) => response,
-    (error) => {
-      if (error.response?.status === 401) {
-        redirectToLogin();
+    async (error) => {
+      const status = error?.response?.status;
+      const original = error?.config;
+      const errorCode = error?.response?.data?.error;
+
+      if (status === 401 && original && !original._retry) {
+        await loadDeps;
+
+        if (errorCode === 'token_revoked' || errorCode === 'refresh_token_reused') {
+          await forceSignOutToLoginRef();
+          return Promise.reject(error);
+        }
+
+        original._retry = true;
+        const newToken = await refreshSessionOnceRef();
+
+        if (!newToken) {
+          await forceSignOutToLoginRef();
+          return Promise.reject(error);
+        }
+
+        original.headers = original.headers ?? {};
+        original.headers.Authorization = `Bearer ${newToken}`;
+        return authApi(original);
       }
 
-      const status = error?.response?.status;
       const message = error?.response?.data?.message || error.message || 'Unexpected error';
       const url = error?.config?.url;
-
       if (process.env.NODE_ENV === 'development') {
         console.error(`[API Error] ${status} @ ${url}: ${message}`, error?.response?.data);
       }
@@ -63,16 +99,8 @@ if (typeof window !== 'undefined') {
   );
 }
 
-const redirectToLogin = () => {
-  if (typeof window !== 'undefined') {
-    window.location.href = '/user/login';
-  }
-};
-
 /**
  * Creates an authenticated API instance for server-side use
- * Call this in Server Components to get an API instance with the token attached
- * @returns {Promise<AxiosInstance>} Axios instance with auth headers
  */
 export async function createAuthenticatedServerApi() {
   const { auth } = await import('./auth/auth');
@@ -87,18 +115,10 @@ export async function createAuthenticatedServerApi() {
   });
 }
 
-/**
- * Helper function to make authenticated server requests
- * Use this in Server Actions that need to call the API
- * @returns {Promise<AxiosInstance>} Axios instance with auth headers
- */
 export async function getAuthApi() {
-  // Check if we're on server or client
   if (typeof window === 'undefined') {
-    // Server-side: use server auth
     return createAuthenticatedServerApi();
   } else {
-    // Client-side: return the global authApi (has interceptor)
     return authApi;
   }
 }

@@ -3,7 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { User, House, Heart, Settings, Tags, LogOut } from 'lucide-react';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import { logout } from '@/lib/auth/logout';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
 
 const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
@@ -135,7 +136,7 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
                     className="text-md leading-5 flex gap-x-2"
                     onClick={() => {
                       closeDropdown();
-                      signOut({ callbackUrl: '/' });
+                      logout({ callbackUrl: '/' });
                     }}
                   >
                     <LogOut className="size-5" />
@@ -162,7 +163,7 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
                     className="text-md leading-5 flex gap-x-2"
                     onClick={() => {
                       closeDropdown();
-                      signOut({ callbackUrl: '/' });
+                      logout({ callbackUrl: '/' });
                     }}
                   >
                     <LogOut className="size-5" />

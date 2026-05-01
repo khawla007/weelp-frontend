@@ -1,10 +1,11 @@
 'use client';
 import { buttonVariants } from '@/components/ui/button';
-import { signOut } from 'next-auth/react';
+
+import { logout } from '@/lib/auth/logout';
 
 export function SignOut() {
   return (
-    <button className={`${buttonVariants()} w-fit`} onClick={() => signOut()}>
+    <button className={`${buttonVariants()} w-fit`} onClick={() => logout()}>
       Sign Out
     </button>
   );
