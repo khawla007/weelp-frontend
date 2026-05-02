@@ -66,9 +66,7 @@ export default async function ApplicationStatusPage() {
       {status === 'pending' && (
         <Card icon={Hourglass} tone="warning" title="Application under review">
           <p>Your application is being reviewed by our team. This usually takes 2–5 business days.</p>
-          {application?.created_at && (
-            <p className="mt-2 text-sm text-[#5A5A5A]">Submitted {new Date(application.created_at).toLocaleDateString()}.</p>
-          )}
+          {application?.created_at && <p className="mt-2 text-sm text-[#5A5A5A]">Submitted {new Date(application.created_at).toLocaleDateString()}.</p>}
         </Card>
       )}
 
