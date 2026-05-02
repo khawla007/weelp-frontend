@@ -77,13 +77,13 @@ export const CustomerBookingsList = () => {
 
   return (
     <Card className="shadow-none border-none bg-inherit  bg-white ">
-      <CardHeader className={'px-8'}>
+      <CardHeader className="px-4 md:px-8">
         <CardTitle className="text-xl text-Blueish font-medium">Your Bookings</CardTitle>
         <CardDescription className="text-lg text-grayDark">Manage your bookings, plans.</CardDescription>
       </CardHeader>
 
-      <div className="p-8 pt-0 flex justify-between flex-wrap gap-4">
-        <Card className="flex justify-between items-center gap-2 bg-none border-none bg-gray-200 p-1">
+      <div className="p-4 md:p-8 pt-0 md:pt-0 flex justify-between flex-wrap gap-4">
+        <Card className="flex flex-wrap justify-start items-center gap-2 bg-none border-none bg-gray-200 p-1">
           {ORDER_STATUS.map(({ name, value }, index) => {
             return (
               <Label key={index} className={`${status === value && 'bg-white'} flex items-center flex-wrap text-center text-xs sm:text-base cursor-pointer p-2 border rounded-md relative`}>
@@ -114,7 +114,7 @@ export const CustomerBookingsList = () => {
       </div>
 
       {/* Filtered Orders */}
-      <div className="bg-[#f5f9fa] p-8 min-h-screen pb-20">
+      <div className="bg-[#f5f9fa] p-4 md:p-8 min-h-screen pb-20">
         <div className="flex flex-col bg-[#F5F9FA] gap-4">
           <div className="flex flex-wrap gap-4">
             {filteredOrders.length > 0 ? filteredOrders.map((order) => <BookingCard key={order.id} bookingItem={order} />) : <p> No bookings found</p>}
