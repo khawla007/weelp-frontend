@@ -2,12 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { RotateCcw, ShoppingCart, Loader2, Send } from 'lucide-react';
+import { RotateCcw, ShoppingCart, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useItineraryEditStore } from '@/lib/store/useItineraryEditStore';
 import { saveCustomerItinerary } from '@/lib/actions/customerItineraries';
-import { submitCreatorItinerary } from '@/lib/actions/creatorItineraries';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
 
 export default function ItineraryEditActionBar({ session }) {
@@ -23,7 +22,6 @@ export default function ItineraryEditActionBar({ session }) {
   if (!hasChanges) return null;
 
   const isLoggedIn = !!session?.user;
-  const isCreator = !!session?.user?.is_creator;
 
   const payload = {
     parent_itinerary_id: itineraryId,
@@ -43,22 +41,6 @@ export default function ItineraryEditActionBar({ session }) {
       }
     } else {
       toast({ variant: 'destructive', title: res.message || 'Failed to save.' });
-    }
-  };
-
-  const handleCreatorSubmit = async () => {
-    setSubmitting(true);
-    const res = await submitCreatorItinerary(payload);
-    setSubmitting(false);
-
-    if (res.success) {
-      toast({ title: res.message || 'Itinerary submitted for approval.' });
-      resetChanges();
-      if (res.data?.slug) {
-        router.push(`/itineraries/${res.data.slug}`);
-      }
-    } else {
-      toast({ variant: 'destructive', title: res.message || 'Failed to submit.' });
     }
   };
 
@@ -105,17 +87,6 @@ export default function ItineraryEditActionBar({ session }) {
             <ShoppingCart className="h-4 w-4 mr-2" />
             Book Now
           </Button>
-        ) : isCreator ? (
-          <div className="flex items-center gap-3">
-            <Button onClick={handleCustomerSave} disabled={submitting} variant="outline" className="border-secondaryDark text-secondaryDark hover:bg-secondaryDark/5">
-              {submitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <ShoppingCart className="h-4 w-4 mr-2" />}
-              Save &amp; Book
-            </Button>
-            <Button onClick={handleCreatorSubmit} disabled={submitting} className="bg-secondaryDark hover:bg-secondaryDark/90">
-              {submitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Send className="h-4 w-4 mr-2" />}
-              Apply for Approval
-            </Button>
-          </div>
         ) : (
           <Button onClick={handleCustomerSave} disabled={submitting} className="bg-secondaryDark hover:bg-secondaryDark/90">
             {submitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <ShoppingCart className="h-4 w-4 mr-2" />}
