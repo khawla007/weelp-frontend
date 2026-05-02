@@ -1,4 +1,9 @@
-NODE_OPTIONS="--max-old-space-size=16384" npx jest --watchAll=false --workerIdleMemoryLimit=1024MB --maxWorkers=2 --logHeapUsage
+# Run only tests related to staged files. Full suite OOMs the worker;
+# CI runs the full suite via npm run test:ci.
+STAGED_JS=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(js|jsx|ts|tsx)$' || true)
+if [ -n "$STAGED_JS" ]; then
+  NODE_OPTIONS="--max-old-space-size=8192" npx jest --watchAll=false --findRelatedTests --passWithNoTests $STAGED_JS
+fi
 
 npx prettier . --write
 npm run lint

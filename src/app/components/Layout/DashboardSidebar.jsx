@@ -35,10 +35,7 @@ export default function DashboardSidebar({ nav, user, accent = 'bg-secondaryDark
 
   useEffect(() => {
     const stored = sessionStorage.getItem(STORAGE_KEY);
-    const initial =
-      stored !== null
-        ? stored === 'true'
-        : typeof window !== 'undefined' && window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`).matches;
+    const initial = stored !== null ? stored === 'true' : typeof window !== 'undefined' && window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`).matches;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- restoring persisted/responsive collapse on mount; SSR-safe alternative would require useSyncExternalStore
     setCollapsed(initial);
   }, []);
@@ -55,14 +52,10 @@ export default function DashboardSidebar({ nav, user, accent = 'bg-secondaryDark
   const initials = getInitials(user?.name);
 
   return (
-    <aside
-      className={`bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out ${collapsed ? 'w-16' : 'w-64'} shrink-0`}
-    >
+    <aside className={`bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out ${collapsed ? 'w-16' : 'w-64'} shrink-0`}>
       <div className="sticky top-[112px] h-[calc(100vh-112px)] flex flex-col">
         <div className="flex-1 py-4 px-2 space-y-2 overflow-y-auto">
-          <div
-            className={`bg-white rounded-xl shadow-md border border-gray-200/60 transition-all duration-300 ease-in-out ${collapsed ? 'p-2' : 'p-3'} mb-5`}
-          >
+          <div className={`bg-white rounded-xl shadow-md border border-gray-200/60 transition-all duration-300 ease-in-out ${collapsed ? 'p-2' : 'p-3'} mb-5`}>
             <div className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3'}`}>
               <Avatar className="h-11 w-11 rounded-full border-2 border-white shadow-sm flex-shrink-0">
                 {user?.avatar && <AvatarImage src={user.avatar} alt={user.name || 'user'} />}

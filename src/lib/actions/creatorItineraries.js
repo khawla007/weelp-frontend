@@ -3,6 +3,22 @@
 import { getAuthApi, publicApi } from '../axiosInstance';
 
 /**
+ * Get creator earnings with filters
+ * @param {object} filters - { status?, from?, to?, page?, per_page? }
+ * @returns {object} { success, data }
+ */
+export const getCreatorEarnings = async (filters = {}) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.get('/api/creator/dashboard/earnings', { params: filters });
+    return { success: true, data: res.data?.data };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to fetch earnings.';
+    return { success: false, message };
+  }
+};
+
+/**
  * Submit a creator itinerary
  * @param {object} data - Itinerary data
  * @returns {object} { success, message, data }

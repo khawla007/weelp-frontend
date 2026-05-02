@@ -1,4 +1,4 @@
-import { HelpCircle, Settings, Star, Tag, Home, Route, BarChart3 } from 'lucide-react';
+import { HelpCircle, Settings, Star, Tag, Home, Route, BarChart3, DollarSign, ClipboardCheck } from 'lucide-react';
 
 // User Navigation
 export const DashboardUserNav = {
@@ -15,6 +15,8 @@ export const DashboardUserNav = {
     { title: 'Reviews', icon: Star, url: '/dashboard/customer/reviews' },
     // My Itineraries (replaces My Posts)
     { title: 'My Itineraries', icon: Route, url: '/dashboard/customer/my-itineraries' },
+    { title: 'Earnings', icon: DollarSign, url: '/dashboard/customer/earnings', creatorOnly: true },
+    { title: 'Application Status', icon: ClipboardCheck, url: '/dashboard/customer/application-status', nonCreatorOnly: true },
     { title: 'Help Center', icon: HelpCircle, url: '/dashboard/customer/help-center' },
     // Creator-only: Analytics after Help Center
     { title: 'Analytics', icon: BarChart3, url: '/dashboard/customer/analytics', creatorOnly: true },
