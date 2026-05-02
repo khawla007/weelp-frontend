@@ -19,22 +19,6 @@ export const getCreatorEarnings = async (filters = {}) => {
 };
 
 /**
- * Submit a creator itinerary
- * @param {object} data - Itinerary data
- * @returns {object} { success, message, data }
- */
-export const submitCreatorItinerary = async (data) => {
-  try {
-    const api = await getAuthApi();
-    const res = await api.post('/api/creator/itineraries', data);
-    return { success: true, message: res.data?.message, data: res.data?.data };
-  } catch (err) {
-    const message = err?.response?.data?.message || 'Failed to submit itinerary.';
-    return { success: false, message };
-  }
-};
-
-/**
  * Get itinerary edit data
  * @param {string} slug - Itinerary slug
  * @returns {object} { success, data }
