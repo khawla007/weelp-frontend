@@ -83,7 +83,8 @@ export const CustomerBookingsList = () => {
       </CardHeader>
 
       <div className="p-4 md:p-8 pt-0 md:pt-0 flex justify-between flex-wrap gap-4">
-        <Card className="flex flex-wrap justify-start items-center gap-2 bg-none border-none bg-gray-200 p-1">
+        {/* Status pills (lg and up) */}
+        <Card className="hidden lg:flex flex-wrap justify-start items-center gap-2 bg-none border-none bg-gray-200 p-1">
           {ORDER_STATUS.map(({ name, value }, index) => {
             return (
               <Label key={index} className={`${status === value && 'bg-white'} flex items-center flex-wrap text-center text-xs sm:text-base cursor-pointer p-2 border rounded-md relative`}>
@@ -94,10 +95,26 @@ export const CustomerBookingsList = () => {
           })}
         </Card>
 
-        {/* Select for item type */}
-        <div suppressHydrationWarning>
+        {/* Filter dropdowns (status collapses into select below lg, item type always shown) */}
+        <div className="flex flex-wrap items-center gap-3 lg:ml-auto" suppressHydrationWarning>
+          <div className="lg:hidden">
+            <Select onValueChange={handleStatusChange} value={status || 'all'}>
+              <SelectTrigger className="w-[140px] dark:bg-black">
+                <SelectValue placeholder="Status">{status ? ORDER_STATUS.find((s) => s.value === status)?.name : 'Status'}</SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {ORDER_STATUS.map(({ name, value }, index) => (
+                    <SelectItem key={index} value={value}>
+                      {name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
           <Select onValueChange={handleSortByChange} value={sortBy || 'all'}>
-            <SelectTrigger className="w-[120px] dark:bg-black">
+            <SelectTrigger className="w-[140px] dark:bg-black">
               <SelectValue placeholder="Item Type">{sortBy ? ITEM_TYPE.find((t) => t.value === sortBy)?.name : 'Item Type'}</SelectValue>
             </SelectTrigger>
             <SelectContent>
