@@ -21,6 +21,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
+import { getItineraryDisplayImage } from '@/lib/utils/itineraryImages';
 
 const STATUS_TABS = ['all', 'pending', 'approved', 'rejected', 'deleted'];
 
@@ -181,8 +182,10 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-20">Image</TableHead>
                 <TableHead>Creator</TableHead>
                 <TableHead>Itinerary Name</TableHead>
+                <TableHead>Original</TableHead>
                 <TableHead>Preview</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>Status</TableHead>
@@ -191,10 +194,38 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
             </TableHeader>
             <TableBody>
               {filtered.map((item) => {
+                const thumbnail = getItineraryDisplayImage(item);
+                const parentSlug = item.parent_itinerary?.slug;
                 return (
                   <TableRow key={item.id}>
+                    <TableCell>
+                      {thumbnail ? (
+                        <img
+                          src={thumbnail}
+                          alt={item.name || 'Itinerary thumbnail'}
+                          className="size-12 rounded-md object-cover border border-[#435a6742]"
+                        />
+                      ) : (
+                        <div className="size-12 rounded-md bg-[#CFDBE54D] border border-[#435a6742]" aria-label="No image" />
+                      )}
+                    </TableCell>
                     <TableCell className="font-medium">{item.creator?.name || item.user?.name || '-'}</TableCell>
                     <TableCell>{item.name || item.title || '-'}</TableCell>
+                    <TableCell>
+                      {parentSlug ? (
+                        <a
+                          href={`/itineraries/${parentSlug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-secondaryDark hover:underline inline-flex items-center gap-1"
+                        >
+                          {item.parent_itinerary?.name || 'View'}
+                          <ExternalLink className="size-3" />
+                        </a>
+                      ) : (
+                        '-'
+                      )}
+                    </TableCell>
                     <TableCell>
                       <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer" className="text-secondaryDark hover:underline inline-flex items-center gap-1">
                         Preview
