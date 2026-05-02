@@ -18,8 +18,21 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
   const [removalReason, setRemovalReason] = useState('');
   const [removalDialogOpen, setRemovalDialogOpen] = useState(false);
   const [removalTargetId, setRemovalTargetId] = useState(null);
+  const [activeTab, setActiveTab] = useState('all');
   const { toast } = useToast();
   const router = useRouter();
+
+  const filtered = (() => {
+    if (!isCreator || activeTab === 'all') return itineraries;
+    if (activeTab === 'drafts') {
+      return itineraries.filter((item) => {
+        const meta = item.meta || {};
+        const draftId = item.draft_itinerary_id ?? meta.draft_itinerary_id;
+        return draftId != null;
+      });
+    }
+    return itineraries;
+  })();
 
   const handleRequestEdit = async (id) => {
     setProcessingId(id);
@@ -102,8 +115,31 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
     <div className="space-y-6">
       {headerButton && <div className="flex justify-end">{headerButton}</div>}
 
+      {isCreator && (
+        <div className="flex gap-2">
+          {['all', 'drafts'].map((tab) => (
+            <Button
+              key={tab}
+              size="sm"
+              variant={activeTab === tab ? 'default' : 'outline'}
+              onClick={() => setActiveTab(tab)}
+              className={activeTab === tab ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#435a6742] text-[#435a67]'}
+            >
+              {tab === 'all' ? 'All Itineraries' : 'Drafts'}
+            </Button>
+          ))}
+        </div>
+      )}
+
+      {filtered.length === 0 && isCreator && activeTab === 'drafts' ? (
+        <div className="text-center py-12 bg-white rounded-lg border border-[#435a6742]">
+          <p className="text-lg text-[#142A38]">No drafts</p>
+          <p className="text-[#5A5A5A] mt-2">Edits you&apos;ve submitted for review will appear here.</p>
+        </div>
+      ) : null}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        {itineraries.map((item) => {
+        {filtered.map((item) => {
           const itinerary = item.itinerary || item;
           const featuredMedia = itinerary.media_gallery?.find((m) => m.is_featured)?.media?.url || itinerary.media_gallery?.[0]?.media?.url;
           const featuredImage = featuredMedia || itinerary.featured_image || '/assets/images/placeholder-itinerary.jpg';
