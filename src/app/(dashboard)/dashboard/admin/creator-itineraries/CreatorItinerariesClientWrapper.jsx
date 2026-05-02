@@ -200,11 +200,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                   <TableRow key={item.id}>
                     <TableCell>
                       {thumbnail ? (
-                        <img
-                          src={thumbnail}
-                          alt={item.name || 'Itinerary thumbnail'}
-                          className="size-12 rounded-md object-cover border border-[#435a6742]"
-                        />
+                        <img src={thumbnail} alt={item.name || 'Itinerary thumbnail'} className="size-12 rounded-md object-cover border border-[#435a6742]" />
                       ) : (
                         <div className="size-12 rounded-md bg-[#CFDBE54D] border border-[#435a6742]" aria-label="No image" />
                       )}
@@ -213,12 +209,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     <TableCell>{item.name || item.title || '-'}</TableCell>
                     <TableCell>
                       {parentSlug ? (
-                        <a
-                          href={`/itineraries/${parentSlug}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-secondaryDark hover:underline inline-flex items-center gap-1"
-                        >
+                        <a href={`/itineraries/${parentSlug}`} target="_blank" rel="noopener noreferrer" className="text-secondaryDark hover:underline inline-flex items-center gap-1">
                           {item.parent_itinerary?.name || 'View'}
                           <ExternalLink className="size-3" />
                         </a>

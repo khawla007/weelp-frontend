@@ -1,4 +1,4 @@
-NODE_OPTIONS="--max-old-space-size=8192" npx jest --watchAll=false --workerIdleMemoryLimit=512MB --maxWorkers=2
+NODE_OPTIONS="--max-old-space-size=16384" npx jest --watchAll=false --workerIdleMemoryLimit=1024MB --maxWorkers=2 --logHeapUsage
 
 npx prettier . --write
 npm run lint
