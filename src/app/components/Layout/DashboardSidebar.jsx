@@ -34,10 +34,19 @@ export default function DashboardSidebar({ nav, user, accent = 'bg-secondaryDark
   const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
     const stored = sessionStorage.getItem(STORAGE_KEY);
-    const initial = stored !== null ? stored === 'true' : typeof window !== 'undefined' && window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`).matches;
+    const initial = stored !== null ? stored === 'true' : mql.matches;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- restoring persisted/responsive collapse on mount; SSR-safe alternative would require useSyncExternalStore
     setCollapsed(initial);
+
+    // Live breakpoint listener: only auto-toggle when user has no explicit override stored.
+    const onChange = (e) => {
+      if (sessionStorage.getItem(STORAGE_KEY) !== null) return;
+      setCollapsed(e.matches);
+    };
+    mql.addEventListener('change', onChange);
+    return () => mql.removeEventListener('change', onChange);
   }, []);
 
   const toggle = () => {
