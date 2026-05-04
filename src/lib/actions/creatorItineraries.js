@@ -19,6 +19,22 @@ export const getCreatorEarnings = async (filters = {}) => {
 };
 
 /**
+ * Get creator payouts grouped by paid_at date
+ * @param {object} filters - { from?, to?, page?, per_page? }
+ * @returns {object} { success, data }
+ */
+export const getCreatorPayouts = async (filters = {}) => {
+  try {
+    const api = await getAuthApi();
+    const res = await api.get('/api/creator/dashboard/payouts', { params: filters });
+    return { success: true, data: res.data?.data };
+  } catch (err) {
+    const message = err?.response?.data?.message || 'Failed to fetch payouts.';
+    return { success: false, message };
+  }
+};
+
+/**
  * Get itinerary edit data
  * @param {string} slug - Itinerary slug
  * @returns {object} { success, data }
