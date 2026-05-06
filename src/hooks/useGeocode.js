@@ -16,7 +16,8 @@ function buildKey(query, limit, hasToken) {
 }
 
 export function useGeocode(query, { limit = 5 } = {}) {
-  const { data: session } = useSession();
+  // useSession returns undefined during static prerender; guard the destructure.
+  const { data: session } = useSession() ?? { data: null };
   const token = session?.access_token && !session.error ? session.access_token : null;
 
   const { data, error, isLoading, isValidating, mutate } = useSWR(buildKey(query, limit, !!token), ([, q, lim]) => geocode(q, { limit: lim, token }), {
