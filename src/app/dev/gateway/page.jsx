@@ -15,7 +15,10 @@ const DEBOUNCE_MS = 300;
 // so wiring geocoded results into it would have meant rewriting that flow.
 // Keep this page; remove it only when a real geocoded input replaces it.
 export default function GatewayDevPage() {
-  const { data: session, status } = useSession();
+  // useSession returns undefined during static prerender (no SessionProvider
+  // in that context). Default-safe destructure keeps the build green; at
+  // runtime the provider in ProviderWrapper supplies the real value.
+  const { data: session, status } = useSession() ?? { data: null, status: 'unauthenticated' };
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [picked, setPicked] = useState(null);
