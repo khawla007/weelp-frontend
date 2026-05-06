@@ -41,7 +41,11 @@ async function post(path, body, accessToken) {
   const res = await fetch(`${API_BASE}${path}`, { method: 'POST', headers, body: JSON.stringify(body) });
   const text = await res.text();
   let data = null;
-  try { data = JSON.parse(text); } catch { data = text; }
+  try {
+    data = JSON.parse(text);
+  } catch {
+    data = text;
+  }
   return { status: res.status, data };
 }
 
@@ -77,35 +81,17 @@ async function main() {
   record(
     '2. /refresh-token rotates both tokens',
     r1.status === 200 && !!newAccess && !!newRefresh && newRefresh !== initial.refresh,
-    `status=${r1.status}, refresh-rotated=${newRefresh !== initial.refresh}`
+    `status=${r1.status}, refresh-rotated=${newRefresh !== initial.refresh}`,
   );
 
   const r2 = await refresh(initial.refresh);
-  record(
-    '3. reusing old refresh returns 401 token_revoked',
-    r2.status === 401,
-    `status=${r2.status}`
-  );
+  record('3. reusing old refresh returns 401 token_revoked', r2.status === 401, `status=${r2.status}`);
 
   const fresh = await login();
-  const parallel = await Promise.all([
-    refresh(fresh.refresh),
-    refresh(fresh.refresh),
-    refresh(fresh.refresh),
-    refresh(fresh.refresh),
-    refresh(fresh.refresh),
-  ]);
+  const parallel = await Promise.all([refresh(fresh.refresh), refresh(fresh.refresh), refresh(fresh.refresh), refresh(fresh.refresh), refresh(fresh.refresh)]);
   const successes = parallel.filter((r) => r.status === 200);
-  const issuedAccess = new Set(
-    successes
-      .map((r) => r.data?.access_token || r.data?.accessToken)
-      .filter(Boolean)
-  );
-  record(
-    '4. parallel refreshes never double-spend a single refresh',
-    issuedAccess.size <= 1,
-    `successes=${successes.length}, distinct access issued=${issuedAccess.size}`
-  );
+  const issuedAccess = new Set(successes.map((r) => r.data?.access_token || r.data?.accessToken).filter(Boolean));
+  record('4. parallel refreshes never double-spend a single refresh', issuedAccess.size <= 1, `successes=${successes.length}, distinct access issued=${issuedAccess.size}`);
 
   console.log('');
   console.log(`Results: ${results.length - failures}/${results.length} passed`);
