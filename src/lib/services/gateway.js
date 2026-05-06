@@ -11,8 +11,7 @@
 // `NEXT_PUBLIC_GATEWAY_URL` is the only contract; do not hard-code the host
 // elsewhere. Default points at the dev port (9100, not 9000 — MinIO holds 9000).
 
-const GATEWAY_URL =
-  process.env.NEXT_PUBLIC_GATEWAY_URL?.replace(/\/$/, '') || 'http://localhost:9100';
+const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL?.replace(/\/$/, '') || 'http://localhost:9100';
 
 export class GatewayError extends Error {
   constructor(message, { status, body } = {}) {
@@ -47,10 +46,7 @@ async function gatewayFetch(path, { params, token, signal } = {}) {
     } catch {
       // non-JSON error body is fine; status code is enough for the caller.
     }
-    throw new GatewayError(
-      body?.detail || body?.message || `Gateway ${res.status}`,
-      { status: res.status, body },
-    );
+    throw new GatewayError(body?.detail || body?.message || `Gateway ${res.status}`, { status: res.status, body });
   }
 
   return res.json();

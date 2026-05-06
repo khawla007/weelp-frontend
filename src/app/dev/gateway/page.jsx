@@ -35,21 +35,17 @@ export default function GatewayDevPage() {
     <main className="mx-auto max-w-2xl space-y-6 px-4 py-12">
       <header className="space-y-1">
         <h1 className="text-2xl font-semibold">Gateway dev surface</h1>
-        <p className="text-sm text-gray-500">
-          Phase 5 verification. Type a place name; the gateway answers via Mapbox / Nominatim.
-        </p>
+        <p className="text-sm text-gray-500">Phase 5 verification. Type a place name; the gateway answers via Mapbox / Nominatim.</p>
       </header>
 
       <section className="rounded-lg border border-gray-200 bg-white p-4 text-sm">
         <dl className="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1">
           <dt className="text-gray-500">Session</dt>
-          <dd>{status === 'loading' ? 'loading…' : session?.user?.email ?? 'logged out'}</dd>
+          <dd>{status === 'loading' ? 'loading…' : (session?.user?.email ?? 'logged out')}</dd>
           <dt className="text-gray-500">Tier</dt>
           <dd>{tier}</dd>
           <dt className="text-gray-500">Bearer</dt>
-          <dd className="font-mono text-xs">
-            {session?.access_token ? `${session.access_token.slice(0, 16)}…` : '—'}
-          </dd>
+          <dd className="font-mono text-xs">{session?.access_token ? `${session.access_token.slice(0, 16)}…` : '—'}</dd>
         </dl>
       </section>
 
@@ -66,13 +62,7 @@ export default function GatewayDevPage() {
           className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-[#558e7b] focus:outline-none"
           autoComplete="off"
         />
-        <p className="text-xs text-gray-400">
-          {isLoading || isValidating
-            ? 'querying gateway…'
-            : data
-              ? `${data.length} result${data.length === 1 ? '' : 's'}`
-              : 'awaiting input'}
-        </p>
+        <p className="text-xs text-gray-400">{isLoading || isValidating ? 'querying gateway…' : data ? `${data.length} result${data.length === 1 ? '' : 's'}` : 'awaiting input'}</p>
       </section>
 
       {error && (
@@ -103,11 +93,7 @@ export default function GatewayDevPage() {
         </ul>
       )}
 
-      {picked && (
-        <pre className="overflow-x-auto rounded-lg bg-gray-900 p-3 text-xs text-gray-100">
-          {JSON.stringify(picked, null, 2)}
-        </pre>
-      )}
+      {picked && <pre className="overflow-x-auto rounded-lg bg-gray-900 p-3 text-xs text-gray-100">{JSON.stringify(picked, null, 2)}</pre>}
     </main>
   );
 }

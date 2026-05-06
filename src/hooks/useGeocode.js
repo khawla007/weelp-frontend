@@ -19,14 +19,10 @@ export function useGeocode(query, { limit = 5 } = {}) {
   const { data: session } = useSession();
   const token = session?.access_token && !session.error ? session.access_token : null;
 
-  const { data, error, isLoading, isValidating, mutate } = useSWR(
-    buildKey(query, limit, !!token),
-    ([, q, lim]) => geocode(q, { limit: lim, token }),
-    {
-      revalidateOnFocus: false,
-      keepPreviousData: true,
-    },
-  );
+  const { data, error, isLoading, isValidating, mutate } = useSWR(buildKey(query, limit, !!token), ([, q, lim]) => geocode(q, { limit: lim, token }), {
+    revalidateOnFocus: false,
+    keepPreviousData: true,
+  });
 
   return { data, error, isLoading, isValidating, mutate };
 }
