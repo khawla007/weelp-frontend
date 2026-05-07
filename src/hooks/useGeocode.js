@@ -5,6 +5,10 @@ import useSWR from 'swr';
 
 import { geocode } from '@/lib/services/gateway';
 
+/**
+ * @typedef {import('@/types/gateway').components['schemas']['CanonicalPlace']} CanonicalPlace
+ */
+
 const MIN_QUERY_LENGTH = 2;
 
 // Cache key explicitly carries `hasToken` so anonymous and authenticated
@@ -15,6 +19,17 @@ function buildKey(query, limit, hasToken) {
   return ['gateway:geocode', query.trim(), limit, hasToken];
 }
 
+/**
+ * @param {string} query
+ * @param {{ limit?: number }} [opts]
+ * @returns {{
+ *   data: CanonicalPlace[] | undefined,
+ *   error: Error | undefined,
+ *   isLoading: boolean,
+ *   isValidating: boolean,
+ *   mutate: () => void,
+ * }}
+ */
 export function useGeocode(query, { limit = 5 } = {}) {
   // useSession returns undefined during static prerender; guard the destructure.
   const { data: session } = useSession() ?? { data: null };

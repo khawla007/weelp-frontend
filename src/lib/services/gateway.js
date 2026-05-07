@@ -10,6 +10,14 @@
 //
 // `NEXT_PUBLIC_GATEWAY_URL` is the only contract; do not hard-code the host
 // elsewhere. Default points at the dev port (9100, not 9000 — MinIO holds 9000).
+//
+// Response shapes come from `src/types/gateway.ts`, regenerated via
+// `npm run gen:gateway-types` against a running gateway. Never hand-edit the
+// generated file; if a field is missing, fix the FastAPI DTO and regenerate.
+
+/**
+ * @typedef {import('@/types/gateway').components['schemas']['CanonicalPlace']} CanonicalPlace
+ */
 
 const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL?.replace(/\/$/, '') || 'http://localhost:9100';
 
@@ -52,6 +60,11 @@ async function gatewayFetch(path, { params, token, signal } = {}) {
   return res.json();
 }
 
+/**
+ * @param {string} q
+ * @param {{ limit?: number, token?: string|null, signal?: AbortSignal }} [opts]
+ * @returns {Promise<CanonicalPlace[]>}
+ */
 export async function geocode(q, { limit = 5, token, signal } = {}) {
   return gatewayFetch('/v1/places/geocode', {
     params: { q, limit },
@@ -60,6 +73,12 @@ export async function geocode(q, { limit = 5, token, signal } = {}) {
   });
 }
 
+/**
+ * @param {number} lat
+ * @param {number} lng
+ * @param {{ token?: string|null, signal?: AbortSignal }} [opts]
+ * @returns {Promise<CanonicalPlace|null>}
+ */
 export async function reverse(lat, lng, { token, signal } = {}) {
   return gatewayFetch('/v1/places/reverse', {
     params: { lat, lng },
