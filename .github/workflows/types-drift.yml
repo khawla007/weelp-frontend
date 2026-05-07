@@ -1,0 +1,38 @@
+name: types-drift
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/types/gateway.ts"
+      - "src/types/gateway.openapi.json"
+      - ".github/workflows/types-drift.yml"
+  pull_request:
+    paths:
+      - "src/types/gateway.ts"
+      - "src/types/gateway.openapi.json"
+      - ".github/workflows/types-drift.yml"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Regenerate types from snapshot
+        run: |
+          npx -y openapi-typescript src/types/gateway.openapi.json -o /tmp/gateway-regen.ts
+
+      - name: Diff against committed gateway.ts
+        run: |
+          if ! diff -q /tmp/gateway-regen.ts src/types/gateway.ts; then
+            echo "::error::gateway.ts is out of sync with src/types/gateway.openapi.json. Run npm run gen:gateway-types and commit the result."
+            diff -u src/types/gateway.ts /tmp/gateway-regen.ts || true
+            exit 1
+          fi
