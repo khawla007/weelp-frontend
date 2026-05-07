@@ -1,0 +1,4 @@
+# Generated files — do not reformat
+src/types/gateway.ts
+src/types/gateway.openapi.json
+.github/workflows/types-drift.yml

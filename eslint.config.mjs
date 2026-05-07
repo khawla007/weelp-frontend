@@ -12,6 +12,9 @@ import nextWebVitals from 'eslint-config-next/core-web-vitals';
 
 const eslintConfig = [
   includeIgnoreFile(gitignorePath),
+  {
+    ignores: ['src/types/gateway.ts', 'src/types/gateway.openapi.json'],
+  },
   ...nextConfig,
   ...nextWebVitals,
   {
