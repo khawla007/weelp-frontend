@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { Frown, LoaderCircle, Search, X } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import Image from 'next/image';
 import { debounce } from 'lodash';
 import { useCallback } from 'react';
 import { useBlogs } from '@/hooks/api/public/blogs/useBlogs';
@@ -34,20 +33,19 @@ export const SearchFormCreator = () => {
     defaultValues: { search: '' },
   });
 
-  const getItemHref = (post) => {
-    const item = post?.tagged_items?.[0];
-    if (!item?.taggable) return '#';
-    const slug = item.taggable.slug;
-    const type = item.taggable_type;
-    const citySlug = item.taggable.locations?.[0]?.city?.slug;
-    const creatorId = post?.creator?.id;
+  const getItemHref = (itinerary) => {
+    const citySlug = itinerary?.locations?.[0]?.city?.slug;
+    const slug = itinerary?.slug;
+    const creatorId = itinerary?.creator?.id;
 
-    if (!citySlug) return '#';
+    if (!citySlug || !slug) return '#';
 
-    if (type === 'App\\Models\\Activity') return `/cities/${citySlug}/activities/${slug}?ref=${creatorId}`;
-    if (type === 'App\\Models\\Itinerary') return `/cities/${citySlug}/itineraries/${slug}?ref=${creatorId}`;
-    if (type === 'App\\Models\\Package') return `/cities/${citySlug}/packages/${slug}?ref=${creatorId}`;
-    return '#';
+    return `/cities/${citySlug}/itineraries/${slug}${creatorId ? `?ref=${creatorId}` : ''}`;
+  };
+
+  const getFeaturedImage = (itinerary) => {
+    const featuredMedia = itinerary?.media_gallery?.find((media) => media.is_featured)?.media?.url || itinerary?.media_gallery?.[0]?.media?.url;
+    return featuredMedia || itinerary?.featured_image || '/assets/Card.webp';
   };
 
   const onSubmit = async (data) => {
@@ -73,10 +71,10 @@ export const SearchFormCreator = () => {
 
     try {
       const res = await fetch(`/api/search/creator?search=${encodeURIComponent(query)}`);
-      const { posts } = await res.json();
+      const { itineraries } = await res.json();
 
-      if (posts && posts.length > 0) {
-        setResults(posts);
+      if (itineraries && itineraries.length > 0) {
+        setResults(itineraries);
         setMessage('');
       } else {
         setResults([]);
@@ -115,7 +113,7 @@ export const SearchFormCreator = () => {
             registerOnChange(e);
             handleInputChange(e);
           }}
-          placeholder="Search posts or creators..."
+          placeholder="Search creator itineraries..."
           className="w-10/12 p-4 focus-visible:outline-none placeholder:text-grayDark"
         />
         <div>{isSubmitting ? <LoaderCircle size={16} className="animate-spin duration-1000" /> : <Search size={16} />}</div>
@@ -128,16 +126,22 @@ export const SearchFormCreator = () => {
           <div>
             {results.length > 0 ? (
               <ul className="bg-white w-full rounded-md flex flex-col gap-1 max-h-64 h-fit shadow-md overflow-y-auto tfc_scroll">
-                {results.map((post) => (
-                  <li key={post.id}>
-                    <Link href={getItemHref(post)} onClick={() => setShowDropdown(false)} className="hover:bg-gray-50 flex items-center gap-3 py-2.5 px-4 hover:cursor-pointer">
-                      <img src={post?.media?.url || '/assets/Card.webp'} className="size-10 rounded-md object-cover shrink-0" alt="post thumbnail" width={40} height={40} />
+                {results.map((itinerary) => (
+                  <li key={itinerary.id}>
+                    <Link href={getItemHref(itinerary)} onClick={() => setShowDropdown(false)} className="hover:bg-gray-50 flex items-center gap-3 py-2.5 px-4 hover:cursor-pointer">
+                      <img src={getFeaturedImage(itinerary)} className="size-10 rounded-md object-cover shrink-0" alt="itinerary thumbnail" width={40} height={40} />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate">{post?.caption || 'Untitled post'}</p>
-                        <p className="text-xs text-gray-500 truncate">by {post?.creator?.name || 'Unknown creator'}</p>
+                        <p className="text-sm font-medium text-gray-900 truncate">{itinerary?.name || 'Untitled itinerary'}</p>
+                        <p className="text-xs text-gray-500 truncate">by {itinerary?.creator?.name || 'Unknown creator'}</p>
                       </div>
-                      {post?.creator?.avatar_media?.url ? (
-                        <img src={post.creator.avatar_media.url} className="size-7 rounded-full object-cover shrink-0" alt="creator avatar" width={28} height={28} />
+                      {itinerary?.creator?.avatar_media?.url || itinerary?.creator?.profile?.avatar ? (
+                        <img
+                          src={itinerary?.creator?.avatar_media?.url || itinerary?.creator?.profile?.avatar}
+                          className="size-7 rounded-full object-cover shrink-0"
+                          alt="creator avatar"
+                          width={28}
+                          height={28}
+                        />
                       ) : (
                         <img src="/assets/Card.webp" className="size-7 rounded-full object-cover shrink-0" alt="creator avatar" width={28} height={28} />
                       )}
