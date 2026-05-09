@@ -2,7 +2,7 @@
 # CI runs the full suite via npm run test:ci.
 STAGED_JS=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(js|jsx|ts|tsx)$' || true)
 if [ -n "$STAGED_JS" ]; then
-  NODE_OPTIONS="--max-old-space-size=8192" npx jest --watchAll=false --findRelatedTests --passWithNoTests $STAGED_JS
+  NODE_OPTIONS="--max-old-space-size=8192" npx jest --watchAll=false --runInBand --findRelatedTests --passWithNoTests $STAGED_JS
 fi
 
 npx prettier . --write
