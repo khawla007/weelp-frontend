@@ -20,7 +20,9 @@ export default async function DiffPage({ params }) {
   if (!result.success) {
     return (
       <div className="p-6">
-        <h1 className="text-2xl font-semibold text-[#18181b] mb-4" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Review Edit Changes</h1>
+        <h1 className="text-2xl font-semibold text-[#18181b] mb-4" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+          Review Edit Changes
+        </h1>
         <p className="text-[#71717a]">{result.message || 'No pending edit found for this itinerary.'}</p>
       </div>
     );
@@ -29,7 +31,9 @@ export default async function DiffPage({ params }) {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Review Edit Changes</h1>
+        <h1 className="text-2xl font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+          Review Edit Changes
+        </h1>
         <p className="text-[#71717a] mt-1">Compare the approved version with proposed changes.</p>
       </div>
       <DiffViewClient approved={result.data.approved} draft={result.data.draft} itineraryId={id} />
