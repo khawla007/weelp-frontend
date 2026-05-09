@@ -209,10 +209,7 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
         <div className="mt-10">
           {/* Heading with navigation arrows on right side */}
           <div className="flex items-center justify-between mb-3">
-            <h3
-              className="text-lg sm:text-[28px] text-[#18181b]"
-              style={{ fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif', fontWeight: 600, letterSpacing: '-0.005em' }}
-            >
+            <h3 className="text-lg sm:text-[28px] text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif', fontWeight: 600, letterSpacing: '-0.005em' }}>
               Featured review
             </h3>
             {featuredReviewsData.length > 2 && (
@@ -347,10 +344,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
 
   return (
     <div ref={sectionRef} className="flex flex-col gap-4 mt-8">
-      <h3
-        className="text-lg sm:text-[28px] text-[#18181b] capitalize"
-        style={{ fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif', fontWeight: 600, letterSpacing: '-0.005em' }}
-      >
+      <h3 className="text-lg sm:text-[28px] text-[#18181b] capitalize" style={{ fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif', fontWeight: 600, letterSpacing: '-0.005em' }}>
         All Reviews
       </h3>
 

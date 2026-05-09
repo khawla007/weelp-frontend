@@ -52,10 +52,7 @@ export const WhatIncludedPanel = () => {
           ))}
         </ul>
       </div>
-      <button
-        type="button"
-        className={`text-left text-base font-medium text-[#18181b] mt-4 hover:underline rounded-sm w-fit ${FOCUS_RING}`}
-      >
+      <button type="button" className={`text-left text-base font-medium text-[#18181b] mt-4 hover:underline rounded-sm w-fit ${FOCUS_RING}`}>
         See 14 More
       </button>
     </div>

@@ -15,10 +15,7 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
         <div className="flex flex-col gap-2 pt-[70px]">
           <BreadCrumb className="mb-2" />
 
-          <h1
-            className="text-[#18181b] text-2xl lg:text-[40px] capitalize"
-            style={{ fontFamily: fontJakarta, fontWeight: 600, lineHeight: 1.15, letterSpacing: '-0.005em' }}
-          >
+          <h1 className="text-[#18181b] text-2xl lg:text-[40px] capitalize" style={{ fontFamily: fontJakarta, fontWeight: 600, lineHeight: 1.15, letterSpacing: '-0.005em' }}>
             {activityName ?? 'Melaka Wonderland Water Theme Park Ticket'}
           </h1>
 
@@ -41,10 +38,7 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
               </li>
               <li className="flex items-center gap-2 pr-4 border-r border-[#e4e4e7]">
                 <MapPin size={18} className="text-[#71717a]" />
-                <NavigationLink
-                  href={`/cities/${city || '#'}`}
-                  className={`text-[#71717a] text-sm lg:text-base font-medium hover:text-[#18181b] transition-colors rounded-sm ${focusRing}`}
-                >
+                <NavigationLink href={`/cities/${city || '#'}`} className={`text-[#71717a] text-sm lg:text-base font-medium hover:text-[#18181b] transition-colors rounded-sm ${focusRing}`}>
                   {primaryLocation?.city || 'Location'} {primaryLocation?.location_label && `(${primaryLocation.location_label})`}
                 </NavigationLink>
               </li>
@@ -55,10 +49,7 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
             </ul>
 
             {/* Save to Wishlist — desktop only */}
-            <button
-              type="button"
-              className={`hidden lg:flex items-center gap-2 text-[#52525b] hover:text-[#18181b] font-medium text-base rounded-sm px-1 py-1 transition-colors ${focusRing}`}
-            >
+            <button type="button" className={`hidden lg:flex items-center gap-2 text-[#52525b] hover:text-[#18181b] font-medium text-base rounded-sm px-1 py-1 transition-colors ${focusRing}`}>
               <Heart size={18} />
               Save to Wishlist
             </button>
@@ -73,10 +64,7 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
           <div className="relative mt-6">
             <div className="flex gap-1 h-[250px] lg:h-[349px] overflow-hidden">
               {media_gallery.slice(0, 3).map((img, index) => (
-                <div
-                  key={index}
-                  className={`relative flex-1 overflow-hidden ${index === 0 ? 'rounded-l-xl' : ''} ${index === Math.min(media_gallery.length, 3) - 1 ? 'rounded-r-xl' : ''}`}
-                >
+                <div key={index} className={`relative flex-1 overflow-hidden ${index === 0 ? 'rounded-l-xl' : ''} ${index === Math.min(media_gallery.length, 3) - 1 ? 'rounded-r-xl' : ''}`}>
                   <Image
                     src={img?.url}
                     alt={img?.alt_text || `${activityName} Image ${index + 1}`}
