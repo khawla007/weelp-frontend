@@ -201,7 +201,7 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
                     >
                       <div
                         className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${
-                          currentStep == step?.id ? 'text-secondaryDark ' : 'text-grayDark'
+                          currentStep == step?.id ? 'text-secondaryDark ' : 'text-[#71717a]'
                         }`}
                       >
                         {step.title}

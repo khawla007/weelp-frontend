@@ -460,7 +460,7 @@ export const CardVendorDriver = ({
 
           {/* Status [available ,off_duty, on_duty] */}
           <CardDescription>
-            {status === 'available' && <Badge className="bg-yellow-400 text-black hover:bg-yellow-400">Available</Badge>}
+            {status === 'available' && <Badge className="bg-yellow-400 text-[#18181b] hover:bg-yellow-400">Available</Badge>}
             {status === 'off_duty' && <Badge variant="outline">Off Duty</Badge>}
             {status === 'on_duty' && <Badge variant="success">On Duty</Badge>}
           </CardDescription>

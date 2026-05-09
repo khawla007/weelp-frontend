@@ -2,7 +2,7 @@ export const VendorNoResultFound = ({ text = '' }) => {
   if (!text) {
     return (
       <div className="h-[50vh] flex items-center flex-col justify-center gap-4">
-        <h2 className="text-Blueish font-semibold text-base sm:text-2xl ">Not Found</h2>
+        <h2 className="text-[#18181b] font-semibold text-base sm:text-2xl ">Not Found</h2>
         <p>Could not find requested resource</p>
       </div>
     );
@@ -10,7 +10,7 @@ export const VendorNoResultFound = ({ text = '' }) => {
 
   return (
     <div className="h-[50vh] flex items-center flex-col justify-center gap-4">
-      <h2 className="text-Blueish font-semibold text-base sm:text-2xl ">Not Found</h2>
+      <h2 className="text-[#18181b] font-semibold text-base sm:text-2xl ">Not Found</h2>
       <p>{text}</p>
     </div>
   );

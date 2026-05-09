@@ -29,7 +29,7 @@ export default function SmartGallery({ name, defaultImages = [] }) {
           <img src={file.url || file.path || file.preview} alt={`gallery-${index}`} className="w-full h-full object-cover rounded-md" />
 
           <button type="button" onClick={() => removeImage(index)}>
-            <Trash2 className="absolute  hidden group-hover:block top-3/4 left-3/4 p-1 -m-2 bg-white text-black border-none rounded-md  size-6 cursor-pointer" size={15} />
+            <Trash2 className="absolute  hidden group-hover:block top-3/4 left-3/4 p-1 -m-2 bg-white text-[#18181b] border-none rounded-md  size-6 cursor-pointer" size={15} />
           </button>
         </div>
       ))}

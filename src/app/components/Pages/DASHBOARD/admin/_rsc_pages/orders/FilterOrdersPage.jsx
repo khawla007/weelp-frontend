@@ -195,7 +195,7 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell className="capitalize text-grayDark" key={cell.id}>
+                    <TableCell className="capitalize text-[#71717a]" key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}

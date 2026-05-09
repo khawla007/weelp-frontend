@@ -173,7 +173,7 @@ const CreateOrderForm = () => {
           </div>
 
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="orderable_type" className={`block text-sm font-medium ${errors?.orderable_type ? 'text-red-400' : 'text-black'}`}>
+            <Label htmlFor="orderable_type" className={`block text-sm font-medium ${errors?.orderable_type ? 'text-red-400' : 'text-[#52525b]'}`}>
               Order Type
             </Label>
             <Controller
@@ -336,7 +336,7 @@ const CreateOrderForm = () => {
 
         {/* Status  */}
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="status" className={`block text-sm font-medium ${errors?.status ? 'text-red-400' : 'text-black'}`}>
+          <Label htmlFor="status" className={`block text-sm font-medium ${errors?.status ? 'text-red-400' : 'text-[#52525b]'}`}>
             Status
           </Label>
           <Controller
@@ -367,7 +367,7 @@ const CreateOrderForm = () => {
 
         {/* Specia requirements  */}
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="special_requirements" className={`block text-sm font-medium ${errors?.special_requirements ? 'text-red-400' : 'text-black'}`}>
+          <Label htmlFor="special_requirements" className={`block text-sm font-medium ${errors?.special_requirements ? 'text-red-400' : 'text-[#52525b]'}`}>
             Special Requirements
           </Label>
           <Textarea
@@ -429,7 +429,7 @@ const CreateOrderForm = () => {
 
         <div className="pb-2 space-x-4 flex flex-col md:flex-row">
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="payment.payment_status" className={`block text-sm font-medium ${errors?.payment?.payment_status ? 'text-red-400' : 'text-black'}`}>
+            <Label htmlFor="payment.payment_status" className={`block text-sm font-medium ${errors?.payment?.payment_status ? 'text-red-400' : 'text-[#52525b]'}`}>
               Payment Status
             </Label>
             <Controller
@@ -455,7 +455,7 @@ const CreateOrderForm = () => {
           </div>
 
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="payment.payment_method" className={`block text-sm font-medium ${errors?.payment?.payment_method ? 'text-red-400' : 'text-black'}`}>
+            <Label htmlFor="payment.payment_method" className={`block text-sm font-medium ${errors?.payment?.payment_method ? 'text-red-400' : 'text-[#52525b]'}`}>
               Payment Method
             </Label>
             <Controller
@@ -484,7 +484,7 @@ const CreateOrderForm = () => {
         {/* Payment Information Row */}
         <div className="pb-2 space-x-4 flex flex-col md:flex-row">
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="payment.total_amount" className={`block text-sm font-medium ${errors?.payment?.total_amount ? 'text-red-400' : 'text-black'}`}>
+            <Label htmlFor="payment.total_amount" className={`block text-sm font-medium ${errors?.payment?.total_amount ? 'text-red-400' : 'text-[#52525b]'}`}>
               Total Amount
             </Label>
             <Input
@@ -524,7 +524,7 @@ const CreateOrderForm = () => {
         {/* Custom Amount condition based */}
         {watchedCustomAmount && (
           <div className="flex items-center  space-x-2 w-full">
-            <Label htmlFor="payment.custom_amount" className={` text-sm font-medium w-full flex flex-col gap-2  ${errors?.payment?.custom_amount ? 'text-red-400' : 'text-black'}`}>
+            <Label htmlFor="payment.custom_amount" className={` text-sm font-medium w-full flex flex-col gap-2  ${errors?.payment?.custom_amount ? 'text-red-400' : 'text-[#52525b]'}`}>
               Custom Amount
               <Input
                 type="number"
@@ -563,7 +563,7 @@ const CreateOrderForm = () => {
         {/* Payment Information Row */}
         <div className="pb-2 space-x-4 flex flex-col items-center">
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="emergency_contact.contact_name" className={`block text-sm font-medium ${errors?.emergency_contact?.contact_name ? 'text-red-400' : 'text-black'}`}>
+            <Label htmlFor="emergency_contact.contact_name" className={`block text-sm font-medium ${errors?.emergency_contact?.contact_name ? 'text-red-400' : 'text-[#52525b]'}`}>
               Contact Name
             </Label>
             <Input
@@ -578,7 +578,7 @@ const CreateOrderForm = () => {
           </div>
 
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="emergency_contact.contact_phone" className={`block text-sm font-medium ${errors?.emergency_contact?.contact_phone ? 'text-red-400' : 'text-black'}`}>
+            <Label htmlFor="emergency_contact.contact_phone" className={`block text-sm font-medium ${errors?.emergency_contact?.contact_phone ? 'text-red-400' : 'text-[#52525b]'}`}>
               Contact Phone
             </Label>
             <Input
@@ -594,7 +594,7 @@ const CreateOrderForm = () => {
           </div>
 
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="emergency_contact.relationship" className={`block text-sm font-medium ${errors?.emergency_contact?.relationship ? 'text-red-400' : 'text-black'}`}>
+            <Label htmlFor="emergency_contact.relationship" className={`block text-sm font-medium ${errors?.emergency_contact?.relationship ? 'text-red-400' : 'text-[#52525b]'}`}>
               Relationship
             </Label>
             <Input
@@ -666,7 +666,7 @@ const CreateOrderForm = () => {
                   className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'}`}
                 >
                   <div
-                    className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${currentStep == step?.id ? 'text-secondaryDark ' : 'text-grayDark'}`}
+                    className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${currentStep == step?.id ? 'text-secondaryDark ' : 'text-[#71717a]'}`}
                   >
                     {step.title}
                   </div>

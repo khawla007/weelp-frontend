@@ -36,7 +36,7 @@ const PersonalInfoTab = () => {
       {/* Name */}
       <div className="flex w-full gap-4 flex-col sm:flex-row">
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-black'}`}>
+          <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-[#52525b]'}`}>
             Name
           </Label>
           <Input
@@ -50,7 +50,7 @@ const PersonalInfoTab = () => {
         </div>
 
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-black'}`}>
+          <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-[#52525b]'}`}>
             Slug
           </Label>
           <Input
@@ -66,7 +66,7 @@ const PersonalInfoTab = () => {
 
       {/* Description */}
       <div className="space-y-2">
-        <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-black'}`}>
+        <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-[#52525b]'}`}>
           Description
         </Label>
         <Textarea
@@ -82,7 +82,7 @@ const PersonalInfoTab = () => {
 
       {/* Transfer Type */}
       <div className="space-y-2">
-        <Label htmlFor="transfer_type" className={`block text-sm font-medium ${errors?.transfer_type ? 'text-red-400' : 'text-black'}`}>
+        <Label htmlFor="transfer_type" className={`block text-sm font-medium ${errors?.transfer_type ? 'text-red-400' : 'text-[#52525b]'}`}>
           Transfer Type
         </Label>
         <Controller

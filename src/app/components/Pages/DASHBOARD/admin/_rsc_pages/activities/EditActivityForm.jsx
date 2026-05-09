@@ -324,7 +324,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
             </div>
             <div className="pb-2 space-y-2 w-full">
-              <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-black'}`}>
+              <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-[#52525b]'}`}>
                 Slug <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -667,7 +667,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                 duration: null,
               })
             }
-            className="mt-4 w-full bg-white text-black hover:bg-inherit border shadow-sm"
+            className="mt-4 w-full bg-white text-[#18181b] hover:bg-inherit border shadow-sm"
           >
             Add Additional Location
           </Button>
@@ -910,7 +910,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               {activityImages.map((image, index) => {
                 const isFeatured = image.media_id == featuredImageId;
                 return (
-                  <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-black">
+                  <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-[#e4e4e7]">
                     <img className="size-72 rounded-md border" src={image?.url} alt="media_image" />
                     {/* Featured Star - Top Right */}
                     <Star
@@ -1567,7 +1567,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                     >
                       <Separator className={`pt-1 rounded-full ${currentStep >= step?.id ? 'bg-[#568f7c] group-hover:bg-[#e5e5e5]' : 'bg-neutral-200 group-hover:bg-[#568f7c]'}`} />
 
-                      <div className={`text-sm font-medium pt-2 ${currentStep == step?.id ? 'text-secondaryDark' : 'text-grayDark'}`}>{step.title}</div>
+                      <div className={`text-sm font-medium pt-2 ${currentStep == step?.id ? 'text-secondaryDark' : 'text-[#71717a]'}`}>{step.title}</div>
                       <span className="text-sm text-gray-500">{step?.description}</span>
                     </li>
                   ))}

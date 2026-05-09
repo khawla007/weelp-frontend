@@ -164,7 +164,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
             variant={activeTab === tab ? 'default' : 'outline'}
             size="sm"
             onClick={() => setActiveTab(tab)}
-            className={activeTab === tab ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#435a6742] text-[#435a67]'}
+            className={activeTab === tab ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#e4e4e7] text-[#52525b]'}
           >
             {formatStatus(tab)}
           </Button>
@@ -174,11 +174,11 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
       {/* Table */}
       {filtered.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-lg text-[#142A38]">No itineraries found</p>
-          <p className="text-[#5A5A5A] mt-2">{activeTab === 'all' ? 'No creator itineraries have been submitted yet.' : `No ${activeTab} itineraries.`}</p>
+          <p className="text-lg text-[#18181b]">No itineraries found</p>
+          <p className="text-[#71717a] mt-2">{activeTab === 'all' ? 'No creator itineraries have been submitted yet.' : `No ${activeTab} itineraries.`}</p>
         </div>
       ) : (
-        <div className="bg-white rounded-lg border border-[#435a6742]">
+        <div className="bg-white rounded-lg border border-[#e4e4e7]">
           <Table>
             <TableHeader>
               <TableRow>
@@ -200,9 +200,9 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                   <TableRow key={item.id}>
                     <TableCell>
                       {thumbnail ? (
-                        <img src={thumbnail} alt={item.name || 'Itinerary thumbnail'} className="size-12 rounded-md object-cover border border-[#435a6742]" />
+                        <img src={thumbnail} alt={item.name || 'Itinerary thumbnail'} className="size-12 rounded-md object-cover border border-[#e4e4e7]" />
                       ) : (
-                        <div className="size-12 rounded-md bg-[#CFDBE54D] border border-[#435a6742]" aria-label="No image" />
+                        <div className="size-12 rounded-md bg-[#f4f4f5] border border-[#e4e4e7]" aria-label="No image" />
                       )}
                     </TableCell>
                     <TableCell className="font-medium">{item.creator?.name || item.user?.name || '-'}</TableCell>
@@ -289,7 +289,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                         {item.status !== 'deleted' && (
                           <>
                             <NavigationLink href={`/dashboard/admin/creator-itineraries/${item.id}`}>
-                              <Button variant="outline" size="sm" className="border-[#435a6742] text-[#435a67]">
+                              <Button variant="outline" size="sm" className="border-[#e4e4e7] text-[#52525b]">
                                 <Pencil className="size-4 mr-1" />
                                 Edit
                               </Button>
@@ -332,8 +332,8 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel className="border-[#588f7a] text-black hover:bg-[#588f7a] hover:text-white">Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => handleDelete(item.id)} className="border-red-500 text-black bg-white hover:bg-red-500 hover:text-white">
+                                <AlertDialogCancel className="border-[#588f7a] text-[#18181b] hover:bg-[#588f7a] hover:text-white">Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDelete(item.id)} className="border-red-500 text-[#18181b] bg-white hover:bg-red-500 hover:text-white">
                                   Delete
                                 </AlertDialogAction>
                               </AlertDialogFooter>

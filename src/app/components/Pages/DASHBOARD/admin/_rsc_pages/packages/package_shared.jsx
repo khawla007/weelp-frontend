@@ -89,7 +89,7 @@ export const ActivitySearchModal = ({ day, onClose, activities = [], addActivity
           <div className="w-full flex gap-4 items-center">
             <Input type="text" placeholder="Search Activity..." className="w-full border p-2 focus-visible:ring-secondaryDark focus-visible:ring-1" onChange={handleSearch} />
             <Button className="bg-white hover:bg-white border">
-              <SearchIcon className="text-black" />
+              <SearchIcon className="text-[#52525b]" />
             </Button>
           </div>
           <ul>
@@ -246,7 +246,7 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
           <div className="w-full flex gap-4 items-center">
             <Input type="text" placeholder="Search transfers..." className="w-full border p-2 focus-visible:ring-secondaryDark focus-visible:ring-1" />
             <Button className="bg-white hover:bg-white border">
-              <SearchIcon className="text-black" />
+              <SearchIcon className="text-[#52525b]" />
             </Button>
           </div>
 
@@ -415,7 +415,7 @@ export const ItinerarySearchModal = ({ day, onClose, itineraries = [], addItiner
           <div className="w-full flex gap-4 items-center">
             <Input type="text" placeholder="Search itineraries..." className="w-full border p-2 focus-visible:ring-secondaryDark focus-visible:ring-1" />
             <Button className="bg-white hover:bg-white border">
-              <SearchIcon className="text-black" />
+              <SearchIcon className="text-[#52525b]" />
             </Button>
           </div>
 

@@ -23,8 +23,8 @@ export default async function CreatorApplicationsPage() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#142A38]">Creator Applications</h1>
-          <p className="text-[#5A5A5A] mt-1">Review and manage creator applications.</p>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Creator Applications</h1>
+          <p className="text-[#71717a] mt-1">Review and manage creator applications.</p>
         </div>
       </div>
 

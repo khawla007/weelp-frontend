@@ -246,7 +246,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
 
         <div className="flex w-full gap-4">
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-black'}`}>
+            <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-[#52525b]'}`}>
               Package Name <span className="text-red-500">*</span>
             </Label>
             <Input
@@ -260,7 +260,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
           </div>
 
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-black'}`}>
+            <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-[#52525b]'}`}>
               Slug <span className="text-red-500">*</span>
             </Label>
             <Input
@@ -275,7 +275,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-black'}`}>
+          <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-[#52525b]'}`}>
             Description <span className="text-red-500">*</span>
           </Label>
           <Textarea
@@ -291,7 +291,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
 
         {/* destination */}
         <div className="space-y-2">
-          <Label htmlFor={'locations'} className={`block text-sm font-medium ${errors?.locations ? 'text-red-400' : 'text-black'}`}>
+          <Label htmlFor={'locations'} className={`block text-sm font-medium ${errors?.locations ? 'text-red-400' : 'text-[#52525b]'}`}>
             Destinations <span className="text-red-500">*</span>
           </Label>
           <Controller
@@ -1697,7 +1697,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
       <div className="flex flex-col justify-between py-2 rounded-md space-y-8">
         <div className="flex justify-between">
           <h3 className="text-base font-bold text-gray-900 ">Inclusion & Exclusions</h3>
-          <Button className="bg-white text-black border hover:bg-accent hover:accent-black" onClick={handleAddInclustionField}>
+          <Button className="bg-white text-[#18181b] border hover:bg-accent" onClick={handleAddInclustionField}>
             + Add Item
           </Button>
         </div>
@@ -1890,7 +1890,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
             {activityImages.map((image, index) => {
               const isFeatured = image.media_id == featuredImageId;
               return (
-                <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-black">
+                <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-[#e4e4e7]">
                   <img className="size-72 rounded-md border" src={image?.url} alt="city_image" />
                   <Star
                     size={24}
@@ -2194,7 +2194,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
       >
         <AccordionItem value="item-1">
           <AccordionTrigger className="hover:bg-gray-50 px-4">
-            <h2 className="text-black font-semibold text-xl">Basic Settings</h2>
+            <h2 className="text-[#18181b] font-semibold text-xl" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Basic Settings</h2>
           </AccordionTrigger>
           <AccordionContent className="px-2 space-y-4">
             <div className="space-y-2">
@@ -2273,7 +2273,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
         </AccordionItem>
         <AccordionItem value="item-2">
           <AccordionTrigger className="hover:bg-gray-50 px-4">
-            <h2 className="text-black font-semibold text-xl">Schema Markup</h2>
+            <h2 className="text-[#18181b] font-semibold text-xl" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Schema Markup</h2>
             {errors?.schema_data?.message && <div className="bg-red-100 text-red-800">{errors?.schema_data?.message}</div>}
           </AccordionTrigger>
           <AccordionContent className="px-2 flex flex-col">
@@ -2638,7 +2638,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                     >
                       <div
                         className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${
-                          currentStep == step?.id ? 'text-secondaryDark ' : 'text-grayDark'
+                          currentStep == step?.id ? 'text-secondaryDark ' : 'text-[#71717a]'
                         }`}
                       >
                         {step.title}
@@ -2686,7 +2686,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                             onClick={() => {
                               router.back();
                             }}
-                            className={' bg-white text-black border hover:bg-white'}
+                            className={' bg-white text-[#18181b] border hover:bg-white'}
                           >
                             Cancel
                           </Button>

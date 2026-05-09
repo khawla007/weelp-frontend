@@ -13,11 +13,11 @@ function DiffField({ label, approvedValue, draftValue }) {
   return (
     <div className={`grid grid-cols-2 gap-4 p-3 rounded-lg ${changed ? 'bg-amber-50 border border-amber-200' : ''}`}>
       <div>
-        <p className="text-xs text-[#5A5A5A] mb-1">{label} (Current)</p>
-        <p className="text-sm text-[#142A38]">{approvedValue || <span className="text-[#5A5A5A] italic">Empty</span>}</p>
+        <p className="text-xs text-[#71717a] mb-1">{label} (Current)</p>
+        <p className="text-sm text-[#18181b]">{approvedValue || <span className="text-[#71717a] italic">Empty</span>}</p>
       </div>
       <div>
-        <p className="text-xs text-[#5A5A5A] mb-1">
+        <p className="text-xs text-[#71717a] mb-1">
           {label} (Proposed)
           {changed && (
             <Badge variant="warning" className="ml-2 text-xs">
@@ -25,7 +25,7 @@ function DiffField({ label, approvedValue, draftValue }) {
             </Badge>
           )}
         </p>
-        <p className="text-sm text-[#142A38]">{draftValue || <span className="text-[#5A5A5A] italic">Empty</span>}</p>
+        <p className="text-sm text-[#18181b]">{draftValue || <span className="text-[#71717a] italic">Empty</span>}</p>
       </div>
     </div>
   );
@@ -42,8 +42,8 @@ function ScheduleDiff({ approvedSchedules, draftSchedules }) {
         const dayNum = i + 1;
 
         return (
-          <div key={i} className="border border-[#435a6742] rounded-lg overflow-hidden">
-            <div className="bg-[#CFDBE54D] px-4 py-2 font-medium text-sm text-[#142A38]">
+          <div key={i} className="border border-[#e4e4e7] rounded-lg overflow-hidden">
+            <div className="bg-[#f4f4f5] px-4 py-2 font-medium text-sm text-[#18181b]">
               Day {dayNum}
               {!approved && (
                 <Badge variant="success" className="ml-2 text-xs">
@@ -58,43 +58,43 @@ function ScheduleDiff({ approvedSchedules, draftSchedules }) {
             </div>
             <div className="grid grid-cols-2 gap-4 p-4">
               <div>
-                <p className="text-xs font-medium text-[#5A5A5A] mb-2">Current</p>
+                <p className="text-xs font-medium text-[#71717a] mb-2">Current</p>
                 {approved ? (
                   <>
-                    {approved.title && <p className="text-sm text-[#142A38] mb-2 font-medium">{approved.title}</p>}
+                    {approved.title && <p className="text-sm text-[#18181b] mb-2 font-medium">{approved.title}</p>}
                     {approved.activities?.map((a, idx) => (
-                      <div key={idx} className="text-sm text-[#435A67] py-1 border-b border-[#435a6714]">
+                      <div key={idx} className="text-sm text-[#52525b] py-1 border-b border-[#eaeaea]">
                         {a.name || `Activity #${a.activity_id}`} {a.start_time && `(${a.start_time})`}
                       </div>
                     ))}
                     {approved.transfers?.map((t, idx) => (
-                      <div key={idx} className="text-sm text-[#435A67] py-1 border-b border-[#435a6714] italic">
+                      <div key={idx} className="text-sm text-[#52525b] py-1 border-b border-[#eaeaea] italic">
                         Transfer: {t.name || `#${t.transfer_id}`} {t.start_time && `(${t.start_time})`}
                       </div>
                     ))}
                   </>
                 ) : (
-                  <p className="text-sm text-[#5A5A5A] italic">No day {dayNum} in current version</p>
+                  <p className="text-sm text-[#71717a] italic">No day {dayNum} in current version</p>
                 )}
               </div>
               <div>
-                <p className="text-xs font-medium text-[#5A5A5A] mb-2">Proposed</p>
+                <p className="text-xs font-medium text-[#71717a] mb-2">Proposed</p>
                 {draft ? (
                   <>
-                    {draft.title && <p className="text-sm text-[#142A38] mb-2 font-medium">{draft.title}</p>}
+                    {draft.title && <p className="text-sm text-[#18181b] mb-2 font-medium">{draft.title}</p>}
                     {draft.activities?.map((a, idx) => (
-                      <div key={idx} className="text-sm text-[#435A67] py-1 border-b border-[#435a6714]">
+                      <div key={idx} className="text-sm text-[#52525b] py-1 border-b border-[#eaeaea]">
                         {a.name || `Activity #${a.activity_id}`} {a.start_time && `(${a.start_time})`}
                       </div>
                     ))}
                     {draft.transfers?.map((t, idx) => (
-                      <div key={idx} className="text-sm text-[#435A67] py-1 border-b border-[#435a6714] italic">
+                      <div key={idx} className="text-sm text-[#52525b] py-1 border-b border-[#eaeaea] italic">
                         Transfer: {t.name || `#${t.transfer_id}`} {t.start_time && `(${t.start_time})`}
                       </div>
                     ))}
                   </>
                 ) : (
-                  <p className="text-sm text-[#5A5A5A] italic">No day {dayNum} in proposed version</p>
+                  <p className="text-sm text-[#71717a] italic">No day {dayNum} in proposed version</p>
                 )}
               </div>
             </div>
@@ -138,18 +138,18 @@ export default function DiffViewClient({ approved, draft, itineraryId }) {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-lg border border-[#435a6742] p-6 space-y-4">
-        <h2 className="text-lg font-semibold text-[#142A38] mb-4">Basic Information</h2>
+      <div className="bg-white rounded-lg border border-[#e4e4e7] p-6 space-y-4">
+        <h2 className="text-lg font-semibold text-[#18181b] mb-4">Basic Information</h2>
         <DiffField label="Name" approvedValue={approved.name} draftValue={draft.name} />
         <DiffField label="Description" approvedValue={approved.description} draftValue={draft.description} />
       </div>
 
-      <div className="bg-white rounded-lg border border-[#435a6742] p-6">
-        <h2 className="text-lg font-semibold text-[#142A38] mb-4">Schedule Changes</h2>
+      <div className="bg-white rounded-lg border border-[#e4e4e7] p-6">
+        <h2 className="text-lg font-semibold text-[#18181b] mb-4">Schedule Changes</h2>
         <ScheduleDiff approvedSchedules={approved.schedules} draftSchedules={draft.schedules} />
       </div>
 
-      <div className="flex gap-3 justify-end sticky bottom-4 bg-white p-4 rounded-lg border border-[#435a6742] shadow-lg">
+      <div className="flex gap-3 justify-end sticky bottom-4 bg-white p-4 rounded-lg border border-[#e4e4e7] shadow-lg">
         <Button variant="outline" onClick={() => router.back()} disabled={processing}>
           Back
         </Button>

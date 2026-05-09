@@ -108,7 +108,7 @@ const MediaTab = () => {
           {media_gallery.map((image, index) => {
             const isFeatured = image.media_id == featuredImageId;
             return (
-              <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-black">
+              <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-[#e4e4e7]">
                 <img className="size-72 rounded-md border" src={image?.url} alt="activity_image" />
                 {/* Featured Star - Top Right */}
                 <Star

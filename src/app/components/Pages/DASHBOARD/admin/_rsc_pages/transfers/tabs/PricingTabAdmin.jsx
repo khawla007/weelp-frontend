@@ -34,7 +34,7 @@ const PricingTabAdmin = () => {
       <CardContent className="space-y-4">
         <div className="flex flex-col sm:flex-row">
           <div className="flex flex-col space-y-2 w-full p-2 border-none">
-            <Label htmlFor="transfer_price" className={errors?.transfer_price ? 'text-red-400' : 'text-black'}>
+            <Label htmlFor="transfer_price" className={errors?.transfer_price ? 'text-red-400' : 'text-[#52525b]'}>
               Transfer Price <span className="text-red-500">*</span>
             </Label>
             <Input type="number" min="0" id="transfer_price" {...register('transfer_price', { required: 'Transfer price is required', valueAsNumber: true })} />
@@ -42,7 +42,7 @@ const PricingTabAdmin = () => {
           </div>
 
           <div className="flex flex-col space-y-2 w-full p-2 border-none">
-            <Label htmlFor="currency" className={errors?.currency ? 'text-red-400' : 'text-black'}>
+            <Label htmlFor="currency" className={errors?.currency ? 'text-red-400' : 'text-[#52525b]'}>
               Currency <span className="text-red-500">*</span>
             </Label>
             <Controller
@@ -56,7 +56,7 @@ const PricingTabAdmin = () => {
         </div>
 
         <div className="flex flex-col space-y-2 w-full p-2 border-none">
-          <Label htmlFor="price_type" className={errors?.price_type ? 'text-red-400' : 'text-black'}>
+          <Label htmlFor="price_type" className={errors?.price_type ? 'text-red-400' : 'text-[#52525b]'}>
             Price Type <span className="text-red-500">*</span>
           </Label>
           <Controller
@@ -72,13 +72,13 @@ const PricingTabAdmin = () => {
           <div className="flex flex-col space-y-4 w-full p-2 border-none">
             <Label htmlFor="extra_luggage_charge">Per-Bag Luggage Rate</Label>
             <Input type="number" min="0" step="0.01" defaultValue="0" {...register('extra_luggage_charge', { valueAsNumber: true })} />
-            <p className="text-xs text-[#5a5a5a]">Charged per extra bag selected by the customer.</p>
+            <p className="text-xs text-[#71717a]">Charged per extra bag selected by the customer.</p>
           </div>
 
           <div className="flex flex-col space-y-4 w-full p-2 border-none">
             <Label htmlFor="waiting_charge">Per-Minute Waiting Rate</Label>
             <Input type="number" min="0" step="0.01" defaultValue="0" {...register('waiting_charge', { valueAsNumber: true })} />
-            <p className="text-xs text-[#5a5a5a]">Charged per minute of waiting requested by the customer.</p>
+            <p className="text-xs text-[#71717a]">Charged per minute of waiting requested by the customer.</p>
           </div>
         </div>
       </CardContent>

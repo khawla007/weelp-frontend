@@ -172,7 +172,7 @@ const FilterVendorSchedulePage = () => {
 
           {/* Date */}
           <Label className="flex items-center gap-2">
-            Date <CalendarIcon size={18} /> <span className="text-black">{watchedDate}</span>
+            Date <CalendarIcon size={18} /> <span className="text-[#18181b]">{watchedDate}</span>
           </Label>
 
           <Controller

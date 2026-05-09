@@ -114,7 +114,7 @@ export const PostMedia = ({ setDialogOpen, onSelectionChange }) => {
           {activityImages.map((image, index) => {
             const isFeatured = featuredImageId === image.media_id;
             return (
-              <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-black">
+              <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-[#e4e4e7]">
                 <img className="size-72 rounded-md border" src={image?.url} alt="activity_image" />
 
                 {/* Featured Star - Top Right */}

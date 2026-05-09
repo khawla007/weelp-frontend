@@ -98,7 +98,7 @@ const MediaComponent = () => {
         <div className="w-full flex flex-wrap gap-4 ">
           {activityImages.map((image, index) => {
             return (
-              <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-black">
+              <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-[#e4e4e7]">
                 <img className="size-20 rounded-md border" src={image?.url} alt="activity_image" />
                 <X onClick={() => handleDeleteImage(image)} className="absolute bottom-8 right-8 size-0 group-hover/item:size-6 transition-all text-red-400 bg-white rounded-full shadow" />
               </div>

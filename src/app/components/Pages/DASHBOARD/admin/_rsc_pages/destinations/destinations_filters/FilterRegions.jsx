@@ -87,7 +87,7 @@ const RegionCard = ({ id, name, type, description, image_url, countries_count = 
         <p className="text-sm text-gray-600 line-clamp-2">{description || 'No description'}</p>
         {/* Badges */}
         <div className="flex items-center gap-2">
-          <Badge className="bg-accent text-black hover:bg-accent">{type}</Badge>
+          <Badge className="bg-accent text-[#18181b] hover:bg-accent">{type}</Badge>
           <Badge variant="outline">
             {countries_count} {countries_count === 1 ? 'Country' : 'Countries'}
           </Badge>

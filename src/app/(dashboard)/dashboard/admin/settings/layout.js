@@ -37,7 +37,7 @@ const AdminSettingLayout = ({ children }) => {
           <NavigationMenu className="w-full max-w-full ">
             <NavigationMenuList className={'flex flex-col space-y-2 w-full min-w-full '}>
               {AccountRoutes?.map((val, index) => (
-                <NavigationMenuItem key={index} className={`w-full min-w-full py-2 hover:bg-gray-100 rounded-md text-black font-medium `}>
+                <NavigationMenuItem key={index} className={`w-full min-w-full py-2 hover:bg-gray-100 rounded-md text-[#18181b] font-medium `}>
                   <NavigationMenuLink asChild className="w-full px-4  ">
                     <Link className=" capitalize max-w-full w-full flex items-center gap-3 text-md " href={val?.url}>
                       {val?.icon}

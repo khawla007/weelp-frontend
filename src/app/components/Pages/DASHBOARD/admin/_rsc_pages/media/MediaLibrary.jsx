@@ -167,7 +167,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                     setIsAllSelected(!isAllSelected);
                   }}
                   variant="outline"
-                  className="bg-secondaryDark text-black hover:bg-secondaryDark/90"
+                  className="bg-secondaryDark text-white hover:bg-secondaryDark/90"
                 >
                   {isAllSelected ? 'Unselect All' : `Select All (${images.length})`}
                 </Button>
@@ -281,7 +281,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                     )}
 
                     {/* Dark overlay on hover */}
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none" />
+                    <div className="absolute inset-0 bg-[#18181b]/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none" />
 
                     {/* Edit pencil icon - shown on hover */}
                     <button

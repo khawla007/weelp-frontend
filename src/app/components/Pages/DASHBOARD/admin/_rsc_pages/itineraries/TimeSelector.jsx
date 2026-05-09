@@ -57,7 +57,7 @@ export default function TimeSelector({ id, value, onChange }) {
           ))}
         </SelectContent>
       </Select>
-      <span className="text-[#273f4e] font-semibold">:</span>
+      <span className="text-[#18181b] font-semibold">:</span>
       <Select value={parts.minute} onValueChange={(v) => setPart('minute', v)}>
         <SelectTrigger className={`${triggerCls} w-16`}>
           <SelectValue />

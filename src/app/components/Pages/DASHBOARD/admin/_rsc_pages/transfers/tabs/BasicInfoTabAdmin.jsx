@@ -50,7 +50,7 @@ const BasicInfoTabAdmin = () => {
 
       {/* Name */}
       <div className="pb-2 space-y-2 w-full">
-        <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-black'}`}>
+        <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-[#52525b]'}`}>
           Name <span className="text-red-500">*</span>
         </Label>
         <Input
@@ -64,7 +64,7 @@ const BasicInfoTabAdmin = () => {
       </div>
 
       <div className="pb-2 space-y-2 w-full">
-        <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-black'}`}>
+        <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-[#52525b]'}`}>
           Slug <span className="text-red-500">*</span>
         </Label>
         <Input
@@ -79,7 +79,7 @@ const BasicInfoTabAdmin = () => {
 
       {/* Transfer Type */}
       <div className="space-y-2">
-        <Label htmlFor="transfer_type" className={`block text-sm font-medium ${errors?.transfer_type ? 'text-red-400' : 'text-black'}`}>
+        <Label htmlFor="transfer_type" className={`block text-sm font-medium ${errors?.transfer_type ? 'text-red-400' : 'text-[#52525b]'}`}>
           Transfer Type <span className="text-red-500">*</span>
         </Label>
         <Controller
@@ -93,7 +93,7 @@ const BasicInfoTabAdmin = () => {
 
       {/* Vehicle Type */}
       <div className="space-y-2">
-        <Label htmlFor="vehicle_type" className={`block text-sm font-medium ${errors?.vehicle_type ? 'text-red-400' : 'text-black'}`}>
+        <Label htmlFor="vehicle_type" className={`block text-sm font-medium ${errors?.vehicle_type ? 'text-red-400' : 'text-[#52525b]'}`}>
           Vehicle Type <span className="text-red-500">*</span>
         </Label>
         <Controller
@@ -107,7 +107,7 @@ const BasicInfoTabAdmin = () => {
 
       {/* Route */}
       <div className="pb-2 space-y-2 w-full">
-        <Label className={`block text-sm font-medium ${errors?.transfer_route_id ? 'text-red-400' : 'text-black'}`}>
+        <Label className={`block text-sm font-medium ${errors?.transfer_route_id ? 'text-red-400' : 'text-[#52525b]'}`}>
           Route <span className="text-red-500">*</span>
         </Label>
         <Controller
@@ -142,7 +142,7 @@ const BasicInfoTabAdmin = () => {
 
       {/* Description */}
       <div className="space-y-2">
-        <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-black'}`}>
+        <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-[#52525b]'}`}>
           Description <span className="text-red-500">*</span>
         </Label>
         <Textarea
@@ -158,7 +158,7 @@ const BasicInfoTabAdmin = () => {
 
       {/* Inclusions */}
       <div className="space-y-2">
-        <Label htmlFor="inclusion" className={`block text-sm font-medium ${errors?.inclusion ? 'text-red-400' : 'text-black'}`}>
+        <Label htmlFor="inclusion" className={`block text-sm font-medium ${errors?.inclusion ? 'text-red-400' : 'text-[#52525b]'}`}>
           Inclusion <span className="text-red-500">*</span>
         </Label>
         <Textarea
