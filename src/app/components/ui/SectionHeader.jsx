@@ -7,7 +7,7 @@ export default function SectionHeader({ superTitle, title, subtitle, titleSize, 
         </span>
       )}
       <h2
-        className={`text-lg ${titleSize === 'lg' ? 'sm:text-[36px]' : 'sm:text-[28px]'} text-[#273f4e]`}
+        className={`text-lg ${titleSize === 'lg' ? 'sm:text-[36px]' : 'sm:text-[28px]'} text-[#18181b]`}
         style={{ fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif', fontWeight: 600, letterSpacing: '-0.005em' }}
       >
         {title}

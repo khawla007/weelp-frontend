@@ -184,6 +184,16 @@ export default function FilterBar() {
     }
   };
 
+  const applyExampleCity = (cityName) => {
+    setInputValue(cityName);
+    setHasTyped(true);
+    setShowLocation(true);
+    const filtered = allLocations.filter((loc) => loc.name.toLowerCase().startsWith(cityName.toLowerCase()));
+    setFilteredLocations(filtered);
+  };
+
+  const exampleCities = ['Dubai', 'Paris', 'Tokyo'];
+
   return (
     <div className="relative w-full max-w-[720px]">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -196,7 +206,7 @@ export default function FilterBar() {
               className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none"
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
-              <MapPin size={20} className="flex-shrink-0" style={{ color: '#142a38b2' }} />
+              <MapPin size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
               <input
                 type="text"
                 placeholder="Where to?"
@@ -211,7 +221,25 @@ export default function FilterBar() {
 
             {/* Location Dropdown */}
             {showLocation && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border max-h-52 overflow-y-auto z-[70]">
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border max-h-72 overflow-y-auto z-[70]">
+                {!hasTyped && (
+                  <div className="px-4 pt-3 pb-2 border-b border-[#e4e4e7]">
+                    <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#52525b] mb-2">Popular this week</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      <span className="text-[12px] text-[#52525b] mr-1 self-center">Try</span>
+                      {exampleCities.map((city) => (
+                        <button
+                          key={city}
+                          type="button"
+                          onClick={() => applyExampleCity(city)}
+                          className="rounded-full border border-[#e4e4e7] px-2.5 py-0.5 text-[12px] font-medium text-[#18181b] hover:border-[#588f7a] hover:text-[#588f7a] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40"
+                        >
+                          {city}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 {filteredLocations.length > 0 ? (
                   filteredLocations.map((loc) => (
                     <div
@@ -254,7 +282,7 @@ export default function FilterBar() {
               className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
-              <Calendar size={20} className="flex-shrink-0" style={{ color: '#142a38b2' }} />
+              <Calendar size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
               <span className="text-sm font-medium" style={{ color: '#5a5a5a' }}>
                 {watchedFrom?.from && watchedFrom?.to
                   ? `${new Date(watchedFrom.from).toLocaleDateString('en-US', {
@@ -306,7 +334,7 @@ export default function FilterBar() {
               className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-l-none"
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
-              <Users size={20} className="flex-shrink-0" style={{ color: '#142a38b2' }} />
+              <Users size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
               <span className="text-sm font-medium" style={{ color: '#5a5a5a' }}>
                 {total || 1} {total === 1 ? 'Guest' : 'Guests'}
               </span>
@@ -315,6 +343,7 @@ export default function FilterBar() {
             {/* Guests Dropdown */}
             {showHowMany && (
               <div onMouseLeave={() => setShowHowMany(false)} className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-4 z-[70] w-64">
+                <p className="text-[11px] text-[#52525b] mb-3 pb-2 border-b border-[#e4e4e7] leading-snug">Adults 13+, children 2 to 12, infants under 2.</p>
                 {['adults', 'children', 'infants'].map((type) => (
                   <div key={type} className="flex justify-between items-center mb-3">
                     <div>
@@ -374,7 +403,7 @@ export default function FilterBar() {
                   href={item.href}
                   className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-b-0 pr-10"
                 >
-                  <span className="text-sm font-semibold text-[#142a38] truncate text-left">{item.title}</span>
+                  <span className="text-sm font-semibold text-[#18181b] truncate text-left">{item.title}</span>
                   <span className="rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#588f7a]">{item.category}</span>
                   <span className="text-sm font-medium text-[#5a5a5a] text-right">{item.price || ''}</span>
                 </Link>

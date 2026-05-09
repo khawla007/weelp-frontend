@@ -10,7 +10,7 @@ const HeroSection = () => {
         backgroundImage: 'url(/assets/images/hero_illustration.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundColor: '#d9ede2',
+        backgroundColor: '#f2f7f5',
         height: '615px',
       }}
     >
@@ -23,13 +23,13 @@ const HeroSection = () => {
             fontWeight: 500,
             lineHeight: 1.05,
             letterSpacing: '-0.01em',
-            color: '#0c2536',
+            color: '#18181b',
           }}
         >
           The cities, picked. The days, planned.
         </h1>
         <p
-          className="mb-8 text-[20px] sm:text-[24px] max-w-[36ch]"
+          className="mb-8 text-[20px] sm:text-[24px] max-w-[44ch]"
           style={{
             fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
             fontWeight: 500,
@@ -37,7 +37,7 @@ const HeroSection = () => {
             lineHeight: 1.4,
           }}
         >
-          Independent guides shape every itinerary. You arrive ready, not lost.
+          Pick a city to begin. Independent guides shape every itinerary; you arrive ready, not lost.
         </p>
         <FilterBar />
       </div>

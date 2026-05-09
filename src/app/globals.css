@@ -342,6 +342,11 @@ body {
 .carousel-shell-wrapper.has-mobile-pagination .swiper-pagination-bullet-active {
   background: #588f7a;
 }
+.carousel-shell-wrapper.has-mobile-pagination .swiper-pagination-bullet:focus-visible,
+.testimonial-slider .testimonial-pagination .swiper-pagination-bullet:focus-visible {
+  outline: 2px solid rgba(88, 143, 122, 0.45);
+  outline-offset: 2px;
+}
 @media (min-width: 640px) {
   .carousel-shell-wrapper.has-mobile-pagination .swiper-pagination {
     display: none;

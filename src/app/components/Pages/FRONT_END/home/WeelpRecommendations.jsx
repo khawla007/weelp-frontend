@@ -3,6 +3,7 @@ import SectionFallback from '@/app/components/ui/SectionFallback';
 import { getFeaturedItineraries } from '@/lib/services/itineraries';
 
 const fontIT = 'var(--font-interTight), Inter Tight, sans-serif';
+const fontJakarta = 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif';
 
 function getRandomItems(array, count) {
   if (array.length <= count) return array;
@@ -34,12 +35,12 @@ const WeelpRecommendations = async () => {
   const itineraries = getRandomItems(items, 32);
 
   return (
-    <div className="w-full bg-[#f3f5f6]">
+    <div className="w-full bg-[#f8faf9]">
       <div className="w-full px-4 py-10 lg:px-[60px]">
-        <h3 className="text-[18px] text-[#243141] mb-4" style={{ fontFamily: fontIT, fontWeight: 600, letterSpacing: '-0.38px' }}>
+        <h3 className="text-[20px] text-[#18181b] mb-4" style={{ fontFamily: fontJakarta, fontWeight: 600, lineHeight: 1.3 }}>
           Weelp Recommendations
         </h3>
-        <div className="mb-4" style={{ borderTop: '1.3px solid #e3e3e3a6' }} />
+        <div className="mb-4 border-t border-[#e4e4e7]" />
         <div className="grid grid-cols-2 gap-x-6 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
           {itineraries.map((itinerary) => {
             const { name, slug, city_slug } = itinerary;
@@ -49,7 +50,7 @@ const WeelpRecommendations = async () => {
               <Link
                 key={`${slug}-${city_slug}`}
                 href={href}
-                className="text-[16px] text-[#6f7680] transition hover:text-[#243141]"
+                className="text-[16px] text-[#71717a] transition hover:text-[#18181b]"
                 style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px', lineHeight: 2.06 }}
               >
                 {name}
