@@ -23,14 +23,7 @@ const fontInterTight = 'var(--font-interTight), Inter Tight, sans-serif';
  *                                       'error' renders the Try again button.
  * @param {string}  [props.className]    Wrapper override; defaults match other sections.
  */
-export default function SectionFallback({
-  eyebrow,
-  message,
-  pivotHref,
-  pivotLabel,
-  variant = 'empty',
-  className = 'pt-14 pb-10 md:pt-20 md:pb-14 lg:pt-24 lg:pb-16',
-}) {
+export default function SectionFallback({ eyebrow, message, pivotHref, pivotLabel, variant = 'empty', className = 'pt-14 pb-10 md:pt-20 md:pb-14 lg:pt-24 lg:pb-16' }) {
   const handleRetry = () => {
     if (typeof window !== 'undefined') window.location.reload();
   };
@@ -38,19 +31,13 @@ export default function SectionFallback({
   return (
     <section className={`mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:px-8 ${className}`}>
       {eyebrow && (
-        <span
-          className="text-[13px] uppercase tracking-[0.08em] text-[#52525b]"
-          style={{ fontFamily: fontInterTight, fontWeight: 600 }}
-        >
+        <span className="text-[13px] uppercase tracking-[0.08em] text-[#52525b]" style={{ fontFamily: fontInterTight, fontWeight: 600 }}>
           {eyebrow}
         </span>
       )}
 
       <div className="flex flex-col gap-5 border-t border-[#eaeaea] pt-8">
-        <p
-          className="max-w-[60ch] text-[18px] sm:text-[20px] text-[#18181b]"
-          style={{ fontFamily: fontJakarta, fontWeight: 500, lineHeight: 1.4, letterSpacing: '-0.005em' }}
-        >
+        <p className="max-w-[60ch] text-[18px] sm:text-[20px] text-[#18181b]" style={{ fontFamily: fontJakarta, fontWeight: 500, lineHeight: 1.4, letterSpacing: '-0.005em' }}>
           {message}
         </p>
 

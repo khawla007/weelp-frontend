@@ -19,9 +19,11 @@ const WeelpRecommendations = async () => {
     return (
       <SectionFallback
         eyebrow="Weelp recommends"
-        message={ok
-          ? "Our editors are between picks for you. Browse the catalog and save the ones you love for next time."
-          : "We couldn't pull this week's picks just now. Refresh, or browse the full catalog."}
+        message={
+          ok
+            ? 'Our editors are between picks for you. Browse the catalog and save the ones you love for next time.'
+            : "We couldn't pull this week's picks just now. Refresh, or browse the full catalog."
+        }
         variant={ok ? 'empty' : 'error'}
         pivotHref="/cities"
         pivotLabel="Browse all cities"

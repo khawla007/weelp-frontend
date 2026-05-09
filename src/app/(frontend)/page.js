@@ -23,12 +23,7 @@ const fetchBlogs = () =>
     .catch(() => ({ ok: false, data: [] }));
 
 const HomePage = async () => {
-  const [featuredActivitiesRes, featuredCitiesRes, blogsResult, reviewsRes] = await Promise.all([
-    getAllFeaturedActivities(),
-    getAllFeaturedCities(),
-    fetchBlogs(),
-    getPublicReviews(),
-  ]);
+  const [featuredActivitiesRes, featuredCitiesRes, blogsResult, reviewsRes] = await Promise.all([getAllFeaturedActivities(), getAllFeaturedCities(), fetchBlogs(), getPublicReviews()]);
 
   const featuredActivities = Array.isArray(featuredActivitiesRes) ? featuredActivitiesRes : (featuredActivitiesRes?.data ?? []);
 
@@ -87,9 +82,7 @@ const HomePage = async () => {
         <SectionFallback
           eyebrow="Your guide"
           message={
-            blogsResult.ok
-              ? "New stories from our editors are on the way. The catalog has plenty to wander in the meantime."
-              : "We couldn't pull the editors' latest just now. Refresh to try again."
+            blogsResult.ok ? 'New stories from our editors are on the way. The catalog has plenty to wander in the meantime.' : "We couldn't pull the editors' latest just now. Refresh to try again."
           }
           variant={blogsResult.ok ? 'empty' : 'error'}
           pivotHref="/blogs"
