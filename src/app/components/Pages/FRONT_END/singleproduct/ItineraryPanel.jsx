@@ -129,7 +129,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
 
         {/* Action buttons */}
         {canEdit && !isEditing && (
-          <button onClick={handleStartEdit} className="px-6 py-2.5 bg-[#57947d] hover:bg-[#4a7d6a] text-white font-medium rounded-lg transition-colors flex items-center gap-2">
+          <button onClick={handleStartEdit} className="px-6 py-2.5 bg-[#588f7a] hover:bg-[#4a7d6a] text-white font-medium rounded-lg transition-colors flex items-center gap-2">
             <Pencil size={16} />
             {isLoggedIn ? 'Customize This Itinerary' : 'Login to Customize'}
           </button>
@@ -167,8 +167,8 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
                     px-[18px] py-3 text-base font-medium whitespace-nowrap rounded-[6px] transition-colors
                     ${
                       isActive
-                        ? 'bg-gradient-to-b from-[#f3f5f5] to-[#57947d]/10 border border-[#57947d] text-[#56756c]'
-                        : 'bg-white border border-[#ccc]/50 text-[#667085] hover:border-[#57947d] hover:text-[#56756c]'
+                        ? 'bg-gradient-to-b from-[#f3f5f5] to-[#588f7a]/10 border border-[#588f7a] text-[#56756c]'
+                        : 'bg-white border border-[#ccc]/50 text-[#667085] hover:border-[#588f7a] hover:text-[#56756c]'
                     }
                   `}
                 >
@@ -181,7 +181,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
             {isEditing && (
               <button
                 onClick={() => useItineraryEditStore.getState().addDay()}
-                className="px-[18px] py-3 text-base font-medium whitespace-nowrap rounded-[6px] transition-colors border border-dashed border-[#57947d] text-[#57947d] hover:bg-[#57947d]/5 flex items-center justify-center gap-2"
+                className="px-[18px] py-3 text-base font-medium whitespace-nowrap rounded-[6px] transition-colors border border-dashed border-[#588f7a] text-[#588f7a] hover:bg-[#588f7a]/5 flex items-center justify-center gap-2"
               >
                 <Plus size={16} /> Add Day
               </button>
@@ -265,7 +265,7 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
             value={dayTitle === `Day ${dayNumber}` ? '' : dayTitle}
             onChange={(e) => useItineraryEditStore.getState().updateDayTitle(dayIndex, e.target.value)}
             placeholder={`Day ${dayNumber}`}
-            className="text-[#0c2536] text-lg font-semibold bg-transparent border-b border-dashed border-[#ccc] focus:border-[#57947d] outline-none flex-1 min-w-0"
+            className="text-[#0c2536] text-lg font-semibold bg-transparent border-b border-dashed border-[#ccc] focus:border-[#588f7a] outline-none flex-1 min-w-0"
           />
         ) : (
           <span className="text-[#0c2536] text-lg font-semibold">{dayTitle}</span>
@@ -411,13 +411,13 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
         <div className="flex gap-3">
           <button
             onClick={() => setActiveModal({ type: 'addActivity' })}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-[#57947d] border border-dashed border-[#57947d] rounded-lg hover:bg-[#57947d]/5 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-[#588f7a] border border-dashed border-[#588f7a] rounded-lg hover:bg-[#588f7a]/5 transition-colors"
           >
             <Plus size={14} /> Add Activity
           </button>
           <button
             onClick={() => setActiveModal({ type: 'addTransfer' })}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-[#57947d] border border-dashed border-[#57947d] rounded-lg hover:bg-[#57947d]/5 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-[#588f7a] border border-dashed border-[#588f7a] rounded-lg hover:bg-[#588f7a]/5 transition-colors"
           >
             <Plus size={14} /> Add Transfer
           </button>

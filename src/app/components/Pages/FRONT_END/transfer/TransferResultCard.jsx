@@ -95,11 +95,11 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
 
       <div className="bg-[#f3f5f5] py-4 px-8 flex flex-wrap gap-2 sm:gap-4">
         <span className="flex items-center gap-2 text-sm text-[#273f4e]">
-          <CircleCheckBig className="h-4 w-4 text-[#57947d]" />
+          <CircleCheckBig className="h-4 w-4 text-[#588f7a]" />
           <span>Live Guide</span>
         </span>
         <span className="flex items-center gap-2 text-sm text-[#273f4e]">
-          <Clock className="h-4 w-4 text-[#57947d]" />
+          <Clock className="h-4 w-4 text-[#588f7a]" />
           <span>Duration - {durationHours} Hours</span>
         </span>
       </div>
@@ -152,7 +152,7 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
             <ChevronDown className={`h-3 w-3 transition-transform ${expanded ? 'rotate-180' : ''}`} />
           </button>
         </div>
-        <Button type="button" onClick={handleSelectClick} className="bg-[#57947d] hover:bg-[#57947d]/90 text-white px-10">
+        <Button type="button" onClick={handleSelectClick} className="bg-[#588f7a] hover:bg-[#588f7a]/90 text-white px-10">
           Select
         </Button>
       </div>

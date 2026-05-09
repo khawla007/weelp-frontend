@@ -377,7 +377,7 @@ export default function ToursFilterBar() {
                   }
                 }}
                 className="scale-90 origin-top-right"
-                style={{ '--rdp-accent-color': '#558e7b', '--rdp-accent-background': '#558e7b' }}
+                style={{ '--rdp-accent-color': '#588f7a', '--rdp-accent-background': '#588f7a' }}
               />
             </div>
           )}
@@ -456,7 +456,7 @@ export default function ToursFilterBar() {
                   className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-b-0 pr-10"
                 >
                   <span className="text-sm font-semibold text-[#142a38] truncate text-left">{item.name || item.title}</span>
-                  <span className="rounded-md bg-[#759c8d]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#759c8d]">{item.type || 'item'}</span>
+                  <span className="rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#588f7a]">{item.type || 'item'}</span>
                   <span className="text-sm font-medium text-[#5a5a5a] text-right">{item.price ? `$${item.price}` : ''}</span>
                 </NavigationLink>
               ))}

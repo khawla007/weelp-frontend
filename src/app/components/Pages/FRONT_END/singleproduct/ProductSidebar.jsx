@@ -187,7 +187,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                         pricing.groupHint.type === 'upgrade'
                           ? `Add ${needed} more to unlock ${min}-person group discount (${discountLabel}).`
                           : `Add ${needed} more to bundle another ${min}-person group discount.`;
-                      return <div className="text-xs text-[#57947d]">{hintText}</div>;
+                      return <div className="text-xs text-[#588f7a]">{hintText}</div>;
                     })()}
                   {pricing.earlyBirdDiscount && (
                     <div className="flex justify-between text-green-700">
@@ -218,7 +218,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
 
         {/* Discount rule hints for activities */}
         {productType === 'activity' && (showEbHint || showLmHint) && (
-          <div className="mt-3 flex flex-col gap-1 text-xs text-[#57947d]">
+          <div className="mt-3 flex flex-col gap-1 text-xs text-[#588f7a]">
             {showEbHint && (
               <span>
                 Early bird: book {Number(eb.days_before_start)}+ days ahead for{' '}
@@ -267,7 +267,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                       }
                     }}
                   >
-                    <span className={`w-5 h-5 rounded-[4px] flex items-center justify-center flex-shrink-0 transition-colors ${isChecked ? 'bg-[#57947d]' : 'border-2 border-gray-300 bg-white'}`}>
+                    <span className={`w-5 h-5 rounded-[4px] flex items-center justify-center flex-shrink-0 transition-colors ${isChecked ? 'bg-[#588f7a]' : 'border-2 border-gray-300 bg-white'}`}>
                       {isChecked && <Check size={14} className="text-white" />}
                     </span>
                     <div className="flex-1 min-w-0">
@@ -309,7 +309,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                   <p className="text-lg font-bold text-[#0c2536]">Total: {formatCurrency(pricing.final, pricing.currency)}</p>
                 ) : selectedAddons.length > 0 ? (
                   <>
-                    <p className="text-sm font-medium text-[#57947d]">+ Add-ons: ${addonsTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                    <p className="text-sm font-medium text-[#588f7a]">+ Add-ons: ${addonsTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                     <p className="text-lg font-bold text-[#0c2536]">Total: ${(basePrice + addonsTotal).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                   </>
                 ) : (

@@ -11,14 +11,6 @@ jest.mock(
     },
 );
 
-jest.mock(
-  '../FeaturedPackagesSlider',
-  () =>
-    function FeaturedPackagesSliderMock() {
-      return <div>Featured packages</div>;
-    },
-);
-
 describe('HeroSection', () => {
   it('uses the homepage hero background image', () => {
     const { container } = render(<HeroSection />);
