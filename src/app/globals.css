@@ -122,7 +122,7 @@ body {
     --weelp-card-badge-bg: #f4f4f5;
     --weelp-card-badge-text: #52525b;
     --weelp-card-category-text: #16a34a;
-    --weelp-city-brand: #57947d;
+    --weelp-city-brand: #588f7a;
     --weelp-city-discount: #ff725e;
     --weelp-city-discount-soft: #ff725e0a;
     --weelp-city-tab-text: #435a67;
@@ -448,7 +448,7 @@ body {
 .bannerForm .rdp-day_range_end,
 .singleProducform .rdp-day_range_start,
 .singleProducform .rdp-day_range_end {
-  @apply bg-[#51927a] border-none rounded-lg text-white;
+  @apply bg-[#588f7a] border-none rounded-lg text-white;
 }
 
 .bannerForm .rdp-nav_button_previous,
@@ -462,7 +462,7 @@ body {
 .bannerForm .rdp-nav_button_next:hover,
 .singleProducform .rdp-nav_button_previous:hover,
 .singleProducform .rdp-nav_button_next:hover {
-  background-color: #56947d !important;
+  background-color: #588f7a !important;
   color: white !important;
 }
 
@@ -471,18 +471,18 @@ body {
 .bannerForm .rdp-range_end .rdp-day_button,
 .singleProducform .rdp-range_start .rdp-day_button,
 .singleProducform .rdp-range_end .rdp-day_button {
-  @apply bg-[#51927a] border-none rounded-lg;
+  @apply bg-[#588f7a] border-none rounded-lg;
 }
 
 /* Activity seasonal date range picker (tfc_calendar) */
 .tfc_calendar .day-selected:not(.day-range-middle) > button {
-  background-color: #558e7b !important;
+  background-color: #588f7a !important;
   color: #fff !important;
   border-radius: 0.375rem !important;
 }
 .tfc_calendar .day-selected:not(.day-range-middle) > button:hover,
 .tfc_calendar .day-selected:not(.day-range-middle) > button:focus {
-  background-color: #558e7b !important;
+  background-color: #588f7a !important;
   color: #fff !important;
 }
 .tfc_calendar .day-range-middle > button:hover,
@@ -714,7 +714,7 @@ span {
 
 /* Customize Range Slider */
 .range-slider__thumb {
-  background-color: #56947d !important;
+  background-color: #588f7a !important;
 }
 
 .range-slider__range {
@@ -732,7 +732,7 @@ span {
 }
 
 .tfc_admin_activitiesmultiselect .optionContainer > li input:checked {
-  background-color: #56947d;
+  background-color: #588f7a;
 }
 
 /* Calendar */

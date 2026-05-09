@@ -1397,7 +1397,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       <div className="flex flex-col justify-between pb-2 rounded-md space-y-8">
         <div className="flex justify-between">
           <h3 className="text-base font-bold text-gray-900 ">Inclusion & Exclusions</h3>
-          <Button className="bg-[#558e7b] text-white border hover:bg-[#558e7b]/90" onClick={handleAddInclustionField}>
+          <Button className="bg-[#588f7a] text-white border hover:bg-[#588f7a]/90" onClick={handleAddInclustionField}>
             + Add Item
           </Button>
         </div>
@@ -2200,7 +2200,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                     {currentStep === 8 ? (
                       <div className="flex gap-4 ml-auto">
                         {isCreatorItinerary && status === 'pending' ? (
-                          <Button type="button" onClick={methods.handleSubmit(handleSubmitAndApprove)} disabled={isSubmitting || isApproving} className="bg-[#558e7b] hover:bg-[#558e7b]/90 text-white">
+                          <Button type="button" onClick={methods.handleSubmit(handleSubmitAndApprove)} disabled={isSubmitting || isApproving} className="bg-[#588f7a] hover:bg-[#588f7a]/90 text-white">
                             {isApproving ? 'Approving...' : 'Approve'}
                           </Button>
                         ) : (

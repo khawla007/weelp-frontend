@@ -332,7 +332,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel className="border-[#558e7b] text-black hover:bg-[#558e7b] hover:text-white">Cancel</AlertDialogCancel>
+                                <AlertDialogCancel className="border-[#588f7a] text-black hover:bg-[#588f7a] hover:text-white">Cancel</AlertDialogCancel>
                                 <AlertDialogAction onClick={() => handleDelete(item.id)} className="border-red-500 text-black bg-white hover:bg-red-500 hover:text-white">
                                   Delete
                                 </AlertDialogAction>
