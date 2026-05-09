@@ -1,4 +1,6 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
 /** Default static values applied when variant="full" and no data is provided. */
 const FULL_DEFAULTS = { rating: '4.5', reviewCount: '3.4K', discount: '40% OFF' };
@@ -13,7 +15,7 @@ const FULL_DEFAULTS = { rating: '4.5', reviewCount: '3.4K', discount: '40% OFF' 
  * values so every card looks complete even before API data is available.
  * Pass explicit values (or null) to override.
  */
-export default function ItemCard({ href, image, title, category, excerpt, price, originalPrice, rating, reviewCount, discount, variant = 'full', className = '' }) {
+export default function ItemCard({ href, image, title, category, excerpt, price, rating, reviewCount, discount, variant = 'full', className = '' }) {
   const isFull = variant === 'full';
 
   // Apply defaults for full variant when values are not explicitly provided
@@ -27,8 +29,16 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
       className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-white p-3 sm:p-4 lg:p-[17px] border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)] hover:border-transparent ${className}`}
     >
       {/* Image */}
-      <div className="relative overflow-hidden rounded-[6px]">
-        <img src={image} alt={title} className="h-[190px] sm:h-[200px] lg:h-[217px] w-full object-cover transition duration-500 group-hover:scale-105" />
+      <div className="relative h-[190px] w-full overflow-hidden rounded-[6px] bg-[#f2f7f5] sm:h-[200px] lg:h-[217px]">
+        <Image
+          src={image}
+          alt={title}
+          fill
+          sizes="(max-width: 640px) 90vw, (max-width: 1024px) 33vw, (max-width: 1440px) 25vw, 20vw"
+          placeholder="blur"
+          blurDataURL={IMAGE_BLUR_DATA_URL}
+          className="object-cover transition duration-500 group-hover:scale-105"
+        />
       </div>
 
       {/* Content */}

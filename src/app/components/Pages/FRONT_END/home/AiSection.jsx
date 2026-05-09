@@ -1,23 +1,55 @@
-import React from 'react';
 import Image from 'next/image';
+import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
 const AiSection = () => {
   return (
-    <section className="container mx-auto flex flex-col items-center gap-8 px-4 pb-[100px]">
+    <section className="mx-auto flex w-full max-w-7xl flex-col items-center gap-10 px-4 sm:px-6 lg:px-8 pb-24 md:pb-28 lg:pb-32">
       <h2 className="text-center text-[28px] font-medium text-Nileblue">Your AI Travel Buddy</h2>
       <div className="flex w-full max-w-6xl flex-col gap-4 lg:flex-row lg:items-stretch">
         <div className="relative w-full min-h-[300px] lg:w-[48%]">
-          <Image src="/assets/images/AiChatassistant.png" alt="AI chat assistant" fill className="rounded-[28px] object-cover" />
+          <Image
+            src="/assets/images/AiChatassistant.png"
+            alt="AI chat assistant"
+            fill
+            sizes="(max-width: 1024px) 100vw, 48vw"
+            placeholder="blur"
+            blurDataURL={IMAGE_BLUR_DATA_URL}
+            className="rounded-[28px] object-cover"
+          />
         </div>
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:w-[52%]">
           <div className="relative min-h-[200px]">
-            <Image src="/assets/images/AiSuggestionMap.png" alt="AI suggestion map" fill className="rounded-[28px] object-cover" />
+            <Image
+              src="/assets/images/AiSuggestionMap.png"
+              alt="AI suggestion map"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 26vw"
+              placeholder="blur"
+              blurDataURL={IMAGE_BLUR_DATA_URL}
+              className="rounded-[28px] object-cover"
+            />
           </div>
           <div className="relative min-h-[200px]">
-            <Image src="/assets/images/AiSaveMoney.png" alt="AI save money suggestions" fill className="rounded-[28px] object-cover" />
+            <Image
+              src="/assets/images/AiSaveMoney.png"
+              alt="AI save money suggestions"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 26vw"
+              placeholder="blur"
+              blurDataURL={IMAGE_BLUR_DATA_URL}
+              className="rounded-[28px] object-cover"
+            />
           </div>
           <div className="relative min-h-[200px] sm:col-span-2">
-            <Image src="/assets/images/AiPersonalised.png" alt="AI personalised travel planning" fill className="rounded-[28px] object-cover" />
+            <Image
+              src="/assets/images/AiPersonalised.png"
+              alt="AI personalised travel planning"
+              fill
+              sizes="(max-width: 1024px) 100vw, 52vw"
+              placeholder="blur"
+              blurDataURL={IMAGE_BLUR_DATA_URL}
+              className="rounded-[28px] object-cover"
+            />
           </div>
         </div>
       </div>

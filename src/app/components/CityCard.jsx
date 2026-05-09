@@ -1,5 +1,7 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
+import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
 export default function CityCard({ city, className = '', subtitleMode = 'count' }) {
   const image = city.featured_image || city.feature_image || city.image || '/assets/Card.webp';
@@ -20,7 +22,15 @@ export default function CityCard({ city, className = '', subtitleMode = 'count' 
       href={`/cities/${city.slug}`}
       className={`group relative block h-[360px] overflow-hidden rounded-lg bg-white border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)] hover:border-transparent ${className}`}
     >
-      <img src={image} alt={city.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
+      <Image
+        src={image}
+        alt={city.name}
+        fill
+        sizes="(max-width: 640px) 65vw, (max-width: 1024px) 40vw, (max-width: 1440px) 25vw, 20vw"
+        placeholder="blur"
+        blurDataURL={IMAGE_BLUR_DATA_URL}
+        className="object-cover transition-transform duration-300 group-hover:scale-105"
+      />
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 pt-16">
         <span className="block text-[18px] leading-[1.59] text-white drop-shadow-md" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
           {city.name}

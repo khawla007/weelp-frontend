@@ -29,7 +29,7 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
   if (!items.length) return null;
 
   return (
-    <section className={`container mx-auto flex flex-col gap-6 md:gap-8 px-4 py-12 md:py-16 lg:py-[100px] ${className}`}>
+    <section className={`mx-auto flex w-full max-w-7xl flex-col gap-6 md:gap-8 px-4 sm:px-6 lg:px-8 pt-14 pb-10 md:pt-20 md:pb-14 lg:pt-24 lg:pb-16 ${className}`}>
       <div className="flex items-center justify-between">
         <SectionHeader title={title} />
 
@@ -37,14 +37,14 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
           <div className="hidden sm:flex items-center gap-2">
             <button
               type="button"
-              className={`${navigationId}-prev flex size-9 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918] shadow-sm transition hover:bg-gray-50`}
+              className={`${navigationId}-prev flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-all duration-200 hover:border-[#588f7a] hover:text-[#588f7a] hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40`}
               aria-label={`Previous ${title}`}
             >
               <ChevronLeft className="size-4" />
             </button>
             <button
               type="button"
-              className={`${navigationId}-next flex size-9 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918] shadow-sm transition hover:bg-gray-50`}
+              className={`${navigationId}-next flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-all duration-200 hover:border-[#588f7a] hover:text-[#588f7a] hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40`}
               aria-label={`Next ${title}`}
             >
               <ChevronRight className="size-4" />
