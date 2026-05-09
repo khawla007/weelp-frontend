@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import FilterBar from './FilterBar';
 
 const HeroSection = () => {
@@ -27,17 +26,18 @@ const HeroSection = () => {
             color: '#0c2536',
           }}
         >
-          Plan and Book
+          The cities, picked. The days, planned.
         </h1>
         <p
-          className="text-[29px] mb-8"
+          className="mb-8 text-[20px] sm:text-[24px] max-w-[36ch]"
           style={{
             fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
             fontWeight: 500,
             color: '#667085',
+            lineHeight: 1.4,
           }}
         >
-          The Best Experiences Around You
+          Independent guides shape every itinerary. You arrive ready, not lost.
         </p>
         <FilterBar />
       </div>

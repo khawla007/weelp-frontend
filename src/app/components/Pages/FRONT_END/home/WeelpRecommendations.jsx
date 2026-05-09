@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import SectionFallback from '@/app/components/ui/SectionFallback';
 import { getFeaturedItineraries } from '@/lib/services/itineraries';
 
 const fontIT = 'var(--font-interTight), Inter Tight, sans-serif';
@@ -11,14 +12,24 @@ function getRandomItems(array, count) {
 
 const WeelpRecommendations = async () => {
   const response = await getFeaturedItineraries();
+  const items = Array.isArray(response?.data) ? response.data : [];
 
-  // Hide section if no data or error
-  if (!response?.success || !response?.data?.length) {
-    return null;
+  if (!items.length) {
+    const ok = response?.success !== false;
+    return (
+      <SectionFallback
+        eyebrow="Weelp recommends"
+        message={ok
+          ? "Our editors are between picks for you. Browse the catalog and save the ones you love for next time."
+          : "We couldn't pull this week's picks just now. Refresh, or browse the full catalog."}
+        variant={ok ? 'empty' : 'error'}
+        pivotHref="/cities"
+        pivotLabel="Browse all cities"
+      />
+    );
   }
 
-  // Get up to 32 random itineraries
-  const itineraries = getRandomItems(response.data, 32);
+  const itineraries = getRandomItems(items, 32);
 
   return (
     <div className="w-full bg-[#f3f5f6]">

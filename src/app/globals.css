@@ -324,6 +324,50 @@ body {
   /* secondaryDark */
 }
 
+/* Mobile-only swipe progress dots for CarouselShell sliders.
+   Touch users get a discoverable affordance; arrows still own >=sm. */
+.carousel-shell-wrapper.has-mobile-pagination .swiper {
+  padding-bottom: 28px;
+}
+.carousel-shell-wrapper.has-mobile-pagination .swiper-pagination {
+  bottom: 4px;
+}
+.carousel-shell-wrapper.has-mobile-pagination .swiper-pagination-bullet {
+  background: #d4d4d8;
+  opacity: 1;
+  transition:
+    background-color 0.2s ease,
+    width 0.2s ease;
+}
+.carousel-shell-wrapper.has-mobile-pagination .swiper-pagination-bullet-active {
+  background: #588f7a;
+}
+@media (min-width: 640px) {
+  .carousel-shell-wrapper.has-mobile-pagination .swiper-pagination {
+    display: none;
+  }
+  .carousel-shell-wrapper.has-mobile-pagination .swiper {
+    padding-bottom: 0;
+  }
+}
+
+/* Testimonial slider: visible touch nav (prev/next + dynamic dots) below the row.
+   Autoplay still drives default motion; manual controls give touch users a way in. */
+.testimonial-slider .testimonial-pagination {
+  position: static;
+  width: auto;
+  min-width: 64px;
+  margin: 0;
+}
+.testimonial-slider .testimonial-pagination .swiper-pagination-bullet {
+  background: #d4d4d8;
+  opacity: 1;
+  margin: 0 3px;
+}
+.testimonial-slider .testimonial-pagination .swiper-pagination-bullet-active {
+  background: #588f7a;
+}
+
 .swiper-button-prev,
 .swiper-button-next {
   @apply bg-white rounded-[10px] size-10 border border-gray-100 flex items-center justify-center transition-all duration-300 !important;

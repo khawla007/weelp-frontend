@@ -68,6 +68,7 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
         navigationPrefix={headerAction === 'navigation' ? navigationId : undefined}
         breakpoints={PRODUCT_BREAKPOINTS}
         slideClassName="!h-auto"
+        showMobilePagination
         renderSlide={(card) => <ItemCard {...card} variant="full" />}
       />
     </section>

@@ -6,14 +6,6 @@ import CarouselShell from '@/app/components/ui/CarouselShell';
 import ItemCard from '@/app/components/ui/item-card';
 import { mapBlogToItemCard } from '@/lib/mapProductToItemCard';
 
-const STATIC_BLOGS = [
-  { id: 1, href: '#', image: '/assets/Card.webp', title: 'Best Places for Solo Travel', category: 'Solo' },
-  { id: 2, href: '#', image: '/assets/Card.webp', title: 'Your Gang, Your Rules', category: 'Friends' },
-  { id: 3, href: '#', image: '/assets/Card.webp', title: 'Your Gang, Your Rules', category: 'Friends' },
-  { id: 4, href: '#', image: '/assets/Card.webp', title: 'Best Places for Winter', category: 'Curated' },
-  { id: 5, href: '#', image: '/assets/Card.webp', title: 'Hidden Gems of Europe', category: 'Travel' },
-];
-
 const BLOG_BREAKPOINTS = {
   450: { slidesPerView: 1, spaceBetween: 10 },
   640: { slidesPerView: 2, spaceBetween: 15 },
@@ -31,8 +23,8 @@ const BLOG_BREAKPOINTS = {
  * @param {string}   className - Optional wrapper class overrides
  */
 export default function BlogSection({ blogs = [], title = 'Your Guide', navigationId = 'blog-section', className = 'pb-14 md:pb-20 lg:pb-24' }) {
-  const apiItems = blogs.map((b) => mapBlogToItemCard(b));
-  const items = apiItems.length > 0 ? apiItems : STATIC_BLOGS;
+  const items = blogs.map((b) => mapBlogToItemCard(b));
+  if (!items.length) return null;
 
   return (
     <section className={`mx-auto flex w-full max-w-7xl flex-col gap-6 md:gap-8 px-4 sm:px-6 lg:px-8 ${className}`}>
@@ -61,6 +53,7 @@ export default function BlogSection({ blogs = [], title = 'Your Guide', navigati
         navigationPrefix={navigationId}
         breakpoints={BLOG_BREAKPOINTS}
         slideClassName="!h-auto"
+        showMobilePagination
         renderSlide={(item) => <ItemCard href={item.href} image={item.image} title={item.title} category={item.category} variant="compact" />}
       />
     </section>

@@ -199,7 +199,7 @@ export default function FilterBar() {
               <MapPin size={20} className="flex-shrink-0" style={{ color: '#142a38b2' }} />
               <input
                 type="text"
-                placeholder="Where To?"
+                placeholder="Where to?"
                 value={inputValue}
                 onChange={handleInputChange}
                 onClick={handleInputClick}
@@ -233,7 +233,7 @@ export default function FilterBar() {
                     </div>
                   ))
                 ) : (
-                  <div className="px-4 py-3 text-sm text-gray-400 text-center">No locations found</div>
+                  <div className="px-4 py-3 text-sm text-gray-400 text-center">No cities match that yet.</div>
                 )}
               </div>
             )}
@@ -364,7 +364,7 @@ export default function FilterBar() {
           {previewLoading ? (
             <div className="flex items-center justify-center gap-2 py-6 text-sm text-gray-400">
               <Loader2 size={16} className="animate-spin" />
-              <span>Searching...</span>
+              <span>Searching the catalog…</span>
             </div>
           ) : previewResults.length > 0 ? (
             <>
@@ -383,12 +383,12 @@ export default function FilterBar() {
                 href={buildSearchUrl(watchedWhereTo, watchedFrom, watchedhowMany)}
                 className="flex items-center justify-center gap-1.5 px-4 py-3 text-sm font-semibold text-[#588f7a] hover:bg-[#588f7a]/5 transition-colors border-t border-gray-100"
               >
-                See More
+                See all matches
                 <ChevronRight size={14} />
               </Link>
             </>
           ) : (
-            <div className="py-6 text-center text-sm text-gray-400">No results found for this search</div>
+            <div className="py-6 text-center text-sm text-gray-400">Nothing matches that combination yet.</div>
           )}
         </div>
       )}

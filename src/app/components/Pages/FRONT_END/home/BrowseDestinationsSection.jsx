@@ -13,16 +13,8 @@ const DESTINATION_BREAKPOINTS = {
   1440: { slidesPerView: 5, spaceBetween: 22 },
 };
 
-const STATIC_DESTINATIONS = [
-  { id: 1, name: 'Paris', slug: 'paris', image: '/assets/Card.webp', activitiesCount: 150 },
-  { id: 2, name: 'Florence', slug: 'florence', image: '/assets/Card.webp', activitiesCount: 85 },
-  { id: 3, name: 'Istanbul', slug: 'istanbul', image: '/assets/Card.webp', activitiesCount: 120 },
-  { id: 4, name: 'Bangkok', slug: 'bangkok', image: '/assets/Card.webp', activitiesCount: 200 },
-  { id: 5, name: 'Tokyo', slug: 'tokyo', image: '/assets/Card.webp', activitiesCount: 175 },
-];
-
-export default function BrowseDestinationsSection({ cities = [], title = 'Top Destination', subtitleMode = 'count', navigationPrefix = 'browse-destinations', className = 'pb-20 md:pb-28 lg:pb-32' }) {
-  const apiCities = cities.map((c) => ({
+export default function BrowseDestinationsSection({ cities = [], title = 'Top Destinations', subtitleMode = 'count', navigationPrefix = 'browse-destinations', className = 'pb-20 md:pb-28 lg:pb-32' }) {
+  const items = cities.map((c) => ({
     id: c.id,
     name: c.name,
     slug: c.slug,
@@ -31,7 +23,7 @@ export default function BrowseDestinationsSection({ cities = [], title = 'Top De
     starting_price: c.starting_price ?? null,
     currency: c.currency ?? null,
   }));
-  const items = apiCities.length > 0 ? apiCities : STATIC_DESTINATIONS;
+  if (!items.length) return null;
 
   return (
     <section className={`mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8 ${className}`}>
@@ -60,6 +52,7 @@ export default function BrowseDestinationsSection({ cities = [], title = 'Top De
         navigationPrefix={navigationPrefix}
         breakpoints={DESTINATION_BREAKPOINTS}
         slideClassName="!h-auto"
+        showMobilePagination
         renderSlide={(city) => <CityCard city={city} subtitleMode={subtitleMode} />}
       />
     </section>

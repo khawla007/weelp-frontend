@@ -19,7 +19,7 @@ describe('FilterBar', () => {
     render(<FilterBar />);
     await waitFor(() => expect(getCitiesRegions).toHaveBeenCalled());
 
-    expect(screen.getByPlaceholderText('Where To?')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Where to?')).toBeInTheDocument();
     expect(screen.getByText('When?')).toBeInTheDocument();
     expect(screen.getByText(/Guest/i)).toBeInTheDocument();
   });

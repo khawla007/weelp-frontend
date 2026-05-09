@@ -1,20 +1,31 @@
 'use client';
 
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-export default function CarouselShell({ items = [], navigationPrefix, renderSlide, breakpoints, className = '', slideClassName = '' }) {
+import { Navigation, Pagination } from 'swiper/modules';
+
+export default function CarouselShell({
+  items = [],
+  navigationPrefix,
+  renderSlide,
+  breakpoints,
+  className = '',
+  slideClassName = '',
+  showMobilePagination = false,
+}) {
   const swiperRef = useRef(null);
   const hasNavigation = Boolean(navigationPrefix);
 
-  if (!items.length) {
-    return null;
-  }
+  const modules = [];
+  if (hasNavigation) modules.push(Navigation);
+  if (showMobilePagination) modules.push(Pagination);
+
+  if (!items.length) return null;
 
   return (
-    <div className="carousel-shell-wrapper">
+    <div className={`carousel-shell-wrapper ${showMobilePagination ? 'has-mobile-pagination' : ''}`}>
       <Swiper
-        modules={hasNavigation ? [Navigation] : []}
+        modules={modules}
         onBeforeInit={(swiper) => {
           swiperRef.current = swiper;
           if (hasNavigation && typeof swiper.params.navigation === 'object') {
@@ -33,6 +44,7 @@ export default function CarouselShell({ items = [], navigationPrefix, renderSlid
         slidesPerView={1.08}
         spaceBetween={18}
         breakpoints={breakpoints}
+        pagination={showMobilePagination ? { clickable: true, dynamicBullets: true } : undefined}
         className={className}
       >
         {items.map((item, index) => (
