@@ -24,7 +24,7 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
   return (
     <Link
       href={href}
-      className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-white p-3 sm:p-4 lg:p-[17px] shadow-[0_2.8px_7.2px_rgba(0,0,0,0.05)] transition-shadow duration-300 hover:shadow-lg ${className}`}
+      className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-white p-3 sm:p-4 lg:p-[17px] border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)] hover:border-transparent ${className}`}
     >
       {/* Image */}
       <div className="relative overflow-hidden rounded-[6px]">

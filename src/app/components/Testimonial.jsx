@@ -4,7 +4,7 @@ import { ArrowRight, BadgeCheck, Star } from 'lucide-react';
 
 const Testimonial = ({ username, title, date, itemName, rating }) => {
   return (
-    <div className="bg-white rounded-lg p-4 flex flex-col gap-4 flex-wrap shadow-md h-full justify-evenly">
+    <div className="bg-white rounded-lg p-4 flex flex-col gap-4 flex-wrap h-full justify-evenly border border-[#e4e4e7]">
       {/* username */}
       <div className="flex gap-4 items-center flex-wrap">
         <img src="/assets/testimonial.png" alt="testimonial" className="rounded-full w-16" />

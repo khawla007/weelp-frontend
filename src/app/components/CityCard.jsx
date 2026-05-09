@@ -18,7 +18,7 @@ export default function CityCard({ city, className = '', subtitleMode = 'count' 
   return (
     <Link
       href={`/cities/${city.slug}`}
-      className={`group relative block h-[360px] overflow-hidden rounded-lg bg-white shadow-[0_2.8px_7.2px_rgba(0,0,0,0.05)] transition-shadow duration-300 hover:shadow-lg ${className}`}
+      className={`group relative block h-[360px] overflow-hidden rounded-lg bg-white border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)] hover:border-transparent ${className}`}
     >
       <img src={image} alt={city.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 pt-16">
