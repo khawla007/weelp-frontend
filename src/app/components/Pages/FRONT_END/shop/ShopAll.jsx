@@ -109,8 +109,8 @@ export const ShopAllProduct = () => {
         <div className="flex items-center justify-center sm:justify-between  bg-[#f5f9fa] h-full min-h-20 sm:min-h-36">
           <Icon className={'hidden sm:block -translate-x-20 '} />
           <div className="flex flex-col gap-2">
-            <h1 className="font-semibold sm:text-3xl text-center text-Nileblue ">Shop</h1>
-            {products && products.length > 0 && <p className="text-center font-medium text-Nileblue text-sm sm:text-lg">{products.length} Result Founds</p>}
+            <h1 className="font-semibold sm:text-3xl text-center text-[#18181b] ">Shop</h1>
+            {products && products.length > 0 && <p className="text-center font-medium text-[#18181b] text-sm sm:text-lg">{products.length} Result Founds</p>}
           </div>
           <Icon className={'hidden sm:block -translate-x-20 '} />
         </div>

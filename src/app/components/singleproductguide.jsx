@@ -14,7 +14,7 @@ const Singleproductguide = ({ imageSrc, postTitle, subtitle, slug }) => {
         <img src={imageSrc || '/assets/images/8597548-ai 1.jpg'} alt={'China'} className="object-cover w-full h-52 sm:h-60" />
         <div className="p-4 sm:p-5">
           <h2 className="text-xs sm:text-sm font-medium text-secondaryDark mb-1 uppercase tracking-wider">{postTitle || 'Solo'}</h2>
-          <p className="text-base sm:text-xl font-semibold text-Nileblue line-clamp-2">{modifiedSubtitle || 'Best Places for Solo Travel'}</p>
+          <p className="text-base sm:text-xl font-semibold text-[#18181b] line-clamp-2">{modifiedSubtitle || 'Best Places for Solo Travel'}</p>
         </div>
       </Link>
     </div>
@@ -33,7 +33,7 @@ export const BlogCard = ({ imageSrc = '', blogTitle = '', created_at = '', slug 
       <Link href={`/blogs/${slug}`}>
         <Image alt="blog_logo" src={imageSrc ? imageSrc : FALLBACK_IMAGE.src} className="w-full h-52 sm:h-60" width={400} height={250} style={{ objectFit: 'cover' }} />
         <div className="p-4 sm:p-5">
-          <h2 className="text-base sm:text-xl font-semibold text-Nileblue mb-3 line-clamp-2">{blogTitle ? blogTitle : "Spend the night on the set of SEVENTEEN's latest music video"}</h2>
+          <h2 className="text-base sm:text-xl font-semibold text-[#18181b] mb-3 line-clamp-2">{blogTitle ? blogTitle : "Spend the night on the set of SEVENTEEN's latest music video"}</h2>
           {created_at && <span className="text-xs sm:text-sm uppercase tracking-widest text-[#5A5A5A]">{format(created_at, 'MMM dd yyyy')}</span>}
         </div>
       </Link>

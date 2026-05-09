@@ -172,11 +172,11 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
           </div>
 
           <div className="flex items-center justify-around px-8 pb-8 gap-4 pt-4 font-semibold flex-wrap">
-            <button onClick={() => signIn('google')} className="flex w-fit items-center rounded-md p-2 gap-4 shadow border px-8 text-Nileblue">
+            <button onClick={() => signIn('google')} className="flex w-fit items-center rounded-md p-2 gap-4 shadow border px-8 text-[#18181b]">
               <Image src="/assets/images/google.png" className="size-4" alt="google_logo" width={100} height={100} />
               Google
             </button>
-            <button className="flex w-fit items-center rounded-md p-2 gap-4 shadow border px-8 text-Nileblue">
+            <button className="flex w-fit items-center rounded-md p-2 gap-4 shadow border px-8 text-[#18181b]">
               <Image src="/assets/images/facebook.png" className="size-4" alt="facebook_logo" width={100} height={100} />
               Facebook
             </button>

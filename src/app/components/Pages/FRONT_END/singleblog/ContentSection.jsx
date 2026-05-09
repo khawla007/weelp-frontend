@@ -21,7 +21,7 @@ const ContentSection = ({ content = '', categories = [] }) => {
       </div>
 
       <div className="flex flex-col gap-4 lg:gap-12 flex-1 p-6 px-8">
-        <h3 className="text-lg sm:text-[28px] lg:mt-4 font-semibold text-Nileblue capitalize">Categories</h3>
+        <h3 className="text-lg sm:text-[28px] lg:mt-4 font-semibold text-[#18181b] capitalize">Categories</h3>
         <RelatedLinks categories={categories || []} />
         <FollowUs />
       </div>

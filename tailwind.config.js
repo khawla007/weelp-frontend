@@ -22,7 +22,6 @@ const config = {
         grayDark: '#435A67',
         graycolor: '#CFDBE54D',
         Brightgray: '#EAEAEA',
-        Nileblue: '#273F4E',
         Bluewhale: '#63696e',
         Blueish: '#0c2536',
         Lynchcolor: '#667085',

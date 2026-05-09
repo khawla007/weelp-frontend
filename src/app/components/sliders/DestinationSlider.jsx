@@ -12,7 +12,6 @@ const DestinationSlider = ({ data }) => {
 
   return (
     <div>
-      {/* <h2 className='text-[28px] font-medium text-Nileblue'>Top Activities</h2> */}
       <Swiper
         modules={[Navigation]}
         spaceBetween={20}

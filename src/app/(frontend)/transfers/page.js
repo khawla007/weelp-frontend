@@ -94,7 +94,7 @@ const TransfersPage = () => {
 
       <section className="relative">
         <div className="max-w-screen-xl w-full mx-auto productSlider space-y-8 p-4">
-          <h2 className="text-3xl font-semibold text-Nileblue">Featured Review</h2>
+          <h2 className="text-3xl font-semibold text-[#18181b]">Featured Review</h2>
           <ReviewSlider />
           <Accordion items={faqItems} />
         </div>
