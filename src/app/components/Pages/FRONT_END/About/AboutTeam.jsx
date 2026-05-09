@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 
-const fontIT = 'var(--font-interTight), Inter Tight, sans-serif';
+const headlineFont = { fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif', fontWeight: 600, letterSpacing: '-0.005em', lineHeight: 1.15 };
+const bodyFont = { fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 400, lineHeight: 1.5 };
 
 const AboutTeam = () => {
   const team = [
@@ -21,25 +22,28 @@ const AboutTeam = () => {
 
   return (
     <section className="container mx-auto px-4 py-[70px]">
-      <h2 className="text-[28px] font-medium text-center mb-12" style={{ fontFamily: fontIT, color: '#273F4E' }}>
+      <h2 className="text-[28px] md:text-[32px] text-[#18181b] text-center mb-12" style={headlineFont}>
         Meet the Team
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {team.map((member, index) => (
-          <div key={index} className="bg-white rounded-[28px] p-4 shadow-[0_3px_9px_rgba(0,0,0,0.04)] text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <div className="relative w-full aspect-square mb-4 rounded-[28px] bg-gray-200 overflow-hidden">
+          <div
+            key={index}
+            className="bg-white rounded-[24px] p-4 border border-[#e4e4e7] text-center transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)]"
+          >
+            <div className="relative w-full aspect-square mb-4 rounded-[16px] bg-[#f4f4f5] overflow-hidden">
               {!imageErrors[index] ? (
                 <Image src={member.image} alt={member.name} fill className="object-cover" onError={() => handleImageError(index)} />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                  <span className="text-gray-400 text-4xl">{member.name.charAt(0)}</span>
+                <div className="w-full h-full flex items-center justify-center bg-[#f4f4f5]">
+                  <span className="text-[#71717a] text-4xl">{member.name.charAt(0)}</span>
                 </div>
               )}
             </div>
-            <h3 className="text-lg font-semibold mb-1" style={{ fontFamily: fontIT, color: '#0c2536' }}>
+            <h3 className="text-lg text-[#18181b] mb-1" style={headlineFont}>
               {member.name}
             </h3>
-            <p className="text-sm" style={{ fontFamily: fontIT, color: '#667085' }}>
+            <p className="text-sm text-[#71717a]" style={bodyFont}>
               {member.role}
             </p>
           </div>

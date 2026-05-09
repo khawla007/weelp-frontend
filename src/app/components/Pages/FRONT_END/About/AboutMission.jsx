@@ -1,7 +1,7 @@
-import React from 'react';
 import { Target, Eye } from 'lucide-react';
 
-const fontIT = 'var(--font-interTight), Inter Tight, sans-serif';
+const headlineFont = { fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif', fontWeight: 600, letterSpacing: '-0.005em', lineHeight: 1.15 };
+const bodyFont = { fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 400, lineHeight: 1.6 };
 
 const AboutMission = () => {
   const cards = [
@@ -19,23 +19,26 @@ const AboutMission = () => {
 
   return (
     <section className="container mx-auto px-4 py-[70px]">
-      <h2 className="text-[28px] font-medium text-center mb-12" style={{ fontFamily: fontIT, color: '#273F4E' }}>
+      <h2 className="text-[28px] md:text-[32px] text-[#18181b] text-center mb-12" style={headlineFont}>
         Our Purpose
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {cards.map((card, index) => {
           const Icon = card.icon;
           return (
-            <div key={index} className="bg-white rounded-[28px] p-8 shadow-[0_3px_9px_rgba(0,0,0,0.04)]">
+            <div
+              key={index}
+              className="bg-white rounded-[24px] p-8 border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)]"
+            >
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0" style={{ color: '#588f7a' }}>
+                <div className="flex-shrink-0 text-[#588f7a]">
                   <Icon size={32} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-3" style={{ fontFamily: fontIT, color: '#0c2536' }}>
+                  <h3 className="text-xl text-[#18181b] mb-3" style={headlineFont}>
                     {card.title}
                   </h3>
-                  <p className="text-base leading-relaxed" style={{ fontFamily: fontIT, color: '#667085' }}>
+                  <p className="text-base text-[#71717a] max-w-[65ch]" style={bodyFont}>
                     {card.description}
                   </p>
                 </div>
