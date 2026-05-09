@@ -73,7 +73,7 @@ export default function NotificationBell() {
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
             <h3 className="text-sm font-semibold text-[#0c2536]">Notifications</h3>
             {unreadCount > 0 && (
-              <button onClick={handleMarkAllRead} className="text-xs text-[#57947d] hover:underline flex items-center gap-1">
+              <button onClick={handleMarkAllRead} className="text-xs text-[#588f7a] hover:underline flex items-center gap-1">
                 <CheckCheck size={14} /> Mark all as read
               </button>
             )}
@@ -90,10 +90,10 @@ export default function NotificationBell() {
                 <button
                   key={notif.id}
                   onClick={() => !notif.read_at && handleMarkAsRead(notif.id)}
-                  className={`w-full text-left px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition-colors ${!notif.read_at ? 'bg-[#57947d]/5' : ''}`}
+                  className={`w-full text-left px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition-colors ${!notif.read_at ? 'bg-[#588f7a]/5' : ''}`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`mt-1 w-2 h-2 rounded-full flex-shrink-0 ${!notif.read_at ? 'bg-[#57947d]' : 'bg-transparent'}`} />
+                    <div className={`mt-1 w-2 h-2 rounded-full flex-shrink-0 ${!notif.read_at ? 'bg-[#588f7a]' : 'bg-transparent'}`} />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-[#0c2536] truncate">{notif.title}</p>
                       <p className="text-xs text-gray-500 line-clamp-2 mt-0.5">{notif.message}</p>
@@ -107,7 +107,7 @@ export default function NotificationBell() {
 
           {/* Footer */}
           <div className="px-4 py-2 border-t border-gray-100 text-center">
-            <NavigationLink href="/dashboard/customer/settings/notifications" className="text-xs text-[#57947d] hover:underline" onClick={() => setOpen(false)}>
+            <NavigationLink href="/dashboard/customer/settings/notifications" className="text-xs text-[#588f7a] hover:underline" onClick={() => setOpen(false)}>
               View All
             </NavigationLink>
           </div>

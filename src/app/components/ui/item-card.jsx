@@ -36,7 +36,7 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
         {/* Rating row — full variant */}
         {isFull && displayRating && (
           <div className="flex items-center gap-1">
-            <span className="text-[13px] lg:text-[14px] leading-[1.38] text-[#759c8d]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
+            <span className="text-[13px] lg:text-[14px] leading-[1.38] text-[#588f7a]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
               {displayRating}
             </span>
             {displayReviewCount && (
@@ -48,7 +48,7 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
         )}
 
         {/* Category badge — compact variant */}
-        {!isFull && category && <span className="w-fit rounded-md bg-[#759c8d]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#759c8d]">{category}</span>}
+        {!isFull && category && <span className="w-fit rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#588f7a]">{category}</span>}
 
         {/* Title */}
         <h3 className="text-[15px] sm:text-base lg:text-[18px] leading-[1.59] text-[#142a38] line-clamp-2" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>

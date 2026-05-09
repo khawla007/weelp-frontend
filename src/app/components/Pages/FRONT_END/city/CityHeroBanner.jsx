@@ -35,8 +35,8 @@ const CityHeroBanner = ({ city }) => {
       </div>
 
       {/* Decorative SVG vectors */}
-      <Icons.Vector2 className="hidden lg:block absolute bottom-0 left-0 -translate-x-14 scale-125 rotate-45 text-[#57947d]" />
-      <Icons.Vector2 className="hidden lg:block absolute bottom-16 left-4 rotate-45 scale-[.2] text-[#57947d]" />
+      <Icons.Vector2 className="hidden lg:block absolute bottom-0 left-0 -translate-x-14 scale-125 rotate-45 text-[#588f7a]" />
+      <Icons.Vector2 className="hidden lg:block absolute bottom-16 left-4 rotate-45 scale-[.2] text-[#588f7a]" />
     </section>
   );
 };

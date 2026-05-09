@@ -49,7 +49,7 @@ const Footer = () => {
                         )}
                         {link.label === 'Career' && (
                           <span
-                            className="rounded-[9px] border-2 border-[#759c8d1a] px-2 py-0.5 text-[11px] md:px-2.5 md:py-1 md:text-[13px] lg:text-[15px] text-[#759c8d]"
+                            className="rounded-[9px] border-2 border-[#588f7a1a] px-2 py-0.5 text-[11px] md:px-2.5 md:py-1 md:text-[13px] lg:text-[15px] text-[#588f7a]"
                             style={{ fontFamily: fontIT, fontWeight: 600, letterSpacing: '0.17px' }}
                           >
                             We are hiring

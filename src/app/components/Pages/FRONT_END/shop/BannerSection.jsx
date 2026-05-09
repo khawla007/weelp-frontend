@@ -37,7 +37,7 @@ export default BannerSection;
 export const Icon = ({ className }) => {
   return (
     <svg className={`${className} h-full min-h-full`} width="236" height="144" viewBox="0 0 236 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M236 0L128.46 558L0 558L110.234 0H236Z" fill="#57947D" />
+      <path d="M236 0L128.46 558L0 558L110.234 0H236Z" fill="#588f7a" />
     </svg>
   );
 };

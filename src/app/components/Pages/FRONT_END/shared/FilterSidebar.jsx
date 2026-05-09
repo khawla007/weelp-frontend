@@ -52,7 +52,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                   checked={selectedItemType === type.value}
                   onChange={() => onItemTypeChange(type.value)}
                   disabled={disabled}
-                  className="size-[19px] accent-[#57947d]"
+                  className="size-[19px] accent-[#588f7a]"
                 />
                 <span className="text-[18px] text-[#435a67]" style={{ ...FONT, fontWeight: 500 }}>
                   {type.label}
@@ -74,7 +74,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                 checked={selectedCategories.length === 0}
                 onChange={() => handleCheckbox('all')}
                 disabled={disabled}
-                className="size-[19px] rounded-[2px] border-2 border-[#667085] accent-[#57947d]"
+                className="size-[19px] rounded-[2px] border-2 border-[#667085] accent-[#588f7a]"
               />
               <span className="text-[18px] text-[#435a67]" style={{ ...FONT, fontWeight: 500 }}>
                 All
@@ -87,7 +87,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                   checked={selectedCategories.includes(cat?.name)}
                   onChange={() => handleCheckbox(cat?.name)}
                   disabled={disabled}
-                  className="size-[19px] rounded-[2px] border-2 border-[#667085] accent-[#57947d]"
+                  className="size-[19px] rounded-[2px] border-2 border-[#667085] accent-[#588f7a]"
                 />
                 <span className="text-[18px] text-[#435a67]" style={{ ...FONT, fontWeight: 500 }}>
                   {cat?.name}
@@ -123,7 +123,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
           <div className={`flex flex-col gap-3 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
             {[5, 4, 3].map((r) => (
               <label key={r} className="flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="rating" checked={ratingFilter === r} onChange={() => onRatingChange(r)} disabled={disabled} className="size-[19px] accent-[#57947d]" />
+                <input type="radio" name="rating" checked={ratingFilter === r} onChange={() => onRatingChange(r)} disabled={disabled} className="size-[19px] accent-[#588f7a]" />
                 <div className="flex">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star key={i} size={19} className={i < r ? 'fill-[#fed141] stroke-none' : 'stroke-[#fed141] fill-none'} strokeWidth={2} />

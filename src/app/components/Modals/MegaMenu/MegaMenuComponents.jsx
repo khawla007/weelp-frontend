@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 
-const GREEN = '#57947d';
-const GREEN_TINT = '#57947d1a';
+const GREEN = '#588f7a';
+const GREEN_TINT = '#588f7a1a';
 const TEXT_DARK = '#1e1e1e';
 const TEXT_MUTED = '#5a5a5a';
 const FONT_FAMILY = 'var(--font-interTight), Inter Tight, sans-serif';
@@ -106,7 +106,7 @@ export const CityGrid = ({ cities = [] }) => {
         <li key={city.id}>
           <Link
             href={`/cities/${city.slug}`}
-            className="transition hover:text-[color:var(--green,#57947d)]"
+            className="transition hover:text-[color:var(--green,#588f7a)]"
             style={{
               color: TEXT_MUTED,
               fontFamily: FONT_FAMILY,
