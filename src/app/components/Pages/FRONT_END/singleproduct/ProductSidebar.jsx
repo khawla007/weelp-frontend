@@ -114,19 +114,19 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             return (
               <div>
                 {itineraryTotal > 0 ? (
-                  <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
+                  <h3 className="text-[#18181b] font-bold text-2xl lg:text-[28px]">
                     {currency} {itineraryTotal.toFixed(2)}{' '}
-                    <span className="text-base font-medium text-[#5a5a5a]">
+                    <span className="text-base font-medium text-[#71717a]">
                       total for {guests} guest{guests === 1 ? '' : 's'}
                     </span>
                   </h3>
                 ) : (
-                  <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
-                    From {currency} {displayPrice} <span className="text-base font-medium text-[#5a5a5a]">/ person</span>
+                  <h3 className="text-[#18181b] font-bold text-2xl lg:text-[28px]">
+                    From {currency} {displayPrice} <span className="text-base font-medium text-[#71717a]">/ person</span>
                   </h3>
                 )}
                 {itineraryTotal > 0 && (
-                  <p className="text-sm text-[#5a5a5a] mt-1">
+                  <p className="text-sm text-[#71717a] mt-1">
                     {currency} {displayPrice} / person
                   </p>
                 )}
@@ -134,7 +134,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             );
           })()
         ) : (
-          <h3 className="text-[#0c2536] font-bold text-2xl lg:text-[28px]">
+          <h3 className="text-[#18181b] font-bold text-2xl lg:text-[28px]">
             From {formatCurrency(Number(productData?.pricing?.regular_price ?? 0), productData?.pricing?.currency ?? 'USD')} / person
           </h3>
         )}
@@ -147,13 +147,13 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             const regularPrice = pricing.season?.regularPrice ?? pricing.pricePerHead;
             const regularSubtotal = regularPrice * pricing.headcount;
             return (
-              <div className="mt-4 bg-white rounded-xl border border-[#ccc]/50 shadow-[0_3px_9px_rgba(0,0,0,0.04)] p-4 text-sm text-[#5a5a5a]">
+              <div className="mt-4 bg-white rounded-xl border border-[#e4e4e7] p-4 text-sm text-[#71717a]">
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span>
                       {formatCurrency(regularPrice, pricing.currency)} × {pricing.headcount}
                     </span>
-                    <span className="text-[#0c2536]">{formatCurrency(regularSubtotal, pricing.currency)}</span>
+                    <span className="text-[#18181b]">{formatCurrency(regularSubtotal, pricing.currency)}</span>
                   </div>
                   {pricing.season && pricing.season.savings > 0 && (
                     <div className="flex justify-between text-green-700">
@@ -207,7 +207,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                       <span>+{formatCurrency(pricing.addonsTotal, pricing.currency)}</span>
                     </div>
                   )}
-                  <div className="border-t border-[#ccc]/50 pt-2 flex justify-between text-[#0c2536]">
+                  <div className="border-t border-[#e4e4e7] pt-2 flex justify-between text-[#18181b]">
                     <span>Total</span>
                     <span>{formatCurrency(pricing.final, pricing.currency)}</span>
                   </div>
@@ -248,8 +248,8 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
         {/* Select Addon */}
         {addons.length > 0 && (
           <>
-            <p className="text-[#5a5a5a] text-base font-medium mb-3 mt-6">Select Addon</p>
-            <div className="bg-white rounded-xl border border-[#ccc]/50 shadow-[0_3px_9px_rgba(0,0,0,0.04)] p-5 flex flex-col gap-3">
+            <p className="text-[#71717a] text-base font-medium mb-3 mt-6">Select Addon</p>
+            <div className="bg-white rounded-xl border border-[#e4e4e7] p-5 flex flex-col gap-3">
               {addons.map((addon) => {
                 const isChecked = selectedAddons.some((a) => a.addon_id === addon.addon_id);
                 return (
@@ -271,19 +271,19 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                       {isChecked && <Check size={14} className="text-white" />}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <span className="text-base font-medium text-[#0c2536]">{addon.addon_name}</span>
-                      {addon.addon_description && <p className="text-sm text-[#5a5a5a] truncate">{addon.addon_description}</p>}
+                      <span className="text-base font-medium text-[#18181b]">{addon.addon_name}</span>
+                      {addon.addon_description && <p className="text-sm text-[#71717a] truncate">{addon.addon_description}</p>}
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
                       {addon.addon_sale_price != null ? (
                         <>
                           <span className="text-sm text-gray-400 line-through">${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                          <span className="text-base font-semibold text-[#273f4e]">
+                          <span className="text-base font-semibold text-[#18181b]">
                             ${Number(addon.addon_sale_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </span>
                         </>
                       ) : (
-                        <span className="text-base font-semibold text-[#273f4e]">${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        <span className="text-base font-semibold text-[#18181b]">${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                       )}
                     </div>
                   </div>
@@ -294,11 +294,15 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
         )}
 
         {/* Select Card */}
-        <div className="bg-white rounded-xl border border-[#ccc]/50 shadow-[0_3px_9px_rgba(0,0,0,0.04)] p-5 mt-4 flex items-center justify-between">
+        <div className="bg-white rounded-xl border border-[#e4e4e7] p-5 mt-4 flex items-center justify-between">
           {isInCart ? (
             <>
-              <p className="text-lg font-medium text-[#0c2536]">Item Moved to Cart</p>
-              <button type="button" onClick={() => setMiniCartOpen(true)} className="px-8 py-3 text-base font-medium bg-secondaryDark text-white rounded-md shadow cursor-pointer">
+              <p className="text-lg font-medium text-[#18181b]">Item Moved to Cart</p>
+              <button
+                type="button"
+                onClick={() => setMiniCartOpen(true)}
+                className="px-8 py-3 text-base font-medium bg-[#588f7a] hover:bg-[#4d8069] text-white rounded-md cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              >
                 Show Cart
               </button>
             </>
@@ -306,20 +310,20 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             <>
               <div className="flex flex-col">
                 {productType === 'activity' && pricing && pricing.headcount >= 1 ? (
-                  <p className="text-lg font-bold text-[#0c2536]">Total: {formatCurrency(pricing.final, pricing.currency)}</p>
+                  <p className="text-lg font-bold text-[#18181b]">Total: {formatCurrency(pricing.final, pricing.currency)}</p>
                 ) : selectedAddons.length > 0 ? (
                   <>
                     <p className="text-sm font-medium text-[#588f7a]">+ Add-ons: ${addonsTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                    <p className="text-lg font-bold text-[#0c2536]">Total: ${(basePrice + addonsTotal).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                    <p className="text-lg font-bold text-[#18181b]">Total: ${(basePrice + addonsTotal).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                   </>
                 ) : (
-                  <p className="text-lg font-bold text-[#0c2536]">${basePrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                  <p className="text-lg font-bold text-[#18181b]">${basePrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 )}
               </div>
               <button
                 type="submit"
                 form={`booking-form-${productId}`}
-                className="px-8 py-3 text-base font-medium bg-secondaryDark text-white rounded-md shadow disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="px-8 py-3 text-base font-medium bg-[#588f7a] hover:bg-[#4d8069] text-white rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 Select
               </button>
@@ -328,14 +332,19 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
         </div>
 
         {/* Questions Card */}
-        <div className="mt-4 border border-[#e5e5e5] rounded-xl p-7 bg-white/70 backdrop-blur-sm">
+        <div className="mt-4 border border-[#e4e4e7] rounded-xl p-7 bg-white">
           <div className="flex items-start justify-between gap-4">
             <div className="flex flex-col gap-2">
-              <h4 className="text-[#0c2536] font-semibold text-lg">Questions?</h4>
-              <p className="text-base text-black">Visit the Weelp Help Centre for any further questions.</p>
-              <span className="text-base mt-2">Product ID : {productId ?? 451245}</span>
+              <h4 className="text-[#18181b] font-semibold text-lg">Questions?</h4>
+              <p className="text-base text-[#71717a]">Visit the Weelp Help Centre for any further questions.</p>
+              <span className="text-sm text-[#52525b] mt-2">Product ID : {productId ?? 451245}</span>
             </div>
-            <button className="px-6 py-3 border border-black rounded-lg text-sm font-medium text-black whitespace-nowrap hover:bg-gray-50 transition-colors">Help Center</button>
+            <button
+              type="button"
+              className="px-6 py-3 border border-[#e4e4e7] rounded-lg text-sm font-medium text-[#18181b] whitespace-nowrap hover:bg-[#f4f4f5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            >
+              Help Center
+            </button>
           </div>
         </div>
       </div>

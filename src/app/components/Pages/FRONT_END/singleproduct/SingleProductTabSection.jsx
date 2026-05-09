@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import Image from 'next/image';
 import throttle from 'lodash/throttle';
 import { OverViewPanel, WhatIncludedPanel, ReviewPanel, FaqPanel } from './TabSection__modules';
 import SimilarExperiences from './SimilarExperiences';
@@ -10,6 +11,7 @@ import ItineraryEditActionBar from './ItineraryEditActionBar';
 
 const HEADER_HEIGHT = 66;
 const TAB_BAR_HEIGHT = 60;
+const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
 
 const SIDEBAR_IMAGES = {
   activity: '/assets/images/activity-sidebar-bottom.png',
@@ -129,17 +131,24 @@ const SingleProductTabSection = ({
   return (
     <section className="w-full bg-white mt-[70px]">
       {/* Sticky Tab Bar */}
-      <div className={`${fixedTab ? 'fixed' : 'relative'} z-[11] w-full bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]`} style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}>
+      <div
+        className={`${fixedTab ? 'fixed' : 'relative'} z-[11] w-full bg-white border-b border-[#e4e4e7] ${fixedTab ? 'shadow-[0_4px_12px_rgba(0,0,0,0.06)]' : ''}`}
+        style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}
+      >
         <div className="flex items-center justify-center">
           {tabs.map((tab, index) => (
             <button
               key={tab.id}
+              type="button"
               onClick={() => toggleTab(tab.id)}
-              className={`relative px-6 lg:px-8 py-4 text-sm lg:text-[14px] cursor-pointer transition-colors ${activeTab === tab.id ? 'font-bold text-[#0c2536]' : 'font-normal text-black'}`}
+              aria-current={activeTab === tab.id ? 'true' : undefined}
+              className={`relative px-6 lg:px-8 py-4 text-sm cursor-pointer transition-colors rounded-sm ${FOCUS_RING} ${
+                activeTab === tab.id ? 'font-semibold text-[#18181b]' : 'font-normal text-[#71717a] hover:text-[#18181b]'
+              }`}
               style={index < tabs.length - 1 ? { marginRight: '44px' } : undefined}
             >
               {tab.label}
-              {activeTab === tab.id && <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#0c2536]" />}
+              {activeTab === tab.id && <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#588f7a]" aria-hidden="true" />}
             </button>
           ))}
         </div>
@@ -187,11 +196,10 @@ const SingleProductTabSection = ({
           </div>
 
           {/* Right Column — Booking Sidebar */}
-          <div className="w-full xl:w-[42%] relative" style={{ background: 'linear-gradient(180deg, #f5f9fa 0%, rgba(255, 255, 255, 0.4) 100%)' }}>
+          <div className="w-full xl:w-[42%] relative bg-[#f8faf9]">
             {/* Bottom decorative image */}
-            <div className="absolute bottom-0 left-0 w-full h-auto pointer-events-none">
-              <img src={bottomImage} alt="" className="w-full h-auto object-cover" style={{ maxHeight: '150px' }} />
-              <div className="absolute bottom-0 left-0 w-full h-24 backdrop-blur-3xl opacity-70" />
+            <div className="absolute bottom-0 left-0 w-full pointer-events-none overflow-hidden" style={{ maxHeight: '150px' }} aria-hidden="true">
+              <Image src={bottomImage} alt="" width={640} height={150} sizes="(max-width: 1280px) 100vw, 640px" className="w-full h-auto object-cover opacity-70" />
             </div>
             <ProductSidebar
               productId={productId}

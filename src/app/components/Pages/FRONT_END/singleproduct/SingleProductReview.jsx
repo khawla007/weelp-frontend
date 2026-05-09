@@ -6,7 +6,8 @@ import { allReviewsData } from '@/app/Data/SingleActivityData';
 import { getActivityReviews, getActivityFeaturedReviews } from '@/lib/services/reviews';
 import useSWR from 'swr';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
+import SectionHeader from '@/app/components/ui/SectionHeader';
 import 'swiper/css';
 
 export const SingleProductReview = ({ productData, activitySlug }) => {
@@ -128,21 +129,23 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
   const filteredReviews = getFilteredReviews();
 
   return (
-    <div className="flex flex-col border-t border-[#d9d9d9]">
+    <div className="flex flex-col border-t border-[#eaeaea]">
       {/* Reviews Header - Reviews heading with rating below */}
       <div className="pt-6 pb-2">
-        <h2 className="text-[28px] font-semibold text-[#273f4e] capitalize">Reviews</h2>
+        <SectionHeader title="Reviews" />
         <div className="flex items-center gap-2 mt-2">
-          <span className="text-[36px] font-extrabold text-[#273f4e] leading-none">{reviewSummary?.average_rating || '5.0'}</span>
-          <div className="flex gap-[2px]">
+          <span className="text-[36px] font-bold text-[#18181b] leading-none" style={{ fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif' }}>
+            {reviewSummary?.average_rating || '5.0'}
+          </span>
+          <div className="flex gap-[2px]" role="img" aria-label={`${reviewSummary?.average_rating || 5} out of 5 stars`}>
             {Array(5)
               .fill(0)
               .map((_, i) => (
-                <Star key={i} className={i < Math.round(reviewSummary?.average_rating || 5) ? 'fill-[#fed141ff] stroke-none' : 'fill-gray-300 stroke-none'} size={24} />
+                <Star key={i} className={i < Math.round(reviewSummary?.average_rating || 5) ? 'fill-[#fed141] stroke-none' : 'fill-gray-300 stroke-none'} size={24} aria-hidden="true" />
               ))}
           </div>
         </div>
-        <p className="text-sm text-[#5a5a5a] mt-1">{reviewSummary?.total_reviews || 0} reviews</p>
+        <p className="text-sm text-[#71717a] mt-1">{reviewSummary?.total_reviews || 0} reviews</p>
       </div>
 
       {/* Photo Gallery - Using Swiper like city page */}
@@ -185,16 +188,16 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
           {allReviewsWithPhotos.length > 2 && (
             <div className="absolute bottom-[10px] right-[10px] flex gap-3 z-10">
               <button
-                className="photo-prev w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="photo-prev w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 aria-label="Previous photo"
               >
-                <ChevronLeft size={16} className="text-[#3c4257]" />
+                <ChevronLeft size={16} className="text-[#52525b]" />
               </button>
               <button
-                className="photo-next w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="photo-next w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 aria-label="Next photo"
               >
-                <ChevronRight size={16} className="text-[#3c4257]" />
+                <ChevronRight size={16} className="text-[#52525b]" />
               </button>
             </div>
           )}
@@ -206,20 +209,25 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
         <div className="mt-10">
           {/* Heading with navigation arrows on right side */}
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-[28px] font-semibold text-[#273f4e]">Featured review</h3>
+            <h3
+              className="text-lg sm:text-[28px] text-[#18181b]"
+              style={{ fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif', fontWeight: 600, letterSpacing: '-0.005em' }}
+            >
+              Featured review
+            </h3>
             {featuredReviewsData.length > 2 && (
               <div className="flex items-center gap-1">
                 <button
-                  className="featured-prev w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="featured-prev w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                   aria-label="Scroll featured reviews left"
                 >
-                  <ChevronLeft size={16} className="text-[#3c4257]" />
+                  <ChevronLeft size={16} className="text-[#52525b]" />
                 </button>
                 <button
-                  className="featured-next w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="featured-next w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                   aria-label="Scroll featured reviews right"
                 >
-                  <ChevronRight size={16} className="text-[#3c4257]" />
+                  <ChevronRight size={16} className="text-[#52525b]" />
                 </button>
               </div>
             )}
@@ -257,16 +265,16 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
           >
             {featuredReviewsData.map((review, index) => (
               <SwiperSlide key={index} style={{ height: 'auto', display: 'flex' }}>
-                <div className="bg-white p-8 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 flex flex-col gap-[17px] w-full">
-                  <h5 className="text-black font-medium text-base">{review.userName}</h5>
+                <div className="bg-white p-8 rounded-xl border border-[#e4e4e7] hover:border-transparent hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)] transition-all duration-300 flex flex-col gap-[17px] w-full">
+                  <h5 className="text-[#18181b] font-medium text-base">{review.userName}</h5>
                   <div className="flex gap-[7px]">
                     {Array(review.rating)
                       .fill(0)
                       .map((_, i) => (
-                        <Star key={i} className="fill-[#fed141ff] stroke-none" size={16} />
+                        <Star key={i} className="fill-[#fed141] stroke-none" size={16} />
                       ))}
                   </div>
-                  <p className="text-base text-black overflow-x-hidden">{review.comment}</p>
+                  <p className="text-base text-[#18181b] overflow-x-hidden">{review.comment}</p>
                 </div>
               </SwiperSlide>
             ))}
@@ -339,7 +347,12 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
 
   return (
     <div ref={sectionRef} className="flex flex-col gap-4 mt-8">
-      <h3 className="text-[28px] font-semibold text-[#273f4e] capitalize">All Reviews</h3>
+      <h3
+        className="text-lg sm:text-[28px] text-[#18181b] capitalize"
+        style={{ fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif', fontWeight: 600, letterSpacing: '-0.005em' }}
+      >
+        All Reviews
+      </h3>
 
       {/* Filter + Sort Row - Match pen design */}
       <div className="flex items-center justify-between px-0">
@@ -363,13 +376,13 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
         <div className="relative" ref={sortDropdownRef}>
           <button
             onClick={() => setShowSortDropdown((prev) => !prev)}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[#435a67] border border-[#cccccc80] bg-white min-w-[141px]"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[#435a67] border border-[#e4e4e7] bg-white min-w-[141px]"
           >
             {sortOrder === 'newest' ? 'Newest' : 'Oldest'}
             <ChevronDown size={16} className="text-[#435a67]" />
           </button>
           {showSortDropdown && (
-            <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg border border-[#e5e5e5] py-1 min-w-[141px] z-20">
+            <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg border border-[#e4e4e7] py-1 min-w-[141px] z-20">
               <button onClick={() => handleSortChange('newest')} className={`w-full text-left px-4 py-2 text-sm ${sortOrder === 'newest' ? 'bg-gray-100 font-medium' : 'text-gray-700'}`}>
                 Newest
               </button>
@@ -386,22 +399,22 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
         {/* Reviews Container - Fixed height for 3 cards */}
         <div className="flex flex-col gap-4 min-h-[600px]">
           {getCurrentReviews().map((review, index) => (
-            <div key={index} className="p-6 bg-white rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.1)]">
+            <div key={index} className="p-6 bg-white rounded-xl border border-[#e4e4e7]">
               {/* First Row: Avatar + Name/Date */}
               <div className="flex items-center gap-3">
                 {/* Left: Avatar */}
-                <div className="w-[44px] h-[44px] rounded-full overflow-hidden bg-[#f5f5f5] border border-[#e5e5e5] flex-shrink-0">
+                <div className="w-[44px] h-[44px] rounded-full overflow-hidden bg-[#f5f5f5] border border-[#e4e4e7] flex-shrink-0">
                   {review.avatar ? (
                     <img src={review.avatar} alt={review.userName} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-sm font-bold text-[#3c4257]">{review.userName.charAt(0)}</div>
+                    <div className="w-full h-full flex items-center justify-center text-sm font-bold text-[#52525b]">{review.userName.charAt(0)}</div>
                   )}
                 </div>
 
                 {/* Right: 2 divs - Name above, Date below */}
                 <div className="flex flex-col justify-center">
-                  <p className="text-base font-semibold text-[#000000]">{review.userName}</p>
-                  <p className="text-sm font-semibold text-[#000000]">{review.date}</p>
+                  <p className="text-base font-semibold text-[#18181b]">{review.userName}</p>
+                  <p className="text-sm font-semibold text-[#18181b]">{review.date}</p>
                 </div>
               </div>
 
@@ -410,7 +423,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
                 {Array(review.rating)
                   .fill(0)
                   .map((_, i) => (
-                    <Star key={i} className="fill-[#fed141ff] stroke-none" size={16} />
+                    <Star key={i} className="fill-[#fed141] stroke-none" size={16} />
                   ))}
               </div>
 
@@ -447,16 +460,16 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
                     {review.images.length > 1 && (
                       <div className="absolute bottom-[10px] right-[10px] flex gap-3 z-10">
                         <button
-                          className={`review-img-prev-${index} w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
+                          className={`review-img-prev-${index} w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
                           aria-label="Previous image"
                         >
-                          <ChevronLeft size={16} className="text-[#3c4257]" />
+                          <ChevronLeft size={16} className="text-[#52525b]" />
                         </button>
                         <button
-                          className={`review-img-next-${index} w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
+                          className={`review-img-next-${index} w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
                           aria-label="Next image"
                         >
-                          <ChevronRight size={16} className="text-[#3c4257]" />
+                          <ChevronRight size={16} className="text-[#52525b]" />
                         </button>
                       </div>
                     )}
@@ -468,12 +481,12 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
                 ))}
 
               {/* Review Content - increased spacing */}
-              <p className="text-base text-[#000000] leading-[1.5] my-6">{review.comment}</p>
+              <p className="text-base text-[#18181b] leading-[1.5] my-6">{review.comment}</p>
 
               {/* Separator Line + Helpful Section - increased spacing */}
-              <div className="border-t border-[#e3e3e3] pt-4 mt-6">
+              <div className="border-t border-[#e4e4e7] pt-4 mt-6">
                 <div className="flex items-center gap-2 py-2">
-                  <button className="flex items-center gap-2 text-sm text-[#5a5a5a] hover:text-[#3c4257] transition-colors">
+                  <button className="flex items-center gap-2 text-sm text-[#71717a] hover:text-[#52525b] transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
                     </svg>
@@ -490,17 +503,17 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
           <div className="flex items-center justify-end gap-3 mt-6">
             <button
               onClick={handlePrevious}
-              className="w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-gray-200 hover:bg-gray-50 transition-colors"
+              className="w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               aria-label="Previous reviews"
             >
-              <ChevronLeft size={16} className="text-[#3c4257]" />
+              <ChevronLeft size={16} className="text-[#52525b]" />
             </button>
             <button
               onClick={handleNext}
-              className="w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-gray-200 hover:bg-gray-50 transition-colors"
+              className="w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               aria-label="Next reviews"
             >
-              <ChevronRight size={16} className="text-[#3c4257]" />
+              <ChevronRight size={16} className="text-[#52525b]" />
             </button>
           </div>
         )}

@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { MapPin, LifeBuoy, User, Wind, Clock4, Eye, Plus, Trash2, Pencil, X } from 'lucide-react';
 import { useItineraryEditStore } from '@/lib/store/useItineraryEditStore';
+import SectionHeader from '@/app/components/ui/SectionHeader';
 import ActivitySearchModalPublic from './ActivitySearchModalPublic';
 import TransferSearchModalPublic from './TransferSearchModalPublic';
 
@@ -125,11 +126,11 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-[28px] font-semibold text-[#273f4e] capitalize">{title}</h2>
+        <SectionHeader title={title} />
 
         {/* Action buttons */}
         {canEdit && !isEditing && (
-          <button onClick={handleStartEdit} className="px-6 py-2.5 bg-[#588f7a] hover:bg-[#4a7d6a] text-white font-medium rounded-lg transition-colors flex items-center gap-2">
+          <button onClick={handleStartEdit} className="px-6 py-2.5 bg-[#588f7a] hover:bg-[#4d8069] text-white font-medium rounded-lg transition-colors flex items-center gap-2">
             <Pencil size={16} />
             {isLoggedIn ? 'Customize This Itinerary' : 'Login to Customize'}
           </button>
@@ -167,8 +168,8 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
                     px-[18px] py-3 text-base font-medium whitespace-nowrap rounded-[6px] transition-colors
                     ${
                       isActive
-                        ? 'bg-gradient-to-b from-[#f3f5f5] to-[#588f7a]/10 border border-[#588f7a] text-[#56756c]'
-                        : 'bg-white border border-[#ccc]/50 text-[#667085] hover:border-[#588f7a] hover:text-[#56756c]'
+                        ? 'bg-gradient-to-b from-[#f3f5f5] to-[#588f7a]/10 border border-[#588f7a] text-[#588f7a]'
+                        : 'bg-white border border-[#e4e4e7]/50 text-[#71717a] hover:border-[#588f7a] hover:text-[#588f7a]'
                     }
                   `}
                 >
@@ -258,19 +259,19 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
     <div className="flex flex-col gap-4">
       {/* Day Header */}
       <div className="flex items-center gap-3">
-        <p className="text-[#0c2536] text-lg font-semibold whitespace-nowrap">Day - {dayNumber}</p>
+        <p className="text-[#18181b] text-lg font-semibold whitespace-nowrap">Day - {dayNumber}</p>
         {isEditing ? (
           <input
             type="text"
             value={dayTitle === `Day ${dayNumber}` ? '' : dayTitle}
             onChange={(e) => useItineraryEditStore.getState().updateDayTitle(dayIndex, e.target.value)}
             placeholder={`Day ${dayNumber}`}
-            className="text-[#0c2536] text-lg font-semibold bg-transparent border-b border-dashed border-[#ccc] focus:border-[#588f7a] outline-none flex-1 min-w-0"
+            className="text-[#18181b] text-lg font-semibold bg-transparent border-b border-dashed border-[#e4e4e7] focus:border-[#588f7a] outline-none flex-1 min-w-0"
           />
         ) : (
-          <span className="text-[#0c2536] text-lg font-semibold">{dayTitle}</span>
+          <span className="text-[#18181b] text-lg font-semibold">{dayTitle}</span>
         )}
-        {dateLabel && <span className="text-sm text-[#5a5a5a] whitespace-nowrap">({dateLabel})</span>}
+        {dateLabel && <span className="text-sm text-[#71717a] whitespace-nowrap">({dateLabel})</span>}
         {isEditing && (
           <button onClick={() => useItineraryEditStore.getState().removeDay(dayIndex)} className="ml-auto text-red-400 hover:text-red-600 transition-colors p-1 flex-shrink-0" title="Remove Day">
             <Trash2 size={16} />
@@ -284,15 +285,15 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
         if (!transferName) return null;
 
         return (
-          <div key={transferIndex} className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-3 bg-[#f8f9f9] border-b border-[#e5e5e5]">
-              <span className="text-sm font-semibold text-[#0c2536]">Transfer</span>
+          <div key={transferIndex} className="bg-white rounded-xl border border-[#e4e4e7] overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-3 bg-[#f8faf9] border-b border-[#e4e4e7]">
+              <span className="text-sm font-semibold text-[#18181b]">Transfer</span>
               <div className="flex items-center gap-3">
                 {isEditing && (
                   <>
                     <button
                       onClick={() => setActiveModal({ type: 'changeTransfer', index: transferIndex })}
-                      className="inline-flex items-center gap-1.5 text-sm text-[#5a5a5a] hover:text-[#0c2536] transition-colors"
+                      className="inline-flex items-center gap-1.5 text-sm text-[#71717a] hover:text-[#18181b] transition-colors"
                     >
                       <Pencil size={13} /> Edit
                     </button>
@@ -305,22 +306,22 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
                     </button>
                   </>
                 )}
-                {!isEditing && <span className="text-sm text-[#5a5a5a]">Description</span>}
+                {!isEditing && <span className="text-sm text-[#71717a]">Description</span>}
               </div>
             </div>
             <div className="flex gap-4 p-4">
               <img src={transfer.featured_image || 'https://picsum.photos/300/200?random=1'} alt={transferName} className="w-[140px] h-[100px] object-cover rounded-lg flex-shrink-0" />
               <div className="flex flex-col justify-center gap-2 flex-1">
-                <h3 className="text-[#0c2536] text-base font-semibold">{transferName}</h3>
-                {vehicle_type && <p className="text-sm text-[#5a5a5a]">{vehicle_type}</p>}
+                <h3 className="text-[#18181b] text-base font-semibold">{transferName}</h3>
+                {vehicle_type && <p className="text-sm text-[#71717a]">{vehicle_type}</p>}
                 <div className="flex gap-4 flex-wrap mt-1">
-                  <span className="text-[#5a5a5a] inline-flex gap-1.5 items-center text-sm">
+                  <span className="text-[#71717a] inline-flex gap-1.5 items-center text-sm">
                     <User size={14} /> 3 Seater
                   </span>
-                  <span className="text-[#5a5a5a] inline-flex gap-1.5 items-center text-sm">
+                  <span className="text-[#71717a] inline-flex gap-1.5 items-center text-sm">
                     <Wind size={14} /> AC
                   </span>
-                  <span className="text-[#5a5a5a] inline-flex gap-1.5 items-center text-sm">
+                  <span className="text-[#71717a] inline-flex gap-1.5 items-center text-sm">
                     <LifeBuoy size={14} /> First Aid
                   </span>
                 </div>
@@ -329,15 +330,15 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
 
             {/* Pickup to Dropoff */}
             <div className="px-4 pb-4 flex items-center justify-between gap-2">
-              <span className="inline-flex items-center gap-2 border border-[#e5e5e5] rounded-lg py-2 px-4 text-sm text-[#0c2536]">
+              <span className="inline-flex items-center gap-2 border border-[#e4e4e7] rounded-lg py-2 px-4 text-sm text-[#18181b]">
                 <MapPin size={14} /> {pickup_location || 'Airport'}
               </span>
               <div className="flex items-center gap-2 flex-1 mx-2">
-                <div className="flex-1 border-t border-dashed border-[#ccc]" />
-                {transferDuration && <span className="text-xs text-[#5a5a5a] whitespace-nowrap">{transferDuration}</span>}
-                <div className="flex-1 border-t border-dashed border-[#ccc]" />
+                <div className="flex-1 border-t border-dashed border-[#e4e4e7]" />
+                {transferDuration && <span className="text-xs text-[#71717a] whitespace-nowrap">{transferDuration}</span>}
+                <div className="flex-1 border-t border-dashed border-[#e4e4e7]" />
               </div>
-              <span className="inline-flex items-center gap-2 border border-[#e5e5e5] rounded-lg py-2 px-4 text-sm text-[#0c2536]">
+              <span className="inline-flex items-center gap-2 border border-[#e4e4e7] rounded-lg py-2 px-4 text-sm text-[#18181b]">
                 <MapPin size={14} /> {dropoff_location || 'Hotel'}
               </span>
             </div>
@@ -352,9 +353,9 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
         if (!activityName) return null;
 
         return (
-          <div key={activityIndex} className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-3 bg-[#f8f9f9] border-b border-[#e5e5e5]">
-              <span className="text-sm font-semibold text-[#0c2536]">
+          <div key={activityIndex} className="bg-white rounded-xl border border-[#e4e4e7] overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-3 bg-[#f8faf9] border-b border-[#e4e4e7]">
+              <span className="text-sm font-semibold text-[#18181b]">
                 Activity in {locationName || 'Unknown'} {formatDuration(duration_minutes) || ''}
               </span>
               <div className="flex items-center gap-3">
@@ -362,7 +363,7 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
                   <>
                     <button
                       onClick={() => setActiveModal({ type: 'changeActivity', index: activityIndex })}
-                      className="inline-flex items-center gap-1.5 text-sm text-[#5a5a5a] hover:text-[#0c2536] transition-colors"
+                      className="inline-flex items-center gap-1.5 text-sm text-[#71717a] hover:text-[#18181b] transition-colors"
                     >
                       <Pencil size={13} /> Edit
                     </button>
@@ -375,27 +376,27 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
                     </button>
                   </>
                 )}
-                {!isEditing && <span className="text-sm text-[#5a5a5a]">Description</span>}
+                {!isEditing && <span className="text-sm text-[#71717a]">Description</span>}
               </div>
             </div>
             <div className="flex gap-4 p-4">
               <img src={featured_image || 'https://picsum.photos/300/200?random=2'} alt={activityName} className="w-[140px] h-[100px] object-cover rounded-lg flex-shrink-0" />
               <div className="flex flex-col justify-center gap-2 flex-1">
-                <h3 className="text-[#0c2536] text-base font-semibold">{activityName}</h3>
-                {locationName && <p className="text-sm text-[#5a5a5a]">{locationName}</p>}
+                <h3 className="text-[#18181b] text-base font-semibold">{activityName}</h3>
+                {locationName && <p className="text-sm text-[#71717a]">{locationName}</p>}
                 <div className="flex gap-4 flex-wrap mt-1">
                   {activity.tags?.map((tag, i) => (
-                    <span key={i} className="text-[#5a5a5a] inline-flex gap-1.5 items-center text-sm">
+                    <span key={i} className="text-[#71717a] inline-flex gap-1.5 items-center text-sm">
                       <Eye size={14} /> {typeof tag === 'object' ? tag.name : tag}
                     </span>
                   ))}
                   {duration_minutes && (
-                    <span className="text-[#5a5a5a] inline-flex gap-1.5 items-center text-sm">
+                    <span className="text-[#71717a] inline-flex gap-1.5 items-center text-sm">
                       <Clock4 size={14} /> {formatDuration(duration_minutes)}
                     </span>
                   )}
                   {activityType && (
-                    <span className="text-[#5a5a5a] inline-flex gap-1.5 items-center text-sm">
+                    <span className="text-[#71717a] inline-flex gap-1.5 items-center text-sm">
                       <Eye size={14} /> {activityType}
                     </span>
                   )}
