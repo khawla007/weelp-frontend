@@ -26,10 +26,7 @@ const AboutMission = () => {
         {cards.map((card, index) => {
           const Icon = card.icon;
           return (
-            <div
-              key={index}
-              className="bg-white rounded-[24px] p-8 border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)]"
-            >
+            <div key={index} className="bg-white rounded-[24px] p-8 border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)]">
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 text-[#588f7a]">
                   <Icon size={32} />
