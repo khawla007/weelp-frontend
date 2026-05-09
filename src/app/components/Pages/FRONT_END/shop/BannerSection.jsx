@@ -14,7 +14,7 @@ const BannerSection = () => {
         <BookingForm />
       </div>
       {location && (
-        <div className="flex items-center justify-center  bg-[#f5f9fa] h-full min-h-20 sm:min-h-36">
+        <div className="flex items-center justify-center  bg-[#f8faf9] h-full min-h-20 sm:min-h-36">
           {/* <Icon className={"hidden sm:block -translate-x-20 "} /> */}
           <div className="flex flex-col gap-2">
             <h1 className="font-semibold sm:text-3xl text-center text-[#18181b] ">

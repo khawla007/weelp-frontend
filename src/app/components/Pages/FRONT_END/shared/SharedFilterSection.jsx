@@ -139,7 +139,7 @@ export default function SharedFilterSection({ scope, slug }) {
                 })
               ) : (
                 <div className="col-span-full flex items-center justify-center min-h-[300px]">
-                  <span className="text-lg text-[#6b7b8d]">No items found</span>
+                  <span className="text-lg text-[#71717a]">No items found</span>
                 </div>
               )}
             </div>

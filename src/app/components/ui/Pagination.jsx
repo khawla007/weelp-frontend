@@ -3,7 +3,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const BTN_STYLE = {
-  borderColor: '#e0e6eb',
+  borderColor: '#e4e4e7',
   fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
   fontWeight: 400,
   fontSize: '15.6px',
@@ -38,8 +38,8 @@ export default function Pagination({ currentPage, totalPages, onPageChange, alig
         type="button"
         onClick={() => onPageChange(Math.max(1, currentPage - 1))}
         disabled={currentPage === 1}
-        className="flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#4f566b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition disabled:opacity-45"
-        style={{ borderColor: '#e0e6eb' }}
+        className="flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#52525b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition disabled:opacity-45"
+        style={{ borderColor: '#e4e4e7' }}
         aria-label="Previous page"
       >
         <ChevronLeft className="size-4" />
@@ -69,8 +69,8 @@ export default function Pagination({ currentPage, totalPages, onPageChange, alig
         type="button"
         onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
         disabled={currentPage === totalPages}
-        className="flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#4f566b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition disabled:opacity-45"
-        style={{ borderColor: '#e0e6eb' }}
+        className="flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#52525b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition disabled:opacity-45"
+        style={{ borderColor: '#e4e4e7' }}
         aria-label="Next page"
       >
         <ChevronRight className="size-4" />

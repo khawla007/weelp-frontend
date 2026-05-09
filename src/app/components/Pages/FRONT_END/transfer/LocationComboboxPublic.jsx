@@ -61,28 +61,28 @@ export default function LocationComboboxPublic({ value, onChange, placeholder = 
           className="flex w-full items-center gap-2 py-[18px] px-4 text-left bg-transparent outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 rounded-xl"
           aria-label={placeholder}
         >
-          <Icon className="h-5 w-5 shrink-0 text-[#5a5a5a]" />
-          <span className={`truncate text-xs sm:text-sm font-medium ${isPlaceholder ? 'text-[#5a5a5a]' : 'text-[#273f4e]'}`}>{displayLabel}</span>
+          <Icon className="h-5 w-5 shrink-0 text-[#71717a]" />
+          <span className={`truncate text-xs sm:text-sm font-medium ${isPlaceholder ? 'text-[#71717a]' : 'text-[#18181b]'}`}>{displayLabel}</span>
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-[320px] p-0" align="start">
         <Command shouldFilter={false}>
           <CommandInput autoFocus placeholder={placeholder} value={query} onValueChange={handleInput} />
           <CommandList>
-            {loading && <div className="py-6 text-center text-sm text-[#5a5a5a]">Searching...</div>}
+            {loading && <div className="py-6 text-center text-sm text-[#71717a]">Searching...</div>}
             {!loading && query && results.length === 0 && <CommandEmpty>No locations found.</CommandEmpty>}
             {!loading && results.length > 0 && (
               <CommandGroup>
                 {results.map((item) => (
                   <CommandItem key={`${item.locatable_type}-${item.locatable_id}`} value={`${item.locatable_type}-${item.locatable_id}`} onSelect={() => handleSelect(item)}>
                     <div className="flex items-center gap-2 flex-1 min-w-0">
-                      <span className="truncate text-[#273f4e]">{item.name}</span>
+                      <span className="truncate text-[#18181b]">{item.name}</span>
                       {item.type && (
                         <Badge variant="secondary" className="shrink-0 text-[10px] capitalize">
                           {item.type}
                         </Badge>
                       )}
-                      {(item.city_name || item.country_name) && <span className="text-[11px] text-[#5a5a5a] truncate">{[item.city_name, item.country_name].filter(Boolean).join(', ')}</span>}
+                      {(item.city_name || item.country_name) && <span className="text-[11px] text-[#71717a] truncate">{[item.city_name, item.country_name].filter(Boolean).join(', ')}</span>}
                     </div>
                   </CommandItem>
                 ))}

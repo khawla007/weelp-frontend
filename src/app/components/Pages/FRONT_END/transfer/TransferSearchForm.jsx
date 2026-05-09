@@ -165,9 +165,9 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
 
   return (
     <div className="mx-auto md:w-[735px] w-full relative flex flex-col gap-4">
-      <div className="relative flex items-stretch bg-white rounded-xl border border-[#cccccc80] shadow-[0_3.39px_8.89px_#0000000a]">
+      <div className="relative flex items-stretch bg-white rounded-xl border border-[#e4e4e7]">
         {/* Pickup */}
-        <div className="flex-1 min-w-0 border-r border-[#cccccc80]">
+        <div className="flex-1 min-w-0 border-r border-[#e4e4e7]">
           <Controller name="pickup" control={control} render={({ field }) => <LocationComboboxPublic value={field.value} onChange={field.onChange} placeholder="Pickup Location" icon={MapPin} />} />
         </div>
 
@@ -176,23 +176,23 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
           type="button"
           onClick={handleSwap}
           aria-label="Swap pickup and destination"
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 sm:left-1/4 z-20 w-[27px] h-[27px] rounded-full bg-white border border-[#cccccc80] flex items-center justify-center shadow-[0_3.39px_8.89px_#0000000a] hover:bg-[#f3f5f5]"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 sm:left-1/4 z-20 w-[27px] h-[27px] rounded-full bg-white border border-[#e4e4e7] flex items-center justify-center shadow-[4px_4px_12px_rgba(0,0,0,0.1)] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
         >
-          <ArrowLeftRight className="h-3 w-3 text-[#273f4e]" />
+          <ArrowLeftRight className="h-3 w-3 text-[#18181b]" />
         </button>
 
         {/* Destination */}
-        <div className="flex-1 min-w-0 border-r border-[#cccccc80]">
+        <div className="flex-1 min-w-0 border-r border-[#e4e4e7]">
           <Controller name="destination" control={control} render={({ field }) => <LocationComboboxPublic value={field.value} onChange={field.onChange} placeholder="Destination" icon={MapPin} />} />
         </div>
 
         {/* Date */}
-        <div className="flex-1 min-w-0 border-r border-[#cccccc80]">
+        <div className="flex-1 min-w-0 border-r border-[#e4e4e7]">
           <Popover open={dateOpen} onOpenChange={setDateOpen}>
             <PopoverTrigger asChild>
               <button type="button" className="flex w-full items-center gap-2 py-[18px] px-4 text-left bg-transparent outline-none">
-                <CalendarIcon className="h-5 w-5 shrink-0 text-[#5a5a5a]" />
-                <span className={`truncate text-xs sm:text-sm font-medium ${date ? 'text-[#273f4e]' : 'text-[#5a5a5a]'}`}>{formatDate(date)}</span>
+                <CalendarIcon className="h-5 w-5 shrink-0 text-[#71717a]" />
+                <span className={`truncate text-xs sm:text-sm font-medium ${date ? 'text-[#18181b]' : 'text-[#71717a]'}`}>{formatDate(date)}</span>
               </button>
             </PopoverTrigger>
             <PopoverContent
@@ -206,8 +206,8 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                 }
               }}
             >
-              <div className="flex items-center gap-2 px-2 pt-1 pb-2 border-b border-[#cccccc80] mb-1">
-                <span className="text-xs font-medium text-[#273f4e] shrink-0">Pickup time</span>
+              <div className="flex items-center gap-2 px-2 pt-1 pb-2 border-b border-[#e4e4e7] mb-1">
+                <span className="text-xs font-medium text-[#18181b] shrink-0">Pickup time</span>
                 <Controller
                   name="time"
                   control={control}
@@ -233,7 +233,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                             ))}
                           </SelectContent>
                         </Select>
-                        <span className="text-[#273f4e] font-semibold">:</span>
+                        <span className="text-[#18181b] font-semibold">:</span>
                         <Select value={parts.minute} onValueChange={(v) => setPart('minute', v)}>
                           <SelectTrigger className={`${triggerCls} w-16`}>
                             <SelectValue />
@@ -266,7 +266,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                   type="button"
                   onClick={() => setDateOpen(false)}
                   disabled={!date}
-                  className="rounded-md bg-[#588f7a] px-3 py-1 text-xs font-medium text-white hover:bg-[#588f7a]/90 disabled:opacity-40"
+                  className="rounded-md bg-[#588f7a] px-3 py-1 text-xs font-medium text-white hover:bg-[#4d8069] disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 >
                   Done
                 </button>
@@ -294,8 +294,8 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
           <Popover open={paxOpen} onOpenChange={setPaxOpen}>
             <PopoverTrigger asChild>
               <button type="button" className="flex w-full items-center gap-2 py-[18px] px-4 text-left bg-transparent outline-none">
-                <Users className="h-5 w-5 shrink-0 text-[#5a5a5a]" />
-                <span className={`truncate text-xs sm:text-sm font-medium ${paxTouched ? 'text-[#273f4e]' : 'text-[#5a5a5a]'}`}>
+                <Users className="h-5 w-5 shrink-0 text-[#71717a]" />
+                <span className={`truncate text-xs sm:text-sm font-medium ${paxTouched ? 'text-[#18181b]' : 'text-[#71717a]'}`}>
                   {paxTouched ? `${totalPassengers} ${totalPassengers === 1 ? 'Person' : 'People'}` : 'How Many?'}
                 </span>
               </button>
@@ -309,24 +309,24 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                 ].map((row) => (
                   <div key={row.key} className="flex justify-between items-center">
                     <div>
-                      <h3 className="font-semibold text-[#273f4e] text-sm">{row.label}</h3>
-                      <span className="text-xs text-[#5a5a5a]">{row.sub}</span>
+                      <h3 className="font-semibold text-[#18181b] text-sm">{row.label}</h3>
+                      <span className="text-xs text-[#71717a]">{row.sub}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <button
                         type="button"
                         onClick={() => decrement(row.key)}
                         disabled={row.value <= row.min}
-                        className="w-8 h-8 rounded-full border border-[#cccccc80] flex items-center justify-center text-[#273f4e] hover:bg-[#f3f5f5] disabled:opacity-40"
+                        className="w-8 h-8 rounded-full border border-[#e4e4e7] flex items-center justify-center text-[#18181b] hover:bg-[#f4f4f5] disabled:opacity-40"
                         aria-label={`Decrease ${row.label}`}
                       >
                         <Minus size={14} />
                       </button>
-                      <span className="font-semibold text-[#273f4e] w-5 text-center">{row.value}</span>
+                      <span className="font-semibold text-[#18181b] w-5 text-center">{row.value}</span>
                       <button
                         type="button"
                         onClick={() => increment(row.key)}
-                        className="w-8 h-8 rounded-full border border-[#588f7a] flex items-center justify-center text-[#588f7a] hover:bg-[#f3f5f5]"
+                        className="w-8 h-8 rounded-full border border-[#588f7a] flex items-center justify-center text-[#588f7a] hover:bg-[#f4f4f5]"
                         aria-label={`Increase ${row.label}`}
                       >
                         <Plus size={14} />

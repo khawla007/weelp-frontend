@@ -110,7 +110,7 @@ export default function SharedToursSection({ scope, slug, title }) {
 
   return (
     <section ref={sectionRef} className="mx-auto flex w-full max-w-[1480px] flex-col gap-8 px-4 md:px-6 xl:px-0 py-10 md:py-14 lg:py-[100px]">
-      <h2 className="text-xl md:text-2xl lg:text-[28px] font-semibold text-pretty text-[#273f4e] capitalize" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
+      <h2 className="text-xl md:text-2xl lg:text-[28px] font-semibold text-pretty text-[#18181b] capitalize" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
         {title} Tours
       </h2>
 
@@ -125,13 +125,13 @@ export default function SharedToursSection({ scope, slug, title }) {
             }}
             className="min-h-[44px] sm:min-h-0 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
             style={{
-              backgroundColor: '#f2f2f2',
+              backgroundColor: '#f4f4f5',
               borderColor: 'rgba(67, 90, 103, 0.26)',
               fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
               fontWeight: selectedTags.length === 0 ? 600 : 500,
             }}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f2f2f2')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f4f4f5')}
           >
             All
           </button>
@@ -146,13 +146,13 @@ export default function SharedToursSection({ scope, slug, title }) {
                   onClick={() => handleTagToggle(tag.name)}
                   className="min-h-[44px] sm:min-h-0 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
                   style={{
-                    backgroundColor: '#f2f2f2',
+                    backgroundColor: '#f4f4f5',
                     borderColor: 'rgba(67, 90, 103, 0.26)',
                     fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
                     fontWeight: isActive ? 600 : 500,
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f2f2f2')}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f4f4f5')}
                 >
                   {tag.name}
                 </button>
@@ -169,13 +169,13 @@ export default function SharedToursSection({ scope, slug, title }) {
               onClick={() => setShowSortDropdown((prev) => !prev)}
               className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
               style={{
-                backgroundColor: '#f2f2f2',
+                backgroundColor: '#f4f4f5',
                 borderColor: 'rgba(67, 90, 103, 0.26)',
                 fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
                 fontWeight: 500,
               }}
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f2f2f2')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f4f4f5')}
             >
               Sort
               <ChevronDown className="size-4" />
@@ -187,7 +187,7 @@ export default function SharedToursSection({ scope, slug, title }) {
                     key={option.value}
                     type="button"
                     onClick={() => handleSortChange(option.value)}
-                    className={`block w-full px-4 py-2 text-left text-sm transition hover:bg-gray-50 ${sortBy === option.value ? 'font-semibold text-[#273f4e]' : 'text-[#435a67]'}`}
+                    className={`block w-full px-4 py-2 text-left text-sm transition hover:bg-gray-50 ${sortBy === option.value ? 'font-semibold text-[#18181b]' : 'text-[#435a67]'}`}
                     style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
                   >
                     {option.label}
@@ -202,13 +202,13 @@ export default function SharedToursSection({ scope, slug, title }) {
             type="button"
             className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
             style={{
-              backgroundColor: '#f2f2f2',
+              backgroundColor: '#f4f4f5',
               borderColor: 'rgba(67, 90, 103, 0.26)',
               fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
               fontWeight: 500,
             }}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f2f2f2')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f4f4f5')}
           >
             <MapPin className="size-5" strokeWidth={1.2} />
             View on Map
@@ -241,7 +241,7 @@ export default function SharedToursSection({ scope, slug, title }) {
         </div>
       ) : (
         <div className="flex min-h-[220px] items-center justify-center">
-          <span className="text-sm md:text-base text-[#6b7b8d]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500 }}>
+          <span className="text-sm md:text-base text-[#71717a]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500 }}>
             No itineraries found for the selected tags
           </span>
         </div>

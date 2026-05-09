@@ -66,10 +66,10 @@ const TransfersPage = () => {
 
   return (
     <>
-      <section className="relative min-h-[320px] sm:min-h-[520px] flex justify-center bg-[#F5F9FA] p-6 pt-10 sm:pt-16">
+      <section className="relative min-h-[320px] sm:min-h-[520px] flex justify-center bg-[#f8faf9] p-6 pt-10 sm:pt-16">
         <div className="max-w-3xl w-full flex flex-col items-center gap-4 relative z-10">
-          <h1 className="text-xl sm:text-5xl font-semibold text-[#143042] text-center">Book Your Taxi</h1>
-          <p className="text-sm sm:text-lg font-medium text-grayDark text-center">
+          <h1 className="text-xl sm:text-5xl font-semibold text-[#18181b] text-center">Book Your Taxi</h1>
+          <p className="text-sm sm:text-lg font-medium text-[#435a67] text-center">
             You&apos;ll discover everything from whisky to Harry Potter, or even some bodysnatchers, in Scotland&apos;s captivating capital.
           </p>
 

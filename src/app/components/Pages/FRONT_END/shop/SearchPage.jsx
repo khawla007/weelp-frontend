@@ -139,7 +139,7 @@ export const SearchPage = () => {
       <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-8 p-4 sm:px-12 sm:py-4 mx-auto">
         {/* Sidebar Filters */}
         <div className="w-full sm:max-w-xs p-4 bg-white shadow-md rounded-lg">
-          <h2 className="text-lg font-medium text-[#143042] my-4">Category</h2>
+          <h2 className="text-lg font-medium text-[#18181b] my-4">Category</h2>
           <div className="flex flex-col space-y-2 h-48 overflow-scroll overflow-x-hidden">
             {categories.map((category) => (
               <label key={category.id} className="flex items-center space-x-2 cursor-pointer">
@@ -155,14 +155,14 @@ export const SearchPage = () => {
             ))}
           </div>
 
-          <h2 className="text-lg font-medium text-[#143042] mt-6 mb-4">Price Range</h2>
+          <h2 className="text-lg font-medium text-[#18181b] mt-6 mb-4">Price Range</h2>
           <ReactRangeSliderInput min={100} max={5000} step={10} value={priceRange} onInput={setPriceRange} className="w-full" />
           <div className="flex justify-between text-sm text-gray-600 mt-2">
             <span>${priceRange[0]}</span>
             <span>${priceRange[1]}</span>
           </div>
 
-          <h2 className="text-lg font-medium text-[#143042] my-4">Ratings</h2>
+          <h2 className="text-lg font-medium text-[#18181b] my-4">Ratings</h2>
           <div className="flex flex-col gap-4">
             {[3, 4, 5].map((rating) => (
               <label key={rating} className="flex cursor-pointer items-center space-x-1">
@@ -176,7 +176,7 @@ export const SearchPage = () => {
             ))}
           </div>
 
-          <h2 className="text-lg font-medium text-[#143042] my-4">Location</h2>
+          <h2 className="text-lg font-medium text-[#18181b] my-4">Location</h2>
           {locations.map((location) => (
             <label key={location.id} className="flex items-center space-x-2 pb-2 cursor-pointer">
               <input

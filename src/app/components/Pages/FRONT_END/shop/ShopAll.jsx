@@ -106,7 +106,7 @@ export const ShopAllProduct = () => {
   return (
     <>
       <section className={`bg-secondaryDark shop_banner ${Styles.shop_banner}`}>
-        <div className="flex items-center justify-center sm:justify-between  bg-[#f5f9fa] h-full min-h-20 sm:min-h-36">
+        <div className="flex items-center justify-center sm:justify-between  bg-[#f8faf9] h-full min-h-20 sm:min-h-36">
           <Icon className={'hidden sm:block -translate-x-20 '} />
           <div className="flex flex-col gap-2">
             <h1 className="font-semibold sm:text-3xl text-center text-[#18181b] ">Shop</h1>
@@ -143,7 +143,7 @@ export const ShopAllProduct = () => {
             {/* Sidebar Filters */}
             <div className="w-full h-fit sm:max-w-xs p-4 bg-white shadow-md rounded-lg">
               {/* Category Filters */}
-              <h2 className="text-lg font-medium text-[#143042] my-4">Category</h2>
+              <h2 className="text-lg font-medium text-[#18181b] my-4">Category</h2>
               <div className="w-full max-w-full flex flex-col space-y-2">
                 <label className="flex items-center space-x-2 cursor-pointer text-grayDark">
                   <input type="checkbox" checked={!selectedCategories.length} onChange={() => setSelectedCategories([])} className="size-5 cursor-pointer checked:accent-secondaryDark" />
@@ -168,7 +168,7 @@ export const ShopAllProduct = () => {
               </div>
 
               {/* Price Range Filter */}
-              <h2 className="text-lg font-medium text-[#143042] mt-6 mb-4">Price Range</h2>
+              <h2 className="text-lg font-medium text-[#18181b] mt-6 mb-4">Price Range</h2>
               <ReactRangeSliderInput min={100} max={5000} step={10} value={priceRange} onInput={setPriceRange} className="w-full" />
               <div className="w-full flex justify-between text-sm text-gray-600 mt-2">
                 <span>${priceRange[0]}</span>
@@ -176,7 +176,7 @@ export const ShopAllProduct = () => {
               </div>
 
               {/* Rating Filter */}
-              <h2 className="text-lg font-medium text-[#143042] my-4">Ratings</h2>
+              <h2 className="text-lg font-medium text-[#18181b] my-4">Ratings</h2>
               <div className="flex flex-col gap-4">
                 {[3, 4, 5].map((rating) => (
                   <label key={rating} className="flex cursor-pointer items-center space-x-1">
@@ -191,7 +191,7 @@ export const ShopAllProduct = () => {
               </div>
 
               {/* Location Filter */}
-              <h2 className="text-lg font-medium text-[#143042] my-4">Location</h2>
+              <h2 className="text-lg font-medium text-[#18181b] my-4">Location</h2>
               {useMemo(
                 () =>
                   locations.map((location) => (

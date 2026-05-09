@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { MapPin, Calendar, Users, ChevronRight, Loader2, X } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { MapPin, Calendar, Users, Loader2, X } from 'lucide-react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { getCitiesRegions } from '@/lib/services/global';
@@ -241,18 +241,18 @@ export default function ToursFilterBar() {
         <div className="flex-1 relative" ref={fromRef}>
           <div
             onClick={handleFromInputClick}
-            className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none"
+            className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
-            <MapPin size={20} className="flex-shrink-0" style={{ color: '#142a38b2' }} />
+            <MapPin size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
             <input
               type="text"
               placeholder="From?"
               value={fromInputValue}
               onChange={handleFromInputChange}
               onClick={handleFromInputClick}
-              className="w-full bg-transparent border-0 focus:outline-none text-sm font-medium placeholder:text-[#5a5a5a]"
-              style={{ color: '#5a5a5a', fontFamily: 'inherit' }}
+              className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-[#71717a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
+              style={{ color: '#52525b', fontFamily: 'inherit' }}
               autoComplete="off"
             />
           </div>
@@ -289,18 +289,18 @@ export default function ToursFilterBar() {
         <div className="flex-1 relative" ref={toRef}>
           <div
             onClick={handleToInputClick}
-            className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
+            className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
-            <MapPin size={20} className="flex-shrink-0" style={{ color: '#142a38b2' }} />
+            <MapPin size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
             <input
               type="text"
               placeholder="Where To?"
               value={toInputValue}
               onChange={handleToInputChange}
               onClick={handleToInputClick}
-              className="w-full bg-transparent border-0 focus:outline-none text-sm font-medium placeholder:text-[#5a5a5a]"
-              style={{ color: '#5a5a5a', fontFamily: 'inherit' }}
+              className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-[#71717a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
+              style={{ color: '#52525b', fontFamily: 'inherit' }}
               autoComplete="off"
             />
           </div>
@@ -346,11 +346,11 @@ export default function ToursFilterBar() {
               setShowToDropdown(false);
               setShowGuests(false);
             }}
-            className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
+            className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
-            <Calendar size={20} className="flex-shrink-0" style={{ color: '#142a38b2' }} />
-            <span className="text-sm font-medium" style={{ color: '#5a5a5a' }}>
+            <Calendar size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
+            <span className="text-sm font-medium" style={{ color: '#52525b' }}>
               {dateRange?.from && dateRange?.to
                 ? `${dateRange.from.toLocaleDateString('en-US', {
                     month: 'short',
@@ -392,11 +392,11 @@ export default function ToursFilterBar() {
               setShowToDropdown(false);
               setShowCalendar(false);
             }}
-            className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-l-none"
+            className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-l-none"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
-            <Users size={20} className="flex-shrink-0" style={{ color: '#142a38b2' }} />
-            <span className="text-sm font-medium" style={{ color: '#5a5a5a' }}>
+            <Users size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
+            <span className="text-sm font-medium" style={{ color: '#52525b' }}>
               {totalGuests > 0 ? `${totalGuests} ${totalGuests === 1 ? 'Guest' : 'Guests'}` : 'How Many?'}
             </span>
           </div>
@@ -455,9 +455,9 @@ export default function ToursFilterBar() {
                   href={buildResultUrl(item)}
                   className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-b-0 pr-10"
                 >
-                  <span className="text-sm font-semibold text-[#142a38] truncate text-left">{item.name || item.title}</span>
+                  <span className="text-sm font-semibold text-[#18181b] truncate text-left">{item.name || item.title}</span>
                   <span className="rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#588f7a]">{item.type || 'item'}</span>
-                  <span className="text-sm font-medium text-[#5a5a5a] text-right">{item.price ? `$${item.price}` : ''}</span>
+                  <span className="text-sm font-medium text-[#71717a] text-right">{item.price ? `$${item.price}` : ''}</span>
                 </NavigationLink>
               ))}
             </>
