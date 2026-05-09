@@ -26,7 +26,7 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
   return (
     <Link
       href={href}
-      className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-white p-3 sm:p-4 lg:p-[17px] border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)] hover:border-transparent ${className}`}
+      className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-white p-3 sm:p-4 lg:p-[17px] border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)] hover:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${className}`}
     >
       {/* Image */}
       <div className="relative h-[190px] w-full overflow-hidden rounded-[6px] bg-[#f2f7f5] sm:h-[200px] lg:h-[217px]">
@@ -50,7 +50,7 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
               {displayRating}
             </span>
             {displayReviewCount && (
-              <span className="text-[13px] lg:text-[14px] leading-[1.38] text-[#5a5a5a]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 400 }}>
+              <span className="text-[13px] lg:text-[14px] leading-[1.38] text-[#71717a]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 400 }}>
                 ({displayReviewCount})
               </span>
             )}
@@ -61,22 +61,22 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
         {!isFull && category && <span className="w-fit rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#588f7a]">{category}</span>}
 
         {/* Title */}
-        <h3 className="text-[15px] sm:text-base lg:text-[18px] leading-[1.59] text-[#142a38] line-clamp-2" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
+        <h3 className="text-[15px] sm:text-base lg:text-[18px] leading-[1.59] text-[#18181b] line-clamp-2" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
           {title}
         </h3>
 
-        {isFull && excerpt && <p className="text-sm leading-relaxed text-[#5a5a5a] line-clamp-2">{excerpt}</p>}
+        {isFull && excerpt && <p className="text-sm leading-relaxed text-[#71717a] line-clamp-2">{excerpt}</p>}
 
         {/* Divider + Price row — full variant */}
         {isFull && price && (
           <>
-            <div className="mt-auto" style={{ borderTop: '1.42px solid #e3e3e3' }} />
+            <div className="mt-auto border-t border-[#e4e4e7]" />
             <div className="flex items-center justify-between pt-1">
               <div className="flex flex-col">
-                <span className="text-sm lg:text-[15.6px] leading-[1.37] text-[#5a5a5a]" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontWeight: 400 }}>
+                <span className="text-sm lg:text-[15.6px] leading-[1.37] text-[#71717a]" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontWeight: 400 }}>
                   From
                 </span>
-                <span className="text-sm lg:text-[15.6px] leading-[1.37] text-[#5a5a5a]" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontWeight: 400 }}>
+                <span className="text-sm lg:text-[15.6px] leading-[1.37] text-[#71717a]" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontWeight: 400 }}>
                   {price}
                 </span>
               </div>

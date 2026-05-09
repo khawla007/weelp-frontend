@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronDown, Globe, Headphones, MapPin, Search, ShoppingCart, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
@@ -31,22 +31,22 @@ const DesktopMenu = ({ stickyHeader }) => {
       <div className={`${stickyHeader ? 'hidden' : 'block'} border-b border-[#ededed] bg-[linear-gradient(180deg,#eaeaea_0%,#ffffff66_100%)]`}>
         <div className="mx-auto flex h-[46px] w-full items-center justify-between gap-4 px-4 md:px-8 xl:px-[60px]">
           <div className="flex items-center gap-4">
-            <div className="inline-flex items-center gap-2 text-[14px] text-[#273f4e]">
-              <Smartphone className="size-[18px] text-[#273f4e]" />
+            <div className="inline-flex items-center gap-2 text-[14px] text-[#18181b]">
+              <Smartphone className="size-[18px] text-[#18181b]" />
               <span>{HEADER_PRIMARY_META[0].label}</span>
             </div>
-            <div className="inline-flex items-center gap-2 text-[14px] text-[#273f4e]">
-              <Headphones className="size-[18px] text-[#273f4e]" />
+            <div className="inline-flex items-center gap-2 text-[14px] text-[#18181b]">
+              <Headphones className="size-[18px] text-[#18181b]" />
               <span>{HEADER_PRIMARY_META[1].label}</span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="inline-flex items-center gap-[13px] text-[14px] text-[#273f4e]">
-              <Globe className="size-[18px] text-[#273f4e]" />
+            <div className="inline-flex items-center gap-[13px] text-[14px] text-[#18181b]">
+              <Globe className="size-[18px] text-[#18181b]" />
               <span>{HEADER_SECONDARY_META[0]}</span>
             </div>
-            <div className="inline-flex items-center gap-[13px] text-[14px] text-[#273f4e]">
+            <div className="inline-flex items-center gap-[13px] text-[14px] text-[#18181b]">
               <span>{HEADER_SECONDARY_META[1]}</span>
             </div>
           </div>
@@ -59,7 +59,7 @@ const DesktopMenu = ({ stickyHeader }) => {
         <div className="grid h-[66px] w-full items-center gap-4 px-4 py-[8px] md:px-8 xl:px-[60px]" style={{ gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)' }}>
           <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start focus:outline-none">
             <img src={getLogoUrl()} alt="Weelp" className="h-9 w-auto" />
-            <span className="text-[18px] font-semibold text-[#142a38]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
+            <span className="text-[18px] font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
               Weelp.
             </span>
           </Link>
@@ -105,14 +105,14 @@ const NavMenuDesktop = () => {
               <li key={nav.title} onMouseEnter={scheduleOpen} onMouseLeave={scheduleClose}>
                 <button
                   type="button"
-                  className="flex items-center gap-2 whitespace-nowrap text-[15px] font-medium text-[#142a38]/70 transition hover:text-[#142a38] focus-visible:outline-none focus-visible:text-[#142a38] xl:text-[16px]"
+                  className="flex items-center gap-2 whitespace-nowrap text-[15px] font-medium text-[#18181b]/70 transition hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm focus-visible:outline-none focus-visible:text-[#18181b] xl:text-[16px]"
                   onClick={() => setMegaOpen((v) => !v)}
                   onFocus={scheduleOpen}
                   onBlur={scheduleClose}
                   aria-expanded={megaOpen}
                   aria-haspopup="menu"
                 >
-                  {index === 0 && <MapPin className="size-[15px] text-[#142a38]/70" strokeWidth={1.24} />}
+                  {index === 0 && <MapPin className="size-[15px] text-[#18181b]/70" strokeWidth={1.24} />}
                   {nav.title}
                 </button>
               </li>
@@ -120,8 +120,8 @@ const NavMenuDesktop = () => {
           }
           return (
             <li key={nav.title}>
-              <Link className="flex items-center gap-2 whitespace-nowrap text-[15px] font-medium text-[#142a38]/70 transition hover:text-[#142a38] xl:text-[16px]" href={nav.href}>
-                {index === 0 && <MapPin className="size-[15px] text-[#142a38]/70" strokeWidth={1.24} />}
+              <Link className="flex items-center gap-2 whitespace-nowrap text-[15px] font-medium text-[#18181b]/70 transition hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm xl:text-[16px]" href={nav.href}>
+                {index === 0 && <MapPin className="size-[15px] text-[#18181b]/70" strokeWidth={1.24} />}
                 {nav.title}
               </Link>
             </li>
@@ -172,7 +172,7 @@ export const HeaderAccount = () => {
     <div className="relative justify-self-end">
       <ul className="flex items-center gap-5 xl:gap-[24px]">
         <li>
-          <button type="button" className="relative flex items-center justify-center text-[#0c2536] transition hover:text-[#142a38]" onClick={handleShowCart}>
+          <button type="button" className="relative flex items-center justify-center text-[#18181b] transition hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm" onClick={handleShowCart}>
             <ShoppingCart className="size-5" strokeWidth={1.5} />
             {cartItems?.length > 0 && <Badge className={'absolute -right-4 -top-2 scale-75'}>{cartItems?.length}</Badge>}
           </button>
@@ -181,7 +181,7 @@ export const HeaderAccount = () => {
           <NotificationBell />
         </li>
         <li>
-          <button type="button" className="flex items-center justify-center text-[#0c2536] transition hover:text-[#142a38]" onClick={handleShowForm}>
+          <button type="button" className="flex items-center justify-center text-[#18181b] transition hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm" onClick={handleShowForm}>
             <Search className="size-5" strokeWidth={1.5} />
           </button>
         </li>
@@ -189,13 +189,13 @@ export const HeaderAccount = () => {
         <li>
           <button
             type="button"
-            className="flex items-center justify-center gap-2 w-[65px] h-[40px] rounded-[30px] border border-[#d9d9d9] transition hover:bg-gray-50 overflow-hidden"
+            className="flex items-center justify-center gap-2 w-[65px] h-[40px] rounded-[30px] border border-[#e4e4e7] transition hover:bg-[#f4f4f5] overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             onClick={handleSubmenu}
           >
             {isLoggedIn && avatarSrc ? (
               <img src={avatarSrc} alt={name || 'user'} className="h-8 w-8 rounded-full object-cover shrink-0" />
             ) : isLoggedIn ? (
-              <span className="h-8 w-8 rounded-full flex items-center justify-center text-white font-semibold text-sm shrink-0" style={{ backgroundColor: '#568f7c' }}>
+              <span className="h-8 w-8 rounded-full flex items-center justify-center bg-[#588f7a] text-white font-semibold text-sm shrink-0">
                 {userInitials}
               </span>
             ) : (
@@ -212,7 +212,7 @@ export const HeaderAccount = () => {
                 </g>
               </svg>
             )}
-            <ChevronDown className="size-[16px] text-[#142a38]/70 shrink-0" strokeWidth={1.5} />
+            <ChevronDown className="size-[16px] text-[#18181b]/70 shrink-0" strokeWidth={1.5} />
           </button>
         </li>
       </ul>

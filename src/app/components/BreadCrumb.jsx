@@ -1,12 +1,11 @@
 'use client';
 import React from 'react';
-import { useParams, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 
 const BreadCrumb = ({ className }) => {
   const pathName = usePathname();
-  const { itinerary } = useParams();
 
   const pathArray = String(pathName).split('/');
 
@@ -28,16 +27,27 @@ const BreadCrumb = ({ className }) => {
     <div className={`${className}`}>
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem className={'text-base text-[#566872] font-medium last:text-[#566872]'}>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          <BreadcrumbItem className={'text-base text-[#71717a] font-medium'}>
+            <BreadcrumbLink href="/" className="transition-colors hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm">
+              Home
+            </BreadcrumbLink>
           </BreadcrumbItem>
           {items.map((item, index) => {
             const isLast = index === items.length - 1;
             return (
               <React.Fragment key={index}>
                 <BreadcrumbSeparator />
-                <BreadcrumbItem className={'capitalize text-[#566872] text-base font-medium last:font-semibold last:text-[#566872]'}>
-                  {isLast ? item.label : <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>}
+                <BreadcrumbItem className={`capitalize text-base font-medium ${isLast ? 'text-[#18181b] font-semibold' : 'text-[#71717a]'}`}>
+                  {isLast ? (
+                    item.label
+                  ) : (
+                    <BreadcrumbLink
+                      href={item.href}
+                      className="transition-colors hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+                    >
+                      {item.label}
+                    </BreadcrumbLink>
+                  )}
                 </BreadcrumbItem>
               </React.Fragment>
             );
