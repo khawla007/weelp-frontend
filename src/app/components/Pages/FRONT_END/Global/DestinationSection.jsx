@@ -6,7 +6,7 @@ const DestinationSliderSection = ({ sliderTitle = '', data }) => {
   if (sliderTitle && data) {
     return (
       <div className="container mx-auto flex flex-col gap-3 p-4 py-12 productDestination">
-        <h2 className="text-lg sm:text-[28px] font-medium text-Nileblue capitalize">{sliderTitle ? sliderTitle : 'Top Destination'}</h2>
+        <h2 className="text-lg sm:text-[28px] font-medium text-[#18181b] capitalize">{sliderTitle ? sliderTitle : 'Top Destination'}</h2>
         <DestinationSlider data={data} />
       </div>
     );
