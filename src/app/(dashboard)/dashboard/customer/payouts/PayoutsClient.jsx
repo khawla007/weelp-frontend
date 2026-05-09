@@ -48,7 +48,9 @@ function SummaryCard({ label, value }) {
   return (
     <div className="bg-white rounded-xl border border-[#e4e4e7] p-4 sm:p-5">
       <p className="text-sm text-[#71717a]">{label}</p>
-      <p className="text-2xl sm:text-3xl font-semibold text-[#18181b] mt-2" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>{value}</p>
+      <p className="text-2xl sm:text-3xl font-semibold text-[#18181b] mt-2" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+        {value}
+      </p>
     </div>
   );
 }
@@ -84,7 +86,9 @@ export default function PayoutsClient({ initial }) {
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <header>
-        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Payouts</h1>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+          Payouts
+        </h1>
         <p className="text-[#71717a] mt-1">Paid commission batches grouped by date.</p>
       </header>
 
@@ -112,7 +116,9 @@ export default function PayoutsClient({ initial }) {
 
       {rows.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-lg border border-[#e4e4e7]">
-          <p className="text-lg font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>No payouts in this period</p>
+          <p className="text-lg font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+            No payouts in this period
+          </p>
           <p className="text-[#71717a] mt-2">Paid commissions will appear here once your earnings are settled.</p>
         </div>
       ) : (

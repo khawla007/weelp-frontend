@@ -25,7 +25,9 @@ const ReviewsPage = () => {
     return (
       <Card className="shadow-none border-none bg-inherit bg-white">
         <CardHeader className={'px-8'}>
-          <CardTitle className="text-xl text-[#18181b] font-semibold" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Your Reviews</CardTitle>
+          <CardTitle className="text-xl text-[#18181b] font-semibold" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+            Your Reviews
+          </CardTitle>
           <CardDescription className="text-lg text-[#71717a]">See your reviews, thoughts.</CardDescription>
         </CardHeader>
         <div className="bg-[#f8faf9] p-8 min-h-screen flex items-center justify-center">
@@ -40,7 +42,9 @@ const ReviewsPage = () => {
     return (
       <Card className="shadow-none border-none bg-inherit bg-white">
         <CardHeader className={'px-8'}>
-          <CardTitle className="text-xl text-[#18181b] font-semibold" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Your Reviews</CardTitle>
+          <CardTitle className="text-xl text-[#18181b] font-semibold" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+            Your Reviews
+          </CardTitle>
           <CardDescription className="text-lg text-[#71717a]">See your reviews, thoughts.</CardDescription>
         </CardHeader>
         <div className="bg-[#f8faf9] p-8 min-h-screen flex items-center justify-center">
@@ -54,7 +58,9 @@ const ReviewsPage = () => {
   return (
     <Card className="shadow-none border-none bg-inherit bg-white">
       <CardHeader className={'px-8'}>
-        <CardTitle className="text-xl text-[#18181b] font-semibold" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Your Reviews</CardTitle>
+        <CardTitle className="text-xl text-[#18181b] font-semibold" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+          Your Reviews
+        </CardTitle>
         <CardDescription className="text-lg text-[#71717a]">Manage your Reviews, Create New.</CardDescription>
       </CardHeader>
       <div className="bg-[#f8faf9] p-8 min-h-screen pb-20">
