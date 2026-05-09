@@ -28,7 +28,10 @@ const BreadCrumb = ({ className }) => {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem className={'text-base text-[#71717a] font-medium'}>
-            <BreadcrumbLink href="/" className="transition-colors hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm">
+            <BreadcrumbLink
+              href="/"
+              className="transition-colors hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+            >
               Home
             </BreadcrumbLink>
           </BreadcrumbItem>

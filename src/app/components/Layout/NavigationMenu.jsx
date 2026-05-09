@@ -120,7 +120,10 @@ const NavMenuDesktop = () => {
           }
           return (
             <li key={nav.title}>
-              <Link className="flex items-center gap-2 whitespace-nowrap text-[15px] font-medium text-[#18181b]/70 transition hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm xl:text-[16px]" href={nav.href}>
+              <Link
+                className="flex items-center gap-2 whitespace-nowrap text-[15px] font-medium text-[#18181b]/70 transition hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm xl:text-[16px]"
+                href={nav.href}
+              >
                 {index === 0 && <MapPin className="size-[15px] text-[#18181b]/70" strokeWidth={1.24} />}
                 {nav.title}
               </Link>
@@ -172,7 +175,11 @@ export const HeaderAccount = () => {
     <div className="relative justify-self-end">
       <ul className="flex items-center gap-5 xl:gap-[24px]">
         <li>
-          <button type="button" className="relative flex items-center justify-center text-[#18181b] transition hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm" onClick={handleShowCart}>
+          <button
+            type="button"
+            className="relative flex items-center justify-center text-[#18181b] transition hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+            onClick={handleShowCart}
+          >
             <ShoppingCart className="size-5" strokeWidth={1.5} />
             {cartItems?.length > 0 && <Badge className={'absolute -right-4 -top-2 scale-75'}>{cartItems?.length}</Badge>}
           </button>
@@ -181,7 +188,11 @@ export const HeaderAccount = () => {
           <NotificationBell />
         </li>
         <li>
-          <button type="button" className="flex items-center justify-center text-[#18181b] transition hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm" onClick={handleShowForm}>
+          <button
+            type="button"
+            className="flex items-center justify-center text-[#18181b] transition hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+            onClick={handleShowForm}
+          >
             <Search className="size-5" strokeWidth={1.5} />
           </button>
         </li>
@@ -195,9 +206,7 @@ export const HeaderAccount = () => {
             {isLoggedIn && avatarSrc ? (
               <img src={avatarSrc} alt={name || 'user'} className="h-8 w-8 rounded-full object-cover shrink-0" />
             ) : isLoggedIn ? (
-              <span className="h-8 w-8 rounded-full flex items-center justify-center bg-[#588f7a] text-white font-semibold text-sm shrink-0">
-                {userInitials}
-              </span>
+              <span className="h-8 w-8 rounded-full flex items-center justify-center bg-[#588f7a] text-white font-semibold text-sm shrink-0">{userInitials}</span>
             ) : (
               <svg width="32" height="32" viewBox="0 0 36 36" fill="none" className="shrink-0">
                 <defs>
