@@ -92,13 +92,13 @@ Holiday Page (page, bg: #f8faf9)
 
 ## Reconciliation log (2026-05-09)
 
-| Framer export | Canonical token | Role |
-|---|---|---|
-| `#143042` | `#18181b` (ink) | Headline text |
-| `#5a5a5a` | `#52525b` (label) / `#71717a` (copy) | Field labels / body |
-| `#273f4e` | `#18181b` (ink) | Section title |
-| `#6f7680` | `#71717a` (copy) | Submit button text replaced by primary button white |
-| `#f5f9fa` | `#f8faf9` (page) | Hero background |
-| `#dfdfeb` | `#ffffff` 80% | Image-overlay supporting text |
+| Framer export | Canonical token                      | Role                                                |
+| ------------- | ------------------------------------ | --------------------------------------------------- |
+| `#143042`     | `#18181b` (ink)                      | Headline text                                       |
+| `#5a5a5a`     | `#52525b` (label) / `#71717a` (copy) | Field labels / body                                 |
+| `#273f4e`     | `#18181b` (ink)                      | Section title                                       |
+| `#6f7680`     | `#71717a` (copy)                     | Submit button text replaced by primary button white |
+| `#f5f9fa`     | `#f8faf9` (page)                     | Hero background                                     |
+| `#dfdfeb`     | `#ffffff` 80%                        | Image-overlay supporting text                       |
 
 If you reach for any of the left-column values when implementing this surface, stop — DESIGN.md owns the right-column instead.

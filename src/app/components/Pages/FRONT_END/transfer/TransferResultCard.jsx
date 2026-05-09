@@ -147,12 +147,21 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
               {formatCurrency(unitPrice, currency)} × {headcount} pax
             </span>
           )}
-          <button type="button" onClick={() => setExpanded((v) => !v)} className="text-[#71717a] text-xs flex items-center gap-1 hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded transition-colors mt-1" aria-expanded={expanded}>
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            className="text-[#71717a] text-xs flex items-center gap-1 hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded transition-colors mt-1"
+            aria-expanded={expanded}
+          >
             <span>Detailed Breakdown</span>
             <ChevronDown className={`h-3 w-3 transition-transform ${expanded ? 'rotate-180' : ''}`} />
           </button>
         </div>
-        <Button type="button" onClick={handleSelectClick} className="bg-[#588f7a] hover:bg-[#4d8069] text-white px-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white">
+        <Button
+          type="button"
+          onClick={handleSelectClick}
+          className="bg-[#588f7a] hover:bg-[#4d8069] text-white px-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+        >
           Select
         </Button>
       </div>
