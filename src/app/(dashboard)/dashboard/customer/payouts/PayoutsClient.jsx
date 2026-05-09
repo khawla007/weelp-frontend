@@ -46,9 +46,9 @@ function toIso(d) {
 
 function SummaryCard({ label, value }) {
   return (
-    <div className="bg-white rounded-xl border border-[#435a6742] p-4 sm:p-5">
-      <p className="text-sm text-[#5A5A5A]">{label}</p>
-      <p className="text-2xl sm:text-3xl font-bold text-[#142A38] mt-2">{value}</p>
+    <div className="bg-white rounded-xl border border-[#e4e4e7] p-4 sm:p-5">
+      <p className="text-sm text-[#71717a]">{label}</p>
+      <p className="text-2xl sm:text-3xl font-semibold text-[#18181b] mt-2" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>{value}</p>
     </div>
   );
 }
@@ -84,8 +84,8 @@ export default function PayoutsClient({ initial }) {
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <header>
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#142A38]">Payouts</h1>
-        <p className="text-[#5A5A5A] mt-1">Paid commission batches grouped by date.</p>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Payouts</h1>
+        <p className="text-[#71717a] mt-1">Paid commission batches grouped by date.</p>
       </header>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -103,7 +103,7 @@ export default function PayoutsClient({ initial }) {
               setPreset(p.key);
               setPage(1);
             }}
-            className={preset === p.key ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#435a6742] text-[#435a67]'}
+            className={preset === p.key ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#e4e4e7] text-[#52525b]'}
           >
             {p.label}
           </Button>
@@ -111,13 +111,13 @@ export default function PayoutsClient({ initial }) {
       </section>
 
       {rows.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-lg border border-[#435a6742]">
-          <p className="text-lg text-[#142A38]">No payouts in this period</p>
-          <p className="text-[#5A5A5A] mt-2">Paid commissions will appear here once your earnings are settled.</p>
+        <div className="text-center py-16 bg-white rounded-lg border border-[#e4e4e7]">
+          <p className="text-lg font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>No payouts in this period</p>
+          <p className="text-[#71717a] mt-2">Paid commissions will appear here once your earnings are settled.</p>
         </div>
       ) : (
         <>
-          <div className="hidden md:block bg-white rounded-lg border border-[#435a6742]">
+          <div className="hidden md:block bg-white rounded-lg border border-[#e4e4e7]">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -140,12 +140,12 @@ export default function PayoutsClient({ initial }) {
 
           <div className="md:hidden space-y-3">
             {rows.map((r) => (
-              <div key={r.payout_date} className="bg-white rounded-lg border border-[#435a6742] p-4 space-y-2">
+              <div key={r.payout_date} className="bg-white rounded-lg border border-[#e4e4e7] p-4 space-y-2">
                 <div className="flex justify-between items-start">
-                  <div className="font-medium text-[#142A38]">{fmtDate(r.payout_date)}</div>
-                  <div className="font-semibold text-[#142A38]">{fmtCurrency(r.total_amount)}</div>
+                  <div className="font-medium text-[#18181b]">{fmtDate(r.payout_date)}</div>
+                  <div className="font-semibold text-[#18181b]">{fmtCurrency(r.total_amount)}</div>
                 </div>
-                <div className="text-sm text-[#5A5A5A]">
+                <div className="text-sm text-[#71717a]">
                   {r.commission_count} commission{r.commission_count === 1 ? '' : 's'}
                 </div>
               </div>
@@ -154,7 +154,7 @@ export default function PayoutsClient({ initial }) {
 
           {pagination.last_page > 1 && (
             <div className="flex items-center justify-between text-sm">
-              <span className="text-[#5A5A5A]">
+              <span className="text-[#71717a]">
                 Page {pagination.current_page} of {pagination.last_page}
               </span>
               <div className="flex gap-2">

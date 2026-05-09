@@ -15,7 +15,7 @@ function StatCardsSkeleton() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {[0, 1, 2].map((i) => (
-        <div key={i} className="h-28 rounded-xl bg-white border border-[#435a6742] animate-pulse" />
+        <div key={i} className="h-28 rounded-xl bg-white border border-[#e4e4e7] animate-pulse" />
       ))}
     </div>
   );
@@ -31,8 +31,8 @@ export default async function OverviewPage() {
   return (
     <div className="p-4 sm:p-6 lg:p-8">
       <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#142A38]">Dashboard Overview</h1>
-        <p className="text-[#5A5A5A] mt-1">Here&apos;s what&apos;s happening with your content.</p>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Dashboard Overview</h1>
+        <p className="text-[#71717a] mt-1">Here&apos;s what&apos;s happening with your content.</p>
       </div>
 
       <section className="mb-6 sm:mb-8">
@@ -42,7 +42,7 @@ export default async function OverviewPage() {
       </section>
 
       <section className="mb-6 sm:mb-8">
-        <h2 className="text-lg font-semibold text-[#142A38] mb-4">Quick Actions</h2>
+        <h2 className="text-lg font-semibold text-[#18181b] mb-4" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Quick Actions</h2>
         <QuickActions />
       </section>
 

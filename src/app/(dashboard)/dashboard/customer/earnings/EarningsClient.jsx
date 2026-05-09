@@ -68,9 +68,9 @@ function statusBadgeVariant(status) {
 
 function SummaryCard({ label, value }) {
   return (
-    <div className="bg-white rounded-xl border border-[#435a6742] p-4 sm:p-5">
-      <p className="text-sm text-[#5A5A5A]">{label}</p>
-      <p className="text-2xl sm:text-3xl font-bold text-[#142A38] mt-2">{value}</p>
+    <div className="bg-white rounded-xl border border-[#e4e4e7] p-4 sm:p-5">
+      <p className="text-sm text-[#71717a]">{label}</p>
+      <p className="text-2xl sm:text-3xl font-semibold text-[#18181b] mt-2" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>{value}</p>
     </div>
   );
 }
@@ -108,8 +108,8 @@ export default function EarningsClient({ initial }) {
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <header>
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#142A38]">Earnings</h1>
-        <p className="text-[#5A5A5A] mt-1">Commissions from your published itineraries.</p>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Earnings</h1>
+        <p className="text-[#71717a] mt-1">Commissions from your published itineraries.</p>
       </header>
 
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -129,7 +129,7 @@ export default function EarningsClient({ initial }) {
                 setStatus(tab);
                 setPage(1);
               }}
-              className={status === tab ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#435a6742] text-[#435a67]'}
+              className={status === tab ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#e4e4e7] text-[#52525b]'}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </Button>
@@ -145,7 +145,7 @@ export default function EarningsClient({ initial }) {
                 setPreset(p.key);
                 setPage(1);
               }}
-              className={preset === p.key ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#435a6742] text-[#435a67]'}
+              className={preset === p.key ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#e4e4e7] text-[#52525b]'}
             >
               {p.label}
             </Button>
@@ -154,13 +154,13 @@ export default function EarningsClient({ initial }) {
       </section>
 
       {rows.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-lg border border-[#435a6742]">
-          <p className="text-lg text-[#142A38]">No earnings in this period</p>
-          <p className="text-[#5A5A5A] mt-2">Once your itineraries get booked you&apos;ll see commissions here.</p>
+        <div className="text-center py-16 bg-white rounded-lg border border-[#e4e4e7]">
+          <p className="text-lg font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>No earnings in this period</p>
+          <p className="text-[#71717a] mt-2">Once your itineraries get booked you&apos;ll see commissions here.</p>
         </div>
       ) : (
         <>
-          <div className="hidden md:block bg-white rounded-lg border border-[#435a6742]">
+          <div className="hidden md:block bg-white rounded-lg border border-[#e4e4e7]">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -201,19 +201,19 @@ export default function EarningsClient({ initial }) {
 
           <div className="md:hidden space-y-3">
             {rows.map((r) => (
-              <div key={r.id} className="bg-white rounded-lg border border-[#435a6742] p-4 space-y-2">
+              <div key={r.id} className="bg-white rounded-lg border border-[#e4e4e7] p-4 space-y-2">
                 <div className="flex justify-between items-start">
-                  <div className="font-medium text-[#142A38]">{r.itinerary?.name || '-'}</div>
+                  <div className="font-medium text-[#18181b]">{r.itinerary?.name || '-'}</div>
                   <Badge variant={statusBadgeVariant(r.status)}>{r.status}</Badge>
                 </div>
-                <div className="text-sm text-[#5A5A5A]">
+                <div className="text-sm text-[#71717a]">
                   {fmtDate(r.created_at)} · Order #{r.order_id}
                 </div>
-                <div className="flex justify-between text-sm pt-2 border-t border-gray-100">
+                <div className="flex justify-between text-sm pt-2 border-t border-[#eaeaea]">
                   <span>
                     Gross: {fmtCurrency(r.gross_amount)} · {r.commission_rate}%
                   </span>
-                  <span className="font-semibold text-[#142A38]">+{fmtCurrency(r.commission_amount)}</span>
+                  <span className="font-semibold text-[#18181b]">+{fmtCurrency(r.commission_amount)}</span>
                 </div>
               </div>
             ))}
@@ -221,7 +221,7 @@ export default function EarningsClient({ initial }) {
 
           {pagination.last_page > 1 && (
             <div className="flex items-center justify-between text-sm">
-              <span className="text-[#5A5A5A]">
+              <span className="text-[#71717a]">
                 Page {pagination.current_page} of {pagination.last_page}
               </span>
               <div className="flex gap-2">

@@ -25,11 +25,11 @@ const ReviewsPage = () => {
     return (
       <Card className="shadow-none border-none bg-inherit bg-white">
         <CardHeader className={'px-8'}>
-          <CardTitle className="text-xl text-Blueish font-medium">Your Reviews</CardTitle>
-          <CardDescription className="text-lg text-grayDark">See your reviews, thoughts.</CardDescription>
+          <CardTitle className="text-xl text-[#18181b] font-semibold" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Your Reviews</CardTitle>
+          <CardDescription className="text-lg text-[#71717a]">See your reviews, thoughts.</CardDescription>
         </CardHeader>
-        <div className="bg-[#f5f9fa] p-8 min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-Blueish"></div>
+        <div className="bg-[#f8faf9] p-8 min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-secondaryDark"></div>
         </div>
       </Card>
     );
@@ -40,10 +40,10 @@ const ReviewsPage = () => {
     return (
       <Card className="shadow-none border-none bg-inherit bg-white">
         <CardHeader className={'px-8'}>
-          <CardTitle className="text-xl text-Blueish font-medium">Your Reviews</CardTitle>
-          <CardDescription className="text-lg text-grayDark">See your reviews, thoughts.</CardDescription>
+          <CardTitle className="text-xl text-[#18181b] font-semibold" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Your Reviews</CardTitle>
+          <CardDescription className="text-lg text-[#71717a]">See your reviews, thoughts.</CardDescription>
         </CardHeader>
-        <div className="bg-[#f5f9fa] p-8 min-h-screen flex items-center justify-center">
+        <div className="bg-[#f8faf9] p-8 min-h-screen flex items-center justify-center">
           <p className="text-red-500">Failed to load reviews. Please try again.</p>
         </div>
       </Card>
@@ -54,11 +54,11 @@ const ReviewsPage = () => {
   return (
     <Card className="shadow-none border-none bg-inherit bg-white">
       <CardHeader className={'px-8'}>
-        <CardTitle className="text-xl text-Blueish font-medium">Your Reviews</CardTitle>
-        <CardDescription className="text-lg text-grayDark">Manage your Reviews, Create New.</CardDescription>
+        <CardTitle className="text-xl text-[#18181b] font-semibold" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>Your Reviews</CardTitle>
+        <CardDescription className="text-lg text-[#71717a]">Manage your Reviews, Create New.</CardDescription>
       </CardHeader>
-      <div className="bg-[#f5f9fa] p-8 min-h-screen pb-20">
-        <div className="flex flex-col bg-[#F5F9FA] gap-4">
+      <div className="bg-[#f8faf9] p-8 min-h-screen pb-20">
+        <div className="flex flex-col bg-[#f8faf9] gap-4">
           <CustomerReviewList reviews={reviews} mutate={mutate} />
 
           {/* Pagination */}

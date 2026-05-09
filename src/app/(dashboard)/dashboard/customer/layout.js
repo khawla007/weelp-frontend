@@ -15,9 +15,9 @@ export default function UserLayout({ children }) {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
-      <div className="flex flex-1 relative bg-[#F5F9FA]">
+      <div className="flex flex-1 relative bg-[#f8faf9]">
         <DashboardSidebar nav={DashboardUserNav.userRoutes} user={user} />
-        <main className="flex-1 w-full dark:bg-black">
+        <main className="flex-1 w-full dark:bg-[#18181b]">
           <DashboardContentWrapper>{children}</DashboardContentWrapper>
           <Toaster />
         </main>
