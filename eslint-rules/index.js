@@ -214,8 +214,7 @@ const noInlineStyleHex = {
       },
     ],
     messages: {
-      drift:
-        'Non-canonical hex {{hex}} in inline `style.{{prop}}`. Use a token from DESIGN.md §2 (e.g. `#18181b`, `#71717a`, `#588f7a`) or move the value to a className.',
+      drift: 'Non-canonical hex {{hex}} in inline `style.{{prop}}`. Use a token from DESIGN.md §2 (e.g. `#18181b`, `#71717a`, `#588f7a`) or move the value to a className.',
     },
   },
   create(context) {
