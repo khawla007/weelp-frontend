@@ -89,7 +89,7 @@ export function DeleteItem({ id, name, onClose }) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className={'bg-secondaryDark'} onClick={removeItemAlertAction}>
+          <AlertDialogAction className={'bg-[#588f7a]'} onClick={removeItemAlertAction}>
             Continue
           </AlertDialogAction>
         </AlertDialogFooter>
