@@ -51,6 +51,16 @@ const eslintConfig = [
       'weelp/no-noncanonical-container': 'error',
       'weelp/no-inline-heading-font': 'error',
       'weelp/no-inline-style-hex': 'error',
+      'weelp/no-semantic-gray': 'error',
+    },
+  },
+  // Primitive Baseline Exception (DESIGN.md §5): shadcn primitives keep
+  // their stock `neutral-*` / `gray-*` palette — perceptual delta below
+  // noise floor, re-hexing 32 files for high blast / low signal.
+  {
+    files: ['src/components/ui/**/*.{js,jsx,ts,tsx}'],
+    rules: {
+      'weelp/no-semantic-gray': 'off',
     },
   },
   // Reading-Column Exception (DESIGN.md §7): legal pages keep max-w-4xl

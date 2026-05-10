@@ -29,14 +29,14 @@ export function AuthPageClient({ defaultTab = 'login', returnUrl = null }) {
         <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: 'url("/assets/images/auth-hero.jpg")' }} />
         <div className="relative z-10 flex flex-col items-center justify-center h-full p-8 text-center">
           <img src="/assets/images/SiteLogo.png" alt="Weelp" width={150} height={52} className="mb-4" />
-          <h1 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-2">Welcome to Weelp</h1>
-          <p className="text-gray-700">Your journey to amazing destinations starts here</p>
+          <h1 className="text-3xl lg:text-4xl font-semibold text-zinc-900 mb-2">Welcome to Weelp</h1>
+          <p className="text-zinc-700">Your journey to amazing destinations starts here</p>
         </div>
       </div>
 
       {/* Right Side - Auth Form (50% on desktop, 65% on mobile) */}
       <div className="lg:w-1/2 flex items-center justify-center py-4 lg:py-8">
-        <div className="w-full max-w-[35rem] bg-white rounded-2xl shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.9)] border border-gray-100 p-10">
+        <div className="w-full max-w-[35rem] bg-white rounded-2xl shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.9)] border border-zinc-100 p-10">
           {/* Logo */}
           <div className="flex justify-center mb-6">
             <img src="/assets/images/SiteLogo.png" alt="Weelp" width={122} height={42} />

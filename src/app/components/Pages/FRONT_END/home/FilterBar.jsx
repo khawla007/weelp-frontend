@@ -251,17 +251,17 @@ export default function FilterBar() {
                         setShowLocation(false);
                         fetchPreviewResults(locValue, watchedFrom, howMany);
                       }}
-                      className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                      className="flex items-center justify-between px-4 py-2 hover:bg-zinc-100 cursor-pointer text-sm"
                     >
                       <div className="flex items-center gap-2">
-                        <MapPin size={14} className="text-gray-400 flex-shrink-0" />
+                        <MapPin size={14} className="text-zinc-400 flex-shrink-0" />
                         <span>{loc.name}</span>
                       </div>
-                      <span className="text-[10px] uppercase tracking-wider text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">{loc.type}</span>
+                      <span className="text-[10px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded">{loc.type}</span>
                     </div>
                   ))
                 ) : (
-                  <div className="px-4 py-3 text-sm text-gray-400 text-center">No cities match that yet.</div>
+                  <div className="px-4 py-3 text-sm text-zinc-400 text-center">No cities match that yet.</div>
                 )}
               </div>
             )}
@@ -348,14 +348,14 @@ export default function FilterBar() {
                   <div key={type} className="flex justify-between items-center mb-3">
                     <div>
                       <span className="font-medium capitalize text-sm">{type}</span>
-                      <span className="text-xs text-gray-500 block">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
+                      <span className="text-xs text-zinc-500 block">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <button type="button" onClick={() => handleDecrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-gray-100">
+                      <button type="button" onClick={() => handleDecrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-zinc-100">
                         -
                       </button>
                       <span className="w-6 text-center">{howMany[type]}</span>
-                      <button type="button" onClick={() => handleIncrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-gray-100">
+                      <button type="button" onClick={() => handleIncrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-zinc-100">
                         +
                       </button>
                     </div>
@@ -379,19 +379,19 @@ export default function FilterBar() {
       {showPreview && (
         <div
           ref={previewRef}
-          className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50"
+          className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-zinc-100 overflow-hidden z-50"
           style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
         >
           <button
             type="button"
             onClick={() => setShowPreview(false)}
-            className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors z-10"
+            className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full hover:bg-zinc-100 transition-colors z-10"
             aria-label="Close preview"
           >
-            <X size={14} className="text-gray-400" />
+            <X size={14} className="text-zinc-400" />
           </button>
           {previewLoading ? (
-            <div className="flex items-center justify-center gap-2 py-6 text-sm text-gray-400">
+            <div className="flex items-center justify-center gap-2 py-6 text-sm text-zinc-400">
               <Loader2 size={16} className="animate-spin" />
               <span>Searching the catalog…</span>
             </div>
@@ -401,7 +401,7 @@ export default function FilterBar() {
                 <Link
                   key={item.id}
                   href={item.href}
-                  className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-b-0 pr-10"
+                  className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-zinc-50 transition-colors border-b border-zinc-50 last:border-b-0 pr-10"
                 >
                   <span className="text-sm font-semibold text-[#18181b] truncate text-left">{item.title}</span>
                   <span className="rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#588f7a]">{item.category}</span>
@@ -410,14 +410,14 @@ export default function FilterBar() {
               ))}
               <Link
                 href={buildSearchUrl(watchedWhereTo, watchedFrom, watchedhowMany)}
-                className="flex items-center justify-center gap-1.5 px-4 py-3 text-sm font-semibold text-[#588f7a] hover:bg-[#588f7a]/5 transition-colors border-t border-gray-100"
+                className="flex items-center justify-center gap-1.5 px-4 py-3 text-sm font-semibold text-[#588f7a] hover:bg-[#588f7a]/5 transition-colors border-t border-zinc-100"
               >
                 See all matches
                 <ChevronRight size={14} />
               </Link>
             </>
           ) : (
-            <div className="py-6 text-center text-sm text-gray-400">Nothing matches that combination yet.</div>
+            <div className="py-6 text-center text-sm text-zinc-400">Nothing matches that combination yet.</div>
           )}
         </div>
       )}

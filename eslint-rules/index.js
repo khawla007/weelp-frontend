@@ -1,11 +1,12 @@
 /**
  * Weelp custom ESLint rules — Impeccable Cascade Phase 12 + 13 lint guards.
  *
- * Encodes four named rules from frontend/DESIGN.md:
+ * Encodes five named rules from frontend/DESIGN.md:
  *   1. weelp/no-noncanonical-hex       — §2 canonical token allow-list (className)
  *   2. weelp/no-noncanonical-container — §7 Single-Container Rule + exceptions
  *   3. weelp/no-inline-heading-font    — §3 Global-Heading Rule
  *   4. weelp/no-inline-style-hex       — §2 canonical token allow-list (inline style)
+ *   5. weelp/no-semantic-gray          — §5 Primitive Baseline (zinc canonical, gray/neutral drift)
  *
  * Zero-dependency: pure ESLint AST visitors over JSX. No tailwind plugin.
  */
@@ -251,11 +252,44 @@ const noInlineStyleHex = {
   },
 };
 
+const SEMANTIC_GRAY_PATTERN = /\b(text|bg|border|ring|from|to|via|stroke|outline|divide|placeholder|caret|accent|shadow|decoration)-(gray|neutral)-[0-9]+\b/g;
+
+const noSemanticGray = {
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Disallow Tailwind `gray-*` / `neutral-*` palette outside grandfathered shadcn primitives — canonical neutral is `zinc-*` (DESIGN.md §5).',
+    },
+    schema: [],
+    messages: {
+      drift:
+        '`{{cls}}` uses non-canonical neutral palette. Replace with `zinc-*` (DESIGN.md §5 — primitives in `src/components/ui` are grandfathered via eslint override).',
+    },
+  },
+  create(context) {
+    return {
+      JSXAttribute(attr) {
+        if (!attr.name || attr.name.name !== 'className') return;
+        const strings = collectClassStrings(attr.value);
+        for (const { value, node } of strings) {
+          let m;
+          SEMANTIC_GRAY_PATTERN.lastIndex = 0;
+          while ((m = SEMANTIC_GRAY_PATTERN.exec(value)) !== null) {
+            context.report({ node, messageId: 'drift', data: { cls: m[0] } });
+          }
+        }
+      },
+    };
+  },
+};
+
 export default {
   rules: {
     'no-noncanonical-hex': noNoncanonicalHex,
     'no-noncanonical-container': noNoncanonicalContainer,
     'no-inline-heading-font': noInlineHeadingFont,
     'no-inline-style-hex': noInlineStyleHex,
+    'no-semantic-gray': noSemanticGray,
   },
 };

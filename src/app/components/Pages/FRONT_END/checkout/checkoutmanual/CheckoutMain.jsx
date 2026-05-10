@@ -122,7 +122,7 @@ export default function CheckoutMainManual() {
 
   //  is the key point: Only render <Elements> once clientSecret is available
   if (!clientSecret) {
-    return <div className="text-center text-gray-600">Something went wrong. Please refresh.</div>;
+    return <div className="text-center text-zinc-600">Something went wrong. Please refresh.</div>;
   }
 
   return (

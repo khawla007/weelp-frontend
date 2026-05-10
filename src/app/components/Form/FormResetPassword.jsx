@@ -154,24 +154,24 @@ export const FormResetPassword = () => {
             {password && (
               <>
                 <div className="mt-2 space-y-1 text-xs">
-                  <p className="text-gray-500 font-medium mb-1">Password must contain:</p>
-                  <div className={`flex items-center gap-1 ${password.length >= 8 ? 'text-green-600' : 'text-gray-400'}`}>
+                  <p className="text-zinc-500 font-medium mb-1">Password must contain:</p>
+                  <div className={`flex items-center gap-1 ${password.length >= 8 ? 'text-green-600' : 'text-zinc-400'}`}>
                     {password.length >= 8 ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                     <span>At least 8 characters</span>
                   </div>
-                  <div className={`flex items-center gap-1 ${/[A-Z]/.test(password) ? 'text-green-600' : 'text-gray-400'}`}>
+                  <div className={`flex items-center gap-1 ${/[A-Z]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
                     {/[A-Z]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                     <span>One uppercase letter (A-Z)</span>
                   </div>
-                  <div className={`flex items-center gap-1 ${/[a-z]/.test(password) ? 'text-green-600' : 'text-gray-400'}`}>
+                  <div className={`flex items-center gap-1 ${/[a-z]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
                     {/[a-z]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                     <span>One lowercase letter (a-z)</span>
                   </div>
-                  <div className={`flex items-center gap-1 ${/[0-9]/.test(password) ? 'text-green-600' : 'text-gray-400'}`}>
+                  <div className={`flex items-center gap-1 ${/[0-9]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
                     {/[0-9]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                     <span>One number (0-9)</span>
                   </div>
-                  <div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? 'text-green-600' : 'text-gray-400'}`}>
+                  <div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
                     {/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                     <span>One special character</span>
                   </div>
@@ -209,7 +209,7 @@ export const FormResetPassword = () => {
             type="submit"
             disabled={isSubmitting || !password || !isPasswordValid(password) || password !== passwordConfirmation}
             className={`w-full p-4 rounded-md ${
-              isSubmitting || !password || !isPasswordValid(password) || password !== passwordConfirmation ? 'bg-gray-400 cursor-not-allowed' : 'bg-secondaryDark hover:bg-secondarylight text-white'
+              isSubmitting || !password || !isPasswordValid(password) || password !== passwordConfirmation ? 'bg-zinc-400 cursor-not-allowed' : 'bg-secondaryDark hover:bg-secondarylight text-white'
             }`}
           >
             {isSubmitting ? 'Processing...' : 'Continue'}

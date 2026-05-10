@@ -42,7 +42,7 @@ export default function NotificationWidget({ session }) {
   const unreadCount = (notifications || []).filter((n) => !n.read_at).length;
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5">
+    <div className="bg-white rounded-xl border border-zinc-200 p-5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Bell size={18} className="text-[#18181b]" />
@@ -57,21 +57,21 @@ export default function NotificationWidget({ session }) {
       </div>
 
       {loading ? (
-        <p className="text-sm text-gray-400 text-center py-4">Loading...</p>
+        <p className="text-sm text-zinc-400 text-center py-4">Loading...</p>
       ) : (notifications || []).length === 0 ? (
-        <p className="text-sm text-gray-400 text-center py-4">No notifications yet</p>
+        <p className="text-sm text-zinc-400 text-center py-4">No notifications yet</p>
       ) : (
         <div className="space-y-3">
           {(notifications || []).map((notif) => {
             const IconComponent = TYPE_ICONS[notif.type] || Bell;
-            const iconColor = TYPE_COLORS[notif.type] || 'text-gray-400';
+            const iconColor = TYPE_COLORS[notif.type] || 'text-zinc-400';
             return (
-              <div key={notif.id} className={`flex items-start gap-3 p-3 rounded-lg ${!notif.read_at ? 'bg-[#588f7a]/5' : 'bg-gray-50'}`}>
+              <div key={notif.id} className={`flex items-start gap-3 p-3 rounded-lg ${!notif.read_at ? 'bg-[#588f7a]/5' : 'bg-zinc-50'}`}>
                 <IconComponent size={18} className={`mt-0.5 flex-shrink-0 ${iconColor}`} />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-[#18181b]">{notif.title}</p>
-                  <p className="text-xs text-gray-500 line-clamp-2 mt-0.5">{notif.message}</p>
-                  <p className="text-xs text-gray-400 mt-1">{timeAgo(notif.created_at)}</p>
+                  <p className="text-xs text-zinc-500 line-clamp-2 mt-0.5">{notif.message}</p>
+                  <p className="text-xs text-zinc-400 mt-1">{timeAgo(notif.created_at)}</p>
                 </div>
               </div>
             );

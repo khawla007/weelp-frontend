@@ -376,7 +376,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                 {username && username.length >= 3 && (
                   <div className="absolute right-10">
                     {isCheckingUsername ? (
-                      <LoaderCircle className="text-gray-400 size-5 animate-spin" />
+                      <LoaderCircle className="text-zinc-400 size-5 animate-spin" />
                     ) : usernameError ? (
                       <X className="text-red-500 size-5" strokeWidth={3} />
                     ) : (
@@ -425,24 +425,24 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
               {password && (
                 <>
                   <div className="mt-2 space-y-1 text-xs">
-                    <p className="text-gray-500 font-medium mb-1">Password must contain:</p>
-                    <div className={`flex items-center gap-1 ${password.length >= 8 ? 'text-green-600' : 'text-gray-400'}`}>
+                    <p className="text-zinc-500 font-medium mb-1">Password must contain:</p>
+                    <div className={`flex items-center gap-1 ${password.length >= 8 ? 'text-green-600' : 'text-zinc-400'}`}>
                       {password.length >= 8 ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                       <span>At least 8 characters</span>
                     </div>
-                    <div className={`flex items-center gap-1 ${/[A-Z]/.test(password) ? 'text-green-600' : 'text-gray-400'}`}>
+                    <div className={`flex items-center gap-1 ${/[A-Z]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
                       {/[A-Z]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                       <span>One uppercase letter (A-Z)</span>
                     </div>
-                    <div className={`flex items-center gap-1 ${/[a-z]/.test(password) ? 'text-green-600' : 'text-gray-400'}`}>
+                    <div className={`flex items-center gap-1 ${/[a-z]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
                       {/[a-z]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                       <span>One lowercase letter (a-z)</span>
                     </div>
-                    <div className={`flex items-center gap-1 ${/[0-9]/.test(password) ? 'text-green-600' : 'text-gray-400'}`}>
+                    <div className={`flex items-center gap-1 ${/[0-9]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
                       {/[0-9]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                       <span>One number (0-9)</span>
                     </div>
-                    <div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? 'text-green-600' : 'text-gray-400'}`}>
+                    <div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
                       {/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                       <span>One special character</span>
                     </div>
@@ -481,7 +481,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full h-auto py-3 rounded-lg text-base border border-[#588f7a] transition-all duration-200 ${isSubmitting ? 'bg-gray-400 cursor-not-allowed border-gray-400' : 'bg-[#588f7a] text-white hover:bg-white hover:text-[#588f7a]'}`}
+                className={`w-full h-auto py-3 rounded-lg text-base border border-[#588f7a] transition-all duration-200 ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed border-zinc-400' : 'bg-[#588f7a] text-white hover:bg-white hover:text-[#588f7a]'}`}
               >
                 {isSubmitting ? (
                   <>
@@ -523,7 +523,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
               type="button"
               onClick={handleResendOtp}
               disabled={timeUntilResend > 0 || isResending}
-              className="text-sm font-semibold text-secondaryDark hover:underline disabled:text-gray-400 disabled:no-underline"
+              className="text-sm font-semibold text-secondaryDark hover:underline disabled:text-zinc-400 disabled:no-underline"
             >
               {isResending ? 'Sending...' : timeUntilResend > 0 ? `Resend in ${timeUntilResend}s` : 'Resend OTP'}
             </button>
