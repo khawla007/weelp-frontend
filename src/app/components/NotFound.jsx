@@ -23,7 +23,7 @@ import clsx from 'clsx';
 export function NotFoundComponent({ url = '/' }) {
   return (
     <div className="h-[50vh] flex flex-col items-center justify-center gap-4 text-center">
-      <h2 className="text-blueish font-semibold text-lg sm:text-2xl">Not Found</h2>
+      <h2 className="font-semibold text-lg sm:text-2xl">Not Found</h2>
       <p className="text-muted-foreground text-sm sm:text-base">Could not find the requested resource</p>
       <Link href={url} className={clsx(buttonVariants({ variant: 'default' }), 'bg-secondaryDark')}>
         Click Here to Go Back
