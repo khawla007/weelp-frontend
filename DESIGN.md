@@ -113,7 +113,7 @@ the purple-gradient SaaS dashboard cliché on the operator side.
 **Key Characteristics:**
 
 - Restrained color strategy: tinted neutrals plus a single sage accent at ≤10% surface area on brand pages.
-- Editorial type pairing: Inter Tight for headlines and body, Inter for small UI labels, Degular as a decorative accent only. See `frontend/docs/typography.md` for the pen-derived tier reference.
+- Editorial type pairing: Inter Tight for headlines and body, Inter for small UI labels, Degular as a decorative accent only. See `docs/frontend-design-correction/typography.md` for the pen-derived tier reference.
 - Flat surfaces by default; depth appears only on intent (hover, focus).
 - Cards used sparingly. The default answer is whitespace and rhythm, not a card grid.
 - Imagery is destination-led; chrome and decoration recede when a strong photo is present.
@@ -168,7 +168,7 @@ New brand-signal exceptions must be opted in explicitly via `eslint.config.mjs` 
 
 ## 3. Typography
 
-The canonical reference is `Designs/pencil-homepage.pen`. The full pen-derived tier reference lives at `frontend/docs/typography.md`. This section is the in-DESIGN summary.
+The canonical reference is `Designs/pencil-homepage.pen`. The full pen-derived tier reference lives at `docs/frontend-design-correction/typography.md`. This section is the in-DESIGN summary.
 
 **Primary Font:** Inter Tight (Google) — headings, body, buttons, links. The pen file uses Inter Tight on ~84% of all text nodes.
 **Secondary Font:** Inter (Google) — small UI labels, chips, table cells (~15% of pen nodes; 11–14px).

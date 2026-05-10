@@ -209,7 +209,7 @@ body {
 
   /* Global heading layer — sourced from Designs/pencil-homepage.pen.
      Inter Tight 600 across h1-h6 with tier sizes lifted from the pen file.
-     See frontend/docs/typography.md for the full tier reference. Tailwind
+     See docs/frontend-design-correction/typography.md for full tier reference. Tailwind
      utilities still win on specificity, so a card or dashboard heading can
      opt into a smaller size via `text-*` / `font-*` classes. */
   h1,
