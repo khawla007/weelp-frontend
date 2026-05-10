@@ -74,7 +74,7 @@ export default function ItineraryEditActionBar({ session }) {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-50 p-4">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="container-page flex items-center justify-between">
         {/* Left: Reset */}
         <Button variant="outline" onClick={resetChanges} disabled={submitting}>
           <RotateCcw className="h-4 w-4 mr-2" />

@@ -267,7 +267,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                       }
                     }}
                   >
-                    <span className={`w-5 h-5 rounded-[4px] flex items-center justify-center flex-shrink-0 transition-colors ${isChecked ? 'bg-[#588f7a]' : 'border-2 border-gray-300 bg-white'}`}>
+                    <span className={`w-5 h-5 rounded-[4px] flex items-center justify-center flex-shrink-0 transition-colors ${isChecked ? 'bg-[#588f7a]' : 'border-2 border-zinc-300 bg-white'}`}>
                       {isChecked && <Check size={14} className="text-white" />}
                     </span>
                     <div className="flex-1 min-w-0">
@@ -277,7 +277,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                     <div className="flex items-center gap-2 flex-shrink-0">
                       {addon.addon_sale_price != null ? (
                         <>
-                          <span className="text-sm text-gray-400 line-through">${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                          <span className="text-sm text-zinc-400 line-through">${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                           <span className="text-base font-semibold text-[#18181b]">
                             ${Number(addon.addon_sale_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </span>
@@ -323,7 +323,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
               <button
                 type="submit"
                 form={`booking-form-${productId}`}
-                className="px-8 py-3 text-base font-medium bg-[#588f7a] hover:bg-[#4d8069] text-white rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="px-8 py-3 text-base font-medium bg-[#588f7a] hover:bg-[#4d8069] text-white rounded-md disabled:bg-zinc-400 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 Select
               </button>

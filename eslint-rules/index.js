@@ -16,7 +16,9 @@ const CANONICAL_HEXES = new Set([
   '71717a', // ink-soft
   '52525b', // ink-mid
   '588f7a', // sage (Single-Sage Rule)
+  '4d8069', // sage hover (pressed state of Sage Deep)
   'e4e4e7', // border
+  'eaeaea', // divider (heavier rules under section headings)
   'f4f4f5', // surface-soft
   'f8faf9', // surface
   'ff725e', // accent (warning/orange)
@@ -252,7 +254,7 @@ const noInlineStyleHex = {
   },
 };
 
-const SEMANTIC_GRAY_PATTERN = /\b(text|bg|border|ring|from|to|via|stroke|outline|divide|placeholder|caret|accent|shadow|decoration)-(gray|neutral)-[0-9]+\b/g;
+const SEMANTIC_GRAY_PATTERN = /\b(text|bg|border|ring|from|to|via|fill|stroke|outline|divide|placeholder|caret|accent|shadow|decoration)-(gray|neutral)-[0-9]+\b/g;
 
 const noSemanticGray = {
   meta: {

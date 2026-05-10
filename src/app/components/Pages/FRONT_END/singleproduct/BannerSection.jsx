@@ -4,7 +4,6 @@ import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { CircleCheckBig, Clock4, MapPin, Star, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
-const fontJakarta = 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif';
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
 
 const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null, primaryLocation = null, city = null, scheduleDisplay = null }) => {
@@ -15,9 +14,7 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
         <div className="flex flex-col gap-2 pt-[70px]">
           <BreadCrumb className="mb-2" />
 
-          <h1 className="text-[#18181b] text-2xl lg:text-[40px] capitalize" style={{ fontFamily: fontJakarta, fontWeight: 600, lineHeight: 1.15, letterSpacing: '-0.005em' }}>
-            {activityName ?? 'Melaka Wonderland Water Theme Park Ticket'}
-          </h1>
+          <h1 className="text-[#18181b] text-2xl lg:text-[40px] capitalize">{activityName ?? 'Melaka Wonderland Water Theme Park Ticket'}</h1>
 
           {/* Stats Row + Save to Wishlist */}
           <div className="flex flex-wrap items-center justify-between pb-4">
@@ -27,7 +24,7 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
                   {Array(5)
                     .fill(0)
                     .map((_, i) => (
-                      <Star key={i} className={i < Math.round(reviewSummary?.average_rating || 0) ? 'stroke-none fill-[#fed141]' : 'stroke-none fill-gray-300'} size={16} />
+                      <Star key={i} className={i < Math.round(reviewSummary?.average_rating || 0) ? 'stroke-none fill-[#fed141]' : 'stroke-none fill-zinc-300'} size={16} />
                     ))}
                 </span>
                 <span className="text-[#71717a] text-sm lg:text-base font-medium">{reviewSummary?.total_reviews || 0} Reviews</span>

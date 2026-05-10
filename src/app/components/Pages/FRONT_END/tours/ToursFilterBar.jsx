@@ -269,17 +269,17 @@ export default function ToursFilterBar() {
                       setFromInputValue(city.name);
                       setShowFromDropdown(false);
                     }}
-                    className="flex items-center justify-between gap-4 px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                    className="flex items-center justify-between gap-4 px-4 py-2 hover:bg-zinc-100 cursor-pointer text-sm"
                   >
                     <div className="flex items-center gap-2">
-                      <MapPin size={14} className="text-gray-400 flex-shrink-0" />
+                      <MapPin size={14} className="text-zinc-400 flex-shrink-0" />
                       <span className="whitespace-nowrap">{city.name}</span>
                     </div>
-                    <span className="text-[10px] uppercase tracking-wider text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
                   </div>
                 ))
               ) : (
-                <div className="px-4 py-3 text-sm text-gray-400 text-center">No locations found</div>
+                <div className="px-4 py-3 text-sm text-zinc-400 text-center">No locations found</div>
               )}
             </div>
           )}
@@ -317,17 +317,17 @@ export default function ToursFilterBar() {
                       setToInputValue(city.name);
                       setShowToDropdown(false);
                     }}
-                    className="flex items-center justify-between gap-4 px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                    className="flex items-center justify-between gap-4 px-4 py-2 hover:bg-zinc-100 cursor-pointer text-sm"
                   >
                     <div className="flex items-center gap-2">
-                      <MapPin size={14} className="text-gray-400 flex-shrink-0" />
+                      <MapPin size={14} className="text-zinc-400 flex-shrink-0" />
                       <span className="whitespace-nowrap">{city.name}</span>
                     </div>
-                    <span className="text-[10px] uppercase tracking-wider text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
                   </div>
                 ))
               ) : (
-                <div className="px-4 py-3 text-sm text-gray-400 text-center">No locations found</div>
+                <div className="px-4 py-3 text-sm text-zinc-400 text-center">No locations found</div>
               )}
             </div>
           )}
@@ -408,14 +408,14 @@ export default function ToursFilterBar() {
                 <div key={type} className="flex justify-between items-center mb-3 last:mb-0">
                   <div>
                     <span className="font-medium capitalize text-sm">{type}</span>
-                    <span className="text-xs text-gray-500 block">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
+                    <span className="text-xs text-zinc-500 block">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <button type="button" onClick={() => handleGuestDecrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-gray-100">
+                    <button type="button" onClick={() => handleGuestDecrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-zinc-100">
                       -
                     </button>
                     <span className="w-6 text-center">{guests[type]}</span>
-                    <button type="button" onClick={() => handleGuestIncrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-gray-100">
+                    <button type="button" onClick={() => handleGuestIncrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-zinc-100">
                       +
                     </button>
                   </div>
@@ -430,20 +430,20 @@ export default function ToursFilterBar() {
       {showResults && (
         <div
           ref={resultsRef}
-          className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-[100]"
+          className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-zinc-100 overflow-hidden z-[100]"
           style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
         >
           <button
             type="button"
             onClick={handleResetFilters}
-            className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors z-10"
+            className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full hover:bg-zinc-100 transition-colors z-10"
             aria-label="Close results"
           >
             <X size={18} className="text-red-500" />
           </button>
 
           {resultsLoading ? (
-            <div className="flex items-center justify-center gap-2 py-6 text-sm text-gray-400">
+            <div className="flex items-center justify-center gap-2 py-6 text-sm text-zinc-400">
               <Loader2 size={16} className="animate-spin" />
               <span>Searching...</span>
             </div>
@@ -453,7 +453,7 @@ export default function ToursFilterBar() {
                 <NavigationLink
                   key={`${item.id}-${item.type}`}
                   href={buildResultUrl(item)}
-                  className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-b-0 pr-10"
+                  className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-zinc-50 transition-colors border-b border-zinc-50 last:border-b-0 pr-10"
                 >
                   <span className="text-sm font-semibold text-[#18181b] truncate text-left">{item.name || item.title}</span>
                   <span className="rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#588f7a]">{item.type || 'item'}</span>
@@ -462,7 +462,7 @@ export default function ToursFilterBar() {
               ))}
             </>
           ) : (
-            <div className="py-6 text-center text-sm text-gray-400">No results found</div>
+            <div className="py-6 text-center text-sm text-zinc-400">No results found</div>
           )}
         </div>
       )}

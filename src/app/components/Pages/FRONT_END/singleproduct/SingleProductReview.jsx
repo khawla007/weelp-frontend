@@ -141,7 +141,7 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
             {Array(5)
               .fill(0)
               .map((_, i) => (
-                <Star key={i} className={i < Math.round(reviewSummary?.average_rating || 5) ? 'fill-[#fed141] stroke-none' : 'fill-gray-300 stroke-none'} size={24} aria-hidden="true" />
+                <Star key={i} className={i < Math.round(reviewSummary?.average_rating || 5) ? 'fill-[#fed141] stroke-none' : 'fill-zinc-300 stroke-none'} size={24} aria-hidden="true" />
               ))}
           </div>
         </div>
@@ -178,7 +178,7 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
           >
             {allReviewsWithPhotos.map((review, index) => (
               <SwiperSlide key={index}>
-                <div className="h-[248px] rounded-xl overflow-hidden bg-gray-200 cursor-pointer hover:opacity-90 transition-opacity">
+                <div className="h-[248px] rounded-xl overflow-hidden bg-zinc-200 cursor-pointer hover:opacity-90 transition-opacity">
                   <img src={review.image} alt={`Review photo ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
               </SwiperSlide>
@@ -209,9 +209,7 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
         <div className="mt-10">
           {/* Heading with navigation arrows on right side */}
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-lg sm:text-[28px] text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif', fontWeight: 600, letterSpacing: '-0.005em' }}>
-              Featured review
-            </h3>
+            <h3 className="text-lg sm:text-[28px] text-[#18181b]">Featured review</h3>
             {featuredReviewsData.length > 2 && (
               <div className="flex items-center gap-1">
                 <button
@@ -344,9 +342,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
 
   return (
     <div ref={sectionRef} className="flex flex-col gap-4 mt-8">
-      <h3 className="text-lg sm:text-[28px] text-[#18181b] capitalize" style={{ fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif', fontWeight: 600, letterSpacing: '-0.005em' }}>
-        All Reviews
-      </h3>
+      <h3 className="text-lg sm:text-[28px] text-[#18181b] capitalize">All Reviews</h3>
 
       {/* Filter + Sort Row - Match pen design */}
       <div className="flex items-center justify-between px-0">
@@ -377,10 +373,10 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
           </button>
           {showSortDropdown && (
             <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg border border-[#e4e4e7] py-1 min-w-[141px] z-20">
-              <button onClick={() => handleSortChange('newest')} className={`w-full text-left px-4 py-2 text-sm ${sortOrder === 'newest' ? 'bg-gray-100 font-medium' : 'text-gray-700'}`}>
+              <button onClick={() => handleSortChange('newest')} className={`w-full text-left px-4 py-2 text-sm ${sortOrder === 'newest' ? 'bg-zinc-100 font-medium' : 'text-zinc-700'}`}>
                 Newest
               </button>
-              <button onClick={() => handleSortChange('oldest')} className={`w-full text-left px-4 py-2 text-sm ${sortOrder === 'oldest' ? 'bg-gray-100 font-medium' : 'text-gray-700'}`}>
+              <button onClick={() => handleSortChange('oldest')} className={`w-full text-left px-4 py-2 text-sm ${sortOrder === 'oldest' ? 'bg-zinc-100 font-medium' : 'text-zinc-700'}`}>
                 Oldest
               </button>
             </div>
@@ -397,7 +393,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
               {/* First Row: Avatar + Name/Date */}
               <div className="flex items-center gap-3">
                 {/* Left: Avatar */}
-                <div className="w-[44px] h-[44px] rounded-full overflow-hidden bg-[#f5f5f5] border border-[#e4e4e7] flex-shrink-0">
+                <div className="w-[44px] h-[44px] rounded-full overflow-hidden bg-[#f4f4f5] border border-[#e4e4e7] flex-shrink-0">
                   {review.avatar ? (
                     <img src={review.avatar} alt={review.userName} className="w-full h-full object-cover" />
                   ) : (
@@ -445,7 +441,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
                     >
                       {review.images.map((img, imgIndex) => (
                         <SwiperSlide key={`${index}-${imgIndex}`}>
-                          <div className="h-[280px] rounded-xl overflow-hidden bg-gray-200 cursor-pointer hover:opacity-90 transition-opacity">
+                          <div className="h-[280px] rounded-xl overflow-hidden bg-zinc-200 cursor-pointer hover:opacity-90 transition-opacity">
                             <img src={img} alt={`Review ${imgIndex + 1}`} className="w-full h-full object-cover" />
                           </div>
                         </SwiperSlide>
@@ -469,7 +465,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
                     )}
                   </div>
                 ) : (
-                  <div className="w-full h-[280px] rounded-xl overflow-hidden bg-gray-200 mt-4">
+                  <div className="w-full h-[280px] rounded-xl overflow-hidden bg-zinc-200 mt-4">
                     <img src={review.images[0]} alt="Review" className="w-full h-full object-cover" />
                   </div>
                 ))}

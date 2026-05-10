@@ -124,6 +124,7 @@ A restrained palette built around a sage-green accent and a warm-leaning neutral
 ### Primary
 
 - **Sage Deep** (`#588f7a`): The single brand accent. Primary buttons, navigation progress, range-slider tracks, focus signals. Used on ≤10% of any given screen — its rarity is the point.
+- **Sage Hover** (`#4d8069`): Pressed / hovered state of Sage Deep. Pairs only with `#588f7a` on interactive surfaces (CTA buttons, link active state). Never used at rest.
 
 ### Secondary
 

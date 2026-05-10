@@ -143,7 +143,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
               setUserStartedEdit(false);
               useItineraryEditStore.getState().resetChanges();
             }}
-            className="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-colors"
+            className="px-6 py-2.5 bg-zinc-200 hover:bg-zinc-300 text-zinc-700 font-medium rounded-lg transition-colors"
           >
             Exit Edit Mode
           </button>

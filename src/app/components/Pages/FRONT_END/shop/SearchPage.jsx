@@ -157,7 +157,7 @@ export const SearchPage = () => {
 
           <h2 className="text-lg font-medium text-[#18181b] mt-6 mb-4">Price Range</h2>
           <ReactRangeSliderInput min={100} max={5000} step={10} value={priceRange} onInput={setPriceRange} className="w-full" />
-          <div className="flex justify-between text-sm text-gray-600 mt-2">
+          <div className="flex justify-between text-sm text-zinc-600 mt-2">
             <span>${priceRange[0]}</span>
             <span>${priceRange[1]}</span>
           </div>
@@ -219,7 +219,7 @@ export const SearchPage = () => {
                 })
               ) : (
                 <div className="grid h-full  ">
-                  <span className="text-gray-500">Sorry No Items</span>
+                  <span className="text-zinc-500">Sorry No Items</span>
                   <Button asChild>
                     <Link className={'bg-secondaryDark'} href={'/shop'}>
                       Back To Shop

@@ -91,8 +91,8 @@ export default function ActivitySearchModalPublic({ open, onOpenChange, cityIds 
           ) : (
             <ul className="space-y-1">
               {filtered.map((activity) => (
-                <li key={activity.id} className="flex items-center gap-3 p-2 rounded-md hover:bg-neutral-100 cursor-pointer transition-colors" onClick={() => handleSelect(activity)}>
-                  <div className="relative h-14 w-14 rounded-md overflow-hidden bg-neutral-200 flex-shrink-0">
+                <li key={activity.id} className="flex items-center gap-3 p-2 rounded-md hover:bg-zinc-100 cursor-pointer transition-colors" onClick={() => handleSelect(activity)}>
+                  <div className="relative h-14 w-14 rounded-md overflow-hidden bg-zinc-200 flex-shrink-0">
                     {activity.featured_image ? (
                       <img src={activity.featured_image} alt={activity.name} className="h-full w-full object-cover" />
                     ) : (

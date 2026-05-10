@@ -11,9 +11,9 @@ import nextConfig from 'eslint-config-next';
 import nextWebVitals from 'eslint-config-next/core-web-vitals';
 import weelpRules from './eslint-rules/index.js';
 
-// Surfaces cleared by Impeccable Cascade Phases 6–11.
-// Phase 12 lint guards run at error severity inside this glob set; new
-// surfaces are added here as they are cascaded.
+// Surfaces cleared by Impeccable Cascade Phases 6–13.
+// Lint guards run at error severity inside this glob set; new surfaces
+// are added here as they are cascaded.
 const CASCADED_SURFACES = [
   'src/app/(dashboard)/dashboard/**/*.{js,jsx,ts,tsx}',
   'src/app/components/Dashboard/**/*.{js,jsx,ts,tsx}',
@@ -27,6 +27,12 @@ const CASCADED_SURFACES = [
   'src/app/(frontend)/cancellation/**/*.{js,jsx,ts,tsx}',
   'src/app/components/NotFound.jsx',
   'src/components/ui/**/*.{js,jsx,ts,tsx}',
+  // Phase 13c — public product surfaces graduated under guard.
+  'src/app/components/Pages/FRONT_END/singleproduct/**/*.{js,jsx,ts,tsx}',
+  'src/app/components/Pages/FRONT_END/About/**/*.{js,jsx,ts,tsx}',
+  'src/app/components/Pages/FRONT_END/shop/**/*.{js,jsx,ts,tsx}',
+  'src/app/components/Pages/FRONT_END/tours/**/*.{js,jsx,ts,tsx}',
+  'src/app/components/Pages/FRONT_END/transfer/**/*.{js,jsx,ts,tsx}',
 ];
 
 const eslintConfig = [
@@ -89,6 +95,18 @@ const eslintConfig = [
     files: ['src/app/components/Pages/FRONT_END/checkout/CheckoutCards.jsx'],
     rules: {
       'weelp/no-noncanonical-hex': ['error', { allowExtra: ['00b67a'] }],
+    },
+  },
+  // Reserved-Brand-Signal Exception (DESIGN.md §2): rating-star gold
+  // `#fed141` on review surfaces depends on third-party-style recognition
+  // (Google / Trustpilot / app-store rating gold).
+  {
+    files: [
+      'src/app/components/Pages/FRONT_END/singleproduct/BannerSection.jsx',
+      'src/app/components/Pages/FRONT_END/singleproduct/SingleProductReview.jsx',
+    ],
+    rules: {
+      'weelp/no-noncanonical-hex': ['error', { allowExtra: ['fed141'] }],
     },
   },
 ];

@@ -170,7 +170,7 @@ export const ShopAllProduct = () => {
               {/* Price Range Filter */}
               <h2 className="text-lg font-medium text-[#18181b] mt-6 mb-4">Price Range</h2>
               <ReactRangeSliderInput min={100} max={5000} step={10} value={priceRange} onInput={setPriceRange} className="w-full" />
-              <div className="w-full flex justify-between text-sm text-gray-600 mt-2">
+              <div className="w-full flex justify-between text-sm text-zinc-600 mt-2">
                 <span>${priceRange[0]}</span>
                 <span>${priceRange[1]}</span>
               </div>
@@ -233,7 +233,7 @@ export const ShopAllProduct = () => {
                       />
                     ))
                   ) : (
-                    <span className="text-gray-500 text-lg">No product found</span>
+                    <span className="text-zinc-500 text-lg">No product found</span>
                   )
                 ) : (
                   <span className="loader">Loading...</span>
@@ -248,7 +248,7 @@ export const ShopAllProduct = () => {
                       <button
                         key={page}
                         onClick={() => setCurrentPage(page)}
-                        className={`px-3 py-1 border rounded ${pagination.current_page === page ? 'bg-secondaryDark text-white' : 'hover:bg-gray-200'}`}
+                        className={`px-3 py-1 border rounded ${pagination.current_page === page ? 'bg-secondaryDark text-white' : 'hover:bg-zinc-200'}`}
                       >
                         {page}
                       </button>
