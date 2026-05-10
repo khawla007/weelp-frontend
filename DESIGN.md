@@ -253,13 +253,13 @@ The success-state palette on `Alert` and `Toast` was migrated in Phase 12c from 
 
 **Contrast matrix on `#ffffff`** (WCAG 2.2 AA needs 4.5:1 body / 3:1 large):
 
-| Token | Hex | Ratio | Verdict |
-|-------|-----|-------|---------|
-| Ink | `#18181b` | 16.0:1 | AAA all sizes |
-| Label | `#52525b` | 7.4:1 | AAA all sizes |
-| Copy | `#71717a` | 4.6:1 | AA body |
-| Steel | `#435a67` | 8.2:1 | AAA all sizes |
-| Sage Deep | `#588f7a` | 3.8:1 | **AA large only** (≥18px or ≥14px / 700) |
+| Token     | Hex       | Ratio  | Verdict                                  |
+| --------- | --------- | ------ | ---------------------------------------- |
+| Ink       | `#18181b` | 16.0:1 | AAA all sizes                            |
+| Label     | `#52525b` | 7.4:1  | AAA all sizes                            |
+| Copy      | `#71717a` | 4.6:1  | AA body                                  |
+| Steel     | `#435a67` | 8.2:1  | AAA all sizes                            |
+| Sage Deep | `#588f7a` | 3.8:1  | **AA large only** (≥18px or ≥14px / 700) |
 
 The Sage Deep ratio is the operative constraint. Sage on white below 18px / 14px-bold is a WCAG failure; escalate to `#52525b` for the resting state and use sage on hover (or move sage to a non-text role — icon, underline, border). Phase 12d migrated two `text-xs text-[#588f7a]` action links on `NotificationWidget.jsx` (Mark all read, View all) to this ink-default + sage-hover pattern.
 
