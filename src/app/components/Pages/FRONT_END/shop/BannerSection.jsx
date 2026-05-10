@@ -10,7 +10,7 @@ const BannerSection = () => {
 
   return (
     <>
-      <div className={`bg-secondaryDark shop_banner ${styles.shop_banner} `}>
+      <div className={`bg-[#588f7a] shop_banner ${styles.shop_banner} `}>
         <BookingForm />
       </div>
       {location && (

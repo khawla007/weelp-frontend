@@ -17,7 +17,7 @@ const Sidebar = ({ dispatch, data }) => {
               <input
                 type="checkbox"
                 id={val} // Use the category name as the id
-                className="checked:accent-secondaryDark size-5"
+                className="checked:accent-[#588f7a] size-5"
                 onChange={handleCategoryChange} // Call the updated handler
               />
               <span className="text-[#435A67] font-medium text-lg">{val}</span>

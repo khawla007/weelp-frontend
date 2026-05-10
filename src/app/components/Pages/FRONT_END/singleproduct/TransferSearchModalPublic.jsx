@@ -112,13 +112,7 @@ export default function TransferSearchModalPublic({ open, onOpenChange, cityIds 
             <div className="flex gap-2 items-center">
               <div className="relative flex-1">
                 <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="Search transfers..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="pl-9 focus-visible:ring-secondaryDark focus-visible:ring-1"
-                />
+                <Input type="text" placeholder="Search transfers..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9 focus-visible:ring-[#588f7a] focus-visible:ring-1" />
               </div>
             </div>
 
@@ -232,7 +226,7 @@ export default function TransferSearchModalPublic({ open, onOpenChange, cityIds 
               <span className="text-sm font-medium">
                 Pickup Time <span className="text-red-500">*</span>
               </span>
-              <Input type="time" value={pickupTime} onChange={(e) => setPickupTime(e.target.value)} className="focus-visible:ring-secondaryDark focus-visible:ring-1" />
+              <Input type="time" value={pickupTime} onChange={(e) => setPickupTime(e.target.value)} className="focus-visible:ring-[#588f7a] focus-visible:ring-1" />
             </Label>
 
             {/* Actions */}
@@ -241,7 +235,7 @@ export default function TransferSearchModalPublic({ open, onOpenChange, cityIds 
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back
               </Button>
-              <Button onClick={handleConfirm} disabled={!isConfigValid} className="flex-1 bg-secondaryDark hover:bg-secondaryDark/90">
+              <Button onClick={handleConfirm} disabled={!isConfigValid} className="flex-1 bg-[#588f7a] hover:bg-[#588f7a]/90">
                 Confirm Transfer
               </Button>
             </div>

@@ -105,7 +105,7 @@ export const ShopAllProduct = () => {
 
   return (
     <>
-      <section className={`bg-secondaryDark shop_banner ${Styles.shop_banner}`}>
+      <section className={`bg-[#588f7a] shop_banner ${Styles.shop_banner}`}>
         <div className="flex items-center justify-center sm:justify-between  bg-[#f8faf9] h-full min-h-20 sm:min-h-36">
           <Icon className={'hidden sm:block -translate-x-20 '} />
           <div className="flex flex-col gap-2">
@@ -146,7 +146,7 @@ export const ShopAllProduct = () => {
               <h2 className="text-lg font-medium text-[#18181b] my-4">Category</h2>
               <div className="w-full max-w-full flex flex-col space-y-2">
                 <label className="flex items-center space-x-2 cursor-pointer text-[#435a67]">
-                  <input type="checkbox" checked={!selectedCategories.length} onChange={() => setSelectedCategories([])} className="size-5 cursor-pointer checked:accent-secondaryDark" />
+                  <input type="checkbox" checked={!selectedCategories.length} onChange={() => setSelectedCategories([])} className="size-5 cursor-pointer checked:accent-[#588f7a]" />
                   <span>All Categories</span>
                 </label>
                 {useMemo(
@@ -158,7 +158,7 @@ export const ShopAllProduct = () => {
                           value={category.name}
                           checked={selectedCategories.includes(category.name)}
                           onChange={() => setSelectedCategories((prev) => (prev.includes(category.name) ? prev.filter((c) => c !== category.name) : [...prev, category.name]))}
-                          className="size-5 cursor-pointer checked:accent-secondaryDark"
+                          className="size-5 cursor-pointer checked:accent-[#588f7a]"
                         />
                         <span>{category.name}</span>
                       </label>
@@ -180,7 +180,7 @@ export const ShopAllProduct = () => {
               <div className="flex flex-col gap-4">
                 {[3, 4, 5].map((rating) => (
                   <label key={rating} className="flex cursor-pointer items-center space-x-1">
-                    <input type="radio" name="rating" value={rating} checked={ratingFilter === rating} onChange={() => setRatingFilter(rating)} className="size-5 checked:accent-secondaryDark" />
+                    <input type="radio" name="rating" value={rating} checked={ratingFilter === rating} onChange={() => setRatingFilter(rating)} className="size-5 checked:accent-[#588f7a]" />
                     <div className="flex">
                       {Array.from({ length: rating }).map((_, i) => (
                         <Star key={i} size={20} className="fill-yellow-500 stroke-yellow-400" />
@@ -202,7 +202,7 @@ export const ShopAllProduct = () => {
                         value={location.id}
                         checked={selectedLocation?.id === location.id}
                         onChange={() => setSelectedLocation(location)}
-                        className="size-5 cursor-pointer checked:accent-secondaryDark"
+                        className="size-5 cursor-pointer checked:accent-[#588f7a]"
                       />
                       <span>{location.name}</span>
                     </label>
@@ -248,7 +248,7 @@ export const ShopAllProduct = () => {
                       <button
                         key={page}
                         onClick={() => setCurrentPage(page)}
-                        className={`px-3 py-1 border rounded ${pagination.current_page === page ? 'bg-secondaryDark text-white' : 'hover:bg-zinc-200'}`}
+                        className={`px-3 py-1 border rounded ${pagination.current_page === page ? 'bg-[#588f7a] text-white' : 'hover:bg-zinc-200'}`}
                       >
                         {page}
                       </button>
