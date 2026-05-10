@@ -1,6 +1,3 @@
-const headlineFont = { fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif', fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1.05 };
-const bodyFont = { fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500, lineHeight: 1.4 };
-
 const AboutStats = () => {
   const stats = [
     { number: '10+', label: 'Years of Experience' },
@@ -15,12 +12,8 @@ const AboutStats = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
-              <h3 className="text-4xl md:text-5xl text-[#588f7a] mb-2" style={headlineFont}>
-                {stat.number}
-              </h3>
-              <p className="text-sm md:text-base text-[#52525b]" style={bodyFont}>
-                {stat.label}
-              </p>
+              <h3 className="mb-2 text-4xl font-bold tracking-[-0.01em] text-[#588f7a] md:text-5xl">{stat.number}</h3>
+              <p className="text-sm font-medium leading-[1.4] text-[#52525b] md:text-base">{stat.label}</p>
             </div>
           ))}
         </div>

@@ -13,7 +13,7 @@ const CitySection = ({ data }) => {
               className="w-full sm:max-w-xs h-24 md:h-28 lg:h-32 flex flex-col justify-center items-center p-4 bg-white rounded-[var(--weelp-card-radius)] border border-[var(--weelp-card-border)] shadow-[0_0_0] hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)] transition-shadow duration-300"
             >
               {<Icon />}
-              <CardTitle className="capitalize text-center font-home-heading text-sm md:text-base lg:text-lg font-bold text-[var(--weelp-home-ink)] mt-4">{name}</CardTitle>
+              <CardTitle className="capitalize text-center text-sm md:text-base lg:text-lg font-bold text-[var(--weelp-home-ink)] mt-4">{name}</CardTitle>
             </Card>
           ))}
       </section>

@@ -18,19 +18,20 @@ colors:
   signal-warn-wash: '#fff5f3'
 typography:
   display:
-    fontFamily: "degular_demo, 'Plus Jakarta Sans', sans-serif"
-    fontSize: 'clamp(2.5rem, 6vw, 4.25rem)'
-    fontWeight: 500
+    fontFamily: "degular_demo, 'Inter Tight', sans-serif"
+    fontSize: 'clamp(2.25rem, 4.5vw, 3.25rem)'
+    fontWeight: 400
     lineHeight: 1.05
-    letterSpacing: '-0.01em'
-  headline:
-    fontFamily: "'Plus Jakarta Sans', sans-serif"
-    fontSize: 'clamp(1.75rem, 3vw, 2.5rem)'
-    fontWeight: 600
-    lineHeight: 1.15
     letterSpacing: '-0.005em'
+    note: 'Editorial accent only. Pen reserves Degular for decorative section labels (~42-52px). Never replaces a heading tier.'
+  headline:
+    fontFamily: "'Inter Tight', sans-serif"
+    fontSize: 'clamp(1.75rem, 3.2vw, 2.375rem)'
+    fontWeight: 600
+    lineHeight: 1.1
+    letterSpacing: '-0.01em'
   title:
-    fontFamily: "'Plus Jakarta Sans', sans-serif"
+    fontFamily: "'Inter Tight', sans-serif"
     fontSize: '1.25rem'
     fontWeight: 600
     lineHeight: 1.3
@@ -112,7 +113,7 @@ the purple-gradient SaaS dashboard cliché on the operator side.
 **Key Characteristics:**
 
 - Restrained color strategy: tinted neutrals plus a single sage accent at ≤10% surface area on brand pages.
-- Editorial type pairing: Degular for display, Plus Jakarta for headlines, Inter Tight for body, Inter for labels.
+- Editorial type pairing: Inter Tight for headlines and body, Inter for small UI labels, Degular as a decorative accent only. See `frontend/docs/typography.md` for the pen-derived tier reference.
 - Flat surfaces by default; depth appears only on intent (hover, focus).
 - Cards used sparingly. The default answer is whitespace and rhythm, not a card grid.
 - Imagery is destination-led; chrome and decoration recede when a strong photo is present.
@@ -167,30 +168,39 @@ New brand-signal exceptions must be opted in explicitly via `eslint.config.mjs` 
 
 ## 3. Typography
 
-**Display Font:** `degular_demo` (custom OTF) with Plus Jakarta Sans as fallback.
-**Headline Font:** Plus Jakarta Sans (Google).
-**Body Font:** Inter Tight (Google), with Inter as a secondary system for labels and dense UI.
-**Script Accent:** Montez — used sparingly for editorial flourish in long-form content; never in product UI.
+The canonical reference is `Designs/pencil-homepage.pen`. The full pen-derived tier reference lives at `frontend/docs/typography.md`. This section is the in-DESIGN summary.
 
-**Character:** Confident, editorial, slightly architectural. Plus Jakarta carries the section work; Inter Tight does the long reading. Degular is reserved for marquee moments — it is not a replacement for Plus Jakarta on every heading.
+**Primary Font:** Inter Tight (Google) — headings, body, buttons, links. The pen file uses Inter Tight on ~84% of all text nodes.
+**Secondary Font:** Inter (Google) — small UI labels, chips, table cells (~15% of pen nodes; 11–14px).
+**Editorial Accent:** `degular_demo` (custom OTF) — decorative section labels at 42–52px regular weight only. The pen uses it 10 times.
+**Script Accent:** Montez — sparingly, for editorial flourish in long-form content; never in product UI.
+
+Plus Jakarta Sans is **retired**. It was introduced in earlier phases without pen basis and produced drift across headings; remove on sight.
+
+**Character:** Confident, editorial, slightly architectural. Inter Tight carries the section work and the long reading. Degular is decoration — never a heading swap.
 
 ### Hierarchy
 
-- **Display** (Degular, 500, `clamp(2.5rem, 6vw, 4.25rem)`, line-height 1.05): Hero and section-opener moments only. Never on dashboard pages.
-- **Headline** (Plus Jakarta, 600, `clamp(1.75rem, 3vw, 2.5rem)`, line-height 1.15): Page titles, major section headings on brand pages.
-- **Title** (Plus Jakarta, 600, 20px, line-height 1.3): Card titles, modal titles, list-section titles.
-- **Body** (Inter Tight, 400, 16px, line-height 1.6): Long reading. Cap line length at 65–75ch.
-- **Label** (Inter, 500, 13px, letter-spacing 0.02em): Form labels, eyebrows, breadcrumbs, badge text. Sentence case by default; uppercase only for very short eyebrow labels (≤3 words).
+- **Hero** (Inter Tight, 600, `clamp(1.75rem, 3.2vw, 2.375rem)`, line-height 1.1, tracking -0.01em): Homepage h1, full-bleed banner h1.
+- **Section opener** (Inter Tight, 600, 48px): Mid-page editorial moments — "Plan your Holiday.", "Explore Creators".
+- **Section heading** (Inter Tight, 600, 28px): "Top activities", "Reviews", "FAQs".
+- **Sub-heading** (Inter Tight, 600, 24px): Card group titles, in-page block headers.
+- **Card title** (Inter Tight, 600, 18px): Product card names, list-row titles.
+- **Body lead** (Inter Tight, 500, 20–24px, line-height 1.4): Hero subhead, section intro paragraphs.
+- **Body** (Inter Tight, 400/500, 16px, line-height 1.6): Long reading. Cap line length at 65–75ch.
+- **Body small** (Inter Tight, 400/500, 14px): Meta text, form helper text.
+- **Label** (Inter, 400/500, 12–14px, letter-spacing 0.02em): Form labels, eyebrows, badges. Sentence case by default; uppercase only for short eyebrows (≤3 words).
+- **Editorial accent** (Degular Demo, 400, 42–52px): One-off decorative labels only.
 
 ### Named Rules
 
-**The Reserved-Display Rule.** Degular only appears in hero blocks, opener spreads, and editorial features. Section headings inside a page are Plus Jakarta. If every heading on the page uses Degular, Degular has stopped meaning anything.
+**The Inter-Tight-First Rule.** Inter Tight is the default font on every `<h1>`–`<h6>`, every `<p>`, every `<button>`, every `<a>` via the `@layer base` block in `src/app/globals.css`. Raw tags inherit canonical font-family, weight, size, line-height, and ink color automatically — no per-component `style={{ fontFamily }}` or matching className needed. Tailwind utilities (`text-*`, `font-*`, `leading-*`) still win on specificity, so a card or dashboard heading can opt into a smaller size by class.
 
-**The Two-Sans Rule.** Inter Tight carries body, Inter carries labels. Do not introduce a third sans. Outfit and Inter (loose) are loaded by next/font but should not be referenced in new code; treat them as legacy.
+**The Reserved-Accent Rule.** Degular only appears as decorative section labels (42–52px regular weight) in editorial features. Apply via the `.display` utility — never as the font for an h1, h2, or section heading. If every accent on the page uses Degular, Degular has stopped meaning anything.
 
-**The Global-Heading Rule.** Plus Jakarta is the default font on every `<h1>`–`<h6>` via the `@layer base` block in `src/app/globals.css`. Raw heading tags inherit canonical font-family, weight, size, line-height, and ink color automatically — no per-component `style={{ fontFamily }}` or matching className needed. Tailwind utilities (`text-*`, `font-*`, `leading-*`) still win on specificity, so a card or dashboard heading can opt into a smaller size by class. For hero / section-opener marquee moments, apply the `.display` utility on top of an `<h1>` to switch to Degular at the display tier — that is the only heading site that should carry custom font-family or size declarations.
+**The Two-Sans Rule.** Inter Tight carries headings and body, Inter carries small labels. Do not introduce a third sans. Outfit is loaded by next/font but should not be referenced in new code; treat it as legacy.
 
-**Exception policy.** Per-component inline font / text overrides on a heading are only acceptable when the design intent diverges from the global tier (e.g. `BannerSection.jsx` blog hero uses `text-[52px]` because its visual weight sits between display and headline). Duplicating the global tier inline is drift — strip on sight.
+**Exception policy.** Per-component inline font / text overrides on a heading are only acceptable when the design intent diverges from the global tier (e.g. `BannerSection.jsx` blog hero uses `text-[52px]` because its visual weight sits between hero and section opener). Duplicating the global tier inline is drift — strip on sight.
 
 ## 4. Elevation
 
@@ -293,8 +303,9 @@ The Sage Deep ratio is the operative constraint. Sage on white below 18px / 14px
 - **Don't** use the SaaS hero-metric template (big number, small label, supporting stats, gradient accent) anywhere. It is the first-order training-data reflex.
 - **Don't** stamp identical photo cards in a uniform grid (AirBnB anti-reference). Vary card width, vary which signal earns the eye.
 - **Don't** import the Booking.com / Expedia dense filter rail on the city page. Filters are progressive disclosure, not a left-rail wall.
-- **Don't** introduce a third sans-serif. Inter Tight body, Inter labels, Plus Jakarta headlines, Degular display — that is the set.
-- **Don't** use Degular on every heading. The Reserved-Display Rule guards it for marquee moments only.
+- **Don't** introduce a third sans-serif. Inter Tight (headings + body), Inter (small labels), Degular (decorative accent) — that is the set.
+- **Don't** use Degular on a heading. The Reserved-Accent Rule guards it for editorial decoration only.
+- **Don't** add Plus Jakarta Sans back. It is retired from the type system.
 - **Don't** convey information through color alone. Discount, availability, and price-tier states must also use shape, weight, or text.
 
 ## 7. Layout & Container

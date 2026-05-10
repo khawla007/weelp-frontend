@@ -14,20 +14,9 @@ const HeroSection = () => {
         height: '615px',
       }}
     >
-      {/* Centered content */}
       <div className="container-page relative z-0 flex flex-col items-center justify-center text-center">
-        <h1 className="display mb-3">The cities, picked. The days, planned.</h1>
-        <p
-          className="mb-8 text-[20px] sm:text-[24px] max-w-[44ch]"
-          style={{
-            fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
-            fontWeight: 500,
-            color: '#71717a',
-            lineHeight: 1.4,
-          }}
-        >
-          Pick a city to begin. Independent guides shape every itinerary; you arrive ready, not lost.
-        </p>
+        <h1 className="mb-3 text-[28px] sm:text-[32px] md:text-[38px]">Plan and Book</h1>
+        <p className="mb-8 max-w-[44ch] text-[20px] font-medium leading-[1.4] text-[#71717a] sm:text-[24px]">The best experiences around you.</p>
         <FilterBar />
       </div>
     </section>

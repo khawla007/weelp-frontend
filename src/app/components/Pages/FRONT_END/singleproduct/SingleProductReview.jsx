@@ -134,9 +134,7 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
       <div className="pt-6 pb-2">
         <SectionHeader title="Reviews" />
         <div className="flex items-center gap-2 mt-2">
-          <span className="text-[36px] font-bold text-[#18181b] leading-none" style={{ fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif' }}>
-            {reviewSummary?.average_rating || '5.0'}
-          </span>
+          <span className="text-[36px] font-bold leading-none text-[#18181b]">{reviewSummary?.average_rating || '5.0'}</span>
           <div className="flex gap-[2px]" role="img" aria-label={`${reviewSummary?.average_rating || 5} out of 5 stars`}>
             {Array(5)
               .fill(0)

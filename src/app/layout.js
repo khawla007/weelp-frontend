@@ -1,4 +1,4 @@
-import { Inter, Inter_Tight, Montez, Outfit, Plus_Jakarta_Sans } from 'next/font/google';
+import { Inter, Inter_Tight, Montez, Outfit } from 'next/font/google';
 import './globals.css';
 
 const interTight = Inter_Tight({
@@ -23,13 +23,6 @@ const inter = Inter({
   display: 'swap',
 });
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  weight: ['500', '600', '700', '800'],
-  variable: '--font-plus-jakarta',
-  display: 'swap',
-});
-
 const outfit = Outfit({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -45,7 +38,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html suppressHydrationWarning={true}>
-      <body className={`${interTight.variable} ${inter.variable} ${plusJakartaSans.variable} ${outfit.variable} ${montez.variable} font-sans antialiased tfc_scroll`}>{children}</body>
+      <body className={`${interTight.variable} ${inter.variable} ${outfit.variable} ${montez.variable} font-sans antialiased tfc_scroll`}>{children}</body>
     </html>
   );
 }

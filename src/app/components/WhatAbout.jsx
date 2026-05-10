@@ -16,8 +16,8 @@ export const WhatAboutCity = ({ location_details }) => {
     <div className="p-4 sm:p-6 md:py-8 md:px-10 lg:px-12 xl:px-8 2xl:px-16">
       {metaData.length > 0 ? (
         <>
-          <h5 className="font-home-heading font-semibold text-[var(--weelp-home-copy)] capitalize">What About</h5>
-          <h2 className="font-home-heading font-bold text-3xl text-[var(--weelp-home-ink)] capitalize">{city}</h2>
+          <h5 className="font-semibold text-[var(--weelp-home-copy)] capitalize">What About</h5>
+          <h2 className="font-bold text-3xl text-[var(--weelp-home-ink)] capitalize">{city}</h2>
           <ul className="bg-white grid grid-cols-1 sm:grid-cols-2 justify-center shadow-sm rounded-md mt-8">
             {metaData.map((val, index) => {
               if (val[0] && val[1]) {
@@ -26,7 +26,7 @@ export const WhatAboutCity = ({ location_details }) => {
                     key={index}
                     className="capitalize flex flex-col flex-wrap items-start p-3 sm:p-5 md:py-9 md:px-[3.25rem] odd:border-b odd:border-r even:border-b border-[var(--weelp-home-border)]"
                   >
-                    <h3 className="font-home-heading font-bold px-8 text-base sm:text-lg md:text-xl text-[var(--weelp-home-ink)]">{stringSignRemover(val?.[0])}</h3>
+                    <h3 className="font-bold px-8 text-base sm:text-lg md:text-xl text-[var(--weelp-home-ink)]">{stringSignRemover(val?.[0])}</h3>
                     <span className="capitalize text-xs sm:text-sm md:text-base font-medium px-8 text-[var(--weelp-home-copy)]">{val[1]}</span>
                   </li>
                 );
@@ -44,14 +44,14 @@ export const WhatAboutRegion = ({ regionMetaData, destinationInfo }) => {
   const { region } = useParams();
   return (
     <div className="p-6 sm:py-8  sm:px-16 xl:px-8 2xl:px-16 ">
-      <h5 className="font-home-heading font-semibold text-[var(--weelp-home-copy)] capitalize">What About</h5>
-      <h2 className="font-home-heading font-bold text-3xl text-[var(--weelp-home-ink)] capitalize">{region}</h2>
+      <h5 className="font-semibold text-[var(--weelp-home-copy)] capitalize">What About</h5>
+      <h2 className="font-bold text-3xl text-[var(--weelp-home-ink)] capitalize">{region}</h2>
       {destinationInfo && destinationInfo.length > 0 ? (
         <ul className="bg-white grid grid-cols-2 justify-center shadow-sm rounded-md mt-8">
           {destinationInfo.map((val, index) => {
             return (
               <li key={index} className="capitalize flex flex-col flex-wrap items-start p-2 sm:py-9 sm:px-13 odd:border-b odd:border-r even:border-b border-[var(--weelp-home-border)]">
-                <h3 className="font-home-heading font-bold px-8 text-sm sm:text-xl text-[var(--weelp-home-ink)]">{val.title}</h3>
+                <h3 className="font-bold px-8 text-sm sm:text-xl text-[var(--weelp-home-ink)]">{val.title}</h3>
                 <span className="capitalize text-xs sm:text-sm font-medium px-8 text-[var(--weelp-home-copy)]">{val.description}</span>
               </li>
             );

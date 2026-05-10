@@ -1,8 +1,5 @@
 import { Heart, Sparkles, Lightbulb, Shield } from 'lucide-react';
 
-const headlineFont = { fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif', fontWeight: 600, letterSpacing: '-0.005em', lineHeight: 1.15 };
-const bodyFont = { fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 400, lineHeight: 1.6 };
-
 const AboutValues = () => {
   const values = [
     {
@@ -29,9 +26,7 @@ const AboutValues = () => {
 
   return (
     <section className="container mx-auto px-4 py-[70px]">
-      <h2 className="text-[28px] md:text-[32px] text-[#18181b] text-center mb-12" style={headlineFont}>
-        Our Values
-      </h2>
+      <h2 className="mb-12 text-center text-[28px] text-[#18181b] md:text-[32px]">Our Values</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {values.map((value, index) => {
           const Icon = value.icon;
@@ -40,12 +35,8 @@ const AboutValues = () => {
               <div className="flex justify-center mb-4 text-[#588f7a]">
                 <Icon size={32} />
               </div>
-              <h3 className="text-lg text-[#18181b] mb-2" style={headlineFont}>
-                {value.title}
-              </h3>
-              <p className="text-sm text-[#71717a]" style={bodyFont}>
-                {value.description}
-              </p>
+              <h3 className="mb-2 text-lg text-[#18181b]">{value.title}</h3>
+              <p className="text-sm font-normal leading-[1.6] text-[#71717a]">{value.description}</p>
             </div>
           );
         })}

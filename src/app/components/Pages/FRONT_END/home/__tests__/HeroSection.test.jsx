@@ -19,10 +19,11 @@ describe('HeroSection', () => {
     expect(section.style.backgroundImage).toContain('hero_illustration.png');
   });
 
-  it('renders the editorial homepage heading text', () => {
+  it('renders the homepage heading text from the pen design', () => {
     const { getByText } = render(<HeroSection />);
 
-    expect(getByText('The cities, picked. The days, planned.')).toBeInTheDocument();
+    expect(getByText('Plan and Book')).toBeInTheDocument();
+    expect(getByText('The best experiences around you.')).toBeInTheDocument();
   });
 
   it('allows search dropdowns to extend below the hero without being clipped', () => {
