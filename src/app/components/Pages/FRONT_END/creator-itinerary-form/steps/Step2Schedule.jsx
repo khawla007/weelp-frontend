@@ -130,7 +130,7 @@ export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel
       {errors?.schedules && <p className="text-sm text-red-500">{errors?.schedules?.message}</p>}
 
       <div className="w-full flex justify-between items-center">
-        <h3 className="text-base font-semibold text-[#09090B]">Daily Schedule</h3>
+        <h3 className="text-base font-semibold text-[#18181b]">Daily Schedule</h3>
         <Button type="button" onClick={handleAddDay} className="bg-secondaryDark hover:bg-secondaryDark">
           + Add Day
         </Button>

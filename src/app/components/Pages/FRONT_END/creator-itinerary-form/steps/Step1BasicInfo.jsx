@@ -28,7 +28,7 @@ export default function Step1BasicInfo({ locations = [] }) {
 
   return (
     <div className="space-y-4 py-6">
-      <h2 className="text-base font-semibold text-[#09090B]">Basic Information</h2>
+      <h2 className="text-base font-semibold text-[#18181b]">Basic Information</h2>
 
       <div className="flex w-full gap-4">
         <div className="pb-2 space-y-2 w-full">
