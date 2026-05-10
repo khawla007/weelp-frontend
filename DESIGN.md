@@ -283,7 +283,7 @@ Page-level wrappers should use this single class instead of hardcoding `max-w-*`
 
 ### Named Rules
 
-**The Single-Container Rule.** Every page-level section wrapper across public pages, dashboard surfaces, and modals reads at the canonical `container-page` width. If a section needs to feel narrower, narrow the *content* inside the canonical container, not the container itself.
+**The Single-Container Rule.** Every page-level section wrapper across public pages, dashboard surfaces, and modals reads at the canonical `container-page` width. If a section needs to feel narrower, narrow the _content_ inside the canonical container, not the container itself.
 
 **Reading-Column Exception.** Long-form prose surfaces (single-blog body, legal pages — `/privacy`, `/terms`, `/cancellation` — single-product guide, About story columns, FAQ answers) constrain to `max-w-4xl` or a `max-w-[65ch]` reading column per the body 65–75ch rule in §3. The outer wrapper still uses `container-page`; the inner prose column applies a narrower `max-w-*` for legibility. Document the intent inline if it isn't obvious.
 
