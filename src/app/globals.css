@@ -775,12 +775,12 @@ body {
   33% {
     background: #fff;
     box-shadow:
-      -24px 0 #588e78,
+      -24px 0 #588f7a,
       24px 0 #fff;
   }
 
   66% {
-    background: #588e78;
+    background: #588f7a;
     box-shadow:
       -24px 0 #fff,
       24px 0 #fff;
@@ -790,7 +790,7 @@ body {
     background: #fff;
     box-shadow:
       -24px 0 #fff,
-      24px 0 #588e78;
+      24px 0 #588f7a;
   }
 }
 
