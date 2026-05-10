@@ -16,7 +16,7 @@ const ItineraryCard = ({ productId, imgsrc, productTitle, category }) => {
             <h3 className="text-black text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</h3>
           </div>
           <div className="flex justify-between flex-wrap gap-2 items-end">
-            <button className="w-fit h-fit border border-secondaryDark  text-secondaryDark font-semibold py-2 px-4 capitalize rounded-md">Explore</button>
+            <button className="w-fit h-fit border border-[#588f7a]  text-[#588f7a] font-semibold py-2 px-4 capitalize rounded-md">Explore</button>
           </div>
         </div>
       </Link>
