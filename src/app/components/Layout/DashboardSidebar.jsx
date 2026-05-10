@@ -29,7 +29,7 @@ function isActive(pathname, url) {
   return pathname.startsWith(url);
 }
 
-export default function DashboardSidebar({ nav, user, accent = 'bg-secondaryDark text-white' }) {
+export default function DashboardSidebar({ nav, user, accent = 'bg-[#588f7a] text-white' }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
