@@ -178,6 +178,10 @@ A restrained palette built around a sage-green accent and a warm-leaning neutral
 
 **The Two-Sans Rule.** Inter Tight carries body, Inter carries labels. Do not introduce a third sans. Outfit and Inter (loose) are loaded by next/font but should not be referenced in new code; treat them as legacy.
 
+**The Global-Heading Rule.** Plus Jakarta is the default font on every `<h1>`–`<h6>` via the `@layer base` block in `src/app/globals.css`. Raw heading tags inherit canonical font-family, weight, size, line-height, and ink color automatically — no per-component `style={{ fontFamily }}` or matching className needed. Tailwind utilities (`text-*`, `font-*`, `leading-*`) still win on specificity, so a card or dashboard heading can opt into a smaller size by class. For hero / section-opener marquee moments, apply the `.display` utility on top of an `<h1>` to switch to Degular at the display tier — that is the only heading site that should carry custom font-family or size declarations.
+
+**Exception policy.** Per-component inline font / text overrides on a heading are only acceptable when the design intent diverges from the global tier (e.g. `BannerSection.jsx` blog hero uses `text-[52px]` because its visual weight sits between display and headline). Duplicating the global tier inline is drift — strip on sight.
+
 ## 4. Elevation
 
 Surfaces are flat at rest. Depth is a response to intent, not a decoration. The system uses one ambient shadow for hover lift and one tighter shadow for floating navigation controls; that is the entire elevation vocabulary.

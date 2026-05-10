@@ -16,18 +16,7 @@ const HeroSection = () => {
     >
       {/* Centered content */}
       <div className="relative z-0 flex flex-col items-center justify-center text-center px-4 w-full max-w-4xl mx-auto">
-        <h1
-          className="mb-3 font-degular"
-          style={{
-            fontSize: 'clamp(2.5rem, 6vw, 4.25rem)',
-            fontWeight: 500,
-            lineHeight: 1.05,
-            letterSpacing: '-0.01em',
-            color: '#18181b',
-          }}
-        >
-          The cities, picked. The days, planned.
-        </h1>
+        <h1 className="display mb-3">The cities, picked. The days, planned.</h1>
         <p
           className="mb-8 text-[20px] sm:text-[24px] max-w-[44ch]"
           style={{

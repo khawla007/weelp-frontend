@@ -32,7 +32,7 @@ function Card({ icon: Icon, tone, title, children }) {
     <div className={`bg-white rounded-xl border ${toneClass} p-6 transition-shadow duration-200 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)]`}>
       <div className="flex items-center gap-3 mb-3">
         <Icon className="size-6 text-[#52525b]" />
-        <h2 className="text-lg font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+        <h2 className="text-lg font-semibold text-[#18181b]">
           {title}
         </h2>
       </div>
@@ -52,7 +52,7 @@ export default async function ApplicationStatusPage() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-2xl">
       <header className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">
           Application Status
         </h1>
         <p className="text-[#71717a] mt-1">Track your creator application.</p>

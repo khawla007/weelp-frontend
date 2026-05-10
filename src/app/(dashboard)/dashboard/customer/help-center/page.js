@@ -11,7 +11,7 @@ const HelpCenter = () => {
         </div>
 
         {/* Coming Soon Text */}
-        <h1 className="text-4xl font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+        <h1 className="text-4xl font-semibold text-[#18181b]">
           Coming Soon
         </h1>
 

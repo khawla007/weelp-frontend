@@ -23,7 +23,7 @@ export default async function CreatorItinerariesPage() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">
             Creator Itineraries
           </h1>
           <p className="text-[#71717a] mt-1">Review and manage creator-submitted itineraries.</p>

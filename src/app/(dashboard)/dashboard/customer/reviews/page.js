@@ -25,7 +25,7 @@ const ReviewsPage = () => {
     return (
       <Card className="shadow-none border-none bg-inherit bg-white">
         <CardHeader className={'px-8'}>
-          <CardTitle className="text-xl text-[#18181b] font-semibold" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+          <CardTitle className="text-xl text-[#18181b] font-semibold">
             Your Reviews
           </CardTitle>
           <CardDescription className="text-lg text-[#71717a]">See your reviews, thoughts.</CardDescription>
@@ -42,7 +42,7 @@ const ReviewsPage = () => {
     return (
       <Card className="shadow-none border-none bg-inherit bg-white">
         <CardHeader className={'px-8'}>
-          <CardTitle className="text-xl text-[#18181b] font-semibold" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+          <CardTitle className="text-xl text-[#18181b] font-semibold">
             Your Reviews
           </CardTitle>
           <CardDescription className="text-lg text-[#71717a]">See your reviews, thoughts.</CardDescription>
@@ -58,7 +58,7 @@ const ReviewsPage = () => {
   return (
     <Card className="shadow-none border-none bg-inherit bg-white">
       <CardHeader className={'px-8'}>
-        <CardTitle className="text-xl text-[#18181b] font-semibold" style={{ fontFamily: 'var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif' }}>
+        <CardTitle className="text-xl text-[#18181b] font-semibold">
           Your Reviews
         </CardTitle>
         <CardDescription className="text-lg text-[#71717a]">Manage your Reviews, Create New.</CardDescription>
