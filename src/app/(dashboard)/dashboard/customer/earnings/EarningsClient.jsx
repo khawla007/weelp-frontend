@@ -209,7 +209,7 @@ export default function EarningsClient({ initial }) {
                 <div className="text-sm text-[#71717a]">
                   {fmtDate(r.created_at)} · Order #{r.order_id}
                 </div>
-                <div className="flex justify-between text-sm pt-2 border-t border-[#eaeaea]">
+                <div className="flex justify-between text-sm pt-2 border-t border-[#e4e4e7]">
                   <span>
                     Gross: {fmtCurrency(r.gross_amount)} · {r.commission_rate}%
                   </span>

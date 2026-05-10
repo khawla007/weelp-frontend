@@ -32,7 +32,7 @@ export default function Step1BasicInfo({ locations = [] }) {
 
       <div className="flex w-full gap-4">
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-black'}`}>
+          <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-[#18181b]'}`}>
             Itinerary Name <span className="text-red-500">*</span>
           </Label>
           <Input
@@ -46,7 +46,7 @@ export default function Step1BasicInfo({ locations = [] }) {
         </div>
 
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-black'}`}>
+          <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-[#18181b]'}`}>
             Slug <span className="text-red-500">*</span>
           </Label>
           <Input
@@ -61,7 +61,7 @@ export default function Step1BasicInfo({ locations = [] }) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-black'}`}>
+        <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-[#18181b]'}`}>
           Description <span className="text-red-500">*</span>
         </Label>
         <Textarea
@@ -77,7 +77,7 @@ export default function Step1BasicInfo({ locations = [] }) {
 
       {/* destination */}
       <div className="space-y-2">
-        <Label htmlFor={'locations'} className={`block text-sm font-medium ${errors?.locations ? 'text-red-400' : 'text-black'}`}>
+        <Label htmlFor={'locations'} className={`block text-sm font-medium ${errors?.locations ? 'text-red-400' : 'text-[#18181b]'}`}>
           Destinations <span className="text-red-500">*</span>
         </Label>
         <Controller

@@ -203,7 +203,7 @@ export default function FilterBar() {
           <div className="flex-1 relative" ref={locationRef}>
             <div
               onClick={handleInputClick}
-              className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none"
+              className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none"
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <MapPin size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
@@ -213,7 +213,7 @@ export default function FilterBar() {
                 value={inputValue}
                 onChange={handleInputChange}
                 onClick={handleInputClick}
-                className="w-full bg-transparent border-0 focus:outline-none text-sm font-medium placeholder:text-[#5a5a5a]"
+                className="w-full bg-transparent border-0 focus:outline-none text-sm font-medium placeholder:text-[#71717a]"
                 style={{ color: '#5a5a5a', fontFamily: 'inherit' }}
                 autoComplete="off"
               />
@@ -279,7 +279,7 @@ export default function FilterBar() {
                   setValue('dateRange', { from: null, to: null });
                 }
               }}
-              className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
+              className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <Calendar size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
@@ -331,7 +331,7 @@ export default function FilterBar() {
                 setShowLocation(false);
                 setShowCalendar(false);
               }}
-              className="flex items-center gap-3 rounded-xl border border-[#cccccc80] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-l-none"
+              className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-l-none"
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <Users size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
@@ -405,7 +405,7 @@ export default function FilterBar() {
                 >
                   <span className="text-sm font-semibold text-[#18181b] truncate text-left">{item.title}</span>
                   <span className="rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#588f7a]">{item.category}</span>
-                  <span className="text-sm font-medium text-[#5a5a5a] text-right">{item.price || ''}</span>
+                  <span className="text-sm font-medium text-[#71717a] text-right">{item.price || ''}</span>
                 </Link>
               ))}
               <Link

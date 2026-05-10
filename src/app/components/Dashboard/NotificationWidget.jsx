@@ -45,8 +45,8 @@ export default function NotificationWidget({ session }) {
     <div className="bg-white rounded-xl border border-gray-200 p-5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Bell size={18} className="text-[#0c2536]" />
-          <h3 className="text-base font-semibold text-[#0c2536]">Notifications</h3>
+          <Bell size={18} className="text-[#18181b]" />
+          <h3 className="text-base font-semibold text-[#18181b]">Notifications</h3>
           {unreadCount > 0 && <span className="text-xs bg-red-500 text-white rounded-full px-2 py-0.5">{unreadCount}</span>}
         </div>
         {unreadCount > 0 && (
@@ -69,7 +69,7 @@ export default function NotificationWidget({ session }) {
               <div key={notif.id} className={`flex items-start gap-3 p-3 rounded-lg ${!notif.read_at ? 'bg-[#588f7a]/5' : 'bg-gray-50'}`}>
                 <IconComponent size={18} className={`mt-0.5 flex-shrink-0 ${iconColor}`} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#0c2536]">{notif.title}</p>
+                  <p className="text-sm font-medium text-[#18181b]">{notif.title}</p>
                   <p className="text-xs text-gray-500 line-clamp-2 mt-0.5">{notif.message}</p>
                   <p className="text-xs text-gray-400 mt-1">{timeAgo(notif.created_at)}</p>
                 </div>

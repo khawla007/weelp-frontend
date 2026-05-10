@@ -38,14 +38,14 @@ export default function BrowseDestinationsSection({
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className={`${navigationPrefix}-prev flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-all duration-200 hover:border-[#588f7a] hover:text-[#588f7a] hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40`}
+            className={`${navigationPrefix}-prev flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] transition-all duration-200 hover:border-[#588f7a] hover:text-[#588f7a] hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40`}
             aria-label="Previous destination"
           >
             <ChevronLeft className="size-4" />
           </button>
           <button
             type="button"
-            className={`${navigationPrefix}-next flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-all duration-200 hover:border-[#588f7a] hover:text-[#588f7a] hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40`}
+            className={`${navigationPrefix}-next flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] transition-all duration-200 hover:border-[#588f7a] hover:text-[#588f7a] hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40`}
             aria-label="Next destination"
           >
             <ChevronRight className="size-4" />

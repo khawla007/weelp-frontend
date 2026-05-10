@@ -12,7 +12,7 @@ import { ActivitySearchModal, CustomizedEditActivityForm, CustomizedEditTransfer
 export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel = 'Submit for Review', submitting = false }) {
   const [openDropdownForDay, setOpenDropdownForDay] = useState(null);
   const [modalContext, setModalContext] = useState({ type: '', day: null });
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [, setDropdownOpen] = useState(false);
   const [handleEdit, setHandleEdit] = useState({
     type: '',
     isEditOn: false,
@@ -40,23 +40,13 @@ export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel
   });
 
   // Activity Repeater
-  const {
-    fields: activityFields,
-    append: addActivity,
-    update: updateActivity,
-    remove: removeActivity,
-  } = useFieldArray({
+  const { append: addActivity, update: updateActivity } = useFieldArray({
     control,
     name: 'activities',
   });
 
   // Transfer Repeater
-  const {
-    fields: transferFields,
-    append: addTransfer,
-    update: updateTransfer,
-    remove: removeTransfer,
-  } = useFieldArray({
+  const { append: addTransfer, update: updateTransfer } = useFieldArray({
     control,
     name: 'transfers',
   });

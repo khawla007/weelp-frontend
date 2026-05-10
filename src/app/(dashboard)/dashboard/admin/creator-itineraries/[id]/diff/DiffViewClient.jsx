@@ -63,12 +63,12 @@ function ScheduleDiff({ approvedSchedules, draftSchedules }) {
                   <>
                     {approved.title && <p className="text-sm text-[#18181b] mb-2 font-medium">{approved.title}</p>}
                     {approved.activities?.map((a, idx) => (
-                      <div key={idx} className="text-sm text-[#52525b] py-1 border-b border-[#eaeaea]">
+                      <div key={idx} className="text-sm text-[#52525b] py-1 border-b border-[#e4e4e7]">
                         {a.name || `Activity #${a.activity_id}`} {a.start_time && `(${a.start_time})`}
                       </div>
                     ))}
                     {approved.transfers?.map((t, idx) => (
-                      <div key={idx} className="text-sm text-[#52525b] py-1 border-b border-[#eaeaea] italic">
+                      <div key={idx} className="text-sm text-[#52525b] py-1 border-b border-[#e4e4e7] italic">
                         Transfer: {t.name || `#${t.transfer_id}`} {t.start_time && `(${t.start_time})`}
                       </div>
                     ))}
@@ -83,12 +83,12 @@ function ScheduleDiff({ approvedSchedules, draftSchedules }) {
                   <>
                     {draft.title && <p className="text-sm text-[#18181b] mb-2 font-medium">{draft.title}</p>}
                     {draft.activities?.map((a, idx) => (
-                      <div key={idx} className="text-sm text-[#52525b] py-1 border-b border-[#eaeaea]">
+                      <div key={idx} className="text-sm text-[#52525b] py-1 border-b border-[#e4e4e7]">
                         {a.name || `Activity #${a.activity_id}`} {a.start_time && `(${a.start_time})`}
                       </div>
                     ))}
                     {draft.transfers?.map((t, idx) => (
-                      <div key={idx} className="text-sm text-[#52525b] py-1 border-b border-[#eaeaea] italic">
+                      <div key={idx} className="text-sm text-[#52525b] py-1 border-b border-[#e4e4e7] italic">
                         Transfer: {t.name || `#${t.transfer_id}`} {t.start_time && `(${t.start_time})`}
                       </div>
                     ))}

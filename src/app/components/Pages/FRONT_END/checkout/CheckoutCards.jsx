@@ -369,14 +369,14 @@ const TransferCheckoutItemCard = ({ item }) => {
         </span>
       </div>
 
-      <div className="flex flex-col gap-2 pt-3 border-t border-[#eee]">
+      <div className="flex flex-col gap-2 pt-3 border-t border-[#e4e4e7]">
         <BreakdownRow label={priceType === 'per_person' ? `Price (${formatCurrency(unitPrice, currency)} × ${headcount} pax)` : 'Price'} amount={basePrice} currency={currency} />
         {bagCount > 0 && <BreakdownRow label={`Extra luggage (${bagCount} × ${formatCurrency(luggageRate, currency)})`} amount={luggageAmount} currency={currency} />}
         {waitingMinutes > 0 && <BreakdownRow label={`Waiting time (${waitingMinutes} min × ${formatCurrency(waitingRate, currency)})`} amount={waitingAmount} currency={currency} />}
         <p className="text-[#71717a] text-xs italic">To add extra luggage and waiting minute edit on the search results before adding to cart.</p>
       </div>
 
-      <div className="flex items-center justify-between pt-2 border-t border-[#eee]">
+      <div className="flex items-center justify-between pt-2 border-t border-[#e4e4e7]">
         <span className="text-[#18181b] text-lg font-bold">Total</span>
         <span className="text-Blueish font-bold text-lg">{formatCurrency(price, currency)}</span>
       </div>

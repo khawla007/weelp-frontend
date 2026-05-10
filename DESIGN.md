@@ -155,6 +155,10 @@ A restrained palette built around a sage-green accent and a warm-leaning neutral
 
 **The No-Pure-Black, No-Pure-White Rule.** Backgrounds are `#f8faf9` or `#ffffff`. Text is `#18181b` ink, never `#000000`. Borders are `#e4e4e7`, never `#000000` at any opacity.
 
+**The Reserved-Brand-Signal Rule.** External-platform brand colors are not Weelp tokens, but a small set is preserved verbatim where the surface depends on third-party recognition. Today the only sanctioned exception is the Trustpilot star (`#00B67A`) on `CheckoutCards.jsx` — it carries platform recognition that a sage-tinted swap would erase. New brand-signal exceptions must be opted in explicitly via `eslint.config.mjs` (Phase 12 lint guards), one file at a time; never as a blanket allow-list.
+
+**Lint enforcement.** §2 hex allow-list, §3 Global-Heading Rule, and §7 Single-Container Rule are enforced via three custom rules in `eslint-rules/index.js` (`weelp/no-noncanonical-hex`, `weelp/no-inline-heading-font`, `weelp/no-noncanonical-container`). Rules run only on cascaded surfaces — see `CASCADED_SURFACES` in `eslint.config.mjs`. New surfaces graduate into the guard set as their phase ships.
+
 ## 3. Typography
 
 **Display Font:** `degular_demo` (custom OTF) with Plus Jakarta Sans as fallback.

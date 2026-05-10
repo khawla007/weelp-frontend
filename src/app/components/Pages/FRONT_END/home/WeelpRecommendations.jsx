@@ -3,7 +3,6 @@ import SectionFallback from '@/app/components/ui/SectionFallback';
 import { getFeaturedItineraries } from '@/lib/services/itineraries';
 
 const fontIT = 'var(--font-interTight), Inter Tight, sans-serif';
-const fontJakarta = 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif';
 
 function getRandomItems(array, count) {
   if (array.length <= count) return array;
@@ -37,7 +36,7 @@ const WeelpRecommendations = async () => {
   return (
     <div className="w-full bg-[#f8faf9]">
       <div className="w-full px-4 py-10 lg:px-[60px]">
-        <h3 className="text-[20px] text-[#18181b] mb-4" style={{ fontFamily: fontJakarta, fontWeight: 600, lineHeight: 1.3 }}>
+        <h3 className="text-[20px] text-[#18181b] mb-4">
           Weelp Recommendations
         </h3>
         <div className="mb-4 border-t border-[#e4e4e7]" />
