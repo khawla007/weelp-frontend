@@ -13,7 +13,7 @@ const Singleproductguide = ({ imageSrc, postTitle, subtitle, slug }) => {
       <Link href={slug ? `/blogs/${slug}` : '/blogs'}>
         <img src={imageSrc || '/assets/images/8597548-ai 1.jpg'} alt={'China'} className="object-cover w-full h-52 sm:h-60" />
         <div className="p-4 sm:p-5">
-          <h2 className="text-xs sm:text-sm font-medium text-secondaryDark mb-1 uppercase tracking-wider">{postTitle || 'Solo'}</h2>
+          <h2 className="text-xs sm:text-sm font-medium text-[#588f7a] mb-1 uppercase tracking-wider">{postTitle || 'Solo'}</h2>
           <p className="text-base sm:text-xl font-semibold text-[#18181b] line-clamp-2">{modifiedSubtitle || 'Best Places for Solo Travel'}</p>
         </div>
       </Link>
