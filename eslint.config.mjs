@@ -101,10 +101,7 @@ const eslintConfig = [
   // `#fed141` on review surfaces depends on third-party-style recognition
   // (Google / Trustpilot / app-store rating gold).
   {
-    files: [
-      'src/app/components/Pages/FRONT_END/singleproduct/BannerSection.jsx',
-      'src/app/components/Pages/FRONT_END/singleproduct/SingleProductReview.jsx',
-    ],
+    files: ['src/app/components/Pages/FRONT_END/singleproduct/BannerSection.jsx', 'src/app/components/Pages/FRONT_END/singleproduct/SingleProductReview.jsx'],
     rules: {
       'weelp/no-noncanonical-hex': ['error', { allowExtra: ['fed141'] }],
     },
