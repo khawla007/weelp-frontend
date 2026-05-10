@@ -79,7 +79,7 @@ export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productR
               )}
             </h5>
 
-            <button className="border border-dangerSecondary text-dangerSecondary bg-dangerLite font-semibold py-1 px-4 uppercase rounded-md text-xs">40% off</button>
+            <button className="border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-1 px-4 uppercase rounded-md text-xs">40% off</button>
           </div>
         </div>
       </NavigationLink>
@@ -120,7 +120,7 @@ const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, pro
                 </>
               )}
             </h5>
-            <button className=" border border-dangerSecondary text-dangerSecondary bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
+            <button className=" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
           </div>
         </div>
       </NavigationLink>
@@ -159,7 +159,7 @@ export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, p
               <span className="font-normal">From</span>
               {productPrice || '$1200'}
             </h5>
-            <button className=" border border-dangerSecondary text-dangerSecondary bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
+            <button className=" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
           </div>
         </div>
       </NavigationLink>
@@ -197,7 +197,7 @@ export const SingleProductCardPackage = ({ productId, imgsrc, productRating, pro
               <span className="font-normal">From</span>
               {productPrice || '$1200'}
             </h5>
-            <button className=" border border-dangerSecondary text-dangerSecondary bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
+            <button className=" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
           </div>
         </div>
       </NavigationLink>

@@ -101,7 +101,7 @@ export function CardActions({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => handleDialogChange(false)}>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-dangerSecondary" onClick={handleDeleteConfirm}>
+            <AlertDialogAction className="bg-[#ff725e]" onClick={handleDeleteConfirm}>
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>

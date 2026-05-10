@@ -553,7 +553,7 @@ body {
 /* day picker  Latest Version 8.0+ */
 .bannerForm .rdp-day_selected,
 .singleProducform .rdp-day_selected {
-  @apply bg-secondaryLight2 text-inherit;
+  @apply bg-[#f2f7f5] text-inherit;
 }
 
 .bannerForm .rdp-day_selected:hover,
@@ -616,7 +616,7 @@ body {
 
 .bannerForm .rdp-range_middle .rdp-day_button,
 .singleProducform .rdp-range_middle .rdp-day_button {
-  @apply bg-secondaryLight2;
+  @apply bg-[#f2f7f5];
 }
 
 .bannerForm .rdp-button_next,

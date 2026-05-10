@@ -28,7 +28,7 @@ export const TransfertCard = () => {
         />
       </CardHeader>
       <CardFooter className={'p-0 flex flex-col'}>
-        <div className="bg-secondaryLight2 py-4 px-8 w-full flex  gap-2 sm:gap-4">
+        <div className="bg-[#f2f7f5] py-4 px-8 w-full flex  gap-2 sm:gap-4">
           <span className="capitalize flex gap-2  text-green-800">
             {' '}
             <CircleCheckBig /> live guide

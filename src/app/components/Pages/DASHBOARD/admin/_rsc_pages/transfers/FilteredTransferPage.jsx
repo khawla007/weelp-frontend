@@ -461,7 +461,7 @@ const FilterTransfer = () => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel onClick={cancelDelete}>Cancel</AlertDialogCancel>
-              <AlertDialogAction className="bg-dangerSecondary" onClick={confirmDelete}>
+              <AlertDialogAction className="bg-[#ff725e]" onClick={confirmDelete}>
                 Continue
               </AlertDialogAction>
             </AlertDialogFooter>
