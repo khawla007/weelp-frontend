@@ -258,13 +258,11 @@ const noSemanticGray = {
   meta: {
     type: 'problem',
     docs: {
-      description:
-        'Disallow Tailwind `gray-*` / `neutral-*` palette outside grandfathered shadcn primitives — canonical neutral is `zinc-*` (DESIGN.md §5).',
+      description: 'Disallow Tailwind `gray-*` / `neutral-*` palette outside grandfathered shadcn primitives — canonical neutral is `zinc-*` (DESIGN.md §5).',
     },
     schema: [],
     messages: {
-      drift:
-        '`{{cls}}` uses non-canonical neutral palette. Replace with `zinc-*` (DESIGN.md §5 — primitives in `src/components/ui` are grandfathered via eslint override).',
+      drift: '`{{cls}}` uses non-canonical neutral palette. Replace with `zinc-*` (DESIGN.md §5 — primitives in `src/components/ui` are grandfathered via eslint override).',
     },
   },
   create(context) {
