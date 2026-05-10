@@ -678,14 +678,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
             ) => (
               <div key={item?.id} className="space-y-4">
                 <div className="flex items-center gap-4 mt-4 justify-between">
-                  <Input
-                    type="number"
-                    {...register(`schedules.${index}.day`)}
-                    defaultValue={item?.day}
-                    className="w-20 focus-visible:ring-[#588f7a] focus-visible:ring-1"
-                    placeholder="Day"
-                    readOnly
-                  />
+                  <Input type="number" {...register(`schedules.${index}.day`)} defaultValue={item?.day} className="w-20 focus-visible:ring-[#588f7a] focus-visible:ring-1" placeholder="Day" readOnly />
                   <Input type="text" {...register(`schedules.${index}.title`)} className="flex-1 focus-visible:ring-[#588f7a] focus-visible:ring-1" placeholder="e.g., Arrival in Port Blair" />
                   <Trash2 onClick={() => setPendingRemoval({ kind: 'day', payload: { item, itineraryId: id, dayIndex: index } })} className="text-red-400 cursor-pointer" size={16} />
                 </div>
@@ -1457,9 +1450,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                 control={control}
                 name={`inclusions_exclusions.${index}.included`}
                 defaultValue={false}
-                render={({ field }) => (
-                  <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-[#588f7a]" />
-                )}
+                render={({ field }) => <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-[#588f7a]" />}
               />
               <Label htmlFor={`inclusions_exclusions.${index}.included`}>Included</Label>
             </div>

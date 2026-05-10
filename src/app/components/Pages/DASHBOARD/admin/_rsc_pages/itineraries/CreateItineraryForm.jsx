@@ -1039,9 +1039,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                 control={control}
                 name={`inclusions_exclusions.${index}.included`}
                 defaultValue={false}
-                render={({ field }) => (
-                  <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-[#588f7a]" />
-                )}
+                render={({ field }) => <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-[#588f7a]" />}
               />
               <Label htmlFor={`inclusions_exclusions.${index}.included`}>Included</Label>
             </div>
