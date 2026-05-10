@@ -318,7 +318,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                 placeholder="Activity name"
                 id="name"
                 {...register('name', { required: 'Name is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus:outline-secondaryDark"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus:outline-[#588f7a]"
                 onBlur={handleBlur}
               />
               {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
@@ -331,7 +331,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                 placeholder="Enter Url slug"
                 id="slug"
                 {...register('slug', { required: 'Slug is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
                 onBlur={handleBlur}
               />
               {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
@@ -347,7 +347,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               {...register('description', {
                 required: 'Description is required',
               })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm h-28 focus:outline-secondaryDark"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm h-28 focus:outline-[#588f7a]"
             />
             {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
           </div>
@@ -362,7 +362,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               {...register('short_description', {
                 required: 'Field is required',
               })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 h-20 focus:outline-secondaryDark"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 h-20 focus:outline-[#588f7a]"
             />
             {errors?.short_description && <p className="text-red-500 text-sm mt-1">{errors.short_description.message}</p>}
           </div>
@@ -380,7 +380,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                   checked={field.value}
                   onCheckedChange={field.onChange}
                   id="featured_activity"
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-secondaryDark"
+                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-[#588f7a]"
                 >
                   <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
                 </Switch>
@@ -477,7 +477,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                   placeholder="Min Age"
                   value={field.value || ''} // Ensure it's controlled
                   onChange={(e) => field.onChange(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-zinc-300 shadow-sm focus-visible:focus:outline-secondaryDark"
+                  className="mt-1 block w-full rounded-md border-zinc-300 shadow-sm focus-visible:focus:outline-[#588f7a]"
                 />
               )}
             />
@@ -502,7 +502,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                   placeholder="Max group size"
                   value={field.value || ''} // Ensure it's controlled
                   onChange={(e) => field.onChange(e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:outline-secondaryDark"
+                  className="mt-1 block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:outline-[#588f7a]"
                 />
               )}
             />
@@ -555,7 +555,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               rules={{ required: 'Type required' }}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="w-full rounded-md text-start focus:outline-secondaryDark">
+                  <SelectTrigger className="w-full rounded-md text-start focus:outline-[#588f7a]">
                     <SelectValue placeholder="Location Type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -615,7 +615,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                       control={methods.control}
                       render={({ field }) => (
                         <Select onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger className="w-full rounded-md text-start focus:outline-secondaryDark">
+                          <SelectTrigger className="w-full rounded-md text-start focus:outline-[#588f7a]">
                             <SelectValue placeholder="Location Type" />
                           </SelectTrigger>
                           <SelectContent>
@@ -760,7 +760,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               defaultValue="easy"
               render={({ field }) => (
                 <Select id={'difficulty_level'} onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger className="mt-1 w-full capitalize rounded-md p-2 focus:outline-secondaryDark">
+                  <SelectTrigger className="mt-1 w-full capitalize rounded-md p-2 focus:outline-[#588f7a]">
                     <SelectValue placeholder="Select a unit" />
                   </SelectTrigger>
                   <SelectContent>
@@ -1167,7 +1167,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               {/* Switch for Seasonal Pricing*/}
               <div className="flex items-center gap-4">
                 <Switch
-                  className="data-[state=checked]:bg-secondaryDark ease-in-out duration-500"
+                  className="data-[state=checked]:bg-[#588f7a] ease-in-out duration-500"
                   checked={isSeasonPricing}
                   onCheckedChange={(checked) => {
                     setSeasonPricing(checked);
@@ -1335,7 +1335,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                         enable_seasonal_pricing: true,
                       })
                     }
-                    className="mt-4 bg-secondaryDark"
+                    className="mt-4 bg-[#588f7a]"
                   >
                     Add Season
                   </Button>
@@ -1563,11 +1563,11 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                         }
                         setCurrentStep(step?.id);
                       }}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && 'bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-secondaryDark border-b-2'}`}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && 'bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-[#588f7a] border-b-2'}`}
                     >
                       <Separator className={`pt-1 rounded-full ${currentStep >= step?.id ? 'bg-[#588f7a] group-hover:bg-[#eaeaea]' : 'bg-zinc-200 group-hover:bg-[#588f7a]'}`} />
 
-                      <div className={`text-sm font-medium pt-2 ${currentStep == step?.id ? 'text-secondaryDark' : 'text-[#71717a]'}`}>{step.title}</div>
+                      <div className={`text-sm font-medium pt-2 ${currentStep == step?.id ? 'text-[#588f7a]' : 'text-[#71717a]'}`}>{step.title}</div>
                       <span className="text-sm text-zinc-500">{step?.description}</span>
                     </li>
                   ))}
@@ -1614,7 +1614,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                 {currentStep === 6 ? (
                   <FormActionButtons mode="update" isSubmitting={isSubmitting} isDisabled={!isValid || !isDirty} cancelAlwaysEnabled={true} containerType="div" className="flex gap-4" />
                 ) : (
-                  <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
+                  <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}>
                     {isSubmitting ? 'Next' : 'Next'}
                   </Button>
                 )}

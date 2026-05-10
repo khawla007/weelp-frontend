@@ -102,7 +102,7 @@ const BasicInformationTab = () => {
             render={({ field }) => (
               <FormItem className="flex items-start gap-2">
                 <FormControl>
-                  <Switch className="data-[state=checked]:bg-secondaryDark" checked={field.value} onCheckedChange={field.onChange} />
+                  <Switch className="data-[state=checked]:bg-[#588f7a]" checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
                 <FormLabel>Featured Destination</FormLabel>
                 <FormMessage />

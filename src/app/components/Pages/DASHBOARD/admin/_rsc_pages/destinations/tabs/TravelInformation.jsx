@@ -72,7 +72,7 @@ const TravelInformationTab = () => {
               render={({ field }) => (
                 <FormItem className="flex items-start gap-2">
                   <FormControl>
-                    <Switch checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-secondaryDark" />
+                    <Switch checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-[#588f7a]" />
                   </FormControl>
                   <FormLabel className="capitalize">{value.replace(/_/g, ' ')}</FormLabel>
                   <FormMessage />
@@ -93,7 +93,7 @@ const TravelInformationTab = () => {
               render={({ field }) => (
                 <FormItem className="flex items-start gap-2">
                   <FormControl>
-                    <Switch checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-secondaryDark" />
+                    <Switch checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-[#588f7a]" />
                   </FormControl>
                   <FormLabel className="capitalize">{value.replace(/_/g, ' ')}</FormLabel>
                   <FormMessage />

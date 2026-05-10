@@ -384,7 +384,7 @@ const FilterBlog = () => {
                       {tags.length > 0 && (
                         <ListingCardTags>
                           {tags.map(({ tag_name }, idx) => (
-                            <Badge key={idx} className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${idx === 0 && 'bg-zinc-400'}`}>
+                            <Badge key={idx} className={`bg-[#588f7a] text-white hover:text-white hover:bg-[#588f7a] ${idx === 0 && 'bg-zinc-400'}`}>
                               {tag_name}
                             </Badge>
                           ))}
@@ -394,7 +394,7 @@ const FilterBlog = () => {
                       {/* Status */}
                       <div className="flex items-center gap-2">
                         <b>Status:</b>
-                        {publish ? <Badge className={'bg-secondaryDark'}>Published</Badge> : <Badge className={'bg-yellow-400'}>Draft</Badge>}
+                        {publish ? <Badge className={'bg-[#588f7a]'}>Published</Badge> : <Badge className={'bg-yellow-400'}>Draft</Badge>}
                       </div>
 
                       {/* Excerpt */}

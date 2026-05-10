@@ -35,7 +35,7 @@ export function AdminDashboardPage() {
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-xl md:text-3xl font-bold tracking-tight">Super Admin Dashboard</h2>
         <div className="flex items-center space-x-2">
-          <Button className="bg-secondaryDark">Download</Button>
+          <Button className="bg-[#588f7a]">Download</Button>
         </div>
       </div>
 

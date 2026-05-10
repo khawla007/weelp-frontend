@@ -164,10 +164,10 @@ export const CreateTransferForm = ({}) => {
                     <li
                       key={step.id}
                       onClick={() => setCurrentStep(step?.id)}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-secondaryDark border-b-2'}`}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-[#588f7a] border-b-2'}`}
                     >
                       <div
-                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-secondaryDark ' : 'text-[#71717a]'}`}
+                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-[#588f7a] ' : 'text-[#71717a]'}`}
                       >
                         {step.title}
                       </div>
@@ -218,7 +218,7 @@ export const CreateTransferForm = ({}) => {
                 {currentStep === 6 ? (
                   <FormActionButtons mode="create" isSubmitting={isSubmitting} containerType="div" className="flex gap-4 ml-auto" />
                 ) : (
-                  <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
+                  <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}>
                     Next
                   </Button>
                 )}

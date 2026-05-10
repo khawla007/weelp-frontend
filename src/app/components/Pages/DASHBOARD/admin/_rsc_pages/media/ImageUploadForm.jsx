@@ -153,7 +153,7 @@ export const UploadImagesForm = ({ uploadImagePop, setUploadImagePopUp, mutateMe
       )}
 
       <div className={`flex gap-4 ${isloading && ' cursor-wait'}`}>
-        <Button type="button" className="bg-secondaryDark" onClick={handleSubmitImage} disabled={isloading || files.length === 0 || fileRejections.length > 0}>
+        <Button type="button" className="bg-[#588f7a]" onClick={handleSubmitImage} disabled={isloading || files.length === 0 || fileRejections.length > 0}>
           {isloading ? 'Uploading' : 'Upload'}
         </Button>
         {!isloading && (

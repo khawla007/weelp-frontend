@@ -167,7 +167,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                     setIsAllSelected(!isAllSelected);
                   }}
                   variant="outline"
-                  className="bg-secondaryDark text-white hover:bg-secondaryDark/90"
+                  className="bg-[#588f7a] text-white hover:bg-[#588f7a]/90"
                 >
                   {isAllSelected ? 'Unselect All' : `Select All (${images.length})`}
                 </Button>
@@ -334,7 +334,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
 
         {/* If Images Are Selected Outside of the Media Library */}
         {!isMediaPage && !isEmpty(selectedImages) && (
-          <Button onClick={selectedImagesHandleStore} className="bg-secondaryDark w-fit col-span-full">
+          <Button onClick={selectedImagesHandleStore} className="bg-[#588f7a] w-fit col-span-full">
             Select Images
           </Button>
         )}

@@ -272,7 +272,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                 placeholder="Itinerary name"
                 id="name"
                 {...register('name', { required: 'Name is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
                 onBlur={handleBlur}
               />
               {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
@@ -286,7 +286,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                 placeholder="Enter Url slug"
                 id="slug"
                 {...register('slug', { required: 'Slug is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
                 onBlur={handleBlur}
               />
               {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
@@ -303,7 +303,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
               {...register('description', {
                 required: 'Description is required',
               })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
             />
             {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
           </div>
@@ -342,7 +342,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                     id="featured_itinerary"
                     checked={field.value}
                     onCheckedChange={field.onChange}
-                    className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-secondaryDark"
+                    className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-[#588f7a]"
                   >
                     <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
                   </Switch>
@@ -360,7 +360,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                     id="private_itinerary"
                     checked={field.value}
                     onCheckedChange={field.onChange}
-                    className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-secondaryDark"
+                    className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-[#588f7a]"
                   >
                     <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
                   </Switch>
@@ -652,7 +652,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
 
         <div className="w-full flex justify-between items-center">
           <h3 className="text-base font-semibold text-[#18181b]">Daily Schedule</h3>
-          <Button type="button" onClick={handleAddDay} className="bg-secondaryDark hover:bg-secondaryDark">
+          <Button type="button" onClick={handleAddDay} className="bg-[#588f7a] hover:bg-[#588f7a]">
             + Add Day
           </Button>
         </div>
@@ -682,11 +682,11 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                     type="number"
                     {...register(`schedules.${index}.day`)}
                     defaultValue={item?.day}
-                    className="w-20 focus-visible:ring-secondaryDark focus-visible:ring-1"
+                    className="w-20 focus-visible:ring-[#588f7a] focus-visible:ring-1"
                     placeholder="Day"
                     readOnly
                   />
-                  <Input type="text" {...register(`schedules.${index}.title`)} className="flex-1 focus-visible:ring-secondaryDark focus-visible:ring-1" placeholder="e.g., Arrival in Port Blair" />
+                  <Input type="text" {...register(`schedules.${index}.title`)} className="flex-1 focus-visible:ring-[#588f7a] focus-visible:ring-1" placeholder="e.g., Arrival in Port Blair" />
                   <Trash2 onClick={() => setPendingRemoval({ kind: 'day', payload: { item, itineraryId: id, dayIndex: index } })} className="text-red-400 cursor-pointer" size={16} />
                 </div>
 
@@ -770,7 +770,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                       }}
                     >
                       <DropdownMenuTrigger>
-                        <p className="bg-secondaryDark hover:bg-secondaryDark rounded-3xl p-2 text-white px-6 self-center">+ Add Item</p>
+                        <p className="bg-[#588f7a] hover:bg-[#588f7a] rounded-3xl p-2 text-white px-6 self-center">+ Add Item</p>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
                         <DropdownMenuItem
@@ -852,7 +852,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
         <Button
           type="submit"
           onClick={handleValidationSchedule}
-          className={`absolute right-0 -bottom-14 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}
+          className={`absolute right-0 -bottom-14 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}
         >
           Next
         </Button>
@@ -1412,7 +1412,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                 defaultValue=""
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="w-[180px] focus:ring-secondaryDark">
+                    <SelectTrigger className="w-[180px] focus:ring-[#588f7a]">
                       <SelectValue placeholder="activity" />
                     </SelectTrigger>
                     <SelectContent>
@@ -1433,7 +1433,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
               </Label>
               <Input
                 id={`inclusions_exclusions.${index}.title`}
-                className="focus-visible:ring-secondaryDark"
+                className="focus-visible:ring-[#588f7a]"
                 placeholder="Enter Title"
                 {...register(`inclusions_exclusions.${index}.title`, {
                   required: 'Field Required',
@@ -1446,7 +1446,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
               <Label htmlFor={`inclusions_exclusions.${index}.description`}>Description</Label>
               <Textarea
                 id={`inclusions_exclusions.${index}.description`}
-                className="focus-visible:ring-secondaryDark"
+                className="focus-visible:ring-[#588f7a]"
                 placeholder="Enter Description"
                 {...register(`inclusions_exclusions.${index}.description`)}
               />
@@ -1458,7 +1458,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                 name={`inclusions_exclusions.${index}.included`}
                 defaultValue={false}
                 render={({ field }) => (
-                  <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-secondaryDark" />
+                  <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-[#588f7a]" />
                 )}
               />
               <Label htmlFor={`inclusions_exclusions.${index}.included`}>Included</Label>
@@ -1806,7 +1806,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                 type="text"
                 maxLength="60"
                 placeholder="Enter meta title"
-                className="focus-visible:ring-secondaryDark"
+                className="focus-visible:ring-[#588f7a]"
                 {...register('seo.meta_title', {
                   required: 'Meta Title Required',
                 })}
@@ -1821,7 +1821,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                 type="text"
                 placeholder="Enter meta description"
                 maxLength="160"
-                className="focus-visible:ring-secondaryDark"
+                className="focus-visible:ring-[#588f7a]"
                 {...register('seo.meta_description', {
                   required: 'Meta Description Required',
                 })}
@@ -1835,7 +1835,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
               <Input
                 type="text"
                 placeholder="Enter keywords separated by commas"
-                className="focus-visible:ring-secondaryDark"
+                className="focus-visible:ring-[#588f7a]"
                 {...register('seo.keywords', {
                   required: 'Keywords Required',
                   onBlur: (e) => {
@@ -1852,7 +1852,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
               <Input
                 type="url"
                 placeholder="e.g: https://example.com/sample-og.jpg"
-                className="focus-visible:ring-secondaryDark"
+                className="focus-visible:ring-[#588f7a]"
                 {...register('seo.og_image_url', {
                   required: 'og_image_url Required',
                 })}
@@ -1865,7 +1865,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
               <Input
                 type="url"
                 placeholder="e.g: https://example.com/"
-                className="focus-visible:ring-secondaryDark"
+                className="focus-visible:ring-[#588f7a]"
                 {...register('seo.canonical_url', {
                   required: 'canonical_url Required',
                 })}
@@ -2140,12 +2140,12 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                         setCurrentStep(step?.id);
                       }}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${
-                        currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-secondaryDark border-b-2'
+                        currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-[#588f7a] border-b-2'
                       }`}
                     >
                       <div
                         className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${
-                          currentStep == step?.id ? 'text-secondaryDark ' : 'text-[#71717a]'
+                          currentStep == step?.id ? 'text-[#588f7a] ' : 'text-[#71717a]'
                         }`}
                       >
                         {step.title}
@@ -2215,7 +2215,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                         )}
                       </div>
                     ) : (
-                      <Button type="submit" disabled={isSubmitting || isApproving} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}>
+                      <Button type="submit" disabled={isSubmitting || isApproving} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}>
                         {isSubmitting ? 'Next' : 'Next'}
                       </Button>
                     )}

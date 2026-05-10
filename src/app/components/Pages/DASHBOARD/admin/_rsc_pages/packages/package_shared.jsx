@@ -87,7 +87,7 @@ export const ActivitySearchModal = ({ day, onClose, activities = [], addActivity
           </DialogHeader>
 
           <div className="w-full flex gap-4 items-center">
-            <Input type="text" placeholder="Search Activity..." className="w-full border p-2 focus-visible:ring-secondaryDark focus-visible:ring-1" onChange={handleSearch} />
+            <Input type="text" placeholder="Search Activity..." className="w-full border p-2 focus-visible:ring-[#588f7a] focus-visible:ring-1" onChange={handleSearch} />
             <Button className="bg-white hover:bg-white border">
               <SearchIcon className="text-[#52525b]" />
             </Button>
@@ -164,7 +164,7 @@ export const ActivitySearchModal = ({ day, onClose, activities = [], addActivity
                           included: checked,
                         }))
                       }
-                      className="data-[state=checked]:bg-secondaryDark ease-in-out duration-500"
+                      className="data-[state=checked]:bg-[#588f7a] ease-in-out duration-500"
                     />
                   </Label>
                 </div>
@@ -244,7 +244,7 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
 
           {/* Your activity search form here */}
           <div className="w-full flex gap-4 items-center">
-            <Input type="text" placeholder="Search transfers..." className="w-full border p-2 focus-visible:ring-secondaryDark focus-visible:ring-1" />
+            <Input type="text" placeholder="Search transfers..." className="w-full border p-2 focus-visible:ring-[#588f7a] focus-visible:ring-1" />
             <Button className="bg-white hover:bg-white border">
               <SearchIcon className="text-[#52525b]" />
             </Button>
@@ -320,7 +320,7 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
                           included: checked,
                         }))
                       }
-                      className="data-[state=checked]:bg-secondaryDark ease-in-out duration-500"
+                      className="data-[state=checked]:bg-[#588f7a] ease-in-out duration-500"
                     />
                   </Label>
                 </div>
@@ -342,7 +342,7 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
               </div>
 
               <div className="flex flex-col gap-4 mt-4">
-                <Button onClick={handleAddTransfer} className="p-2 rounded-md w-full bg-secondaryDark">
+                <Button onClick={handleAddTransfer} className="p-2 rounded-md w-full bg-[#588f7a]">
                   Done
                 </Button>
                 {/* <Button onClick={closeModal} className="bg-red-500 text-white p-2 rounded-md">
@@ -413,7 +413,7 @@ export const ItinerarySearchModal = ({ day, onClose, itineraries = [], addItiner
 
           {/* Your activity search form here */}
           <div className="w-full flex gap-4 items-center">
-            <Input type="text" placeholder="Search itineraries..." className="w-full border p-2 focus-visible:ring-secondaryDark focus-visible:ring-1" />
+            <Input type="text" placeholder="Search itineraries..." className="w-full border p-2 focus-visible:ring-[#588f7a] focus-visible:ring-1" />
             <Button className="bg-white hover:bg-white border">
               <SearchIcon className="text-[#52525b]" />
             </Button>
@@ -489,14 +489,14 @@ export const ItinerarySearchModal = ({ day, onClose, itineraries = [], addItiner
                           included: checked,
                         }))
                       }
-                      className="data-[state=checked]:bg-secondaryDark ease-in-out duration-500"
+                      className="data-[state=checked]:bg-[#588f7a] ease-in-out duration-500"
                     />
                   </Label>
                 </div>
               </div>
 
               <div className="flex flex-col gap-4 mt-4">
-                <Button onClick={handleAddItinerary} className="p-2 rounded-md w-full bg-secondaryDark">
+                <Button onClick={handleAddItinerary} className="p-2 rounded-md w-full bg-[#588f7a]">
                   Done
                 </Button>
               </div>
@@ -623,14 +623,14 @@ export const CustomizedEditActivityForm = ({ isEditOn, updateActivity, day, sele
                         included: checked,
                       }))
                     }
-                    className="data-[state=checked]:bg-secondaryDark ease-in-out duration-500"
+                    className="data-[state=checked]:bg-[#588f7a] ease-in-out duration-500"
                   />
                 </Label>
               </div>
             </div>
 
             <div className="flex flex-col gap-4 mt-4">
-              <Button onClick={handleUpdateActivity} className="p-2 rounded-md w-full bg-secondaryDark ">
+              <Button onClick={handleUpdateActivity} className="p-2 rounded-md w-full bg-[#588f7a] ">
                 Submit
               </Button>
             </div>
@@ -755,7 +755,7 @@ export const CustomizedEditTransferForm = ({ isEditOn, updateTransfer, day, sele
                         included: checked,
                       }))
                     }
-                    className="data-[state=checked]:bg-secondaryDark ease-in-out duration-500"
+                    className="data-[state=checked]:bg-[#588f7a] ease-in-out duration-500"
                   />
                 </Label>
               </div>
@@ -777,7 +777,7 @@ export const CustomizedEditTransferForm = ({ isEditOn, updateTransfer, day, sele
             </div>
 
             <div className="flex flex-col gap-4 mt-4">
-              <Button onClick={handleUpdateTransfer} className="p-2 rounded-md w-full bg-secondaryDark">
+              <Button onClick={handleUpdateTransfer} className="p-2 rounded-md w-full bg-[#588f7a]">
                 Submit
               </Button>
             </div>
@@ -899,14 +899,14 @@ export const CustomizedEditItineraryForm = ({ isEditOn, updateItinerary, day, se
                         included: checked,
                       }))
                     }
-                    className="data-[state=checked]:bg-secondaryDark ease-in-out duration-500"
+                    className="data-[state=checked]:bg-[#588f7a] ease-in-out duration-500"
                   />
                 </Label>
               </div>
             </div>
 
             <div className="flex flex-col gap-4 mt-4">
-              <Button onClick={handleUpdateItinerary} className="p-2 rounded-md w-full bg-secondaryDark">
+              <Button onClick={handleUpdateItinerary} className="p-2 rounded-md w-full bg-[#588f7a]">
                 Submit
               </Button>
             </div>

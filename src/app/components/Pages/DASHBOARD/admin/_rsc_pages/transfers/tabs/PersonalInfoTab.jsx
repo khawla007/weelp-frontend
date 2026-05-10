@@ -43,7 +43,7 @@ const PersonalInfoTab = () => {
             placeholder="Enter Transfer Name"
             id="name"
             {...register('name', { required: 'Name is required' })}
-            className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
+            className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
             onBlur={handleBlur}
           />
           {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
@@ -57,7 +57,7 @@ const PersonalInfoTab = () => {
             placeholder="Enter Url slug"
             id="slug"
             {...register('slug', { required: 'Slug is required' })}
-            className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
+            className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
             onBlur={handleBlur}
           />
           {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
@@ -75,7 +75,7 @@ const PersonalInfoTab = () => {
           {...register('description', {
             required: 'Description is required',
           })}
-          className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
+          className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
         />
         {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
       </div>

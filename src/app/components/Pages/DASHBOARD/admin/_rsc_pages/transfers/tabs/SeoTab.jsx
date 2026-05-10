@@ -201,7 +201,7 @@ const SeoTab = () => {
               type="text"
               maxLength="60"
               placeholder="Enter meta title"
-              className="focus-visible:ring-secondaryDark"
+              className="focus-visible:ring-[#588f7a]"
               {...register('seo.meta_title', {
                 required: 'Meta Title Required',
               })}
@@ -216,7 +216,7 @@ const SeoTab = () => {
               type="text"
               placeholder="Enter meta description"
               maxLength="160"
-              className="focus-visible:ring-secondaryDark"
+              className="focus-visible:ring-[#588f7a]"
               {...register('seo.meta_description', {
                 required: 'Meta Description Required',
               })}
@@ -230,7 +230,7 @@ const SeoTab = () => {
             <Input
               type="text"
               placeholder="Enter keywords separated by commas"
-              className="focus-visible:ring-secondaryDark"
+              className="focus-visible:ring-[#588f7a]"
               {...register('seo.keywords', {
                 required: 'Keywords Required',
                 onBlur: (e) => {
@@ -247,7 +247,7 @@ const SeoTab = () => {
             <Input
               type="text"
               placeholder="Enter OG Image Url"
-              className="focus-visible:ring-secondaryDark"
+              className="focus-visible:ring-[#588f7a]"
               {...register('seo.og_image_url', {
                 required: 'og_image_url Required',
               })}
@@ -260,7 +260,7 @@ const SeoTab = () => {
             <Input
               type="text"
               placeholder="Enter canonical URL"
-              className="focus-visible:ring-secondaryDark"
+              className="focus-visible:ring-[#588f7a]"
               {...register('seo.canonical_url', {
                 required: 'canonical_url Required',
               })}
