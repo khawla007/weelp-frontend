@@ -3,24 +3,14 @@ export const metadata = {
   description: 'Read the Terms of Service for using the Weelp travel booking platform, including rules for bookings, payments, user responsibilities, and more.',
 };
 
-const fontIT = 'var(--font-interTight), Inter Tight, sans-serif';
+const SectionTitle = ({ children }) => <h2 className="text-2xl font-semibold">{children}</h2>;
 
-const SectionTitle = ({ children }) => (
-  <h2 style={{ fontFamily: fontIT }} className="text-2xl font-semibold text-[#243141]">
-    {children}
-  </h2>
-);
-
-const Paragraph = ({ children }) => (
-  <p style={{ fontFamily: fontIT, fontWeight: 500 }} className="text-lg text-[#6f7680] leading-relaxed">
-    {children}
-  </p>
-);
+const Paragraph = ({ children }) => <p className="text-lg text-[#71717a] leading-relaxed font-medium">{children}</p>;
 
 const BulletList = ({ items }) => (
   <ul className="list-disc list-inside space-y-2">
     {items.map((item, index) => (
-      <li key={index} style={{ fontFamily: fontIT, fontWeight: 500 }} className="text-lg text-[#6f7680] leading-relaxed">
+      <li key={index} className="text-lg text-[#71717a] leading-relaxed font-medium">
         {item}
       </li>
     ))}
@@ -29,11 +19,10 @@ const BulletList = ({ items }) => (
 
 const TermsPage = () => {
   return (
-    <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
-      <p className="text-sm text-[#6f7680]">Last updated: April 4, 2026</p>
-      <h1 style={{ fontFamily: fontIT }} className="text-4xl font-bold text-[#243141] md:text-5xl mt-4 mb-12">
-        Terms of Service
-      </h1>
+    <div className="container-page py-16 md:py-24">
+      <div className="mx-auto max-w-4xl">
+        <p className="text-sm text-[#71717a]">Last updated: April 4, 2026</p>
+        <h1 className="text-4xl md:text-5xl font-bold mt-4 mb-12">Terms of Service</h1>
 
       <div className="space-y-10">
         <section className="space-y-4">
@@ -110,7 +99,7 @@ const TermsPage = () => {
           <SectionTitle>Cancellations and Refunds</SectionTitle>
           <Paragraph>
             Cancellation and refund eligibility is governed by our{' '}
-            <a href="/cancellation" className="text-[#243141] underline hover:no-underline">
+            <a href="/cancellation" className="text-[#18181b] underline hover:no-underline">
               Cancellation Policy
             </a>
             . By completing a booking on the Platform, you agree to the terms set out in that policy.
@@ -156,6 +145,7 @@ const TermsPage = () => {
           <SectionTitle>Contact Information</SectionTitle>
           <Paragraph>If you have any questions about these Terms of Service, please contact our legal team at legal@weelp.com.</Paragraph>
         </section>
+        </div>
       </div>
     </div>
   );

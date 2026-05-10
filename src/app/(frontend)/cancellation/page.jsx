@@ -3,24 +3,14 @@ export const metadata = {
   description: "Understand Weelp's cancellation and refund policies, including eligibility, timelines, and how to request a cancellation for your booking.",
 };
 
-const fontIT = 'var(--font-interTight), Inter Tight, sans-serif';
+const SectionTitle = ({ children }) => <h2 className="text-2xl font-semibold">{children}</h2>;
 
-const SectionTitle = ({ children }) => (
-  <h2 className="text-2xl font-semibold text-[#243141]" style={{ fontFamily: fontIT }}>
-    {children}
-  </h2>
-);
-
-const Paragraph = ({ children }) => (
-  <p className="text-lg text-[#6f7680] leading-relaxed" style={{ fontFamily: fontIT, fontWeight: 500 }}>
-    {children}
-  </p>
-);
+const Paragraph = ({ children }) => <p className="text-lg text-[#71717a] leading-relaxed font-medium">{children}</p>;
 
 const BulletList = ({ items }) => (
   <ul className="list-disc list-inside space-y-2">
     {items.map((item, index) => (
-      <li key={index} className="text-lg text-[#6f7680] leading-relaxed" style={{ fontFamily: fontIT, fontWeight: 500 }}>
+      <li key={index} className="text-lg text-[#71717a] leading-relaxed font-medium">
         {item}
       </li>
     ))}
@@ -29,11 +19,10 @@ const BulletList = ({ items }) => (
 
 const CancellationPage = () => {
   return (
-    <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
-      <p className="text-sm text-[#6f7680]">Last updated: April 4, 2026</p>
-      <h1 className="text-4xl font-bold text-[#243141] md:text-5xl mt-4 mb-12" style={{ fontFamily: fontIT }}>
-        Cancellation Policy
-      </h1>
+    <div className="container-page py-16 md:py-24">
+      <div className="mx-auto max-w-4xl">
+        <p className="text-sm text-[#71717a]">Last updated: April 4, 2026</p>
+        <h1 className="text-4xl md:text-5xl font-bold mt-4 mb-12">Cancellation Policy</h1>
 
       <div className="space-y-10">
         {/* 1. Overview */}
@@ -49,23 +38,23 @@ const CancellationPage = () => {
             If you need to cancel a booking, the refund amount depends on how far in advance you cancel relative to the activity date. The following tiered refund schedule applies:
           </Paragraph>
           <div className="overflow-x-auto">
-            <table className="w-full text-lg text-[#6f7680] border-collapse" style={{ fontFamily: fontIT, fontWeight: 500 }}>
+            <table className="w-full text-lg text-[#71717a] border-collapse font-medium">
               <thead>
-                <tr className="border-b-2 border-[#e3e3e3]">
-                  <th className="py-3 pr-6 text-left font-semibold text-[#243141]">Cancellation Window</th>
-                  <th className="py-3 text-left font-semibold text-[#243141]">Refund</th>
+                <tr className="border-b-2 border-[#e4e4e7]">
+                  <th className="py-3 pr-6 text-left font-semibold text-[#18181b]">Cancellation Window</th>
+                  <th className="py-3 text-left font-semibold text-[#18181b]">Refund</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-[#e3e3e3a6]">
+                <tr className="border-b border-[#e4e4e7]/65">
                   <td className="py-3 pr-6">7 or more days before the activity date</td>
                   <td className="py-3">Full refund minus processing fee (2.9% + $0.30)</td>
                 </tr>
-                <tr className="border-b border-[#e3e3e3a6]">
+                <tr className="border-b border-[#e4e4e7]/65">
                   <td className="py-3 pr-6">3 to 6 days before the activity date</td>
                   <td className="py-3">50% refund</td>
                 </tr>
-                <tr className="border-b border-[#e3e3e3a6]">
+                <tr className="border-b border-[#e4e4e7]/65">
                   <td className="py-3 pr-6">Less than 3 days before the activity date</td>
                   <td className="py-3">No refund</td>
                 </tr>
@@ -157,12 +146,13 @@ const CancellationPage = () => {
           <SectionTitle>Contact Us</SectionTitle>
           <Paragraph>
             If you have any questions about this Cancellation Policy or need assistance with a booking, please reach out to us at{' '}
-            <a href="mailto:support@weelp.com" className="text-[#243141] underline hover:opacity-80">
+            <a href="mailto:support@weelp.com" className="text-[#18181b] underline hover:opacity-80">
               support@weelp.com
             </a>
             . We are here to help.
           </Paragraph>
         </section>
+        </div>
       </div>
     </div>
   );
