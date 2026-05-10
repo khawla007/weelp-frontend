@@ -118,9 +118,9 @@ export const OtpInput = forwardRef(({ length = 6, value = '', onChange, onComple
           className={cn(
             'w-12 h-14 text-center text-2xl font-semibold',
             'border-2 rounded-lg',
-            'focus:outline-none focus:ring-2 focus:ring-secondaryDark',
+            'focus:outline-none focus:ring-2 focus:ring-[#588f7a]',
             'disabled:opacity-50 disabled:cursor-not-allowed',
-            error ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-secondaryDark',
+            error ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-[#588f7a]',
           )}
           autoComplete="one-time-code"
         />

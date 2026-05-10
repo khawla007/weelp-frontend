@@ -523,7 +523,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
               type="button"
               onClick={handleResendOtp}
               disabled={timeUntilResend > 0 || isResending}
-              className="text-sm font-semibold text-secondaryDark hover:underline disabled:text-zinc-400 disabled:no-underline"
+              className="text-sm font-semibold text-[#588f7a] hover:underline disabled:text-zinc-400 disabled:no-underline"
             >
               {isResending ? 'Sending...' : timeUntilResend > 0 ? `Resend in ${timeUntilResend}s` : 'Resend OTP'}
             </button>
@@ -531,7 +531,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
           {/* Back Button */}
           <div className="text-center pt-2">
-            <button type="button" onClick={handleBackToInfo} className="text-sm text-[#52525b] hover:text-secondaryDark">
+            <button type="button" onClick={handleBackToInfo} className="text-sm text-[#52525b] hover:text-[#588f7a]">
               ← Back to registration
             </button>
           </div>

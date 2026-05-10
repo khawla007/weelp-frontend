@@ -61,14 +61,14 @@ export const FormVerifyEmail = () => {
 function EmailVerifiedCard({ emailaddress = '' }) {
   return (
     <div className="max-w-sm mx-auto bg-white rounded-2xl p-8 text-center">
-      <div className="flex items-center justify-center size-20 mx-auto rounded-full bg-secondaryDark mb-6">
+      <div className="flex items-center justify-center size-20 mx-auto rounded-full bg-[#588f7a] mb-6">
         <CheckCircle className="w-10 h-10 text-white" />
       </div>
       <h2 className="text-2xl font-semibold text-gray-900 mb-2">Email Verified!</h2>
       <p className="text-gray-500 mb-6">Your Email has been successfully verified. </p>
       <p className="text-gray-500 mb-6 font-bold">{emailaddress}</p>
       <Button asChild>
-        <Link href="/user/login" className="bg-secondaryDark">
+        <Link href="/user/login" className="bg-[#588f7a]">
           Click Here To Login
         </Link>
       </Button>
@@ -79,12 +79,12 @@ function EmailVerifiedCard({ emailaddress = '' }) {
 function InvalidExpiredToken() {
   return (
     <div className="max-w-sm mx-auto bg-white rounded-2xl p-8 text-center">
-      <div className="flex items-center justify-center size-20 mx-auto rounded-full bg-secondaryDark mb-6">
+      <div className="flex items-center justify-center size-20 mx-auto rounded-full bg-[#588f7a] mb-6">
         <UserX className="w-10 h-10 text-white" />
       </div>
       <h2 className="text-2xl font-semibold text-gray-900 mb-2">Invalid or Expired Token!</h2>
       <Button asChild>
-        <Link href="/user/email/revalidate" className="bg-secondaryDark">
+        <Link href="/user/email/revalidate" className="bg-[#588f7a]">
           Click Here To Verify Your Email
         </Link>
       </Button>

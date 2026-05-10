@@ -322,14 +322,14 @@ export default function BookingForm() {
                         <button
                           type="button"
                           onClick={() => handleIncrement(type)}
-                          className="w-8 h-8 rounded-full border border-[#b5d8cb] text-lg flex items-center justify-center text-secondaryDark hover:bg-[#e9f5ed] hover:opacity-80 "
+                          className="w-8 h-8 rounded-full border border-[#b5d8cb] text-lg flex items-center justify-center text-[#588f7a] hover:bg-[#e9f5ed] hover:opacity-80 "
                         >
                           <Plus size={14} />
                         </button>
                       </div>
                     </div>
                   ))}
-                  <button type="submit" className="w-full py-2 bg-secondaryDark text-white rounded-md shadow">
+                  <button type="submit" className="w-full py-2 bg-[#588f7a] text-white rounded-md shadow">
                     Submit
                   </button>
                 </div>

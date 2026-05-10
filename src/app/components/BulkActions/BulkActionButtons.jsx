@@ -29,7 +29,7 @@ export function BulkActionButtons({ selectedCount, totalCount, isAllSelected, on
           onSelectAllToggle();
         }}
         variant="outline"
-        className="shrink-0 whitespace-nowrap bg-secondaryDark text-white hover:bg-secondaryDark/90"
+        className="shrink-0 whitespace-nowrap bg-[#588f7a] text-white hover:bg-[#588f7a]/90"
       >
         {isAllSelected ? 'Unselect All' : `Select All (${totalCount})`}
       </Button>

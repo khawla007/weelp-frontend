@@ -28,7 +28,7 @@ export function DashboardSearch({ control, name = 'search', placeholder = 'Searc
             placeholder={placeholder}
             disabled={disabled}
             aria-label={ariaLabel || placeholder}
-            className={cn('w-full bg-white focus-visible:ring-secondaryDark pl-9', disabled && 'opacity-50 cursor-not-allowed', className)}
+            className={cn('w-full bg-white focus-visible:ring-[#588f7a] pl-9', disabled && 'opacity-50 cursor-not-allowed', className)}
             {...field}
           />
         </div>
