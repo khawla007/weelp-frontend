@@ -204,7 +204,7 @@ Surfaces are flat at rest. Depth is a response to intent, not a decoration. The 
 
 ## 5. Components
 
-**Primitive baseline.** All form/button/skeleton/dialog/sheet/popover/toast surfaces resolve through the shadcn/ui primitives in `src/components/ui/`. Those primitives ship a stock `neutral-*` Tailwind palette that sits within ±2 hex points of the canonical `zinc-*` palette named in §2 (e.g. `bg-neutral-100` ≈ `#f5f5f5` vs canonical `#f4f4f5`). Re-hexing the primitives across 32 files for a perceptual delta below noise floor is high blast for low signal, so the baseline is grandfathered: primitives keep their neutral-* classes, product code targets canonical zinc hexes via the arbitrary syntax (`text-[#18181b]`, `border-[#e4e4e7]`), and the lint guards check both.
+**Primitive baseline.** All form/button/skeleton/dialog/sheet/popover/toast surfaces resolve through the shadcn/ui primitives in `src/components/ui/`. Those primitives ship a stock `neutral-*` Tailwind palette that sits within ±2 hex points of the canonical `zinc-*` palette named in §2 (e.g. `bg-neutral-100` ≈ `#f5f5f5` vs canonical `#f4f4f5`). Re-hexing the primitives across 32 files for a perceptual delta below noise floor is high blast for low signal, so the baseline is grandfathered: primitives keep their neutral-\* classes, product code targets canonical zinc hexes via the arbitrary syntax (`text-[#18181b]`, `border-[#e4e4e7]`), and the lint guards check both.
 
 The success-state palette on `Alert` and `Toast` was migrated in Phase 12c from external bootstrap-green (`#256029` / `#B6E2A1` / `#F0FDF4` / `#568f7c` / `#4a7a6a`) to canonical sage tier (`#588f7a` border + `#f2f7f5` wash + `#18181b` ink). One sage, one success voice.
 
@@ -248,6 +248,24 @@ The success-state palette on `Alert` and `Toast` was migrated in Phase 12c from 
 ### Navigation Progress (NProgress)
 
 - 5px Sage Deep bar fixed to the top of the viewport during route transitions, with a soft sage glow at the leading edge. The only place sage is allowed to occupy a horizontal stripe at full width — and only because it disappears in <500ms.
+
+### Accessibility
+
+**Contrast matrix on `#ffffff`** (WCAG 2.2 AA needs 4.5:1 body / 3:1 large):
+
+| Token | Hex | Ratio | Verdict |
+|-------|-----|-------|---------|
+| Ink | `#18181b` | 16.0:1 | AAA all sizes |
+| Label | `#52525b` | 7.4:1 | AAA all sizes |
+| Copy | `#71717a` | 4.6:1 | AA body |
+| Steel | `#435a67` | 8.2:1 | AAA all sizes |
+| Sage Deep | `#588f7a` | 3.8:1 | **AA large only** (≥18px or ≥14px / 700) |
+
+The Sage Deep ratio is the operative constraint. Sage on white below 18px / 14px-bold is a WCAG failure; escalate to `#52525b` for the resting state and use sage on hover (or move sage to a non-text role — icon, underline, border). Phase 12d migrated two `text-xs text-[#588f7a]` action links on `NotificationWidget.jsx` (Mark all read, View all) to this ink-default + sage-hover pattern.
+
+**Focus visibility.** `globals.css` ships a global `:focus-visible` outline at `rgba(88, 143, 122, 0.45)` 2px + 2px offset on every `<input>`/`<textarea>`/`<select>`/`<button>`. Component-level Tailwind utilities (e.g. `focus-visible:ring-2 focus-visible:ring-[#588f7a]/40`) layer on top for non-default surfaces — never strip the global outline.
+
+**Reduced motion.** `globals.css` honors `prefers-reduced-motion: reduce` globally — animations and transitions collapse to 0.01ms; smooth scroll falls back to auto. Components that need motion semantics under reduced-motion (e.g. crossfade in place of slide) can opt back in via `@media (prefers-reduced-motion: no-preference)` inside their own scope.
 
 ## 6. Do's and Don'ts
 

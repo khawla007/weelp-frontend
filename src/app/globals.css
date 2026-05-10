@@ -311,6 +311,22 @@ body {
     cursor: not-allowed;
   }
 
+  /* Reduced-motion preference (Phase 12d a11y).
+     Honor `prefers-reduced-motion: reduce` globally — collapses every
+     animation, transition, and smooth scroll on the page. Components
+     that need a richer treatment (e.g. crossfade vs slide) can override
+     within their own scope via `@media (prefers-reduced-motion: no-preference)`. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   /* Remove webkit autofill background and styles */
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
