@@ -23,9 +23,7 @@ export default async function CreatorApplicationsPage() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">
-            Creator Applications
-          </h1>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">Creator Applications</h1>
           <p className="text-[#71717a] mt-1">Review and manage creator applications.</p>
         </div>
       </div>

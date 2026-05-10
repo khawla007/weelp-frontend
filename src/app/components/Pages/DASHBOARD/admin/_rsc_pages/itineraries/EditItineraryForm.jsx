@@ -1797,9 +1797,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       >
         <AccordionItem value="item-1">
           <AccordionTrigger className="hover:bg-gray-50 pl-0 pr-4 pt-0 pb-8">
-            <h2 className="text-[#18181b] font-semibold text-base">
-              Basic Settings
-            </h2>
+            <h2 className="text-[#18181b] font-semibold text-base">Basic Settings</h2>
           </AccordionTrigger>
           <AccordionContent className="pr-2 space-y-4">
             <div className="space-y-2">
@@ -1878,9 +1876,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
         </AccordionItem>
         <AccordionItem value="item-2">
           <AccordionTrigger className="hover:bg-gray-50 pl-0 pr-4 pt-8 pb-8">
-            <h2 className="text-[#18181b] font-semibold text-base">
-              Schema Markup
-            </h2>
+            <h2 className="text-[#18181b] font-semibold text-base">Schema Markup</h2>
             {errors?.schema_data?.message && <div className="bg-red-100 text-red-800">{errors?.schema_data?.message}</div>}
           </AccordionTrigger>
           <AccordionContent className="pr-2 flex flex-col">

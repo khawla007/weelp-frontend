@@ -86,9 +86,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
         <div className="space-y-6">
           {headerButton && <div className="flex justify-end">{headerButton}</div>}
           <div className="text-center py-16">
-            <p className="text-lg font-semibold text-[#18181b]">
-              No itineraries yet
-            </p>
+            <p className="text-lg font-semibold text-[#18181b]">No itineraries yet</p>
             <p className="text-[#71717a] mt-2">Create your first itinerary and submit it for approval.</p>
             <div className="mt-4 flex justify-center">
               <NavigationLink href="/dashboard/customer/my-itineraries/new">
@@ -104,9 +102,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
     }
     return (
       <div className="text-center py-16">
-        <p className="text-lg font-semibold text-[#18181b]">
-          No itineraries yet
-        </p>
+        <p className="text-lg font-semibold text-[#18181b]">No itineraries yet</p>
         <p className="text-[#71717a] mt-2">Browse and save itineraries from the explore page to see them here.</p>
         <NavigationLink href="/explore-creators">
           <Button className="mt-4 bg-secondaryDark hover:bg-secondaryDark/90">Explore Itineraries</Button>
@@ -137,9 +133,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
 
       {filtered.length === 0 && isCreator && activeTab === 'drafts' ? (
         <div className="text-center py-12 bg-white rounded-lg border border-[#e4e4e7]">
-          <p className="text-lg font-semibold text-[#18181b]">
-            No drafts
-          </p>
+          <p className="text-lg font-semibold text-[#18181b]">No drafts</p>
           <p className="text-[#71717a] mt-2">Edits you&apos;ve submitted for review will appear here.</p>
         </div>
       ) : null}
@@ -214,9 +208,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
                 )}
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-[#18181b] text-base line-clamp-1 mb-2">
-                  {name}
-                </h3>
+                <h3 className="font-semibold text-[#18181b] text-base line-clamp-1 mb-2">{name}</h3>
                 <div className="flex items-center gap-4 text-sm text-[#71717a] mb-4">
                   {city && (
                     <span className="flex items-center gap-1">

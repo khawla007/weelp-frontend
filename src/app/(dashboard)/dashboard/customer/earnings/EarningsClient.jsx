@@ -70,9 +70,7 @@ function SummaryCard({ label, value }) {
   return (
     <div className="bg-white rounded-xl border border-[#e4e4e7] p-4 sm:p-5">
       <p className="text-sm text-[#71717a]">{label}</p>
-      <p className="text-2xl sm:text-3xl font-semibold text-[#18181b] mt-2">
-        {value}
-      </p>
+      <p className="text-2xl sm:text-3xl font-semibold text-[#18181b] mt-2">{value}</p>
     </div>
   );
 }
@@ -110,9 +108,7 @@ export default function EarningsClient({ initial }) {
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <header>
-        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">
-          Earnings
-        </h1>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">Earnings</h1>
         <p className="text-[#71717a] mt-1">Commissions from your published itineraries.</p>
       </header>
 
@@ -159,9 +155,7 @@ export default function EarningsClient({ initial }) {
 
       {rows.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-lg border border-[#e4e4e7]">
-          <p className="text-lg font-semibold text-[#18181b]">
-            No earnings in this period
-          </p>
+          <p className="text-lg font-semibold text-[#18181b]">No earnings in this period</p>
           <p className="text-[#71717a] mt-2">Once your itineraries get booked you&apos;ll see commissions here.</p>
         </div>
       ) : (

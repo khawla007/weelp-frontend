@@ -44,9 +44,7 @@ export function AppearanceSettings({ user }) {
   return (
     <Card className="shadow-none border-none bg-transparent space-y-8 dark:bg-[#18181b]">
       <div className="space-y-2">
-        <CardTitle className="text-[#18181b] font-semibold text-lg">
-          Appearance
-        </CardTitle>
+        <CardTitle className="text-[#18181b] font-semibold text-lg">Appearance</CardTitle>
         <CardDescription className="text-[#71717a] text-sm">Customize the appearance of the app.</CardDescription>
       </div>
 

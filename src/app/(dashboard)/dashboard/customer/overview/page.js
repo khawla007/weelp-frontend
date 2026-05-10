@@ -31,9 +31,7 @@ export default async function OverviewPage() {
   return (
     <div className="p-4 sm:p-6 lg:p-8">
       <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">
-          Dashboard Overview
-        </h1>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">Dashboard Overview</h1>
         <p className="text-[#71717a] mt-1">Here&apos;s what&apos;s happening with your content.</p>
       </div>
 
@@ -44,9 +42,7 @@ export default async function OverviewPage() {
       </section>
 
       <section className="mb-6 sm:mb-8">
-        <h2 className="text-lg font-semibold text-[#18181b] mb-4">
-          Quick Actions
-        </h2>
+        <h2 className="text-lg font-semibold text-[#18181b] mb-4">Quick Actions</h2>
         <QuickActions />
       </section>
 

@@ -192,9 +192,7 @@ const SeoTab = () => {
     >
       <AccordionItem value="item-1">
         <AccordionTrigger className="hover:bg-gray-50 px-4">
-          <h2 className="text-[#18181b] font-semibold text-xl">
-            Basic Settings
-          </h2>
+          <h2 className="text-[#18181b] font-semibold text-xl">Basic Settings</h2>
         </AccordionTrigger>
         <AccordionContent className="px-2 space-y-4">
           <div className="space-y-2">
@@ -273,9 +271,7 @@ const SeoTab = () => {
       </AccordionItem>
       <AccordionItem value="item-2">
         <AccordionTrigger className="hover:bg-gray-50 px-4">
-          <h2 className="text-[#18181b] font-semibold text-xl">
-            Schema Markup
-          </h2>
+          <h2 className="text-[#18181b] font-semibold text-xl">Schema Markup</h2>
           {errors?.schema_data?.message && <div className="bg-red-100 text-red-800">{errors?.schema_data?.message}</div>}
         </AccordionTrigger>
         <AccordionContent className="px-2 flex flex-col">
