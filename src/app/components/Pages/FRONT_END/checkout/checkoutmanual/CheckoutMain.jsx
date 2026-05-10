@@ -141,7 +141,7 @@ export default function CheckoutMainManual() {
         </div>
       </div>
 
-      <div className="w-full p-6 pt-10 pb-24 xl:w-2/5 xl:ps-20 bg-[#f2f3f5]">
+      <div className="w-full p-6 pt-10 pb-24 xl:w-2/5 xl:ps-20 bg-[#f4f4f5]">
         <CheckoutItems />
       </div>
     </section>

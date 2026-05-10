@@ -76,13 +76,13 @@ export function FormForgotPassword() {
               Login
             </Link>
           </h3>
-          <sub className="text-[#5a5a5a]">Enter your email to receive a password reset link.</sub>
+          <sub className="text-[#52525b]">Enter your email to receive a password reset link.</sub>
         </div>
 
         {/* Email Input */}
         <div>
           <label htmlFor="email" className="flex items-center bg-white shadow-md border p-2 rounded-md w-full">
-            <AtSign className="text-[#5A5A5A] size-4" />
+            <AtSign className="text-[#52525b] size-4" />
             <input placeholder="Email ID" type="email" id="email" {...register('email')} autoComplete="off" className="py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base w-full" />
           </label>
           {errors.email && <p className="text-sm text-red-600 pt-2">{errors.email.message}</p>}

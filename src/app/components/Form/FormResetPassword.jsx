@@ -127,13 +127,13 @@ export const FormResetPassword = () => {
                 Login
               </Link>
             </h3>
-            <sub className="text-[#5a5a5a]">Enter your new password below.</sub>
+            <sub className="text-[#52525b]">Enter your new password below.</sub>
           </div>
 
           {/* Password Input */}
           <div className="border relative mb-4">
             <label htmlFor="password" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative">
-              <Key className="text-[#5A5A5A] size-4" />
+              <Key className="text-[#52525b] size-4" />
               <input
                 placeholder="New password"
                 type={visible ? 'text' : 'password'}
@@ -143,9 +143,9 @@ export const FormResetPassword = () => {
                 className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1"
               />
               {visible ? (
-                <EyeOff onClick={toggle} className="text-[#5A5A5A] size-5 absolute right-4 cursor-pointer" />
+                <EyeOff onClick={toggle} className="text-[#52525b] size-5 absolute right-4 cursor-pointer" />
               ) : (
-                <Eye onClick={toggle} className="text-[#5A5A5A] size-5 absolute right-4 cursor-pointer" />
+                <Eye onClick={toggle} className="text-[#52525b] size-5 absolute right-4 cursor-pointer" />
               )}
             </label>
             {errors.password && <p className="text-sm text-red-600 pt-2">{errors.password.message}</p>}
@@ -185,7 +185,7 @@ export const FormResetPassword = () => {
           {/* Confirm Password Input */}
           <div>
             <label htmlFor="password_confirmation" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative">
-              <Key className="text-[#5A5A5A] size-4" />
+              <Key className="text-[#52525b] size-4" />
               <input
                 placeholder="Confirm new password"
                 type="password"

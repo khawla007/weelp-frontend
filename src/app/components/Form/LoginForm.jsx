@@ -119,7 +119,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
           {/* Email Input */}
           <div>
             <label htmlFor="email" className=" flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
-              <AtSign className="text-[#5A5A5A] size-4" />
+              <AtSign className="text-[#52525b] size-4" />
               <input
                 placeholder={'Email ID'}
                 type="email"
@@ -135,7 +135,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
           {/* Password Input */}
           <div>
             <label htmlFor="password" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative">
-              <KeyRound className="text-[#5A5A5A] size-4" />
+              <KeyRound className="text-[#52525b] size-4" />
               <input
                 type={visible ? 'text' : 'password'}
                 id="password"
@@ -146,9 +146,9 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
               />
 
               {visible ? (
-                <EyeOff onClick={toggle} className="text-[#5A5A5A] size-5 absolute right-6 cursor-pointer" />
+                <EyeOff onClick={toggle} className="text-[#52525b] size-5 absolute right-6 cursor-pointer" />
               ) : (
-                <Eye onClick={toggle} className="text-[#5A5A5A] size-5 absolute right-6 cursor-pointer" />
+                <Eye onClick={toggle} className="text-[#52525b] size-5 absolute right-6 cursor-pointer" />
               )}
             </label>
             {errors.password && <p className="text-sm text-red-600 p-2">{errors.password.message}</p>}
@@ -159,7 +159,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
           <Button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full h-auto py-3 rounded-lg text-base border border-[#568f7c] transition-all duration-200 ${isSubmitting ? 'bg-gray-400 cursor-not-allowed border-gray-400' : 'bg-[#568f7c] text-white hover:bg-white hover:text-[#568f7c]'}`}
+            className={`w-full h-auto py-3 rounded-lg text-base border border-[#588f7a] transition-all duration-200 ${isSubmitting ? 'bg-gray-400 cursor-not-allowed border-gray-400' : 'bg-[#588f7a] text-white hover:bg-white hover:text-[#588f7a]'}`}
           >
             {isSubmitting ? 'Logging in...' : 'Continue'}
           </Button>
@@ -167,7 +167,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
         <div className="hidden">
           <div className="flex justify-center gap-4 items-center">
             <hr className="w-full" />
-            <span className="text-sm text-nowrap text-[#667085]">Or continue with</span>
+            <span className="text-sm text-nowrap text-[#71717a]">Or continue with</span>
             <hr className="w-full" />
           </div>
 

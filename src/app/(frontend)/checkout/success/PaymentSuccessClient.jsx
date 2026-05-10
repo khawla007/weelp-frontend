@@ -49,8 +49,8 @@ export default function PaymentSuccessClient({ sessionId }) {
   const tableRowClass = '';
 
   return (
-    <div className="flex min-h-[85vh] items-center justify-center bg-gray-50 px-4 py-10">
-      <div className="grid w-full max-w-7xl grid-cols-1 gap-6 lg:grid-cols-3">
+    <div className="flex min-h-[85vh] items-center justify-center bg-[#f8faf9] py-10">
+      <div className="container-page grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card className="space-y-4 lg:col-span-2">
           <CardHeader className="space-y-2 rounded-md">
             <CardTitle>Booking Successfull</CardTitle>
@@ -111,7 +111,7 @@ export default function PaymentSuccessClient({ sessionId }) {
               <Link href="/" className="rounded-2xl border bg-white p-2 px-4 text-sm font-medium text-black">
                 Back to Home
               </Link>
-              <Link href={dashboardUrl} className="rounded-2xl border bg-[#163b4e] p-2 px-4 text-sm font-medium text-white">
+              <Link href={dashboardUrl} className="rounded-2xl border bg-[#18181b] p-2 px-4 text-sm font-medium text-white">
                 Go To Bookings
               </Link>
             </div>
@@ -119,7 +119,7 @@ export default function PaymentSuccessClient({ sessionId }) {
         </Card>
 
         <Card className="h-fit rounded-md border">
-          <CardHeader className="rounded-md bg-[#163b4e] text-white">
+          <CardHeader className="rounded-md bg-[#18181b] text-white">
             <CardTitle>Payment Info</CardTitle>
             <h2 className="text-lg font-semibold">{item_detail?.item_name}</h2>
           </CardHeader>

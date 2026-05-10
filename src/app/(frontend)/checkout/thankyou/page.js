@@ -56,8 +56,8 @@ const SucceceedPageContent = () => {
   // console.log(priceAmount)
 
   return (
-    <div className="min-h-[85vh] bg-gray-50 py-10 px-4 flex justify-center items-center">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl w-full">
+    <div className="min-h-[85vh] bg-[#f8faf9] py-10 flex justify-center items-center">
+      <div className="container-page grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Booking Summary */}
         <Card className="lg:col-span-2 space-y-4">
           <CardHeader className="rounded-md space-y-2">
