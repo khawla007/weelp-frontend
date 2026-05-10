@@ -82,7 +82,7 @@ export function AppearanceSettings({ user }) {
                 <Label>Theme</Label>
                 <FormControl>
                   <RadioGroup onValueChange={field.onChange} value={field.value} className="flex space-x-4">
-                    <FormItem className={`p-4 cursor-pointer border-2 flex items-center gap-2 rounded-md ${selectedTheme === 'light' ? 'border-secondaryDark bg-secondaryLight2' : ''}`}>
+                    <FormItem className={`p-4 cursor-pointer border-2 flex items-center gap-2 rounded-md ${selectedTheme === 'light' ? 'border-[#588f7a] bg-secondaryLight2' : ''}`}>
                       <FormControl>
                         <RadioGroupItem value="light" id="light" className="hidden" />
                       </FormControl>
@@ -92,7 +92,7 @@ export function AppearanceSettings({ user }) {
                       </Label>
                     </FormItem>
 
-                    <FormItem className={`p-4 cursor-pointer border-2 flex items-center gap-2 rounded-md ${selectedTheme === 'dark' ? 'border-secondaryDark bg-secondaryLight2' : ''}`}>
+                    <FormItem className={`p-4 cursor-pointer border-2 flex items-center gap-2 rounded-md ${selectedTheme === 'dark' ? 'border-[#588f7a] bg-secondaryLight2' : ''}`}>
                       <FormControl>
                         <RadioGroupItem value="dark" id="dark" className="hidden" />
                       </FormControl>
@@ -109,7 +109,7 @@ export function AppearanceSettings({ user }) {
             )}
           />
 
-          <Button disabled={!isDirty} type="submit" className="bg-secondaryDark">
+          <Button disabled={!isDirty} type="submit" className="bg-[#588f7a]">
             Update Preferences
           </Button>
         </form>
