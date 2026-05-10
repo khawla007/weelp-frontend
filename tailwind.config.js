@@ -13,7 +13,6 @@ const config = {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
         },
-        secondaryDark: '#588f7a',
         secondaryLight2: '#f2f7f5',
         mainBackground: '#F8F9F9',
         dangerSecondary: '#FF725E',

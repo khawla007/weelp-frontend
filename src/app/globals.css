@@ -398,7 +398,7 @@ body {
 :root {
   --swiper-navigation-size: 14px !important;
   --swiper-navigation-color: #588f7a !important;
-  /* secondaryDark */
+  /* [#588f7a] */
 }
 
 /* Mobile-only swipe progress dots for CarouselShell sliders.
@@ -460,7 +460,7 @@ body {
 
 .swiper-button-prev:hover,
 .swiper-button-next:hover {
-  @apply bg-secondaryDark border-secondaryDark !important;
+  @apply bg-[#588f7a] border-[#588f7a] !important;
   --swiper-navigation-color: #ffffff !important;
   box-shadow: 4px 4px 15px rgba(88, 143, 122, 0.3) !important;
 }
@@ -489,7 +489,7 @@ body {
   width: 20px !important;
   height: 20px !important;
   color: #588f7a !important;
-  /* default secondaryDark */
+  /* default [#588f7a] */
   fill: currentColor !important;
   transition: all 0.3s ease;
 }
@@ -572,7 +572,7 @@ body {
 .bannerForm .rdp-nav_button_next,
 .singleProducform .rdp-nav_button_previous,
 .singleProducform .rdp-nav_button_next {
-  @apply bg-secondaryDark text-white rounded-lg mx-1;
+  @apply bg-[#588f7a] text-white rounded-lg mx-1;
 }
 
 .bannerForm .rdp-nav_button_previous:hover,
@@ -815,7 +815,7 @@ a,
 div,
 li,
 button {
-  @apply dark:text-white dark:bg-black hover:dark:bg-black hover:dark:text-secondaryDark;
+  @apply dark:text-white dark:bg-black hover:dark:bg-black hover:dark:text-[#588f7a];
 }
 
 p,
@@ -857,7 +857,7 @@ span {
 .tfc_calendar .rdp-day_range_start:focus,
 .tfc_calendar .day-range-end,
 .tfc_calendar .day-range-end:focus {
-  @apply bg-secondaryDark text-white;
+  @apply bg-[#588f7a] text-white;
 }
 
 /* City page filter price slider — green theme */
