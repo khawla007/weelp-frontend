@@ -183,7 +183,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
                 style={{
                   color: '#435a67',
                   padding: activeTab === tab.value ? '7px 21px' : '7px 0',
-                  backgroundColor: activeTab === tab.value ? '#cfdbe54d' : 'transparent',
+                  backgroundColor: activeTab === tab.value ? '#f2f7f5' : 'transparent',
                   borderRadius: activeTab === tab.value ? '8.5px' : '0',
                 }}
               >
@@ -228,7 +228,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
                 >
                   <span className="flex items-center gap-2">
                     {option.label}
-                    {option.value === 'mine' && !isAuthenticated && <span className="text-xs text-gray-400">(Login required)</span>}
+                    {option.value === 'mine' && !isAuthenticated && <span className="text-xs text-zinc-400">(Login required)</span>}
                   </span>
                   {activeSource === option.value && <Check size={14} className="text-secondaryDark" />}
                 </DropdownMenuItem>

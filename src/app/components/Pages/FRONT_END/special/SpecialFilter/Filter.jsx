@@ -82,7 +82,7 @@ export const SpecialFilter = () => {
   const currentItems = filteredItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
-    <section className="bg-[#f5f9fa] hidden lg:block">
+    <section className="bg-[#f8faf9] hidden lg:block">
       <div className="flex container mx-auto">
         <div className="flex-[1] flex justify-center py-12">
           <Sidebar dispatch={dispatch} data={fakeData} />
@@ -98,7 +98,7 @@ export const SpecialFilter = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-center text-gray-500">No items match the selected filters.</p>
+              <p className="text-center text-zinc-500">No items match the selected filters.</p>
             )}
 
             {/* Pagination */}
@@ -108,7 +108,7 @@ export const SpecialFilter = () => {
                 <button
                   key={index}
                   onClick={() => handlePageChange(index + 1)}
-                  className={`p-2 px-4 shadow-md rounded border border-gray-300 ${currentPage === index + 1 ? ' bg-white text-black ' : ' '}`}
+                  className={`p-2 px-4 shadow-md rounded border border-zinc-300 ${currentPage === index + 1 ? ' bg-white text-black ' : ' '}`}
                 >
                   {index + 1}
                 </button>

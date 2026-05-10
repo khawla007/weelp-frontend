@@ -35,6 +35,14 @@ const CASCADED_SURFACES = [
   'src/app/components/Pages/FRONT_END/transfer/**/*.{js,jsx,ts,tsx}',
   // Phase 14a — admin RSC builders (activity / package / itinerary forms).
   'src/app/components/Pages/DASHBOARD/admin/_rsc_pages/**/*.{js,jsx,ts,tsx}',
+  // Phase 14b — public city / region / explore / holiday / special / shared / Global surfaces.
+  'src/app/components/Pages/FRONT_END/city/**/*.{js,jsx,ts,tsx}',
+  'src/app/components/Pages/FRONT_END/region/**/*.{js,jsx,ts,tsx}',
+  'src/app/components/Pages/FRONT_END/explore/**/*.{js,jsx,ts,tsx}',
+  'src/app/components/Pages/FRONT_END/shared/**/*.{js,jsx,ts,tsx}',
+  'src/app/components/Pages/FRONT_END/holiday/**/*.{js,jsx,ts,tsx}',
+  'src/app/components/Pages/FRONT_END/special/**/*.{js,jsx,ts,tsx}',
+  'src/app/components/Pages/FRONT_END/Global/**/*.{js,jsx,ts,tsx}',
 ];
 
 const eslintConfig = [
@@ -103,7 +111,11 @@ const eslintConfig = [
   // `#fed141` on review surfaces depends on third-party-style recognition
   // (Google / Trustpilot / app-store rating gold).
   {
-    files: ['src/app/components/Pages/FRONT_END/singleproduct/BannerSection.jsx', 'src/app/components/Pages/FRONT_END/singleproduct/SingleProductReview.jsx'],
+    files: [
+      'src/app/components/Pages/FRONT_END/singleproduct/BannerSection.jsx',
+      'src/app/components/Pages/FRONT_END/singleproduct/SingleProductReview.jsx',
+      'src/app/components/Pages/FRONT_END/shared/FilterSidebar.jsx',
+    ],
     rules: {
       'weelp/no-noncanonical-hex': ['error', { allowExtra: ['fed141'] }],
     },

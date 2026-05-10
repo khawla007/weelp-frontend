@@ -9,7 +9,7 @@ const Sidebar = ({ dispatch, data }) => {
 
   return (
     <div className="bg-white p-8 max-w-xs h-fit w-full rounded-lg flex flex-col gap-2">
-      <h3 className="text-[#143042] text-lg">Categories</h3>
+      <h3 className="text-[#18181b] text-lg">Categories</h3>
       <ul>
         {categories.map((val, index) => (
           <li key={index}>

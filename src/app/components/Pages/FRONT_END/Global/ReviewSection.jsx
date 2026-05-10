@@ -23,7 +23,7 @@ export const ReviewSectionCity = ({ cityData, reviews = [] }) => {
     <section className="flex flex-wrap">
       {/* if values exist inoobjects */}
       {cityData?.location_details && Object.keys(cityData.location_details).length > 0 && (
-        <div className="w-full xl:w-1/3 bg-[#f4f5f7]" style={bgStyle}>
+        <div className="w-full xl:w-1/3 bg-[#f4f4f5]" style={bgStyle}>
           <WhatAboutCity location_details={cityData.location_details} />
         </div>
       )}
@@ -38,7 +38,7 @@ export const ReviewSectionCity = ({ cityData, reviews = [] }) => {
                 <button type="button" className="review-prev rounded-full bg-[#F4F4F5] px-3 py-[10px] text-[#18181B] transition hover:bg-[#E4E4E7]" aria-label="Previous review">
                   <ChevronLeft className="size-[18px]" />
                 </button>
-                <button type="button" className="review-next rounded-full bg-[#18181B] px-3 py-[10px] text-white transition hover:bg-[#27272A]" aria-label="Next review">
+                <button type="button" className="review-next rounded-full bg-[#18181B] px-3 py-[10px] text-white transition hover:bg-[#18181b]" aria-label="Next review">
                   <ChevronRight className="size-[18px]" />
                 </button>
               </div>
@@ -56,7 +56,7 @@ export const ReviewSectionCity = ({ cityData, reviews = [] }) => {
 export const ReviewSectionRegion = ({ cityData }) => {
   return (
     <section className="flex flex-wrap  mt-8">
-      <div className="w-full xl:w-1/3 bg-[#f4f5f7]" style={bgStyle}>
+      <div className="w-full xl:w-1/3 bg-[#f4f4f5]" style={bgStyle}>
         <WhatAboutRegion destinationInfo={destinationInfo} />
       </div>
 
@@ -70,7 +70,7 @@ export const ReviewSectionRegion = ({ cityData }) => {
                 <button type="button" className="review-prev rounded-full bg-[#F4F4F5] px-3 py-[10px] text-[#18181B] transition hover:bg-[#E4E4E7]" aria-label="Previous review">
                   <ChevronLeft className="size-[18px]" />
                 </button>
-                <button type="button" className="review-next rounded-full bg-[#18181B] px-3 py-[10px] text-white transition hover:bg-[#27272A]" aria-label="Next review">
+                <button type="button" className="review-next rounded-full bg-[#18181B] px-3 py-[10px] text-white transition hover:bg-[#18181b]" aria-label="Next review">
                   <ChevronRight className="size-[18px]" />
                 </button>
               </div>

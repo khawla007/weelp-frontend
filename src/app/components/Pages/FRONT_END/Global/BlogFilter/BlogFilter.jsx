@@ -75,11 +75,11 @@ const BlogFilterBar = () => {
 
       {/* Results Grid */}
       {isLoading ? (
-        <div className="text-center py-8 text-gray-500">Loading...</div>
+        <div className="text-center py-8 text-zinc-500">Loading...</div>
       ) : error ? (
         <div className="text-center py-8 text-red-500">Error loading blogs</div>
       ) : blogs.length === 0 ? (
-        <div className="text-center py-8 text-gray-500">No blogs found</div>
+        <div className="text-center py-8 text-zinc-500">No blogs found</div>
       ) : (
         <ul className="grid grid-col-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-16">
           {blogs.map((blog) => (

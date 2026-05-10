@@ -1,5 +1,4 @@
 'use client';
-import React from 'react';
 import GallerySlider from '@/app/components/sliders/GallerySlider';
 import * as Icons from '../../../../../../public/assets/Icons/Icons';
 import BreadCrumb from '@/app/components/BreadCrumb';
@@ -8,21 +7,14 @@ const CityHeroBanner = ({ city }) => {
   const { name = '', description = '', media_gallery = [] } = city || {};
 
   return (
-    <section className="flex min-h-[420px] md:min-h-[480px] lg:h-[60vh] py-12 relative page_city_banner overflow-hidden" style={{ background: 'linear-gradient(-165deg, #F7FAFC, #ECF4F2)' }}>
+    <section className="flex min-h-[420px] md:min-h-[480px] lg:h-[60vh] py-12 relative page_city_banner overflow-hidden" style={{ background: 'linear-gradient(-165deg, #f8faf9, #f2f7f5)' }}>
       <div className="flex flex-col lg:flex-row container mx-auto gap-4 p-6 py-6 md:py-10 lg:py-12">
         <div className="relative flex-1 w-full lg:w-1/3 lg:pl-6 py-4 p-6">
-          <BreadCrumb className="mb-4 text-[#566872]" />
-          <h2 className="text-xl md:text-2xl font-medium mb-4 capitalize text-[#254255]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
-            Things to do In
-          </h2>
-          <h1
-            className="text-[32px] sm:text-[40px] md:text-[48px] lg:text-[62px] font-semibold leading-[1.1] text-pretty mb-4 capitalize text-[#10293A]"
-            style={{ fontFamily: 'degular_demo, Degular Demo, sans-serif', fontWeight: 600 }}
-          >
-            {name}
-          </h1>
+          <BreadCrumb className="mb-4 text-[#71717a]" />
+          <h2 className="text-xl md:text-2xl font-medium mb-4 capitalize text-[#18181b]">Things to do In</h2>
+          <h1 className="display text-[32px] sm:text-[40px] md:text-[48px] lg:text-[62px] font-semibold leading-[1.1] text-pretty mb-4 capitalize text-[#18181b]">{name}</h1>
           <p
-            className="text-base md:text-lg max-w-full md:max-w-[391px] leading-relaxed text-wrap text-[#4E6574]"
+            className="text-base md:text-lg max-w-full md:max-w-[391px] leading-relaxed text-wrap text-[#71717a]"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500, lineHeight: 1.55 }}
           >
             {description}

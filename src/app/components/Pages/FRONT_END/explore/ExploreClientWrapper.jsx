@@ -78,8 +78,8 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
           {isCreator ? (
             <div className="flex items-center justify-between bg-gradient-to-r from-secondaryDark/10 to-secondaryDark/5 rounded-xl p-6">
               <div>
-                <h3 className="text-lg font-semibold text-[#142A38]">Welcome, Creator!</h3>
-                <p className="text-sm text-[#5A5A5A] mt-1">Share your travel experiences and inspire the community.</p>
+                <h3 className="text-lg font-semibold text-[#18181b]">Welcome, Creator!</h3>
+                <p className="text-sm text-[#71717a] mt-1">Share your travel experiences and inspire the community.</p>
               </div>
               <div className="flex items-center gap-3">
                 <NavigationLink href="/dashboard/customer/my-itineraries/new">
@@ -97,8 +97,8 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
           ) : applicationStatus === 'pending' ? (
             <div className="flex items-center justify-between bg-gradient-to-r from-amber-100/60 to-amber-50/40 rounded-xl p-6">
               <div>
-                <h3 className="text-lg font-semibold text-[#142A38]">Application Pending</h3>
-                <p className="text-sm text-[#5A5A5A] mt-1">Your creator application is under review. We&apos;ll notify you once it&apos;s approved.</p>
+                <h3 className="text-lg font-semibold text-[#18181b]">Application Pending</h3>
+                <p className="text-sm text-[#71717a] mt-1">Your creator application is under review. We&apos;ll notify you once it&apos;s approved.</p>
               </div>
               <div className="flex items-center gap-2 text-amber-600 bg-amber-50 px-4 py-2 rounded-lg">
                 <Clock className="size-4" />
@@ -108,8 +108,8 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
           ) : (
             <div className="flex items-center justify-between bg-gradient-to-r from-secondaryDark/10 to-secondaryDark/5 rounded-xl p-6">
               <div>
-                <h3 className="text-lg font-semibold text-[#142A38]">Become a Creator</h3>
-                <p className="text-sm text-[#5A5A5A] mt-1">Share your travel experiences and earn commissions on bookings.</p>
+                <h3 className="text-lg font-semibold text-[#18181b]">Become a Creator</h3>
+                <p className="text-sm text-[#71717a] mt-1">Share your travel experiences and earn commissions on bookings.</p>
               </div>
               <Button onClick={() => setApplicationFormOpen(true)} className="bg-secondaryDark hover:bg-secondaryDark/90 text-white">
                 <Sparkles className="size-4 mr-2" />
@@ -140,7 +140,7 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
       <Dialog open={guideOpen} onOpenChange={setGuideOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle className="text-xl font-semibold text-[#142A38]">How to Create an Itinerary</DialogTitle>
+            <DialogTitle className="text-xl font-semibold text-[#18181b]">How to Create an Itinerary</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 pt-2">
             {[
@@ -156,8 +156,8 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
                   <span className="text-sm font-semibold text-secondaryDark">{item.step}</span>
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-[#142A38]">{item.title}</h4>
-                  <p className="text-sm text-[#5A5A5A] mt-0.5">{item.desc}</p>
+                  <h4 className="text-sm font-semibold text-[#18181b]">{item.title}</h4>
+                  <p className="text-sm text-[#71717a] mt-0.5">{item.desc}</p>
                 </div>
               </div>
             ))}

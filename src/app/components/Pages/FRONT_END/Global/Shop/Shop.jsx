@@ -54,7 +54,7 @@ const ShopProduct = () => {
       {showPagination && (
         <div className="w-full flex justify-center mt-8">
           {Array.from({ length: totalPages }, (_, i) => (
-            <button key={i + 1} className={`px-4 py-2 mx-1 border ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`} onClick={() => handlePageChange(i + 1)}>
+            <button key={i + 1} className={`px-4 py-2 mx-1 border ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-zinc-200'}`} onClick={() => handlePageChange(i + 1)}>
               {i + 1}
             </button>
           ))}

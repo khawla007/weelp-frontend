@@ -82,7 +82,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-[#142A38] text-xl">Apply to Become a Creator</DialogTitle>
+          <DialogTitle className="text-[#18181b] text-xl">Apply to Become a Creator</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -159,7 +159,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
           {/* YouTube (optional) */}
           <div>
             <Label htmlFor="youtube" className="text-[#435A67] text-sm font-medium">
-              YouTube <span className="text-[#5A5A5A] text-xs font-normal">(optional)</span>
+              YouTube <span className="text-[#71717a] text-xs font-normal">(optional)</span>
             </Label>
             <Input id="youtube" placeholder="https://youtube.com/@yourchannel" className="mt-1.5" {...register('youtube')} />
           </div>
@@ -167,7 +167,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
           {/* Facebook (optional) */}
           <div>
             <Label htmlFor="facebook" className="text-[#435A67] text-sm font-medium">
-              Facebook <span className="text-[#5A5A5A] text-xs font-normal">(optional)</span>
+              Facebook <span className="text-[#71717a] text-xs font-normal">(optional)</span>
             </Label>
             <Input id="facebook" placeholder="https://facebook.com/yourprofile" className="mt-1.5" {...register('facebook')} />
           </div>

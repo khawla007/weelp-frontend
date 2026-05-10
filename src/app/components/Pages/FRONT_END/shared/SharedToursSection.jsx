@@ -110,9 +110,7 @@ export default function SharedToursSection({ scope, slug, title }) {
 
   return (
     <section ref={sectionRef} className="mx-auto flex w-full max-w-[1480px] flex-col gap-8 px-4 md:px-6 xl:px-0 py-10 md:py-14 lg:py-[100px]">
-      <h2 className="text-xl md:text-2xl lg:text-[28px] font-semibold text-pretty text-[#18181b] capitalize" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
-        {title} Tours
-      </h2>
+      <h2 className="text-xl md:text-2xl lg:text-[28px] font-semibold text-pretty text-[#18181b] capitalize">{title} Tours</h2>
 
       <div className="flex flex-wrap items-center gap-4">
         {/* Featured Tags — Simple Box Design */}
@@ -181,13 +179,13 @@ export default function SharedToursSection({ scope, slug, title }) {
               <ChevronDown className="size-4" />
             </button>
             {showSortDropdown && (
-              <div className="absolute right-0 top-full z-10 mt-1 min-w-[200px] rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
+              <div className="absolute right-0 top-full z-10 mt-1 min-w-[200px] rounded-lg border border-zinc-200 bg-white py-1 shadow-lg">
                 {SORT_OPTIONS.map((option) => (
                   <button
                     key={option.value}
                     type="button"
                     onClick={() => handleSortChange(option.value)}
-                    className={`block w-full px-4 py-2 text-left text-sm transition hover:bg-gray-50 ${sortBy === option.value ? 'font-semibold text-[#18181b]' : 'text-[#435a67]'}`}
+                    className={`block w-full px-4 py-2 text-left text-sm transition hover:bg-zinc-50 ${sortBy === option.value ? 'font-semibold text-[#18181b]' : 'text-[#435a67]'}`}
                     style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
                   >
                     {option.label}

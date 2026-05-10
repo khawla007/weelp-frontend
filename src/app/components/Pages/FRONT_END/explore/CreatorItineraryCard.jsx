@@ -92,23 +92,23 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn }) {
 
       {/* Engagement row */}
       <div className="px-2 pt-2 flex items-center gap-4">
-        <button onClick={handleLike} className="text-[#5A5A5A] flex items-center gap-1.5 text-sm">
-          <Heart className={`size-4 ${liked ? 'text-[#FF8686] fill-[#FF8686]' : 'text-[#FF8686]'}`} />
+        <button onClick={handleLike} className="text-[#71717a] flex items-center gap-1.5 text-sm">
+          <Heart className={`size-4 ${liked ? 'text-[#ff725e] fill-[#ff725e]' : 'text-[#ff725e]'}`} />
           {formatCount(likesCount)}
         </button>
-        <span className="text-[#5A5A5A] flex items-center gap-1.5 text-sm">
-          <Eye className="size-4 text-[#5A5A5A]" />
+        <span className="text-[#71717a] flex items-center gap-1.5 text-sm">
+          <Eye className="size-4 text-[#71717a]" />
           {formatCount(viewsCount)}
         </span>
       </div>
 
       {/* Title + creator avatar row */}
       <div className="px-2 pt-1 flex items-center justify-between">
-        <h3 className="text-[#142A38] text-lg font-medium line-clamp-1 flex-1 mr-2">{title}</h3>
+        <h3 className="text-[#18181b] text-lg font-medium line-clamp-1 flex-1 mr-2">{title}</h3>
         {creatorAvatar ? (
           <img src={creatorAvatar} alt={creatorName || 'creator'} className="size-9 rounded-full object-cover flex-shrink-0" />
         ) : (
-          <span className="size-9 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0" style={{ backgroundColor: '#568f7c' }}>
+          <span className="size-9 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0" style={{ backgroundColor: '#588f7a' }}>
             {creatorInitials}
           </span>
         )}
