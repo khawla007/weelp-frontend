@@ -139,7 +139,7 @@ const MiniCartNew = () => {
                       onClick={() => {
                         (router.push('/checkout'), setMiniCartOpen(false));
                       }}
-                      className="w-full capitalize rounded-md bg-secondaryDark text-[#ffffff] text-base font-medium"
+                      className="w-full capitalize rounded-md bg-[#588f7a] text-[#ffffff] text-base font-medium"
                     >
                       Make Payment
                     </button>
@@ -155,7 +155,7 @@ const MiniCartNew = () => {
 
               <div className="h-full flex items-center justify-center">
                 <span
-                  className={`${buttonVariants()} bg-secondaryDark py-6`}
+                  className={`${buttonVariants()} bg-[#588f7a] py-6`}
                   onClick={() => {
                     setMiniCartOpen(!isMiniCartOpen);
                   }}
