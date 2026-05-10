@@ -1,10 +1,11 @@
 /**
- * Weelp custom ESLint rules — Impeccable Cascade Phase 12 lint guards.
+ * Weelp custom ESLint rules — Impeccable Cascade Phase 12 + 13 lint guards.
  *
- * Encodes three named rules from frontend/DESIGN.md:
- *   1. weelp/no-noncanonical-hex      — §2 canonical token allow-list
+ * Encodes four named rules from frontend/DESIGN.md:
+ *   1. weelp/no-noncanonical-hex       — §2 canonical token allow-list (className)
  *   2. weelp/no-noncanonical-container — §7 Single-Container Rule + exceptions
- *   3. weelp/no-inline-heading-font   — §3 Global-Heading Rule
+ *   3. weelp/no-inline-heading-font    — §3 Global-Heading Rule
+ *   4. weelp/no-inline-style-hex       — §2 canonical token allow-list (inline style)
  *
  * Zero-dependency: pure ESLint AST visitors over JSX. No tailwind plugin.
  */
@@ -164,10 +165,98 @@ const noInlineHeadingFont = {
   },
 };
 
+const CSS_COLOR_PROPS = new Set([
+  'color',
+  'background',
+  'backgroundColor',
+  'borderColor',
+  'borderTopColor',
+  'borderRightColor',
+  'borderBottomColor',
+  'borderLeftColor',
+  'fill',
+  'stroke',
+  'outlineColor',
+  'caretColor',
+  'accentColor',
+  'textDecorationColor',
+  'columnRuleColor',
+  'boxShadow',
+]);
+
+const INLINE_HEX_PATTERN = /#([0-9a-fA-F]{3,8})\b/g;
+
+function propKeyName(prop) {
+  if (!prop || prop.type !== 'Property') return null;
+  if (prop.key.type === 'Identifier') return prop.key.name;
+  if (prop.key.type === 'Literal' && typeof prop.key.value === 'string') return prop.key.value;
+  return null;
+}
+
+function collectStringSegments(node) {
+  if (!node) return [];
+  if (node.type === 'Literal' && typeof node.value === 'string') return [{ value: node.value, node }];
+  if (node.type === 'TemplateLiteral') return node.quasis.map((q) => ({ value: q.value.cooked || '', node: q }));
+  if (node.type === 'ConditionalExpression') return [...collectStringSegments(node.consequent), ...collectStringSegments(node.alternate)];
+  if (node.type === 'LogicalExpression') return [...collectStringSegments(node.left), ...collectStringSegments(node.right)];
+  return [];
+}
+
+const noInlineStyleHex = {
+  meta: {
+    type: 'problem',
+    docs: { description: 'Disallow non-canonical hex colors in JSX inline `style={{ … }}` props' },
+    schema: [
+      {
+        type: 'object',
+        properties: { allowExtra: { type: 'array', items: { type: 'string' } } },
+        additionalProperties: false,
+      },
+    ],
+    messages: {
+      drift:
+        'Non-canonical hex {{hex}} in inline `style.{{prop}}`. Use a token from DESIGN.md §2 (e.g. `#18181b`, `#71717a`, `#588f7a`) or move the value to a className.',
+    },
+  },
+  create(context) {
+    const opts = context.options[0] || {};
+    const extra = new Set((opts.allowExtra || []).map((h) => h.toLowerCase()));
+    return {
+      JSXAttribute(attr) {
+        if (!attr.name || attr.name.name !== 'style') return;
+        if (!attr.value || attr.value.type !== 'JSXExpressionContainer') return;
+        const expr = attr.value.expression;
+        if (!expr || expr.type !== 'ObjectExpression') return;
+        for (const prop of expr.properties) {
+          if (prop.type !== 'Property') continue;
+          const key = propKeyName(prop);
+          if (!key) continue;
+          const looksColorish = CSS_COLOR_PROPS.has(key) || (key.startsWith('--') && /color|background|fill|stroke|shadow/i.test(key));
+          if (!looksColorish) continue;
+          for (const seg of collectStringSegments(prop.value)) {
+            let m;
+            INLINE_HEX_PATTERN.lastIndex = 0;
+            while ((m = INLINE_HEX_PATTERN.exec(seg.value)) !== null) {
+              const hex = normalizeHex(m[1]);
+              if (CANONICAL_HEXES.has(hex) || extra.has(hex)) continue;
+              context.report({
+                node: seg.node,
+                messageId: 'drift',
+                data: { hex: `#${m[1]}`, prop: key },
+              });
+            }
+          }
+        }
+      },
+    };
+  },
+};
+
 export default {
   rules: {
     'no-noncanonical-hex': noNoncanonicalHex,
     'no-noncanonical-container': noNoncanonicalContainer,
     'no-inline-heading-font': noInlineHeadingFont,
+    'no-inline-style-hex': noInlineStyleHex,
   },
 };

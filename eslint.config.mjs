@@ -50,6 +50,7 @@ const eslintConfig = [
       'weelp/no-noncanonical-hex': 'error',
       'weelp/no-noncanonical-container': 'error',
       'weelp/no-inline-heading-font': 'error',
+      'weelp/no-inline-style-hex': 'error',
     },
   },
   // Reading-Column Exception (DESIGN.md §7): legal pages keep max-w-4xl

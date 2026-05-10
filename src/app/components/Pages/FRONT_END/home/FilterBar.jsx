@@ -214,7 +214,7 @@ export default function FilterBar() {
                 onChange={handleInputChange}
                 onClick={handleInputClick}
                 className="w-full bg-transparent border-0 focus:outline-none text-sm font-medium placeholder:text-[#71717a]"
-                style={{ color: '#5a5a5a', fontFamily: 'inherit' }}
+                style={{ color: '#71717a', fontFamily: 'inherit' }}
                 autoComplete="off"
               />
             </div>
@@ -283,7 +283,7 @@ export default function FilterBar() {
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <Calendar size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
-              <span className="text-sm font-medium" style={{ color: '#5a5a5a' }}>
+              <span className="text-sm font-medium" style={{ color: '#71717a' }}>
                 {watchedFrom?.from && watchedFrom?.to
                   ? `${new Date(watchedFrom.from).toLocaleDateString('en-US', {
                       month: 'short',
@@ -335,7 +335,7 @@ export default function FilterBar() {
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <Users size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
-              <span className="text-sm font-medium" style={{ color: '#5a5a5a' }}>
+              <span className="text-sm font-medium" style={{ color: '#71717a' }}>
                 {total || 1} {total === 1 ? 'Guest' : 'Guests'}
               </span>
             </div>

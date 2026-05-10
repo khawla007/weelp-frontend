@@ -22,7 +22,7 @@ const HeroSection = () => {
           style={{
             fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
             fontWeight: 500,
-            color: '#667085',
+            color: '#71717a',
             lineHeight: 1.4,
           }}
         >
