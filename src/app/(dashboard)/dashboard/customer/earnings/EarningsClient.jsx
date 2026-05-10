@@ -129,7 +129,7 @@ export default function EarningsClient({ initial }) {
                 setStatus(tab);
                 setPage(1);
               }}
-              className={status === tab ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#e4e4e7] text-[#52525b]'}
+              className={status === tab ? 'bg-[#588f7a] hover:bg-[#588f7a]/90' : 'border-[#e4e4e7] text-[#52525b]'}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </Button>
@@ -145,7 +145,7 @@ export default function EarningsClient({ initial }) {
                 setPreset(p.key);
                 setPage(1);
               }}
-              className={preset === p.key ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#e4e4e7] text-[#52525b]'}
+              className={preset === p.key ? 'bg-[#588f7a] hover:bg-[#588f7a]/90' : 'border-[#e4e4e7] text-[#52525b]'}
             >
               {p.label}
             </Button>
@@ -179,7 +179,7 @@ export default function EarningsClient({ initial }) {
                     <TableCell>{fmtDate(r.created_at)}</TableCell>
                     <TableCell>
                       {r.itinerary?.slug ? (
-                        <NavigationLink href={`/itineraries/${r.itinerary.slug}`} className="text-secondaryDark hover:underline">
+                        <NavigationLink href={`/itineraries/${r.itinerary.slug}`} className="text-[#588f7a] hover:underline">
                           {r.itinerary.name}
                         </NavigationLink>
                       ) : (

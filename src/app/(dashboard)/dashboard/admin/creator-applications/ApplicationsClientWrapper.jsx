@@ -159,7 +159,7 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
             variant={activeTab === tab ? 'default' : 'outline'}
             size="sm"
             onClick={() => setActiveTab(tab)}
-            className={activeTab === tab ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#e4e4e7] text-[#52525b]'}
+            className={activeTab === tab ? 'bg-[#588f7a] hover:bg-[#588f7a]/90' : 'border-[#e4e4e7] text-[#52525b]'}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
           </Button>
@@ -282,7 +282,7 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
                     value={rejectNotes}
                     onChange={(e) => setRejectNotes(e.target.value)}
                     placeholder="Reason for rejection..."
-                    className="w-full border border-[#e4e4e7] rounded-md p-2 text-sm resize-none h-20 focus:outline-none focus:ring-2 focus:ring-secondaryDark/30"
+                    className="w-full border border-[#e4e4e7] rounded-md p-2 text-sm resize-none h-20 focus:outline-none focus:ring-2 focus:ring-[#588f7a]/30"
                   />
                 </div>
               )}
@@ -296,7 +296,7 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
                   <XCircle className="size-4 mr-1" />
                   {processing ? 'Processing...' : 'Reject'}
                 </Button>
-                <Button onClick={() => handleApprove(selectedApp.id)} disabled={processing} className="bg-secondaryDark hover:bg-secondaryDark/90">
+                <Button onClick={() => handleApprove(selectedApp.id)} disabled={processing} className="bg-[#588f7a] hover:bg-[#588f7a]/90">
                   <CheckCircle className="size-4 mr-1" />
                   {processing ? 'Processing...' : 'Approve'}
                 </Button>
@@ -358,7 +358,7 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
             <Button variant="outline" onClick={() => setEditDialogOpen(false)} className="border-[#e4e4e7] text-[#52525b]">
               Cancel
             </Button>
-            <Button onClick={handleEditSave} disabled={processing} className="bg-secondaryDark hover:bg-secondaryDark/90">
+            <Button onClick={handleEditSave} disabled={processing} className="bg-[#588f7a] hover:bg-[#588f7a]/90">
               {processing ? 'Saving...' : 'Save Changes'}
             </Button>
           </DialogFooter>

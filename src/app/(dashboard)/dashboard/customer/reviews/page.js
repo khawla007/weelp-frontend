@@ -29,7 +29,7 @@ const ReviewsPage = () => {
           <CardDescription className="text-lg text-[#71717a]">See your reviews, thoughts.</CardDescription>
         </CardHeader>
         <div className="bg-[#f8faf9] p-8 min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-secondaryDark"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#588f7a]"></div>
         </div>
       </Card>
     );

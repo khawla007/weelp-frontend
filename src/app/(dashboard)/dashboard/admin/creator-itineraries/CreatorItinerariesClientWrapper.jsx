@@ -164,7 +164,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
             variant={activeTab === tab ? 'default' : 'outline'}
             size="sm"
             onClick={() => setActiveTab(tab)}
-            className={activeTab === tab ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#e4e4e7] text-[#52525b]'}
+            className={activeTab === tab ? 'bg-[#588f7a] hover:bg-[#588f7a]/90' : 'border-[#e4e4e7] text-[#52525b]'}
           >
             {formatStatus(tab)}
           </Button>
@@ -209,7 +209,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     <TableCell>{item.name || item.title || '-'}</TableCell>
                     <TableCell>
                       {parentSlug ? (
-                        <a href={`/itineraries/${parentSlug}`} target="_blank" rel="noopener noreferrer" className="text-secondaryDark hover:underline inline-flex items-center gap-1">
+                        <a href={`/itineraries/${parentSlug}`} target="_blank" rel="noopener noreferrer" className="text-[#588f7a] hover:underline inline-flex items-center gap-1">
                           {item.parent_itinerary?.name || 'View'}
                           <ExternalLink className="size-3" />
                         </a>
@@ -218,7 +218,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                       )}
                     </TableCell>
                     <TableCell>
-                      <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer" className="text-secondaryDark hover:underline inline-flex items-center gap-1">
+                      <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer" className="text-[#588f7a] hover:underline inline-flex items-center gap-1">
                         Preview
                         <ExternalLink className="size-3" />
                       </a>
@@ -241,7 +241,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                               <XCircle className="size-4 mr-1" />
                               Reject
                             </Button>
-                            <Button size="sm" onClick={() => handleApprove(item.id)} disabled={processingId === item.id} className="bg-secondaryDark hover:bg-secondaryDark/90">
+                            <Button size="sm" onClick={() => handleApprove(item.id)} disabled={processingId === item.id} className="bg-[#588f7a] hover:bg-[#588f7a]/90">
                               <CheckCircle className="size-4 mr-1" />
                               Approve
                             </Button>
@@ -260,7 +260,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                               <XCircle className="size-4 mr-1" />
                               Reject Edit
                             </Button>
-                            <Button size="sm" onClick={() => handleApproveEdit(item.id)} disabled={processingId === item.id} className="bg-secondaryDark hover:bg-secondaryDark/90">
+                            <Button size="sm" onClick={() => handleApproveEdit(item.id)} disabled={processingId === item.id} className="bg-[#588f7a] hover:bg-[#588f7a]/90">
                               <CheckCircle className="size-4 mr-1" />
                               Approve Edit
                             </Button>

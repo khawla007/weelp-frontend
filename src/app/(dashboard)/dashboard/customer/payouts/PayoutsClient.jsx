@@ -103,7 +103,7 @@ export default function PayoutsClient({ initial }) {
               setPreset(p.key);
               setPage(1);
             }}
-            className={preset === p.key ? 'bg-secondaryDark hover:bg-secondaryDark/90' : 'border-[#e4e4e7] text-[#52525b]'}
+            className={preset === p.key ? 'bg-[#588f7a] hover:bg-[#588f7a]/90' : 'border-[#e4e4e7] text-[#52525b]'}
           >
             {p.label}
           </Button>
