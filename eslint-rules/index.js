@@ -26,8 +26,7 @@ const CANONICAL_HEXES = new Set([
 ]);
 
 const CONTAINER_PATTERN = /\bmax-w-(4xl|5xl|6xl|7xl)\b/g;
-const HEX_PATTERN =
-  /\b(text|bg|border|fill|ring|from|to|via|stroke|outline|divide|placeholder|caret|accent|shadow|decoration)-\[#([0-9a-fA-F]{3,8})\]/g;
+const HEX_PATTERN = /\b(text|bg|border|fill|ring|from|to|via|stroke|outline|divide|placeholder|caret|accent|shadow|decoration)-\[#([0-9a-fA-F]{3,8})\]/g;
 
 function normalizeHex(raw) {
   const lower = raw.toLowerCase();
@@ -73,8 +72,7 @@ const noNoncanonicalHex = {
       },
     ],
     messages: {
-      drift:
-        'Non-canonical hex {{hex}} in `{{cls}}`. Use a token from DESIGN.md §2 (e.g. text-[#18181b], border-[#e4e4e7]).',
+      drift: 'Non-canonical hex {{hex}} in `{{cls}}`. Use a token from DESIGN.md §2 (e.g. text-[#18181b], border-[#e4e4e7]).',
     },
   },
   create(context) {
@@ -114,8 +112,7 @@ const noNoncanonicalContainer = {
       },
     ],
     messages: {
-      drift:
-        'Use `.container-page` instead of `max-w-{{size}}` (DESIGN.md §7 Single-Container Rule). Reading-Column / Dashboard-Surface exceptions must be opted in via eslint override.',
+      drift: 'Use `.container-page` instead of `max-w-{{size}}` (DESIGN.md §7 Single-Container Rule). Reading-Column / Dashboard-Surface exceptions must be opted in via eslint override.',
     },
   },
   create(context) {
@@ -144,8 +141,7 @@ const noInlineHeadingFont = {
     docs: { description: 'Disallow inline fontFamily on h1–h6 (Global-Heading Rule)' },
     schema: [],
     messages: {
-      drift:
-        'Inline `style={{ fontFamily }}` on <{{tag}}> breaks the Global-Heading Rule (DESIGN.md §3). Remove the override; @layer base handles it.',
+      drift: 'Inline `style={{ fontFamily }}` on <{{tag}}> breaks the Global-Heading Rule (DESIGN.md §3). Remove the override; @layer base handles it.',
     },
   },
   create(context) {
@@ -153,18 +149,12 @@ const noInlineHeadingFont = {
       JSXOpeningElement(node) {
         const name = node.name && node.name.name;
         if (!name || !/^h[1-6]$/.test(name)) return;
-        const styleAttr = node.attributes.find(
-          (a) => a.type === 'JSXAttribute' && a.name && a.name.name === 'style',
-        );
+        const styleAttr = node.attributes.find((a) => a.type === 'JSXAttribute' && a.name && a.name.name === 'style');
         if (!styleAttr || !styleAttr.value) return;
-        const expr =
-          styleAttr.value.type === 'JSXExpressionContainer' ? styleAttr.value.expression : null;
+        const expr = styleAttr.value.type === 'JSXExpressionContainer' ? styleAttr.value.expression : null;
         if (!expr || expr.type !== 'ObjectExpression') return;
         const hasFontFamily = expr.properties.some(
-          (p) =>
-            p.type === 'Property' &&
-            ((p.key.type === 'Identifier' && p.key.name === 'fontFamily') ||
-              (p.key.type === 'Literal' && p.key.value === 'fontFamily')),
+          (p) => p.type === 'Property' && ((p.key.type === 'Identifier' && p.key.name === 'fontFamily') || (p.key.type === 'Literal' && p.key.value === 'fontFamily')),
         );
         if (hasFontFamily) {
           context.report({ node, messageId: 'drift', data: { tag: name } });

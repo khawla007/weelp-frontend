@@ -31,11 +31,7 @@ const CASCADED_SURFACES = [
 const eslintConfig = [
   includeIgnoreFile(gitignorePath),
   {
-    ignores: [
-      'src/types/gateway.ts',
-      'src/types/gateway.openapi.json',
-      'eslint-rules/__tests__/**',
-    ],
+    ignores: ['src/types/gateway.ts', 'src/types/gateway.openapi.json', 'eslint-rules/__tests__/**'],
   },
   ...nextConfig,
   ...nextWebVitals,
