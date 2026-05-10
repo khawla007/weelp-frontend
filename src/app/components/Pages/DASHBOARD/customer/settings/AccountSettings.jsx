@@ -46,7 +46,7 @@ const TabButton = ({ active, onClick, children }) => (
     type="button"
     onClick={onClick}
     className={`px-4 py-2 font-semibold transition-all border-x-0 border-t-0 border-b-[3px] outline-none focus:outline-none ${
-      active ? 'border-secondaryDark text-secondaryDark' : 'border-transparent text-muted-foreground hover:text-foreground'
+      active ? 'border-[#588f7a] text-[#588f7a]' : 'border-transparent text-muted-foreground hover:text-foreground'
     }`}
   >
     {children}
@@ -248,7 +248,7 @@ export function AccountSettings({ user }) {
               />
             </div>
 
-            <Button type="submit" className="bg-secondaryDark">
+            <Button type="submit" className="bg-[#588f7a]">
               Save Contact Information
             </Button>
           </form>
@@ -354,7 +354,7 @@ export function AccountSettings({ user }) {
                 )}
               />
 
-              <Button type="submit" disabled={passwordForm.formState.isSubmitting || !isPasswordValid(watchPassword)} className="bg-secondaryDark">
+              <Button type="submit" disabled={passwordForm.formState.isSubmitting || !isPasswordValid(watchPassword)} className="bg-[#588f7a]">
                 {passwordForm.formState.isSubmitting ? 'Changing...' : 'Change Password'}
               </Button>
             </form>
