@@ -39,7 +39,7 @@ export default function Step1BasicInfo({ locations = [] }) {
             placeholder="Itinerary name"
             id="name"
             {...register('name', { required: 'Name is required' })}
-            className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
+            className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
             onBlur={handleBlur}
           />
           {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
@@ -53,7 +53,7 @@ export default function Step1BasicInfo({ locations = [] }) {
             placeholder="Enter Url slug"
             id="slug"
             {...register('slug', { required: 'Slug is required' })}
-            className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
+            className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
             onBlur={handleBlur}
           />
           {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
@@ -70,7 +70,7 @@ export default function Step1BasicInfo({ locations = [] }) {
           {...register('description', {
             required: 'Description is required',
           })}
-          className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
+          className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
         />
         {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
       </div>

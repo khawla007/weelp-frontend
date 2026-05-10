@@ -121,7 +121,7 @@ export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel
 
       <div className="w-full flex justify-between items-center">
         <h3 className="text-base font-semibold text-[#18181b]">Daily Schedule</h3>
-        <Button type="button" onClick={handleAddDay} className="bg-secondaryDark hover:bg-secondaryDark">
+        <Button type="button" onClick={handleAddDay} className="bg-[#588f7a] hover:bg-[#588f7a]">
           + Add Day
         </Button>
       </div>
@@ -130,8 +130,8 @@ export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel
       {dayFields.map((item, index) => (
         <div key={item?.id} className="space-y-4">
           <div className="flex items-center gap-4 mt-4 justify-between">
-            <Input type="number" {...register(`schedules.${index}.day`)} defaultValue={item?.day} className="w-20 focus-visible:ring-secondaryDark focus-visible:ring-1" placeholder="Day" readOnly />
-            <Input type="text" {...register(`schedules.${index}.title`)} className="flex-1 focus-visible:ring-secondaryDark focus-visible:ring-1" placeholder="e.g., Arrival in Port Blair" />
+            <Input type="number" {...register(`schedules.${index}.day`)} defaultValue={item?.day} className="w-20 focus-visible:ring-[#588f7a] focus-visible:ring-1" placeholder="Day" readOnly />
+            <Input type="text" {...register(`schedules.${index}.title`)} className="flex-1 focus-visible:ring-[#588f7a] focus-visible:ring-1" placeholder="e.g., Arrival in Port Blair" />
             <Trash2 onClick={() => removeDay(index)} className="text-red-400 cursor-pointer" size={16} />
           </div>
 
@@ -208,7 +208,7 @@ export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel
                 }}
               >
                 <DropdownMenuTrigger>
-                  <p className="bg-secondaryDark hover:bg-secondaryDark rounded-3xl p-2 text-white px-6 self-center">+ Add Item</p>
+                  <p className="bg-[#588f7a] hover:bg-[#588f7a] rounded-3xl p-2 text-white px-6 self-center">+ Add Item</p>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuItem
@@ -286,7 +286,7 @@ export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel
         type="button"
         onClick={handleValidationSchedule}
         disabled={submitting}
-        className={`absolute right-0 -bottom-14 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-secondaryDark cursor-pointer`}
+        className={`absolute right-0 -bottom-14 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}
       >
         {submitting ? 'Submitting...' : submitLabel}
       </Button>

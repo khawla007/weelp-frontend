@@ -160,7 +160,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
                 {SORT_OPTIONS.map((option) => (
                   <DropdownMenuItem key={option.value} onClick={() => setActiveSort(option.value)} className="flex items-center justify-between gap-4 cursor-pointer">
                     {option.label}
-                    {activeSort === option.value && <Check size={14} className="text-secondaryDark" />}
+                    {activeSort === option.value && <Check size={14} className="text-[#588f7a]" />}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -200,7 +200,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
               <button
                 onClick={onActionClick}
                 disabled={applicationStatus === 'pending'}
-                className="flex items-center gap-1.5 text-[18px] font-medium text-white bg-secondaryDark hover:bg-secondaryDark/90 px-5 py-[7px] rounded-[8.5px] transition-colors disabled:opacity-60"
+                className="flex items-center gap-1.5 text-[18px] font-medium text-white bg-[#588f7a] hover:bg-[#588f7a]/90 px-5 py-[7px] rounded-[8.5px] transition-colors disabled:opacity-60"
               >
                 <ActionIcon size={16} />
                 {actionBtn.label}
@@ -230,7 +230,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
                     {option.label}
                     {option.value === 'mine' && !isAuthenticated && <span className="text-xs text-zinc-400">(Login required)</span>}
                   </span>
-                  {activeSource === option.value && <Check size={14} className="text-secondaryDark" />}
+                  {activeSource === option.value && <Check size={14} className="text-[#588f7a]" />}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -242,7 +242,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
       <div className="flex flex-col gap-4 py-6">
         {loading && displayItineraries.length === 0 ? (
           <div className="flex justify-center py-12">
-            <div className="w-8 h-8 border-2 border-secondaryDark border-t-transparent rounded-full animate-spin" />
+            <div className="w-8 h-8 border-2 border-[#588f7a] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : displayItineraries.length === 0 ? (
           <div className="text-center py-12 text-[#435a67]">
@@ -262,7 +262,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
         {/* Infinite scroll sentinel — disabled on trending tab */}
         {activeTab === 'home' && page < maxPage && (
           <div ref={observerRef} className="flex justify-center py-4">
-            {loading && <div className="w-8 h-8 border-2 border-secondaryDark border-t-transparent rounded-full animate-spin" />}
+            {loading && <div className="w-8 h-8 border-2 border-[#588f7a] border-t-transparent rounded-full animate-spin" />}
           </div>
         )}
       </div>

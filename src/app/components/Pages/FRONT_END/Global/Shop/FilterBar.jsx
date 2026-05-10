@@ -70,7 +70,7 @@ const FilterBar = ({ filters, setFilters }) => {
               <div key={category} className="flex items-center">
                 <input
                   type="checkbox"
-                  className="form-checkbox size-5 accent-secondaryDark border  border-[#71717a] cursor-pointer"
+                  className="form-checkbox size-5 accent-[#588f7a] border  border-[#71717a] cursor-pointer"
                   value={category}
                   checked={filters.categories.includes(category)}
                   onChange={handleCategoryChange}
@@ -90,7 +90,7 @@ const FilterBar = ({ filters, setFilters }) => {
               type="range"
               min="0"
               max="5000"
-              className="w-full h-2 bg-zinc-200 rounded-lg appearance-none cursor-pointer range-thumb focus:outline-none accent-secondaryDark"
+              className="w-full h-2 bg-zinc-200 rounded-lg appearance-none cursor-pointer range-thumb focus:outline-none accent-[#588f7a]"
               value={filters.priceRange}
               onChange={handlePriceRangeChange}
             />
@@ -107,7 +107,7 @@ const FilterBar = ({ filters, setFilters }) => {
                 <input
                   type="radio"
                   name="rating"
-                  className="form-radio size-5 accent-secondaryDark border-[#71717a] cursor-pointer"
+                  className="form-radio size-5 accent-[#588f7a] border-[#71717a] cursor-pointer"
                   value={rating}
                   checked={filters.rating === rating}
                   onChange={handleRatingChange}
@@ -132,7 +132,7 @@ const FilterBar = ({ filters, setFilters }) => {
               <div key={location} className="flex items-center">
                 <input
                   type="checkbox"
-                  className="form-checkbox size-5 accent-secondaryDark cursor-pointer"
+                  className="form-checkbox size-5 accent-[#588f7a] cursor-pointer"
                   value={location}
                   checked={filters.locations.includes(location)}
                   onChange={handleLocationChange}
