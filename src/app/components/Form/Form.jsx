@@ -322,7 +322,7 @@ export default function BookingForm() {
                         <button
                           type="button"
                           onClick={() => handleIncrement(type)}
-                          className="w-8 h-8 rounded-full border border-secondarylight text-lg flex items-center justify-center text-secondaryDark hover:bg-[#e9f5ed] hover:opacity-80 "
+                          className="w-8 h-8 rounded-full border border-[#b5d8cb] text-lg flex items-center justify-center text-secondaryDark hover:bg-[#e9f5ed] hover:opacity-80 "
                         >
                           <Plus size={14} />
                         </button>

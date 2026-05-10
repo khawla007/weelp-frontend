@@ -558,7 +558,7 @@ body {
 
 .bannerForm .rdp-day_selected:hover,
 .singleProducform .rdp-day_selected:hover {
-  @apply bg-secondarylight text-black;
+  @apply bg-[#b5d8cb] text-black;
 }
 
 .bannerForm .rdp-day_range_start,
@@ -630,7 +630,7 @@ body {
 
 .bannerForm .rdp-chevron,
 .singleProducform .rdp-chevron {
-  @apply fill-grayDark size-4 stroke-none;
+  @apply fill-[#435a67] size-4 stroke-none;
 }
 
 /* Slider */

@@ -245,7 +245,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
             <div className="w-8 h-8 border-2 border-secondaryDark border-t-transparent rounded-full animate-spin" />
           </div>
         ) : displayItineraries.length === 0 ? (
-          <div className="text-center py-12 text-grayDark">
+          <div className="text-center py-12 text-[#435a67]">
             <p className="text-lg font-medium">{activeSource === 'mine' ? "You haven't created any itineraries yet" : 'No itineraries yet'}</p>
             <p className="text-sm mt-2">{activeSource === 'mine' ? 'Share your travel experiences with the community!' : 'Be the first creator to share your travel experience!'}</p>
           </div>

@@ -30,7 +30,7 @@ const BannerSection = () => {
         <div className="flex flex-[1] flex-col items-start gap-4 p-5 sm:p-8 md:p-12 lg:p-20">
           <div className="flex flex-col justify-start gap-4">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold capitalize text-[#18181b]">{name}</h1>
-            <p className="mb-4 text-base sm:text-lg font-medium text-grayDark">{description}</p>
+            <p className="mb-4 text-base sm:text-lg font-medium text-[#435a67]">{description}</p>
           </div>
         </div>
         <Icons.Vector1 className="absolute left-[48%] z-10 hidden xl:block" />

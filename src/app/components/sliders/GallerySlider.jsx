@@ -63,7 +63,7 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff' }) => {
 
           {/* Show Gallery Button */}
           <button
-            className="md:block absolute bottom-4 right-4 text-grayDark text-sm font-medium z-10 capitalize bg-white py-3 px-6 rounded-lg active:bg-grayDark active:text-white gallery_slider_toggle_btn"
+            className="md:block absolute bottom-4 right-4 text-[#435a67] text-sm font-medium z-10 capitalize bg-white py-3 px-6 rounded-lg active:bg-[#435a67] active:text-white gallery_slider_toggle_btn"
             onClick={toggleGallery}
           >
             View Gallery

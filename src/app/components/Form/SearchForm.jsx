@@ -114,7 +114,7 @@ export const SearchFormCreator = () => {
             handleInputChange(e);
           }}
           placeholder="Search creator itineraries..."
-          className="w-10/12 p-4 focus-visible:outline-none placeholder:text-grayDark"
+          className="w-10/12 p-4 focus-visible:outline-none placeholder:text-[#435a67]"
         />
         <div>{isSubmitting ? <LoaderCircle size={16} className="animate-spin duration-1000" /> : <Search size={16} />}</div>
       </form>
@@ -151,7 +151,7 @@ export const SearchFormCreator = () => {
               </ul>
             ) : (
               message && (
-                <div className="hover:bg-grayDark flex justify-between rounded-md items-center py-2 px-6 hover:text-white hover:cursor-not-allowed bg-white shadow-md">
+                <div className="hover:bg-[#435a67] flex justify-between rounded-md items-center py-2 px-6 hover:text-white hover:cursor-not-allowed bg-white shadow-md">
                   Sorry No Result Found
                   <Frown size={24} className="animate-pulse" />
                 </div>
@@ -212,7 +212,7 @@ export const SearchFormBlogs = () => {
             minLength: { value: 3, message: 'Minimum 3 characters required' },
           })}
           placeholder={'What`s your want to read ?'}
-          className="w-10/12 p-4 focus-visible:outline-none placeholder:text-grayDark"
+          className="w-10/12 p-4 focus-visible:outline-none placeholder:text-[#435a67]"
         />
         <div>{isSubmitting ? <LoaderCircle size={16} className="animate-spin duration-1000" /> : <X size={16} />}</div>
       </form>
@@ -231,7 +231,7 @@ export const SearchFormBlogs = () => {
             <ul className="absolute z-10 top-4 bg-white w-full rounded-md flex flex-col gap-2 max-h-52 shadow-md overflow-y-auto tfc_scroll">
               {searchedBlogs.map((val, index) => (
                 <li key={index}>
-                  <Link href={`/blogs/${val?.slug}`} className="hover:bg-grayDark flex justify-between items-center py-2 px-6 hover:text-white hover:cursor-pointer">
+                  <Link href={`/blogs/${val?.slug}`} className="hover:bg-[#435a67] flex justify-between items-center py-2 px-6 hover:text-white hover:cursor-pointer">
                     {val?.name}
                     <img alt="logo" src={val?.media_gallery?.[0]?.url ?? FALLBACK_IMAGE.src} className="size-9 rounded-full" />
                   </Link>
@@ -242,7 +242,7 @@ export const SearchFormBlogs = () => {
 
           {/* No result */}
           {query.size > 0 && !error && !isValidating && searchedBlogs.length === 0 && (
-            <div className="hover:bg-grayDark flex justify-between rounded-md items-center py-2 px-6 hover:text-white bg-white mt-2">
+            <div className="hover:bg-[#435a67] flex justify-between rounded-md items-center py-2 px-6 hover:text-white bg-white mt-2">
               Sorry No Result Found
               <Frown size={24} className="animate-pulse" />
             </div>

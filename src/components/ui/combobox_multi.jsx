@@ -75,7 +75,7 @@ export function ComboboxMultipleAttribute({ attributes, value = [], onChange }) 
           {value.map((selected) => (
             <div
               key={`${selected.attribute_id}-${selected.attribute_value}`}
-              className="flex items-center text-sm text-grayDark font-bold bg-[#f4f4f5] gap-2 px-2 py-1 rounded-lg hover:scale-110 duration-100 ease-linear"
+              className="flex items-center text-sm text-[#435a67] font-bold bg-[#f4f4f5] gap-2 px-2 py-1 rounded-lg hover:scale-110 duration-100 ease-linear"
             >
               <span>
                 {getAttributeName(selected.attribute_id)}: {selected.attribute_value}
@@ -152,7 +152,7 @@ export function ComboboxMultiple({ items, type, value = [], onChange }) {
           {items
             .filter((item) => value.includes(item.id))
             .map((item) => (
-              <div key={item.id} className="flex items-center text-sm text-grayDark font-bold bg-[#f4f4f5] gap-2  px-2 py-1 rounded-lg hover:scale-110 duration-100 ease-linear">
+              <div key={item.id} className="flex items-center text-sm text-[#435a67] font-bold bg-[#f4f4f5] gap-2  px-2 py-1 rounded-lg hover:scale-110 duration-100 ease-linear">
                 <span>{item.name}</span>
                 <button onClick={() => handleRemove(item.id)} className="ml-2">
                   <X size={14} />

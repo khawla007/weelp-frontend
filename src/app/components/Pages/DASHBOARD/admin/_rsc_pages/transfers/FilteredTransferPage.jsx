@@ -436,7 +436,7 @@ const FilterTransfer = () => {
                         </ListingCardTags>
                       )}
                       <ListingCardStats>
-                        <Badge className="bg-secondarylight hover:bg-secondarylight text-secondaryDark">4.8</Badge>
+                        <Badge className="bg-[#b5d8cb] hover:bg-[#b5d8cb] text-secondaryDark">4.8</Badge>
                         <ListingCardMeta icon={Users}>1200 Bookings</ListingCardMeta>
                       </ListingCardStats>
                     </ListingCardContent>

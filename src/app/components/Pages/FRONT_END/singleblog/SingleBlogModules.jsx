@@ -27,7 +27,7 @@ export const RelatedLinks = ({ categories = [] }) => {
 export const FollowUs = () => {
   return (
     <div className="flex flex-col gap-2 sm:gap-4">
-      <p className="text-base text-grayDark">Share with your gang</p>
+      <p className="text-base text-[#435a67]">Share with your gang</p>
       <ul className="flex gap-2 sm:gap-4 items-center">
         <li>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
