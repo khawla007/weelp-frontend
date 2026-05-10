@@ -42,7 +42,7 @@ const CheckoutPage = () => {
       <div className="h-[80vh] flex items-center justify-center py-16">
         <p className="flex flex-col gap-4 text-center">
           Your cart is empty.{' '}
-          <Link href="/" className={buttonVariants({ variant: 'secondary' }) + ' bg-secondaryDark'}>
+          <Link href="/" className={buttonVariants({ variant: 'secondary' }) + ' bg-[#588f7a]'}>
             Back to Home
           </Link>
         </p>
