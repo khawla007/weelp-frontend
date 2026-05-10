@@ -43,7 +43,7 @@ export const TransfertCard = () => {
             <span className=" text-[#273F4E] font-semibold text-lg">$6,790.18</span>
             <span className="text-[#5A5A5A]">Detailed BreakDown</span>
           </div>
-          <Button className={'bg-secondaryDark hover:bg-secondaryDark text-white max-w-full w-fit p-6 px-12'}>Select</Button>
+          <Button className={'bg-[#588f7a] hover:bg-[#588f7a] text-white max-w-full w-fit p-6 px-12'}>Select</Button>
         </div>
       </CardFooter>
     </Card>
