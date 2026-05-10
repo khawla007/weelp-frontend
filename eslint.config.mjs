@@ -26,6 +26,7 @@ const CASCADED_SURFACES = [
   'src/app/(frontend)/terms/**/*.{js,jsx,ts,tsx}',
   'src/app/(frontend)/cancellation/**/*.{js,jsx,ts,tsx}',
   'src/app/components/NotFound.jsx',
+  'src/components/ui/**/*.{js,jsx,ts,tsx}',
 ];
 
 const eslintConfig = [

@@ -10,7 +10,7 @@ const alertVariants = cva(
       variant: {
         default: 'bg-white text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50',
         destructive: 'border-red-500/50 text-red-500 dark:border-red-500 [&>svg]:text-red-500 dark:border-red-900/50 dark:text-red-900 dark:dark:border-red-900 dark:[&>svg]:text-red-900',
-        success: 'text-[#256029] border-[#B6E2A1] bg-[#F0FDF4]',
+        success: 'text-[#18181b] border-[#588f7a] bg-[#f2f7f5]',
       },
     },
     defaultVariants: {

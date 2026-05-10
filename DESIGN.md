@@ -204,6 +204,10 @@ Surfaces are flat at rest. Depth is a response to intent, not a decoration. The 
 
 ## 5. Components
 
+**Primitive baseline.** All form/button/skeleton/dialog/sheet/popover/toast surfaces resolve through the shadcn/ui primitives in `src/components/ui/`. Those primitives ship a stock `neutral-*` Tailwind palette that sits within ±2 hex points of the canonical `zinc-*` palette named in §2 (e.g. `bg-neutral-100` ≈ `#f5f5f5` vs canonical `#f4f4f5`). Re-hexing the primitives across 32 files for a perceptual delta below noise floor is high blast for low signal, so the baseline is grandfathered: primitives keep their neutral-* classes, product code targets canonical zinc hexes via the arbitrary syntax (`text-[#18181b]`, `border-[#e4e4e7]`), and the lint guards check both.
+
+The success-state palette on `Alert` and `Toast` was migrated in Phase 12c from external bootstrap-green (`#256029` / `#B6E2A1` / `#F0FDF4` / `#568f7c` / `#4a7a6a`) to canonical sage tier (`#588f7a` border + `#f2f7f5` wash + `#18181b` ink). One sage, one success voice.
+
 ### Buttons
 
 - **Shape:** Gently curved (8px radius, `{rounded.sm}`). Pill (999px) reserved for filter chips and floating CTAs only.
