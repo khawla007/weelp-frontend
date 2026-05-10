@@ -51,8 +51,8 @@ export const ReviewCard2 = ({ userImageSrc, userName, galleryImages, date, title
       {title && <h5 className="text-black font-medium sm:text-lg pt-3 capitalize">{title}</h5>}
       {comment && <p className="text-base text-black capitalize h-24 overflow-y-scroll tfc_scroll">{comment}</p>}
       <BreakSection marginTop={'mt-2'} className={'mb-4'} />
-      <button className="w-fit flex gap-2 items-center group-active:first:fill-secondaryDark ">
-        <ThumbsUp size={20} className=" text-secondaryDark active:fill-secondaryDark " />
+      <button className="w-fit flex gap-2 items-center group-active:first:fill-[#588f7a] ">
+        <ThumbsUp size={20} className=" text-[#588f7a] active:fill-[#588f7a] " />
         <span className="capitalize underline font-medium">helpful</span>
       </button>
     </div>
