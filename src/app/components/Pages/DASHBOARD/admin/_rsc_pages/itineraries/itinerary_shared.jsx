@@ -148,7 +148,7 @@ export const ActivitySearchModal = ({ day, onClose, cityIds = [], addActivity, a
               </li>
             ) : filteredActivities.length > 0 ? (
               filteredActivities.map((activity) => (
-                <li className="list-none hover:bg-neutral-100 cursor-pointer p-2" onClick={() => handleSelectActivity(activity)} key={activity?.id}>
+                <li className="list-none hover:bg-zinc-100 cursor-pointer p-2" onClick={() => handleSelectActivity(activity)} key={activity?.id}>
                   {activity?.name}
                 </li>
               ))
@@ -316,7 +316,7 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
           <ul className="max-h-60 overflow-y-auto">
             {filteredTransfers.length > 0 ? (
               filteredTransfers.map((transfer) => (
-                <li className="list-none hover:bg-neutral-100 cursor-pointer p-2" onClick={() => handleSelectTransfer(transfer)} key={transfer?.id}>
+                <li className="list-none hover:bg-zinc-100 cursor-pointer p-2" onClick={() => handleSelectTransfer(transfer)} key={transfer?.id}>
                   {transfer?.name}
                 </li>
               ))

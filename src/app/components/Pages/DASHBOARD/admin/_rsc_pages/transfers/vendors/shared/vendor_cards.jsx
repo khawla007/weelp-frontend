@@ -68,37 +68,37 @@ export const CardVendor = ({ id, title = '', description = '', status = '', vehi
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-auto" align="end" offset={10}>
-            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}`)}>
+            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}`)}>
               View Details
             </DropdownMenuItem>
-            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/routes`)}>
+            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/routes`)}>
               Routes
             </DropdownMenuItem>
-            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/pricing`)}>
+            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/pricing`)}>
               Pricing
             </DropdownMenuItem>
             <DropdownMenuItem
-              className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none"
+              className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none"
               onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/availability`)}
             >
               Availability
             </DropdownMenuItem>
-            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/vehicles`)}>
+            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/vehicles`)}>
               Vehicles
             </DropdownMenuItem>
-            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/drivers`)}>
+            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/drivers`)}>
               Drivers
             </DropdownMenuItem>
 
             {/* Status Based Actions */}
             {status === 'active' && (
-              <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none text-red-600" onClick={() => handleVendorStatus(id, 'inactive')}>
+              <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none text-red-600" onClick={() => handleVendorStatus(id, 'inactive')}>
                 Deactivate
               </DropdownMenuItem>
             )}
 
             {(status === 'inactive' || status === 'pending') && (
-              <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none text-green-600" onClick={() => handleVendorStatus(id, 'active')}>
+              <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none text-green-600" onClick={() => handleVendorStatus(id, 'active')}>
                 Activate
               </DropdownMenuItem>
             )}
@@ -318,24 +318,24 @@ export const CardVendorVehicle = ({ id, vendor_id, make = '', status = '', model
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-auto" align="end" offset={10}>
               <DropdownMenuItem
-                className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none"
+                className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none"
                 onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/vehicles/${id}/view`)}
               >
                 View Details
               </DropdownMenuItem>
               <DropdownMenuItem
-                className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none"
+                className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none"
                 onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/vehicles/${id}/edit`)}
               >
                 Edit
               </DropdownMenuItem>
               <DropdownMenuItem
-                className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none"
+                className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none"
                 onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/pricing`)}
               >
                 Pricing
               </DropdownMenuItem>
-              <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none text-red-600">Deactivate</DropdownMenuItem>
+              <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none text-red-600">Deactivate</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -475,18 +475,18 @@ export const CardVendorDriver = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-auto" align="end" offset={10}>
             <DropdownMenuItem
-              className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none"
+              className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none"
               onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/drivers/${id}/view`)}
             >
               View Details
             </DropdownMenuItem>
             <DropdownMenuItem
-              className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none"
+              className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none"
               onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/drivers/${id}/edit`)}
             >
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f5f5f5] transition focus-visible:outline-none text-red-600">Deactivate</DropdownMenuItem>
+            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none text-red-600">Deactivate</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </CardHeader>

@@ -86,7 +86,7 @@ const MediaTab = () => {
 
       {/**Uploaded Media As Dialog */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">Click the star icon to mark an image as featured</p>
+        <p className="text-sm text-zinc-500">Click the star icon to mark an image as featured</p>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
             <Button className="w-fit">
@@ -113,12 +113,12 @@ const MediaTab = () => {
                 {/* Featured Star - Top Right */}
                 <Star
                   size={24}
-                  fill={isFeatured ? '#568f7c' : 'white'}
+                  fill={isFeatured ? '#588f7a' : 'white'}
                   strokeWidth={2}
                   onClick={() => handleSetFeatured(image.media_id)}
-                  className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#568f7c]' : 'text-[#568f7c] hover:scale-110'}`}
+                  className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#588f7a]' : 'text-[#588f7a] hover:scale-110'}`}
                 />
-                {isFeatured && <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
+                {isFeatured && <div className="absolute top-4 left-4 bg-[#588f7a] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
                 <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-4 right-4 size-0 group-hover/item:size-6 transition-all text-red-500 bg-white rounded-full shadow p-1" />
               </div>
             );

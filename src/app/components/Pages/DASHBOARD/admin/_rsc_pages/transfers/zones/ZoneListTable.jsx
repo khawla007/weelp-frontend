@@ -39,7 +39,7 @@ export default function ZoneListTable({ zones = [], selectedIds = [], onToggleSe
               <TableCell className="text-muted-foreground">{z.slug}</TableCell>
               <TableCell className="text-muted-foreground max-w-xs truncate">{z.description || '—'}</TableCell>
               <TableCell>
-                <Badge className="gap-1 bg-[#DC3545] text-white hover:bg-[#DC3545]/90">
+                <Badge className="gap-1 bg-red-600 text-white hover:bg-red-700">
                   <MapPin className="h-3 w-3" />
                   {z.locations_count ?? 0}
                 </Badge>

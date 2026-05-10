@@ -33,6 +33,8 @@ const CASCADED_SURFACES = [
   'src/app/components/Pages/FRONT_END/shop/**/*.{js,jsx,ts,tsx}',
   'src/app/components/Pages/FRONT_END/tours/**/*.{js,jsx,ts,tsx}',
   'src/app/components/Pages/FRONT_END/transfer/**/*.{js,jsx,ts,tsx}',
+  // Phase 14a — admin RSC builders (activity / package / itinerary forms).
+  'src/app/components/Pages/DASHBOARD/admin/_rsc_pages/**/*.{js,jsx,ts,tsx}',
 ];
 
 const eslintConfig = [

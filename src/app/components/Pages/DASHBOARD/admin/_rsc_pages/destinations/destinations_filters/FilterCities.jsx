@@ -118,7 +118,7 @@ export const FilterCities = () => {
           {/* Error State */}
           {!isValidating && error && <div className="text-red-500 text-center py-4">Failed to load data. Please try again.</div>}
           {/* No Items Found */}
-          {!isValidating && !error && cities.length === 0 && <div className="text-gray-500 text-center py-4">No cities found.</div>}
+          {!isValidating && !error && cities.length === 0 && <div className="text-zinc-500 text-center py-4">No cities found.</div>}
 
           {/* For cities */}
           {!isValidating && !error && cities.length > 0 && (

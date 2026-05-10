@@ -212,7 +212,7 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-xs  text-gray-600">
+        <div className="text-xs  text-zinc-600">
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
       </div>

@@ -311,14 +311,14 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
         <div className="space-y-4 py-6">
           <div className="pb-2 space-y-2 w-full">
             <div className="pb-2 space-y-2">
-              <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-gray-700'}`}>
+              <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-zinc-700'}`}>
                 Name <span className="text-red-500">*</span>
               </Label>
               <Input
                 placeholder="Activity name"
                 id="name"
                 {...register('name', { required: 'Name is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus:outline-secondaryDark"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus:outline-secondaryDark"
                 onBlur={handleBlur}
               />
               {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
@@ -331,14 +331,14 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                 placeholder="Enter Url slug"
                 id="slug"
                 {...register('slug', { required: 'Slug is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
                 onBlur={handleBlur}
               />
               {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
             </div>
           </div>
           <div className="pb-2 space-y-2">
-            <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-gray-700'}`}>
+            <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-zinc-700'}`}>
               Description <span className="text-red-500">*</span>
             </Label>
             <Textarea
@@ -347,13 +347,13 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               {...register('description', {
                 required: 'Description is required',
               })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm h-28 focus:outline-secondaryDark"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm h-28 focus:outline-secondaryDark"
             />
             {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
           </div>
 
           <div className="pb-2 space-y-2">
-            <Label htmlFor="short_description" className={`block text-sm font-medium ${errors?.short_description ? 'text-red-400' : 'text-gray-700'}`}>
+            <Label htmlFor="short_description" className={`block text-sm font-medium ${errors?.short_description ? 'text-red-400' : 'text-zinc-700'}`}>
               Short Description <span className="text-red-500">*</span>
             </Label>
             <Textarea
@@ -362,13 +362,13 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               {...register('short_description', {
                 required: 'Field is required',
               })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 h-20 focus:outline-secondaryDark"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 h-20 focus:outline-secondaryDark"
             />
             {errors?.short_description && <p className="text-red-500 text-sm mt-1">{errors.short_description.message}</p>}
           </div>
 
           <div className="flex items-center space-x-2">
-            <Label htmlFor="featured_activity" className="text-sm font-medium text-gray-700">
+            <Label htmlFor="featured_activity" className="text-sm font-medium text-zinc-700">
               Feature Activity
             </Label>
             <Controller
@@ -380,7 +380,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                   checked={field.value}
                   onCheckedChange={field.onChange}
                   id="featured_activity"
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-gray-300 data-[state=checked]:bg-secondaryDark"
+                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-secondaryDark"
                 >
                   <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
                 </Switch>
@@ -464,7 +464,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
         {/* Min Group Size */}
         <div className="hidden justify-between gap-4 py-2 ">
           <div className="w-full">
-            <label className="block text-sm font-medium text-gray-700">Minimum Age</label>
+            <label className="block text-sm font-medium text-zinc-700">Minimum Age</label>
             <Controller
               name="minimum_age"
               control={methods?.control}
@@ -477,7 +477,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                   placeholder="Min Age"
                   value={field.value || ''} // Ensure it's controlled
                   onChange={(e) => field.onChange(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus-visible:focus:outline-secondaryDark"
+                  className="mt-1 block w-full rounded-md border-zinc-300 shadow-sm focus-visible:focus:outline-secondaryDark"
                 />
               )}
             />
@@ -487,7 +487,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
 
           {/** Max Group Size */}
           <div className="w-full">
-            <label className="block text-sm font-medium text-gray-700">Max Group Size</label>
+            <label className="block text-sm font-medium text-zinc-700">Max Group Size</label>
             <Controller
               name="maxgroup_size"
               control={methods.control}
@@ -502,7 +502,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                   placeholder="Max group size"
                   value={field.value || ''} // Ensure it's controlled
                   onChange={(e) => field.onChange(e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus-visible:outline-secondaryDark"
+                  className="mt-1 block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:outline-secondaryDark"
                 />
               )}
             />
@@ -512,11 +512,11 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
 
         {/* Locations */}
         <div>
-          <Label className="block py-2 text-sm font-medium text-gray-700">Locations</Label>
+          <Label className="block py-2 text-sm font-medium text-zinc-700">Locations</Label>
 
           {/* Single City Selection at the Top */}
           <div className="py-4 px-8 space-y-2 bg-white">
-            <span className="block text-sm font-medium text-gray-700">Select City</span>
+            <span className="block text-sm font-medium text-zinc-700">Select City</span>
             <Combobox
               data={locations}
               value={selectedCityId}
@@ -538,7 +538,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
 
           {/* Primary Location */}
           <p className="py-4 px-8 space-y-4 bg-white mt-2">
-            <span className="block pb-2 text-sm font-medium text-gray-700">Primary Location</span>
+            <span className="block pb-2 text-sm font-medium text-zinc-700">Primary Location</span>
 
             {/* Hidden city_id from selected city */}
             <input type="hidden" {...methods.register('locations.0.city_id')} value={selectedCityId || ''} />
@@ -598,7 +598,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
 
               return (
                 <div key={index} className="mt-4 py-4 px-8 space-y-4 bg-white">
-                  <span className="block text-sm font-medium text-gray-700">Additional Location {index}</span>
+                  <span className="block text-sm font-medium text-zinc-700">Additional Location {index}</span>
 
                   {/* Hidden city_id from selected city */}
                   <input type="hidden" {...methods.register(`locations.${index}.city_id`)} value={selectedCityId || ''} />
@@ -691,7 +691,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
         <div className="space-y-4">
           {/* Categories */}
           <div>
-            <Label htmlFor={'categories'} className="block py-2 text-sm font-medium text-gray-700">
+            <Label htmlFor={'categories'} className="block py-2 text-sm font-medium text-zinc-700">
               Categories
             </Label>
             <Controller
@@ -713,7 +713,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
 
           {/* Tags */}
           <div>
-            <Label htmlFor={'tags'} className="block py-2 text-sm font-medium text-gray-700">
+            <Label htmlFor={'tags'} className="block py-2 text-sm font-medium text-zinc-700">
               Tags
             </Label>
 
@@ -738,7 +738,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
 
           {/* Attributes */}
           <div>
-            <Label htmlFor={'attributes'} className="block py-2 text-sm font-medium text-gray-700">
+            <Label htmlFor={'attributes'} className="block py-2 text-sm font-medium text-zinc-700">
               Attributes
             </Label>
             <Controller
@@ -751,7 +751,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
           </div>
 
           <div className="w-full py-2">
-            <Label htmlFor={'difficulty_level'} className="block text-sm font-medium text-gray-700">
+            <Label htmlFor={'difficulty_level'} className="block text-sm font-medium text-zinc-700">
               Difficulty Level
             </Label>
             <Controller
@@ -888,7 +888,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
 
           {/**Uploaded Media As Dialog */}
           <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">Click the star icon to mark an image as featured</p>
+            <p className="text-sm text-zinc-500">Click the star icon to mark an image as featured</p>
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger asChild>
                 <Button className="w-fit">
@@ -915,12 +915,12 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                     {/* Featured Star - Top Right */}
                     <Star
                       size={24}
-                      fill={isFeatured ? '#568f7c' : 'white'}
+                      fill={isFeatured ? '#588f7a' : 'white'}
                       strokeWidth={2}
                       onClick={() => handleSetFeatured(image.media_id)}
-                      className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#568f7c]' : 'text-[#568f7c] hover:scale-110'}`}
+                      className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#588f7a]' : 'text-[#588f7a] hover:scale-110'}`}
                     />
-                    {isFeatured && <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
+                    {isFeatured && <div className="absolute top-4 left-4 bg-[#588f7a] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
                     <Trash2
                       onClick={() => handleDeleteImage(image)}
                       className="absolute bottom-4 right-4 size-0 group-hover/item:size-6 transition-all text-red-500 bg-white rounded-full shadow p-1"
@@ -1102,7 +1102,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
         <div className="space-y-6">
           {/* Base Pricing */}
           <div className="flex flex-col justify-between gap-4 p-8 shadow-md bg-white rounded-md">
-            <h3 className="text-lg font-medium text-gray-900">$ Base Pricing</h3>
+            <h3 className="text-lg font-medium text-zinc-900">$ Base Pricing</h3>
             <div className="w-full flex gap-4">
               <div className="w-full space-y-2">
                 <Label htmlFor="regular_price" className="w-full">
@@ -1193,7 +1193,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                   }}
                 />
 
-                <Label className="text-sm font-medium text-gray-900">Enable Seasonal Pricing</Label>
+                <Label className="text-sm font-medium text-zinc-900">Enable Seasonal Pricing</Label>
               </div>
 
               {isSeasonPricing && (
@@ -1346,14 +1346,14 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
 
           {/* Discount & Promotions */}
           <div className="flex flex-col justify-between gap-4 p-8 shadow-md bg-white rounded-md">
-            <h3 className="text-lg flex items-center gap-4 font-semibold text-gray-900">
+            <h3 className="text-lg flex items-center gap-4 font-semibold text-zinc-900">
               <Tag size={18} className=" stroke-2 font-semibold" /> Discount & Promotions
             </h3>
 
             {/* Group Discounts */}
             <div className="w-full flex flex-col gap-4">
               <div className="w-full flex justify-between">
-                <h3 className="text-lg flex items-center gap-4 font-semibold text-gray-900">
+                <h3 className="text-lg flex items-center gap-4 font-semibold text-zinc-900">
                   <Users size={18} className="stroke-2" />
                   Group Discount
                 </h3>
@@ -1544,7 +1544,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
   };
 
   return (
-    <div className="w-full bg-gray-50 py-6 sm:px-4 lg:px-6" style={{ overflowAnchor: 'none', overflowY: 'auto' }}>
+    <div className="w-full bg-zinc-50 py-6 sm:px-4 lg:px-6" style={{ overflowAnchor: 'none', overflowY: 'auto' }}>
       <NavigationActivity title={'Edit Activity'} desciption={'Edit activity for your customers'} backurl={'/dashboard/admin/activities/'} />
       <div className="w-full space-y-6">
         <FormProvider {...methods}>
@@ -1563,12 +1563,12 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                         }
                         setCurrentStep(step?.id);
                       }}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && 'bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'}`}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && 'bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-secondaryDark border-b-2'}`}
                     >
-                      <Separator className={`pt-1 rounded-full ${currentStep >= step?.id ? 'bg-[#568f7c] group-hover:bg-[#e5e5e5]' : 'bg-neutral-200 group-hover:bg-[#568f7c]'}`} />
+                      <Separator className={`pt-1 rounded-full ${currentStep >= step?.id ? 'bg-[#588f7a] group-hover:bg-[#eaeaea]' : 'bg-zinc-200 group-hover:bg-[#588f7a]'}`} />
 
                       <div className={`text-sm font-medium pt-2 ${currentStep == step?.id ? 'text-secondaryDark' : 'text-[#71717a]'}`}>{step.title}</div>
-                      <span className="text-sm text-gray-500">{step?.description}</span>
+                      <span className="text-sm text-zinc-500">{step?.description}</span>
                     </li>
                   ))}
               </ul>
@@ -1591,7 +1591,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                   <Button
                     type="button"
                     onClick={() => setCurrentStep(currentStep - 1)}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Previous
                   </Button>
@@ -1604,7 +1604,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                     onClick={() => {
                       router.back();
                     }}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Cancel
                   </Button>

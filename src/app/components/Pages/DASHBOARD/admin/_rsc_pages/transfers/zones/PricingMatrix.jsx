@@ -76,7 +76,7 @@ export default function PricingMatrix() {
     return (
       <div className="space-y-6">
         <Header />
-        <div className="grid place-items-center text-gray-400 py-16">Create zones first before setting prices.</div>
+        <div className="grid place-items-center text-zinc-400 py-16">Create zones first before setting prices.</div>
       </div>
     );
   }

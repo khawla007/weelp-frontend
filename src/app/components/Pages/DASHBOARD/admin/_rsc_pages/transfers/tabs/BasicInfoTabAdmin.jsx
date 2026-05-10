@@ -45,8 +45,8 @@ const BasicInfoTabAdmin = () => {
 
   return (
     <div className="space-y-4 py-6">
-      <h2 className="text-base font-semibold text-[#09090B]">Transfer Details</h2>
-      <p className="text-sm text-gray-600">Enter the basic detail of transfer service</p>
+      <h2 className="text-base font-semibold text-[#18181b]">Transfer Details</h2>
+      <p className="text-sm text-zinc-600">Enter the basic detail of transfer service</p>
 
       {/* Name */}
       <div className="pb-2 space-y-2 w-full">
@@ -57,7 +57,7 @@ const BasicInfoTabAdmin = () => {
           placeholder="Enter Transfer Name"
           id="name"
           {...register('name', { required: 'Name is required' })}
-          className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+          className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
           onBlur={handleBlur}
         />
         {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
@@ -71,7 +71,7 @@ const BasicInfoTabAdmin = () => {
           placeholder="Enter Url slug"
           id="slug"
           {...register('slug', { required: 'Slug is required' })}
-          className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+          className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
           onBlur={handleBlur}
         />
         {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
@@ -151,7 +151,7 @@ const BasicInfoTabAdmin = () => {
           {...register('description', {
             required: 'Description is required',
           })}
-          className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+          className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
         />
         {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
       </div>
@@ -167,7 +167,7 @@ const BasicInfoTabAdmin = () => {
           {...register('inclusion', {
             required: 'inclusion is required',
           })}
-          className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+          className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
         />
         {errors?.inclusion && <p className="text-red-500 text-sm mt-1">{errors?.inclusion.message}</p>}
       </div>

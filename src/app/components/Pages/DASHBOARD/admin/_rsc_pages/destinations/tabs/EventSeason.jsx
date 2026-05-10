@@ -156,7 +156,7 @@ const EventSeasonTab = () => {
 
             {/* If No Season Found */}
             {!seasonFields.length > 0 && (
-              <div className="grid place-items-center rounded-lg  p-4 pt-8 text-gray-500">
+              <div className="grid place-items-center rounded-lg  p-4 pt-8 text-zinc-500">
                 <div className="flex flex-col items-center space-y-1">
                   <Calendar size={20} /> <h3 className=" capitalize">No seasons added yet</h3>
                   <span className=" text-xs">Add a season to get started</span>
@@ -285,7 +285,7 @@ const EventSeasonTab = () => {
 
             {/* If No Season Found */}
             {!seasonFields.length > 0 && (
-              <div className="grid place-items-center rounded-lg  p-4 pt-8 text-gray-500">
+              <div className="grid place-items-center rounded-lg  p-4 pt-8 text-zinc-500">
                 <div className="flex flex-col items-center space-y-1">
                   <Calendar size={20} /> <h3 className=" capitalize">No seasons added yet</h3>
                   <span className=" text-xs">Add a season to get started</span>

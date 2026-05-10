@@ -22,7 +22,7 @@ export const DestinationListCard = ({ label, icon, items, description, url }) =>
         </div>
       </CardHeader>
       <CardContent>
-        <p className=" text-gray-600 pb-4">{description}</p>
+        <p className=" text-zinc-600 pb-4">{description}</p>
         <div className="flex items-center justify-between gap-3 ">
           <Link href={url} aschild="true" className="w-full">
             <Button className="w-full bg-accent text-[#18181b] text-sm hover:text-white">

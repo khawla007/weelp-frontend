@@ -100,12 +100,12 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 py-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen w-full bg-zinc-50 py-4 sm:px-6 lg:px-8">
       <div className="mb-6 flex items-center gap-3">
         <ArrowLeft className="cursor-pointer" onClick={() => router.back()} />
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{id ? 'Edit Region' : 'New Region'}</h1>
-          <p className="text-sm text-gray-600 mt-1">{`${id ? 'Edit' : 'Create a new'} region with detailed information`}</p>
+          <h1 className="text-2xl font-bold text-zinc-900">{id ? 'Edit Region' : 'New Region'}</h1>
+          <p className="text-sm text-zinc-600 mt-1">{`${id ? 'Edit' : 'Create a new'} region with detailed information`}</p>
         </div>
       </div>
 

@@ -191,21 +191,21 @@ const SeoTab = () => {
       }}
     >
       <AccordionItem value="item-1">
-        <AccordionTrigger className="hover:bg-gray-50 px-4">
+        <AccordionTrigger className="hover:bg-zinc-50 px-4">
           <h2 className="text-[#18181b] font-semibold text-xl">Basic Settings</h2>
         </AccordionTrigger>
         <AccordionContent className="px-2 space-y-4">
           <div className="space-y-2">
             <Label className={`${errors?.seo?.meta_title?.message && 'text-red-400'}`}>Meta Title</Label>
             <Input type="text" maxLength="60" placeholder="Enter meta title" className="focus-visible:ring-secondaryDark" {...register('seo.meta_title')} />
-            <span className="block text-xs p-1 text-gray-500">{`${String(metaTitle || '').length}/60`} Characters</span>
+            <span className="block text-xs p-1 text-zinc-500">{`${String(metaTitle || '').length}/60`} Characters</span>
             {errors?.seo?.meta_title && <p className="text-red-400 text-sm">{errors?.seo?.meta_title?.message}</p>}
           </div>
 
           <div className="space-y-2">
             <Label className={`${errors?.seo?.meta_description?.message && 'text-red-400'}`}>Meta Description</Label>
             <Input type="text" placeholder="Enter meta description" maxLength="160" className="focus-visible:ring-secondaryDark" {...register('seo.meta_description')} />
-            <span className="block text-xs p-1 text-gray-500">{`${String(metaDescription || '').length}/160`} Characters</span>
+            <span className="block text-xs p-1 text-zinc-500">{`${String(metaDescription || '').length}/160`} Characters</span>
             {errors?.seo?.meta_description && <p className="text-red-400 text-sm">{errors?.seo?.meta_description.message}</p>}
           </div>
 
@@ -239,7 +239,7 @@ const SeoTab = () => {
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
-        <AccordionTrigger className="hover:bg-gray-50 px-4">
+        <AccordionTrigger className="hover:bg-zinc-50 px-4">
           <h2 className="text-[#18181b] font-semibold text-xl">Schema Markup</h2>
           {errors?.schema_data?.message && <div className="bg-red-100 text-red-800">{errors?.schema_data?.message}</div>}
         </AccordionTrigger>

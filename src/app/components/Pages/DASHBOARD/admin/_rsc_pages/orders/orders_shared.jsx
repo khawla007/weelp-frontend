@@ -69,7 +69,7 @@ export const StatsOrdersCards = ({ summary = {} }) => {
 
   const currentMonth = new Date().toLocaleString('en-US', { month: 'long' });
 
-  const iconClass = 'text-[#09090B] text-sm font-medium';
+  const iconClass = 'text-[#18181b] text-sm font-medium';
 
   // All-time stat cards (growth = current month vs previous month)
   const allTimeCards = [

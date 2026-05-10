@@ -288,7 +288,7 @@ const FilterTransfer = () => {
                   <div className="space-y-3">
                     {/* Weekday Checkboxes */}
                     <div className="space-y-1">
-                      <Label className="text-xs text-gray-500">Days</Label>
+                      <Label className="text-xs text-zinc-500">Days</Label>
                       <Controller
                         name="available_days"
                         control={control}
@@ -313,10 +313,10 @@ const FilterTransfer = () => {
 
                     {/* Time Slot Inputs */}
                     <div className="space-y-1">
-                      <Label className="text-xs text-gray-500">Time Slot</Label>
+                      <Label className="text-xs text-zinc-500">Time Slot</Label>
                       <div className="flex items-center gap-2">
                         <Input type="time" {...register('time_slot_start')} className="text-sm" />
-                        <span className="text-xs text-gray-400">to</span>
+                        <span className="text-xs text-zinc-400">to</span>
                         <Input type="time" {...register('time_slot_end')} className="text-sm" />
                       </div>
                     </div>
@@ -392,7 +392,7 @@ const FilterTransfer = () => {
           {!isValidating && error && <div className="text-red-500 text-center">Failed to load data. Please try again.</div>}
 
           {/* Empty State */}
-          {!isValidating && !error && items.length === 0 && <div className="text-gray-500 text-center">No items found.</div>}
+          {!isValidating && !error && items.length === 0 && <div className="text-zinc-500 text-center">No items found.</div>}
 
           {/* For Items */}
           {!isValidating && !error && items.length > 0 && (
@@ -416,7 +416,7 @@ const FilterTransfer = () => {
                       <ListingCardTitle actions={<ListingCardActions itemId={itemId} editHref={`/dashboard/admin/transfers/edit/${itemId}`} onDelete={() => handleDeleteClick(itemId)} />}>
                         {name}
                       </ListingCardTitle>
-                      <span className="text-gray-500 text-sm">{is_vendor ? 'Vendor Route' : 'Admin Route'}</span>
+                      <span className="text-zinc-500 text-sm">{is_vendor ? 'Vendor Route' : 'Admin Route'}</span>
                       {attributes.length > 0 &&
                         attributes.map(
                           ({ attribute_name }, index) =>
@@ -429,7 +429,7 @@ const FilterTransfer = () => {
                       {tags.length > 0 && (
                         <ListingCardTags>
                           {tags.map(({ tag_name }, index) => (
-                            <Badge key={index} className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${index === 0 && 'bg-gray-400'}`}>
+                            <Badge key={index} className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${index === 0 && 'bg-zinc-400'}`}>
                               {tag_name}
                             </Badge>
                           ))}

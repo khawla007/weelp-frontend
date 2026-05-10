@@ -32,7 +32,7 @@ export default function SmartDropZone({ name, multiple = true }) {
 
   return (
     <Card>
-      <CardContent {...getRootProps()} className="border-2 border-dashed border-gray-400 p-4 text-center cursor-pointer">
+      <CardContent {...getRootProps()} className="border-2 border-dashed border-zinc-400 p-4 text-center cursor-pointer">
         <input {...cleanInputProps} {...(multiple && { multiple: true })} />
         {value.length > 0 ? (
           <ul className="list-none p-0 m-0">

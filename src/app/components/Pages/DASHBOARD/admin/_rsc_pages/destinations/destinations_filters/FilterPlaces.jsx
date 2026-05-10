@@ -118,7 +118,7 @@ const FilterPlaces = () => {
           {/* Error State */}
           {!isValidating && error && <div className="text-red-500 text-center py-4">Failed to load data. Please try again.</div>}
           {/* No Items Found */}
-          {!isValidating && !error && places.length === 0 && <div className="text-gray-500 text-center py-4">No places found.</div>}
+          {!isValidating && !error && places.length === 0 && <div className="text-zinc-500 text-center py-4">No places found.</div>}
 
           {/* For places */}
           {!isValidating && !error && places.length > 0 && (

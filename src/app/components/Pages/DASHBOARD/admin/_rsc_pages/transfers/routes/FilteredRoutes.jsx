@@ -187,7 +187,7 @@ export default function FilteredRoutes() {
               onDelete={requestDelete}
             />
           ) : (
-            <div className="grid place-items-center text-gray-400 py-12">No routes found. Create your first one.</div>
+            <div className="grid place-items-center text-zinc-400 py-12">No routes found. Create your first one.</div>
           )}
           <CustomPagination
             totalItems={total}

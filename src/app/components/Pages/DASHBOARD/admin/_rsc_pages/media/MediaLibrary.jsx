@@ -249,7 +249,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                   <Card
                     key={index}
                     className={`group relative aspect-square overflow-hidden rounded-lg bg-muted cursor-pointer transition-all
-                      ${isSelected ? 'border-4 border-[#568f7c]' : 'border border-gray-200'}
+                      ${isSelected ? 'border-4 border-[#588f7a]' : 'border border-zinc-200'}
                     `}
                     onClick={() => {
                       if (isMediaPage) {
@@ -289,9 +289,9 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                         e.stopPropagation(); // Prevent Card click
                         handleSelectMedia(image);
                       }}
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 pointer-events-auto"
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white rounded-full p-2 shadow-lg hover:bg-zinc-100 pointer-events-auto"
                     >
-                      <Edit size={20} className="text-gray-700" />
+                      <Edit size={20} className="text-zinc-700" />
                     </button>
 
                     {/* Selection badge - shows in both selected and unselected states */}

@@ -242,7 +242,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
 
     return (
       <div className="space-y-4 py-6">
-        <h2 className="text-base font-semibold text-[#09090B]">Basic Information</h2>
+        <h2 className="text-base font-semibold text-[#18181b]">Basic Information</h2>
 
         <div className="flex w-full gap-4">
           <div className="pb-2 space-y-2 w-full">
@@ -253,7 +253,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
               placeholder="Package name"
               id="name"
               {...register('name', { required: 'Name is required' })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
               onBlur={handleBlur}
             />
             {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
@@ -267,7 +267,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
               placeholder="Enter Url slug"
               id="slug"
               {...register('slug', { required: 'Slug is required' })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
               onBlur={handleBlur}
             />
             {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
@@ -284,7 +284,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
             {...register('description', {
               required: 'Description is required',
             })}
-            className="mt-1 p-2 text-sm block w-full rounded-md border border-gray-300 shadow-sm focus-visible:ring-secondaryDark"
+            className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-secondaryDark"
           />
           {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
         </div>
@@ -313,7 +313,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
         </div>
 
         <div className="flex items-center space-x-2">
-          <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" htmlFor="featured_package">
+          <Label className="text-sm font-medium text-zinc-700 flex items-center gap-2" htmlFor="featured_package">
             <Controller
               name="featured_package"
               defaultValue={false}
@@ -323,7 +323,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                   id="featured_package"
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-gray-300 data-[state=checked]:bg-secondaryDark"
+                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-secondaryDark"
                 >
                   <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
                 </Switch>
@@ -331,7 +331,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
             />
             Featured
           </Label>
-          <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" htmlFor="private_package">
+          <Label className="text-sm font-medium text-zinc-700 flex items-center gap-2" htmlFor="private_package">
             <Controller
               name="private_package"
               defaultValue={false}
@@ -341,7 +341,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                   id="private_package"
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-gray-300 data-[state=checked]:bg-secondaryDark"
+                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-secondaryDark"
                 >
                   <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
                 </Switch>
@@ -826,7 +826,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
         {errors?.schedules && <p className="text-sm text-red-500">{errors?.schedules?.message}</p>}
 
         <div className="w-full flex justify-between items-center">
-          <h3 className="text-base font-semibold text-[#09090B]">Daily Schedule</h3>
+          <h3 className="text-base font-semibold text-[#18181b]">Daily Schedule</h3>
           <Button type="button" onClick={handleAddDay} className="bg-secondaryDark hover:bg-secondaryDark">
             + Add Day
           </Button>
@@ -1156,7 +1156,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
       <div className="flex flex-col justify-between py-2  rounded-md space-y-8">
         {/* Base Pricing */}
         <div className="flex flex-col space-y-4 border p-4 rounded-xl bg-white">
-          <h3 className="text-lg font-medium text-gray-900">Base Pricing</h3>
+          <h3 className="text-lg font-medium text-zinc-900">Base Pricing</h3>
           <div className="w-full  flex gap-4">
             <div className="w-full space-y-2">
               <Label htmlFor="currency" className="w-full">
@@ -1489,7 +1489,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
 
     return (
       <div className="flex flex-col justify-between py-2  rounded-md space-y-4">
-        <h3 className="text-lg font-medium text-gray-900">Availability</h3>
+        <h3 className="text-lg font-medium text-zinc-900">Availability</h3>
         {/* Availability */}
         <div className="flex flex-col space-y-4 border p-4 rounded-xl bg-white">
           {/* Date Based Package Switch */}
@@ -1696,7 +1696,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
     return (
       <div className="flex flex-col justify-between py-2 rounded-md space-y-8">
         <div className="flex justify-between">
-          <h3 className="text-base font-bold text-gray-900 ">Inclusion & Exclusions</h3>
+          <h3 className="text-base font-bold text-zinc-900 ">Inclusion & Exclusions</h3>
           <Button className="bg-white text-[#18181b] border hover:bg-accent" onClick={handleAddInclustionField}>
             + Add Item
           </Button>
@@ -1856,7 +1856,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
     // console.log(getValues())
     return (
       <div className="flex flex-col gap-4">
-        <p className="text-sm text-gray-500">Click the star icon to mark an image as featured</p>
+        <p className="text-sm text-zinc-500">Click the star icon to mark an image as featured</p>
         <div className="hidden">
           <Controller
             control={methods?.control}
@@ -1894,12 +1894,12 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                   <img className="size-72 rounded-md border" src={image?.url} alt="city_image" />
                   <Star
                     size={24}
-                    fill={isFeatured ? '#568f7c' : 'white'}
+                    fill={isFeatured ? '#588f7a' : 'white'}
                     strokeWidth={2}
                     onClick={() => handleSetFeatured(image.media_id)}
-                    className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#568f7c]' : 'text-[#568f7c] hover:scale-110'}`}
+                    className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#588f7a]' : 'text-[#588f7a] hover:scale-110'}`}
                   />
-                  {isFeatured && <div className="absolute top-4 left-4 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
+                  {isFeatured && <div className="absolute top-4 left-4 bg-[#588f7a] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
                   <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-4 right-4 size-0 group-hover/item:size-6 transition-all text-red-500 bg-white rounded-full shadow p-1" />
                 </div>
               );
@@ -1924,7 +1924,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
       <div className="space-y-4">
         {/* Categories */}
         <div>
-          <Label htmlFor={'categories'} className="block py-2 text-sm font-medium text-gray-700">
+          <Label htmlFor={'categories'} className="block py-2 text-sm font-medium text-zinc-700">
             Categories
           </Label>
           <Controller
@@ -1946,7 +1946,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
 
         {/* Tags */}
         <div>
-          <Label htmlFor={'tags'} className="block py-2 text-sm font-medium text-gray-700">
+          <Label htmlFor={'tags'} className="block py-2 text-sm font-medium text-zinc-700">
             Tags
           </Label>
 
@@ -1971,7 +1971,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
 
         {/* Attributes */}
         <div>
-          <Label htmlFor={'attributes'} className="block py-2 text-sm font-medium text-gray-700">
+          <Label htmlFor={'attributes'} className="block py-2 text-sm font-medium text-zinc-700">
             Attributes
           </Label>
           <Controller
@@ -1986,7 +1986,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
         </div>
 
         <div className="w-full py-2">
-          <Label htmlFor={'difficulty'} className="block text-sm font-medium text-gray-700">
+          <Label htmlFor={'difficulty'} className="block text-sm font-medium text-zinc-700">
             Difficulty Level
           </Label>
           <Controller
@@ -2193,7 +2193,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
         }}
       >
         <AccordionItem value="item-1">
-          <AccordionTrigger className="hover:bg-gray-50 px-4">
+          <AccordionTrigger className="hover:bg-zinc-50 px-4">
             <h2 className="text-[#18181b] font-semibold text-xl">Basic Settings</h2>
           </AccordionTrigger>
           <AccordionContent className="px-2 space-y-4">
@@ -2208,7 +2208,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                   required: 'Meta Title Required',
                 })}
               />
-              <span className="block text-xs p-1 text-gray-500">{`${String(metaTitle || '').length}/60`} Characters</span>
+              <span className="block text-xs p-1 text-zinc-500">{`${String(metaTitle || '').length}/60`} Characters</span>
               {errors?.seo?.meta_title && <p className="text-red-400 text-sm">{errors?.seo?.meta_title?.message}</p>}
             </div>
 
@@ -2223,7 +2223,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                   required: 'Meta Description Required',
                 })}
               />
-              <span className="block text-xs p-1 text-gray-500">{`${String(metaDescription || '').length}/160`} Characters</span>
+              <span className="block text-xs p-1 text-zinc-500">{`${String(metaDescription || '').length}/160`} Characters</span>
               {errors?.seo?.meta_description && <p className="text-red-400 text-sm">{errors?.seo?.meta_description.message}</p>}
             </div>
 
@@ -2272,7 +2272,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2">
-          <AccordionTrigger className="hover:bg-gray-50 px-4">
+          <AccordionTrigger className="hover:bg-zinc-50 px-4">
             <h2 className="text-[#18181b] font-semibold text-xl">Schema Markup</h2>
             {errors?.schema_data?.message && <div className="bg-red-100 text-red-800">{errors?.schema_data?.message}</div>}
           </AccordionTrigger>
@@ -2614,7 +2614,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen w-full bg-zinc-50 py-12 sm:px-6 lg:px-8">
       <NavigationPackage title={'Create New Package'} desciption={'Design and configure your travel package'} backurl={'/dashboard/admin/package-builder/'} />
       <div className="w-full space-y-4">
         <FormProvider {...methods}>
@@ -2632,12 +2632,12 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                         }
                         setCurrentStep(step?.id);
                       }}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${
-                        currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${
+                        currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-secondaryDark border-b-2'
                       }`}
                     >
                       <div
-                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${
+                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${
                           currentStep == step?.id ? 'text-secondaryDark ' : 'text-[#71717a]'
                         }`}
                       >
@@ -2666,7 +2666,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                   <Button
                     type="button"
                     onClick={() => setCurrentStep(currentStep - 1)}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Previous
                   </Button>

@@ -201,7 +201,7 @@ const FilterItinerary = ({ categories = [], difficulties = [], durations = [] })
           {!isValidating && error && <div className="text-red-500 text-center">Failed to load data. Please try again.</div>}
 
           {/* Empty State */}
-          {!isValidating && !error && items.length === 0 && <div className="text-gray-500 text-center">No items found.</div>}
+          {!isValidating && !error && items.length === 0 && <div className="text-zinc-500 text-center">No items found.</div>}
 
           {/* For Items */}
           {!isValidating && !error && items.length > 0 && (
@@ -269,7 +269,7 @@ const FilterItinerary = ({ categories = [], difficulties = [], durations = [] })
                       {tags.length > 0 && (
                         <ListingCardTags>
                           {tags.map(({ tag_name }, index) => (
-                            <Badge key={index} className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${index === 0 && 'bg-gray-400'}`}>
+                            <Badge key={index} className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${index === 0 && 'bg-zinc-400'}`}>
                               {tag_name}
                             </Badge>
                           ))}

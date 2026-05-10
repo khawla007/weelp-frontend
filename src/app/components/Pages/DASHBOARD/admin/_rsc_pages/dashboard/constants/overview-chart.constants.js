@@ -25,7 +25,7 @@ export const overviewChartData = [
  */
 export const chartConfig = {
   height: 350,
-  axisColor: '#888888',
+  axisColor: '#71717a',
   axisFontSize: 12,
   valueFormatter: (value) => `$${value}`,
 };

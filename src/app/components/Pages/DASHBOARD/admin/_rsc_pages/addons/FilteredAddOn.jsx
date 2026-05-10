@@ -179,7 +179,7 @@ export const FilteredAddOn = () => {
           {addOns && addOns.length > 0 ? (
             <AddOnTable data={addOns} onDelete={handleDelete} selectedItems={selectedItems} onSelectionChange={setSelectedItems} addOnsCount={addOns.length} onAllSelectedChange={setIsAllSelected} />
           ) : (
-            <div className="grid place-items-center text-gray-400">
+            <div className="grid place-items-center text-zinc-400">
               <span>Sorry No Item Found</span>
             </div>
           )}

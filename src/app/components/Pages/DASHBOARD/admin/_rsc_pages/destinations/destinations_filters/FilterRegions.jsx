@@ -84,7 +84,7 @@ const RegionCard = ({ id, name, type, description, image_url, countries_count = 
         </div>
       </CardContent>
       <CardFooter className="flex flex-col items-start gap-4">
-        <p className="text-sm text-gray-600 line-clamp-2">{description || 'No description'}</p>
+        <p className="text-sm text-zinc-600 line-clamp-2">{description || 'No description'}</p>
         {/* Badges */}
         <div className="flex items-center gap-2">
           <Badge className="bg-accent text-[#18181b] hover:bg-accent">{type}</Badge>
@@ -137,7 +137,7 @@ export const FilterRegions = () => {
           {!isValidating && error && <div className="text-red-500 text-center py-4">Failed to load data. Please try again.</div>}
 
           {/* No Items Found */}
-          {!isValidating && !error && regions.length === 0 && <div className="text-gray-500 text-center py-4">No regions found.</div>}
+          {!isValidating && !error && regions.length === 0 && <div className="text-zinc-500 text-center py-4">No regions found.</div>}
 
           {/* For regions */}
           {!isValidating && !error && regions.length > 0 && (

@@ -174,14 +174,14 @@ const EditOrderForm = ({ order = {} }) => {
     return (
       <div className="space-y-4 py-2">
         <div>
-          <h3 className="text-base font-semibold text-[#09090B]">Basic Information</h3>
+          <h3 className="text-base font-semibold text-[#18181b]">Basic Information</h3>
           <span className="text-sm text-[#71717A]">Enter the customer details</span>
         </div>
 
         {/* Customer  & Order Type */}
         <div className="pb-2 space-x-4 flex flex-col md:flex-row">
           <div className="w-full pb-2 space-y-2">
-            <Label htmlFor="user_id" className={`block text-sm font-medium ${errors?.user_id ? 'text-red-400' : 'text-gray-700'}`}>
+            <Label htmlFor="user_id" className={`block text-sm font-medium ${errors?.user_id ? 'text-red-400' : 'text-zinc-700'}`}>
               Customer
             </Label>
             <Controller
@@ -225,7 +225,7 @@ const EditOrderForm = ({ order = {} }) => {
           {/* Condition Based Rendering */}
           {/* For Activity */}
           {watchOrderType === 'activity' && (
-            <Label htmlFor="orderable_id" className={`flex flex-col gap-2 text-sm space-y-4 font-medium  ${errors?.orderable_id ? 'text-red-400' : 'text-gray-700'}`}>
+            <Label htmlFor="orderable_id" className={`flex flex-col gap-2 text-sm space-y-4 font-medium  ${errors?.orderable_id ? 'text-red-400' : 'text-zinc-700'}`}>
               Activity
               <Controller
                 name="orderable_id"
@@ -238,7 +238,7 @@ const EditOrderForm = ({ order = {} }) => {
 
           {/* For Transfer */}
           {watchOrderType === 'itinerary' && (
-            <Label htmlFor="orderable_id" className={`flex flex-col gap-2 text-sm space-y-4 font-medium  ${errors?.orderable_id ? 'text-red-400' : 'text-gray-700'}`}>
+            <Label htmlFor="orderable_id" className={`flex flex-col gap-2 text-sm space-y-4 font-medium  ${errors?.orderable_id ? 'text-red-400' : 'text-zinc-700'}`}>
               Itinerary
               <Controller
                 name="orderable_id"
@@ -251,7 +251,7 @@ const EditOrderForm = ({ order = {} }) => {
 
           {/* For Package */}
           {watchOrderType === 'package' && (
-            <Label htmlFor="orderable_id" className={`flex flex-col gap-2 text-sm space-y-4 font-medium  ${errors?.orderable_id ? 'text-red-400' : 'text-gray-700'}`}>
+            <Label htmlFor="orderable_id" className={`flex flex-col gap-2 text-sm space-y-4 font-medium  ${errors?.orderable_id ? 'text-red-400' : 'text-zinc-700'}`}>
               Package
               <Controller
                 name="orderable_id"
@@ -268,7 +268,7 @@ const EditOrderForm = ({ order = {} }) => {
         {/* Date Selection */}
         <div className="pb-2 space-x-4 flex flex-col md:flex-row">
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="travel_date" className={`block text-sm font-medium ${errors?.travel_date ? 'text-red-400' : 'text-gray-700'}`}>
+            <Label htmlFor="travel_date" className={`block text-sm font-medium ${errors?.travel_date ? 'text-red-400' : 'text-zinc-700'}`}>
               Travel Date
             </Label>
             <Controller
@@ -304,7 +304,7 @@ const EditOrderForm = ({ order = {} }) => {
           </div>
 
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="preferred_time" className={`block text-sm font-medium ${errors?.preferred_time ? 'text-red-400' : 'text-gray-700'}`}>
+            <Label htmlFor="preferred_time" className={`block text-sm font-medium ${errors?.preferred_time ? 'text-red-400' : 'text-zinc-700'}`}>
               Preferred Time
             </Label>
             <Input
@@ -331,7 +331,7 @@ const EditOrderForm = ({ order = {} }) => {
         <div className="flex items-center space-x-2 flex-col md:flex-row">
           {/* Adults */}
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="number_of_adults" className="text-sm font-medium text-gray-700 flex flex-col gap-2">
+            <Label htmlFor="number_of_adults" className="text-sm font-medium text-zinc-700 flex flex-col gap-2">
               Number of Adults
               <div className="flex gap-2">
                 <Minus className="text-lg size-10 p-2 border rounded-md " onClick={() => handleDecrement('adult')} />
@@ -344,7 +344,7 @@ const EditOrderForm = ({ order = {} }) => {
 
           {/* Children */}
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="number_of_children" className="text-sm font-medium text-gray-700 flex flex-col gap-2">
+            <Label htmlFor="number_of_children" className="text-sm font-medium text-zinc-700 flex flex-col gap-2">
               Number of Children
               <div className="flex gap-2">
                 <Minus className="text-lg size-10 p-2 border rounded-md " onClick={() => handleDecrement('children')} />
@@ -444,7 +444,7 @@ const EditOrderForm = ({ order = {} }) => {
     return (
       <div className="space-y-4 py-4">
         <div>
-          <h3 className="text-base font-semibold text-[#09090B]">Payment Information</h3>
+          <h3 className="text-base font-semibold text-[#18181b]">Payment Information</h3>
           <span className="text-sm text-[#71717A]">Enter the customer payment details</span>
         </div>
 
@@ -522,7 +522,7 @@ const EditOrderForm = ({ order = {} }) => {
 
           {/* Switches Row */}
           <div className="flex items-center space-x-2 w-full">
-            <Label id="payment.is_custom_amount" className="text-sm font-medium text-gray-700">
+            <Label id="payment.is_custom_amount" className="text-sm font-medium text-zinc-700">
               Custom Amount
             </Label>
             <Controller
@@ -533,7 +533,7 @@ const EditOrderForm = ({ order = {} }) => {
                   id="payment.is_custom_amount"
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-gray-300 data-[state=checked]:bg-secondaryDark"
+                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-secondaryDark"
                 >
                   <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
                 </Switch>
@@ -577,7 +577,7 @@ const EditOrderForm = ({ order = {} }) => {
     return (
       <div className="space-y-4 py-4">
         <div>
-          <h3 className="text-base font-semibold text-[#09090B]">Emergency Contact</h3>
+          <h3 className="text-base font-semibold text-[#18181b]">Emergency Contact</h3>
           <span className="text-sm text-[#71717A]">Add Emergency Contact Information</span>
         </div>
 
@@ -674,7 +674,7 @@ const EditOrderForm = ({ order = {} }) => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 py-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen w-full bg-zinc-50 py-4 sm:px-6 lg:px-8">
       <NavigationOrder title="Edit Order" desciption="Edit your order" />
 
       <div className="w-full mx-auto space-y-4 rounded-lg  ">
@@ -684,10 +684,10 @@ const EditOrderForm = ({ order = {} }) => {
               steps.map((step) => (
                 <li
                   key={step.id}
-                  className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'}`}
+                  className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-secondaryDark border-b-2'}`}
                 >
                   <div
-                    className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${currentStep == step?.id ? 'text-secondaryDark ' : 'text-[#71717a]'}`}
+                    className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-secondaryDark ' : 'text-[#71717a]'}`}
                   >
                     {step.title}
                   </div>
@@ -707,7 +707,7 @@ const EditOrderForm = ({ order = {} }) => {
                   <Button
                     type="button"
                     onClick={() => setCurrentStep(currentStep - 1)}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Previous
                   </Button>
@@ -720,7 +720,7 @@ const EditOrderForm = ({ order = {} }) => {
                     onClick={() => {
                       router.back();
                     }}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Cancel
                   </Button>
@@ -734,7 +734,7 @@ const EditOrderForm = ({ order = {} }) => {
                       onClick={() => {
                         router.back();
                       }}
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                     >
                       Cancel
                     </Button>

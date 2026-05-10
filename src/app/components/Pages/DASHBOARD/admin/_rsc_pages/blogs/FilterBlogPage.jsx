@@ -204,7 +204,7 @@ const FilterBlog = () => {
               {!isCategoriesLoading && categoriesOptionError && (
                 <span className="text-sm text-red-500">{categoriesOptionError?.message || `Failed to load categories <br> ${JSON.stringify(categoriesOptionError)}`}</span>
               )}
-              {!isCategoriesLoading && !categoriesOptionError && categoriesList.length === 0 && <span className="text-sm text-gray-500">No categories found</span>}
+              {!isCategoriesLoading && !categoriesOptionError && categoriesList.length === 0 && <span className="text-sm text-zinc-500">No categories found</span>}
 
               {!isCategoriesLoading && categoriesList.length > 0 && (
                 <Controller
@@ -243,7 +243,7 @@ const FilterBlog = () => {
               {isTagLoading && <span className="loader" />}
 
               {!isTagLoading && tagOptionsError && <span className="text-sm text-red-500">{tagOptionsError?.message || `Failed to load categories <br> ${JSON.stringify(tagOptionsError)}`}</span>}
-              {!isTagLoading && !tagOptionsError && categoriesList.length === 0 && <span className="text-sm text-gray-500">No categories found</span>}
+              {!isTagLoading && !tagOptionsError && categoriesList.length === 0 && <span className="text-sm text-zinc-500">No categories found</span>}
 
               {!isTagLoading && categoriesList.length > 0 && (
                 <Controller
@@ -323,7 +323,7 @@ const FilterBlog = () => {
           {!isValidating && error && <div className="text-red-500 text-center">Failed to load data. Please try again.</div>}
 
           {/* Empty State */}
-          {!isValidating && !error && items.length === 0 && <div className="text-gray-500 text-center">No items found.</div>}
+          {!isValidating && !error && items.length === 0 && <div className="text-zinc-500 text-center">No items found.</div>}
 
           {/* For Items */}
           {!isValidating && !error && items.length > 0 && (
@@ -373,7 +373,7 @@ const FilterBlog = () => {
                       {categories.length > 0 && (
                         <ul className="list-item">
                           {categories.map(({ category_name }, idx) => (
-                            <li key={idx} className="text-gray-500 text-sm flex items-center gap-2">
+                            <li key={idx} className="text-zinc-500 text-sm flex items-center gap-2">
                               {category_name}
                             </li>
                           ))}
@@ -384,7 +384,7 @@ const FilterBlog = () => {
                       {tags.length > 0 && (
                         <ListingCardTags>
                           {tags.map(({ tag_name }, idx) => (
-                            <Badge key={idx} className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${idx === 0 && 'bg-gray-400'}`}>
+                            <Badge key={idx} className={`bg-secondaryDark text-white hover:text-white hover:bg-secondaryDark ${idx === 0 && 'bg-zinc-400'}`}>
                               {tag_name}
                             </Badge>
                           ))}

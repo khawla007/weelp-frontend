@@ -190,7 +190,7 @@ const CreateStateForm = ({ apiFormData = {} }) => {
 
   if (isClient) {
     return (
-      <div className="min-h-screen w-full bg-gray-50 py-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen w-full bg-zinc-50 py-4 sm:px-6 lg:px-8">
         <NavigationDestinations title={id ? 'Edit state' : 'New state'} description={`${id ? ' Edit' : ' Create a new'} state destination with detailed information`} />
 
         <div className="w-full space-y-4">
@@ -203,10 +203,10 @@ const CreateStateForm = ({ apiFormData = {} }) => {
                     <li
                       key={step.id}
                       onClick={() => setCurrentStep(step?.id)}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-gray-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-secondaryDark border-b-2'}`}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-secondaryDark border-b-2'}`}
                     >
                       <div
-                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-gray-800'} ${currentStep == step?.id ? 'text-secondaryDark ' : 'text-[#71717a]'}`}
+                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-secondaryDark ' : 'text-[#71717a]'}`}
                       >
                         {step.title}
                       </div>
@@ -234,7 +234,7 @@ const CreateStateForm = ({ apiFormData = {} }) => {
                     <Button
                       type="button"
                       onClick={() => setCurrentStep(currentStep - 1)}
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                     >
                       Previous
                     </Button>
@@ -247,7 +247,7 @@ const CreateStateForm = ({ apiFormData = {} }) => {
                       onClick={() => {
                         router.back();
                       }}
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                     >
                       Cancel
                     </Button>

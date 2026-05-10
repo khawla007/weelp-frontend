@@ -9,7 +9,7 @@ export const TaxonomiesPageTitle = ({ title, description }) => {
   return (
     <Card className={'flex w-full flex-col justify-between bg-inherit border-none shadow-none '}>
       <CardHeader className={'w-full flex flex-col sm:flex-row sm:items-center justify-between py-2 sm:p-0 '}>{title && <CardTitle className={'capitalize'}>{title}</CardTitle>}</CardHeader>
-      {description && <CardContent className={'capitalize text-gray-500 sm:px-0'}>{description}</CardContent>}
+      {description && <CardContent className={'capitalize text-zinc-500 sm:px-0'}>{description}</CardContent>}
     </Card>
   );
 };

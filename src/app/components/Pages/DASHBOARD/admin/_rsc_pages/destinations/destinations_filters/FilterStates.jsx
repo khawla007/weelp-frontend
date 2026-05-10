@@ -118,7 +118,7 @@ export const FilterStates = () => {
           {/* Error State */}
           {!isValidating && error && <div className="text-red-500 text-center py-4">Failed to load data. Please try again.</div>}
           {/* No Items Found */}
-          {!isValidating && !error && states.length === 0 && <div className="text-gray-500 text-center py-4">No states found.</div>}
+          {!isValidating && !error && states.length === 0 && <div className="text-zinc-500 text-center py-4">No states found.</div>}
 
           {/* For states */}
           {!isValidating && !error && states.length > 0 && (

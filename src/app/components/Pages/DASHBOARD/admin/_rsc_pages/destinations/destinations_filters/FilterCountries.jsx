@@ -119,7 +119,7 @@ export const FilterCountries = () => {
           {/* Error State */}
           {!isValidating && error && <div className="text-red-500 text-center py-4">Failed to load data. Please try again.</div>}
           {/* No Items Found */}
-          {!isValidating && !error && countries.length === 0 && <div className="text-gray-500 text-center py-4">No countries found.</div>}
+          {!isValidating && !error && countries.length === 0 && <div className="text-zinc-500 text-center py-4">No countries found.</div>}
 
           {/* For countries */}
           {!isValidating && !error && countries.length > 0 && (

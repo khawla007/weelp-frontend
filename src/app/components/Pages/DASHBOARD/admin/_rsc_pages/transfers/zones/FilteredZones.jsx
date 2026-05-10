@@ -111,7 +111,7 @@ export default function FilteredZones() {
 
       <Card className="p-5 relative max-w-96">
         <div className="text-sm text-muted-foreground">Total Zones</div>
-        <div className="mt-[25px] text-4xl font-semibold text-[#DC3545]">{total}</div>
+        <div className="mt-[25px] text-4xl font-semibold text-red-600">{total}</div>
         <div className="mt-[5px] text-sm text-muted-foreground">All zones</div>
         <div className="absolute top-4 right-4 h-9 w-9 rounded-full bg-muted grid place-items-center">
           <Map className="h-4 w-4 text-muted-foreground" />
@@ -142,7 +142,7 @@ export default function FilteredZones() {
               onDelete={handleDelete}
             />
           ) : (
-            <div className="grid place-items-center text-gray-400 py-12">No zones found. Create your first one.</div>
+            <div className="grid place-items-center text-zinc-400 py-12">No zones found. Create your first one.</div>
           )}
           <CustomPagination
             totalItems={total}

@@ -96,7 +96,7 @@ export const ActivitySearchModal = ({ day, onClose, activities = [], addActivity
             {activities.length > 0
               ? activities.map((activity, index) => {
                   return (
-                    <li className="list-none hover:bg-neutral-100 cursor-pointer p-2" onClick={() => handleSelectActivity(activity)} key={activity?.id}>
+                    <li className="list-none hover:bg-zinc-100 cursor-pointer p-2" onClick={() => handleSelectActivity(activity)} key={activity?.id}>
                       {activity?.name}
                     </li>
                   );
@@ -254,7 +254,7 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
           {transfers.length > 0
             ? transfers.map((transfer, val) => {
                 return (
-                  <li className="list-none hover:bg-neutral-100 cursor-pointer p-2" onClick={() => handleSelectTransfer(transfer)} key={transfer?.id}>
+                  <li className="list-none hover:bg-zinc-100 cursor-pointer p-2" onClick={() => handleSelectTransfer(transfer)} key={transfer?.id}>
                     {transfer?.name}
                   </li>
                 );
@@ -423,7 +423,7 @@ export const ItinerarySearchModal = ({ day, onClose, itineraries = [], addItiner
           {itineraries.length > 0
             ? itineraries.map((itinerary, val) => {
                 return (
-                  <li className="list-none hover:bg-neutral-100 cursor-pointer p-2" onClick={() => handleSelectItinerary(itinerary)} key={itinerary?.id}>
+                  <li className="list-none hover:bg-zinc-100 cursor-pointer p-2" onClick={() => handleSelectItinerary(itinerary)} key={itinerary?.id}>
                     {itinerary?.name}
                   </li>
                 );
