@@ -264,3 +264,29 @@ Surfaces are flat at rest. Depth is a response to intent, not a decoration. The 
 - **Don't** introduce a third sans-serif. Inter Tight body, Inter labels, Plus Jakarta headlines, Degular display — that is the set.
 - **Don't** use Degular on every heading. The Reserved-Display Rule guards it for marquee moments only.
 - **Don't** convey information through color alone. Discount, availability, and price-tier states must also use shape, weight, or text.
+
+## 7. Layout & Container
+
+The shell of every page-level section reads at one canonical width. Drift between `max-w-4xl`, `max-w-5xl`, `max-w-6xl`, and `max-w-7xl` across sibling sections is what made Reviews look narrower than Top Activities on the homepage — every section is now anchored to the same outer rail.
+
+### The Canonical Container
+
+`container-page` is defined in the `@layer components` block of `src/app/globals.css`:
+
+```css
+.container-page {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+```
+
+Page-level wrappers should use this single class instead of hardcoding `max-w-*` plus manual horizontal padding. It supplies horizontal centering, full-row width, the canonical 1280px ceiling, and the responsive padding scale.
+
+### Named Rules
+
+**The Single-Container Rule.** Every page-level section wrapper across public pages, dashboard surfaces, and modals reads at the canonical `container-page` width. If a section needs to feel narrower, narrow the *content* inside the canonical container, not the container itself.
+
+**Reading-Column Exception.** Long-form prose surfaces (single-blog body, legal pages — `/privacy`, `/terms`, `/cancellation` — single-product guide, About story columns, FAQ answers) constrain to `max-w-4xl` or a `max-w-[65ch]` reading column per the body 65–75ch rule in §3. The outer wrapper still uses `container-page`; the inner prose column applies a narrower `max-w-*` for legibility. Document the intent inline if it isn't obvious.
+
+**Edge-to-Edge Exception.** Full-bleed image bands, gradient hero backgrounds, and sticky action bars span `w-full` on the outer `<section>`. The inner content panel inside that band uses `container-page` so the framing stays canonical even when the band itself runs corner-to-corner.
+
+**Dashboard Surface Exception.** Settings layouts inside `/dashboard/admin/settings` and `/dashboard/customer/settings` retain `max-w-6xl` because dashboard reading width is a tighter ergonomic target than the public marketing rail. New dashboard work that lives outside settings should default to `container-page`.

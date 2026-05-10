@@ -190,6 +190,16 @@ body {
     background-color: var(--weelp-city-tab-active-bg);
     color: var(--weelp-city-tab-text);
   }
+
+  /* Canonical page-level container — DESIGN.md §7.
+     Page-level section wrappers should use this class instead of
+     hardcoded max-w-* + manual horizontal padding. Reading-column
+     wrappers (long prose, blog body, legal pages) and dashboard
+     surfaces with intentionally narrower widths are documented
+     exceptions. */
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
 }
 
 @layer base {

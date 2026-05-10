@@ -3,9 +3,9 @@ import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
 const AiSection = () => {
   return (
-    <section className="mx-auto flex w-full max-w-7xl flex-col items-center gap-10 px-4 sm:px-6 lg:px-8 pb-24 md:pb-28 lg:pb-32">
+    <section className="container-page flex flex-col items-center gap-10 pb-24 md:pb-28 lg:pb-32">
       <h2 className="text-center text-[28px] font-medium text-[#18181b]">An assistant for the small decisions.</h2>
-      <div className="flex w-full max-w-6xl flex-col gap-4 lg:flex-row lg:items-stretch">
+      <div className="flex w-full flex-col gap-4 lg:flex-row lg:items-stretch">
         <div className="relative w-full min-h-[300px] lg:w-[48%]">
           <Image
             src="/assets/images/AiChatassistant.png"

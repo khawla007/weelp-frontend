@@ -15,7 +15,7 @@ const HeroSection = () => {
       }}
     >
       {/* Centered content */}
-      <div className="relative z-0 flex flex-col items-center justify-center text-center px-4 w-full max-w-4xl mx-auto">
+      <div className="container-page relative z-0 flex flex-col items-center justify-center text-center">
         <h1 className="display mb-3">The cities, picked. The days, planned.</h1>
         <p
           className="mb-8 text-[20px] sm:text-[24px] max-w-[44ch]"

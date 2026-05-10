@@ -29,7 +29,7 @@ export default function SectionFallback({ eyebrow, message, pivotHref, pivotLabe
   };
 
   return (
-    <section className={`mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:px-8 ${className}`}>
+    <section className={`container-page flex flex-col gap-6 ${className}`}>
       {eyebrow && (
         <span className="text-[13px] uppercase tracking-[0.08em] text-[#52525b]" style={{ fontFamily: fontInterTight, fontWeight: 600 }}>
           {eyebrow}
