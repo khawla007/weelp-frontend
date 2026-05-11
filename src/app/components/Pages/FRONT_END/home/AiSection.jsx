@@ -18,12 +18,12 @@ const AiSection = () => {
 
       <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
         <article className={`${SHARED_CARD} lg:row-span-2`}>
-          <div className="flex flex-col gap-1 p-6">
+          <div className="flex flex-col gap-1 p-3 md:p-6">
             <h3 className="text-[18px] font-semibold text-[#18181b]">AI Chat Assistant</h3>
             <p className="text-[16px] font-medium text-[#52525b]">Discover unique travel spots.</p>
           </div>
           <div className="h-px w-full bg-[#eaeaea]" />
-          <div className="flex flex-col gap-5 p-6">
+          <div className="flex flex-col gap-5 p-3 md:p-6">
             <div className="rounded-lg bg-zinc-50 px-4 py-3 text-[14px] font-medium text-[#18181b]">@Buddy! Suggests best off-beat places for goa!</div>
             <button
               type="button"
@@ -74,7 +74,7 @@ const AiSection = () => {
           />
           <div
             data-overlay
-            className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-0 bg-gradient-to-t from-black/65 via-black/35 to-transparent p-6 opacity-100 transition-[transform,opacity] duration-[420ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-y-full group-hover:opacity-0"
+            className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-0 bg-gradient-to-t from-black/65 via-black/35 to-transparent p-4 opacity-100 transition-[transform,opacity] duration-[420ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-y-full group-hover:opacity-0 md:p-6"
           >
             <h3 className="text-[18px] font-semibold text-white">Save Money</h3>
             <p className="text-[16px] font-medium text-white/85">Find exclusive travel deals.</p>
@@ -103,7 +103,7 @@ const AiSection = () => {
               </span>
             </span>
           </div>
-          <CardCopy title="Personalised for you" body="Tailored recommendations." className="p-6" />
+          <CardCopy title="Personalised for you" body="Tailored recommendations." className="p-3 md:p-6" />
         </article>
       </div>
     </section>

@@ -1,13 +1,64 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Send, Sparkles } from 'lucide-react';
+
+const TYPE_INTERVAL_MS = 50;
+
+const hasMatchMedia = () => typeof window !== 'undefined' && typeof window.matchMedia === 'function';
+
+const subscribeReducedMotion = (callback) => {
+  if (!hasMatchMedia()) return () => {};
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  mq.addEventListener('change', callback);
+  return () => mq.removeEventListener('change', callback);
+};
+
+const getReducedMotion = () => (hasMatchMedia() ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false);
+const getReducedMotionServer = () => false;
+
+const useReducedMotion = () => useSyncExternalStore(subscribeReducedMotion, getReducedMotion, getReducedMotionServer);
+
+const TypewriterText = ({ text, onDone, onTick, reducedMotion }) => {
+  const [shown, setShown] = useState(() => (reducedMotion ? text : ''));
+  const doneRef = useRef(onDone);
+  const tickRef = useRef(onTick);
+
+  useEffect(() => {
+    doneRef.current = onDone;
+    tickRef.current = onTick;
+  });
+
+  useEffect(() => {
+    if (reducedMotion) {
+      doneRef.current?.();
+      return undefined;
+    }
+
+    let i = 0;
+    const interval = setInterval(() => {
+      i += 1;
+      setShown(text.slice(0, i));
+      tickRef.current?.();
+      if (i >= text.length) {
+        clearInterval(interval);
+        doneRef.current?.();
+      }
+    }, TYPE_INTERVAL_MS);
+
+    return () => clearInterval(interval);
+  }, [text, reducedMotion]);
+
+  return <span aria-hidden="true">{shown}</span>;
+};
 
 const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
   const [draft, setDraft] = useState('');
+  const [completedIds, setCompletedIds] = useState(() => new Set());
+  const reducedMotion = useReducedMotion();
   const listRef = useRef(null);
 
-  useEffect(() => {
+  const scrollToBottom = useCallback(() => {
     const node = listRef.current;
     if (!node) return;
     if (typeof node.scrollTo === 'function') {
@@ -15,7 +66,20 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
     } else {
       node.scrollTop = node.scrollHeight;
     }
-  }, [messages, isThinking]);
+  }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isThinking, scrollToBottom]);
+
+  const handleTypewriterDone = useCallback((id) => {
+    setCompletedIds((prev) => {
+      if (prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -51,7 +115,14 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
         </div>
       </header>
 
-      <div ref={listRef} role="log" aria-live="polite" aria-label="Conversation with Buddy" className="flex-1 min-h-0 overflow-y-auto scroll-smooth px-4 py-4">
+      <div
+        ref={listRef}
+        role="log"
+        aria-live="polite"
+        aria-busy={isThinking}
+        aria-label="Conversation with Buddy"
+        className="flex-1 min-h-0 overflow-y-auto scroll-smooth px-4 py-4"
+      >
         {isEmpty ? (
           <div className="flex h-full flex-col items-start justify-end gap-3">
             <p className="text-[13px] font-medium text-[#52525b]">Try a quick prompt:</p>
@@ -70,19 +141,37 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
           </div>
         ) : (
           <ul className="flex flex-col gap-2">
-            {messages.map((message) => (
-              <li key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <span
-                  className={
-                    message.role === 'user'
-                      ? 'max-w-[80%] rounded-2xl rounded-br-sm bg-[#588f7a] px-3 py-2 text-[13px] font-medium text-white'
-                      : 'max-w-[80%] rounded-2xl rounded-bl-sm bg-zinc-100 px-3 py-2 text-[13px] font-medium text-[#18181b]'
-                  }
-                >
-                  {message.text}
-                </span>
-              </li>
-            ))}
+            {messages.map((message) => {
+              const isUser = message.role === 'user';
+              const isAnimating = !isUser && !completedIds.has(message.id);
+              return (
+                <li key={message.id} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+                  <span
+                    className={
+                      isUser
+                        ? 'max-w-[80%] whitespace-pre-line rounded-2xl rounded-br-sm bg-[#588f7a] px-3 py-2 text-[13px] font-medium text-white'
+                        : 'max-w-[80%] whitespace-pre-line rounded-2xl rounded-bl-sm bg-zinc-100 px-3 py-2 text-[13px] font-medium text-[#18181b]'
+                    }
+                  >
+                    {isUser ? (
+                      message.text
+                    ) : isAnimating ? (
+                      <>
+                        <TypewriterText
+                          text={message.text}
+                          reducedMotion={reducedMotion}
+                          onTick={scrollToBottom}
+                          onDone={() => handleTypewriterDone(message.id)}
+                        />
+                        <span className="sr-only">{message.text}</span>
+                      </>
+                    ) : (
+                      message.text
+                    )}
+                  </span>
+                </li>
+              );
+            })}
             {isThinking && (
               <li className="flex justify-start" aria-label="Buddy is thinking">
                 <span className="inline-flex items-center gap-1 rounded-2xl rounded-bl-sm bg-zinc-100 px-3 py-2.5 text-[#52525b]">
@@ -96,7 +185,7 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
         )}
       </div>
 
-      <form onSubmit={handleSubmit} className="flex items-end gap-2 border-t border-[#eaeaea] px-3 py-3">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2 border-t border-[#eaeaea] px-3 py-3 sm:flex-row sm:items-end">
         <label htmlFor="buddy-chat-input" className="sr-only">
           Message Buddy
         </label>
@@ -107,13 +196,13 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
           onChange={(event) => setDraft(event.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask Buddy: weekend in Paris…"
-          className="max-h-24 min-h-[40px] flex-1 resize-none rounded-lg border border-[#eaeaea] bg-white px-3 py-2 text-[13px] font-medium text-[#18181b] placeholder:text-[#a1a1aa] focus:border-[#588f7a] focus:outline-none focus:ring-2 focus:ring-[#588f7a]/30"
+          className="max-h-24 min-h-[40px] w-full flex-1 resize-none rounded-lg border border-[#eaeaea] bg-white px-3 py-2 text-[13px] font-medium text-[#18181b] placeholder:text-[#a1a1aa] focus:border-[#588f7a] focus:outline-none focus:ring-2 focus:ring-[#588f7a]/30"
         />
         <button
           type="submit"
           aria-label="Send message"
           disabled={!draft.trim() || isThinking}
-          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#588f7a] text-white transition-colors hover:bg-[#4d8069] disabled:cursor-not-allowed disabled:bg-[#588f7a]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40"
+          className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-lg bg-[#588f7a] text-white transition-colors hover:bg-[#4d8069] disabled:cursor-not-allowed disabled:bg-[#588f7a]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 sm:w-10"
         >
           <Send className="h-4 w-4" />
         </button>

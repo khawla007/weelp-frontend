@@ -928,3 +928,20 @@ span {
 .city-price-slider .range-slider__bar {
   background: #f1f5f9 !important;
 }
+
+/* AI Travel Buddy — marker popups */
+.buddy-popup .maplibregl-popup-content {
+  background: #ffffff;
+  border: 1px solid #588f7a;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding: 0.375rem 0.625rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #18181b;
+}
+
+.buddy-popup .maplibregl-popup-tip {
+  border-top-color: #588f7a !important;
+  border-bottom-color: #588f7a !important;
+}
