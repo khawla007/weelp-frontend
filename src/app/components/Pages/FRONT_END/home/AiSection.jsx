@@ -17,50 +17,7 @@ const AiSection = () => {
       <h2 className="text-center text-[28px] font-medium text-[#18181b]">Your AI Travel Buddy</h2>
 
       <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
-        <article className={`${SHARED_CARD} lg:row-span-2`}>
-          <div className="flex flex-col gap-1 p-3 md:p-6">
-            <h3 className="text-[18px] font-semibold text-[#18181b]">AI Chat Assistant</h3>
-            <p className="text-[16px] font-medium text-[#52525b]">Discover unique travel spots.</p>
-          </div>
-          <div className="h-px w-full bg-[#eaeaea]" />
-          <div className="flex flex-col gap-5 p-3 md:p-6">
-            <div className="rounded-lg bg-zinc-50 px-4 py-3 text-[14px] font-medium text-[#18181b]">@Buddy! Suggests best off-beat places for goa!</div>
-            <button
-              type="button"
-              className="inline-flex w-fit items-center justify-center rounded-lg bg-[#588f7a] px-5 py-2.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#4d8069]"
-            >
-              Start Setup
-            </button>
-          </div>
-          <div className="relative mt-auto grid aspect-[4/3] w-full grid-cols-2 gap-2 p-4">
-            <div className="relative overflow-hidden rounded-lg">
-              <Image
-                src="/assets/images/AiCityLiberty.png"
-                alt="Featured destination — New York"
-                fill
-                sizes="(max-width: 1024px) 50vw, 16vw"
-                placeholder="blur"
-                blurDataURL={IMAGE_BLUR_DATA_URL}
-                className="object-cover"
-              />
-            </div>
-            <div className="relative overflow-hidden rounded-lg">
-              <Image
-                src="/assets/images/AiCityBigBen.png"
-                alt="Featured destination — London"
-                fill
-                sizes="(max-width: 1024px) 50vw, 16vw"
-                placeholder="blur"
-                blurDataURL={IMAGE_BLUR_DATA_URL}
-                className="object-cover"
-              />
-            </div>
-          </div>
-        </article>
-
-        <article className={`${SHARED_CARD} motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100 md:aspect-[16/10]`}>
-          <TravelBuddyWidget />
-        </article>
+        <TravelBuddyWidget />
 
         <article className={`${SHARED_CARD} group aspect-[16/10] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}>
           <Image

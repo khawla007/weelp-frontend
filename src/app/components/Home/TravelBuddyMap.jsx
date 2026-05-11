@@ -1,8 +1,24 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+
+let cachedWebGLSupport = null;
+const detectWebGL = () => {
+  if (cachedWebGLSupport !== null) return cachedWebGLSupport;
+  if (typeof window === 'undefined' || typeof document === 'undefined') return true;
+  try {
+    const canvas = document.createElement('canvas');
+    cachedWebGLSupport = Boolean(canvas.getContext('webgl2') || canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
+  } catch {
+    cachedWebGLSupport = false;
+  }
+  return cachedWebGLSupport;
+};
+
+const subscribeNoop = () => () => {};
+const getWebGLServer = () => true;
 
 const OSM_STYLE = {
   version: 8,
@@ -73,20 +89,37 @@ const TravelBuddyMap = ({ markers = [], route = null, fitBounds = false, showPre
   const previewMarkersRef = useRef([]);
   const reducedMotionRef = useRef(false);
   const supportsHoverRef = useRef(false);
+  const webglSupported = useSyncExternalStore(subscribeNoop, detectWebGL, getWebGLServer);
+  const [runtimeFailed, setRuntimeFailed] = useState(false);
+  const mapFailed = !webglSupported || runtimeFailed;
 
   useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
+    if (!containerRef.current || mapRef.current || !webglSupported) return;
 
     reducedMotionRef.current = detectReducedMotion();
     supportsHoverRef.current = detectHover();
 
-    const map = new maplibregl.Map({
-      container: containerRef.current,
-      style: OSM_STYLE,
-      center: [2.3522, 48.8566],
-      zoom: 1.4,
-    });
+    let map;
+    try {
+      map = new maplibregl.Map({
+        container: containerRef.current,
+        style: OSM_STYLE,
+        center: [2.3522, 48.8566],
+        zoom: 1.4,
+      });
+    } catch {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- recover from synchronous WebGL/MapLibre init failure
+      setRuntimeFailed(true);
+      return;
+    }
 
+    const handleError = (e) => {
+      const name = e?.error?.name;
+      if (name === 'WebGLContextCreationError' || name === 'WebGLContextLostError') {
+        setRuntimeFailed(true);
+      }
+    };
+    map.on('error', handleError);
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
     mapRef.current = map;
 
@@ -95,10 +128,11 @@ const TravelBuddyMap = ({ markers = [], route = null, fitBounds = false, showPre
       markersRef.current = [];
       previewMarkersRef.current.forEach((m) => m.remove());
       previewMarkersRef.current = [];
+      map.off('error', handleError);
       map.remove();
       mapRef.current = null;
     };
-  }, []);
+  }, [webglSupported]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -200,6 +234,20 @@ const TravelBuddyMap = ({ markers = [], route = null, fitBounds = false, showPre
       map.once('load', applyRoute);
     }
   }, [route]);
+
+  if (mapFailed) {
+    return (
+      <div
+        ref={containerRef}
+        role="status"
+        className="w-full h-full flex items-center justify-center bg-neutral-100 text-neutral-600 text-sm p-6 text-center"
+      >
+        <span>
+          Interactive map unavailable. Enable hardware acceleration in your browser (chrome://settings/system) to view it.
+        </span>
+      </div>
+    );
+  }
 
   return <div ref={containerRef} className="w-full h-full" />;
 };
