@@ -1,12 +1,13 @@
 /**
  * Weelp custom ESLint rules — Impeccable Cascade Phase 12 + 13 lint guards.
  *
- * Encodes five named rules from frontend/DESIGN.md:
+ * Encodes six named rules from frontend/DESIGN.md:
  *   1. weelp/no-noncanonical-hex       — §2 canonical token allow-list (className)
  *   2. weelp/no-noncanonical-container — §7 Single-Container Rule + exceptions
  *   3. weelp/no-inline-heading-font    — §3 Global-Heading Rule
  *   4. weelp/no-inline-style-hex       — §2 canonical token allow-list (inline style)
  *   5. weelp/no-semantic-gray          — §5 Primitive Baseline (zinc canonical, gray/neutral drift)
+ *   6. weelp/no-noncanonical-fontsize  — §4 canonical font-size scale (className + inline style)
  *
  * Zero-dependency: pure ESLint AST visitors over JSX. No tailwind plugin.
  */
