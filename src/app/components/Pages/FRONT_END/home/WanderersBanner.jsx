@@ -7,13 +7,8 @@ const SAGE_LEAF_PATH = 'M0 571.5c4.16667-99 64.89999-297 274.5-297-219.60001 0-2
 
 const WanderersBanner = () => {
   return (
-    <section aria-labelledby="wanderers-heading" className="relative w-full overflow-hidden bg-white pt-20 pb-32">
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 275 572"
-        preserveAspectRatio="xMinYMid meet"
-        className="pointer-events-none absolute bottom-[104px] left-0 hidden h-[260px] w-auto translate-y-1/2 md:block"
-      >
+    <section aria-labelledby="wanderers-heading" className="relative w-full overflow-hidden bg-white py-20">
+      <svg aria-hidden="true" viewBox="0 0 275 572" preserveAspectRatio="xMinYMid meet" className="pointer-events-none absolute bottom-[104px] left-0 hidden h-[260px] w-auto translate-y-1/2 md:block">
         <path d={SAGE_LEAF_PATH} fill="#588f7a" />
       </svg>
 
@@ -44,7 +39,7 @@ const WanderersBanner = () => {
           <span aria-hidden="true" className="h-px flex-1 bg-[#e4e4e7]" />
           <Link
             href="/cities"
-            className="inline-flex shrink-0 items-center justify-center rounded-md bg-[#588f7a] px-7 py-3 text-[20px] font-semibold leading-none text-white transition-colors hover:bg-[#4d8069]"
+            className="inline-flex shrink-0 items-center justify-center rounded-md bg-[#588f7a] px-7 py-3 text-[20px] font-semibold leading-none !text-white transition-colors hover:bg-[#4d8069]"
           >
             Curate
           </Link>
