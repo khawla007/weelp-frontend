@@ -15,7 +15,7 @@ const CityHeroBanner = ({ city }) => {
           <h1 className="section-opener leading-[1.1] text-pretty mb-4 capitalize">{name}</h1>
           <p
             className="text-base md:text-lg max-w-full md:max-w-[391px] leading-relaxed text-wrap text-[#71717a]"
-            style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500, lineHeight: 1.55 }}
+            style={{ fontWeight: 500, lineHeight: 1.55 }}
           >
             {description}
           </p>
