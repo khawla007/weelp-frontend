@@ -14,6 +14,7 @@ const ProductSliderSection = dynamic(() => import('@/app/components/ui/ProductSl
 const BrowseDestinationsSection = dynamic(() => import('../components/Pages/FRONT_END/home/BrowseDestinationsSection'));
 const TestimonialSection = dynamic(() => import('../components/Pages/FRONT_END/Global/TestimonialSection'));
 const AiSection = dynamic(() => import('../components/Pages/FRONT_END/home/AiSection'));
+const WanderersBanner = dynamic(() => import('../components/Pages/FRONT_END/home/WanderersBanner'));
 const BlogSection = dynamic(() => import('../components/ui/BlogSection'));
 
 const fetchBlogs = () =>
@@ -74,6 +75,7 @@ const HomePage = async () => {
           pivotLabel="Plan a trip worth reviewing"
         />
       )}
+      <WanderersBanner />
       <AiSection />
 
       {blogs.length > 0 ? (
