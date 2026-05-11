@@ -119,7 +119,11 @@ function extractText(message) {
 
 function parseModelJson(raw) {
   try {
-    const trimmed = raw.trim().replace(/^```json\s*/i, '').replace(/```$/, '').trim();
+    const trimmed = raw
+      .trim()
+      .replace(/^```json\s*/i, '')
+      .replace(/```$/, '')
+      .trim();
     const parsed = JSON.parse(trimmed);
     const result = ResponseSchema.safeParse(parsed);
     return result.success ? result.data : null;
@@ -138,19 +142,13 @@ function getClient() {
 
 export async function POST(request) {
   if (!process.env.ANTHROPIC_API_KEY) {
-    return NextResponse.json(
-      { error: 'ANTHROPIC_API_KEY not configured on server' },
-      { status: 503 },
-    );
+    return NextResponse.json({ error: 'ANTHROPIC_API_KEY not configured on server' }, { status: 503 });
   }
 
   const ip = getClientIp(request);
   const limit = checkRateLimit(ip);
   if (!limit.allowed) {
-    return NextResponse.json(
-      { error: 'Rate limit exceeded', retryAfter: limit.retryAfter },
-      { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } },
-    );
+    return NextResponse.json({ error: 'Rate limit exceeded', retryAfter: limit.retryAfter }, { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } });
   }
 
   let body;
@@ -162,10 +160,7 @@ export async function POST(request) {
 
   const parsed = RequestSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: 'Invalid request', details: parsed.error.flatten() },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: 'Invalid request', details: parsed.error.flatten() }, { status: 400 });
   }
 
   const { text, history } = parsed.data;
@@ -200,10 +195,7 @@ export async function POST(request) {
     return NextResponse.json(validated);
   } catch (err) {
     if (err instanceof Anthropic.RateLimitError) {
-      return NextResponse.json(
-        { error: 'Upstream rate limit', ...CLARIFY_FALLBACK },
-        { status: 429 },
-      );
+      return NextResponse.json({ error: 'Upstream rate limit', ...CLARIFY_FALLBACK }, { status: 429 });
     }
     if (err instanceof Anthropic.APIError) {
       console.error('[buddy] Anthropic API error', err.status, err.message);

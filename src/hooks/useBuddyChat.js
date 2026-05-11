@@ -25,10 +25,7 @@ export default function useBuddyChat() {
   const idRef = useRef(0);
   const historyRef = useRef([]);
 
-  const respond = useMemo(
-    () => (shouldUseMock() ? mockBuddyRespond : realBuddyRespond),
-    [],
-  );
+  const respond = useMemo(() => (shouldUseMock() ? mockBuddyRespond : realBuddyRespond), []);
 
   const nextId = () => {
     idRef.current += 1;
@@ -47,11 +44,7 @@ export default function useBuddyChat() {
       const delay = new Promise((resolve) => setTimeout(resolve, 600));
       const [response] = await Promise.all([respondPromise, delay]);
 
-      historyRef.current = [
-        ...historyRef.current,
-        { role: 'user', text },
-        { role: 'buddy', text: response.reply },
-      ].slice(-20);
+      historyRef.current = [...historyRef.current, { role: 'user', text }, { role: 'buddy', text: response.reply }].slice(-20);
 
       setMessages((prev) => [...prev, { id: nextId(), role: 'buddy', text: response.reply }]);
       setLastPayload({
