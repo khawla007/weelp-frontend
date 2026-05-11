@@ -115,14 +115,7 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
         </div>
       </header>
 
-      <div
-        ref={listRef}
-        role="log"
-        aria-live="polite"
-        aria-busy={isThinking}
-        aria-label="Conversation with Buddy"
-        className="flex-1 min-h-0 overflow-y-auto scroll-smooth px-4 py-4"
-      >
+      <div ref={listRef} role="log" aria-live="polite" aria-busy={isThinking} aria-label="Conversation with Buddy" className="flex-1 min-h-0 overflow-y-auto scroll-smooth px-4 py-4">
         {isEmpty ? (
           <div className="flex h-full flex-col items-start justify-end gap-3">
             <p className="text-[13px] font-medium text-[#52525b]">Try a quick prompt:</p>
@@ -157,12 +150,7 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
                       message.text
                     ) : isAnimating ? (
                       <>
-                        <TypewriterText
-                          text={message.text}
-                          reducedMotion={reducedMotion}
-                          onTick={scrollToBottom}
-                          onDone={() => handleTypewriterDone(message.id)}
-                        />
+                        <TypewriterText text={message.text} reducedMotion={reducedMotion} onTick={scrollToBottom} onDone={() => handleTypewriterDone(message.id)} />
                         <span className="sr-only">{message.text}</span>
                       </>
                     ) : (

@@ -11,12 +11,7 @@ const TravelBuddyWidget = () => {
   return (
     <div className="flex h-full min-h-[480px] flex-col md:min-h-0 md:flex-row">
       <div className="group relative order-1 h-72 w-full overflow-hidden md:order-2 md:h-auto md:w-1/2 md:flex-1">
-        <TravelBuddyMap
-          markers={lastPayload.markers}
-          route={lastPayload.route}
-          fitBounds={lastPayload.fitBounds}
-          showPreview={isInitial}
-        />
+        <TravelBuddyMap markers={lastPayload.markers} route={lastPayload.route} fitBounds={lastPayload.fitBounds} showPreview={isInitial} />
         <div
           data-overlay
           className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-0 bg-gradient-to-t from-black/65 via-black/35 to-transparent p-4 opacity-100 transition-[transform,opacity] duration-[420ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-y-full group-hover:opacity-0 md:p-6"

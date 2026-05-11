@@ -29,15 +29,9 @@ const PREVIEW_PINS = [
 
 const EASE_OUT = (t) => 1 - Math.pow(1 - t, 2);
 
-const detectReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const detectReducedMotion = () => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const detectHover = () =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(hover: hover)').matches;
+const detectHover = () => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(hover: hover)').matches;
 
 const buildPopup = (label) => {
   const popup = new maplibregl.Popup({ offset: 16, closeButton: false, className: 'buddy-popup' });
@@ -68,8 +62,7 @@ const attachPopup = (map, marker, label, supportsHover) => {
 const buildPreviewMarkerElement = () => {
   const el = document.createElement('div');
   el.setAttribute('aria-hidden', 'true');
-  el.style.cssText =
-    'width:18px;height:18px;border-radius:9999px;background:#588f7a;opacity:0.45;border:2px solid #ffffff;box-shadow:0 1px 3px rgba(0,0,0,0.18);cursor:pointer;';
+  el.style.cssText = 'width:18px;height:18px;border-radius:9999px;background:#588f7a;opacity:0.45;border:2px solid #ffffff;box-shadow:0 1px 3px rgba(0,0,0,0.18);cursor:pointer;';
   return el;
 };
 
