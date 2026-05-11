@@ -58,8 +58,7 @@ const TravelBuddyMap = ({ markers = [], route = null, fitBounds = false }) => {
 
     const bounds = new maplibregl.LngLatBounds();
     markers.forEach(({ label, lat, lng }) => {
-      const marker = new maplibregl.Marker({ color: ROUTE_STROKE })
-        .setLngLat([lng, lat]);
+      const marker = new maplibregl.Marker({ color: ROUTE_STROKE }).setLngLat([lng, lat]);
       if (label) marker.setPopup(new maplibregl.Popup({ offset: 16 }).setText(label));
       marker.addTo(map);
       markersRef.current.push(marker);
@@ -76,9 +75,7 @@ const TravelBuddyMap = ({ markers = [], route = null, fitBounds = false }) => {
     if (!map) return;
 
     const applyRoute = () => {
-      const data = route
-        ? { type: 'Feature', geometry: { type: 'LineString', coordinates: route.coordinates } }
-        : null;
+      const data = route ? { type: 'Feature', geometry: { type: 'LineString', coordinates: route.coordinates } } : null;
 
       const existing = map.getSource(ROUTE_SOURCE_ID);
       if (!data) {
