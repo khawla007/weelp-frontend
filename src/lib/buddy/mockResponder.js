@@ -1,7 +1,6 @@
 import { ITINERARIES } from './itineraries';
 
-const FALLBACK_REPLY =
-  "I don't have a canned trip for that yet — try Paris, Tokyo, Rome, NYC, Bali, Dubai, Iceland, Barcelona, Bangkok, or Cape Town.";
+const FALLBACK_REPLY = "I don't have a canned trip for that yet — try Paris, Tokyo, Rome, NYC, Bali, Dubai, Iceland, Barcelona, Bangkok, or Cape Town.";
 
 const THINKING_MS = 600;
 

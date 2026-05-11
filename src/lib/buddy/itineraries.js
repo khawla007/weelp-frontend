@@ -4,7 +4,7 @@ export const ITINERARIES = [
     keywords: ['paris', 'france weekend', 'romantic paris', 'weekend in paris', 'paris weekend'],
     title: 'A weekend in Paris',
     reply:
-      "Day one is the classic loop — Eiffel Tower at sunrise, then the Louvre when it opens.\nDay two drifts uphill through Montmartre and finishes at Notre-Dame as the bells ring.\nWalk most of it; the Metro only earns its keep after dark.",
+      'Day one is the classic loop — Eiffel Tower at sunrise, then the Louvre when it opens.\nDay two drifts uphill through Montmartre and finishes at Notre-Dame as the bells ring.\nWalk most of it; the Metro only earns its keep after dark.',
     markers: [
       { label: 'Eiffel Tower', lat: 48.8584, lng: 2.2945 },
       { label: 'Louvre', lat: 48.8606, lng: 2.3376 },
@@ -26,7 +26,7 @@ export const ITINERARIES = [
     keywords: ['tokyo', '3 days in tokyo', 'three days tokyo', 'japan tokyo', 'tokyo trip'],
     title: '3 days in Tokyo',
     reply:
-      "Start in Shibuya for the crossing and a long coffee, then drift north into Shinjuku Gyoen.\nDay two belongs to Asakusa and Senso-ji, with Meiji Shrine quiet enough to hear the gravel.\nFinish at Tokyo Tower after dark — the city looks calmer from up there than it feels.",
+      'Start in Shibuya for the crossing and a long coffee, then drift north into Shinjuku Gyoen.\nDay two belongs to Asakusa and Senso-ji, with Meiji Shrine quiet enough to hear the gravel.\nFinish at Tokyo Tower after dark — the city looks calmer from up there than it feels.',
     markers: [
       { label: 'Shibuya Crossing', lat: 35.6595, lng: 139.7005 },
       { label: 'Shinjuku Gyoen', lat: 35.6852, lng: 139.71 },
@@ -50,7 +50,7 @@ export const ITINERARIES = [
     keywords: ['rome', 'romantic rome', 'italy rome', 'rome trip', 'eternal city'],
     title: 'Romantic Rome',
     reply:
-      "Mornings are for the Colosseum and Forum before the heat lands.\nLunch near the Pantheon, then a slow loop through Trevi when the coin tossers thin out.\nClose the day across the river at the Vatican — golden hour does most of the work.",
+      'Mornings are for the Colosseum and Forum before the heat lands.\nLunch near the Pantheon, then a slow loop through Trevi when the coin tossers thin out.\nClose the day across the river at the Vatican — golden hour does most of the work.',
     markers: [
       { label: 'Colosseum', lat: 41.8902, lng: 12.4922 },
       { label: 'Roman Forum', lat: 41.8925, lng: 12.4853 },
@@ -122,7 +122,7 @@ export const ITINERARIES = [
     keywords: ['dubai', 'uae', 'emirates dubai', 'dubai trip', 'burj khalifa'],
     title: 'Dubai in two days',
     reply:
-      "Burj Khalifa first thing, then drift through the Dubai Mall when the desert heat asks you to.\nAfternoon belongs to the Palm and Marina — the boardwalk earns the walk.\nFinish with a drink in sight of the Burj Al Arab; the silhouette never gets old.",
+      'Burj Khalifa first thing, then drift through the Dubai Mall when the desert heat asks you to.\nAfternoon belongs to the Palm and Marina — the boardwalk earns the walk.\nFinish with a drink in sight of the Burj Al Arab; the silhouette never gets old.',
     markers: [
       { label: 'Burj Khalifa', lat: 25.1972, lng: 55.2744 },
       { label: 'Dubai Mall', lat: 25.1985, lng: 55.2796 },
@@ -172,7 +172,7 @@ export const ITINERARIES = [
     keywords: ['barcelona', 'spain barcelona', 'gaudi', 'catalonia', 'barca trip'],
     title: 'Barcelona on foot',
     reply:
-      "Sagrada Familia takes the morning — book the tower slot, the stairs are worth it.\nWalk up to Park Güell for the city laid flat, then back down via Casa Batlló.\nLas Ramblas drains into Barceloneta — end the day with your shoes off in the sand.",
+      'Sagrada Familia takes the morning — book the tower slot, the stairs are worth it.\nWalk up to Park Güell for the city laid flat, then back down via Casa Batlló.\nLas Ramblas drains into Barceloneta — end the day with your shoes off in the sand.',
     markers: [
       { label: 'Sagrada Família', lat: 41.4036, lng: 2.1744 },
       { label: 'Park Güell', lat: 41.4145, lng: 2.1527 },
