@@ -2,10 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Send, Sparkles } from 'lucide-react';
-import useBuddyChat from '@/hooks/useBuddyChat';
 
-const BuddyChat = () => {
-  const { messages, isThinking, sendMessage, presets } = useBuddyChat();
+const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
   const [draft, setDraft] = useState('');
   const listRef = useRef(null);
 
