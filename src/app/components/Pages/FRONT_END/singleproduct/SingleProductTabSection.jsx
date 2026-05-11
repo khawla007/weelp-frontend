@@ -155,7 +155,7 @@ const SingleProductTabSection = ({
       </div>
 
       {/* Two-Column Content */}
-      <div className={`max-w-[1480px] mx-auto px-4 ${fixedTab ? 'mt-[60px]' : ''}`}>
+      <div className={`max-w-pen mx-auto px-4 ${fixedTab ? 'mt-[60px]' : ''}`}>
         <div className="flex flex-col xl:flex-row">
           {/* Left Column — Content */}
           <div className="w-full xl:w-[58%]">

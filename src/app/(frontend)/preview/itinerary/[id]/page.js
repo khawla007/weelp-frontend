@@ -67,7 +67,7 @@ export default async function CreatorItineraryPreviewPage({ params }) {
     <>
       {/* Admin Preview Banner */}
       <div className="bg-[#588f7a] text-white px-4 py-3 fixed top-0 left-0 right-0 z-50">
-        <div className="max-w-[1480px] mx-auto flex items-center justify-between">
+        <div className="max-w-pen mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href="/dashboard/admin/creator-itineraries" className="inline-flex items-center gap-2 text-sm text-white">
               <ArrowLeft className="size-4" />

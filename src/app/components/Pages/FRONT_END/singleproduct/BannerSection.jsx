@@ -9,7 +9,7 @@ const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible
 const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null, primaryLocation = null, city = null, scheduleDisplay = null }) => {
   return (
     <section className="bg-white">
-      <div className="max-w-[1480px] mx-auto px-4">
+      <div className="max-w-pen mx-auto px-4">
         {/* Breadcrumb + Title + Stats */}
         <div className="flex flex-col gap-2 pt-[70px]">
           <BreadCrumb className="mb-2" />
