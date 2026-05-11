@@ -1,21 +1,14 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 
 import AiSection from '../AiSection';
 
 describe('AiSection', () => {
-  it('renders alternating image-text rows that stack on small screens', () => {
-    const { container } = render(<AiSection />);
-
-    const rowsWrapper = container.querySelector('section > div:last-child');
-    expect(rowsWrapper).toHaveClass('flex-col');
-
-    const rows = Array.from(rowsWrapper.children);
-    expect(rows.length).toBeGreaterThan(1);
-    rows.forEach((row) => {
-      expect(row.className).toMatch(/flex-col/);
-      expect(row.className).toMatch(/lg:flex-row/);
-    });
+  it('renders the four pen-canonical card titles', () => {
+    const { getByText } = render(<AiSection />);
+    expect(getByText('AI Chat Assistant')).toBeInTheDocument();
+    expect(getByText('Suggestions on Map')).toBeInTheDocument();
+    expect(getByText('Save Money')).toBeInTheDocument();
+    expect(getByText('Personalised for you')).toBeInTheDocument();
   });
 
   it('uses the pen-canonical heading copy', () => {
