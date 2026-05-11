@@ -22,13 +22,8 @@ const TravelBuddyWidget = () => {
         <div className="h-px w-full bg-[#eaeaea]" />
 
         <div className="flex flex-col gap-5 p-3 md:p-6">
-          <div className="rounded-lg bg-zinc-50 px-4 py-3 text-[14px] font-medium text-[#18181b]">
-            @Buddy! Suggests best off-beat places for goa!
-          </div>
-          <button
-            type="button"
-            className="inline-flex w-fit items-center justify-center rounded-lg bg-[#588f7a] px-5 py-2.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#4d8069]"
-          >
+          <div className="rounded-lg bg-zinc-50 px-4 py-3 text-[14px] font-medium text-[#18181b]">@Buddy! Suggests best off-beat places for goa!</div>
+          <button type="button" className="inline-flex w-fit items-center justify-center rounded-lg bg-[#588f7a] px-5 py-2.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#4d8069]">
             Start Setup
           </button>
         </div>
@@ -59,9 +54,7 @@ const TravelBuddyWidget = () => {
         </div>
       </article>
 
-      <article
-        className={`${SHARED_CARD} group motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100 md:aspect-[16/10]`}
-      >
+      <article className={`${SHARED_CARD} group motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100 md:aspect-[16/10]`}>
         <div className="relative h-full min-h-[280px] w-full overflow-hidden">
           <TravelBuddyMap markers={lastPayload.markers} route={lastPayload.route} fitBounds={lastPayload.fitBounds} showPreview={isInitial} />
           <div
