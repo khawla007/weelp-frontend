@@ -1,17 +1,15 @@
 'use client';
 
 import { useUIStore } from '@/lib/store/uiStore';
-import { Inter, Roboto, Poppins } from 'next/font/google';
+import { Inter, Roboto } from 'next/font/google';
 import { useEffect } from 'react';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 const roboto = Roboto({ subsets: ['latin'], display: 'swap', weight: '400' });
-const poppins = Poppins({ subsets: ['latin'], display: 'swap', weight: '400' });
 
 const fontMap = {
   Inter: inter.className,
   Roboto: roboto.className,
-  Poppins: poppins.className,
 };
 
 export function ThemeWrapper({ children }) {

@@ -64,7 +64,6 @@ export function AppearanceSettings({ user }) {
                     <SelectContent>
                       <SelectItem value="Inter">Inter</SelectItem>
                       <SelectItem value="Roboto">Roboto</SelectItem>
-                      <SelectItem value="Poppins">Poppins</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>
