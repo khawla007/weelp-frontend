@@ -59,9 +59,7 @@ const AiSection = () => {
           </div>
         </article>
 
-        <article
-          className={`${SHARED_CARD} motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100 md:aspect-[16/10]`}
-        >
+        <article className={`${SHARED_CARD} motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100 md:aspect-[16/10]`}>
           <div className="flex h-full min-h-[480px] flex-col-reverse md:min-h-0 md:flex-row">
             <div className="flex h-72 flex-1 border-t border-[#eaeaea] md:h-auto md:w-1/2 md:border-r md:border-t-0">
               <BuddyChat />

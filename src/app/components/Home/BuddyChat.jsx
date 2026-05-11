@@ -43,10 +43,7 @@ const BuddyChat = () => {
   return (
     <div className="flex h-full min-h-0 flex-col bg-white">
       <header className="flex items-center gap-3 border-b border-[#eaeaea] px-4 py-3">
-        <span
-          aria-hidden="true"
-          className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#588f7a] text-white"
-        >
+        <span aria-hidden="true" className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#588f7a] text-white">
           <Sparkles className="h-4 w-4" />
           <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500" />
         </span>
@@ -56,13 +53,7 @@ const BuddyChat = () => {
         </div>
       </header>
 
-      <div
-        ref={listRef}
-        role="log"
-        aria-live="polite"
-        aria-label="Conversation with Buddy"
-        className="flex-1 min-h-0 overflow-y-auto scroll-smooth px-4 py-4"
-      >
+      <div ref={listRef} role="log" aria-live="polite" aria-label="Conversation with Buddy" className="flex-1 min-h-0 overflow-y-auto scroll-smooth px-4 py-4">
         {isEmpty ? (
           <div className="flex h-full flex-col items-start justify-end gap-3">
             <p className="text-[13px] font-medium text-[#52525b]">Try a quick prompt:</p>
@@ -82,10 +73,7 @@ const BuddyChat = () => {
         ) : (
           <ul className="flex flex-col gap-2">
             {messages.map((message) => (
-              <li
-                key={message.id}
-                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
+              <li key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <span
                   className={
                     message.role === 'user'
@@ -110,10 +98,7 @@ const BuddyChat = () => {
         )}
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex items-end gap-2 border-t border-[#eaeaea] px-3 py-3"
-      >
+      <form onSubmit={handleSubmit} className="flex items-end gap-2 border-t border-[#eaeaea] px-3 py-3">
         <label htmlFor="buddy-chat-input" className="sr-only">
           Message Buddy
         </label>
