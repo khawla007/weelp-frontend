@@ -6,9 +6,13 @@ jest.mock('../../../../../../lib/services/activites', () => ({
   getAllFeaturedActivities: jest.fn(() => Promise.resolve([])),
 }));
 
-jest.mock('../../../../ui/CarouselShell', () => function CarouselShellMock() {
-  return null;
-});
+jest.mock(
+  '../../../../ui/CarouselShell',
+  () =>
+    function CarouselShellMock() {
+      return null;
+    },
+);
 
 describe('AiSection', () => {
   it('renders the four pen-canonical card titles', async () => {
