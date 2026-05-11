@@ -56,7 +56,7 @@ body {
 body {
   color: var(--background);
   background: var(--foreground);
-  font-family: var(--font-interTight) 'sans-serif ';
+  font-family: var(--font-interTight), 'Inter Tight', sans-serif;
 }
 
 @layer base {
