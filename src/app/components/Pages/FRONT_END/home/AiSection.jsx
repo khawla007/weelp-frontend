@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 import TravelBuddyMap from '@/app/components/Home/TravelBuddyMapClient';
+import BuddyChat from '@/app/components/Home/BuddyChat';
 
 const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_6px_rgba(0,0,0,0.05)] ring-1 ring-[#eaeaea]';
 
@@ -58,16 +59,23 @@ const AiSection = () => {
           </div>
         </article>
 
-        <article className={`${SHARED_CARD} group aspect-[16/10] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}>
-          <div className="relative h-full w-full">
-            <TravelBuddyMap />
-          </div>
-          <div
-            data-overlay
-            className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-0 bg-gradient-to-t from-black/65 via-black/35 to-transparent p-6 opacity-100 transition-[transform,opacity] duration-[420ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-y-full group-hover:opacity-0"
-          >
-            <h3 className="text-[18px] font-semibold text-white">Suggestions on Map</h3>
-            <p className="text-[16px] font-medium text-white/85">See your trip mapped out.</p>
+        <article
+          className={`${SHARED_CARD} motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100 md:aspect-[16/10]`}
+        >
+          <div className="flex h-full min-h-[480px] flex-col-reverse md:min-h-0 md:flex-row">
+            <div className="flex h-72 flex-1 border-t border-[#eaeaea] md:h-auto md:w-1/2 md:border-r md:border-t-0">
+              <BuddyChat />
+            </div>
+            <div className="group relative h-56 w-full overflow-hidden md:h-auto md:w-1/2 md:flex-1">
+              <TravelBuddyMap />
+              <div
+                data-overlay
+                className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-0 bg-gradient-to-t from-black/65 via-black/35 to-transparent p-6 opacity-100 transition-[transform,opacity] duration-[420ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-y-full group-hover:opacity-0"
+              >
+                <h3 className="text-[18px] font-semibold text-white">Suggestions on Map</h3>
+                <p className="text-[16px] font-medium text-white/85">See your trip mapped out.</p>
+              </div>
+            </div>
           </div>
         </article>
 
