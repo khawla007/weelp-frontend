@@ -12,7 +12,7 @@ const CityHeroBanner = ({ city }) => {
         <div className="relative flex-1 w-full lg:w-1/3 lg:pl-6 py-4 p-6">
           <BreadCrumb className="mb-4 text-[#71717a]" />
           <h2 className="text-xl md:text-2xl font-medium mb-4 capitalize text-[#18181b]">Things to do In</h2>
-          <h1 className="display text-[32px] sm:text-[40px] md:text-[48px] lg:text-[62px] font-semibold leading-[1.1] text-pretty mb-4 capitalize text-[#18181b]">{name}</h1>
+          <h1 className="section-opener leading-[1.1] text-pretty mb-4 capitalize">{name}</h1>
           <p
             className="text-base md:text-lg max-w-full md:max-w-[391px] leading-relaxed text-wrap text-[#71717a]"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500, lineHeight: 1.55 }}

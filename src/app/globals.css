@@ -59,13 +59,6 @@ body {
   font-family: var(--font-interTight) 'sans-serif ';
 }
 
-@font-face {
-  font-family: 'degular_demo';
-  src: url('/assets/fonts/degular.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -129,6 +122,15 @@ body {
     --weelp-city-tab-bg: #cfdbe533;
     --weelp-city-tab-active-bg: #cfdbe533;
     --weelp-city-tab-active-border: #cfdbe580;
+
+    /* Canonical text tokens — element binding source of truth.
+       See docs/frontend-design-correction/typography.md (Element binding). */
+    --ink: #18181b;
+    --copy: #52525b;
+    --label: #71717a;
+    --link-default: #588f7a;
+    --link-hover: #4d8069;
+    --link-visited: #4d8069;
   }
 
   .dark {
@@ -207,11 +209,10 @@ body {
     @apply border-border;
   }
 
-  /* Global heading layer — sourced from Designs/pencil-homepage.pen.
-     Inter Tight 600 across h1-h6 with tier sizes lifted from the pen file.
-     See docs/frontend-design-correction/typography.md for full tier reference. Tailwind
-     utilities still win on specificity, so a card or dashboard heading can
-     opt into a smaller size via `text-*` / `font-*` classes. */
+  /* Global element layer — sourced from Designs/pencil-homepage.pen and locked
+     by docs/frontend-design-correction/typography.md (Element binding table).
+     Every h1-h6, p, a, button below maps 1:1 to that table. Tailwind utilities
+     still win on specificity — callsites can opt out via `text-*` / `font-*`. */
   h1,
   h2,
   h3,
@@ -219,50 +220,103 @@ body {
   h5,
   h6 {
     font-family: var(--font-interTight), 'Inter Tight', sans-serif;
-    color: #18181b;
+    color: var(--ink);
+    font-weight: 600;
     letter-spacing: -0.005em;
   }
 
+  /* h1 → Hero tier 38px (clamp 28-40 on small screens) */
   h1 {
     font-size: clamp(1.75rem, 3.2vw, 2.375rem);
-    font-weight: 600;
-    line-height: 1.1;
+    line-height: 1.05;
     letter-spacing: -0.01em;
   }
 
+  /* h2 → Section heading tier 28px */
   h2 {
-    font-size: clamp(1.375rem, 2.6vw, 1.75rem);
-    font-weight: 600;
+    font-size: 1.75rem;
+    line-height: 1.1;
+  }
+
+  /* h3 → Sub-heading tier 24px */
+  h3 {
+    font-size: 1.5rem;
     line-height: 1.2;
   }
 
-  h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
+  /* h4 → Card title tier 18px */
+  h4 {
+    font-size: 1.125rem;
     line-height: 1.3;
   }
 
-  h4 {
-    font-size: 1.125rem;
-    font-weight: 600;
+  /* h5 → Body lead tier 16px / weight 600 */
+  h5 {
+    font-size: 1rem;
     line-height: 1.4;
   }
 
-  p,
-  a,
-  button {
-    font-family: var(--font-interTight), 'Inter Tight', sans-serif;
+  /* h6 → Body tier 14px / weight 600 */
+  h6 {
+    font-size: 0.875rem;
+    line-height: 1.4;
   }
 
-  /* Editorial accent — pen reserves Degular for decorative section labels
-     at 42-52px regular weight. Never use on hero h1 or section headings. */
-  .display {
-    font-family: 'degular_demo', 'Inter Tight', sans-serif;
-    font-size: clamp(2.25rem, 4.5vw, 3.25rem);
-    font-weight: 400;
+  /* .section-opener → Section opener tier 48px (clamp 32-48).
+     Applied alongside heading tag for editorial 48px treatment:
+     <h2 class="section-opener">Plan your Holiday.</h2>
+     Visuals only — does not change document outline. */
+  .section-opener {
+    font-size: clamp(2rem, 4vw, 3rem);
     line-height: 1.05;
-    letter-spacing: -0.005em;
-    color: #18181b;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    font-family: var(--font-interTight), 'Inter Tight', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--copy);
+  }
+
+  p.lead {
+    font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  small,
+  .label {
+    font-family: var(--font-inter), 'Inter', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--label);
+  }
+
+  a {
+    font-family: var(--font-interTight), 'Inter Tight', sans-serif;
+    font-weight: 500;
+    color: var(--link-default);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
+  }
+
+  a:visited {
+    color: var(--link-visited);
+  }
+
+  button {
+    font-family: var(--font-interTight), 'Inter Tight', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--ink);
   }
 
   /* Remove default browser styles from all input-like elements */
