@@ -26,7 +26,7 @@ const AboutValues = () => {
 
   return (
     <section className="container mx-auto px-4 py-[70px]">
-      <h2 className="mb-12 text-center text-[28px] text-[#18181b] md:text-[32px]">Our Values</h2>
+      <h2 className="mb-12 text-center text-[28px] text-[#18181b] md:text-[28px]">Our Values</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {values.map((value, index) => {
           const Icon = value.icon;

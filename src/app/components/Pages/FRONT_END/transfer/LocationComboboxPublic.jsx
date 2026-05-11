@@ -78,11 +78,11 @@ export default function LocationComboboxPublic({ value, onChange, placeholder = 
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                       <span className="truncate text-[#18181b]">{item.name}</span>
                       {item.type && (
-                        <Badge variant="secondary" className="shrink-0 text-[10px] capitalize">
+                        <Badge variant="secondary" className="shrink-0 text-[12px] capitalize">
                           {item.type}
                         </Badge>
                       )}
-                      {(item.city_name || item.country_name) && <span className="text-[11px] text-[#71717a] truncate">{[item.city_name, item.country_name].filter(Boolean).join(', ')}</span>}
+                      {(item.city_name || item.country_name) && <span className="text-[12px] text-[#71717a] truncate">{[item.city_name, item.country_name].filter(Boolean).join(', ')}</span>}
                     </div>
                   </CommandItem>
                 ))}

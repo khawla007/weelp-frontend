@@ -59,7 +59,7 @@ const AiSection = () => {
             <div className="flex w-full flex-col gap-3 lg:w-1/2">
               <span className="text-[14px] font-semibold uppercase tracking-[0.08em] text-[#588f7a]">{row.eyebrow}</span>
               <h3 className="text-[24px] font-semibold text-[#18181b] md:text-[28px]">{row.title}</h3>
-              <p className="max-w-[60ch] text-[16px] font-normal leading-[1.6] text-[#52525b] md:text-[17px]">{row.body}</p>
+              <p className="max-w-[60ch] text-[16px] font-normal leading-[1.6] text-[#52525b] md:text-[16px]">{row.body}</p>
             </div>
           </div>
         ))}

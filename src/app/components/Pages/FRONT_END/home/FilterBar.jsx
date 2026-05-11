@@ -224,7 +224,7 @@ export default function FilterBar() {
               <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border max-h-72 overflow-y-auto z-[70]">
                 {!hasTyped && (
                   <div className="px-4 pt-3 pb-2 border-b border-[#e4e4e7]">
-                    <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#52525b] mb-2">Popular this week</p>
+                    <p className="text-[12px] uppercase tracking-[0.08em] font-semibold text-[#52525b] mb-2">Popular this week</p>
                     <div className="flex flex-wrap gap-1.5">
                       <span className="text-[12px] text-[#52525b] mr-1 self-center">Try</span>
                       {exampleCities.map((city) => (
@@ -257,7 +257,7 @@ export default function FilterBar() {
                         <MapPin size={14} className="text-zinc-400 flex-shrink-0" />
                         <span>{loc.name}</span>
                       </div>
-                      <span className="text-[10px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded">{loc.type}</span>
+                      <span className="text-[12px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded">{loc.type}</span>
                     </div>
                   ))
                 ) : (
@@ -343,7 +343,7 @@ export default function FilterBar() {
             {/* Guests Dropdown */}
             {showHowMany && (
               <div onMouseLeave={() => setShowHowMany(false)} className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-4 z-[70] w-64">
-                <p className="text-[11px] text-[#52525b] mb-3 pb-2 border-b border-[#e4e4e7] leading-snug">Adults 13+, children 2 to 12, infants under 2.</p>
+                <p className="text-[12px] text-[#52525b] mb-3 pb-2 border-b border-[#e4e4e7] leading-snug">Adults 13+, children 2 to 12, infants under 2.</p>
                 {['adults', 'children', 'infants'].map((type) => (
                   <div key={type} className="flex justify-between items-center mb-3">
                     <div>
@@ -404,7 +404,7 @@ export default function FilterBar() {
                   className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-zinc-50 transition-colors border-b border-zinc-50 last:border-b-0 pr-10"
                 >
                   <span className="text-sm font-semibold text-[#18181b] truncate text-left">{item.title}</span>
-                  <span className="rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#588f7a]">{item.category}</span>
+                  <span className="rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[12px] font-semibold uppercase tracking-wider text-[#588f7a]">{item.category}</span>
                   <span className="text-sm font-medium text-[#71717a] text-right">{item.price || ''}</span>
                 </Link>
               ))}

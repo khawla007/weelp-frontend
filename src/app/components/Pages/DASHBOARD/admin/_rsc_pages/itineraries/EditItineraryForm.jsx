@@ -666,7 +666,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
             <span className="text-zinc-500">Transfers (base + extras)</span>
             <span className="font-semibold text-[#18181b]">{previewBreakdown.transfers.toFixed(2)}</span>
           </div>
-          <div className="text-[11px] text-zinc-400">Base subtotal. Per-person multiplication and discounts apply at checkout.</div>
+          <div className="text-[12px] text-zinc-400">Base subtotal. Per-person multiplication and discounts apply at checkout.</div>
         </div>
 
         {/* Days Repeater */}

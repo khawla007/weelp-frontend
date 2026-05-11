@@ -151,7 +151,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
           {activeTab === 'home' ? (
             <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center justify-between gap-2 bg-transparent border border-[#435a6742] rounded-[8px] px-4 py-2 text-[17px] font-medium text-[#435a67] outline-none min-w-[160px]">
+                <button className="flex items-center justify-between gap-2 bg-transparent border border-[#435a6742] rounded-[8px] px-4 py-2 text-[16px] font-medium text-[#435a67] outline-none min-w-[160px]">
                   {activeSortLabel}
                   <ChevronDown size={16} className="shrink-0" />
                 </button>
@@ -213,7 +213,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
         <div className="mt-4">
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center justify-between gap-2 bg-transparent border border-[#435a6742] rounded-[7.86px] px-4 py-2 text-[17px] font-medium text-[#435a67] outline-none min-w-[160px]">
+              <button className="flex items-center justify-between gap-2 bg-transparent border border-[#435a6742] rounded-[7.86px] px-4 py-2 text-[16px] font-medium text-[#435a67] outline-none min-w-[160px]">
                 {activeSourceLabel}
                 <ChevronDown size={16} className="shrink-0" />
               </button>

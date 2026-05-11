@@ -275,7 +275,7 @@ export default function ToursFilterBar() {
                       <MapPin size={14} className="text-zinc-400 flex-shrink-0" />
                       <span className="whitespace-nowrap">{city.name}</span>
                     </div>
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
+                    <span className="text-[12px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
                   </div>
                 ))
               ) : (
@@ -323,7 +323,7 @@ export default function ToursFilterBar() {
                       <MapPin size={14} className="text-zinc-400 flex-shrink-0" />
                       <span className="whitespace-nowrap">{city.name}</span>
                     </div>
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
+                    <span className="text-[12px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
                   </div>
                 ))
               ) : (
@@ -456,7 +456,7 @@ export default function ToursFilterBar() {
                   className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-zinc-50 transition-colors border-b border-zinc-50 last:border-b-0 pr-10"
                 >
                   <span className="text-sm font-semibold text-[#18181b] truncate text-left">{item.name || item.title}</span>
-                  <span className="rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#588f7a]">{item.type || 'item'}</span>
+                  <span className="rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[12px] font-semibold uppercase tracking-wider text-[#588f7a]">{item.type || 'item'}</span>
                   <span className="text-sm font-medium text-[#71717a] text-right">{item.price ? `$${item.price}` : ''}</span>
                 </NavigationLink>
               ))}

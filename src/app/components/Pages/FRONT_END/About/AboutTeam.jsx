@@ -19,7 +19,7 @@ const AboutTeam = () => {
 
   return (
     <section className="container mx-auto px-4 py-[70px]">
-      <h2 className="mb-12 text-center text-[28px] text-[#18181b] md:text-[32px]">Meet the Team</h2>
+      <h2 className="mb-12 text-center text-[28px] text-[#18181b] md:text-[28px]">Meet the Team</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {team.map((member, index) => (
           <div key={index} className="bg-white rounded-[24px] p-4 border border-[#e4e4e7] text-center transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)]">

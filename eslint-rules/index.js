@@ -284,6 +284,49 @@ const noSemanticGray = {
   },
 };
 
+/* 6. no-noncanonical-fontsize — typography.md tier scale
+ *    Allow only tier sizes in arbitrary text-[Npx] / text-[Nrem] classes.
+ *    Tiers (px): 12, 14, 16, 18, 20, 24, 28, 38, 48, 52. */
+const CANONICAL_FONT_SIZES_PX = new Set([12, 14, 16, 18, 20, 24, 28, 38, 48, 52]);
+const FONT_SIZE_PATTERN = /\btext-\[(\d+(?:\.\d+)?)(px|rem)\]/g;
+
+const noNoncanonicalFontsize = {
+  meta: {
+    type: 'problem',
+    docs: { description: 'Disallow arbitrary font sizes outside the typography.md tier scale' },
+    schema: [
+      {
+        type: 'object',
+        properties: { allowExtra: { type: 'array', items: { type: 'number' } } },
+        additionalProperties: false,
+      },
+    ],
+    messages: {
+      drift: 'Non-tier font size `{{cls}}`. Use a tier from typography.md (12/14/16/18/20/24/28/38/48/52 px) or a Tailwind preset (text-sm/text-base/text-xl).',
+    },
+  },
+  create(context) {
+    const opts = context.options[0] || {};
+    const extra = new Set(opts.allowExtra || []);
+    return {
+      JSXAttribute(attr) {
+        if (!attr.name || attr.name.name !== 'className') return;
+        const strings = collectClassStrings(attr.value);
+        for (const { value, node } of strings) {
+          let m;
+          FONT_SIZE_PATTERN.lastIndex = 0;
+          while ((m = FONT_SIZE_PATTERN.exec(value)) !== null) {
+            const raw = parseFloat(m[1]);
+            const px = m[2] === 'rem' ? raw * 16 : raw;
+            if (CANONICAL_FONT_SIZES_PX.has(px) || extra.has(px)) continue;
+            context.report({ node, messageId: 'drift', data: { cls: m[0] } });
+          }
+        }
+      },
+    };
+  },
+};
+
 export default {
   rules: {
     'no-noncanonical-hex': noNoncanonicalHex,
@@ -291,5 +334,6 @@ export default {
     'no-inline-heading-font': noInlineHeadingFont,
     'no-inline-style-hex': noInlineStyleHex,
     'no-semantic-gray': noSemanticGray,
+    'no-noncanonical-fontsize': noNoncanonicalFontsize,
   },
 };

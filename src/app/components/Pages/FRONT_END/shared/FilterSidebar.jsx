@@ -36,7 +36,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
       <div className="flex flex-col gap-6 md:gap-8 lg:gap-10">
         {/* Item Type */}
         <div>
-          <h3 className="text-base md:text-[17px] lg:text-[18px] text-[#18181b] mb-4" style={{ ...FONT, fontWeight: 500 }}>
+          <h3 className="text-base md:text-[16px] lg:text-[18px] text-[#18181b] mb-4" style={{ ...FONT, fontWeight: 500 }}>
             Item Type
           </h3>
           <div className={`flex flex-col gap-3 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
@@ -64,7 +64,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
 
         {/* Categories */}
         <div>
-          <h3 className="text-base md:text-[17px] lg:text-[18px] text-[#18181b] mb-4" style={{ ...FONT, fontWeight: 500 }}>
+          <h3 className="text-base md:text-[16px] lg:text-[18px] text-[#18181b] mb-4" style={{ ...FONT, fontWeight: 500 }}>
             Categories
           </h3>
           <div className="flex flex-col space-y-3 max-h-56 md:max-h-64 lg:max-h-72 overflow-auto">
@@ -99,7 +99,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
 
         {/* Price Range */}
         <div>
-          <h3 className="text-base md:text-[17px] lg:text-[18px] text-[#18181b] mb-4" style={{ ...FONT, fontWeight: 500 }}>
+          <h3 className="text-base md:text-[16px] lg:text-[18px] text-[#18181b] mb-4" style={{ ...FONT, fontWeight: 500 }}>
             Price
           </h3>
           <div className={disabled ? 'opacity-50 pointer-events-none' : ''}>
@@ -117,7 +117,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
 
         {/* Ratings */}
         <div>
-          <h3 className="text-base md:text-[17px] lg:text-[18px] text-[#18181b] mb-4" style={{ ...FONT, fontWeight: 500 }}>
+          <h3 className="text-base md:text-[16px] lg:text-[18px] text-[#18181b] mb-4" style={{ ...FONT, fontWeight: 500 }}>
             Ratings
           </h3>
           <div className={`flex flex-col gap-3 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>

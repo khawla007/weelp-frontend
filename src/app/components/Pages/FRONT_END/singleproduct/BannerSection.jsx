@@ -14,7 +14,7 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
         <div className="flex flex-col gap-2 pt-[70px]">
           <BreadCrumb className="mb-2" />
 
-          <h1 className="text-[#18181b] text-2xl lg:text-[40px] capitalize">{activityName ?? 'Melaka Wonderland Water Theme Park Ticket'}</h1>
+          <h1 className="text-[#18181b] text-2xl lg:text-[38px] capitalize">{activityName ?? 'Melaka Wonderland Water Theme Park Ticket'}</h1>
 
           {/* Stats Row + Save to Wishlist */}
           <div className="flex flex-wrap items-center justify-between pb-4">

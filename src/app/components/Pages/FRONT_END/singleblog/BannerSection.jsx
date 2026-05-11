@@ -15,9 +15,7 @@ const BannerSectionBlog = ({ title = '', excerpt = '', tags = [], media_gallery 
       <div className="w-full md:ps-28 md:pe-8 min-h-full flex flex-col justify-center">
         <div className="2xl:w-3/4 mx-auto">
           <div className="flex flex-col gap-4">
-            <h1 className="text-base sm:text-[52px] font-semibold leading-none first-letter:capitalize text-wrap">
-              {title || '32 Best Places and Tours to See Autumn Leaves'}
-            </h1>
+            <h1 className="text-base sm:text-[52px] font-semibold leading-none first-letter:capitalize text-wrap">{title || '32 Best Places and Tours to See Autumn Leaves'}</h1>
             <p className="text-[#435a67] font-medium text-sm sm:text-lg  text-wrap">
               {excerpt || 'You&apos;ll discover everything from whisky to Harry Potter, or even some bodysnatchers, in Scotland.'}
             </p>

@@ -12,7 +12,7 @@ const AboutStory = () => {
     <section className="container mx-auto px-4 py-[70px]">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
-          <h2 className="text-[28px] md:text-[32px] text-[#18181b] mb-6">Our Story</h2>
+          <h2 className="text-[28px] md:text-[28px] text-[#18181b] mb-6">Our Story</h2>
           <p className="text-base text-[#71717a] mb-4 max-w-[65ch]" style={bodyFont}>
             From a simple idea to a global platform, Weelp was born from a passion for travel and a desire to connect people with authentic experiences around the world.
           </p>

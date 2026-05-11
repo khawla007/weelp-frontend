@@ -68,6 +68,7 @@ const eslintConfig = [
       'weelp/no-inline-heading-font': 'error',
       'weelp/no-inline-style-hex': 'error',
       'weelp/no-semantic-gray': 'error',
+      'weelp/no-noncanonical-fontsize': 'error',
     },
   },
   // Primitive Baseline Exception (DESIGN.md §5): shadcn primitives keep
