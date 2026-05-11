@@ -3,7 +3,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { mockBuddyRespond } from '@/lib/buddy/mockResponder';
 
-const PRESETS = ['Weekend in Paris', '3 days in Tokyo', 'Romantic Rome'];
+const PRESETS = ['Weekend in Paris', '3 days in Tokyo', 'Iceland ring road'];
 
 const EMPTY_PAYLOAD = {
   markers: [],

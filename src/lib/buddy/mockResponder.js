@@ -1,26 +1,46 @@
-const PLACES = [
-  { match: 'paris', label: 'Paris', lat: 48.8566, lng: 2.3522 },
-  { match: 'tokyo', label: 'Tokyo', lat: 35.6762, lng: 139.6503 },
-  { match: 'rome', label: 'Rome', lat: 41.9028, lng: 12.4964 },
-];
+import { ITINERARIES } from './itineraries';
+
+const FALLBACK_REPLY =
+  "I don't have a canned trip for that yet — try Paris, Tokyo, Rome, NYC, Bali, Dubai, Iceland, Barcelona, Bangkok, or Cape Town.";
+
+const THINKING_MS = 600;
+
+function scoreItinerary(lower, itinerary) {
+  return itinerary.keywords.reduce((score, kw) => (lower.includes(kw) ? score + 1 : score), 0);
+}
+
+function pickItinerary(text) {
+  const lower = text.toLowerCase();
+  let best = null;
+  let bestScore = 0;
+  for (const itinerary of ITINERARIES) {
+    const score = scoreItinerary(lower, itinerary);
+    if (score > bestScore) {
+      best = itinerary;
+      bestScore = score;
+    }
+  }
+  return bestScore > 0 ? best : null;
+}
 
 export async function mockBuddyRespond(text) {
-  const lower = text.toLowerCase();
-  const hit = PLACES.find((place) => lower.includes(place.match));
+  await new Promise((resolve) => setTimeout(resolve, THINKING_MS));
 
-  if (hit) {
+  const match = pickItinerary(text);
+
+  if (match) {
     return {
-      reply: `Heading to ${hit.label}! Marked it on the map.`,
-      intent: 'show_place',
-      markers: [{ label: hit.label, lat: hit.lat, lng: hit.lng }],
-      route: null,
+      reply: match.reply,
+      intent: 'show_route',
+      markers: match.markers,
+      route: match.route,
       fit_bounds: true,
     };
   }
 
   return {
-    reply: `Got it — let me think about: ${text}`,
-    intent: 'chitchat',
+    reply: FALLBACK_REPLY,
+    intent: 'clarify',
     markers: [],
     route: null,
     fit_bounds: false,
