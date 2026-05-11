@@ -1,16 +1,25 @@
 'use client';
 
-import Image from 'next/image';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import BuddyChat from './BuddyChat';
 import TravelBuddyMap from './TravelBuddyMapClient';
+import CarouselShell from '@/app/components/ui/CarouselShell';
+import ItemCard from '@/app/components/ui/item-card';
 import useBuddyChat from '@/hooks/useBuddyChat';
-import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
 const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_6px_rgba(0,0,0,0.05)] ring-1 ring-[#eaeaea]';
 
-const TravelBuddyWidget = () => {
+const BUDDY_SLIDER_BREAKPOINTS = {
+  0: { slidesPerView: 2, spaceBetween: 12 },
+};
+
+const NAV_BUTTON_CLASS =
+  'flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-all duration-200 hover:border-[#588f7a] hover:text-[#588f7a] hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40';
+
+const TravelBuddyWidget = ({ items = [] }) => {
   const { messages, isThinking, sendMessage, presets, lastPayload } = useBuddyChat();
   const isInitial = messages.length === 0;
+  const hasItems = items.length > 0;
 
   return (
     <>
@@ -19,39 +28,33 @@ const TravelBuddyWidget = () => {
           <BuddyChat messages={messages} isThinking={isThinking} sendMessage={sendMessage} presets={presets} />
         </div>
 
-        <div className="h-px w-full bg-[#eaeaea]" />
+        {hasItems && (
+          <>
+            <div className="h-px w-full bg-[#eaeaea]" />
 
-        <div className="flex flex-col gap-5 p-3 md:p-6">
-          <div className="rounded-lg bg-zinc-50 px-4 py-3 text-[14px] font-medium text-[#18181b]">@Buddy! Suggests best off-beat places for goa!</div>
-          <button type="button" className="inline-flex w-fit items-center justify-center rounded-lg bg-[#588f7a] px-5 py-2.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#4d8069]">
-            Start Setup
-          </button>
-        </div>
+            <div className="flex flex-col gap-3 p-3 md:p-6">
+              <div className="flex items-center justify-between">
+                <h3 className="text-[14px] font-semibold text-[#18181b]">Featured activities</h3>
+                <div className="flex items-center gap-2">
+                  <button type="button" className={`buddy-activities-prev ${NAV_BUTTON_CLASS}`} aria-label="Previous featured activities">
+                    <ChevronLeft className="size-4" />
+                  </button>
+                  <button type="button" className={`buddy-activities-next ${NAV_BUTTON_CLASS}`} aria-label="Next featured activities">
+                    <ChevronRight className="size-4" />
+                  </button>
+                </div>
+              </div>
 
-        <div className="relative mt-auto grid aspect-[4/3] w-full grid-cols-2 gap-2 p-4">
-          <div className="relative overflow-hidden rounded-lg">
-            <Image
-              src="/assets/images/AiCityLiberty.png"
-              alt="Featured destination — New York"
-              fill
-              sizes="(max-width: 1024px) 50vw, 16vw"
-              placeholder="blur"
-              blurDataURL={IMAGE_BLUR_DATA_URL}
-              className="object-cover"
-            />
-          </div>
-          <div className="relative overflow-hidden rounded-lg">
-            <Image
-              src="/assets/images/AiCityBigBen.png"
-              alt="Featured destination — London"
-              fill
-              sizes="(max-width: 1024px) 50vw, 16vw"
-              placeholder="blur"
-              blurDataURL={IMAGE_BLUR_DATA_URL}
-              className="object-cover"
-            />
-          </div>
-        </div>
+              <CarouselShell
+                items={items}
+                navigationPrefix="buddy-activities"
+                breakpoints={BUDDY_SLIDER_BREAKPOINTS}
+                slideClassName="!h-auto"
+                renderSlide={(card) => <ItemCard {...card} variant="full" />}
+              />
+            </div>
+          </>
+        )}
       </article>
 
       <article className={`${SHARED_CARD} group motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100 md:aspect-[16/10]`}>

@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 import TravelBuddyWidget from '@/app/components/Home/TravelBuddyWidget';
+import { getAllFeaturedActivities } from '@/lib/services/activites';
+import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 
 const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_6px_rgba(0,0,0,0.05)] ring-1 ring-[#eaeaea]';
 
@@ -11,13 +13,17 @@ const CardCopy = ({ title, body, className = '' }) => (
   </div>
 );
 
-const AiSection = () => {
+const AiSection = async () => {
+  const featuredRes = await getAllFeaturedActivities();
+  const featured = Array.isArray(featuredRes) ? featuredRes : (featuredRes?.data ?? []);
+  const buddyItems = featured.map((a) => mapProductToItemCard(a));
+
   return (
     <section className="container-page flex flex-col items-center gap-12 pb-24 md:pb-28 lg:pb-32">
       <h2 className="text-center text-[28px] font-medium text-[#18181b]">Your AI Travel Buddy</h2>
 
       <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
-        <TravelBuddyWidget />
+        <TravelBuddyWidget items={buddyItems} />
 
         <article className={`${SHARED_CARD} group aspect-[16/10] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}>
           <Image
