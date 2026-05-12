@@ -21,8 +21,7 @@ const HeroSection = () => {
           aria-hidden="true"
           className="hero-rise pointer-events-none absolute left-1/2 top-[38%] -z-10 h-[222px] w-[538px] max-w-[90vw] -translate-x-1/2 -translate-y-1/2 rounded-[150px] blur-[30px]"
           style={{
-            background:
-              'radial-gradient(ellipse at center, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.89) 34%, rgba(255,255,255,0.50) 72%, rgba(255,255,255,0) 100%)',
+            background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.89) 34%, rgba(255,255,255,0.50) 72%, rgba(255,255,255,0) 100%)',
             '--hero-rise-delay': '40ms',
           }}
         />
