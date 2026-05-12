@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ChevronDown, Globe, Headphones, MapPin, Search, ShoppingCart, Smartphone } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { useSession } from 'next-auth/react';
 import ModalForm from '../Modals/ModalForm';
@@ -73,10 +74,27 @@ const DesktopMenu = ({ stickyHeader }) => {
   );
 };
 
+const DESTINATION_ACTIVE_PREFIXES = ['/cities', '/destinations', '/countries', '/regions'];
+
 const NavMenuDesktop = () => {
   const [megaOpen, setMegaOpen] = useState(false);
+  const pathname = usePathname();
   const closeTimer = useRef(null);
   const openTimer = useRef(null);
+
+  const isHrefActive = (href) => {
+    if (!href || !pathname) return false;
+    if (href === '/') return pathname === '/';
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+  const isMegaActive = pathname ? DESTINATION_ACTIVE_PREFIXES.some((p) => pathname.startsWith(p)) : false;
+
+  const linkClass = (active) =>
+    `group/nav relative flex items-center gap-2 whitespace-nowrap text-[15px] font-medium transition-colors duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#18181b]/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm xl:text-[16px] hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 ${
+      active ? 'text-[#18181b]/70 visited:text-[#18181b]/70' : 'text-black visited:text-black'
+    }`;
+
+  const indicator = () => null;
 
   const scheduleOpen = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -101,31 +119,42 @@ const NavMenuDesktop = () => {
       <ul className="flex items-center gap-5 xl:gap-9">
         {HEADER_NAV_ITEMS.map((nav, index) => {
           if (nav.hasMegaMenu) {
+            const active = megaOpen || isMegaActive;
             return (
               <li key={nav.title} onMouseEnter={scheduleOpen} onMouseLeave={scheduleClose}>
                 <button
                   type="button"
-                  className="flex items-center gap-2 whitespace-nowrap text-[15px] font-medium text-[#18181b]/70 transition hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm focus-visible:outline-none focus-visible:text-[#18181b] xl:text-[16px]"
+                  className={linkClass(active)}
                   onClick={() => setMegaOpen((v) => !v)}
                   onFocus={scheduleOpen}
                   onBlur={scheduleClose}
                   aria-expanded={megaOpen}
                   aria-haspopup="menu"
                 >
-                  {index === 0 && <MapPin className="size-[15px] text-[#18181b]/70" strokeWidth={1.24} />}
+                  {index === 0 && (
+                    <MapPin
+                      className={`size-[15px] transition-colors duration-200 ease-out group-hover/nav:text-[#18181b]/70 ${active ? 'text-[#18181b]/70' : 'text-black'}`}
+                      strokeWidth={1.24}
+                    />
+                  )}
                   {nav.title}
+                  {indicator(active)}
                 </button>
               </li>
             );
           }
+          const active = isHrefActive(nav.href);
           return (
             <li key={nav.title}>
-              <Link
-                className="flex items-center gap-2 whitespace-nowrap text-[15px] font-medium text-[#18181b]/70 transition hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm xl:text-[16px]"
-                href={nav.href}
-              >
-                {index === 0 && <MapPin className="size-[15px] text-[#18181b]/70" strokeWidth={1.24} />}
+              <Link className={linkClass(active)} href={nav.href} aria-current={active ? 'page' : undefined}>
+                {index === 0 && (
+                  <MapPin
+                    className={`size-[15px] transition-colors duration-200 ease-out group-hover/nav:text-[#18181b]/70 ${active ? 'text-[#18181b]/70' : 'text-black'}`}
+                    strokeWidth={1.24}
+                  />
+                )}
                 {nav.title}
+                {indicator(active)}
               </Link>
             </li>
           );
