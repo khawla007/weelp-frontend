@@ -22,7 +22,7 @@ const AboutTeam = () => {
       <h2 className="mb-12 text-center text-[28px] text-[#18181b] md:text-[28px]">Meet the Team</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {team.map((member, index) => (
-          <div key={index} className="bg-white rounded-[24px] p-4 border border-[#e4e4e7] text-center transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)]">
+          <div key={index} className="bg-white rounded-[24px] p-4 border border-[#e4e4e7] text-center transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)]">
             <div className="relative w-full aspect-square mb-4 rounded-[16px] bg-[#f4f4f5] overflow-hidden">
               {!imageErrors[index] ? (
                 <Image src={member.image} alt={member.name} fill className="object-cover" onError={() => handleImageError(index)} />

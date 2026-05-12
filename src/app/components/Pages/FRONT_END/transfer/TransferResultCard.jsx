@@ -70,7 +70,7 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
   };
 
   return (
-    <Card className="p-0 overflow-hidden border border-[#e4e4e7] transition-shadow duration-200 hover:shadow-[0_14px_30px_rgba(24,24,27,0.1)]">
+    <Card className="p-0 overflow-hidden border border-[#e4e4e7] transition-shadow duration-200 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)]">
       <div className="flex flex-row items-stretch">
         <div className="flex-[3] flex flex-col gap-2 py-4 px-8">
           <span className="text-xs text-[#71717a] font-medium">Private Transfer</span>

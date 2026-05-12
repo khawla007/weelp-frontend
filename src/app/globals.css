@@ -111,7 +111,7 @@ body {
     --weelp-card-padding: 20px;
     --weelp-card-image-height: 200px;
     --weelp-card-border: #f4f4f5;
-    --weelp-card-hover-shadow: 0 14px 30px rgba(24, 24, 27, 0.1);
+    --weelp-card-hover-shadow: 0 1px 2px rgba(24, 24, 27, 0.06), 0 4px 12px rgba(24, 24, 27, 0.08);
     --weelp-card-badge-bg: #f4f4f5;
     --weelp-card-badge-text: #52525b;
     --weelp-card-category-text: #16a34a;
@@ -304,7 +304,6 @@ body {
 
   a:hover {
     color: var(--link-hover);
-    text-decoration: underline;
   }
 
   a:visited {
@@ -452,6 +451,15 @@ body {
   --swiper-navigation-size: 14px !important;
   --swiper-navigation-color: #588f7a !important;
   /* [#588f7a] */
+}
+
+/* Reserve a buffer inside the Swiper overflow box so card hover shadows
+   are not clipped at the slide boundary. Negative margin keeps layout
+   unchanged. Without this, the bottom of `--weelp-card-hover-shadow`
+   gets sliced into a straight line by the Swiper's default overflow:hidden. */
+.carousel-shell-wrapper .swiper {
+  overflow: clip;
+  overflow-clip-margin: 24px 0;
 }
 
 /* Mobile-only swipe progress dots for CarouselShell sliders.

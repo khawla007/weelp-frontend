@@ -209,7 +209,7 @@ Surfaces are flat at rest. Depth is a response to intent, not a decoration. The 
 
 ### Shadow Vocabulary
 
-- **Card Hover** (`box-shadow: 0 14px 30px rgba(24, 24, 27, 0.1)`): Applied on `:hover` to clickable cards (itineraries, packages, activities). Already exposed as `--weelp-card-hover-shadow`.
+- **Card Hover** (`box-shadow: 0 1px 2px rgba(24, 24, 27, 0.06), 0 4px 12px rgba(24, 24, 27, 0.08)`): Applied on `:hover` to clickable cards (itineraries, packages, activities). Two-layer stack tuned for compact vertical extent (~16px below) so the shadow renders fully inside Swiper carousels and overflow-bounded sections without pushing layout or requiring large compensating buffers. Proximity layer at 6% opacity defines near-edge contact; ambient layer at 8% with 3:1 blur-to-offset keeps the falloff soft past card corners. Exposed as `--weelp-card-hover-shadow`.
 - **Floating Control** (`box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1)`): Carousel arrows, sticky CTA pills. The Swiper navigation buttons.
 - **Floating Control / Accent State** (`box-shadow: 4px 4px 15px rgba(88, 143, 122, 0.3)`): Same control, hover state — the shadow tints sage to confirm the action.
 
