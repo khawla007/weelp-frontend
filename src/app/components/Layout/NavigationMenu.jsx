@@ -122,20 +122,9 @@ const NavMenuDesktop = () => {
             const active = megaOpen || isMegaActive;
             return (
               <li key={nav.title} onMouseEnter={scheduleOpen} onMouseLeave={scheduleClose}>
-                <button
-                  type="button"
-                  className={linkClass(active)}
-                  onClick={() => setMegaOpen((v) => !v)}
-                  onFocus={scheduleOpen}
-                  onBlur={scheduleClose}
-                  aria-expanded={megaOpen}
-                  aria-haspopup="menu"
-                >
+                <button type="button" className={linkClass(active)} onClick={() => setMegaOpen((v) => !v)} onFocus={scheduleOpen} onBlur={scheduleClose} aria-expanded={megaOpen} aria-haspopup="menu">
                   {index === 0 && (
-                    <MapPin
-                      className={`size-[15px] transition-colors duration-200 ease-out group-hover/nav:text-[#18181b]/70 ${active ? 'text-[#18181b]/70' : 'text-black'}`}
-                      strokeWidth={1.24}
-                    />
+                    <MapPin className={`size-[15px] transition-colors duration-200 ease-out group-hover/nav:text-[#18181b]/70 ${active ? 'text-[#18181b]/70' : 'text-black'}`} strokeWidth={1.24} />
                   )}
                   {nav.title}
                   {indicator(active)}
@@ -148,10 +137,7 @@ const NavMenuDesktop = () => {
             <li key={nav.title}>
               <Link className={linkClass(active)} href={nav.href} aria-current={active ? 'page' : undefined}>
                 {index === 0 && (
-                  <MapPin
-                    className={`size-[15px] transition-colors duration-200 ease-out group-hover/nav:text-[#18181b]/70 ${active ? 'text-[#18181b]/70' : 'text-black'}`}
-                    strokeWidth={1.24}
-                  />
+                  <MapPin className={`size-[15px] transition-colors duration-200 ease-out group-hover/nav:text-[#18181b]/70 ${active ? 'text-[#18181b]/70' : 'text-black'}`} strokeWidth={1.24} />
                 )}
                 {nav.title}
                 {indicator(active)}
