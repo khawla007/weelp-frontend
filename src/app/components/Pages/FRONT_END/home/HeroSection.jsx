@@ -26,8 +26,7 @@ const HeroSection = () => {
             aria-hidden="true"
             className="pointer-events-none absolute left-1/2 top-1/2 -z-10 -ml-[269px] -mt-[111px] h-[222px] w-[538px] max-w-[90vw] rounded-[150px] blur-[30px]"
             style={{
-              background:
-                'radial-gradient(ellipse at center, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.89) 34%, rgba(255,255,255,0.50) 72%, rgba(255,255,255,0) 100%)',
+              background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.89) 34%, rgba(255,255,255,0.50) 72%, rgba(255,255,255,0) 100%)',
             }}
           />
           <h1 className="hero-rise mb-2.5 text-[28px] sm:text-[38px] md:text-[48px] leading-[1.05] text-[#18181b]" style={{ '--hero-rise-delay': '80ms' }}>
