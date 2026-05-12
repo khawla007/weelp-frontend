@@ -159,8 +159,17 @@ const TravelBuddyMap = ({ markers = [], route = null, fitBounds = false, showPre
       bounds.extend([lng, lat]);
     });
 
-    if (!bounds.isEmpty()) {
+    if (bounds.isEmpty()) return;
+
+    const framePreview = () => {
+      map.resize();
       map.fitBounds(bounds, { padding: 48, duration: 0, maxZoom: 3 });
+    };
+
+    if (map.loaded()) {
+      framePreview();
+    } else {
+      map.once('load', framePreview);
     }
   }, [showPreview, markers.length]);
 
