@@ -54,6 +54,15 @@ on the dunes" beats "Experience the magic of the desert".
   heading. The dashboard register inherits this ban.
 - **TripAdvisor-style review walls.** No green-owl badge stack, no
   star-rating clutter, no density-as-credibility.
+- **AI-assistant cliché.** The Travel Buddy is a concierge, not a
+  ChatGPT clone. No purple-to-blue chat bubbles, no robot avatars, no
+  markdown walls in responses, no "As an AI..." hedging, no emoji
+  garnish on assistant turns. The assistant speaks in the same
+  editorial voice as the marketing copy.
+- **Map-first OTA aesthetic** (Google Travel, Kayak, Hotels.com map
+  view). Maps support discovery; they do not replace the editorial
+  surface. No full-bleed map with floating result cards stamped over
+  it as the primary layout.
 
 ## Design Principles
 
@@ -73,6 +82,12 @@ on the dunes" beats "Experience the magic of the desert".
    and creator/customer dashboards use the same type scale, the same
    spacing rhythm, the same green. The dashboard is quieter, but it
    is unmistakably the same product.
+6. **AI speaks the brand.** The Travel Buddy and any future
+   assistant surface follow the same voice rules as marketing copy:
+   second-person, warm but exact, no emoji, no markdown headers, no
+   bullet walls. The assistant is a concierge with taste, not a
+   generic chatbot. Sage signals the assistant just as it signals the
+   primary CTA — sparingly, with intent.
 
 ## Accessibility & Inclusion
 

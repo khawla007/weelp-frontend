@@ -3,11 +3,12 @@ name: Weelp
 description: A curated travel-booking marketplace for Dubai- and Europe-bound travelers.
 colors:
   sage-deep: '#588f7a'
+  sage-hover: '#4d8069'
   sage-tint: '#b5d8cb'
   sage-wash: '#f2f7f5'
   ink: '#18181b'
-  copy: '#71717a'
-  label: '#52525b'
+  copy: '#52525b'
+  label: '#71717a'
   surface: '#ffffff'
   page: '#f8faf9'
   soft: '#f4f4f5'
@@ -134,9 +135,9 @@ A restrained palette built around a sage-green accent and a warm-leaning neutral
 
 ### Neutral
 
-- **Ink** (`#18181b`): Primary text. Headlines, body when emphasis is needed.
-- **Copy** (`#71717a`): Body text default. Long-form reading.
-- **Label** (`#52525b`): Form labels, eyebrow text, secondary metadata.
+- **Ink** (`#18181b`): Primary text. Headlines, body when emphasis is needed. Bound globally as `--ink`.
+- **Copy** (`#52525b`): Body text default. Long-form reading. Bound globally as `--copy`. Note: this is the canonical assignment as of Phase 12; prior DESIGN.md revisions named the lighter `#71717a` as Copy — superseded.
+- **Label** (`#71717a`): Form labels, eyebrow text, secondary metadata. Bound globally as `--label`. Note: this is the canonical assignment as of Phase 12; prior DESIGN.md revisions named the darker `#52525b` as Label — superseded.
 - **Steel** (`#435a67`): Slate-leaning gray for icon strokes and city-page tab text — carries a hint of Mediterranean sky.
 - **Surface** (`#ffffff`): Card and input fills.
 - **Page** (`#f8faf9`): Page background — a near-white with the faintest sage tint, ties the brand into the canvas without coloring it.
@@ -265,6 +266,17 @@ The success-state palette on `Alert` and `Toast` was migrated in Phase 12c from 
 
 - 5px Sage Deep bar fixed to the top of the viewport during route transitions, with a soft sage glow at the leading edge. The only place sage is allowed to occupy a horizontal stripe at full width — and only because it disappears in <500ms.
 
+### Travel Buddy (AI Concierge)
+
+The Buddy is a chat + map widget on the homepage (`src/app/components/Home/TravelBuddyWidget.jsx`, `BuddyChat.jsx`, `TravelBuddyMap.jsx`) backed by the live Anthropic API route at `src/app/api/buddy/route.js`. It is a concierge, not a chatbot — every visual and copy decision must reinforce that distinction.
+
+- **Surface shape:** Two-pane composition — chat column on one side, map preview on the other. Both panes share the canonical card corner radius (24px) and surface white background. No floating chat bubble, no slide-in drawer, no avatar tile.
+- **Voice:** Second-person, warm but exact, identical to marketing copy. No "As an AI...", no emoji garnish, no markdown headers, no bullet-wall responses. If the model wants to enumerate, render the enumeration as a map pin, not a list of `*` bullets.
+- **Color:** Sage Deep (`#588f7a`) is the assistant's single signal — used on the send-button CTA, the active pin, and the "thinking" indicator. Never paint the assistant turn bubble sage; never use sage as the chat background. The One-Voice Rule still applies.
+- **Map preview:** MapLibre GL with OSM tiles. Pin markers in Sage Deep at rest, Sage Hover on focus. `fitBounds` runs over `PREVIEW_PINS` on mount with padding 48, duration 0, maxZoom 3.
+- **Loading state:** A single short verb in Copy color ("Thinking", "Looking that up") — not a typing-indicator dot cluster, not an animated avatar.
+- **Don't:** Render assistant turns as gradient bubbles, robot avatars, ChatGPT-style markdown blocks, purple-to-blue accent strokes, or any visual that reads as "generic AI assistant." The PRODUCT.md anti-reference applies in full.
+
 ### Accessibility
 
 **Contrast matrix on `#ffffff`** (WCAG 2.2 AA needs 4.5:1 body / 3:1 large):
@@ -272,12 +284,12 @@ The success-state palette on `Alert` and `Toast` was migrated in Phase 12c from 
 | Token     | Hex       | Ratio  | Verdict                                  |
 | --------- | --------- | ------ | ---------------------------------------- |
 | Ink       | `#18181b` | 16.0:1 | AAA all sizes                            |
-| Label     | `#52525b` | 7.4:1  | AAA all sizes                            |
-| Copy      | `#71717a` | 4.6:1  | AA body                                  |
+| Copy      | `#52525b` | 7.4:1  | AAA all sizes                            |
+| Label     | `#71717a` | 4.6:1  | AA body                                  |
 | Steel     | `#435a67` | 8.2:1  | AAA all sizes                            |
 | Sage Deep | `#588f7a` | 3.8:1  | **AA large only** (≥18px or ≥14px / 700) |
 
-The Sage Deep ratio is the operative constraint. Sage on white below 18px / 14px-bold is a WCAG failure; escalate to `#52525b` for the resting state and use sage on hover (or move sage to a non-text role — icon, underline, border). Phase 12d migrated two `text-xs text-[#588f7a]` action links on `NotificationWidget.jsx` (Mark all read, View all) to this ink-default + sage-hover pattern.
+The Sage Deep ratio is the operative constraint. Sage on white below 18px / 14px-bold is a WCAG failure; escalate to `#52525b` (Copy) for the resting state and use sage on hover (or move sage to a non-text role — icon, underline, border). Phase 12d migrated two `text-xs text-[#588f7a]` action links on `NotificationWidget.jsx` (Mark all read, View all) to this ink-default + sage-hover pattern.
 
 **Focus visibility.** `globals.css` ships a global `:focus-visible` outline at `rgba(88, 143, 122, 0.45)` 2px + 2px offset on every `<input>`/`<textarea>`/`<select>`/`<button>`. Component-level Tailwind utilities (e.g. `focus-visible:ring-2 focus-visible:ring-[#588f7a]/40`) layer on top for non-default surfaces — never strip the global outline.
 
@@ -307,6 +319,9 @@ The Sage Deep ratio is the operative constraint. Sage on white below 18px / 14px
 - **Don't** use Degular on a heading. The Reserved-Accent Rule guards it for editorial decoration only.
 - **Don't** add Plus Jakarta Sans back. It is retired from the type system.
 - **Don't** convey information through color alone. Discount, availability, and price-tier states must also use shape, weight, or text.
+- **Don't** style the Travel Buddy as a generic AI assistant. No purple-to-blue chat bubbles, no robot avatars, no ChatGPT-style markdown walls, no "thinking…" dot-cluster animations, no `As an AI...` hedging. The PRODUCT.md anti-reference is enforced in code.
+- **Don't** ship a map-first city or homepage layout in the Google Travel / Kayak idiom — full-bleed map with floating result cards stamped over it. Maps support discovery; the editorial surface leads.
+- **Don't** reintroduce the retired home-chrome tokens (`--weelp-home-accent #f59e0b`, `--weelp-home-brand #123347`, `--weelp-home-muted #6a7d88`, `--weelp-card-category-text #16a34a`). They have zero references in `src/` and represent pre-Phase-12 drift; treat as deprecated.
 
 ## 7. Layout & Container
 
@@ -333,3 +348,5 @@ Page-level wrappers should use this single class instead of hardcoding `max-w-*`
 **Edge-to-Edge Exception.** Full-bleed image bands, gradient hero backgrounds, and sticky action bars span `w-full` on the outer `<section>`. The inner content panel inside that band uses `container-page` so the framing stays canonical even when the band itself runs corner-to-corner.
 
 **Dashboard Surface Exception.** Settings layouts inside `/dashboard/admin/settings` and `/dashboard/customer/settings` retain `max-w-6xl` because dashboard reading width is a tighter ergonomic target than the public marketing rail. New dashboard work that lives outside settings should default to `container-page`.
+
+**Pen-Canonical Bleed Exception.** `tailwind.config.js` exposes `maxWidth.pen: 1480px` (Tailwind class `max-w-pen`). Reserved for full-bleed editorial media sections that need the wider pen-derived rail — typically hero image bands, the WanderersBanner pen layout, and the Travel Buddy two-pane preview. Page-level type and CTA chrome still constrain to `container-page` (1280px) inside the wider band.
