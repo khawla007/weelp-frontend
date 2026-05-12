@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 
 import HeroSection from '../HeroSection';
@@ -16,14 +15,14 @@ describe('HeroSection', () => {
     const { container } = render(<HeroSection />);
 
     const section = container.querySelector('section');
-    expect(section.style.backgroundImage).toContain('hero_illustration.png');
+    expect(section.style.backgroundImage).toContain('hero_redesigned_bg.jpeg');
   });
 
   it('renders the homepage heading text from the pen design', () => {
     const { getByText } = render(<HeroSection />);
 
-    expect(getByText('Plan and Book')).toBeInTheDocument();
-    expect(getByText('The best experiences around you.')).toBeInTheDocument();
+    expect(getByText('Find your next escape')).toBeInTheDocument();
+    expect(getByText('Beach stays, marina views, and easy city plans in one place.')).toBeInTheDocument();
   });
 
   it('allows search dropdowns to extend below the hero without being clipped', () => {
@@ -45,15 +44,14 @@ describe('HeroSection', () => {
 
     const subtitle = container.querySelector('p');
     expect(subtitle).toHaveClass('hero-rise');
-    expect(subtitle.getAttribute('style')).toContain('--hero-rise-delay: 120ms');
+    expect(subtitle.getAttribute('style')).toContain('--hero-rise-delay: 160ms');
   });
 
   it('wraps FilterBar in an inline-block span with hero-rise and 240ms delay', () => {
     const { container } = render(<HeroSection />);
 
-    const wrapper = container.querySelector('span.hero-rise');
+    const wrapper = container.querySelector('span.hero-rise.inline-block');
     expect(wrapper).not.toBeNull();
-    expect(wrapper).toHaveClass('inline-block');
     expect(wrapper.getAttribute('style')).toContain('--hero-rise-delay: 240ms');
   });
 });
