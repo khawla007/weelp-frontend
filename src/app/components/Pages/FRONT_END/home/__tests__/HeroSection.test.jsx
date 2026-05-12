@@ -32,4 +32,28 @@ describe('HeroSection', () => {
     const heroSection = container.querySelector('section');
     expect(heroSection).not.toHaveClass('overflow-hidden');
   });
+
+  it('applies hero-rise to the heading', () => {
+    const { container } = render(<HeroSection />);
+
+    const heading = container.querySelector('h1');
+    expect(heading).toHaveClass('hero-rise');
+  });
+
+  it('applies hero-rise with 120ms delay to the subtitle', () => {
+    const { container } = render(<HeroSection />);
+
+    const subtitle = container.querySelector('p');
+    expect(subtitle).toHaveClass('hero-rise');
+    expect(subtitle.getAttribute('style')).toContain('--hero-rise-delay: 120ms');
+  });
+
+  it('wraps FilterBar in an inline-block span with hero-rise and 240ms delay', () => {
+    const { container } = render(<HeroSection />);
+
+    const wrapper = container.querySelector('span.hero-rise');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveClass('inline-block');
+    expect(wrapper.getAttribute('style')).toContain('--hero-rise-delay: 240ms');
+  });
 });
