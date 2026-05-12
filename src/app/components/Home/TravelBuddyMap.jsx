@@ -143,6 +143,8 @@ const TravelBuddyMap = ({ markers = [], route = null, fitBounds = false, showPre
 
     if (!showPreview || markers.length > 0) return;
 
+    const bounds = new maplibregl.LngLatBounds();
+
     PREVIEW_PINS.forEach(({ label, lat, lng }) => {
       const marker = new maplibregl.Marker({ element: buildPreviewMarkerElement() }).setLngLat([lng, lat]);
       const popup = buildPopup(`${label} — Try asking about these`);
@@ -154,7 +156,12 @@ const TravelBuddyMap = ({ markers = [], route = null, fitBounds = false, showPre
       }
       marker.addTo(map);
       previewMarkersRef.current.push(marker);
+      bounds.extend([lng, lat]);
     });
+
+    if (!bounds.isEmpty()) {
+      map.fitBounds(bounds, { padding: 48, duration: 0, maxZoom: 3 });
+    }
   }, [showPreview, markers.length]);
 
   useEffect(() => {
