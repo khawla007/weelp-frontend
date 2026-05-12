@@ -27,7 +27,7 @@ export default function BlogSection({ blogs = [], title = 'Your Guide', navigati
   if (!items.length) return null;
 
   return (
-    <section className={`container-page flex flex-col gap-6 md:gap-8 ${className}`}>
+    <section className={`container-page flex flex-col gap-6 md:gap-8 pb-10 lg:pb-24 ${className}`}>
       <div className="flex items-center justify-between">
         <SectionHeader title={title} />
         <div className="hidden sm:flex items-center gap-2">

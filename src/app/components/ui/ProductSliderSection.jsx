@@ -29,7 +29,7 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
   if (!items.length) return null;
 
   return (
-    <section className={`container-page flex flex-col gap-6 md:gap-8 pt-14 pb-10 md:pt-20 md:pb-14 lg:pt-24 lg:pb-16 ${className}`}>
+    <section className={`container-page flex flex-col gap-6 md:gap-8 pb-10 lg:pb-24 ${className}`}>
       <div className="flex items-center justify-between">
         <SectionHeader title={title} />
 

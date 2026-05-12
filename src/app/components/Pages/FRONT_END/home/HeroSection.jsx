@@ -5,7 +5,7 @@ import FilterBar from './FilterBar';
 const HeroSection = () => {
   return (
     <section
-      className="relative w-full flex items-center justify-center"
+      className="relative w-full flex items-center justify-center mb-10 lg:mb-24"
       style={{
         backgroundImage: 'url(/assets/images/hero_illustration.png)',
         backgroundSize: 'cover',

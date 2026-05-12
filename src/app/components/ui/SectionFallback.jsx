@@ -26,7 +26,7 @@ export default function SectionFallback({ eyebrow, message, pivotHref, pivotLabe
   };
 
   return (
-    <section className={`container-page flex flex-col gap-6 ${className}`}>
+    <section className={`container-page flex flex-col gap-6 pb-10 lg:pb-24 ${className}`}>
       {eyebrow && <span className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#52525b]">{eyebrow}</span>}
 
       <div className="flex flex-col gap-5 border-t border-[#eaeaea] pt-8">

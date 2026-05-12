@@ -18,7 +18,7 @@ export default function BrowseDestinationsSection({
   title = 'Top Destinations',
   subtitleMode = 'count',
   navigationPrefix = 'browse-destinations',
-  className = 'pb-20 md:pb-28 lg:pb-32',
+  className = '',
 }) {
   const items = cities.map((c) => ({
     id: c.id,
@@ -32,7 +32,7 @@ export default function BrowseDestinationsSection({
   if (!items.length) return null;
 
   return (
-    <section className={`container-page flex flex-col gap-8 ${className}`}>
+    <section className={`container-page flex flex-col gap-8 pb-10 lg:pb-24 ${className}`}>
       <div className="flex items-center justify-between">
         <SectionHeader title={title} />
         <div className="flex items-center gap-2">

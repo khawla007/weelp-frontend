@@ -35,7 +35,7 @@ const WeelpRecommendations = async () => {
 
   return (
     <div className="w-full bg-[#f8faf9]">
-      <div className="w-full px-4 py-10 lg:px-[60px]">
+      <div className="w-full px-4 lg:px-[60px]">
         <h3 className="text-[20px] text-[#18181b] mb-4">Weelp Recommendations</h3>
         <div className="mb-4 border-t border-[#e4e4e7]" />
         <div className="grid grid-cols-2 gap-x-6 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
