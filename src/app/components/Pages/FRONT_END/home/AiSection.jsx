@@ -54,10 +54,7 @@ const AiSection = async () => {
             className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%] rounded-full bg-[radial-gradient(circle_at_32%_30%,rgba(255,255,255,0.45)_0%,rgba(255,255,255,0)_60%)] shadow-[inset_0_0_36px_6px_rgba(255,255,255,0.55),inset_0_0_70px_12px_rgba(0,0,0,0.05)]"
           />
           {/* Orbital halo + ping — ambient motion around the sphere */}
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%]"
-          >
+          <span aria-hidden="true" className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%]">
             <span className="absolute inset-[2%] animate-spin rounded-full border border-dashed border-[#588f7a]/25 [animation-duration:60s] [animation-timing-function:linear] motion-reduce:animate-none" />
             <span className="absolute inset-[14%] animate-spin rounded-full border border-dotted border-[#588f7a]/15 [animation-direction:reverse] [animation-duration:90s] [animation-timing-function:linear] motion-reduce:animate-none" />
             <span className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 motion-reduce:hidden">
@@ -65,10 +62,7 @@ const AiSection = async () => {
             </span>
           </span>
           {/* Left-edge white fade so the globe blends into the text area without a dark overlay */}
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-white via-white/85 to-transparent"
-          />
+          <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-white via-white/85 to-transparent" />
           {/* Text — bottom-left inside the card, slides down + fades on hover */}
           <div
             data-overlay
