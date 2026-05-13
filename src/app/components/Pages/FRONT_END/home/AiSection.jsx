@@ -38,14 +38,14 @@ const AiSection = async () => {
         </article>
 
         <article className={`${SHARED_CARD} group aspect-[32/10] lg:col-span-2 motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}>
-          {/* Rotating dotted Earth — right-anchored half-globe, tilted axis (-23.5°) + vertical wobble keyframe */}
+          {/* Rotating dotted Earth — diagonal drift (left-upper → right-lower), tilted -12° */}
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%] overflow-hidden rounded-full bg-white will-change-transform [mask-image:radial-gradient(circle,black_68%,transparent_99%)] [-webkit-mask-image:radial-gradient(circle,black_68%,transparent_99%)]"
+            className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%] overflow-hidden rounded-full bg-white will-change-transform [mask-image:radial-gradient(circle,black_94%,transparent_100%)] [-webkit-mask-image:radial-gradient(circle,black_94%,transparent_100%)]"
           >
             <span
               aria-hidden="true"
-              className="absolute inset-[-25%] bg-[url(/assets/images/dotted-world.svg)] [background-size:200%_100%] [background-repeat:repeat] [animation:globe-axis-rotate_40s_linear_infinite] [transform:rotate(-23.5deg)] motion-reduce:animate-none"
+              className="absolute inset-[-25%] bg-[url(/assets/images/dotted-world.svg)] [background-size:200%_200%] [background-repeat:repeat] [animation:globe-axis-rotate_45s_linear_infinite] [transform:rotate(-12deg)] motion-reduce:animate-none"
             />
           </span>
           {/* Sphere shading — highlight + limb darkening for 3D depth */}

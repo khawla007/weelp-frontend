@@ -884,11 +884,8 @@ body {
   0% {
     background-position: 0% 0%;
   }
-  50% {
-    background-position: 100% 8%;
-  }
   100% {
-    background-position: 200% 0%;
+    background-position: 200% 200%;
   }
 }
 
