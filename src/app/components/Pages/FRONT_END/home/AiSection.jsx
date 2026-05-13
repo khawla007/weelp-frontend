@@ -48,7 +48,7 @@ const AiSection = async () => {
             width={724}
             height={687}
             sizes="(max-width: 1024px) 60vw, 480px"
-            className="pointer-events-none absolute -bottom-6 right-[-40px] aspect-square h-[110%] w-auto select-none object-contain"
+            className="pointer-events-none absolute -bottom-[100px] right-0 h-auto w-auto select-none"
           />
           {/* Left-edge white fade so the globe blends into the text area without a dark overlay */}
           <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-white via-white/85 to-transparent" />
