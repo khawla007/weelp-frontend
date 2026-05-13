@@ -56,7 +56,7 @@ const AiSection = async () => {
           {/* Orbital halo + ping — ambient motion around the sphere */}
           <span aria-hidden="true" className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%]">
             <span className="absolute inset-[2%] animate-spin rounded-full border border-dashed border-[#588f7a]/25 [animation-duration:60s] [animation-timing-function:linear] motion-reduce:animate-none" />
-            <span className="absolute inset-[14%] animate-spin rounded-full border border-dotted border-[#588f7a]/15 [animation-direction:reverse] [animation-duration:90s] [animation-timing-function:linear] motion-reduce:animate-none" />
+            <span className="absolute inset-[6%] animate-spin rounded-full border border-dotted border-[#588f7a]/15 [animation-direction:reverse] [animation-duration:90s] [animation-timing-function:linear] motion-reduce:animate-none" />
             <span className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 motion-reduce:hidden">
               <span className="absolute inset-0 animate-ping rounded-full bg-[#588f7a]/30 [animation-duration:2400ms]" />
             </span>
