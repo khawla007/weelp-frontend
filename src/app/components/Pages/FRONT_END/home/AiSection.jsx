@@ -41,17 +41,22 @@ const AiSection = async () => {
           {/* Rotating dotted Earth — diagonal drift (left-upper → right-lower), tilted -12° */}
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%] overflow-hidden rounded-full bg-white will-change-transform [mask-image:radial-gradient(circle,black_94%,transparent_100%)] [-webkit-mask-image:radial-gradient(circle,black_94%,transparent_100%)]"
+            className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%] overflow-hidden rounded-full bg-white will-change-transform [mask-image:radial-gradient(circle_closest-side,black_86%,transparent_94%)] [-webkit-mask-image:radial-gradient(circle_closest-side,black_86%,transparent_94%)]"
           >
             <span
               aria-hidden="true"
               className="absolute inset-[-25%] bg-[url(/assets/images/dotted-world.svg)] [background-size:200%_200%] [background-repeat:repeat] [animation:globe-axis-rotate_45s_linear_infinite] [transform:rotate(-12deg)] motion-reduce:animate-none"
             />
           </span>
-          {/* Sphere shading — highlight + limb darkening for 3D depth */}
+          {/* Sphere shading — top-left specular highlight (3D depth) */}
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%] rounded-full bg-[radial-gradient(circle_at_32%_30%,rgba(255,255,255,0.45)_0%,rgba(255,255,255,0)_60%)] shadow-[inset_0_0_36px_6px_rgba(255,255,255,0.55),inset_0_0_70px_12px_rgba(0,0,0,0.05)]"
+            className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%] rounded-full bg-[radial-gradient(circle_at_28%_24%,rgba(255,255,255,0.72)_0%,rgba(255,255,255,0)_48%)]"
+          />
+          {/* Sphere shading — bottom-right terminator + limb darkening (sphere illusion) */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%] rounded-full bg-[radial-gradient(circle_at_76%_82%,rgba(15,32,42,0.22)_0%,rgba(0,0,0,0)_55%)] shadow-[inset_0_0_60px_14px_rgba(15,30,42,0.18),inset_0_0_24px_4px_rgba(255,255,255,0.55)]"
           />
           {/* Orbital halo + ping — ambient motion around the sphere */}
           <span aria-hidden="true" className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%]">
