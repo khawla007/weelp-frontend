@@ -38,34 +38,16 @@ const AiSection = async () => {
         </article>
 
         <article className={`${SHARED_CARD} group aspect-[32/10] lg:col-span-2 motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}>
-          {/* Rotating dotted Earth — diagonal drift (left-upper → right-lower), tilted -12° */}
-          <span
+          {/* Dotted Earth — matches tours-experiences hero globe (Group5.png) */}
+          <Image
+            src="/assets/Group5.png"
+            alt=""
             aria-hidden="true"
-            className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%] overflow-hidden rounded-full bg-white will-change-transform [mask-image:radial-gradient(circle_closest-side,black_86%,transparent_94%)] [-webkit-mask-image:radial-gradient(circle_closest-side,black_86%,transparent_94%)]"
-          >
-            <span
-              aria-hidden="true"
-              className="absolute inset-[-25%] bg-[url(/assets/images/dotted-world.svg)] [background-size:200%_200%] [background-repeat:repeat] [animation:globe-axis-rotate_45s_linear_infinite] [transform:rotate(-12deg)] motion-reduce:animate-none"
-            />
-          </span>
-          {/* Sphere shading — top-left specular highlight (3D depth) */}
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%] rounded-full bg-[radial-gradient(circle_at_28%_24%,rgba(255,255,255,0.72)_0%,rgba(255,255,255,0)_48%)]"
+            width={724}
+            height={687}
+            sizes="(max-width: 1024px) 60vw, 540px"
+            className="pointer-events-none absolute right-[-40px] top-[8%] h-[240%] w-auto select-none [animation:globe-float_8s_ease-in-out_infinite] motion-reduce:animate-none"
           />
-          {/* Sphere shading — bottom-right terminator + limb darkening (sphere illusion) */}
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%] rounded-full bg-[radial-gradient(circle_at_76%_82%,rgba(15,32,42,0.22)_0%,rgba(0,0,0,0)_55%)] shadow-[inset_0_0_60px_14px_rgba(15,30,42,0.18),inset_0_0_24px_4px_rgba(255,255,255,0.55)]"
-          />
-          {/* Orbital halo + ping — ambient motion around the sphere */}
-          <span aria-hidden="true" className="pointer-events-none absolute right-[-40px] top-[8%] aspect-square h-[240%]">
-            <span className="absolute inset-[2%] animate-spin rounded-full border border-dashed border-[#588f7a]/25 [animation-duration:60s] [animation-timing-function:linear] motion-reduce:animate-none" />
-            <span className="absolute inset-[6%] animate-spin rounded-full border border-dotted border-[#588f7a]/15 [animation-direction:reverse] [animation-duration:90s] [animation-timing-function:linear] motion-reduce:animate-none" />
-            <span className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 motion-reduce:hidden">
-              <span className="absolute inset-0 animate-ping rounded-full bg-[#588f7a]/30 [animation-duration:2400ms]" />
-            </span>
-          </span>
           {/* Left-edge white fade so the globe blends into the text area without a dark overlay */}
           <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-white via-white/85 to-transparent" />
           {/* Text — bottom-left inside the card, slides down + fades on hover */}
