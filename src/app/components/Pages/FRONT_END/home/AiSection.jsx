@@ -37,20 +37,17 @@ const AiSection = async () => {
           </div>
         </article>
 
-        <article className={`${SHARED_CARD} group aspect-[32/10] lg:col-span-2 motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}>
-          {/* Dotted Earth — matches tours-experiences hero globe (Group5.png) */}
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute right-[-20px] top-[-10%] h-[170%] [animation:globe-float_5s_ease-in-out_infinite] motion-reduce:animate-none"
-          >
+        <article className={`${SHARED_CARD} group aspect-[32/10] lg:col-span-2 lg:aspect-auto lg:min-h-[440px] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}>
+          {/* Dotted Earth — matches tours-experiences hero globe (Group5.png), rotating like a globe */}
+          <span aria-hidden="true" className="pointer-events-none absolute right-[-40px] top-1/2 aspect-square h-[110%] -translate-y-1/2 motion-reduce:animate-none">
             <Image
               src="/assets/Group5.png"
               alt=""
               aria-hidden="true"
               width={724}
               height={687}
-              sizes="(max-width: 1024px) 40vw, 420px"
-              className="h-full w-auto select-none"
+              sizes="(max-width: 1024px) 60vw, 480px"
+              className="h-full w-full select-none object-contain [animation:globe-spin_60s_linear_infinite] motion-reduce:animate-none"
             />
           </span>
           {/* Left-edge white fade so the globe blends into the text area without a dark overlay */}
