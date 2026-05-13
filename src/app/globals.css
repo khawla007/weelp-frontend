@@ -883,10 +883,10 @@ body {
 @keyframes globe-float {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0) rotate(0deg);
   }
   50% {
-    transform: translateY(-6px);
+    transform: translate3d(0, -14px, 0) rotate(-1.5deg);
   }
 }
 

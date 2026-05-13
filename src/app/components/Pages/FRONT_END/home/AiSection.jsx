@@ -39,15 +39,20 @@ const AiSection = async () => {
 
         <article className={`${SHARED_CARD} group aspect-[32/10] lg:col-span-2 motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}>
           {/* Dotted Earth — matches tours-experiences hero globe (Group5.png) */}
-          <Image
-            src="/assets/Group5.png"
-            alt=""
+          <span
             aria-hidden="true"
-            width={724}
-            height={687}
-            sizes="(max-width: 1024px) 60vw, 540px"
-            className="pointer-events-none absolute right-[-40px] top-[8%] h-[240%] w-auto select-none [animation:globe-float_8s_ease-in-out_infinite] motion-reduce:animate-none"
-          />
+            className="pointer-events-none absolute right-[-20px] top-[-10%] h-[170%] [animation:globe-float_5s_ease-in-out_infinite] motion-reduce:animate-none"
+          >
+            <Image
+              src="/assets/Group5.png"
+              alt=""
+              aria-hidden="true"
+              width={724}
+              height={687}
+              sizes="(max-width: 1024px) 40vw, 420px"
+              className="h-full w-auto select-none"
+            />
+          </span>
           {/* Left-edge white fade so the globe blends into the text area without a dark overlay */}
           <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-white via-white/85 to-transparent" />
           {/* Text — bottom-left inside the card, slides down + fades on hover */}
