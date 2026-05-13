@@ -37,19 +37,19 @@ const AiSection = async () => {
           </div>
         </article>
 
-        <article className={`${SHARED_CARD} group aspect-[32/10] lg:col-span-2 lg:aspect-auto lg:min-h-[440px] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}>
-          {/* Dotted Earth — matches tours-experiences hero globe (Group5.png), rotating like a globe */}
-          <span aria-hidden="true" className="pointer-events-none absolute right-[-40px] top-1/2 aspect-square h-[110%] -translate-y-1/2 motion-reduce:animate-none">
-            <Image
-              src="/assets/Group5.png"
-              alt=""
-              aria-hidden="true"
-              width={724}
-              height={687}
-              sizes="(max-width: 1024px) 60vw, 480px"
-              className="h-full w-full select-none object-contain [animation:globe-spin_60s_linear_infinite] motion-reduce:animate-none"
-            />
-          </span>
+        <article
+          className={`${SHARED_CARD} group aspect-[32/10] lg:col-span-2 lg:aspect-auto lg:min-h-[440px] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}
+        >
+          {/* Dotted globe — bottom-anchored. Static PNG today; swap to rotating asset when delivered. */}
+          <Image
+            src="/assets/Group5.png"
+            alt=""
+            aria-hidden="true"
+            width={724}
+            height={687}
+            sizes="(max-width: 1024px) 60vw, 480px"
+            className="pointer-events-none absolute -bottom-6 right-[-40px] aspect-square h-[110%] w-auto select-none object-contain"
+          />
           {/* Left-edge white fade so the globe blends into the text area without a dark overlay */}
           <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-white via-white/85 to-transparent" />
           {/* Text — bottom-left inside the card, slides down + fades on hover */}
