@@ -59,7 +59,7 @@ const PARTICLE_OPTIONS = {
   },
 };
 
-const Sparkles = ({ className = '' }) => {
+const GlobeSparkles = ({ className = '' }) => {
   const [ParticlesComponent, setParticlesComponent] = useState(null);
 
   useEffect(() => {
@@ -98,4 +98,4 @@ const Sparkles = ({ className = '' }) => {
   );
 };
 
-export default Sparkles;
+export default GlobeSparkles;

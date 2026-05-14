@@ -39,6 +39,7 @@ describe('AiSection', () => {
     const globe = container.querySelector('[data-personalised-cobe-globe]');
 
     expect(stage).toHaveClass('absolute', 'inset-0', 'overflow-hidden', 'bg-white');
+    expect(stage).toHaveAttribute('data-animated-globe');
     expect(container.querySelector('[data-personalised-sparkles]')).toBeInTheDocument();
     expect(container.querySelector('[data-personalised-left-sparkles]')).toBeInTheDocument();
     expect(shell).toHaveClass('bottom-[-86px]', 'right-[-18px]', 'size-[507px]', 'md:size-[611px]', 'lg:size-[702px]');
