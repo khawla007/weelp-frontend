@@ -18,7 +18,7 @@ const PARTICLE_OPTIONS = {
   detectRetina: true,
   particles: {
     color: {
-      value: ['#ffffff', '#8ec5ff', '#60a5fa'],
+      value: ['#558e7b', '#6fa996', '#8fc2b2'],
     },
     move: {
       direction: 'none',
@@ -43,7 +43,7 @@ const PARTICLE_OPTIONS = {
         speed: 0.7,
         sync: false,
       },
-      value: { min: 0.15, max: 0.85 },
+      value: { min: 0.28, max: 0.9 },
     },
     shape: {
       type: 'circle',

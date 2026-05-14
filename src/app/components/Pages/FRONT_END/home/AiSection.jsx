@@ -44,15 +44,10 @@ const AiSection = async () => {
         >
           {/* Dotted globe — bottom-anchored and clipped by the card. */}
           <PersonalisedGlobe />
-          {/* Left-edge dark fade keeps the text readable without washing out the globe. */}
-          <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black via-black/70 to-transparent" />
           {/* Text — bottom-left inside the card, slides down + fades on hover */}
-          <div
-            data-overlay
-            className="pointer-events-none absolute bottom-0 left-0 translate-y-0 p-4 opacity-100 transition-[transform,opacity] duration-[420ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-y-full group-hover:opacity-0 md:p-6"
-          >
-            <h3 className="text-[18px] font-semibold text-white">Personalised for you</h3>
-            <p className="text-[16px] font-medium text-white/85">Tailored recommendations.</p>
+          <div data-overlay className="pointer-events-none absolute bottom-0 left-0 z-10 p-4 opacity-100 md:p-6">
+            <h3 className="text-[18px] font-semibold text-black">Personalised for you</h3>
+            <p className="text-[16px] font-medium text-black/70">Tailored recommendations.</p>
           </div>
         </article>
       </div>

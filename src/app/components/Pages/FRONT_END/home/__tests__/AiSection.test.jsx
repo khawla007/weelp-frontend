@@ -38,8 +38,9 @@ describe('AiSection', () => {
     const shell = container.querySelector('[data-personalised-cobe-shell]');
     const globe = container.querySelector('[data-personalised-cobe-globe]');
 
-    expect(stage).toHaveClass('absolute', 'inset-0', 'overflow-hidden', 'bg-[#020817]');
+    expect(stage).toHaveClass('absolute', 'inset-0', 'overflow-hidden', 'bg-white');
     expect(container.querySelector('[data-personalised-sparkles]')).toBeInTheDocument();
+    expect(container.querySelector('[data-personalised-left-sparkles]')).toBeInTheDocument();
     expect(shell).toHaveClass('bottom-[-86px]', 'right-[-18px]', 'size-[390px]', 'md:size-[470px]', 'lg:size-[540px]');
     expect(globe).toHaveClass('personalised-cobe-globe', 'size-full');
     expect(container.querySelector('[data-personalised-globe-loading]')).not.toBeInTheDocument();
@@ -47,11 +48,11 @@ describe('AiSection', () => {
     expect(container.querySelector('[data-personalised-globe-fallback]')).not.toBeInTheDocument();
   });
 
-  it('uses white copy on the dark personalised globe card', async () => {
+  it('uses black copy on the light personalised globe card', async () => {
     const ui = await AiSection();
     const { getByText } = render(ui);
 
-    expect(getByText('Personalised for you')).toHaveClass('text-white');
-    expect(getByText('Tailored recommendations.')).toHaveClass('text-white/85');
+    expect(getByText('Personalised for you')).toHaveClass('text-black');
+    expect(getByText('Tailored recommendations.')).toHaveClass('text-black/70');
   });
 });

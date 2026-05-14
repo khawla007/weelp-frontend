@@ -33,12 +33,12 @@ const PersonalisedGlobe = () => {
           height: CANVAS_SIZE,
           phi,
           theta: 0.25,
-          dark: 1,
-          diffuse: 1.2,
+          dark: 0,
+          diffuse: 1.35,
           mapSamples: 40000,
-          mapBrightness: 6,
-          mapBaseBrightness: 0,
-          baseColor: [0.4, 0.6509, 1],
+          mapBrightness: 2.4,
+          mapBaseBrightness: 0.015,
+          baseColor: [0.98, 0.99, 1],
           markerColor: [1, 0, 0],
           glowColor: [0.2745, 0.5765, 0.898],
           scale: 1.1,
@@ -76,8 +76,9 @@ const PersonalisedGlobe = () => {
   }, []);
 
   return (
-    <span data-personalised-globe-stage aria-hidden="true" className="pointer-events-none absolute inset-0 block overflow-hidden bg-[#020817] select-none">
+    <span data-personalised-globe-stage aria-hidden="true" className="pointer-events-none absolute inset-0 block overflow-hidden bg-white select-none">
       <Sparkles className="absolute inset-0 z-[1]" />
+      <span data-personalised-left-sparkles className="personalised-left-sparkles" />
       <span data-personalised-cobe-shell className="pointer-events-none absolute bottom-[-86px] right-[-18px] z-[3] size-[390px] md:size-[470px] lg:size-[540px]">
         <canvas data-personalised-cobe-globe ref={canvasRef} width={CANVAS_SIZE} height={CANVAS_SIZE} className="personalised-cobe-globe size-full" />
       </span>
