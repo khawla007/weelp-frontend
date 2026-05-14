@@ -41,7 +41,7 @@ describe('AiSection', () => {
     expect(stage).toHaveClass('absolute', 'inset-0', 'overflow-hidden', 'bg-white');
     expect(container.querySelector('[data-personalised-sparkles]')).toBeInTheDocument();
     expect(container.querySelector('[data-personalised-left-sparkles]')).toBeInTheDocument();
-    expect(shell).toHaveClass('bottom-[-86px]', 'right-[-18px]', 'size-[390px]', 'md:size-[470px]', 'lg:size-[540px]');
+    expect(shell).toHaveClass('bottom-[-86px]', 'right-[-18px]', 'size-[507px]', 'md:size-[611px]', 'lg:size-[702px]');
     expect(globe).toHaveClass('personalised-cobe-globe', 'size-full');
     expect(container.querySelector('[data-personalised-globe-loading]')).not.toBeInTheDocument();
     expect(container.querySelector('[data-personalised-globe-map-overlay]')).not.toBeInTheDocument();
