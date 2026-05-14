@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import Accordion from '@/app/components/Faq';
 import TransferSearchForm from '@/app/components/Pages/FRONT_END/transfer/TransferSearchForm';
 import TransferResultsDropdown from '@/app/components/Pages/FRONT_END/transfer/TransferResultsDropdown';
 import ReviewSlider from '@/app/components/sliders/ReviewSlider';
+import AnimatedGlobe from '@/app/components/ui/AnimatedGlobe';
 import { faqItems } from '@/app/Data/ShopData';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 
@@ -66,14 +66,14 @@ const TransfersPage = () => {
 
   return (
     <>
-      <section className="relative min-h-[320px] sm:min-h-[520px] flex justify-center bg-[#f8faf9] p-6 pt-10 sm:pt-16">
-        <div className="max-w-3xl w-full flex flex-col items-center gap-4 relative z-10">
+      <section className="relative z-50 min-h-[320px] sm:min-h-[420px] flex justify-center items-center bg-[#f8faf9] p-6">
+        <div className="w-full max-w-xl sm:max-w-3xl flex flex-col items-center gap-2 relative z-[60]">
           <h1 className="text-xl sm:text-5xl font-semibold text-[#18181b] text-center">Book Your Taxi</h1>
-          <p className="text-sm sm:text-lg font-medium text-[#435a67] text-center">
+          <p className="max-w-xl text-sm sm:text-lg font-medium text-[#435a67] text-center">
             You&apos;ll discover everything from whisky to Harry Potter, or even some bodysnatchers, in Scotland&apos;s captivating capital.
           </p>
 
-          <div className="mt-4 w-full">
+          <div className="mt-2 w-full">
             <TransferSearchForm
               onResults={setResults}
               onLoadingChange={setLoading}
@@ -89,7 +89,15 @@ const TransfersPage = () => {
           </div>
         </div>
 
-        <Image className="hidden 2xl:block absolute -top-4 right-0 scale-90 pointer-events-none" src="/assets/Group5.png" alt="" width={500} height={300} />
+        <div data-transfers-globe-background className="hidden 2xl:block absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          <AnimatedGlobe
+            activationMediaQuery="(min-width: 1536px)"
+            stageClassName="bg-transparent"
+            shellClassName="bottom-[-180px] right-[-120px] z-[3] size-[760px] translate-x-0 translate-y-[40%] 2xl:size-[880px]"
+            showLeftSparkles={false}
+            showVignette={false}
+          />
+        </div>
       </section>
 
       <section className="relative">
