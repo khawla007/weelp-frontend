@@ -84,9 +84,11 @@ const TransfersPage = () => {
             />
           </div>
 
-          <div className="w-full mx-auto md:w-[735px] mt-4">
-            <TransferResultsDropdown open={open} loading={loading} transfers={results} onSelect={handleSelect} onClose={() => setOpen(false)} pickupAt={meta?.pickupAt} passengers={meta} />
-          </div>
+          {open ? (
+            <div data-transfer-results-slot className="w-full mx-auto md:w-[735px] mt-4">
+              <TransferResultsDropdown open={open} loading={loading} transfers={results} onSelect={handleSelect} onClose={() => setOpen(false)} pickupAt={meta?.pickupAt} passengers={meta} />
+            </div>
+          ) : null}
         </div>
 
         <div data-transfers-globe-background className="hidden 2xl:block absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">

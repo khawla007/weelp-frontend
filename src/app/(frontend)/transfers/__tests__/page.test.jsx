@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import path from 'path';
 
 const srcPath = (...segments) => path.join(process.cwd(), 'src', ...segments);
@@ -9,7 +9,13 @@ const mockComponent = (testId) =>
 
 jest.doMock(srcPath('app/components/Pages/FRONT_END/transfer/TransferSearchForm.jsx'), () => ({
   __esModule: true,
-  default: mockComponent('transfer-search-form'),
+  default: function TransferSearchFormMock({ onSubmitted }) {
+    return (
+      <button type="button" data-testid="transfer-search-form" onClick={() => onSubmitted?.({ pickupAt: '2026-05-15', adults: 1 })}>
+        Search transfers
+      </button>
+    );
+  },
 }));
 
 jest.doMock(srcPath('app/components/Pages/FRONT_END/transfer/TransferResultsDropdown.jsx'), () => ({
@@ -82,5 +88,17 @@ describe('TransfersPage', () => {
     expect(container.querySelector('[data-personalised-cobe-globe]')).toBeInTheDocument();
     expect(container.querySelector('[data-personalised-sparkles]')).not.toBeInTheDocument();
     expect(container.querySelector('img[src="/assets/Group5.png"]')).not.toBeInTheDocument();
+    expect(container.querySelector('[data-transfer-results-slot]')).not.toBeInTheDocument();
+    expect(container.querySelector('[data-testid="transfer-results-dropdown"]')).not.toBeInTheDocument();
+  });
+
+  it('renders the results dropdown slot after transfer search submits', () => {
+    const TransfersPage = require('../page').default;
+    const { container, getByTestId } = render(<TransfersPage />);
+
+    fireEvent.click(getByTestId('transfer-search-form'));
+
+    expect(container.querySelector('[data-transfer-results-slot]')).toHaveClass('w-full', 'mx-auto', 'md:w-[735px]', 'mt-4');
+    expect(getByTestId('transfer-results-dropdown')).toBeInTheDocument();
   });
 });
