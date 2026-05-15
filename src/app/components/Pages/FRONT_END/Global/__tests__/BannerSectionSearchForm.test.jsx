@@ -24,10 +24,7 @@ describe('BannerSectionSearchForm', () => {
     const BannerSectionSearchForm = require('../BannerSectionSearchForm').default;
 
     const { container, getByText, getByTestId } = render(
-      <BannerSectionSearchForm
-        title="Explore Creators"
-        description="Discover travel experiences shared by creators. Find inspiration and book your next adventure."
-      />,
+      <BannerSectionSearchForm title="Explore Creators" description="Discover travel experiences shared by creators. Find inspiration and book your next adventure." />,
     );
 
     expect(getByText('Explore Creators')).toBeInTheDocument();
