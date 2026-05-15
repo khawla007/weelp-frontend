@@ -20,7 +20,7 @@ const bgStyle = {
 // Review Section City Page
 export const ReviewSectionCity = ({ cityData, reviews = [] }) => {
   return (
-    <section className="flex flex-wrap">
+    <section className="container-page flex flex-wrap pb-10 lg:pb-24">
       {/* if values exist inoobjects */}
       {cityData?.location_details && Object.keys(cityData.location_details).length > 0 && (
         <div className="w-full xl:w-1/3 bg-[#f4f4f5]" style={bgStyle}>

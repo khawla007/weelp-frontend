@@ -4,7 +4,7 @@ import { Card, CardTitle } from '@/components/ui/card';
 const CitySection = ({ data }) => {
   if (data && data.length > 0) {
     return (
-      <section className="container mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 px-4 md:px-6 pt-6 md:pt-10 lg:pt-12">
+      <section className="container-page grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 pb-10 lg:pb-24">
         {data &&
           data.length > 0 &&
           data.slice(0, 6).map(({ name, icon: Icon }, index) => (

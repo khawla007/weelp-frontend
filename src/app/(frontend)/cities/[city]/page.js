@@ -4,7 +4,6 @@ import CityHeroBanner from '@/app/components/Pages/FRONT_END/city/CityHeroBanner
 import CitySection from '@/app/components/Pages/FRONT_END/Global/CitySection';
 import { whiteCardData } from '@/app/Data/ShopData';
 import { getAllBlogs } from '@/lib/services/blogs';
-import BreakSection from '@/app/components/BreakSection';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import SharedToursSection from '@/app/components/Pages/FRONT_END/shared/SharedToursSection';
 import { notFound } from 'next/navigation';
@@ -77,23 +76,17 @@ export default async function CityPage({ params }) {
       {/* Top Activities Slider — only if activities exist */}
       {activitesData?.length > 0 && <ProductSliderSection items={activitesData.map((a) => mapProductToItemCard(a, city))} title="Top activities" navigationId="city-activities" />}
 
-      {/* Divider before tours section */}
-      {activitesData?.length > 0 && <BreakSection marginTop="m-0 p-0" />}
-
       {/* Tours grid section — fetches its own data with pagination, tag filter, sort */}
-      <SharedToursSection scope="city" slug={city} title={citydata?.name || city} />
-
-      {/* Divider before filter section */}
-      {hasAnyProducts && <BreakSection marginTop="m-0" />}
+      <SharedToursSection scope="city" slug={city} title={citydata?.name || city} variant="home" />
 
       {/* Filter Section (tabs, sort, sidebar, grid, pagination) — only if any product data */}
-      {hasAnyProducts && <SharedFilterSection scope="city" slug={city} />}
+      {hasAnyProducts && <SharedFilterSection scope="city" slug={city} variant="home" />}
 
       {/* Reviews + What About + FAQ — only if city data is a valid object */}
       {typeof citydata === 'object' && citydata?.location_details && <ReviewSectionCity cityData={citydata} reviews={featuredReviews} />}
 
       {/* Blogs Slider — only if blogs exist */}
-      {blogsData.length > 0 && <BlogSection blogs={blogsData} title="Blogs" navigationId="city-blogs" className="py-[100px]" />}
+      {blogsData.length > 0 && <BlogSection blogs={blogsData} title="Blogs" navigationId="city-blogs" />}
 
       {/* JSON-LD Schema */}
       {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}

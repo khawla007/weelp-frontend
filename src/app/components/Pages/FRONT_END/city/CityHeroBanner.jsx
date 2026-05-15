@@ -7,9 +7,15 @@ const CityHeroBanner = ({ city }) => {
   const { name = '', description = '', media_gallery = [] } = city || {};
 
   return (
-    <section className="flex min-h-[420px] md:min-h-[480px] lg:h-[60vh] py-12 relative page_city_banner overflow-hidden" style={{ background: 'linear-gradient(-165deg, #f8faf9, #f2f7f5)' }}>
-      <div className="flex flex-col lg:flex-row container mx-auto gap-4 p-6 py-6 md:py-10 lg:py-12">
-        <div className="relative flex-1 w-full lg:w-1/3 lg:pl-6 py-4 p-6">
+    <section
+      className="relative isolate mb-10 flex w-full items-center justify-center overflow-hidden page_city_banner lg:mb-24"
+      style={{
+        background: 'linear-gradient(-165deg, #f8faf9, #f2f7f5)',
+        height: '615px',
+      }}
+    >
+      <div className="container-page relative z-10 flex h-full flex-col items-center justify-center gap-4 lg:flex-row">
+        <div className="relative flex-1 w-full lg:w-1/3">
           <BreadCrumb className="mb-4 text-[#71717a]" />
           <h2 className="text-xl md:text-2xl font-medium mb-4 capitalize text-[#18181b]">Things to do In</h2>
           <h1 className="section-opener leading-[1.1] text-pretty mb-4 capitalize">{name}</h1>
@@ -19,13 +25,13 @@ const CityHeroBanner = ({ city }) => {
         </div>
 
         <div className="w-full lg:w-2/3">
-          <GallerySlider data={media_gallery} />
+          <GallerySlider data={media_gallery} collapseHiddenThumbnails />
         </div>
       </div>
 
       {/* Decorative SVG vectors */}
-      <Icons.Vector2 className="hidden lg:block absolute bottom-0 left-0 -translate-x-14 scale-125 rotate-45 text-[#588f7a]" />
-      <Icons.Vector2 className="hidden lg:block absolute bottom-16 left-4 rotate-45 scale-[.2] text-[#588f7a]" />
+      <Icons.Vector2 aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 z-0 hidden text-[#588f7a] lg:block" />
+      <Icons.VectorArrow aria-hidden="true" className="pointer-events-none absolute bottom-[125px] left-[167.1px] z-0 hidden -rotate-[27.247deg] text-[#588f7a] lg:block" />
     </section>
   );
 };

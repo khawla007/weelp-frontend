@@ -7,7 +7,7 @@ import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import { ProductGalleryAnimation } from '../Animation/ProductAnimation';
 
 // Slider for City Page and
-const GallerySlider = ({ data, classNames = '', navColor = '#fff' }) => {
+const GallerySlider = ({ data, classNames = '', navColor = '#fff', collapseHiddenThumbnails = false }) => {
   const [showGallery, setShowGallery] = useState(false); // toggle gallery visibility
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
@@ -80,7 +80,7 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff' }) => {
           freeMode={true}
           watchSlidesProgress={true}
           modules={[FreeMode, Navigation, Thumbs]}
-          className={`thumbnail-slider transition-all duration-500 ${showGallery ? 'opacity-100' : 'opacity-0 '} mt-4`}
+          className={`thumbnail-slider transition-all duration-500 ${showGallery ? 'mt-4 max-h-24 opacity-100' : collapseHiddenThumbnails ? 'mt-0 max-h-0 overflow-hidden opacity-0 pointer-events-none' : 'mt-4 opacity-0'}`}
         >
           {imageData.map((val, index) => (
             <SwiperSlide key={index}>

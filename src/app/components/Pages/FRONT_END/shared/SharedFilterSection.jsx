@@ -12,9 +12,14 @@ import FilterDrawer from './FilterDrawer';
 /**
  * Shared filter + listing section used by both city and region pages.
  *
- * @param {{ scope: 'city' | 'region', slug: string }} props
+ * @param {{ scope: 'city' | 'region', slug: string, variant?: 'default' | 'home', className?: string }} props
  */
-export default function SharedFilterSection({ scope, slug }) {
+const SECTION_CLASS_BY_VARIANT = {
+  default: 'mx-auto max-w-pen px-4 sm:px-6 xl:px-0 py-10 md:py-14 lg:py-[100px]',
+  home: 'container-page pb-10 lg:pb-24',
+};
+
+export default function SharedFilterSection({ scope, slug, variant = 'default', className = '' }) {
   const sectionRef = useRef(null);
 
   const [products, setProducts] = useState([]);
@@ -62,8 +67,10 @@ export default function SharedFilterSection({ scope, slug }) {
     return () => clearTimeout(timer);
   }, [priceRange, selectedItemType, selectedCategories, currentPage, slug, ratingFilter, scope]);
 
+  const sectionClassName = `${SECTION_CLASS_BY_VARIANT[variant] || SECTION_CLASS_BY_VARIANT.default} ${className}`.trim();
+
   return (
-    <div ref={sectionRef} className="mx-auto max-w-pen px-4 sm:px-6 xl:px-0 py-10 md:py-14 lg:py-[100px]">
+    <div ref={sectionRef} className={sectionClassName}>
       {/* Sidebar + Grid */}
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="hidden lg:block">

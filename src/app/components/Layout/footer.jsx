@@ -13,7 +13,7 @@ const Footer = () => {
     <footer>
       {/* ── Main Footer ── */}
       <div className="w-full bg-white">
-        <div className="w-full px-4 pt-10 sm:pt-14 md:pt-[71px] lg:px-[60px]">
+        <div className="w-full px-4 lg:px-[60px]">
           {/* Columns + watermark behind */}
           <div className="relative overflow-hidden">
             {/* Watermark behind columns — bottom-left */}

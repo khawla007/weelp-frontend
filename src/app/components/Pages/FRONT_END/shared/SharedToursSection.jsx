@@ -16,7 +16,12 @@ const SORT_OPTIONS = [
   { value: 'price_desc', label: 'Price: High to Low' },
 ];
 
-export default function SharedToursSection({ scope, slug, title }) {
+const SECTION_CLASS_BY_VARIANT = {
+  default: 'mx-auto flex w-full max-w-pen flex-col gap-8 px-4 md:px-6 xl:px-0 py-10 md:py-14 lg:py-[100px]',
+  home: 'container-page flex flex-col gap-8 pb-10 lg:pb-24',
+};
+
+export default function SharedToursSection({ scope, slug, title, variant = 'default', className = '' }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTags, setSelectedTags] = useState([]);
   const [sortBy, setSortBy] = useState('id_desc');
@@ -104,12 +109,13 @@ export default function SharedToursSection({ scope, slug, title }) {
   const fallbackCity = scope === 'city' ? slug : undefined;
   const cards = itineraries.map((item) => mapProductToItemCard(item, item?.city_slug || fallbackCity));
   const totalPages = pagination.last_page;
+  const sectionClassName = `${SECTION_CLASS_BY_VARIANT[variant] || SECTION_CLASS_BY_VARIANT.default} ${className}`.trim();
 
   // Don't render section if initial load returns no itineraries and no tags
   if (!isLoading && itineraries.length === 0 && allTags.length === 0 && selectedTags.length === 0) return null;
 
   return (
-    <section ref={sectionRef} className="mx-auto flex w-full max-w-pen flex-col gap-8 px-4 md:px-6 xl:px-0 py-10 md:py-14 lg:py-[100px]">
+    <section ref={sectionRef} className={sectionClassName}>
       <h2 className="text-xl md:text-2xl lg:text-[28px] font-semibold text-pretty text-[#18181b] capitalize">{title} Tours</h2>
 
       <div className="flex flex-wrap items-center gap-4">

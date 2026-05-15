@@ -122,6 +122,11 @@ body {
     --weelp-city-tab-bg: #cfdbe533;
     --weelp-city-tab-active-bg: #cfdbe533;
     --weelp-city-tab-active-border: #cfdbe580;
+    --weelp-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --weelp-ease-panel: cubic-bezier(0.32, 0.72, 0, 1);
+    --weelp-duration-fast: 160ms;
+    --weelp-duration-base: 260ms;
+    --weelp-duration-slow: 520ms;
 
     /* Canonical text tokens — element binding source of truth.
        See docs/frontend-design-correction/typography.md (Element binding). */

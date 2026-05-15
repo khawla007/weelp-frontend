@@ -24,10 +24,18 @@ export const Cruises = () => {
   );
 };
 
-export const Vector2 = ({ className }) => {
+export const Vector2 = ({ className, ...props }) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} width="355" height="126" viewBox="0 0 355 126" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} width="355" height="126" viewBox="0 0 355 126" fill="none" {...props}>
       <path d="M175.711 0.556026C127.051 171.684 274.577 267.227 354.422 293.608L-112.086 160.959C-37.3957 182.197 124.73 179.849 175.711 0.556026Z" fill="#588f7a" />
+    </svg>
+  );
+};
+
+export const VectorArrow = ({ className, ...props }) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} width="19" height="18" viewBox="0 0 19 18" fill="none" {...props}>
+      <path d="M-0.00016 6.93864L9.73297 8.48614L10.95972 17.90018L18.21911 0L-0.00016 6.93864Z" fill="currentColor" />
     </svg>
   );
 };
