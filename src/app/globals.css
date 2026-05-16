@@ -209,6 +209,118 @@ body {
   }
 }
 
+@layer utilities {
+  @keyframes weelpFadeUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, var(--weelp-fade-up-y, 10px), 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes weelpScaleIn {
+    from {
+      opacity: 0;
+      transform: scale3d(var(--weelp-scale-in-from, 0.98), var(--weelp-scale-in-from, 0.98), 1);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale3d(1, 1, 1);
+    }
+  }
+
+  @keyframes weelpPopover {
+    from {
+      opacity: 0;
+      transform: translate3d(0, var(--weelp-popover-y, 6px), 0) scale3d(0.985, 0.985, 1);
+      filter: blur(2px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes weelpShimmer {
+    from {
+      transform: translate3d(-110%, 0, 0);
+    }
+
+    to {
+      transform: translate3d(110%, 0, 0);
+    }
+  }
+
+  .weelp-fade-up {
+    opacity: 0;
+    animation: weelpFadeUp var(--weelp-motion-duration, var(--weelp-duration-slow)) var(--weelp-motion-ease, var(--weelp-ease-out)) both;
+    animation-delay: var(--weelp-motion-delay, 0ms);
+    will-change: transform, opacity;
+  }
+
+  .weelp-scale-in {
+    opacity: 0;
+    animation: weelpScaleIn var(--weelp-motion-duration, var(--weelp-duration-base)) var(--weelp-motion-ease, var(--weelp-ease-out)) both;
+    animation-delay: var(--weelp-motion-delay, 0ms);
+    transform-origin: var(--weelp-scale-origin, center);
+    will-change: transform, opacity;
+  }
+
+  .weelp-popover {
+    opacity: 0;
+    animation: weelpPopover var(--weelp-motion-duration, var(--weelp-duration-base)) var(--weelp-motion-ease, var(--weelp-ease-panel)) both;
+    animation-delay: var(--weelp-motion-delay, 0ms);
+    transform-origin: var(--weelp-popover-origin, top center);
+    will-change: transform, opacity, filter;
+  }
+
+  .weelp-shimmer {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background-color: var(--weelp-shimmer-base, #f4f4f5);
+  }
+
+  .weelp-shimmer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, var(--weelp-shimmer-highlight, rgba(255, 255, 255, 0.62)), transparent);
+    transform: translate3d(-110%, 0, 0);
+    animation: weelpShimmer var(--weelp-shimmer-duration, var(--weelp-duration-slow)) var(--weelp-motion-ease, var(--weelp-ease-out)) infinite;
+    animation-delay: var(--weelp-motion-delay, 0ms);
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .weelp-fade-up,
+    .weelp-scale-in,
+    .weelp-popover {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      animation: none;
+      will-change: auto;
+    }
+
+    .weelp-shimmer::before {
+      opacity: 0;
+      transform: none;
+      animation: none;
+      will-change: auto;
+    }
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
