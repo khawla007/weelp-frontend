@@ -45,7 +45,9 @@ const MobileMenu = ({ stickyHeader }) => {
         </div>
       </div>
 
-      <div className={`${stickyHeader ? 'fixed top-0 left-0 right-0 z-40 shadow-md' : ''} border-b border-[#e4e4e7] bg-[#f8faf9] px-4 py-3`}>
+      <div
+        className={`${stickyHeader ? 'fixed top-0 left-0 right-0 z-40 shadow-md' : ''} border-b border-[#e4e4e7] bg-[#f8faf9] px-4 py-3 transition-[background-color,border-color,box-shadow,opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none`}
+      >
         <MobileMenuSlider />
       </div>
     </div>
@@ -151,7 +153,7 @@ const NavigationMenuMobile = () => {
       </div>
 
       <div className="relative flex-1 overflow-hidden">
-        <div className="flex h-full w-[300%] transition-transform duration-300 ease-out" style={{ transform: `translateX(-${level * (100 / 3)}%)` }}>
+        <div className="flex h-full w-[300%] transition-transform duration-300 ease-out motion-reduce:transition-none" style={{ transform: `translateX(-${level * (100 / 3)}%)` }}>
           <PanelRegions onOpenRegion={setSelectedRegion} regionItems={regionItems} isLoading={isLoading} error={error} />
           <PanelCountries region={selectedRegion} onOpenCountry={setSelectedCountry} />
           <PanelCities country={selectedCountry} />

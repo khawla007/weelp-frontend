@@ -447,8 +447,14 @@ body {
     /* Remove default borders - will use Tailwind border classes */
     border: 1px solid transparent;
 
-    /* Smooth transitions */
-    transition: all 0.2s ease-in-out;
+    /* Smooth visual state transitions without animating layout geometry. */
+    transition:
+      color 0.2s ease-in-out,
+      background-color 0.2s ease-in-out,
+      border-color 0.2s ease-in-out,
+      box-shadow 0.2s ease-in-out,
+      opacity 0.2s ease-in-out,
+      transform 0.2s ease-in-out;
   }
 
   /* Mouse-click focus (not :focus-visible): keep the surface clean. */
@@ -630,7 +636,7 @@ body {
 
 .swiper-button-prev,
 .swiper-button-next {
-  @apply bg-white rounded-[10px] size-10 border border-gray-100 flex items-center justify-center transition-all duration-300 !important;
+  @apply bg-white rounded-[10px] size-10 border border-gray-100 flex items-center justify-center transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-300 motion-reduce:transition-none !important;
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1) !important;
   /* Stronger visibility */
   margin-top: 0 !important;
@@ -669,7 +675,11 @@ body {
   color: #588f7a !important;
   /* default [#588f7a] */
   fill: currentColor !important;
-  transition: all 0.3s ease;
+  transition:
+    color 0.3s ease,
+    fill 0.3s ease,
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 
 .swiper-button-prev:hover svg,

@@ -14,7 +14,7 @@ const BUDDY_SLIDER_BREAKPOINTS = {
 };
 
 const NAV_BUTTON_CLASS =
-  'flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-all duration-200 hover:border-[#588f7a] hover:text-[#588f7a] hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40';
+  'flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-[#588f7a] hover:text-[#588f7a] hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40';
 
 const TravelBuddyWidget = ({ items = [] }) => {
   const { messages, isThinking, sendMessage, presets, lastPayload } = useBuddyChat();

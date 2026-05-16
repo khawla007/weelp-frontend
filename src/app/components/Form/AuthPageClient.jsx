@@ -46,13 +46,13 @@ export function AuthPageClient({ defaultTab = 'login', returnUrl = null }) {
           <div className="flex mb-6 gap-3">
             <button
               onClick={() => handleTabSwitch('login')}
-              className={`flex-1 py-3 rounded-lg text-center font-medium border border-[#588f7a] transition-all duration-200 ${isLogin ? 'bg-[#588f7a] text-white hover:bg-white hover:text-[#588f7a]' : 'bg-white text-[#588f7a] hover:bg-[#588f7a] hover:text-white'}`}
+              className={`flex-1 py-3 rounded-lg text-center font-medium border border-[#588f7a] transition-colors duration-200 motion-reduce:transition-none ${isLogin ? 'bg-[#588f7a] text-white hover:bg-white hover:text-[#588f7a]' : 'bg-white text-[#588f7a] hover:bg-[#588f7a] hover:text-white'}`}
             >
               Log In
             </button>
             <button
               onClick={() => handleTabSwitch('signup')}
-              className={`flex-1 py-3 rounded-lg text-center font-medium border border-[#588f7a] transition-all duration-200 ${!isLogin ? 'bg-[#588f7a] text-white hover:bg-white hover:text-[#588f7a]' : 'bg-white text-[#588f7a] hover:bg-[#588f7a] hover:text-white'}`}
+              className={`flex-1 py-3 rounded-lg text-center font-medium border border-[#588f7a] transition-colors duration-200 motion-reduce:transition-none ${!isLogin ? 'bg-[#588f7a] text-white hover:bg-white hover:text-[#588f7a]' : 'bg-white text-[#588f7a] hover:bg-[#588f7a] hover:text-white'}`}
             >
               Sign Up
             </button>

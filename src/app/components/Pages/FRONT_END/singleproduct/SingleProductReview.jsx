@@ -258,7 +258,7 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
           >
             {featuredReviewsData.map((review, index) => (
               <SwiperSlide key={index} style={{ height: 'auto', display: 'flex' }}>
-                <div className="bg-white p-8 rounded-xl border border-[#e4e4e7] hover:border-transparent hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] transition-all duration-300 flex flex-col gap-[17px] w-full">
+                <div className="bg-white p-8 rounded-xl border border-[#e4e4e7] hover:border-transparent hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] transition-[border-color,box-shadow] duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-[17px] w-full">
                   <h5 className="text-[#18181b] font-medium text-base">{review.userName}</h5>
                   <div className="flex gap-[7px]">
                     {Array(review.rating)

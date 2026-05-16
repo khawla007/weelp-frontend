@@ -55,7 +55,9 @@ const DesktopMenu = ({ stickyHeader }) => {
       </div>
 
       <div
-        className={`border-b border-[#ededed] ${stickyHeader ? 'fixed top-0 left-0 right-0 z-[99999] bg-[#ffffffcc] shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] backdrop-blur-[47px]' : 'bg-[#ffffffcc] backdrop-blur-[47px]'}`}
+        className={`border-b border-[#ededed] transition-[background-color,border-color,box-shadow,opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+          stickyHeader ? 'fixed top-0 left-0 right-0 z-[99999] bg-[#ffffffcc] shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] backdrop-blur-[47px]' : 'bg-[#ffffffcc] backdrop-blur-[47px]'
+        }`}
       >
         <div className="grid h-[66px] w-full items-center gap-4 px-4 py-[8px] md:px-8 xl:px-[60px]" style={{ gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)' }}>
           <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start focus:outline-none">
@@ -192,7 +194,7 @@ export const HeaderAccount = () => {
         <li>
           <button
             type="button"
-            className="relative flex items-center justify-center text-[#18181b] transition hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+            className="relative flex items-center justify-center text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
             onClick={handleShowCart}
           >
             <ShoppingCart className="size-5" strokeWidth={1.5} />
@@ -205,7 +207,7 @@ export const HeaderAccount = () => {
         <li>
           <button
             type="button"
-            className="flex items-center justify-center text-[#18181b] transition hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+            className="flex items-center justify-center text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
             onClick={handleShowForm}
           >
             <Search className="size-5" strokeWidth={1.5} />
@@ -215,7 +217,7 @@ export const HeaderAccount = () => {
         <li>
           <button
             type="button"
-            className="flex items-center justify-center gap-2 w-[65px] h-[40px] rounded-[30px] border border-[#e4e4e7] transition hover:bg-[#f4f4f5] overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="flex items-center justify-center gap-2 w-[65px] h-[40px] rounded-[30px] border border-[#e4e4e7] transition-[background-color,border-color,color] duration-200 ease-out motion-reduce:transition-none hover:bg-[#f4f4f5] overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             onClick={handleSubmenu}
           >
             {isLoggedIn && avatarSrc ? (

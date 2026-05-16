@@ -100,7 +100,7 @@ const MediaComponent = () => {
             return (
               <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-[#e4e4e7]">
                 <img className="size-20 rounded-md border" src={image?.url} alt="activity_image" />
-                <X onClick={() => handleDeleteImage(image)} className="absolute bottom-8 right-8 size-0 group-hover/item:size-6 transition-all text-red-400 bg-white rounded-full shadow" />
+                <X onClick={() => handleDeleteImage(image)} className="absolute bottom-8 right-8 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-red-400 bg-white rounded-full shadow" />
               </div>
             );
           })}

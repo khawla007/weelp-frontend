@@ -29,7 +29,7 @@ function isActive(pathname, url) {
   return pathname.startsWith(url);
 }
 
-export default function DashboardSidebar({ nav, user, accent = 'bg-[#588f7a] text-white' }) {
+export default function DashboardSidebar({ nav, user, accent = 'text-black visited:text-black' }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -61,10 +61,10 @@ export default function DashboardSidebar({ nav, user, accent = 'bg-[#588f7a] tex
   const initials = getInitials(user?.name);
 
   return (
-    <aside className={`bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out ${collapsed ? 'w-16' : 'w-64'} shrink-0`}>
+    <aside className={`bg-white border-r border-gray-200 flex flex-col transition-colors duration-300 ease-in-out motion-reduce:transition-none ${collapsed ? 'w-16' : 'w-64'} shrink-0`}>
       <div className="sticky top-[112px] h-[calc(100vh-112px)] flex flex-col">
         <div className="flex-1 py-4 px-2 space-y-2 overflow-y-auto">
-          <div className={`bg-white rounded-xl shadow-md border border-gray-200/60 transition-all duration-300 ease-in-out ${collapsed ? 'p-2' : 'p-3'} mb-5`}>
+          <div className={`bg-white rounded-xl shadow-md border border-gray-200/60 transition-[background-color,border-color,box-shadow] duration-300 ease-in-out motion-reduce:transition-none ${collapsed ? 'p-2' : 'p-3'} mb-5`}>
             <div className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3'}`}>
               <Avatar className="h-11 w-11 rounded-full border-2 border-white shadow-sm flex-shrink-0">
                 {user?.avatar && <AvatarImage src={user.avatar} alt={user.name || 'user'} />}
@@ -83,7 +83,9 @@ export default function DashboardSidebar({ nav, user, accent = 'bg-[#588f7a] tex
                 key={route.url}
                 href={route.url}
                 data-active={active ? 'true' : 'false'}
-                className={`flex items-center gap-2 px-3 py-2 text-md transition-colors rounded-full ${active ? accent : 'text-black hover:bg-gray-100'}`}
+                className={`flex items-center gap-2 px-3 py-2 text-md transition-colors duration-200 ease-out rounded-full ${
+                  active ? accent : 'text-black visited:text-black hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70'
+                }`}
               >
                 <route.icon strokeWidth={2} className="size-5" />
                 {!collapsed && <span>{route.title}</span>}
@@ -97,7 +99,7 @@ export default function DashboardSidebar({ nav, user, accent = 'bg-[#588f7a] tex
             type="button"
             onClick={toggle}
             aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            className="p-2.5 w-full flex justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md transition-colors min-h-[40px]"
+            className="p-2.5 w-full flex justify-center text-black hover:text-[#18181b]/70 rounded-md transition-colors duration-200 ease-out min-h-[40px]"
           >
             <PanelLeft size={20} className={collapsed ? 'rotate-180 transition-transform' : 'transition-transform'} />
           </button>

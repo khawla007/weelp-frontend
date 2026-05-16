@@ -36,13 +36,13 @@ const Footer = () => {
                         {link.href ? (
                           <Link
                             href={link.href}
-                            className="text-[14px] md:text-[15px] lg:text-[18px] text-[#71717a] transition hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+                            className="text-[14px] md:text-[15px] lg:text-[18px] text-black transition-colors duration-200 ease-out hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
                             style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}
                           >
                             {link.label}
                           </Link>
                         ) : (
-                          <span className="text-[14px] md:text-[15px] lg:text-[18px] text-[#71717a]" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
+                          <span className="text-[14px] md:text-[15px] lg:text-[18px] text-black" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
                             {link.label}
                           </span>
                         )}
@@ -74,7 +74,7 @@ const Footer = () => {
               <a
                 href="#"
                 aria-label="Instagram"
-                className="text-[#71717a] hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm transition"
+                className="text-black hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm transition-colors duration-200 ease-out"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="2" width="20" height="20" rx="5" />
@@ -85,7 +85,7 @@ const Footer = () => {
               <a
                 href="#"
                 aria-label="X / Twitter"
-                className="text-[#71717a] hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm transition"
+                className="text-black hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm transition-colors duration-200 ease-out"
               >
                 <svg width="22" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -94,7 +94,7 @@ const Footer = () => {
               <a
                 href="#"
                 aria-label="TikTok"
-                className="text-[#71717a] hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm transition"
+                className="text-black hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm transition-colors duration-200 ease-out"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.48V13a8.28 8.28 0 005.58 2.16V11.7a4.83 4.83 0 01-3.58-1.43V6.69h3.58z" />
@@ -108,7 +108,7 @@ const Footer = () => {
           <div className="pt-[20px] pb-[20px]">
             <div className="mb-[20px] border-t border-[#eaeaea]" />
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-              <p className="text-[13px] md:text-[15px] lg:text-[18px] text-[#71717a]" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
+                <p className="text-[13px] md:text-[15px] lg:text-[18px] text-black" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
                 &copy; 2024 - Weelp. All rights reserved.
               </p>
               <div className="flex flex-wrap items-center gap-4 sm:gap-6">
@@ -116,7 +116,7 @@ const Footer = () => {
                   <Link
                     key={item.label}
                     href={item.href}
-                    className="text-[13px] md:text-[15px] lg:text-[18px] text-[#71717a] cursor-pointer transition hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+                    className="text-[13px] md:text-[15px] lg:text-[18px] text-black cursor-pointer transition-colors duration-200 ease-out hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
                     style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}
                   >
                     {item.label}

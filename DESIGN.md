@@ -7,6 +7,8 @@ colors:
   sage-tint: '#b5d8cb'
   sage-wash: '#f2f7f5'
   ink: '#18181b'
+  nav-menu-normal: '#000000'
+  nav-menu-hover: 'rgba(24, 24, 27, 0.7)'
   copy: '#52525b'
   label: '#71717a'
   surface: '#ffffff'
@@ -157,6 +159,8 @@ A restrained palette built around a sage-green accent and a warm-leaning neutral
 **The Single-Sage Rule.** There is one sage. `#588f7a` is canonical. The legacy variants `#56947d`, `#558e7b`, `#51927a`, `#57947d` scattered across globals.css are drift, not range. Replace them with `#588f7a` (or `var(--secondaryDark)`) on sight.
 
 **The No-Pure-Black, No-Pure-White Rule.** Backgrounds are `#f8faf9` or `#ffffff`. Text is `#18181b` ink, never `#000000`. Borders are `#e4e4e7`, never `#000000` at any opacity.
+
+**The Navigation Menu Color Rule.** Navigation menu links are the sanctioned exception to the no-pure-black text rule. Public header menu items, footer menu links, dashboard sidebar menu items, dashboard sidebar dropdown items, and dashboard user-menu dropdown links use black at rest (`#000000`, Tailwind `text-black`) and `rgba(24, 24, 27, 0.7)` on hover (`hover:text-[#18181b]/70`). Active dashboard sidebar items remain black, not sage. Because the global base layer sets visited anchors to `--link-visited`, menu links must explicitly include `visited:text-black` and `visited:hover:text-[#18181b]/70` anywhere an `<a>` can be visited. Sage is reserved for primary actions, progress/focus signals, and badges, not resting menu text.
 
 **The Reserved-Brand-Signal Rule.** External-platform brand colors are not Weelp tokens, but a small set is preserved verbatim where the surface depends on third-party recognition. Sanctioned exceptions today:
 

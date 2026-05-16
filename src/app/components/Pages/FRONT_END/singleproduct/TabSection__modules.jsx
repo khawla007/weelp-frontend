@@ -123,7 +123,7 @@ const FaqAccordionItem = ({ question, answer, defaultOpen = false }) => {
         <span className="text-base font-semibold text-[#18181b]">{question}</span>
         <ChevronRight className={`transition-transform duration-300 flex-shrink-0 text-[#52525b] ${isOpen ? 'rotate-90' : ''}`} size={16} aria-hidden="true" />
       </button>
-      <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+      <div className={`overflow-hidden transition-opacity duration-300 ease-[var(--weelp-ease-panel)] motion-reduce:transition-none ${isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
         <p className="px-5 pb-5 text-sm text-[#71717a] leading-relaxed">{answer}</p>
       </div>
     </div>

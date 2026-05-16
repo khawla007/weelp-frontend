@@ -17,7 +17,7 @@ export function MediaSelectionBadge({ isSelected, className }) {
   return (
     <div
       className={cn(
-        'absolute top-2 left-2 w-6 h-6 rounded-full p-1 shadow-md transition-all flex items-center justify-center',
+        'absolute top-2 left-2 w-6 h-6 rounded-full p-1 shadow-md transition-[background-color,border-color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex items-center justify-center',
         // Unselected state: white bg with green border (visible affordance)
         !isSelected && 'bg-white border-2 border-[#568f7c]',
         // Selected state: green bg with white checkmark

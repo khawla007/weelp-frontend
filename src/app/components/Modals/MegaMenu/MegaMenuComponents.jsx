@@ -57,7 +57,7 @@ export const CountryCards = ({ countries = [], selectedCountryId, onSelect }) =>
           type="button"
           onClick={() => onSelect(country.id)}
           aria-pressed={isSelected}
-          className="group relative block h-[96px] w-[154px] shrink-0 overflow-hidden rounded-[6px] transition-all duration-150 hover:opacity-95 focus:outline-none"
+          className="group relative block h-[96px] w-[154px] shrink-0 overflow-hidden rounded-[6px] transition-opacity duration-150 motion-reduce:transition-none hover:opacity-95 focus:outline-none"
         >
           {country.featured_image ? <img src={country.featured_image} alt={country.name} className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-[#c9c9c9]" />}
           <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%)' }} />

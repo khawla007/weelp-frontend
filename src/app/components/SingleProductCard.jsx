@@ -21,7 +21,7 @@ export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productR
 
   return (
     <div
-      className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
+      className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
     >
       {is_featured && (
         <>
@@ -93,7 +93,7 @@ const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, pro
 
   return (
     <div
-      className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
+      className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
     >
       {featured_activity && (
         <>
@@ -136,7 +136,7 @@ export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, p
   const { region, city } = params;
   return (
     <div
-      className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
+      className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
     >
       {is_featured && (
         <>
@@ -174,7 +174,7 @@ export const SingleProductCardPackage = ({ productId, imgsrc, productRating, pro
 
   return (
     <div
-      className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-all duration-300 border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
+      className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
     >
       {is_featured && (
         <>

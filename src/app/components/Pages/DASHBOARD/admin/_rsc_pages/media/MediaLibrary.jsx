@@ -17,6 +17,7 @@ import { useAllMediaAdmin } from '@/hooks/api/admin/media';
 import { useIsClient } from '@/hooks/useIsClient';
 import { useToast } from '@/hooks/use-toast';
 import { CustomPagination } from '@/app/components/Pagination';
+import { DASHBOARD_PLACEHOLDER_IMAGE } from '@/app/components/DashboardShared/Card/CardImage';
 
 export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelectionChange }) {
   const isClient = useIsClient(); // hydration
@@ -248,8 +249,8 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                 return (
                   <Card
                     key={index}
-                    className={`group relative aspect-square overflow-hidden rounded-lg bg-muted cursor-pointer transition-all
-                      ${isSelected ? 'border-4 border-[#588f7a]' : 'border border-zinc-200'}
+                    className={`group relative aspect-square overflow-hidden rounded-lg bg-muted cursor-pointer border-4 transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none
+                      ${isSelected ? 'border-[#588f7a]' : 'border-transparent'}
                     `}
                     onClick={() => {
                       if (isMediaPage) {
@@ -259,7 +260,14 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                       }
                     }}
                   >
-                    <img src={image?.url} alt={image?.alt_text} className="object-cover transition-all hover:scale-105 w-full h-full" />
+                    <img
+                      src={image?.url || DASHBOARD_PLACEHOLDER_IMAGE}
+                      alt={image?.alt_text || 'media image'}
+                      className="object-cover transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none hover:scale-105 w-full h-full"
+                      onError={(event) => {
+                        event.currentTarget.src = DASHBOARD_PLACEHOLDER_IMAGE;
+                      }}
+                    />
 
                     {/* Selection Checkbox - Only on Media Page */}
                     {isMediaPage && (

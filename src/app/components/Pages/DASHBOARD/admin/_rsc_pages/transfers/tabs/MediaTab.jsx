@@ -141,10 +141,10 @@ const MediaTab = () => {
                   fill={isFeatured ? '#588f7a' : 'white'}
                   strokeWidth={2}
                   onClick={() => handleSetFeatured(image.media_id)}
-                  className={`absolute top-4 right-4 transition-all cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#588f7a]' : 'text-[#588f7a] hover:scale-110'}`}
+                  className={`absolute top-4 right-4 transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#588f7a]' : 'text-[#588f7a] hover:scale-110'}`}
                 />
 
-                <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-8 right-8 size-0 group-hover/item:size-6 transition-all text-red-400 bg-white rounded-full shadow" />
+                <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-8 right-8 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-red-400 bg-white rounded-full shadow" />
               </div>
             );
           })}

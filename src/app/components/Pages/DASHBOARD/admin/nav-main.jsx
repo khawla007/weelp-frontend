@@ -9,7 +9,6 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
@@ -19,24 +18,31 @@ import {
 } from '@/components/ui/sidebar';
 
 const COMING_SOON_LABEL = 'Soon';
-const COMING_SOON_BADGE_CLASS = 'text-[8px] animate-pulse bg-emerald-100 text-emerald-700';
+const COMING_SOON_BADGE_CLASS = 'rounded-md bg-[#558e7b] px-1.5 py-0.5 text-[8px] font-semibold leading-none text-white animate-pulse';
+
+function ComingSoonBadge() {
+  return <span className={COMING_SOON_BADGE_CLASS}>{COMING_SOON_LABEL}</span>;
+}
 
 const isLeafActive = (pathname, url) => pathname === url;
 const isParentActive = (pathname, item) => item.children?.some((c) => pathname === c.url || pathname.startsWith(c.url + '/'));
 
 export function NavMain({ items: sections }) {
   const pathname = usePathname();
+  const activeParentKey = sections.flatMap((section) => section.items.map((item) => ({ key: `${section.section}:${item.title}`, item }))).find(({ item }) => isParentActive(pathname, item))?.key ?? null;
+  const [openItem, setOpenItem] = useState(null);
+  const visibleOpenItem = openItem ?? activeParentKey;
 
   return (
     <>
       {sections.map((section) => (
-        <SectionGroup key={section.section} section={section} pathname={pathname} showSeparator={section.section === 'COMING SOON'} />
+        <SectionGroup key={section.section} section={section} pathname={pathname} showSeparator={section.section === 'COMING SOON'} openItem={visibleOpenItem} setOpenItem={setOpenItem} />
       ))}
     </>
   );
 }
 
-function SectionGroup({ section, pathname, showSeparator }) {
+function SectionGroup({ section, pathname, showSeparator, openItem, setOpenItem }) {
   return (
     <>
       {showSeparator && <SidebarSeparator />}
@@ -44,7 +50,13 @@ function SectionGroup({ section, pathname, showSeparator }) {
         <SidebarGroupLabel>{section.section}</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            {section.items.map((item) => (item.children?.length ? <ParentItem key={item.title} item={item} pathname={pathname} /> : <LeafItem key={item.title} item={item} pathname={pathname} />))}
+            {section.items.map((item) =>
+              item.children?.length ? (
+                <ParentItem key={item.title} item={item} itemKey={`${section.section}:${item.title}`} pathname={pathname} openItem={openItem} setOpenItem={setOpenItem} />
+              ) : (
+                <LeafItem key={item.title} item={item} pathname={pathname} />
+              ),
+            )}
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
@@ -60,9 +72,11 @@ function LeafItem({ item, pathname }) {
       <SidebarMenuItem>
         <SidebarMenuButton tooltip={item.title} disabled>
           <Icon />
-          <span>{item.title}</span>
+          <span className="inline-flex min-w-0 items-center gap-2">
+            <span className="truncate">{item.title}</span>
+            <ComingSoonBadge />
+          </span>
         </SidebarMenuButton>
-        <SidebarMenuBadge className={COMING_SOON_BADGE_CLASS}>{COMING_SOON_LABEL}</SidebarMenuBadge>
       </SidebarMenuItem>
     );
   }
@@ -79,25 +93,20 @@ function LeafItem({ item, pathname }) {
   );
 }
 
-function ParentItem({ item, pathname }) {
+function ParentItem({ item, itemKey, pathname, openItem, setOpenItem }) {
   const parentActive = isParentActive(pathname, item);
-  const [open, setOpen] = useState(parentActive);
-  const [prevActive, setPrevActive] = useState(parentActive);
-  if (parentActive !== prevActive) {
-    setPrevActive(parentActive);
-    if (parentActive) setOpen(true);
-  }
+  const open = openItem === itemKey;
 
   const Icon = item.icon;
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton onClick={() => setOpen((o) => !o)} isActive={parentActive} tooltip={item.title}>
+      <SidebarMenuButton onClick={() => setOpenItem((current) => (current === itemKey ? null : itemKey))} isActive={parentActive} tooltip={item.title}>
         <Icon />
         <span>{item.title}</span>
         {!item.comingSoon && <ChevronDown className={`ml-auto size-4 transition-transform duration-200 ${open ? '-rotate-180' : ''}`} />}
+        {item.comingSoon && <ComingSoonBadge />}
       </SidebarMenuButton>
-      {item.comingSoon && <SidebarMenuBadge className={COMING_SOON_BADGE_CLASS}>{COMING_SOON_LABEL}</SidebarMenuBadge>}
       {open && (
         <SidebarMenuSub>
           {item.children.map((child) => (
@@ -117,9 +126,11 @@ function ChildItem({ child, pathname }) {
       <SidebarMenuSubItem>
         <SidebarMenuSubButton aria-disabled="true" tabIndex={-1} className="opacity-60 pointer-events-none">
           <Icon className="size-4" />
-          <span>{child.title}</span>
+          <span className="inline-flex min-w-0 items-center gap-2">
+            <span className="truncate">{child.title}</span>
+            <ComingSoonBadge />
+          </span>
         </SidebarMenuSubButton>
-        <SidebarMenuBadge className={COMING_SOON_BADGE_CLASS}>{COMING_SOON_LABEL}</SidebarMenuBadge>
       </SidebarMenuSubItem>
     );
   }

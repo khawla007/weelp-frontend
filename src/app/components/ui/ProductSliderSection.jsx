@@ -37,14 +37,14 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
           <div className="hidden sm:flex items-center gap-2">
             <button
               type="button"
-              className={`${navigationId}-prev flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-all duration-200 hover:border-[#588f7a] hover:text-[#588f7a] hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40`}
+              className={`${navigationId}-prev flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-[#588f7a] hover:text-[#588f7a] hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40`}
               aria-label={`Previous ${title}`}
             >
               <ChevronLeft className="size-4" />
             </button>
             <button
               type="button"
-              className={`${navigationId}-next flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-all duration-200 hover:border-[#588f7a] hover:text-[#588f7a] hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40`}
+              className={`${navigationId}-next flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-[#588f7a] hover:text-[#588f7a] hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40`}
               aria-label={`Next ${title}`}
             >
               <ChevronRight className="size-4" />
@@ -55,7 +55,7 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
         {headerAction === 'cta' && ctaHref && ctaLabel && (
           <Link
             href={ctaHref}
-            className="weelp-city-cta-button rounded-[10px] px-4 py-[10px] transition hover:opacity-95"
+            className="weelp-city-cta-button rounded-[10px] px-4 py-[10px] transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none hover:opacity-95"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600, fontSize: '14px' }}
           >
             {ctaLabel}

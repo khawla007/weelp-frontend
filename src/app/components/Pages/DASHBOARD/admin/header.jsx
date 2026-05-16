@@ -128,7 +128,7 @@ const AdminHeader = ({ session }) => {
               ref={searchInputRef}
               type="search"
               placeholder="Search orders, users, activities..."
-              className={`w-full pl-9 pr-20 transition-all ${isSearchFocused ? 'ring-2 ring-primary/20' : ''}`}
+              className={`w-full pl-9 pr-20 transition-[box-shadow,border-color] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${isSearchFocused ? 'ring-2 ring-primary/20' : ''}`}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => setIsSearchFocused(true)}
