@@ -7,7 +7,7 @@ const chips = ['Beach stays', 'Marina views', 'City plans'];
 const HeroSection = () => {
   return (
     <section
-      className="relative w-full flex items-center justify-center mb-10 lg:mb-24"
+      className="relative w-full flex items-center justify-center mb-10 md:mb-16 lg:mb-24"
       style={{
         backgroundImage: 'url(/assets/images/hero_redesigned_bg.jpeg)',
         backgroundSize: 'cover',

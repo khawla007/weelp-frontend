@@ -585,11 +585,7 @@ body {
   overflow-clip-margin: 24px 0;
 }
 
-/* Mobile-only swipe progress dots for CarouselShell sliders.
-   Touch users get a discoverable affordance; arrows still own >=sm. */
-.carousel-shell-wrapper.has-mobile-pagination .swiper {
-  padding-bottom: 28px;
-}
+/* Mobile-only swipe progress dots for CarouselShell sliders. */
 .carousel-shell-wrapper.has-mobile-pagination .swiper-pagination {
   bottom: 4px;
 }

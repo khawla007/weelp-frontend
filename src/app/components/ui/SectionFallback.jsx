@@ -20,13 +20,13 @@ import { ArrowRight, RotateCcw } from 'lucide-react';
  *                                       'error' renders the Try again button.
  * @param {string}  [props.className]    Wrapper override; defaults match other sections.
  */
-export default function SectionFallback({ eyebrow, message, pivotHref, pivotLabel, variant = 'empty', className = 'pt-14 pb-10 md:pt-20 md:pb-14 lg:pt-24 lg:pb-16' }) {
+export default function SectionFallback({ eyebrow, message, pivotHref, pivotLabel, variant = 'empty', className = '' }) {
   const handleRetry = () => {
     if (typeof window !== 'undefined') window.location.reload();
   };
 
   return (
-    <section className={`container-page flex flex-col gap-6 pb-10 lg:pb-24 ${className}`}>
+    <section className={`container-page flex flex-col gap-6 pb-10 md:pb-16 lg:pb-24 ${className}`}>
       {eyebrow && <span className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#52525b]">{eyebrow}</span>}
 
       <div className="flex flex-col gap-5 border-t border-[#eaeaea] pt-8">

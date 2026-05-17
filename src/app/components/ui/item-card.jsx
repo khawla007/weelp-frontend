@@ -26,10 +26,10 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
   return (
     <Link
       href={href}
-      className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-white p-3 sm:p-4 lg:p-[17px] border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] hover:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${className}`}
+      className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-white border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] hover:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${className}`}
     >
       {/* Image */}
-      <div className="relative h-[190px] w-full overflow-hidden rounded-[6px] bg-[#f2f7f5] sm:h-[200px] lg:h-[217px]">
+      <div className="relative h-[190px] w-full overflow-hidden bg-[#f2f7f5] sm:h-[200px] lg:h-[217px]">
         <Image
           src={image}
           alt={title}
@@ -42,7 +42,7 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col gap-1.5 pt-3 lg:gap-[5.7px] lg:pt-[15.6px]">
+      <div className="flex flex-1 flex-col gap-1.5 px-3 pb-3 pt-3 sm:px-4 sm:pb-4 lg:gap-[5.7px] lg:px-[17px] lg:pb-[17px] lg:pt-[15.6px]">
         {/* Rating row — full variant */}
         {isFull && displayRating && (
           <div className="flex items-center gap-1">

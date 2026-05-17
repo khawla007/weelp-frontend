@@ -26,7 +26,7 @@ export default function BrowseDestinationsSection({ cities = [], title = 'Top De
   if (!items.length) return null;
 
   return (
-    <section className={`container-page flex flex-col gap-8 pb-10 lg:pb-24 ${className}`}>
+    <section className={`container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24 ${className}`}>
       <div className="flex items-center justify-between">
         <SectionHeader title={title} />
         <div className="flex items-center gap-2">
