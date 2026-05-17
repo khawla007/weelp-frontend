@@ -17,7 +17,12 @@ const ModalForm = ({ showForm, setShowForm, handleShowForm }) => {
         <div>
           <BookingForm />
         </div>
-        <button className="text-white border-white rotate-45 transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none hover:scale-110" onClick={handleShowForm}>
+        <button
+          type="button"
+          aria-label="Close search"
+          className="flex h-11 w-11 items-center justify-center text-white border-white rotate-45 transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          onClick={handleShowForm}
+        >
           <Plus size={28} />
         </button>
       </div>

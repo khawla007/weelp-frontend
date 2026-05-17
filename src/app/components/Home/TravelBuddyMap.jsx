@@ -259,7 +259,7 @@ const TravelBuddyMap = ({ markers = [], route = null, fitBounds = false, showPre
     );
   }
 
-  return <div ref={containerRef} className="w-full h-full" />;
+  return <div ref={containerRef} className="buddy-map w-full h-full" />;
 };
 
 export default TravelBuddyMap;

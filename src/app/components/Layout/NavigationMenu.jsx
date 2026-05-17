@@ -163,6 +163,7 @@ export const HeaderAccount = () => {
   const isMiniCartOpen = useMiniCartStore((state) => state.isMiniCartOpen);
   const setMiniCartOpen = useMiniCartStore((state) => state.setMiniCartOpen);
   const cartItems = useMiniCartStore((state) => state.cartItems);
+  const cartItemCount = cartItems?.length ?? 0;
   const [showSubmenu, setShowSubmenu] = useState(null);
   const [showForm, setShowForm] = useState(null);
 
@@ -194,11 +195,12 @@ export const HeaderAccount = () => {
         <li>
           <button
             type="button"
-            className="relative flex items-center justify-center text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+            aria-label={cartItemCount > 0 ? `Open cart, ${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'}` : 'Open cart'}
+            className="relative flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             onClick={handleShowCart}
           >
             <ShoppingCart className="size-5" strokeWidth={1.5} />
-            {cartItems?.length > 0 && <Badge className={'absolute -right-4 -top-2 scale-75'}>{cartItems?.length}</Badge>}
+            {cartItemCount > 0 && <Badge className={'absolute -right-4 -top-2 scale-75'}>{cartItemCount}</Badge>}
           </button>
         </li>
         <li>
@@ -207,7 +209,8 @@ export const HeaderAccount = () => {
         <li>
           <button
             type="button"
-            className="flex items-center justify-center text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+            aria-label="Open search"
+            className="flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             onClick={handleShowForm}
           >
             <Search className="size-5" strokeWidth={1.5} />
@@ -217,7 +220,9 @@ export const HeaderAccount = () => {
         <li>
           <button
             type="button"
-            className="flex items-center justify-center gap-2 w-[65px] h-[40px] rounded-[30px] border border-[#e4e4e7] transition-[background-color,border-color,color] duration-200 ease-out motion-reduce:transition-none hover:bg-[#f4f4f5] overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            aria-label="Open account menu"
+            aria-expanded={!!showSubmenu}
+            className="flex h-11 w-[65px] items-center justify-center gap-2 rounded-[30px] border border-[#e4e4e7] transition-[background-color,border-color,color] duration-200 ease-out motion-reduce:transition-none hover:bg-[#f4f4f5] overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             onClick={handleSubmenu}
           >
             {isLoggedIn && avatarSrc ? (

@@ -83,7 +83,11 @@ const MobileMenuSlider = () => {
     <Sheet>
       <div className="flex justify-between items-center">
         <SheetTrigger asChild>
-          <Button variant="ghost" className="h-11 w-11 rounded-full border border-[#e4e4e7] bg-white p-0 text-[#18181b]">
+          <Button
+            variant="ghost"
+            aria-label="Open main navigation"
+            className="h-11 w-11 rounded-full border border-[#e4e4e7] bg-white p-0 text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          >
             <MenuIcon className="size-5" />
           </Button>
         </SheetTrigger>
@@ -135,7 +139,12 @@ const NavigationMenuMobile = () => {
     <div className="flex h-full flex-col">
       <div className="flex h-14 shrink-0 items-center gap-3 border-b border-[#e4e4e7] bg-white px-4">
         {level > 0 ? (
-          <button type="button" onClick={back} aria-label="Back" className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] active:bg-[#f4f4f5]">
+          <button
+            type="button"
+            onClick={back}
+            aria-label="Back to previous menu"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] active:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          >
             <ArrowLeft className="size-4" />
           </button>
         ) : (
@@ -147,7 +156,10 @@ const NavigationMenuMobile = () => {
           </Link>
         )}
         <span className="flex-1 truncate text-sm font-semibold text-[#18181b]">{title}</span>
-        <SheetClose aria-label="Close" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] active:bg-[#f4f4f5]">
+        <SheetClose
+          aria-label="Close main navigation"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] active:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+        >
           <X className="size-4" />
         </SheetClose>
       </div>
@@ -185,7 +197,11 @@ const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error }) => (
         <UserRound className="size-4" />
         Account
       </Link>
-      <Link href="/explore-creators" className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b]" aria-label="Search trips">
+      <Link
+        href="/explore-creators"
+        className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+        aria-label="Search trips"
+      >
         <Search className="size-4" />
       </Link>
     </div>
@@ -265,6 +281,7 @@ const HeaderAccountMobile = () => {
   const isMiniCartOpen = useMiniCartStore((state) => state.isMiniCartOpen);
   const setMiniCartOpen = useMiniCartStore((state) => state.setMiniCartOpen);
   const cartItems = useMiniCartStore((state) => state.cartItems);
+  const cartItemCount = cartItems?.length ?? 0;
 
   // Extract user data
   const user = session?.user || {};
@@ -281,20 +298,38 @@ const HeaderAccountMobile = () => {
   return (
     <div>
       <div className="flex gap-2">
-        <button type="button" className="relative flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b]" onClick={handleShowCart}>
+        <button
+          type="button"
+          aria-label={cartItemCount > 0 ? `Open cart, ${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'}` : 'Open cart'}
+          className="relative flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          onClick={handleShowCart}
+        >
           <ShoppingCart className="size-[18px]" />
-          {cartItems?.length > 0 && <Badge className={'absolute bottom-1/4  left-1/2 scale-75 '}>{cartItems?.length}</Badge>}
+          {cartItemCount > 0 && <Badge className={'absolute bottom-1/4  left-1/2 scale-75 '}>{cartItemCount}</Badge>}
         </button>
         {isLoggedIn && avatarSrc ? (
-          <Link href={accountLink} className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white overflow-hidden">
+          <Link
+            href={accountLink}
+            aria-label="Open account"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          >
             <img src={avatarSrc} alt={name || 'user'} className="h-full w-full object-cover" />
           </Link>
         ) : isLoggedIn ? (
-          <Link href={accountLink} className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] text-white font-semibold" style={{ backgroundColor: '#588f7a' }}>
+          <Link
+            href={accountLink}
+            aria-label="Open account"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] text-white font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            style={{ backgroundColor: '#588f7a' }}
+          >
             {userInitials}
           </Link>
         ) : (
-          <Link href="/user/login" className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b]">
+          <Link
+            href="/user/login"
+            aria-label="Sign in"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          >
             <UserRound className="size-[18px]" />
           </Link>
         )}

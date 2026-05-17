@@ -1151,6 +1151,11 @@ span {
 }
 
 /* AI Travel Buddy — marker popups */
+.buddy-map .maplibregl-ctrl-group button {
+  width: 44px;
+  height: 44px;
+}
+
 .buddy-popup .maplibregl-popup-content {
   background: #ffffff;
   border: 1px solid #588f7a;

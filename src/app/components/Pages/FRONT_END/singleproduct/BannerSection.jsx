@@ -88,15 +88,15 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
             <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
               <button
                 type="button"
-                aria-label="Previous image"
-                className={`flex items-center justify-center w-9 h-9 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] transition-colors ${focusRing}`}
+                aria-label="Previous gallery image"
+                className={`flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] transition-colors ${focusRing}`}
               >
                 <ChevronLeft size={16} />
               </button>
               <button
                 type="button"
-                aria-label="Next image"
-                className={`flex items-center justify-center w-9 h-9 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] transition-colors ${focusRing}`}
+                aria-label="Next gallery image"
+                className={`flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] transition-colors ${focusRing}`}
               >
                 <ChevronRight size={16} />
               </button>
