@@ -108,7 +108,7 @@ const Footer = () => {
           <div className="pt-[20px] pb-[20px]">
             <div className="mb-[20px] border-t border-[#eaeaea]" />
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <p className="text-[13px] md:text-[15px] lg:text-[18px] text-black" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
+              <p className="text-[13px] md:text-[15px] lg:text-[18px] text-black" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
                 &copy; 2024 - Weelp. All rights reserved.
               </p>
               <div className="flex flex-wrap items-center gap-4 sm:gap-6">

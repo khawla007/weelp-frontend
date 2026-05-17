@@ -12,7 +12,10 @@ export const ImageTrashCard = ({ image, onDelete, galleryThumbnail = false }) =>
           event.currentTarget.src = DASHBOARD_PLACEHOLDER_IMAGE;
         }}
       />
-      <Trash2 onClick={() => onDelete(image)} className="absolute bottom-8 right-8 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-red-400 bg-white rounded-full shadow" />
+      <Trash2
+        onClick={() => onDelete(image)}
+        className="absolute bottom-8 right-8 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-red-400 bg-white rounded-full shadow"
+      />
     </div>
   );
 };

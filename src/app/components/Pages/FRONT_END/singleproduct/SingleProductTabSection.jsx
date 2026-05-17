@@ -148,7 +148,10 @@ const SingleProductTabSection = ({
               style={index < tabs.length - 1 ? { marginRight: '44px' } : undefined}
             >
               {tab.label}
-              <span className={`absolute bottom-0 left-0 w-full h-[2px] bg-[#588f7a] transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${activeTab === tab.id ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
+              <span
+                className={`absolute bottom-0 left-0 w-full h-[2px] bg-[#588f7a] transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${activeTab === tab.id ? 'opacity-100' : 'opacity-0'}`}
+                aria-hidden="true"
+              />
             </button>
           ))}
         </div>

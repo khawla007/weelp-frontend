@@ -29,7 +29,8 @@ const isParentActive = (pathname, item) => item.children?.some((c) => pathname =
 
 export function NavMain({ items: sections }) {
   const pathname = usePathname();
-  const activeParentKey = sections.flatMap((section) => section.items.map((item) => ({ key: `${section.section}:${item.title}`, item }))).find(({ item }) => isParentActive(pathname, item))?.key ?? null;
+  const activeParentKey =
+    sections.flatMap((section) => section.items.map((item) => ({ key: `${section.section}:${item.title}`, item }))).find(({ item }) => isParentActive(pathname, item))?.key ?? null;
   const [openItem, setOpenItem] = useState(null);
   const visibleOpenItem = openItem ?? activeParentKey;
 

@@ -130,7 +130,10 @@ export const PostMedia = ({ setDialogOpen, onSelectionChange }) => {
                 {isFeatured && <div className="absolute top-4 left-4 bg-[#588f7a] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
 
                 {/* Trash - Bottom Right */}
-                <Trash2 onClick={() => handleDeleteImage(image)} className="absolute bottom-4 right-4 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-red-500 bg-white rounded-full shadow p-1" />
+                <Trash2
+                  onClick={() => handleDeleteImage(image)}
+                  className="absolute bottom-4 right-4 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-red-500 bg-white rounded-full shadow p-1"
+                />
               </div>
             );
           })}

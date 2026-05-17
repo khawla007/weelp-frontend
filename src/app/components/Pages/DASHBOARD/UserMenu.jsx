@@ -40,7 +40,10 @@ export default function UserMenu({ session }) {
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton
                 size="lg"
-                className={cn('data-[state=open]:text-black', 'gap-2 px-2 py-1.5 text-black visited:text-black hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 transition-colors duration-200 ease-out')}
+                className={cn(
+                  'data-[state=open]:text-black',
+                  'gap-2 px-2 py-1.5 text-black visited:text-black hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 transition-colors duration-200 ease-out',
+                )}
               >
                 <Avatar className="h-9 w-9 rounded-lg border-2 border-white shadow-sm">
                   {avatarSrc && <AvatarImage src={avatarSrc} alt={name || 'user'} />}
