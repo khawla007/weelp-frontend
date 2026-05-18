@@ -2,34 +2,28 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { MapPin, Calendar, Users, ChevronRight, Loader2, X } from 'lucide-react';
+import { MapPin, Calendar, Users, ChevronRight, X } from 'lucide-react';
 import { useForm, Controller, useWatch } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import { useRouter } from 'next/navigation';
 import { getCitiesRegions, homeSearch } from '@/lib/services/global';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 
-// Zod Schema
-const bookingSchema = z.object({
-  whereTo: z.string().min(1, 'Location is required'),
-  dateRange: z
-    .object({
-      from: z.date().nullable().refine(Boolean, 'Start date is required'),
-      to: z.date().nullable().refine(Boolean, 'End date is required'),
-    })
-    .refine((data) => data.from && data.to && data.from <= data.to, 'Start date must be before end date'),
-  howMany: z.object({
-    adults: z.number().min(1, 'At least 1 adult is required').max(10, 'Maximum 10 adults allowed'),
-    children: z.number().min(0).max(10, 'Maximum 10 children allowed'),
-    infants: z.number().min(0).max(5, 'Maximum 5 infants allowed'),
-  }),
-});
+const PANEL_MOTION_CLASS = 'transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none motion-reduce:transform-none';
+const OPEN_PANEL_MOTION_CLASS = 'opacity-100 translate-y-0 scale-100 animate-in fade-in-0 slide-in-from-top-1';
+const CLOSED_PANEL_MOTION_CLASS = 'pointer-events-none opacity-0 -translate-y-1 scale-[0.98]';
+const ROW_MOTION_CLASS =
+  'animate-in fade-in-0 slide-in-from-top-1 transition-[opacity,transform] duration-150 ease-out opacity-100 translate-y-0 motion-reduce:transition-none motion-reduce:transform-none';
+const COUNT_MOTION_CLASS = 'transition-[opacity,transform] duration-150 ease-out motion-reduce:transition-none motion-reduce:transform-none';
+const COUNT_NUMBER_MOTION_CLASS = 'inline-block animate-in fade-in-0 zoom-in-95 transition-[opacity,transform] duration-150 ease-out motion-reduce:transition-none motion-reduce:transform-none';
+const CONTROL_BUTTON_CLASS =
+  'w-8 h-8 rounded-full border flex items-center justify-center hover:bg-zinc-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40';
+const FIELD_TRIGGER_CLASS =
+  'flex w-full items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] text-left shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40';
+const PANEL_EXIT_MS = 160;
+const CLOSED_PANEL_A11Y_PROPS = { 'aria-hidden': true, inert: true };
 
 export default function FilterBar() {
-  const router = useRouter();
   const [allLocations, setAllLocations] = useState([]);
   const [showLocation, setShowLocation] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
@@ -48,6 +42,77 @@ export default function FilterBar() {
   const [previewLoading, setPreviewLoading] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const previewRef = useRef(null);
+  const previewRequestIdRef = useRef(0);
+  const panelTimersRef = useRef({});
+  const [locationPresence, setLocationPresence] = useState({ isMounted: false, state: 'closed' });
+  const [calendarPresence, setCalendarPresence] = useState({ isMounted: false, state: 'closed' });
+  const [guestsPresence, setGuestsPresence] = useState({ isMounted: false, state: 'closed' });
+
+  const getPanelMotionClass = (state) => `${PANEL_MOTION_CLASS} ${state === 'open' ? OPEN_PANEL_MOTION_CLASS : CLOSED_PANEL_MOTION_CLASS}`;
+
+  const clearPanelTimer = useCallback((panelName) => {
+    if (panelTimersRef.current[panelName]) {
+      window.clearTimeout(panelTimersRef.current[panelName]);
+      panelTimersRef.current[panelName] = null;
+    }
+  }, []);
+
+  const openPanel = useCallback(
+    (panelName, setPanelPresence) => {
+      clearPanelTimer(panelName);
+      setPanelPresence({ isMounted: true, state: 'open' });
+    },
+    [clearPanelTimer],
+  );
+
+  const closePanel = useCallback(
+    (panelName, setPanelPresence) => {
+      clearPanelTimer(panelName);
+      setPanelPresence((current) => (current.isMounted ? { isMounted: true, state: 'closed' } : current));
+      panelTimersRef.current[panelName] = window.setTimeout(() => {
+        setPanelPresence({ isMounted: false, state: 'closed' });
+      }, PANEL_EXIT_MS);
+    },
+    [clearPanelTimer],
+  );
+
+  const openLocationPanel = useCallback(() => {
+    setShowLocation(true);
+    openPanel('location', setLocationPresence);
+  }, [openPanel]);
+
+  const closeLocationPanel = useCallback(() => {
+    setShowLocation(false);
+    closePanel('location', setLocationPresence);
+  }, [closePanel]);
+
+  const openCalendarPanel = useCallback(() => {
+    setShowCalendar(true);
+    openPanel('calendar', setCalendarPresence);
+  }, [openPanel]);
+
+  const closeCalendarPanel = useCallback(() => {
+    setShowCalendar(false);
+    closePanel('calendar', setCalendarPresence);
+  }, [closePanel]);
+
+  const openGuestsPanel = useCallback(() => {
+    setShowHowMany(true);
+    openPanel('guests', setGuestsPresence);
+  }, [openPanel]);
+
+  const closeGuestsPanel = useCallback(() => {
+    setShowHowMany(false);
+    closePanel('guests', setGuestsPresence);
+  }, [closePanel]);
+
+  useEffect(() => {
+    return () => {
+      Object.values(panelTimersRef.current).forEach((timer) => {
+        if (timer) window.clearTimeout(timer);
+      });
+    };
+  }, []);
 
   // fetch locations
   useEffect(() => {
@@ -70,12 +135,12 @@ export default function FilterBar() {
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (locationRef.current && !locationRef.current.contains(e.target)) {
-        setShowLocation(false);
+        closeLocationPanel();
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [closeLocationPanel]);
 
   // Build search query URL from current filter values
   const buildSearchUrl = useCallback((location, dateRange, guests) => {
@@ -90,8 +155,13 @@ export default function FilterBar() {
 
   // Fetch preview results when location is set (dates/guests optional)
   const fetchPreviewResults = useCallback(async (location, dateRange, guests) => {
-    if (!location) return;
+    if (!location) {
+      previewRequestIdRef.current += 1;
+      return;
+    }
 
+    const requestId = previewRequestIdRef.current + 1;
+    previewRequestIdRef.current = requestId;
     setPreviewLoading(true);
     setShowPreview(true);
     try {
@@ -102,23 +172,20 @@ export default function FilterBar() {
       if (dateRange?.from) params.start_date = dateRange.from.toISOString().split('T')[0];
       if (dateRange?.to) params.end_date = dateRange.to.toISOString().split('T')[0];
       const response = await homeSearch(params);
-      const items = (response?.data || []).slice(0, 4);
+      if (previewRequestIdRef.current !== requestId) return;
+      const items = (response?.data || []).slice(0, 5);
       setPreviewResults(items.map((item) => mapProductToItemCard(item)));
     } catch {
+      if (previewRequestIdRef.current !== requestId) return;
       setPreviewResults([]);
     } finally {
-      setPreviewLoading(false);
+      if (previewRequestIdRef.current === requestId) {
+        setPreviewLoading(false);
+      }
     }
   }, []);
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(bookingSchema),
+  const { control, setValue } = useForm({
     defaultValues: {
       whereTo: '',
       dateRange: { from: null, to: null },
@@ -147,24 +214,11 @@ export default function FilterBar() {
     fetchPreviewResults(watchedWhereTo, watchedFrom, updated);
   };
 
-  const onSubmit = async (data) => {
-    const startDate = data?.dateRange?.from ? data.dateRange.from.toISOString().split('T')[0] : '';
-    const endDate = data?.dateRange?.to ? data.dateRange.to.toISOString().split('T')[0] : '';
-    const quantity = data?.howMany?.adults + data?.howMany?.children + data?.howMany?.infants;
-
-    router.push(`/search?location=${encodeURIComponent(String(data?.whereTo).toLowerCase())}&start_date=${startDate}&end_date=${endDate}&quantity=${quantity}`);
-
-    setShowCalendar(false);
-    setShowLocation(false);
-    setShowHowMany(false);
-    setShowPreview(false);
-  };
-
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInputValue(value);
     setHasTyped(true);
-    setShowLocation(true);
+    openLocationPanel();
 
     if (value.trim() === '') {
       setFilteredLocations(allLocations);
@@ -176,29 +230,23 @@ export default function FilterBar() {
   };
 
   const handleInputClick = () => {
-    setShowLocation(true);
-    setShowCalendar(false);
-    setShowHowMany(false);
+    openLocationPanel();
+    closeCalendarPanel();
+    closeGuestsPanel();
     if (!hasTyped) {
       setFilteredLocations(allLocations);
     }
   };
 
-  const applyExampleCity = (cityName) => {
-    setInputValue(cityName);
-    setHasTyped(true);
-    setShowLocation(true);
-    const filtered = allLocations.filter((loc) => loc.name.toLowerCase().startsWith(cityName.toLowerCase()));
-    setFilteredLocations(filtered);
-  };
-
-  const exampleCities = ['Dubai', 'Paris', 'Tokyo'];
-
   return (
-    <div className="relative w-full max-w-[720px]">
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className="relative w-full max-w-[860px]">
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+        }}
+      >
         {/* Connected Filter Fields */}
-        <div className="flex flex-col gap-2 sm:flex-row sm:gap-0 sm:-space-x-px">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(210px,1fr)_minmax(0,1fr)] sm:gap-0">
           {/* Where To */}
           <div className="flex-1 relative" ref={locationRef}>
             <div
@@ -210,6 +258,12 @@ export default function FilterBar() {
               <input
                 type="text"
                 placeholder="Where to?"
+                aria-label="Where to?"
+                aria-autocomplete="list"
+                aria-controls="filter-location-panel"
+                aria-expanded={showLocation ? 'true' : 'false'}
+                aria-haspopup="listbox"
+                role="combobox"
                 value={inputValue}
                 onChange={handleInputChange}
                 onClick={handleInputClick}
@@ -220,45 +274,42 @@ export default function FilterBar() {
             </div>
 
             {/* Location Dropdown */}
-            {showLocation && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border max-h-72 overflow-y-auto z-[70]">
-                {!hasTyped && (
-                  <div className="px-4 pt-3 pb-2 border-b border-[#e4e4e7]">
-                    <p className="text-[12px] uppercase tracking-[0.08em] font-semibold text-[#52525b] mb-2">Popular this week</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      <span className="text-[12px] text-[#52525b] mr-1 self-center">Try</span>
-                      {exampleCities.map((city) => (
-                        <button
-                          key={city}
-                          type="button"
-                          onClick={() => applyExampleCity(city)}
-                          className="rounded-full border border-[#e4e4e7] px-2.5 py-0.5 text-[12px] font-medium text-[#18181b] hover:border-[#588f7a] hover:text-[#588f7a] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40"
-                        >
-                          {city}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+            {locationPresence.isMounted && (
+              <div
+                data-testid="filter-location-panel"
+                id="filter-location-panel"
+                data-state={locationPresence.state}
+                role="listbox"
+                aria-label="Location suggestions"
+                {...(locationPresence.state === 'closed' ? CLOSED_PANEL_A11Y_PROPS : {})}
+                className={`absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border max-h-72 overflow-y-auto z-[70] ${getPanelMotionClass(locationPresence.state)}`}
+              >
                 {filteredLocations.length > 0 ? (
-                  filteredLocations.map((loc) => (
-                    <div
+                  filteredLocations.map((loc, index) => (
+                    <button
                       key={loc.id}
+                      type="button"
+                      role="option"
+                      aria-label={`${loc.name} ${loc.type}`}
+                      aria-selected={inputValue === loc.name ? 'true' : 'false'}
                       onClick={() => {
                         const locValue = loc.slug || loc.name;
                         setValue('whereTo', locValue);
                         setInputValue(loc.name);
-                        setShowLocation(false);
+                        setHasTyped(false);
+                        setFilteredLocations(allLocations);
+                        closeLocationPanel();
                         fetchPreviewResults(locValue, watchedFrom, howMany);
                       }}
-                      className="flex items-center justify-between px-4 py-2 hover:bg-zinc-100 cursor-pointer text-sm"
+                      className={`flex w-full items-center justify-between px-4 py-2 hover:bg-zinc-100 cursor-pointer text-left text-sm ${ROW_MOTION_CLASS}`}
+                      style={{ transitionDelay: `${index * 35}ms` }}
                     >
                       <div className="flex items-center gap-2">
                         <MapPin size={14} className="text-zinc-400 flex-shrink-0" />
                         <span>{loc.name}</span>
                       </div>
                       <span className="text-[12px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded">{loc.type}</span>
-                    </div>
+                    </button>
                   ))
                 ) : (
                   <div className="px-4 py-3 text-sm text-zinc-400 text-center">No cities match that yet.</div>
@@ -269,21 +320,38 @@ export default function FilterBar() {
 
           {/* When */}
           <div className="flex-1 relative">
-            <div
+            <button
+              type="button"
+              aria-label="Choose dates"
+              aria-expanded={showCalendar ? 'true' : 'false'}
+              aria-haspopup="dialog"
               onClick={() => {
                 const opening = !showCalendar;
-                setShowCalendar(opening);
-                setShowLocation(false);
-                setShowHowMany(false);
+                if (opening) {
+                  openCalendarPanel();
+                } else {
+                  closeCalendarPanel();
+                }
+                closeLocationPanel();
+                closeGuestsPanel();
                 if (opening) {
                   setValue('dateRange', { from: null, to: null });
                 }
               }}
-              className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  openCalendarPanel();
+                  closeLocationPanel();
+                  closeGuestsPanel();
+                  setValue('dateRange', { from: null, to: null });
+                }
+              }}
+              className={`${FIELD_TRIGGER_CLASS} sm:rounded-none`}
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <Calendar size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
-              <span className="text-sm font-medium" style={{ color: '#71717a' }}>
+              <span className="block min-w-[136px] truncate whitespace-nowrap text-sm font-medium" style={{ color: '#71717a' }}>
                 {watchedFrom?.from && watchedFrom?.to
                   ? `${new Date(watchedFrom.from).toLocaleDateString('en-US', {
                       month: 'short',
@@ -294,11 +362,20 @@ export default function FilterBar() {
                     })}`
                   : 'When?'}
               </span>
-            </div>
+            </button>
 
             {/* Calendar Dropdown */}
-            {showCalendar && (
-              <div onMouseLeave={() => setShowCalendar(false)} className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-2 z-[70]">
+            {calendarPresence.isMounted && (
+              <div
+                data-testid="filter-calendar-panel"
+                id="filter-calendar-panel"
+                data-state={calendarPresence.state}
+                role="dialog"
+                aria-label="Date selector"
+                {...(calendarPresence.state === 'closed' ? CLOSED_PANEL_A11Y_PROPS : {})}
+                onMouseLeave={closeCalendarPanel}
+                className={`absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-2 z-[70] ${getPanelMotionClass(calendarPresence.state)}`}
+              >
                 <Controller
                   name="dateRange"
                   control={control}
@@ -310,7 +387,7 @@ export default function FilterBar() {
                       onSelect={(value) => {
                         field.onChange(value);
                         if (value?.from && value?.to && value.from.getTime() !== value.to.getTime()) {
-                          setShowCalendar(false);
+                          closeCalendarPanel();
                           fetchPreviewResults(watchedWhereTo, value, howMany);
                         }
                       }}
@@ -325,24 +402,52 @@ export default function FilterBar() {
 
           {/* How Many */}
           <div className="flex-1 relative">
-            <div
+            <button
+              type="button"
+              aria-label="Choose guests"
+              aria-expanded={showHowMany ? 'true' : 'false'}
+              aria-haspopup="dialog"
               onClick={() => {
-                setShowHowMany(!showHowMany);
-                setShowLocation(false);
-                setShowCalendar(false);
+                if (showHowMany) {
+                  closeGuestsPanel();
+                } else {
+                  openGuestsPanel();
+                }
+                closeLocationPanel();
+                closeCalendarPanel();
               }}
-              className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-l-none"
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  openGuestsPanel();
+                  closeLocationPanel();
+                  closeCalendarPanel();
+                }
+              }}
+              className={`${FIELD_TRIGGER_CLASS} sm:rounded-l-none`}
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <Users size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
-              <span className="text-sm font-medium" style={{ color: '#71717a' }}>
-                {total || 1} {total === 1 ? 'Guest' : 'Guests'}
+              <span data-testid="filter-guest-total" className={`text-sm font-medium ${COUNT_MOTION_CLASS}`} style={{ color: '#71717a' }}>
+                <span key={total || 1} className={COUNT_NUMBER_MOTION_CLASS}>
+                  {total || 1}
+                </span>
+                {` ${total === 1 ? 'Guest' : 'Guests'}`}
               </span>
-            </div>
+            </button>
 
             {/* Guests Dropdown */}
-            {showHowMany && (
-              <div onMouseLeave={() => setShowHowMany(false)} className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-4 z-[70] w-64">
+            {guestsPresence.isMounted && (
+              <div
+                data-testid="filter-guests-panel"
+                id="filter-guests-panel"
+                data-state={guestsPresence.state}
+                role="dialog"
+                aria-label="Guest selector"
+                {...(guestsPresence.state === 'closed' ? CLOSED_PANEL_A11Y_PROPS : {})}
+                onMouseLeave={closeGuestsPanel}
+                className={`absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-4 z-[70] w-64 ${getPanelMotionClass(guestsPresence.state)}`}
+              >
                 <p className="text-[12px] text-[#52525b] mb-3 pb-2 border-b border-[#e4e4e7] leading-snug">Adults 13+, children 2 to 12, infants under 2.</p>
                 {['adults', 'children', 'infants'].map((type) => (
                   <div key={type} className="flex justify-between items-center mb-3">
@@ -351,11 +456,11 @@ export default function FilterBar() {
                       <span className="text-xs text-zinc-500 block">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <button type="button" onClick={() => handleDecrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-zinc-100">
+                      <button type="button" aria-label={`Decrease ${type}`} onClick={() => handleDecrement(type)} className={CONTROL_BUTTON_CLASS}>
                         -
                       </button>
-                      <span className="w-6 text-center">{howMany[type]}</span>
-                      <button type="button" onClick={() => handleIncrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-zinc-100">
+                      <span className={`w-6 text-center ${COUNT_MOTION_CLASS}`}>{howMany[type]}</span>
+                      <button type="button" aria-label={`Increase ${type}`} onClick={() => handleIncrement(type)} className={CONTROL_BUTTON_CLASS}>
                         +
                       </button>
                     </div>
@@ -365,14 +470,6 @@ export default function FilterBar() {
             )}
           </div>
         </div>
-
-        {/* Hidden submit for Enter key */}
-        <button type="submit" className="sr-only" aria-label="Search" />
-
-        {/* Error Messages */}
-        {(errors.whereTo || errors.dateRange || errors.howMany) && (
-          <div className="text-red-500 text-xs mt-2">{errors.whereTo?.message || errors.dateRange?.message || 'Please fill all required fields'}</div>
-        )}
       </form>
 
       {/* Preview Results Dropdown */}
@@ -391,12 +488,21 @@ export default function FilterBar() {
             <X size={14} className="text-zinc-400" />
           </button>
           {previewLoading ? (
-            <div className="flex items-center justify-center gap-2 py-6 text-sm text-zinc-400">
-              <Loader2 size={16} className="animate-spin" />
-              <span>Searching the catalog…</span>
+            <div role="status" aria-label="Loading preview results" className="space-y-2 px-4 py-4">
+              {[0, 1, 2].map((index) => (
+                <div
+                  key={index}
+                  data-testid="filter-preview-skeleton-row"
+                  className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-lg bg-zinc-50 px-3 py-2.5 animate-pulse motion-reduce:animate-none"
+                >
+                  <span className="h-3 rounded bg-zinc-200" />
+                  <span className="h-5 w-20 rounded-md bg-zinc-200" />
+                  <span className="ml-auto h-3 w-14 rounded bg-zinc-200" />
+                </div>
+              ))}
             </div>
           ) : previewResults.length > 0 ? (
-            <>
+            <div data-testid="filter-preview-results" data-state="open" className={`${PANEL_MOTION_CLASS} ${OPEN_PANEL_MOTION_CLASS}`}>
               {previewResults.map((item) => (
                 <Link
                   key={item.id}
@@ -415,7 +521,7 @@ export default function FilterBar() {
                 See all matches
                 <ChevronRight size={14} />
               </Link>
-            </>
+            </div>
           ) : (
             <div className="py-6 text-center text-sm text-zinc-400">Nothing matches that combination yet.</div>
           )}

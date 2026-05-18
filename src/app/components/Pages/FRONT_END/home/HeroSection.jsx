@@ -36,10 +36,10 @@ const HeroSection = () => {
             Beach stays, marina views, and easy city plans in one place.
           </p>
         </div>
-        <span className="hero-rise mb-4 inline-block" style={{ '--hero-rise-delay': '240ms' }}>
+        <span className="hero-rise relative z-30 mb-4 inline-block" style={{ '--hero-rise-delay': '240ms' }}>
           <FilterBar />
         </span>
-        <div className="hero-rise flex flex-wrap items-center justify-center gap-3" style={{ '--hero-rise-delay': '320ms' }}>
+        <div className="hero-rise relative z-0 flex flex-wrap items-center justify-center gap-3" style={{ '--hero-rise-delay': '320ms' }}>
           {chips.map((label) => (
             <span key={label} className="inline-flex items-center gap-2 rounded-full border border-[#e4e4e7] bg-white/90 px-4 py-2 text-xs font-semibold text-[#18181b]">
               <span className="inline-block h-2 w-2 rounded-full bg-[#588f7a]" />

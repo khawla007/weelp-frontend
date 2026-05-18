@@ -47,11 +47,19 @@ describe('HeroSection', () => {
     expect(subtitle.getAttribute('style')).toContain('--hero-rise-delay: 160ms');
   });
 
-  it('wraps FilterBar in an inline-block span with hero-rise and 240ms delay', () => {
+  it('layers FilterBar above the hero chips so dropdowns are not covered', () => {
     const { container } = render(<HeroSection />);
 
     const wrapper = container.querySelector('span.hero-rise.inline-block');
+    const chipRow = container.querySelector('div.hero-rise.flex');
+
     expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveClass('relative');
+    expect(wrapper).toHaveClass('z-30');
     expect(wrapper.getAttribute('style')).toContain('--hero-rise-delay: 240ms');
+
+    expect(chipRow).not.toBeNull();
+    expect(chipRow).toHaveClass('relative');
+    expect(chipRow).toHaveClass('z-0');
   });
 });

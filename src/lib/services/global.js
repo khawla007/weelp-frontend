@@ -95,7 +95,7 @@ export const getTags = async () => {
 };
 
 /**
- * Home Search - merges activities, itineraries, packages
+ * Home Search - returns activity and itinerary preview results
  * @param {Object} params - Search parameters
  * @returns {Object} { data: [], pagination: {} }
  */
