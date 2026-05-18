@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronDown, Globe, Headphones, MapPin, Search, ShoppingCart, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -15,6 +15,10 @@ import { getLogoUrl } from '@/lib/config/brand';
 import dynamic from 'next/dynamic';
 
 const MegaMenu = dynamic(() => import('../Modals/MegaMenu/MegaMenu'), { ssr: false });
+const MEGA_MENU_ENTER_START_MS = 20;
+const MEGA_MENU_EXIT_MS = 180;
+const MEGA_MENU_PANEL_ID = 'desktop-mega-menu-panel';
+const prefersReducedMotion = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 // Helper function to generate initials from name
 const getInitials = (name) => {
@@ -27,9 +31,27 @@ const getInitials = (name) => {
 };
 
 const DesktopMenu = ({ stickyHeader }) => {
+  const headerBarRef = useRef(null);
+
+  useEffect(() => {
+    const headerBar = headerBarRef.current;
+    if (!headerBar) return undefined;
+
+    if (!stickyHeader) return undefined;
+
+    const settleTimer = window.setTimeout(() => {
+      headerBar.setAttribute('data-weelp-sticky-settled', 'true');
+    }, 80);
+
+    return () => window.clearTimeout(settleTimer);
+  }, [stickyHeader]);
+
   return (
     <div className="hidden lg:block w-full">
-      <div className={`${stickyHeader ? 'hidden' : 'block'} border-b border-[#ededed] bg-[linear-gradient(180deg,#eaeaea_0%,#ffffff66_100%)]`}>
+      <div
+        aria-hidden={stickyHeader ? true : undefined}
+        className={`${stickyHeader ? 'invisible pointer-events-none' : 'visible'} border-b border-[#ededed] bg-[linear-gradient(180deg,#eaeaea_0%,#ffffff66_100%)]`}
+      >
         <div className="mx-auto flex h-[46px] w-full items-center justify-between gap-4 px-4 md:px-8 xl:px-[60px]">
           <div className="flex items-center gap-4">
             <div className="inline-flex items-center gap-2 text-[14px] text-[#18181b]">
@@ -54,22 +76,28 @@ const DesktopMenu = ({ stickyHeader }) => {
         </div>
       </div>
 
-      <div
-        className={`border-b border-[#ededed] transition-[background-color,border-color,box-shadow,opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-          stickyHeader ? 'fixed top-0 left-0 right-0 z-[99999] bg-[#ffffffcc] shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] backdrop-blur-[47px]' : 'bg-[#ffffffcc] backdrop-blur-[47px]'
-        }`}
-      >
-        <div className="grid h-[66px] w-full items-center gap-4 px-4 py-[8px] md:px-8 xl:px-[60px]" style={{ gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)' }}>
-          <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start focus:outline-none">
-            <img src={getLogoUrl()} alt="Weelp" className="h-9 w-auto" />
-            <span className="text-[18px] font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
-              Weelp.
-            </span>
-          </Link>
+      <div className="h-[66px]" data-testid="desktop-header-slot">
+        <div
+          ref={headerBarRef}
+          data-testid="desktop-header-bar"
+          data-weelp-sticky-header={stickyHeader ? 'true' : undefined}
+          data-weelp-sticky-settled={stickyHeader ? 'false' : undefined}
+          className={`weelp-sticky-header-transition h-[66px] border-b border-[#ededed] transition-[background-color,border-color,box-shadow,backdrop-filter,opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+            stickyHeader ? 'fixed top-0 left-0 right-0 z-[99999] bg-[#ffffffd9] shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] backdrop-blur-[47px]' : 'bg-white/95 shadow-none backdrop-blur-[24px]'
+          }`}
+        >
+          <div className="grid h-full w-full items-center gap-4 px-4 py-[8px] md:px-8 xl:px-[60px]" style={{ gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)' }}>
+            <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start focus:outline-none">
+              <img src={getLogoUrl()} alt="Weelp" className="h-9 w-auto" />
+              <span className="text-[18px] font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
+                Weelp.
+              </span>
+            </Link>
 
-          <NavMenuDesktop />
+            <NavMenuDesktop />
 
-          <HeaderAccount />
+            <HeaderAccount />
+          </div>
         </div>
       </div>
     </div>
@@ -80,9 +108,15 @@ const DESTINATION_ACTIVE_PREFIXES = ['/cities', '/destinations', '/countries', '
 
 const NavMenuDesktop = () => {
   const [megaOpen, setMegaOpen] = useState(false);
+  const [megaMounted, setMegaMounted] = useState(false);
+  const [megaMotionState, setMegaMotionState] = useState('closed');
   const pathname = usePathname();
   const closeTimer = useRef(null);
   const openTimer = useRef(null);
+  const enterTimer = useRef(null);
+  const exitTimer = useRef(null);
+  const megaTriggerRef = useRef(null);
+  const megaPanelRef = useRef(null);
 
   const isHrefActive = (href) => {
     if (!href || !pathname) return false;
@@ -92,29 +126,111 @@ const NavMenuDesktop = () => {
   const isMegaActive = pathname ? DESTINATION_ACTIVE_PREFIXES.some((p) => pathname.startsWith(p)) : false;
 
   const linkClass = (active) =>
-    `group/nav relative flex items-center gap-2 whitespace-nowrap text-[15px] font-medium transition-colors duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#18181b]/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm xl:text-[16px] hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 ${
+    `group/nav relative flex items-center gap-2 whitespace-nowrap rounded-sm text-[15px] font-medium transition-[color] duration-200 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#18181b]/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white xl:text-[16px] hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 ${
       active ? 'text-[#18181b]/70 visited:text-[#18181b]/70' : 'text-black visited:text-black'
     }`;
 
-  const indicator = () => null;
+  const indicator = (active) => (
+    <span
+      aria-hidden="true"
+      className={`pointer-events-none absolute -bottom-2 left-0 h-px w-full origin-left rounded-full bg-[#588f7a] transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none group-hover/nav:scale-x-100 group-hover/nav:opacity-100 ${
+        active ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'
+      }`}
+    />
+  );
 
-  const scheduleOpen = () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-    openTimer.current = setTimeout(() => setMegaOpen(true), 100);
-  };
-
-  const scheduleClose = () => {
+  const clearOpenTimer = useCallback(() => {
     if (openTimer.current) clearTimeout(openTimer.current);
-    closeTimer.current = setTimeout(() => setMegaOpen(false), 150);
-  };
+  }, []);
+
+  const clearCloseTimer = useCallback(() => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+  }, []);
+
+  const clearEnterTimer = useCallback(() => {
+    if (enterTimer.current) clearTimeout(enterTimer.current);
+  }, []);
+
+  const clearExitTimer = useCallback(() => {
+    if (exitTimer.current) clearTimeout(exitTimer.current);
+  }, []);
+
+  const openMega = useCallback(() => {
+    clearOpenTimer();
+    clearCloseTimer();
+    clearEnterTimer();
+    clearExitTimer();
+    setMegaMounted(true);
+    setMegaOpen(true);
+    setMegaMotionState('opening');
+    enterTimer.current = setTimeout(
+      () => {
+        setMegaMotionState('open');
+      },
+      prefersReducedMotion() ? 0 : MEGA_MENU_ENTER_START_MS,
+    );
+  }, [clearCloseTimer, clearEnterTimer, clearExitTimer, clearOpenTimer]);
+
+  const closeMega = useCallback(() => {
+    clearOpenTimer();
+    clearEnterTimer();
+    setMegaOpen(false);
+    setMegaMotionState('closing');
+    clearExitTimer();
+    exitTimer.current = setTimeout(
+      () => {
+        setMegaMounted(false);
+        setMegaMotionState('closed');
+      },
+      prefersReducedMotion() ? 0 : MEGA_MENU_EXIT_MS,
+    );
+  }, [clearEnterTimer, clearExitTimer, clearOpenTimer]);
+
+  const scheduleOpen = useCallback(() => {
+    clearCloseTimer();
+    clearExitTimer();
+    clearOpenTimer();
+    if (megaOpen) return;
+    openTimer.current = setTimeout(openMega, 100);
+  }, [clearCloseTimer, clearExitTimer, clearOpenTimer, megaOpen, openMega]);
+
+  const scheduleClose = useCallback(() => {
+    clearOpenTimer();
+    clearCloseTimer();
+    closeTimer.current = setTimeout(closeMega, 150);
+  }, [clearCloseTimer, clearOpenTimer, closeMega]);
+
+  const isInMegaFocusScope = useCallback((target) => {
+    if (!target || !(target instanceof Node)) return false;
+    return megaTriggerRef.current?.contains(target) || megaPanelRef.current?.contains(target);
+  }, []);
+
+  const handleMegaBlur = useCallback(
+    (event) => {
+      if (isInMegaFocusScope(event.relatedTarget)) return;
+      scheduleClose();
+    },
+    [isInMegaFocusScope, scheduleClose],
+  );
 
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape') setMegaOpen(false);
+      if (e.key === 'Escape') closeMega();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
+  }, [closeMega]);
+
+  useEffect(() => {
+    return () => {
+      if (openTimer.current) clearTimeout(openTimer.current);
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+      if (enterTimer.current) clearTimeout(enterTimer.current);
+      if (exitTimer.current) clearTimeout(exitTimer.current);
+    };
   }, []);
+
+  const megaPanelInteractive = megaMotionState === 'open';
 
   return (
     <nav aria-label="Primary" className="relative flex items-center justify-center">
@@ -124,9 +240,24 @@ const NavMenuDesktop = () => {
             const active = megaOpen || isMegaActive;
             return (
               <li key={nav.title} onMouseEnter={scheduleOpen} onMouseLeave={scheduleClose}>
-                <button type="button" className={linkClass(active)} onClick={() => setMegaOpen((v) => !v)} onFocus={scheduleOpen} onBlur={scheduleClose} aria-expanded={megaOpen} aria-haspopup="menu">
+                <button
+                  ref={megaTriggerRef}
+                  type="button"
+                  className={linkClass(active)}
+                  onClick={() => (megaOpen ? closeMega() : openMega())}
+                  onFocus={scheduleOpen}
+                  onBlur={handleMegaBlur}
+                  aria-controls={MEGA_MENU_PANEL_ID}
+                  aria-expanded={megaOpen}
+                  aria-haspopup="dialog"
+                >
                   {index === 0 && (
-                    <MapPin className={`size-[15px] transition-colors duration-200 ease-out group-hover/nav:text-[#18181b]/70 ${active ? 'text-[#18181b]/70' : 'text-black'}`} strokeWidth={1.24} />
+                    <MapPin
+                      className={`size-[15px] transition-[color,transform] duration-200 ease-out motion-reduce:transition-none group-hover/nav:-translate-y-0.5 group-hover/nav:text-[#18181b]/70 ${
+                        active ? 'text-[#18181b]/70' : 'text-black'
+                      }`}
+                      strokeWidth={1.24}
+                    />
                   )}
                   {nav.title}
                   {indicator(active)}
@@ -139,7 +270,12 @@ const NavMenuDesktop = () => {
             <li key={nav.title}>
               <Link className={linkClass(active)} href={nav.href} aria-current={active ? 'page' : undefined}>
                 {index === 0 && (
-                  <MapPin className={`size-[15px] transition-colors duration-200 ease-out group-hover/nav:text-[#18181b]/70 ${active ? 'text-[#18181b]/70' : 'text-black'}`} strokeWidth={1.24} />
+                  <MapPin
+                    className={`size-[15px] transition-[color,transform] duration-200 ease-out motion-reduce:transition-none group-hover/nav:-translate-y-0.5 group-hover/nav:text-[#18181b]/70 ${
+                      active ? 'text-[#18181b]/70' : 'text-black'
+                    }`}
+                    strokeWidth={1.24}
+                  />
                 )}
                 {nav.title}
                 {indicator(active)}
@@ -149,8 +285,24 @@ const NavMenuDesktop = () => {
         })}
       </ul>
 
-      {megaOpen && (
-        <div className="absolute left-1/2 top-full z-[9999] mt-3 -translate-x-1/2" onMouseEnter={scheduleOpen} onMouseLeave={scheduleClose}>
+      {megaMounted && (
+        <div
+          ref={megaPanelRef}
+          id={MEGA_MENU_PANEL_ID}
+          data-testid="desktop-mega-menu-panel"
+          data-state={megaMotionState}
+          role="dialog"
+          aria-label="Explore destinations"
+          aria-hidden={megaPanelInteractive ? undefined : true}
+          inert={megaPanelInteractive ? undefined : true}
+          className={`absolute left-1/2 top-full z-[9999] mt-3 -translate-x-1/2 transform-gpu transition-[opacity,transform] duration-[180ms] ease-[var(--weelp-ease-out)] will-change-[opacity,transform] motion-reduce:transition-none ${
+            megaMotionState === 'open' ? 'translate-y-0 opacity-100' : megaMotionState === 'opening' ? 'pointer-events-none -translate-y-2 opacity-0' : 'pointer-events-none -translate-y-1 opacity-0'
+          }`}
+          onMouseEnter={scheduleOpen}
+          onMouseLeave={scheduleClose}
+          onFocus={scheduleOpen}
+          onBlur={handleMegaBlur}
+        >
           <MegaMenu />
         </div>
       )}
