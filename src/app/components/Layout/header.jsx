@@ -18,7 +18,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="block w-full relative z-40">
+    <header className="block w-full relative z-40 lg:sticky lg:top-[-47px] lg:z-[99999]">
       <DesktopMenu stickyHeader={isScrolled} />
       <MobileMenu stickyHeader={isScrolled} />
     </header>

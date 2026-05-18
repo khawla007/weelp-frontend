@@ -11,7 +11,7 @@ const BannerSection = () => {
   return (
     <>
       <div className={`bg-[#588f7a] shop_banner ${styles.shop_banner} `}>
-        <BookingForm />
+        <BookingForm variant="searchPage" />
       </div>
       {location && (
         <div className="flex items-center justify-center  bg-[#f8faf9] h-full min-h-20 sm:min-h-36">

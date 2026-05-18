@@ -282,28 +282,22 @@ body {
   }
 
   .weelp-sticky-header-transition[data-weelp-sticky-header='true'] {
-    opacity: 0.98;
-    transform: translate3d(0, -2px, 0);
     transition-property:
       background-color,
       border-color,
       box-shadow,
       -webkit-backdrop-filter,
       backdrop-filter;
-    will-change: transform, opacity;
+    will-change: background-color, border-color, box-shadow, backdrop-filter;
   }
 
   .weelp-sticky-header-transition[data-weelp-sticky-header='true'][data-weelp-sticky-settled='true'] {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
     transition-property:
       background-color,
       border-color,
       box-shadow,
       -webkit-backdrop-filter,
-      backdrop-filter,
-      opacity,
-      transform;
+      backdrop-filter;
   }
 
   .weelp-shimmer {

@@ -1,7 +1,7 @@
 'use client';
 /**  This Form Is Used in HomePage Banner  */
 import React, { useState, useEffect } from 'react';
-import { MapPin, Calendar, Users, Minus, Plus } from 'lucide-react';
+import { MapPin, Calendar, Users, Minus, Plus, LoaderCircle } from 'lucide-react';
 import { useForm, Controller, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -27,8 +27,10 @@ const bookingSchema = z.object({
   }),
 });
 
-export default function BookingForm() {
+export default function BookingForm({ variant = 'default', controlsSlot = null, isSearching = false, onSearchStart }) {
   const router = useRouter(); // for navigation
+  const isModal = variant === 'modal';
+  const isSearchPage = variant === 'searchPage';
 
   const [allLocations, setAllLocations] = useState([]);
   const [showLocation, setShowLocation] = useState(false);
@@ -78,6 +80,8 @@ export default function BookingForm() {
 
   // Handle form submission
   const onSubmit = async (data) => {
+    onSearchStart?.();
+
     // Convert dates to YYYY-MM-DD format
     const startDate = data?.dateRange?.from ? data.dateRange.from.toISOString().split('T')[0] : '';
     const endDate = data?.dateRange?.to ? data.dateRange.to.toISOString().split('T')[0] : '';
@@ -177,9 +181,10 @@ export default function BookingForm() {
   // display form based on data
   if (locations && locations.length > 0) {
     return (
-      <div className="p-4 sm:p-6 px-6 sm:px-0  mx-auto md:w-[560px] w-full relative bannerForm">
+      <div className={`p-4 sm:p-6 px-6 sm:px-0 mx-auto w-full relative bannerForm ${isSearchPage ? 'md:w-[700px]' : 'md:w-[560px]'} ${isModal ? 'pt-0' : ''}`}>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-around items-center gap-4 w-full">
-          <div className="flex border-y-[1px]  shadow-sm border w-full bg-white rounded-l-xl rounded-r-xl">
+          <div data-testid="booking-filter-bar" className="relative flex border-y-[1px] shadow-sm border w-full bg-white rounded-l-xl rounded-r-xl">
+            {controlsSlot}
             {/* Where To? */}
             <div className="flex flex-col items-center border-x border-l-0 w-full  justify-center">
               <div className="p-2 sm:py-2 sm:px-4">
@@ -229,6 +234,18 @@ export default function BookingForm() {
                 {errors.howMany && <p className="text-red-500 text-sm text-center">{errors.howMany?.adults?.message || ''}</p>}
               </div>
             </div>
+
+            {isSearchPage && (
+              <div className="flex shrink-0 items-stretch border-l border-[#e4e4e7]">
+                <button
+                  type="submit"
+                  aria-label="Search trips"
+                  className="flex min-w-[112px] items-center justify-center rounded-r-xl bg-white px-6 text-sm font-semibold text-Bluewhale transition-[background-color,color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#f8faf9] hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+                >
+                  Search
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Toggle Fields */}
@@ -329,13 +346,26 @@ export default function BookingForm() {
                       </div>
                     </div>
                   ))}
-                  <button type="submit" className="w-full py-2 bg-[#588f7a] text-white rounded-md shadow">
-                    Submit
-                  </button>
+                  {!isModal && !isSearchPage && (
+                    <button type="submit" className="w-full py-2 bg-[#588f7a] text-white rounded-md shadow">
+                      Submit
+                    </button>
+                  )}
                 </div>
               </div>
             )}
           </div>
+
+          {isModal && (
+            <button
+              type="submit"
+              aria-label="Search trips"
+              disabled={isSearching}
+              className="flex h-11 min-w-[160px] items-center justify-center rounded-full bg-[#588f7a] px-8 text-sm font-semibold text-white shadow-lg shadow-black/10 transition-[background-color,box-shadow,transform] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#477665] hover:shadow-black/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/45 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:cursor-wait disabled:opacity-90 motion-reduce:transition-none"
+            >
+              {isSearching ? <LoaderCircle data-testid="search-submit-loader" className="h-5 w-5 animate-spin motion-reduce:animate-none" aria-hidden="true" /> : 'Search'}
+            </button>
+          )}
         </form>
       </div>
     );

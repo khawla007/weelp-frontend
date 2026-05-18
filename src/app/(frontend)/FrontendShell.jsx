@@ -18,7 +18,7 @@ export function FrontendShell({ header, footer, children }) {
   }, [pathname]);
 
   return (
-    <>
+    <div className="relative min-h-screen">
       <Suspense fallback={null}>
         <NavigationEventsHandler />
       </Suspense>
@@ -26,6 +26,6 @@ export function FrontendShell({ header, footer, children }) {
       <main className="bg-mainBackground min-h-[90vh] relative">{children}</main>
       {footer}
       <NavigationProgressBar />
-    </>
+    </div>
   );
 }

@@ -82,8 +82,8 @@ const DesktopMenu = ({ stickyHeader }) => {
           data-testid="desktop-header-bar"
           data-weelp-sticky-header={stickyHeader ? 'true' : undefined}
           data-weelp-sticky-settled={stickyHeader ? 'false' : undefined}
-          className={`weelp-sticky-header-transition h-[66px] border-b border-[#ededed] transition-[background-color,border-color,box-shadow,backdrop-filter,opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-            stickyHeader ? 'fixed top-0 left-0 right-0 z-[99999] bg-[#ffffffd9] shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] backdrop-blur-[47px]' : 'bg-white/95 shadow-none backdrop-blur-[24px]'
+          className={`weelp-sticky-header-transition h-[66px] border-b border-[#ededed] transition-[background-color,border-color,box-shadow,backdrop-filter] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+            stickyHeader ? 'bg-[#ffffffd9] shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] backdrop-blur-[47px]' : 'bg-white/95 shadow-none backdrop-blur-[24px]'
           }`}
         >
           <div className="grid h-full w-full items-center gap-4 px-4 py-[8px] md:px-8 xl:px-[60px]" style={{ gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)' }}>

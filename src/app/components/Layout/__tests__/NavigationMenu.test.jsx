@@ -216,14 +216,14 @@ describe('DesktopMenu', () => {
 
     expect(headerSlot()).toHaveClass('h-[66px]');
     expect(headerBar()).toHaveClass('h-[66px]');
-    expect(headerBar().className).toContain('transition-[background-color,border-color,box-shadow,backdrop-filter,opacity,transform]');
+    expect(headerBar().className).toContain('transition-[background-color,border-color,box-shadow,backdrop-filter]');
     expect(headerBar().className).not.toMatch(/transition-all|transition:\s*all/);
 
     rerender(<DesktopMenu stickyHeader />);
 
     expect(headerSlot()).toHaveClass('h-[66px]');
     expect(headerBar()).toHaveClass('h-[66px]');
-    expect(headerBar()).toHaveClass('fixed');
+    expect(headerBar()).not.toHaveClass('fixed');
     expect(headerBar()).toHaveAttribute('data-weelp-sticky-header', 'true');
     expect(headerBar()).toHaveAttribute('data-weelp-sticky-settled', 'false');
     act(() => {
@@ -232,6 +232,7 @@ describe('DesktopMenu', () => {
     expect(headerBar()).toHaveAttribute('data-weelp-sticky-settled', 'true');
     expect(headerBar().className).toContain('backdrop-blur');
     expect(headerBar().className).toContain('shadow-');
+    expect(headerBar().className).not.toMatch(/transition-\[[^\]]*(opacity|transform)/);
     expect(container.innerHTML).not.toMatch(/transition-all|transition:\s*all/);
   });
 });
