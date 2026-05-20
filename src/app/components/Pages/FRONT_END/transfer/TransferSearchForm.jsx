@@ -165,9 +165,9 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
 
   return (
     <div className="mx-auto md:w-[735px] w-full relative flex flex-col gap-4">
-      <div className="relative flex items-stretch bg-white rounded-xl border border-[#e4e4e7]">
+      <div className="relative grid grid-cols-2 overflow-hidden rounded-xl border border-[#e4e4e7] bg-white sm:flex sm:items-stretch">
         {/* Pickup */}
-        <div className="flex-1 min-w-0 border-r border-[#e4e4e7]">
+        <div className="min-w-0 border-r border-b border-[#e4e4e7] sm:flex-1 sm:border-b-0">
           <Controller name="pickup" control={control} render={({ field }) => <LocationComboboxPublic value={field.value} onChange={field.onChange} placeholder="Pickup Location" icon={MapPin} />} />
         </div>
 
@@ -176,18 +176,18 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
           type="button"
           onClick={handleSwap}
           aria-label="Swap pickup and destination"
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 sm:left-1/4 z-20 w-[27px] h-[27px] rounded-full bg-white border border-[#e4e4e7] flex items-center justify-center shadow-[4px_4px_12px_rgba(0,0,0,0.1)] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          className="absolute left-1/2 top-[29px] z-20 flex h-[27px] w-[27px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#e4e4e7] bg-white shadow-[4px_4px_12px_rgba(0,0,0,0.1)] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:left-1/4 sm:top-1/2"
         >
           <ArrowLeftRight className="h-3 w-3 text-[#18181b]" />
         </button>
 
         {/* Destination */}
-        <div className="flex-1 min-w-0 border-r border-[#e4e4e7]">
+        <div className="min-w-0 border-b border-[#e4e4e7] sm:flex-1 sm:border-r sm:border-b-0">
           <Controller name="destination" control={control} render={({ field }) => <LocationComboboxPublic value={field.value} onChange={field.onChange} placeholder="Destination" icon={MapPin} />} />
         </div>
 
         {/* Date */}
-        <div className="flex-1 min-w-0 border-r border-[#e4e4e7]">
+        <div className="min-w-0 border-r border-[#e4e4e7] sm:flex-1">
           <Popover open={dateOpen} onOpenChange={setDateOpen}>
             <PopoverTrigger asChild>
               <button type="button" className="flex w-full items-center gap-2 py-[18px] px-4 text-left bg-transparent outline-none">
@@ -290,7 +290,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
         </div>
 
         {/* Passengers */}
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 sm:flex-1">
           <Popover open={paxOpen} onOpenChange={setPaxOpen}>
             <PopoverTrigger asChild>
               <button type="button" className="flex w-full items-center gap-2 py-[18px] px-4 text-left bg-transparent outline-none">

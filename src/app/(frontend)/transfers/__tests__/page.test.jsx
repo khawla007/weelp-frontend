@@ -98,7 +98,7 @@ describe('TransfersPage', () => {
 
     fireEvent.click(getByTestId('transfer-search-form'));
 
-    expect(container.querySelector('[data-transfer-results-slot]')).toHaveClass('w-full', 'mx-auto', 'md:w-[735px]', 'mt-4');
+    expect(container.querySelector('[data-transfer-results-slot]')).toHaveClass('absolute', 'left-1/2', 'top-full', 'z-[80]', 'mt-4', 'w-full', 'max-w-full', '-translate-x-1/2', 'md:w-[735px]');
     expect(getByTestId('transfer-results-dropdown')).toBeInTheDocument();
   });
 });

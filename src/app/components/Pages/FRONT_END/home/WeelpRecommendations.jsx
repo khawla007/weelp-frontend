@@ -34,7 +34,7 @@ const WeelpRecommendations = async () => {
   const itineraries = getRandomItems(items, 32);
 
   return (
-    <section className="w-full bg-[#f8faf9] mb-10 md:mb-16 lg:mb-24">
+    <section className="w-full bg-[#f8faf9] py-24">
       <div className="w-full px-4 lg:px-[60px]">
         <h3 className="text-[20px] text-[#18181b] mb-4">Weelp Recommendations</h3>
         <div className="mb-4 border-t border-[#e4e4e7]" />

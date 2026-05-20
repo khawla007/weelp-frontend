@@ -1,9 +1,10 @@
 'use client';
 
 import { useCallback, useRef, useState } from 'react';
-import { MapPin } from 'lucide-react';
+import { Command as CommandPrimitive } from 'cmdk';
+import { MapPin, Search } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
 import { Badge } from '@/components/ui/badge';
 import { searchPublicLocations } from '@/lib/services/locations';
 
@@ -65,16 +66,35 @@ export default function LocationComboboxPublic({ value, onChange, placeholder = 
           <span className={`truncate text-xs sm:text-sm font-medium ${isPlaceholder ? 'text-[#71717a]' : 'text-[#18181b]'}`}>{displayLabel}</span>
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[320px] p-0" align="start">
-        <Command shouldFilter={false}>
-          <CommandInput autoFocus placeholder={placeholder} value={query} onValueChange={handleInput} />
-          <CommandList>
+      <PopoverContent
+        className="w-[320px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-[#e4e4e7] bg-white p-0 shadow-[0_8px_24px_rgba(24,24,27,0.12)]"
+        align="start"
+        sideOffset={4}
+      >
+        <Command shouldFilter={false} className="rounded-xl">
+          <div className="flex h-12 items-center gap-2 border-b border-[#e4e4e7] px-3">
+            <Search className="h-4 w-4 shrink-0 text-[#71717a]" />
+            <CommandPrimitive.Input
+              autoFocus
+              placeholder={placeholder}
+              value={query}
+              onValueChange={handleInput}
+              className="h-11 w-full bg-transparent text-sm font-medium text-[#18181b] outline-none placeholder:text-[#71717a] disabled:cursor-not-allowed disabled:opacity-50"
+              style={{ outline: 'none' }}
+            />
+          </div>
+          <CommandList className="max-h-72">
             {loading && <div className="py-6 text-center text-sm text-[#71717a]">Searching...</div>}
-            {!loading && query && results.length === 0 && <CommandEmpty>No locations found.</CommandEmpty>}
+            {!loading && query && results.length === 0 && <CommandEmpty className="py-6 text-center text-sm text-[#71717a]">No locations found.</CommandEmpty>}
             {!loading && results.length > 0 && (
-              <CommandGroup>
+              <CommandGroup className="p-1">
                 {results.map((item) => (
-                  <CommandItem key={`${item.locatable_type}-${item.locatable_id}`} value={`${item.locatable_type}-${item.locatable_id}`} onSelect={() => handleSelect(item)}>
+                  <CommandItem
+                    key={`${item.locatable_type}-${item.locatable_id}`}
+                    value={`${item.locatable_type}-${item.locatable_id}`}
+                    onSelect={() => handleSelect(item)}
+                    className="rounded-lg px-3 py-2 data-[selected=true]:bg-[#f4f4f5] data-[selected=true]:text-[#18181b]"
+                  >
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                       <span className="truncate text-[#18181b]">{item.name}</span>
                       {item.type && (

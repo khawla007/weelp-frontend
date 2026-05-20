@@ -13,7 +13,7 @@ const AiSection = async () => {
   const buddyItems = featured.map((a) => mapProductToItemCard(a));
 
   return (
-    <section className="container-page flex flex-col items-center gap-12 pb-10 md:pb-16 lg:pb-24">
+    <section className="container-page flex flex-col items-center gap-12 pt-14 pb-10 md:pt-[72px] md:pb-16 lg:pt-24 lg:pb-24">
       <h2 className="text-center text-[28px] font-medium text-[#18181b]">Your AI Travel Buddy</h2>
 
       <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">

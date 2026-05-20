@@ -73,7 +73,7 @@ const TransfersPage = () => {
             You&apos;ll discover everything from whisky to Harry Potter, or even some bodysnatchers, in Scotland&apos;s captivating capital.
           </p>
 
-          <div className="mt-2 w-full">
+          <div className="mt-2 w-full relative z-[70]">
             <TransferSearchForm
               onResults={setResults}
               onLoadingChange={setLoading}
@@ -82,13 +82,13 @@ const TransfersPage = () => {
                 setOpen(true);
               }}
             />
-          </div>
 
-          {open ? (
-            <div data-transfer-results-slot className="w-full mx-auto md:w-[735px] mt-4">
-              <TransferResultsDropdown open={open} loading={loading} transfers={results} onSelect={handleSelect} onClose={() => setOpen(false)} pickupAt={meta?.pickupAt} passengers={meta} />
-            </div>
-          ) : null}
+            {open ? (
+              <div data-transfer-results-slot className="absolute left-1/2 top-full z-[80] mt-4 w-full max-w-full -translate-x-1/2 md:w-[735px]">
+                <TransferResultsDropdown open={open} loading={loading} transfers={results} onSelect={handleSelect} onClose={() => setOpen(false)} pickupAt={meta?.pickupAt} passengers={meta} />
+              </div>
+            ) : null}
+          </div>
         </div>
 
         <div data-transfers-globe-background className="hidden 2xl:block absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
