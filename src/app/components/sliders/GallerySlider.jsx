@@ -70,29 +70,36 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff', collapseHidde
           </button>
         </Swiper>
 
-        {/* Thumbnail Slider */}
-        <Swiper
-          onSwiper={setThumbsSwiper}
-          loop={false}
-          watchOverflow={true}
-          spaceBetween={7}
-          slidesPerView={5}
-          freeMode={true}
-          watchSlidesProgress={true}
-          modules={[FreeMode, Navigation, Thumbs]}
-          className={`thumbnail-slider overflow-hidden transition-[max-height,margin-top,opacity] duration-500 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${showGallery ? 'mt-4 max-h-24 opacity-100' : collapseHiddenThumbnails ? 'mt-0 max-h-0 opacity-0 pointer-events-none' : 'mt-4 opacity-0'}`}
+        {/* Thumbnail Slider — grid-rows 0fr->1fr eases to the exact content
+            height (no max-height overshoot), so the reveal has no early-stop jump. */}
+        <div
+          className={`thumbnail-gallery grid transition-[grid-template-rows,margin-top,opacity] duration-500 ease-[var(--weelp-ease-panel)] motion-reduce:transition-none ${showGallery ? 'mt-4 grid-rows-[1fr] opacity-100' : collapseHiddenThumbnails ? 'mt-0 grid-rows-[0fr] opacity-0 pointer-events-none' : 'mt-4 grid-rows-[1fr] opacity-0'}`}
         >
-          {imageData.map((val, index) => (
-            <SwiperSlide key={index}>
-              <img
-                loading="lazy"
-                src={val?.url || val?.image}
-                alt={`Thumbnail ${index + 1}`}
-                className="max-w-80 w-full max-h-[56px] h-14 sm:max-h-[70px] sm:h-20 object-cover rounded-md cursor-pointer"
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+          <div className="min-h-0 overflow-hidden">
+            <Swiper
+              onSwiper={setThumbsSwiper}
+              loop={false}
+              watchOverflow={true}
+              spaceBetween={7}
+              slidesPerView={5}
+              freeMode={true}
+              watchSlidesProgress={true}
+              modules={[FreeMode, Navigation, Thumbs]}
+              className="thumbnail-slider"
+            >
+              {imageData.map((val, index) => (
+                <SwiperSlide key={index}>
+                  <img
+                    loading="lazy"
+                    src={val?.url || val?.image}
+                    alt={`Thumbnail ${index + 1}`}
+                    className="max-w-80 w-full max-h-[56px] h-14 sm:max-h-[70px] sm:h-20 object-cover rounded-md cursor-pointer"
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
       </div>
     );
   }
