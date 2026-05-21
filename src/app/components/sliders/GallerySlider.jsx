@@ -80,7 +80,7 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff', collapseHidde
           freeMode={true}
           watchSlidesProgress={true}
           modules={[FreeMode, Navigation, Thumbs]}
-          className={`thumbnail-slider transition-opacity duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${showGallery ? 'mt-4 max-h-24 opacity-100' : collapseHiddenThumbnails ? 'mt-0 max-h-0 overflow-hidden opacity-0 pointer-events-none' : 'mt-4 opacity-0'}`}
+          className={`thumbnail-slider overflow-hidden transition-[max-height,margin-top,opacity] duration-500 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${showGallery ? 'mt-4 max-h-24 opacity-100' : collapseHiddenThumbnails ? 'mt-0 max-h-0 opacity-0 pointer-events-none' : 'mt-4 opacity-0'}`}
         >
           {imageData.map((val, index) => (
             <SwiperSlide key={index}>
