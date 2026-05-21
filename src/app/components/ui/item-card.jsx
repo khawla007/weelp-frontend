@@ -15,7 +15,7 @@ const FULL_DEFAULTS = { rating: '4.5', reviewCount: '3.4K', discount: '40% OFF' 
  * values so every card looks complete even before API data is available.
  * Pass explicit values (or null) to override.
  */
-export default function ItemCard({ href, image, title, category, excerpt, price, rating, reviewCount, discount, variant = 'full', className = '' }) {
+export default function ItemCard({ href, image, title, category, excerpt, price, rating, reviewCount, discount, variant = 'full', className = '', style }) {
   const isFull = variant === 'full';
 
   // Apply defaults for full variant when values are not explicitly provided
@@ -26,6 +26,7 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
   return (
     <Link
       href={href}
+      style={style}
       className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-white border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] hover:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${className}`}
     >
       {/* Image */}
