@@ -8,10 +8,9 @@ const CityHeroBanner = ({ city }) => {
 
   return (
     <section
-      className="relative isolate mb-10 flex w-full items-center justify-center overflow-hidden page_city_banner lg:mb-24"
+      className="relative isolate mb-10 flex w-full items-center justify-center overflow-hidden page_city_banner lg:mb-24 min-h-[615px] py-10 lg:h-[615px] lg:py-0"
       style={{
         background: 'linear-gradient(-165deg, #f8faf9, #f2f7f5)',
-        height: '615px',
       }}
     >
       <div className="container-page relative z-10 flex h-full flex-col items-center justify-center gap-4 lg:flex-row">

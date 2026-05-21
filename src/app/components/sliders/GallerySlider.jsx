@@ -56,7 +56,7 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff', collapseHidde
                 loading="lazy"
                 src={val?.url || val?.image}
                 alt={val?.alt_text || `Slide ${index + 1}`}
-                className="max-w-full xs:max-w-80 w-full h-[240px] sm:h-[300px] md:h-[360px] lg:h-[400px] object-cover"
+                className="max-w-full xs:max-w-80 w-full h-[240px] sm:h-[280px] md:h-[280px] lg:h-[400px] object-cover"
               />
             </SwiperSlide>
           ))}
