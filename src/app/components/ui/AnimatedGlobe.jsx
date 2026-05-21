@@ -13,8 +13,6 @@ const GLOBE_SCALE = 1.1;
 const MARKER_ELEVATION = 0.05;
 const SURFACE_RADIUS = 0.8 + MARKER_ELEVATION;
 const ROUTE_STEPS = 18;
-const FLIGHT_DOT_OPACITY = 0.72;
-const FLIGHT_DOT_HIDDEN_OPACITY = 0.16;
 const DEFAULT_STAGE_CLASS = 'pointer-events-none absolute inset-0 block overflow-hidden bg-white select-none';
 const DEFAULT_SHELL_CLASS = 'pointer-events-none absolute bottom-[-86px] right-[-18px] z-[3] size-[507px] translate-x-[10%] translate-y-[20%] md:size-[611px] lg:size-[702px]';
 const GLOBE_MARKERS = [
@@ -25,7 +23,7 @@ const GLOBE_MARKERS = [
   { location: [35.6762, 139.6503], size: 0.03 },
 ];
 const FLIGHT_START = GLOBE_MARKERS[0].location;
-const FLIGHT_END = GLOBE_MARKERS[1].location;
+const FLIGHT_END = GLOBE_MARKERS[3].location;
 
 const prefersReducedMotion = () => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const toRadians = (value) => (value * Math.PI) / 180;
@@ -69,15 +67,13 @@ const projectVector = (vector, phi, theta = GLOBE_THETA) => {
   };
 };
 
-const updateFlightOverlay = ({ pathElement, planeElement, staticPlaneElement, startDotElement, endDotElement, phi, progress }) => {
-  if (!pathElement || !planeElement || !staticPlaneElement || !startDotElement || !endDotElement) return;
+const updateFlightOverlay = ({ pathElement, planeElement, staticPlaneElement, phi, progress }) => {
+  if (!pathElement || !planeElement || !staticPlaneElement) return;
 
   const start = locationToVector(FLIGHT_START);
   const end = locationToVector(FLIGHT_END);
   const route = Array.from({ length: ROUTE_STEPS + 1 }, (_, index) => projectVector(slerpVector(start, end, index / ROUTE_STEPS), phi));
   const pathData = route.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`).join(' ');
-  const startPoint = route[0];
-  const endPoint = route[route.length - 1];
   const plane = projectVector(slerpVector(start, end, progress), phi);
   const planeNext = projectVector(slerpVector(start, end, Math.min(progress + 0.012, 1)), phi);
   const planeAngle = (Math.atan2(planeNext.y - plane.y, planeNext.x - plane.x) * 180) / Math.PI + 90;
@@ -85,12 +81,6 @@ const updateFlightOverlay = ({ pathElement, planeElement, staticPlaneElement, st
 
   pathElement.setAttribute('d', pathData);
   pathElement.style.opacity = route.some((point) => point.visible) ? '1' : '0.18';
-  startDotElement.setAttribute('cx', startPoint.x.toFixed(2));
-  startDotElement.setAttribute('cy', startPoint.y.toFixed(2));
-  startDotElement.style.opacity = String(startPoint.visible ? FLIGHT_DOT_OPACITY : FLIGHT_DOT_HIDDEN_OPACITY);
-  endDotElement.setAttribute('cx', endPoint.x.toFixed(2));
-  endDotElement.setAttribute('cy', endPoint.y.toFixed(2));
-  endDotElement.style.opacity = String(endPoint.visible ? FLIGHT_DOT_OPACITY : FLIGHT_DOT_HIDDEN_OPACITY);
   planeElement.setAttribute('transform', `translate(${plane.x.toFixed(2)} ${plane.y.toFixed(2)}) rotate(${planeAngle.toFixed(2)})`);
   planeElement.style.opacity = String(planeVisibility);
   staticPlaneElement.setAttribute('transform', `translate(${plane.x.toFixed(2)} ${plane.y.toFixed(2)}) rotate(${planeAngle.toFixed(2)})`);
@@ -102,8 +92,6 @@ const AnimatedGlobe = ({ activationMediaQuery, stageClassName = '', shellClassNa
   const flightPathRef = useRef(null);
   const flightPlaneRef = useRef(null);
   const staticFlightPlaneRef = useRef(null);
-  const startFlightDotRef = useRef(null);
-  const endFlightDotRef = useRef(null);
   const [isActive, setIsActive] = useState(!activationMediaQuery);
 
   useEffect(() => {
@@ -146,8 +134,6 @@ const AnimatedGlobe = ({ activationMediaQuery, stageClassName = '', shellClassNa
       pathElement: flightPathRef.current,
       planeElement: flightPlaneRef.current,
       staticPlaneElement: staticFlightPlaneRef.current,
-      startDotElement: startFlightDotRef.current,
-      endDotElement: endFlightDotRef.current,
     };
 
     if (reducedMotion) {
@@ -217,30 +203,28 @@ const AnimatedGlobe = ({ activationMediaQuery, stageClassName = '', shellClassNa
         <span className="pointer-events-none absolute inset-[7.5%] rounded-full border border-black/10" />
         <svg data-personalised-flight aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none" className="personalised-flight">
           <path ref={flightPathRef} data-personalised-flight-path d="M 24 63 L 76 47" className="personalised-flight-path" />
-          <circle ref={startFlightDotRef} data-personalised-flight-dot cx="24" cy="63" r="1.2" className="personalised-flight-dot" />
-          <circle ref={endFlightDotRef} data-personalised-flight-dot cx="76" cy="47" r="1.05" className="personalised-flight-dot" />
           <g ref={staticFlightPlaneRef} data-personalised-flight-static-plane className="personalised-flight-plane-static">
-            <svg viewBox="0 0 48 48" className="personalised-flight-plane personalised-flight-boeing" x="-4.2" y="-4.2" width="8.4" height="8.4">
+            <svg viewBox="0 0 48 48" className="personalised-flight-plane personalised-flight-boeing" x="-3" y="-3" width="6" height="6">
               <path
                 d="M24 4c2.2 0 4 1.8 4 4v11.2l15 8.2v4.5l-15-3.4v8.2l5.4 4v3.1L24 41.5l-9.4 2.3v-3.1l5.4-4v-8.2L5 31.9v-4.5l15-8.2V8c0-2.2 1.8-4 4-4Z"
                 fill="#ffffff"
                 stroke="#111111"
-                strokeWidth="1.8"
+                strokeWidth="1.1"
                 strokeLinejoin="round"
               />
-              <path d="M24 8v29.5" stroke="#111111" strokeWidth="1.35" strokeLinecap="round" />
+              <path d="M24 8v29.5" stroke="#111111" strokeWidth="0.9" strokeLinecap="round" />
             </svg>
           </g>
           <g ref={flightPlaneRef} data-personalised-flight-motion className="personalised-flight-plane-motion">
-            <svg data-personalised-flight-plane viewBox="0 0 48 48" className="personalised-flight-plane personalised-flight-boeing" x="-4.2" y="-4.2" width="8.4" height="8.4">
+            <svg data-personalised-flight-plane viewBox="0 0 48 48" className="personalised-flight-plane personalised-flight-boeing" x="-3" y="-3" width="6" height="6">
               <path
                 d="M24 4c2.2 0 4 1.8 4 4v11.2l15 8.2v4.5l-15-3.4v8.2l5.4 4v3.1L24 41.5l-9.4 2.3v-3.1l5.4-4v-8.2L5 31.9v-4.5l15-8.2V8c0-2.2 1.8-4 4-4Z"
                 fill="#ffffff"
                 stroke="#111111"
-                strokeWidth="1.8"
+                strokeWidth="1.1"
                 strokeLinejoin="round"
               />
-              <path d="M24 8v29.5" stroke="#111111" strokeWidth="1.35" strokeLinecap="round" />
+              <path d="M24 8v29.5" stroke="#111111" strokeWidth="0.9" strokeLinecap="round" />
             </svg>
           </g>
         </svg>

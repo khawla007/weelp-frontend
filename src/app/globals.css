@@ -1053,26 +1053,19 @@ body {
   inset: 0;
   z-index: 4;
   overflow: visible;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.18));
 }
 
 .personalised-flight-path {
   fill: none;
   stroke: rgba(17, 17, 17, 0.36);
-  stroke-width: 0.34;
+  stroke-width: 0.2;
   stroke-linecap: round;
   stroke-dasharray: 1.4 2.1;
 }
 
-.personalised-flight-dot {
-  fill: #558e7b;
-  opacity: 0.72;
-  stroke: #ffffff;
-  stroke-width: 0.3;
-}
-
 .personalised-flight-plane {
   overflow: visible;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.18));
 }
 
 .personalised-flight-plane-motion {
