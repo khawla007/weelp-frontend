@@ -80,11 +80,16 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff', collapseHidde
               onSwiper={setThumbsSwiper}
               loop={false}
               watchOverflow={true}
-              spaceBetween={7}
-              slidesPerView={5}
+              spaceBetween={8}
+              slidesPerView={2.5}
+              centerInsufficientSlides={true}
               freeMode={true}
               watchSlidesProgress={true}
               modules={[FreeMode, Navigation, Thumbs]}
+              breakpoints={{
+                640: { slidesPerView: 3.5 },
+                1024: { slidesPerView: 4.5 },
+              }}
               className="thumbnail-slider"
             >
               {imageData.map((val, index) => (
@@ -93,7 +98,7 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff', collapseHidde
                     loading="lazy"
                     src={val?.url || val?.image}
                     alt={`Thumbnail ${index + 1}`}
-                    className="max-w-80 w-full max-h-[56px] h-14 sm:max-h-[70px] sm:h-20 object-cover rounded-md cursor-pointer"
+                    className="w-full h-20 sm:h-24 md:h-28 object-cover rounded-md cursor-pointer"
                   />
                 </SwiperSlide>
               ))}
