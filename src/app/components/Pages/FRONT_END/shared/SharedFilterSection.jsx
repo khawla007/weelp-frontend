@@ -37,10 +37,19 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
     (page) => {
       if (page === currentPage) return;
       setCurrentPage(page);
-      setTimeout(() => sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+      const prefersReduced = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      setTimeout(() => sectionRef.current?.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' }), 50);
     },
     [currentPage],
   );
+
+  const clearFilters = useCallback(() => {
+    setSelectedItemType('');
+    setSelectedCategories([]);
+    setPriceRange([0, 5000]);
+    setRatingFilter(0);
+    setCurrentPage(1);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -163,8 +172,15 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
                   );
                 })
               ) : (
-                <div className="col-span-full flex items-center justify-center min-h-[300px]">
-                  <span className="text-lg text-[#71717a]">No items found</span>
+                <div data-testid="empty-state" className="weelp-fade-up col-span-full flex min-h-[300px] flex-col items-center justify-center gap-4 text-center">
+                  <p className="text-lg text-[#71717a]">No items match your filters.</p>
+                  <button
+                    type="button"
+                    onClick={clearFilters}
+                    className="inline-flex min-h-[44px] items-center rounded-[11.5px] border border-[#588f7a] bg-white px-5 py-2.5 text-[16px] font-medium text-[#588f7a] transition-colors duration-200 motion-reduce:transition-none hover:bg-[#588f7a] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  >
+                    Clear filters
+                  </button>
                 </div>
               )}
             </div>

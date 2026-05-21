@@ -52,9 +52,12 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                   checked={selectedItemType === type.value}
                   onChange={() => onItemTypeChange(type.value)}
                   disabled={disabled}
-                  className="size-[19px] accent-[#588f7a]"
+                  className="size-[19px] accent-[#588f7a] transition-colors duration-200 motion-reduce:transition-none"
                 />
-                <span className="text-[18px] text-[#435a67]" style={{ ...FONT, fontWeight: 500 }}>
+                <span
+                  className="text-[18px] transition-colors duration-200 motion-reduce:transition-none"
+                  style={{ ...FONT, fontWeight: 500, color: selectedItemType === type.value ? '#588f7a' : '#435a67' }}
+                >
                   {type.label}
                 </span>
               </label>
@@ -74,26 +77,34 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                 checked={selectedCategories.length === 0}
                 onChange={() => handleCheckbox('all')}
                 disabled={disabled}
-                className="size-[19px] rounded-[2px] border-2 border-[#e4e4e7] accent-[#588f7a]"
+                className={`size-[19px] rounded-[2px] border-2 accent-[#588f7a] transition-colors duration-200 motion-reduce:transition-none ${
+                  selectedCategories.length === 0 ? 'border-[#588f7a]' : 'border-[#e4e4e7]'
+                }`}
               />
-              <span className="text-[18px] text-[#435a67]" style={{ ...FONT, fontWeight: 500 }}>
+              <span
+                className="text-[18px] transition-colors duration-200 motion-reduce:transition-none"
+                style={{ ...FONT, fontWeight: 500, color: selectedCategories.length === 0 ? '#588f7a' : '#435a67' }}
+              >
                 All
               </span>
             </label>
-            {categories.map((cat, i) => (
-              <label key={i} className={`flex items-center gap-2 cursor-pointer ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
-                <input
-                  type="checkbox"
-                  checked={selectedCategories.includes(cat?.name)}
-                  onChange={() => handleCheckbox(cat?.name)}
-                  disabled={disabled}
-                  className="size-[19px] rounded-[2px] border-2 border-[#e4e4e7] accent-[#588f7a]"
-                />
-                <span className="text-[18px] text-[#435a67]" style={{ ...FONT, fontWeight: 500 }}>
-                  {cat?.name}
-                </span>
-              </label>
-            ))}
+            {categories.map((cat, i) => {
+              const active = selectedCategories.includes(cat?.name);
+              return (
+                <label key={cat?.name ?? i} className={`flex items-center gap-2 cursor-pointer ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
+                  <input
+                    type="checkbox"
+                    checked={active}
+                    onChange={() => handleCheckbox(cat?.name)}
+                    disabled={disabled}
+                    className={`size-[19px] rounded-[2px] border-2 accent-[#588f7a] transition-colors duration-200 motion-reduce:transition-none ${active ? 'border-[#588f7a]' : 'border-[#e4e4e7]'}`}
+                  />
+                  <span className="text-[18px] transition-colors duration-200 motion-reduce:transition-none" style={{ ...FONT, fontWeight: 500, color: active ? '#588f7a' : '#435a67' }}>
+                    {cat?.name}
+                  </span>
+                </label>
+              );
+            })}
           </div>
         </div>
 
@@ -123,7 +134,14 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
           <div className={`flex flex-col gap-3 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
             {[5, 4, 3].map((r) => (
               <label key={r} className="flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="rating" checked={ratingFilter === r} onChange={() => onRatingChange(r)} disabled={disabled} className="size-[19px] accent-[#588f7a]" />
+                <input
+                  type="radio"
+                  name="rating"
+                  checked={ratingFilter === r}
+                  onChange={() => onRatingChange(r)}
+                  disabled={disabled}
+                  className="size-[19px] accent-[#588f7a] transition-colors duration-200 motion-reduce:transition-none"
+                />
                 <div className="flex">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star key={i} size={19} className={i < r ? 'fill-[#fed141] stroke-none' : 'stroke-[#fed141] fill-none'} strokeWidth={2} />

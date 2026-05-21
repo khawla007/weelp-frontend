@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import axios from 'axios';
 
 import SharedFilterSection from '../SharedFilterSection';
@@ -152,5 +152,90 @@ describe('SharedFilterSection grid refresh + reveal', () => {
     const grid = container.querySelector('[data-testid="result-grid"]');
     expect(grid.className).toContain('motion-reduce:opacity-100');
     expect(grid.className).toContain('motion-reduce:transition-none');
+  });
+});
+
+describe('SharedFilterSection empty state + pagination scroll', () => {
+  let scrollSpy;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.useFakeTimers();
+    scrollSpy = jest.fn();
+    Element.prototype.scrollIntoView = scrollSpy;
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    delete window.matchMedia;
+  });
+
+  const flushFetch = async () => {
+    await act(async () => {
+      jest.advanceTimersByTime(500);
+    });
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+  };
+
+  const setReducedMotion = (matches) => {
+    window.matchMedia = jest.fn().mockImplementation((query) => ({
+      matches,
+      media: query,
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+    }));
+  };
+
+  it('renders a calm fade-in empty state with a working Clear filters action', async () => {
+    axios.get.mockResolvedValue({ status: 200, data: { data: [], last_page: 1 } });
+    const { container } = render(<SharedFilterSection scope="city" slug="dubai" />);
+    await flushFetch();
+
+    const empty = container.querySelector('[data-testid="empty-state"]');
+    expect(empty).not.toBeNull();
+    // calm fade-in via the shared utility (reduced-motion collapse handled in globals.css)
+    expect(empty.className).toContain('weelp-fade-up');
+
+    const clearBtn = screen.getByRole('button', { name: /clear filters/i });
+    expect(clearBtn).toBeInTheDocument();
+
+    axios.get.mockClear();
+    axios.get.mockResolvedValue({ status: 200, data: { data: [], last_page: 1 } });
+    fireEvent.click(clearBtn);
+    // clearing resets the price range (new array) so the debounced fetch refires
+    await flushFetch();
+    expect(axios.get).toHaveBeenCalled();
+  });
+
+  it('uses smooth scroll on page change when reduced-motion is not preferred', async () => {
+    setReducedMotion(false);
+    axios.get.mockResolvedValue({ status: 200, data: { data: [{ id: 1, item_type: 'activity', slug: 'a', city_slug: 'dubai' }], last_page: 3 } });
+    render(<SharedFilterSection scope="city" slug="dubai" />);
+    await flushFetch();
+
+    fireEvent.click(screen.getByRole('button', { name: '2' }));
+    await act(async () => {
+      jest.advanceTimersByTime(50);
+    });
+
+    expect(scrollSpy).toHaveBeenCalledWith(expect.objectContaining({ behavior: 'smooth' }));
+  });
+
+  it('uses instant scroll on page change when reduced-motion is preferred', async () => {
+    setReducedMotion(true);
+    axios.get.mockResolvedValue({ status: 200, data: { data: [{ id: 1, item_type: 'activity', slug: 'a', city_slug: 'dubai' }], last_page: 3 } });
+    render(<SharedFilterSection scope="city" slug="dubai" />);
+    await flushFetch();
+
+    fireEvent.click(screen.getByRole('button', { name: '2' }));
+    await act(async () => {
+      jest.advanceTimersByTime(50);
+    });
+
+    expect(scrollSpy).toHaveBeenCalledWith(expect.objectContaining({ behavior: 'auto' }));
   });
 });
