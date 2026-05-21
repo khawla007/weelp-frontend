@@ -82,7 +82,6 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff', collapseHidde
               watchOverflow={true}
               spaceBetween={8}
               slidesPerView={2.5}
-              centerInsufficientSlides={true}
               freeMode={true}
               watchSlidesProgress={true}
               modules={[FreeMode, Navigation, Thumbs]}
@@ -94,12 +93,7 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff', collapseHidde
             >
               {imageData.map((val, index) => (
                 <SwiperSlide key={index}>
-                  <img
-                    loading="lazy"
-                    src={val?.url || val?.image}
-                    alt={`Thumbnail ${index + 1}`}
-                    className="w-full h-20 sm:h-24 md:h-28 object-cover rounded-md cursor-pointer"
-                  />
+                  <img loading="lazy" src={val?.url || val?.image} alt={`Thumbnail ${index + 1}`} className="w-full h-16 sm:h-20 lg:h-24 object-cover object-center rounded-md cursor-pointer" />
                 </SwiperSlide>
               ))}
             </Swiper>
