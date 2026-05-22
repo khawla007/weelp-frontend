@@ -20,7 +20,7 @@ const bgStyle = {
 // Review Section City Page
 export const ReviewSectionCity = ({ cityData, reviews = [] }) => {
   return (
-    <section className="container-page flex flex-wrap pb-10 lg:pb-24">
+    <section className="container-page flex flex-wrap pb-10 md:pb-16 lg:pb-24">
       {/* if values exist inoobjects */}
       {cityData?.location_details && Object.keys(cityData.location_details).length > 0 && (
         <div className="w-full xl:w-1/3 bg-[#f4f4f5]" style={bgStyle}>
@@ -55,7 +55,7 @@ export const ReviewSectionCity = ({ cityData, reviews = [] }) => {
 // Review Section Region Page
 export const ReviewSectionRegion = ({ cityData }) => {
   return (
-    <section className="flex flex-wrap  mt-8">
+    <section className="container-page flex flex-wrap pb-10 md:pb-16 lg:pb-24">
       <div className="w-full xl:w-1/3 bg-[#f4f4f5]" style={bgStyle}>
         <WhatAboutRegion destinationInfo={destinationInfo} />
       </div>

@@ -17,8 +17,8 @@ const SORT_OPTIONS = [
 ];
 
 const SECTION_CLASS_BY_VARIANT = {
-  default: 'mx-auto flex w-full max-w-pen flex-col gap-8 px-4 md:px-6 xl:px-0 py-10 md:py-14 lg:py-[100px]',
-  home: 'container-page flex flex-col gap-8 pb-10 lg:pb-24',
+  default: 'mx-auto flex w-full max-w-pen flex-col gap-8 px-4 md:px-6 xl:px-0 pb-10 md:pb-16 lg:pb-24',
+  home: 'container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24',
 };
 
 export default function SharedToursSection({ scope, slug, title, variant = 'default', className = '' }) {

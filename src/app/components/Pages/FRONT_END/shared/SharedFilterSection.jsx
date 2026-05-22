@@ -15,8 +15,8 @@ import FilterDrawer from './FilterDrawer';
  * @param {{ scope: 'city' | 'region', slug: string, variant?: 'default' | 'home', className?: string }} props
  */
 const SECTION_CLASS_BY_VARIANT = {
-  default: 'mx-auto max-w-pen px-4 sm:px-6 xl:px-0 py-10 md:py-14 lg:py-[100px]',
-  home: 'container-page pb-10 lg:pb-24',
+  default: 'mx-auto max-w-pen px-4 sm:px-6 xl:px-0 pb-10 md:pb-16 lg:pb-24',
+  home: 'container-page pb-10 md:pb-16 lg:pb-24',
 };
 
 export default function SharedFilterSection({ scope, slug, variant = 'default', className = '' }) {

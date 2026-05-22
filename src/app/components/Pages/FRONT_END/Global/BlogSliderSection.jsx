@@ -11,7 +11,7 @@ const BlogSliderSection = ({ sectionTitle }) => {
   const latestBlogs = blogs?.data || [];
 
   return (
-    <section className="container mx-auto flex flex-col gap-3 p-4 sm:py-8 productSlider blog_slider_section">
+    <section className="container-page flex flex-col gap-3 pb-10 md:pb-16 lg:pb-24 productSlider blog_slider_section">
       <h2 className="text-[28px] font-medium text-[#18181b] top-4">{sectionTitle || 'Your Blogs'}</h2>
 
       {error && <span>Something went wrong displaying latest blogs</span>}

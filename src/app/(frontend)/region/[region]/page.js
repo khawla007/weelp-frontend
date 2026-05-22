@@ -93,7 +93,7 @@ export default async function Region({ params }) {
 
       <ReviewSectionRegion />
       {/* Blog Section */}
-      <GuideSection sectionTitle="Blogs" data={fakeData} className="py-[100px]" />
+      <GuideSection sectionTitle="Blogs" data={fakeData} />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={schemaJsonSample()} key="product-jsonld" />
     </>
