@@ -7,7 +7,7 @@ const SAGE_LEAF_PATH = 'M0 571.5c4.16667-99 64.89999-297 274.5-297-219.60001 0-2
 
 const WanderersBanner = () => {
   return (
-    <section aria-labelledby="wanderers-heading" className="relative h-[260px] w-full overflow-hidden bg-white md:h-[300px]">
+    <section aria-labelledby="wanderers-heading" className="relative h-[260px] w-full overflow-hidden bg-white md:h-[300px] mb-10 md:mb-16 lg:mb-24">
       <svg
         aria-hidden="true"
         viewBox="0 0 275 572"

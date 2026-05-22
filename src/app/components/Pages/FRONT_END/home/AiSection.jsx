@@ -13,7 +13,7 @@ const AiSection = async () => {
   const buddyItems = featured.map((a) => mapProductToItemCard(a));
 
   return (
-    <section className="container-page flex flex-col items-center gap-12 pt-14 pb-10 md:pt-[72px] md:pb-16 lg:pt-24 lg:pb-24">
+    <section className="container-page flex flex-col items-center gap-12 pb-10 md:pb-16 lg:pb-24">
       <h2 className="text-center text-[28px] font-medium text-[#18181b]">Your AI Travel Buddy</h2>
 
       <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
@@ -40,7 +40,7 @@ const AiSection = async () => {
 
         <article
           data-personalised-card
-          className={`${SHARED_CARD} group aspect-[32/10] lg:col-span-2 lg:aspect-auto lg:min-h-[440px] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}
+          className={`${SHARED_CARD} group min-h-[260px] sm:min-h-[300px] md:min-h-[360px] lg:col-span-2 lg:min-h-[440px] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}
         >
           {/* Dotted globe — bottom-anchored and clipped by the card. */}
           <PersonalisedGlobe />
