@@ -19,7 +19,7 @@ const BulletList = ({ items }) => (
 
 const TermsPage = () => {
   return (
-    <div className="container-page py-16 md:py-24">
+    <div className="container-page pb-10 md:pb-16 lg:pb-24">
       <div className="mx-auto max-w-4xl">
         <p className="text-sm text-[#71717a]">Last updated: April 4, 2026</p>
         <h1 className="text-4xl md:text-5xl font-bold mt-4 mb-12">Terms of Service</h1>

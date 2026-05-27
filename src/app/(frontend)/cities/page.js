@@ -21,7 +21,7 @@ export default async function CitiesPage({ searchParams }) {
   const total = response?.total ?? 0;
 
   return (
-    <section className="container mx-auto flex flex-col gap-8 px-4 py-10">
+    <section className="container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24">
       <BreadCrumb />
       <SectionHeader superTitle="Discover your next adventure" title="All Cities" titleSize="lg" subtitle="Browse all destinations and find the perfect city for your next trip." />
 
