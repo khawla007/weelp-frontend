@@ -3,7 +3,7 @@ import ToursFilterBar from './ToursFilterBar';
 
 export default function ToursHero() {
   return (
-    <section className="relative z-50 min-h-[320px] sm:min-h-[420px] flex justify-center items-center bg-[#f8faf9] p-6">
+    <section className="relative z-50 min-h-[320px] sm:min-h-[420px] flex justify-center items-center bg-[#f8faf9] p-6 mb-10 md:mb-16 lg:mb-24">
       <div data-tours-globe-background className="hidden 2xl:block absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <AnimatedGlobe
           activationMediaQuery="(min-width: 1536px)"

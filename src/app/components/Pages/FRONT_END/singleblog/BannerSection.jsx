@@ -11,7 +11,7 @@ import GallerySlider from '@/app/components/sliders/GallerySlider';
 
 const BannerSectionBlog = ({ title = '', excerpt = '', tags = [], media_gallery = [] }) => {
   return (
-    <section className={`flex p-6 md:px-0 max-h-[400px] h-full items-center ${styles.banner_single_blog}`}>
+    <section className={`flex p-6 md:px-0 max-h-[400px] h-full items-center mb-10 md:mb-16 lg:mb-24 ${styles.banner_single_blog}`}>
       <div className="w-full md:ps-28 md:pe-8 min-h-full flex flex-col justify-center">
         <div className="2xl:w-3/4 mx-auto">
           <div className="flex flex-col gap-4">
