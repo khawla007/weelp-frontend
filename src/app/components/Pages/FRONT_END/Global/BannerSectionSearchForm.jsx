@@ -11,7 +11,7 @@ const BannerSectionSearchForm = ({ title, description }) => {
 
   if (title && description) {
     return (
-      <section className="relative overflow-hidden min-h-[320px] sm:min-h-[420px] h-full flex justify-center items-center bg-[#f8faf9] p-6">
+      <section className="relative overflow-hidden min-h-[320px] sm:min-h-[420px] h-full flex justify-center items-center bg-[#f8faf9] p-6 mb-10 md:mb-16 lg:mb-24">
         {isExploreCreators ? (
           <div data-explore-creators-globe-background className="hidden 2xl:block absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
             <AnimatedGlobe

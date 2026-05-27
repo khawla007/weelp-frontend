@@ -129,7 +129,7 @@ const SingleProductTabSection = ({
   const bottomImage = sidebarBottomImage || SIDEBAR_IMAGES[productType];
 
   return (
-    <section className="w-full bg-white mt-[70px]">
+    <section className="w-full bg-white">
       {/* Sticky Tab Bar */}
       <div
         className={`${fixedTab ? 'fixed' : 'relative'} z-[11] w-full bg-white border-b border-[#e4e4e7] transition-[background-color,border-color,box-shadow,opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${fixedTab ? 'shadow-[0_4px_12px_rgba(0,0,0,0.06)]' : ''}`}
