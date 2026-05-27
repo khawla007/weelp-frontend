@@ -25,7 +25,10 @@ const BannerSection = () => {
   const { name, description } = regionDetails;
 
   return (
-    <section className="relative flex min-h-[420px] sm:min-h-[480px] md:min-h-[520px] lg:min-h-[60vh] page_country_banner mb-10 md:mb-16 lg:mb-24" style={{ background: 'linear-gradient(to bottom, #FFFFFF, #f2f7f5)' }}>
+    <section
+      className="relative flex min-h-[420px] sm:min-h-[480px] md:min-h-[520px] lg:min-h-[60vh] page_country_banner mb-10 md:mb-16 lg:mb-24"
+      style={{ background: 'linear-gradient(to bottom, #FFFFFF, #f2f7f5)' }}
+    >
       <div className="relative mx-auto flex h-full w-full items-center">
         <div className="flex flex-[1] flex-col items-start gap-4 p-5 sm:p-8 md:p-12 lg:p-20">
           <div className="flex flex-col justify-start gap-4">
