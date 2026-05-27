@@ -9,7 +9,7 @@ const AboutStory = () => {
   const [imageError, setImageError] = useState(false);
 
   return (
-    <section className="container mx-auto px-4 py-[70px]">
+    <section className="container-page pb-10 md:pb-16 lg:pb-24">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <h2 className="text-[28px] md:text-[28px] text-[#18181b] mb-6">Our Story</h2>

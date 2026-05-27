@@ -7,8 +7,8 @@ const AboutStats = () => {
   ];
 
   return (
-    <section className="py-12 px-4 bg-[#f2f7f5]">
-      <div className="container mx-auto">
+    <section className="w-full bg-[#f2f7f5] py-10 md:py-16 lg:py-24 mb-10 md:mb-16 lg:mb-24">
+      <div className="container-page">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">

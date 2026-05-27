@@ -25,7 +25,7 @@ const AboutValues = () => {
   ];
 
   return (
-    <section className="container mx-auto px-4 py-[70px]">
+    <section className="container-page pb-10 md:pb-16 lg:pb-24">
       <h2 className="mb-12 text-center text-[28px] text-[#18181b] md:text-[28px]">Our Values</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {values.map((value, index) => {

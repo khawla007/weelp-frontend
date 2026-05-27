@@ -43,7 +43,7 @@ export default async function CityItemsListing({ citySlug, itemType, searchParam
   const basePath = `/cities/${citySlug}/${itemType}`;
 
   return (
-    <section className="container mx-auto flex flex-col gap-8 px-4 py-[70px]">
+    <section className="container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24">
       <BreadCrumb />
       <SectionHeader superTitle={`Explore ${cityName}`} title={`All ${label}`} titleSize="lg" subtitle={`Discover the best ${label.toLowerCase()} in ${cityName}.`} />
 
