@@ -342,9 +342,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                     >
                       <Check
                         size={14}
-                        className={`text-white transition-transform duration-[120ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-                          isChecked ? 'scale-100' : 'scale-0'
-                        }`}
+                        className={`text-white transition-transform duration-[120ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${isChecked ? 'scale-100' : 'scale-0'}`}
                       />
                     </span>
                     <div className="flex-1 min-w-0">
