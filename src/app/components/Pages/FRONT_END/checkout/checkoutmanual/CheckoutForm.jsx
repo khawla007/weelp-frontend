@@ -230,14 +230,8 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
         )}
 
         {/* Handle Submit */}
-        <Button
-          type="submit"
-          disabled={!stripe || methods.formState.isSubmitting}
-          className="flex items-center justify-center gap-2"
-        >
-          {methods.formState.isSubmitting && (
-            <Loader2 size={16} className="animate-spin motion-reduce:hidden" aria-hidden="true" />
-          )}
+        <Button type="submit" disabled={!stripe || methods.formState.isSubmitting} className="flex items-center justify-center gap-2">
+          {methods.formState.isSubmitting && <Loader2 size={16} className="animate-spin motion-reduce:hidden" aria-hidden="true" />}
           {methods.formState.isSubmitting ? 'Processing payment…' : 'Proceed'}
         </Button>
       </form>
