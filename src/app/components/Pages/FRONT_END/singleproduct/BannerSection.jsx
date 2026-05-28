@@ -8,6 +8,7 @@ import { CircleCheckBig, Clock4, MapPin, Star, Heart, ChevronLeft, ChevronRight 
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
+const buttonMotion = 'hover:scale-[1.03] active:scale-100 transition-[background-color,transform] duration-150 ease-[var(--weelp-ease-out)] motion-reduce:transition-none';
 
 const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null, primaryLocation = null, city = null, scheduleDisplay = null }) => {
   const galleryLen = media_gallery?.length || 0;
@@ -123,7 +124,7 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
             {/* View Gallery Button */}
             <button
               type="button"
-              className={`absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-[4px_4px_12px_rgba(0,0,0,0.1)] text-[#18181b] text-sm font-medium hover:bg-[#f4f4f5] hover:scale-[1.03] active:scale-100 transition-[background-color,transform] duration-150 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${focusRing}`}
+              className={`absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-[4px_4px_12px_rgba(0,0,0,0.1)] text-[#18181b] text-sm font-medium hover:bg-[#f4f4f5] ${buttonMotion} ${focusRing}`}
             >
               View Gallery
             </button>
@@ -135,7 +136,7 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
                 aria-label="Previous gallery image"
                 onClick={handlePrev}
                 disabled={galleryLen <= 1}
-                className={`flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] hover:scale-[1.03] active:scale-100 disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed transition-[background-color,transform] duration-150 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${focusRing}`}
+                className={`flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed ${buttonMotion} ${focusRing}`}
               >
                 <ChevronLeft size={16} />
               </button>
@@ -144,7 +145,7 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
                 aria-label="Next gallery image"
                 onClick={handleNext}
                 disabled={galleryLen <= 1}
-                className={`flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] hover:scale-[1.03] active:scale-100 disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed transition-[background-color,transform] duration-150 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${focusRing}`}
+                className={`flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed ${buttonMotion} ${focusRing}`}
               >
                 <ChevronRight size={16} />
               </button>
