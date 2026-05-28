@@ -17,6 +17,7 @@ import { useToast } from '@/hooks/use-toast';
 import { editUserProfileAction } from '@/lib/actions/userActions'; // actions not working
 import { checkoutCreateOrder } from '@/lib/actions/checkout'; // actions not working
 import axios from 'axios';
+import { AlertTriangle, Loader2 } from 'lucide-react';
 
 const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
   const stripe = useStripe();
@@ -44,6 +45,9 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
     },
   });
 
+  const [submitError, setSubmitError] = useState(null);
+  const [paymentSucceeded, setPaymentSucceeded] = useState(false);
+
   const item = cartItems.at(0) || {}; // retrieve item
 
   // prepare item data
@@ -64,12 +68,13 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
 
   // handlesubmit
   const handleFormSubmit = async (profileData) => {
+    setSubmitError(null);
     try {
       // Check if Stripe is ready
       if (!stripe || !elements) {
-        toast({
-          title: 'Payment system is not ready. Please try again later.',
-        });
+        const msg = 'Payment system is not ready. Please try again later.';
+        setSubmitError(msg);
+        toast({ title: msg });
         return;
       }
 
@@ -81,10 +86,9 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
       });
 
       if (!profileResponse.data?.success) {
-        toast({
-          title: 'Failed to update profile. Please try again.',
-          variant: 'destructive',
-        });
+        const msg = 'Failed to update profile. Please try again.';
+        setSubmitError(msg);
+        toast({ title: msg, variant: 'destructive' });
         return;
       }
 
@@ -137,10 +141,8 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
       // Check response
       if (!orderResponse.data?.success) {
         const errMsg = orderResponse.data?.error || 'Failed to create order. Please try again.';
-        toast({
-          title: errMsg,
-          variant: 'destructive',
-        });
+        setSubmitError(errMsg);
+        toast({ title: errMsg, variant: 'destructive' });
         // Stale cart item — clear so user can re-add fresh selection
         if (orderResponse.data?.code === 'ORDERABLE_NOT_FOUND') {
           clearCart?.();
@@ -163,25 +165,29 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
 
       // Error If then display
       if (result.error) {
-        toast({
-          title: result?.error?.message || 'Payment failed. Please try again.',
-          variant: 'destructive',
-        });
+        const msg = result?.error?.message || 'Payment failed. Please try again.';
+        setSubmitError(msg);
+        toast({ title: msg, variant: 'destructive' });
       } else {
+        setPaymentSucceeded(true);
         toast({ title: 'Processing your payment...' });
       }
     } catch (error) {
       console.log('Unexpected error during checkout:', error);
-      toast({
-        title: 'An unexpected error occurred. Please try again.',
-        variant: 'destructive',
-      });
+      const msg = 'An unexpected error occurred. Please try again.';
+      setSubmitError(msg);
+      toast({ title: msg, variant: 'destructive' });
     }
   };
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleFormSubmit)} className="flex flex-col gap-4 p-4">
+      <form
+        onSubmit={methods.handleSubmit(handleFormSubmit)}
+        className={`flex flex-col gap-4 p-4 transition-opacity duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+          paymentSucceeded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}
+      >
         {/* Custom Checkout Fields  */}
         <CheckoutFields />
 
@@ -212,9 +218,27 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
           }}
         />
 
+        {/* Inline submit error */}
+        {submitError && (
+          <div
+            role="alert"
+            className="rounded-md border border-[#ff725e] bg-[#ffffff] p-4 flex items-start gap-2 text-sm text-[#18181b] transition-[opacity,border-color] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none animate-fade-in"
+          >
+            <AlertTriangle size={16} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
+            <span>{submitError}</span>
+          </div>
+        )}
+
         {/* Handle Submit */}
-        <Button type="submit" disabled={!stripe || methods.formState.isSubmitting}>
-          {methods.formState.isSubmitting ? 'Processing...' : 'Proceed'}
+        <Button
+          type="submit"
+          disabled={!stripe || methods.formState.isSubmitting}
+          className="flex items-center justify-center gap-2"
+        >
+          {methods.formState.isSubmitting && (
+            <Loader2 size={16} className="animate-spin motion-reduce:hidden" aria-hidden="true" />
+          )}
+          {methods.formState.isSubmitting ? 'Processing payment…' : 'Proceed'}
         </Button>
       </form>
     </FormProvider>

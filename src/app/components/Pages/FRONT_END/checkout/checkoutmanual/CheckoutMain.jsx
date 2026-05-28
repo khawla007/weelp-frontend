@@ -6,6 +6,7 @@ import { getStripe } from '@/lib/stripe/stripe';
 import CheckoutForm from './CheckoutForm';
 import { useSession } from 'next-auth/react';
 import { CheckoutItems, CheckoutUserDetailCard, CheckoutUserDetailCardSkeleton, CheckoutItemsSkeleton } from '../CheckoutCards';
+import { AlertTriangle } from 'lucide-react';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { useUserProfile } from '@/hooks/api/customer/profile';
 import { useNavigationStore } from '@/lib/store/useNavigationStore';
@@ -138,12 +139,25 @@ export default function CheckoutMainManual() {
   //  Show error
   if (error) {
     return (
-      <div className="text-center text-red-600 grid h-screen place-content-center">
-        <p>Error: {error}</p>
-        <button onClick={() => location.reload()} className="mt-2 px-4 py-2 bg-blue-600 text-white rounded">
-          Try Again
-        </button>
-      </div>
+      <section className="flex items-center justify-center min-h-[60vh] px-6">
+        <div
+          role="alert"
+          className="max-w-md w-full rounded-xl border border-[#ff725e] bg-[#ffffff] p-6 flex flex-col gap-3 transition-[opacity,border-color] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none animate-fade-in"
+        >
+          <div className="flex items-center gap-2 text-[#ff725e]">
+            <AlertTriangle size={20} aria-hidden="true" />
+            <h2 className="font-semibold text-base">Checkout couldn&apos;t load</h2>
+          </div>
+          <p className="text-sm text-[#18181b]">{error}</p>
+          <button
+            type="button"
+            onClick={() => location.reload()}
+            className="self-start px-4 py-2 bg-[#588f7a] hover:bg-[#4d8069] text-white text-sm font-medium rounded-md transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40"
+          >
+            Try Again
+          </button>
+        </div>
+      </section>
     );
   }
 
