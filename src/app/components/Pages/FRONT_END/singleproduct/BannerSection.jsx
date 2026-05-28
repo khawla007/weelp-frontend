@@ -1,8 +1,7 @@
-import Image from 'next/image';
 import BreadCrumb from '@/app/components/BreadCrumb';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
-import { CircleCheckBig, Clock4, MapPin, Star, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
-import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
+import { CircleCheckBig, Clock4, MapPin, Star, Heart } from 'lucide-react';
+import GallerySlider from '@/app/components/sliders/GallerySlider';
 
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
 
@@ -58,49 +57,8 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
 
         {/* Image Gallery */}
         {media_gallery?.length > 0 && (
-          <div className="relative mt-6">
-            <div className="flex gap-1 h-[250px] lg:h-[349px] overflow-hidden">
-              {media_gallery.slice(0, 3).map((img, index) => (
-                <div key={index} className={`relative flex-1 overflow-hidden ${index === 0 ? 'rounded-l-xl' : ''} ${index === Math.min(media_gallery.length, 3) - 1 ? 'rounded-r-xl' : ''}`}>
-                  <Image
-                    src={img?.url}
-                    alt={img?.alt_text || `${activityName} Image ${index + 1}`}
-                    fill
-                    sizes="(max-width: 1024px) 33vw, 480px"
-                    placeholder="blur"
-                    blurDataURL={IMAGE_BLUR_DATA_URL}
-                    priority={index === 0}
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* View Gallery Button */}
-            <button
-              type="button"
-              className={`absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-[4px_4px_12px_rgba(0,0,0,0.1)] text-[#18181b] text-sm font-medium hover:bg-[#f4f4f5] transition-colors ${focusRing}`}
-            >
-              View Gallery
-            </button>
-
-            {/* Navigation Arrows */}
-            <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
-              <button
-                type="button"
-                aria-label="Previous gallery image"
-                className={`flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] transition-colors ${focusRing}`}
-              >
-                <ChevronLeft size={16} />
-              </button>
-              <button
-                type="button"
-                aria-label="Next gallery image"
-                className={`flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] transition-colors ${focusRing}`}
-              >
-                <ChevronRight size={16} />
-              </button>
-            </div>
+          <div className="mt-6">
+            <GallerySlider data={media_gallery} collapseHiddenThumbnails />
           </div>
         )}
       </div>
