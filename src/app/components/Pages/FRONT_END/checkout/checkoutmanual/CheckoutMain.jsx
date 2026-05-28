@@ -5,7 +5,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { getStripe } from '@/lib/stripe/stripe';
 import CheckoutForm from './CheckoutForm';
 import { useSession } from 'next-auth/react';
-import { CheckoutItems, CheckoutUserDetailCard } from '../CheckoutCards';
+import { CheckoutItems, CheckoutUserDetailCard, CheckoutUserDetailCardSkeleton, CheckoutItemsSkeleton } from '../CheckoutCards';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { useUserProfile } from '@/hooks/api/customer/profile';
 import { useNavigationStore } from '@/lib/store/useNavigationStore';
@@ -105,7 +105,34 @@ export default function CheckoutMainManual() {
   }, [isPreparing, setNavigating]);
 
   if (isPreparing) {
-    return null;
+    return (
+      <section className="flex flex-col-reverse xl:flex-row" aria-busy="true">
+        <div className="w-full p-6 pt-10 pb-24 xl:w-3/5 max-w-3xl mx:auto xl:ml-auto xl:mr-28 space-y-4">
+          <div className="flex flex-col border rounded-xl">
+            <div className="font-semibold text-lg text-Blueish p-4 border-b">
+              <div className="weelp-shimmer h-5 w-40 rounded" aria-hidden="true" />
+            </div>
+            <CheckoutUserDetailCardSkeleton />
+            <div className="p-4 flex flex-col gap-4" aria-hidden="true">
+              <div className="weelp-shimmer h-6 w-44 rounded" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="weelp-shimmer h-10 rounded" />
+                <div className="weelp-shimmer h-10 rounded" />
+                <div className="weelp-shimmer h-10 rounded sm:col-span-2" />
+                <div className="weelp-shimmer h-10 rounded" />
+                <div className="weelp-shimmer h-10 rounded" />
+                <div className="weelp-shimmer h-24 rounded sm:col-span-2" />
+              </div>
+              <div className="weelp-shimmer h-32 rounded mt-2" />
+              <div className="weelp-shimmer h-11 rounded mt-2" />
+            </div>
+          </div>
+        </div>
+        <div className="w-full p-6 pt-10 pb-24 xl:w-2/5 xl:ps-20 bg-[#f4f4f5]">
+          <CheckoutItemsSkeleton />
+        </div>
+      </section>
+    );
   }
 
   //  Show error
@@ -126,7 +153,7 @@ export default function CheckoutMainManual() {
   }
 
   return (
-    <section className="flex flex-col-reverse xl:flex-row">
+    <section className="flex flex-col-reverse xl:flex-row animate-fade-in">
       <div className="w-full p-6 pt-10 pb-24 xl:w-3/5 max-w-3xl mx:auto xl:ml-auto xl:mr-28 space-y-4">
         <div className="flex flex-col border rounded-xl">
           <h2 className="font-semibold text-lg text-Blueish p-4 border-b">Contact Details</h2>

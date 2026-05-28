@@ -351,6 +351,21 @@ body {
     animation: weelpRowPulse 600ms var(--weelp-ease-out) both;
   }
 
+  @keyframes weelpFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: weelpFadeIn 220ms var(--weelp-ease-out) both;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .weelp-fade-up,
     .weelp-scale-in,
@@ -363,7 +378,8 @@ body {
     }
 
     .animate-price-fade,
-    .animate-row-pulse {
+    .animate-row-pulse,
+    .animate-fade-in {
       animation: none;
     }
 

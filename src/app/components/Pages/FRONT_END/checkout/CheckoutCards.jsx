@@ -463,3 +463,29 @@ export const CheckoutReview = () => {
     </div>
   );
 };
+
+export const CheckoutUserDetailCardSkeleton = () => (
+  <div className="flex gap-4 p-4 items-center" aria-hidden="true">
+    <div className="weelp-shimmer w-12 h-12 rounded-full" />
+    <div className="flex flex-col gap-2 flex-1">
+      <div className="weelp-shimmer h-4 w-32 rounded" />
+      <div className="weelp-shimmer h-4 w-48 rounded" />
+    </div>
+  </div>
+);
+
+export const CheckoutItemsSkeleton = () => (
+  <div className="flex flex-col gap-4" aria-busy="true" aria-label="Loading order summary">
+    <div className="bg-white max-w-md flex flex-col rounded-xl p-6 gap-2" aria-hidden="true">
+      <div className="weelp-shimmer h-6 w-3/4 rounded" />
+      <div className="weelp-shimmer h-4 w-1/2 rounded mt-2" />
+      <div className="weelp-shimmer h-4 w-2/3 rounded" />
+      <div className="weelp-shimmer h-4 w-1/3 rounded" />
+    </div>
+    <div className="mt-6 flex flex-col gap-2" aria-hidden="true">
+      <div className="weelp-shimmer h-5 w-40 rounded" />
+      <div className="weelp-shimmer h-4 w-56 rounded" />
+      <div className="weelp-shimmer h-4 w-44 rounded mt-3" />
+    </div>
+  </div>
+);
