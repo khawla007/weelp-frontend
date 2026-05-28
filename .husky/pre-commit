@@ -1,8 +1,18 @@
 # Run only tests related to staged files. Full suite OOMs the worker;
 # CI runs the full suite via npm run test:ci.
+#
+# NEXT_UNHANDLED_REJECTION_FILTER=disabled opts out of Next 16's
+# unhandled-rejection polyfill (node-environment-extensions). The
+# polyfill recursively wraps itself across imported modules and
+# overflows the stack during jest teardown — observed on Node 20.20.2
+# with Next 16.x when a staged JSX file imports into any sibling
+# __tests__ test (e.g. NavigationMenu.jsx -> NavigationMenu.test.jsx).
+# The env var is the upstream-documented escape hatch; it changes no
+# test assertions, only the suppression behaviour around prerender
+# rejection logging — irrelevant in a unit-test process.
 STAGED_JS=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(js|jsx|ts|tsx)$' || true)
 if [ -n "$STAGED_JS" ]; then
-  NODE_OPTIONS="--max-old-space-size=8192" npx jest --watchAll=false --runInBand --findRelatedTests --passWithNoTests $STAGED_JS
+  NODE_OPTIONS="--max-old-space-size=8192" NEXT_UNHANDLED_REJECTION_FILTER=disabled npx jest --watchAll=false --runInBand --findRelatedTests --passWithNoTests $STAGED_JS
 fi
 
 npx prettier . --write
