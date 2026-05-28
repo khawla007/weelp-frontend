@@ -159,10 +159,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
         ) : (
           <h3 className="text-[#18181b] font-bold text-2xl lg:text-[28px]">
             From{' '}
-            <span
-              key={`fallback-${productData?.pricing?.regular_price ?? 0}`}
-              className="inline-block animate-price-fade"
-            >
+            <span key={`fallback-${productData?.pricing?.regular_price ?? 0}`} className="inline-block animate-price-fade">
               {formatCurrency(Number(productData?.pricing?.regular_price ?? 0), productData?.pricing?.currency ?? 'USD')}
             </span>{' '}
             / person
@@ -184,7 +181,10 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                       <span key={`reg-${regularPrice}`} className="inline-block animate-price-fade">
                         {formatCurrency(regularPrice, pricing.currency)}
                       </span>{' '}
-                      × <span key={`head-${pricing.headcount}`} className="inline-block animate-price-fade">{pricing.headcount}</span>
+                      ×{' '}
+                      <span key={`head-${pricing.headcount}`} className="inline-block animate-price-fade">
+                        {pricing.headcount}
+                      </span>
                     </span>
                     <span className="text-[#18181b]">
                       <span key={`sub-${regularSubtotal}`} className="inline-block animate-price-fade">
@@ -196,7 +196,8 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                     <RowPulse value={pricing.season.savings} className="flex justify-between text-green-700">
                       <span>Seasonal rate{pricing.season.name ? ` (${pricing.season.name})` : ''} applied</span>
                       <span>
-                        -<span key={`season-${pricing.season.savings}`} className="inline-block animate-price-fade">
+                        -
+                        <span key={`season-${pricing.season.savings}`} className="inline-block animate-price-fade">
                           {formatCurrency(pricing.season.savings, pricing.currency)}
                         </span>
                       </span>
@@ -213,7 +214,8 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                         <RowPulse value={pricing.groupDiscount.amount} className="flex justify-between text-green-700">
                           <span>Group discount ({discountLabel})</span>
                           <span>
-                            -<span key={`grp-${pricing.groupDiscount.amount}`} className="inline-block animate-price-fade">
+                            -
+                            <span key={`grp-${pricing.groupDiscount.amount}`} className="inline-block animate-price-fade">
                               {formatCurrency(pricing.groupDiscount.amount, pricing.currency)}
                             </span>
                           </span>
@@ -238,7 +240,8 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                     <RowPulse value={pricing.earlyBirdDiscount.amount} className="flex justify-between text-green-700">
                       <span>Early bird discount</span>
                       <span>
-                        -<span key={`eb-${pricing.earlyBirdDiscount.amount}`} className="inline-block animate-price-fade">
+                        -
+                        <span key={`eb-${pricing.earlyBirdDiscount.amount}`} className="inline-block animate-price-fade">
                           {formatCurrency(pricing.earlyBirdDiscount.amount, pricing.currency)}
                         </span>
                       </span>
@@ -248,7 +251,8 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                     <RowPulse value={pricing.lastMinuteDiscount.amount} className="flex justify-between text-green-700">
                       <span>Last minute discount</span>
                       <span>
-                        -<span key={`lm-${pricing.lastMinuteDiscount.amount}`} className="inline-block animate-price-fade">
+                        -
+                        <span key={`lm-${pricing.lastMinuteDiscount.amount}`} className="inline-block animate-price-fade">
                           {formatCurrency(pricing.lastMinuteDiscount.amount, pricing.currency)}
                         </span>
                       </span>
@@ -258,7 +262,8 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                     <RowPulse value={pricing.addonsTotal} className="flex justify-between">
                       <span>Add-ons</span>
                       <span>
-                        +<span key={`ad-${pricing.addonsTotal}`} className="inline-block animate-price-fade">
+                        +
+                        <span key={`ad-${pricing.addonsTotal}`} className="inline-block animate-price-fade">
                           {formatCurrency(pricing.addonsTotal, pricing.currency)}
                         </span>
                       </span>
