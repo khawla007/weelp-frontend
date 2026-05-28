@@ -12,6 +12,20 @@ import { bookingSchema } from '@/lib/validation/bookingSchema';
 import { calculateActivityPrice } from '@/lib/pricing/calculateActivityPrice';
 import { formatCurrency } from '@/lib/utils';
 
+function RowPulse({ value, className = '', children }) {
+  const [prevValue, setPrevValue] = useState(value);
+  const [pulseKey, setPulseKey] = useState(0);
+  if (prevValue !== value) {
+    setPrevValue(value);
+    setPulseKey((k) => k + 1);
+  }
+  return (
+    <div key={pulseKey} className={`${className} ${pulseKey > 0 ? 'animate-row-pulse rounded-md' : ''}`}>
+      {children}
+    </div>
+  );
+}
+
 const ProductSidebar = ({ productId, productData, productType = 'activity', itinerarySlug, packageSlug, defaultDateRange = null, onDateChange = null, scheduleCount = 0 }) => {
   const [selectedAddons, setSelectedAddons] = useState([]);
   const { cartItems, setMiniCartOpen } = useMiniCartStore();
@@ -115,19 +129,28 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
               <div>
                 {itineraryTotal > 0 ? (
                   <h3 className="text-[#18181b] font-bold text-2xl lg:text-[28px]">
-                    {currency} {itineraryTotal.toFixed(2)}{' '}
+                    <span key={`${currency}-${itineraryTotal}`} className="inline-block animate-price-fade">
+                      {currency} {itineraryTotal.toFixed(2)}
+                    </span>{' '}
                     <span className="text-base font-medium text-[#71717a]">
                       total for {guests} guest{guests === 1 ? '' : 's'}
                     </span>
                   </h3>
                 ) : (
                   <h3 className="text-[#18181b] font-bold text-2xl lg:text-[28px]">
-                    From {currency} {displayPrice} <span className="text-base font-medium text-[#71717a]">/ person</span>
+                    From{' '}
+                    <span key={`${currency}-${displayPrice}`} className="inline-block animate-price-fade">
+                      {currency} {displayPrice}
+                    </span>{' '}
+                    <span className="text-base font-medium text-[#71717a]">/ person</span>
                   </h3>
                 )}
                 {itineraryTotal > 0 && (
                   <p className="text-sm text-[#71717a] mt-1">
-                    {currency} {displayPrice} / person
+                    <span key={`${currency}-${displayPrice}-pp`} className="inline-block animate-price-fade">
+                      {currency} {displayPrice}
+                    </span>{' '}
+                    / person
                   </p>
                 )}
               </div>
@@ -135,7 +158,14 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
           })()
         ) : (
           <h3 className="text-[#18181b] font-bold text-2xl lg:text-[28px]">
-            From {formatCurrency(Number(productData?.pricing?.regular_price ?? 0), productData?.pricing?.currency ?? 'USD')} / person
+            From{' '}
+            <span
+              key={`fallback-${productData?.pricing?.regular_price ?? 0}`}
+              className="inline-block animate-price-fade"
+            >
+              {formatCurrency(Number(productData?.pricing?.regular_price ?? 0), productData?.pricing?.currency ?? 'USD')}
+            </span>{' '}
+            / person
           </h3>
         )}
 
@@ -149,17 +179,28 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             return (
               <div className="mt-4 bg-white rounded-xl border border-[#e4e4e7] p-4 text-sm text-[#71717a]">
                 <div className="space-y-2">
-                  <div className="flex justify-between">
+                  <RowPulse value={regularSubtotal} className="flex justify-between">
                     <span>
-                      {formatCurrency(regularPrice, pricing.currency)} × {pricing.headcount}
+                      <span key={`reg-${regularPrice}`} className="inline-block animate-price-fade">
+                        {formatCurrency(regularPrice, pricing.currency)}
+                      </span>{' '}
+                      × <span key={`head-${pricing.headcount}`} className="inline-block animate-price-fade">{pricing.headcount}</span>
                     </span>
-                    <span className="text-[#18181b]">{formatCurrency(regularSubtotal, pricing.currency)}</span>
-                  </div>
+                    <span className="text-[#18181b]">
+                      <span key={`sub-${regularSubtotal}`} className="inline-block animate-price-fade">
+                        {formatCurrency(regularSubtotal, pricing.currency)}
+                      </span>
+                    </span>
+                  </RowPulse>
                   {pricing.season && pricing.season.savings > 0 && (
-                    <div className="flex justify-between text-green-700">
+                    <RowPulse value={pricing.season.savings} className="flex justify-between text-green-700">
                       <span>Seasonal rate{pricing.season.name ? ` (${pricing.season.name})` : ''} applied</span>
-                      <span>-{formatCurrency(pricing.season.savings, pricing.currency)}</span>
-                    </div>
+                      <span>
+                        -<span key={`season-${pricing.season.savings}`} className="inline-block animate-price-fade">
+                          {formatCurrency(pricing.season.savings, pricing.currency)}
+                        </span>
+                      </span>
+                    </RowPulse>
                   )}
                   {pricing.groupDiscount &&
                     (() => {
@@ -169,10 +210,14 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                           ? `${Number(rule.discount_amount)}% off ${pricing.groupDiscount.discountedQty} travelers`
                           : `flat ${formatCurrency(Number(rule.discount_amount), pricing.currency)} × ${pricing.groupDiscount.bundles} bundle${pricing.groupDiscount.bundles === 1 ? '' : 's'}`;
                       return (
-                        <div className="flex justify-between text-green-700">
+                        <RowPulse value={pricing.groupDiscount.amount} className="flex justify-between text-green-700">
                           <span>Group discount ({discountLabel})</span>
-                          <span>-{formatCurrency(pricing.groupDiscount.amount, pricing.currency)}</span>
-                        </div>
+                          <span>
+                            -<span key={`grp-${pricing.groupDiscount.amount}`} className="inline-block animate-price-fade">
+                              {formatCurrency(pricing.groupDiscount.amount, pricing.currency)}
+                            </span>
+                          </span>
+                        </RowPulse>
                       );
                     })()}
                   {pricing.groupHint &&
@@ -190,27 +235,43 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                       return <div className="text-xs text-[#588f7a]">{hintText}</div>;
                     })()}
                   {pricing.earlyBirdDiscount && (
-                    <div className="flex justify-between text-green-700">
+                    <RowPulse value={pricing.earlyBirdDiscount.amount} className="flex justify-between text-green-700">
                       <span>Early bird discount</span>
-                      <span>-{formatCurrency(pricing.earlyBirdDiscount.amount, pricing.currency)}</span>
-                    </div>
+                      <span>
+                        -<span key={`eb-${pricing.earlyBirdDiscount.amount}`} className="inline-block animate-price-fade">
+                          {formatCurrency(pricing.earlyBirdDiscount.amount, pricing.currency)}
+                        </span>
+                      </span>
+                    </RowPulse>
                   )}
                   {pricing.lastMinuteDiscount && (
-                    <div className="flex justify-between text-green-700">
+                    <RowPulse value={pricing.lastMinuteDiscount.amount} className="flex justify-between text-green-700">
                       <span>Last minute discount</span>
-                      <span>-{formatCurrency(pricing.lastMinuteDiscount.amount, pricing.currency)}</span>
-                    </div>
+                      <span>
+                        -<span key={`lm-${pricing.lastMinuteDiscount.amount}`} className="inline-block animate-price-fade">
+                          {formatCurrency(pricing.lastMinuteDiscount.amount, pricing.currency)}
+                        </span>
+                      </span>
+                    </RowPulse>
                   )}
                   {pricing.addonsTotal > 0 && (
-                    <div className="flex justify-between">
+                    <RowPulse value={pricing.addonsTotal} className="flex justify-between">
                       <span>Add-ons</span>
-                      <span>+{formatCurrency(pricing.addonsTotal, pricing.currency)}</span>
-                    </div>
+                      <span>
+                        +<span key={`ad-${pricing.addonsTotal}`} className="inline-block animate-price-fade">
+                          {formatCurrency(pricing.addonsTotal, pricing.currency)}
+                        </span>
+                      </span>
+                    </RowPulse>
                   )}
-                  <div className="border-t border-[#e4e4e7] pt-2 flex justify-between text-[#18181b]">
+                  <RowPulse value={pricing.final} className="border-t border-[#e4e4e7] pt-2 flex justify-between text-[#18181b]">
                     <span>Total</span>
-                    <span>{formatCurrency(pricing.final, pricing.currency)}</span>
-                  </div>
+                    <span>
+                      <span key={`final-${pricing.final}`} className="inline-block animate-price-fade">
+                        {formatCurrency(pricing.final, pricing.currency)}
+                      </span>
+                    </span>
+                  </RowPulse>
                 </div>
               </div>
             );
@@ -310,14 +371,33 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             <>
               <div className="flex flex-col">
                 {productType === 'activity' && pricing && pricing.headcount >= 1 ? (
-                  <p className="text-lg font-bold text-[#18181b]">Total: {formatCurrency(pricing.final, pricing.currency)}</p>
+                  <p className="text-lg font-bold text-[#18181b]">
+                    Total:{' '}
+                    <span key={`card-${pricing.final}`} className="inline-block animate-price-fade">
+                      {formatCurrency(pricing.final, pricing.currency)}
+                    </span>
+                  </p>
                 ) : selectedAddons.length > 0 ? (
                   <>
-                    <p className="text-sm font-medium text-[#588f7a]">+ Add-ons: ${addonsTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                    <p className="text-lg font-bold text-[#18181b]">Total: ${(basePrice + addonsTotal).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                    <p className="text-sm font-medium text-[#588f7a]">
+                      + Add-ons:{' '}
+                      <span key={`card-ad-${addonsTotal}`} className="inline-block animate-price-fade">
+                        ${addonsTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    </p>
+                    <p className="text-lg font-bold text-[#18181b]">
+                      Total:{' '}
+                      <span key={`card-tot-${basePrice + addonsTotal}`} className="inline-block animate-price-fade">
+                        ${(basePrice + addonsTotal).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    </p>
                   </>
                 ) : (
-                  <p className="text-lg font-bold text-[#18181b]">${basePrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                  <p className="text-lg font-bold text-[#18181b]">
+                    <span key={`card-base-${basePrice}`} className="inline-block animate-price-fade">
+                      ${basePrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span>
+                  </p>
                 )}
               </div>
               <button
