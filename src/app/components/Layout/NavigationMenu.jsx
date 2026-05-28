@@ -352,7 +352,11 @@ export const HeaderAccount = () => {
             onClick={handleShowCart}
           >
             <ShoppingCart className="size-5" strokeWidth={1.5} />
-            {cartItemCount > 0 && <Badge className={'absolute -right-4 -top-2 scale-75'}>{cartItemCount}</Badge>}
+            {cartItemCount > 0 && (
+              <Badge key={cartItemCount} className="absolute -right-4 -top-2 animate-badge-pulse">
+                {cartItemCount}
+              </Badge>
+            )}
           </button>
         </li>
         <li>

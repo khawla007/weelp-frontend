@@ -63,7 +63,7 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
         e.stopPropagation();
         setShowSubmenu(false);
       }}
-      className="absolute right-0 top-3/4 border rounded-xl bg-white z-10 whitespace-nowrap"
+      className="absolute right-0 top-3/4 border rounded-xl bg-white z-10 whitespace-nowrap animate-fade-in"
     >
       <ul>
         {!session ? (
