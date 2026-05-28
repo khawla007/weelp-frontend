@@ -1,4 +1,7 @@
+'use client';
+
 import Image from 'next/image';
+import { useState } from 'react';
 import BreadCrumb from '@/app/components/BreadCrumb';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { CircleCheckBig, Clock4, MapPin, Star, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -7,6 +10,11 @@ import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
 
 const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null, primaryLocation = null, city = null, scheduleDisplay = null }) => {
+  const galleryLen = media_gallery?.length || 0;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const handlePrev = () => setActiveIndex((i) => (i - 1 + galleryLen) % galleryLen);
+  const handleNext = () => setActiveIndex((i) => (i + 1) % galleryLen);
+
   return (
     <section className="bg-white mb-10 md:mb-16 lg:mb-24">
       <div className="max-w-pen mx-auto px-4">
@@ -60,26 +68,62 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
         {media_gallery?.length > 0 && (
           <div className="relative mt-6">
             <div className="flex gap-1 h-[250px] lg:h-[349px] overflow-hidden">
-              {media_gallery.slice(0, 3).map((img, index) => (
-                <div key={index} className={`relative flex-1 overflow-hidden ${index === 0 ? 'rounded-l-xl' : ''} ${index === Math.min(media_gallery.length, 3) - 1 ? 'rounded-r-xl' : ''}`}>
+              {/* Hero column */}
+              <div className="relative flex-1 overflow-hidden rounded-l-xl group">
+                {media_gallery.map((img, i) => (
                   <Image
+                    key={i}
                     src={img?.url}
-                    alt={img?.alt_text || `${activityName} Image ${index + 1}`}
+                    alt={img?.alt_text || `${activityName} Image ${i + 1}`}
                     fill
-                    sizes="(max-width: 1024px) 33vw, 480px"
+                    sizes="(max-width: 1024px) 100vw, 720px"
                     placeholder="blur"
                     blurDataURL={IMAGE_BLUR_DATA_URL}
-                    priority={index === 0}
-                    className="object-cover"
+                    priority={i === 0}
+                    className={`object-cover transition-[opacity,transform] duration-[260ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none group-hover:scale-[1.02] ${
+                      i === activeIndex ? 'opacity-100' : 'opacity-0'
+                    }`}
                   />
+                ))}
+              </div>
+
+              {/* Thumb column — lg+ only, when at least 2 images */}
+              {galleryLen > 1 && (
+                <div className="hidden lg:flex flex-col gap-1 basis-1/3 max-w-[33%]">
+                  {media_gallery.slice(1, 3).map((img, offset) => {
+                    const thumbIndex = offset + 1;
+                    const isFirst = offset === 0;
+                    const isLast = thumbIndex === Math.min(galleryLen, 3) - 1;
+                    const corners = `${isFirst ? 'rounded-tr-xl' : ''} ${isLast ? 'rounded-br-xl' : ''}`;
+                    return (
+                      <button
+                        key={thumbIndex}
+                        type="button"
+                        onClick={() => setActiveIndex(thumbIndex)}
+                        aria-label={`Show gallery image ${thumbIndex + 1}`}
+                        aria-current={activeIndex === thumbIndex ? 'true' : undefined}
+                        className={`relative flex-1 overflow-hidden ${corners} ${focusRing} group/thumb`}
+                      >
+                        <Image
+                          src={img?.url}
+                          alt={img?.alt_text || ''}
+                          fill
+                          sizes="240px"
+                          placeholder="blur"
+                          blurDataURL={IMAGE_BLUR_DATA_URL}
+                          className="object-cover transition-transform duration-[260ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none group-hover/thumb:scale-[1.02]"
+                        />
+                      </button>
+                    );
+                  })}
                 </div>
-              ))}
+              )}
             </div>
 
             {/* View Gallery Button */}
             <button
               type="button"
-              className={`absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-[4px_4px_12px_rgba(0,0,0,0.1)] text-[#18181b] text-sm font-medium hover:bg-[#f4f4f5] transition-colors ${focusRing}`}
+              className={`absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-[4px_4px_12px_rgba(0,0,0,0.1)] text-[#18181b] text-sm font-medium hover:bg-[#f4f4f5] hover:scale-[1.03] active:scale-100 transition-[background-color,transform] duration-150 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${focusRing}`}
             >
               View Gallery
             </button>
@@ -89,14 +133,18 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
               <button
                 type="button"
                 aria-label="Previous gallery image"
-                className={`flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] transition-colors ${focusRing}`}
+                onClick={handlePrev}
+                disabled={galleryLen <= 1}
+                className={`flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] hover:scale-[1.03] active:scale-100 disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed transition-[background-color,transform] duration-150 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${focusRing}`}
               >
                 <ChevronLeft size={16} />
               </button>
               <button
                 type="button"
                 aria-label="Next gallery image"
-                className={`flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] transition-colors ${focusRing}`}
+                onClick={handleNext}
+                disabled={galleryLen <= 1}
+                className={`flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-[4px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e7] text-[#18181b] hover:bg-[#f4f4f5] hover:scale-[1.03] active:scale-100 disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed transition-[background-color,transform] duration-150 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${focusRing}`}
               >
                 <ChevronRight size={16} />
               </button>
