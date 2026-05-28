@@ -52,6 +52,7 @@ const SingleProductTabSection = ({
   const [activeTab, setActiveTab] = useState('tab_1');
   const sectionRefs = useRef({});
   const [fixedTab, setFixedTab] = useState(false);
+  const [pinSettled, setPinSettled] = useState(false);
 
   // Date state for itinerary/package
   const isScheduleType = productType === 'itinerary' || productType === 'package';
@@ -117,13 +118,22 @@ const SingleProductTabSection = ({
     };
   }, []);
 
+  useEffect(() => {
+    if (fixedTab) {
+      const id = requestAnimationFrame(() => setPinSettled(true));
+      return () => cancelAnimationFrame(id);
+    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reset paired pin-settle state on unpin; runs only when fixedTab transitions to false
+    setPinSettled(false);
+  }, [fixedTab]);
+
   const toggleTab = (tab) => {
     setActiveTab(tab);
     const element = sectionRefs.current[tab];
-    if (element) {
-      const offsetTop = element.getBoundingClientRect().top + window.scrollY - TAB_BAR_HEIGHT - 16;
-      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-    }
+    if (!element) return;
+    const offsetTop = element.getBoundingClientRect().top + window.scrollY - TAB_BAR_HEIGHT - 16;
+    const prefersReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: offsetTop, behavior: prefersReduced ? 'instant' : 'smooth' });
   };
 
   const bottomImage = sidebarBottomImage || SIDEBAR_IMAGES[productType];
@@ -132,7 +142,11 @@ const SingleProductTabSection = ({
     <section className="w-full bg-white">
       {/* Sticky Tab Bar */}
       <div
-        className={`${fixedTab ? 'fixed' : 'relative'} z-[11] w-full bg-white border-b border-[#e4e4e7] transition-[background-color,border-color,box-shadow,opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${fixedTab ? 'shadow-[0_4px_12px_rgba(0,0,0,0.06)]' : ''}`}
+        className={`${fixedTab ? 'fixed' : 'relative'} z-[11] w-full bg-white border-b border-[#e4e4e7] transition-[opacity,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+          fixedTab
+            ? `shadow-[0_4px_12px_rgba(0,0,0,0.06)] ${pinSettled ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1'}`
+            : 'opacity-100 translate-y-0'
+        }`}
         style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}
       >
         <div className="flex items-center justify-center">
@@ -149,7 +163,9 @@ const SingleProductTabSection = ({
             >
               {tab.label}
               <span
-                className={`absolute bottom-0 left-0 w-full h-[2px] bg-[#588f7a] transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${activeTab === tab.id ? 'opacity-100' : 'opacity-0'}`}
+                className={`absolute bottom-0 left-0 w-full h-[2px] bg-[#588f7a] origin-left transition-transform duration-[180ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+                  activeTab === tab.id ? 'scale-x-100' : 'scale-x-0'
+                }`}
                 aria-hidden="true"
               />
             </button>
