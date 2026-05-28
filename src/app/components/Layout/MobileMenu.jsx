@@ -29,7 +29,12 @@ const getInitials = (name) => {
 const MobileMenu = ({ stickyHeader }) => {
   return (
     <div className="lg:hidden w-full">
-      <div className={`${stickyHeader ? 'hidden' : 'block'} border-b border-[#e4e4e7] bg-[#f2f7f5]`}>
+      <div
+        aria-hidden={stickyHeader ? true : undefined}
+        className={`border-b border-[#e4e4e7] bg-[#f2f7f5] overflow-hidden transition-[opacity,max-height,padding] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+          stickyHeader ? 'opacity-0 max-h-0 pointer-events-none' : 'opacity-100 max-h-24'
+        }`}
+      >
         <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#18181b] sm:px-4 sm:py-3 sm:text-[11px] sm:tracking-[0.16em]">
           <div className="inline-flex items-center gap-1.5 rounded-full border border-[#f0c76d] bg-[#fff4d8] px-2.5 py-1 sm:gap-2 sm:px-3 sm:py-1.5">
             <Smartphone className="size-3.5" />
@@ -143,7 +148,7 @@ const NavigationMenuMobile = () => {
             type="button"
             onClick={back}
             aria-label="Back to previous menu"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] active:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] active:bg-[#f4f4f5] active:scale-95 transition-transform duration-150 ease-[var(--weelp-ease-out)] motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           >
             <ArrowLeft className="size-4" />
           </button>
@@ -166,17 +171,21 @@ const NavigationMenuMobile = () => {
 
       <div className="relative flex-1 overflow-hidden">
         <div className="flex h-full w-[300%] transition-transform duration-300 ease-out motion-reduce:transition-none" style={{ transform: `translateX(-${level * (100 / 3)}%)` }}>
-          <PanelRegions onOpenRegion={setSelectedRegion} regionItems={regionItems} isLoading={isLoading} error={error} />
-          <PanelCountries region={selectedRegion} onOpenCountry={setSelectedCountry} />
-          <PanelCities country={selectedCountry} />
+          <PanelRegions onOpenRegion={setSelectedRegion} regionItems={regionItems} isLoading={isLoading} error={error} isCurrent={level === 0} />
+          <PanelCountries region={selectedRegion} onOpenCountry={setSelectedCountry} isCurrent={level === 1} />
+          <PanelCities country={selectedCountry} isCurrent={level === 2} />
         </div>
       </div>
     </div>
   );
 };
 
-const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error }) => (
-  <div className="h-full w-1/3 overflow-y-auto px-4 py-5">
+const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error, isCurrent }) => (
+  <div
+    className={`h-full w-1/3 overflow-y-auto px-4 py-5 transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+      isCurrent ? 'opacity-100' : 'opacity-0'
+    }`}
+  >
     <div className="flex flex-col gap-2">
       {HEADER_NAV_ITEMS.map(({ title, href, hasMegaMenu }) => {
         if (hasMegaMenu) return null;
@@ -218,10 +227,10 @@ const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error }) => (
               key={region.id}
               type="button"
               onClick={() => onOpenRegion(region)}
-              className={`flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-[15px] font-medium text-[#18181b] active:bg-[#f4f4f5] ${i > 0 ? 'border-t border-[#e4e4e7]' : ''}`}
+              className={`group/row flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-[15px] font-medium text-[#18181b] active:bg-[#f4f4f5] ${i > 0 ? 'border-t border-[#e4e4e7]' : ''}`}
             >
               <span className="truncate">{region.name}</span>
-              <ChevronRight className="size-4 shrink-0 text-[#71717a]" />
+              <ChevronRight className="size-4 shrink-0 text-[#71717a] transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none group-hover/row:translate-x-0.5 group-active/row:translate-x-0.5" />
             </button>
           ))}
       </div>
@@ -229,8 +238,12 @@ const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error }) => (
   </div>
 );
 
-const PanelCountries = ({ region, onOpenCountry }) => (
-  <div className="h-full w-1/3 overflow-y-auto px-4 py-5">
+const PanelCountries = ({ region, onOpenCountry, isCurrent }) => (
+  <div
+    className={`h-full w-1/3 overflow-y-auto px-4 py-5 transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+      isCurrent ? 'opacity-100' : 'opacity-0'
+    }`}
+  >
     {region ? (
       <div className="overflow-hidden rounded-[18px] border border-[#e4e4e7] bg-white">
         {region.countries?.length > 0 ? (
@@ -239,10 +252,10 @@ const PanelCountries = ({ region, onOpenCountry }) => (
               key={country.id}
               type="button"
               onClick={() => onOpenCountry(country)}
-              className={`flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-[15px] font-medium text-[#18181b] active:bg-[#f4f4f5] ${i > 0 ? 'border-t border-[#e4e4e7]' : ''}`}
+              className={`group/row flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-[15px] font-medium text-[#18181b] active:bg-[#f4f4f5] ${i > 0 ? 'border-t border-[#e4e4e7]' : ''}`}
             >
               <span className="truncate">{country.name}</span>
-              <ChevronRight className="size-4 shrink-0 text-[#71717a]" />
+              <ChevronRight className="size-4 shrink-0 text-[#71717a] transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none group-hover/row:translate-x-0.5 group-active/row:translate-x-0.5" />
             </button>
           ))
         ) : (
@@ -253,8 +266,12 @@ const PanelCountries = ({ region, onOpenCountry }) => (
   </div>
 );
 
-const PanelCities = ({ country }) => (
-  <div className="h-full w-1/3 overflow-y-auto px-4 py-5">
+const PanelCities = ({ country, isCurrent }) => (
+  <div
+    className={`h-full w-1/3 overflow-y-auto px-4 py-5 transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+      isCurrent ? 'opacity-100' : 'opacity-0'
+    }`}
+  >
     {country ? (
       <div className="overflow-hidden rounded-[18px] border border-[#e4e4e7] bg-white">
         {country.cities?.length > 0 ? (
@@ -262,10 +279,10 @@ const PanelCities = ({ country }) => (
             <Link
               key={city.id ?? city.slug ?? i}
               href={`/cities/${city.slug}`}
-              className={`flex items-center justify-between gap-3 px-4 py-3.5 text-[15px] font-medium text-[#18181b] active:bg-[#f4f4f5] ${i > 0 ? 'border-t border-[#e4e4e7]' : ''}`}
+              className={`group/row flex items-center justify-between gap-3 px-4 py-3.5 text-[15px] font-medium text-[#18181b] active:bg-[#f4f4f5] ${i > 0 ? 'border-t border-[#e4e4e7]' : ''}`}
             >
               <span className="truncate">{city.name}</span>
-              <ChevronRight className="size-4 shrink-0 text-[#71717a]" />
+              <ChevronRight className="size-4 shrink-0 text-[#71717a] transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none group-hover/row:translate-x-0.5 group-active/row:translate-x-0.5" />
             </Link>
           ))
         ) : (
@@ -305,7 +322,11 @@ const HeaderAccountMobile = () => {
           onClick={handleShowCart}
         >
           <ShoppingCart className="size-[18px]" />
-          {cartItemCount > 0 && <Badge className={'absolute bottom-1/4  left-1/2 scale-75 '}>{cartItemCount}</Badge>}
+          {cartItemCount > 0 && (
+            <Badge key={cartItemCount} className="absolute bottom-1/4 left-1/2 animate-badge-pulse">
+              {cartItemCount}
+            </Badge>
+          )}
         </button>
         {isLoggedIn && avatarSrc ? (
           <Link
