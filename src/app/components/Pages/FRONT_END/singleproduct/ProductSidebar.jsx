@@ -324,7 +324,9 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                     role="checkbox"
                     aria-checked={isChecked}
                     tabIndex={0}
-                    className="flex items-center gap-3 cursor-pointer group"
+                    className={`flex items-center gap-3 cursor-pointer group rounded-md px-2 -mx-2 transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+                      isChecked ? 'bg-[#f2f7f5]' : 'bg-transparent'
+                    }`}
                     onClick={() => toggleAddon(addon)}
                     onKeyDown={(e) => {
                       if (e.key === ' ' || e.key === 'Enter') {
@@ -333,8 +335,17 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                       }
                     }}
                   >
-                    <span className={`w-5 h-5 rounded-[4px] flex items-center justify-center flex-shrink-0 transition-colors ${isChecked ? 'bg-[#588f7a]' : 'border-2 border-zinc-300 bg-white'}`}>
-                      {isChecked && <Check size={14} className="text-white" />}
+                    <span
+                      className={`w-5 h-5 rounded-[4px] flex items-center justify-center flex-shrink-0 transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+                        isChecked ? 'bg-[#588f7a]' : 'border-2 border-zinc-300 bg-white'
+                      }`}
+                    >
+                      <Check
+                        size={14}
+                        className={`text-white transition-transform duration-[120ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+                          isChecked ? 'scale-100' : 'scale-0'
+                        }`}
+                      />
                     </span>
                     <div className="flex-1 min-w-0">
                       <span className="text-base font-medium text-[#18181b]">{addon.addon_name}</span>
