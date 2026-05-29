@@ -7,7 +7,6 @@ import AnimatedGlobe from '@/app/components/ui/AnimatedGlobe';
 /** This section handle Creator / Blogs  */
 const BannerSectionSearchForm = ({ title, description }) => {
   const pathName = usePathname();
-  const isExploreCreators = pathName == '/explore-creators';
 
   if (title && description) {
     return (
@@ -21,12 +20,11 @@ const BannerSectionSearchForm = ({ title, description }) => {
             showVignette={false}
           />
         </div>
-        <div className="max-w-xl w-full flex flex-col justify-center items-center gap-2 relative z-[60]">
+        <div className="w-full max-w-xl sm:max-w-3xl flex flex-col items-center gap-2 relative z-[60]">
           <h1 className="text-xl sm:text-5xl font-semibold text-[#18181b] text-center">{title}</h1>
-          <p className="text-sm sm:text-lg font-medium text-[#435a67] text-center">{description}</p>
-          <div className={`${isExploreCreators ? 'mt-2' : 'mt-6'} w-full`}>{pathName == '/blogs' ? <SearchFormBlogs /> : <SearchFormCreator />}</div>
+          <p className="max-w-xl text-sm sm:text-lg font-medium text-[#435a67] text-center">{description}</p>
+          <div className="mt-2 w-full">{pathName == '/blogs' ? <SearchFormBlogs /> : <SearchFormCreator />}</div>
         </div>
-        {isExploreCreators ? null : <img alt="logo" className="hidden 2xl:block absolute -top-8 right-0 scale-90 pointer-events-none" src="/assets/Group5.png" />}
       </section>
     );
   }

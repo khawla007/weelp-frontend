@@ -57,12 +57,15 @@ describe('BannerSectionSearchForm', () => {
     const { container, getByTestId } = render(<BannerSectionSearchForm title="Explore Blogs" description="Travel stories and guides." />);
 
     expect(getByTestId('search-form-blogs')).toBeInTheDocument();
-    expect(getByTestId('search-form-blogs').parentElement).toHaveClass('mt-6', 'w-full');
+    // matches the tours hero: form sits mt-2 under the copy (was mt-6)
+    expect(getByTestId('search-form-blogs').parentElement).toHaveClass('mt-2', 'w-full');
     // blogs hero now shows the globe (same treatment as tours/holiday/explore-creators)
     expect(container.querySelector('[data-banner-globe-background]')).toBeInTheDocument();
     expect(container.querySelector('[data-animated-globe]')).toBeInTheDocument();
-    // CSS-at-paint entrance, and the blogs-only decorative corner image is kept
+    // CSS-at-paint entrance; the old Group5 corner image is removed to match tours
     expect(container.querySelector('section')).toHaveClass('weelp-hero-rise');
-    expect(container.querySelector('img[src="/assets/Group5.png"]')).toHaveClass('hidden', '2xl:block', 'absolute', '-top-8', 'right-0', 'scale-90', 'pointer-events-none');
+    expect(container.querySelector('img[src="/assets/Group5.png"]')).not.toBeInTheDocument();
+    // content wrapper widens to max-w-3xl like the tours hero
+    expect(container.querySelector('[data-banner-globe-background]').parentElement.querySelector('.relative.z-\\[60\\]')).toHaveClass('max-w-xl', 'sm:max-w-3xl');
   });
 });
