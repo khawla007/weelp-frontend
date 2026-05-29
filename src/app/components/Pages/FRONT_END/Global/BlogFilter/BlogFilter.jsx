@@ -1,7 +1,8 @@
 'use client';
 import React from 'react';
 import { useForm, Controller, useWatch } from 'react-hook-form';
-import { BlogCard } from '@/app/components/singleproductguide';
+import ItemCard from '@/app/components/ui/item-card';
+import { mapBlogToItemCard } from '@/lib/mapProductToItemCard';
 import { useBlogs } from '@/hooks/api/public/blogs/useBlogs';
 import { useCategories } from '@/hooks/api/public/categories';
 import { CustomPagination } from '@/app/components/Pagination';
@@ -83,12 +84,15 @@ const BlogFilterBar = () => {
         <div className="text-center py-8 text-zinc-500">No blogs found</div>
       ) : (
         <Reveal as="div" key={`grid-${current_page}`}>
-          <ul className="grid grid-col-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-16">
-            {blogs.map((blog) => (
-              <li key={blog.id || blog.slug}>
-                <BlogCard {...blog} imageSrc={blog?.media_gallery?.find((img) => img.is_featured)?.url || blog?.media_gallery?.[0]?.url || blog?.image} blogTitle={blog?.title} />
-              </li>
-            ))}
+          <ul className="grid grid-col-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {blogs.map((blog) => {
+              const item = mapBlogToItemCard(blog);
+              return (
+                <li key={blog.id || blog.slug}>
+                  <ItemCard href={item.href} image={item.image} title={item.title} category={item.category} variant="compact" />
+                </li>
+              );
+            })}
           </ul>
         </Reveal>
       )}

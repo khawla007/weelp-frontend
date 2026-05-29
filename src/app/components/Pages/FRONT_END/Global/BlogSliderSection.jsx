@@ -1,26 +1,17 @@
 'use client';
 import React from 'react';
-import BlogSlider from '@/app/components/sliders/BlogSlider';
+import BlogSection from '@/app/components/ui/BlogSection';
 import { useBlogs } from '@/hooks/api/public/blogs/useBlogs';
-import { fakeData as data } from '@/app/Data/ShopData';
-import { ProductCarouselAnimation, ProductGalleryAnimation } from '@/app/components/Animation/ProductAnimation';
 
+// Latest-blogs carousel on the blogs page. Reuses the shared BlogSection (the
+// homepage "Your Guide" section) so the card + carousel design stay identical.
 const BlogSliderSection = ({ sectionTitle }) => {
-  const { blogs, isLoading, error } = useBlogs('?sort_by=latest&per_page=5');
-
+  const { blogs, error } = useBlogs('?sort_by=latest&per_page=5');
   const latestBlogs = blogs?.data || [];
 
-  return (
-    <section className="weelp-fade-up container-page flex flex-col gap-3 pb-10 md:pb-16 lg:pb-24 productSlider blog_slider_section" style={{ '--weelp-motion-delay': '150ms' }}>
-      <h2 className="text-[28px] font-medium text-[#18181b] top-4">{sectionTitle || 'Your Blogs'}</h2>
+  if (error || latestBlogs.length === 0) return null;
 
-      {error && <span>Something went wrong displaying latest blogs</span>}
-      {/* {isLoading && <ProductCarouselAnimation />} */}
-      {!isLoading && data.length > 0 && <BlogSlider data={latestBlogs} />}
-    </section>
-  );
+  return <BlogSection blogs={latestBlogs} title={sectionTitle || 'Latest Blogs'} navigationId="latest-blogs" className="weelp-fade-up" />;
 };
-// return;
-// };
 
 export default BlogSliderSection;
