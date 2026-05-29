@@ -2,16 +2,13 @@
 import GallerySlider from '@/app/components/sliders/GallerySlider';
 import * as Icons from '../../../../../../public/assets/Icons/Icons';
 import BreadCrumb from '@/app/components/BreadCrumb';
-import Reveal from '@/app/components/ui/Reveal';
 
 const CityHeroBanner = ({ city }) => {
   const { name = '', description = '', media_gallery = [] } = city || {};
 
   return (
-    <Reveal
-      as="section"
-      variant="hero"
-      className="relative isolate mb-10 md:mb-16 flex w-full items-center justify-center overflow-hidden page_city_banner lg:mb-24 min-h-[615px] py-10 lg:h-[615px] lg:py-0"
+    <section
+      className="weelp-hero-rise relative isolate mb-10 md:mb-16 flex w-full items-center justify-center overflow-hidden page_city_banner lg:mb-24 min-h-[615px] py-10 lg:h-[615px] lg:py-0"
       style={{
         background: 'linear-gradient(-165deg, #f8faf9, #f2f7f5)',
       }}
@@ -34,7 +31,7 @@ const CityHeroBanner = ({ city }) => {
       {/* Decorative SVG vectors */}
       <Icons.Vector2 aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 z-0 hidden text-[#588f7a] lg:block" />
       <Icons.VectorArrow aria-hidden="true" className="pointer-events-none absolute bottom-[125px] left-[167.1px] z-0 hidden -rotate-[27.247deg] text-[#588f7a] lg:block" />
-    </Reveal>
+    </section>
   );
 };
 

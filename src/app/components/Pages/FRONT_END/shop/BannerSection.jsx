@@ -3,7 +3,6 @@ import React from 'react';
 import { useSearchParams } from 'next/navigation';
 import BookingForm from '@/app/components/Form/Form';
 import styles from './BannerSection.module.css';
-import Reveal from '@/app/components/ui/Reveal';
 
 const BannerSection = () => {
   const searchParams = useSearchParams();
@@ -11,9 +10,9 @@ const BannerSection = () => {
 
   return (
     <>
-      <Reveal as="div" variant="hero" className={`bg-[#588f7a] shop_banner ${styles.shop_banner} `}>
+      <div className={`weelp-hero-rise bg-[#588f7a] shop_banner ${styles.shop_banner} `}>
         <BookingForm variant="searchPage" />
-      </Reveal>
+      </div>
       {location && (
         <div className="flex items-center justify-center  bg-[#f8faf9] h-full min-h-20 sm:min-h-36">
           {/* <Icon className={"hidden sm:block -translate-x-20 "} /> */}

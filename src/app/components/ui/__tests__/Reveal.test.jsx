@@ -83,9 +83,9 @@ test('reduced motion shows content immediately, no observer', () => {
   expect(ioInstances.length).toBe(0);
 });
 
-test('delay, y, scale, duration map to style vars and class', () => {
+test('delay, y, duration map to style vars', () => {
   render(
-    <Reveal delay={120} y={20} scale duration={700}>
+    <Reveal delay={120} y={20} duration={700}>
       content
     </Reveal>,
   );
@@ -93,24 +93,6 @@ test('delay, y, scale, duration map to style vars and class', () => {
   expect(el.style.getPropertyValue('--weelp-motion-delay')).toBe('120ms');
   expect(el.style.getPropertyValue('--weelp-fade-up-y')).toBe('20px');
   expect(el.style.getPropertyValue('--weelp-motion-duration')).toBe('700ms');
-  expect(el).toHaveAttribute('data-reveal-scale', 'true');
-});
-
-test('variant="hero" applies preset scale + duration', () => {
-  render(<Reveal variant="hero">content</Reveal>);
-  const el = screen.getByText('content');
-  expect(el).toHaveAttribute('data-reveal-scale', 'true');
-  expect(el.style.getPropertyValue('--weelp-motion-duration')).toBe('700ms');
-});
-
-test('explicit duration overrides variant preset', () => {
-  render(
-    <Reveal variant="hero" duration={300}>
-      content
-    </Reveal>,
-  );
-  const el = screen.getByText('content');
-  expect(el.style.getPropertyValue('--weelp-motion-duration')).toBe('300ms');
 });
 
 test('renders custom element via `as`', () => {

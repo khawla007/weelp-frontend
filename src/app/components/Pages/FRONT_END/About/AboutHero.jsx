@@ -1,13 +1,11 @@
-import Reveal from '@/app/components/ui/Reveal';
-
 const AboutHero = () => {
   return (
-    <Reveal as="section" variant="hero" className="relative flex items-center justify-center h-[400px] md:h-[500px] bg-[#f2f7f5] mb-10 md:mb-16 lg:mb-24">
+    <section className="weelp-hero-rise relative flex items-center justify-center h-[400px] md:h-[500px] bg-[#f2f7f5] mb-10 md:mb-16 lg:mb-24">
       <div className="container mx-auto px-4 flex flex-col items-center justify-center text-center">
         <h1 className="mb-3">About Weelp</h1>
         <p className="lead max-w-[640px]">Connecting travelers with unforgettable experiences worldwide</p>
       </div>
-    </Reveal>
+    </section>
   );
 };
 
