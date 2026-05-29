@@ -4,6 +4,7 @@ const bannerImage = '/assets/images/CountryBanner.webp';
 import * as Icons from '../../../../../../public/assets/Icons/Icons';
 import { useParams } from 'next/navigation';
 import { fetchRegionDetails } from '@/lib/services/region';
+import Reveal from '@/app/components/ui/Reveal';
 
 const BannerSection = () => {
   const { region } = useParams();
@@ -25,7 +26,10 @@ const BannerSection = () => {
   const { name, description } = regionDetails;
 
   return (
-    <section
+    <Reveal
+      as="section"
+      scale
+      duration={700}
       className="relative flex min-h-[420px] sm:min-h-[480px] md:min-h-[520px] lg:min-h-[60vh] page_country_banner mb-10 md:mb-16 lg:mb-24"
       style={{ background: 'linear-gradient(to bottom, #FFFFFF, #f2f7f5)' }}
     >
@@ -44,7 +48,7 @@ const BannerSection = () => {
           </div>
         </div>
       </div>
-    </section>
+    </Reveal>
   );
 };
 
