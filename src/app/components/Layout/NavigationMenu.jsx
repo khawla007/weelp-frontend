@@ -351,12 +351,14 @@ export const HeaderAccount = () => {
             className="relative flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             onClick={handleShowCart}
           >
-            <ShoppingCart className="size-5" strokeWidth={1.5} />
-            {cartItemCount > 0 && (
-              <Badge key={cartItemCount} className="absolute -right-4 -top-2 animate-badge-pulse">
-                {cartItemCount}
-              </Badge>
-            )}
+            <span className="relative inline-flex">
+              <ShoppingCart className="size-5" strokeWidth={1.5} />
+              {cartItemCount > 0 && (
+                <Badge key={cartItemCount} className="absolute -right-3.5 -top-2.5 animate-badge-pulse">
+                  {cartItemCount}
+                </Badge>
+              )}
+            </span>
           </button>
         </li>
         <li>

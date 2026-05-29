@@ -49,34 +49,34 @@ const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
         <h2 className="text-lg sm:text-[28px] font-medium text-[#18181b] capitalize">{title}</h2>
         {/* Sort Bar */}
         <form className="flex flex-wrap gap-4 justify-end">
-        <div className="relative">
-          {/* Sort Dropdown */}
-          <div className="flex justify-start lg:justify-between flex-wrap">
-            <div className="space-y-4 flex flex-col ">
-              {/* Recommended */}
-              <Controller
-                name="sort_by"
-                control={control}
-                render={({ field }) => (
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="w-64">
-                      <SelectValue placeholder="Recommended" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {BLOGSORT_OPTIONS.map(({ name, value }) => (
-                          <SelectItem key={value} value={value} className="cursor-pointer">
-                            {name}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
+          <div className="relative">
+            {/* Sort Dropdown */}
+            <div className="flex justify-start lg:justify-between flex-wrap">
+              <div className="space-y-4 flex flex-col ">
+                {/* Recommended */}
+                <Controller
+                  name="sort_by"
+                  control={control}
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger className="w-64">
+                        <SelectValue placeholder="Recommended" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {BLOGSORT_OPTIONS.map(({ name, value }) => (
+                            <SelectItem key={value} value={value} className="cursor-pointer">
+                              {name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
             </div>
           </div>
-        </div>
         </form>
       </div>
 
