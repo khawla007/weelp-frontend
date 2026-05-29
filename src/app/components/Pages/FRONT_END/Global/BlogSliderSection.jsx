@@ -11,7 +11,10 @@ const BlogSliderSection = ({ sectionTitle }) => {
   const latestBlogs = blogs?.data || [];
 
   return (
-    <section className="weelp-hero-rise container-page flex flex-col gap-3 pb-10 md:pb-16 lg:pb-24 productSlider blog_slider_section">
+    <section
+      className="weelp-fade-up container-page flex flex-col gap-3 pb-10 md:pb-16 lg:pb-24 productSlider blog_slider_section"
+      style={{ '--weelp-motion-delay': '150ms' }}
+    >
       <h2 className="text-[28px] font-medium text-[#18181b] top-4">{sectionTitle || 'Your Blogs'}</h2>
 
       {error && <span>Something went wrong displaying latest blogs</span>}
