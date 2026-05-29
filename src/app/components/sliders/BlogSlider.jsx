@@ -28,7 +28,7 @@ const BlogSlider = ({ data }) => {
             spaceBetween: 15,
           },
           1024: {
-            slidesPerView: 4,
+            slidesPerView: 5,
             spaceBetween: 20,
           },
         }}

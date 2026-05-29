@@ -6,15 +6,12 @@ import { fakeData as data } from '@/app/Data/ShopData';
 import { ProductCarouselAnimation, ProductGalleryAnimation } from '@/app/components/Animation/ProductAnimation';
 
 const BlogSliderSection = ({ sectionTitle }) => {
-  const { blogs, isLoading, error } = useBlogs('?sort_by=latest');
+  const { blogs, isLoading, error } = useBlogs('?sort_by=latest&per_page=5');
 
   const latestBlogs = blogs?.data || [];
 
   return (
-    <section
-      className="weelp-fade-up container-page flex flex-col gap-3 pb-10 md:pb-16 lg:pb-24 productSlider blog_slider_section"
-      style={{ '--weelp-motion-delay': '150ms' }}
-    >
+    <section className="weelp-fade-up container-page flex flex-col gap-3 pb-10 md:pb-16 lg:pb-24 productSlider blog_slider_section" style={{ '--weelp-motion-delay': '150ms' }}>
       <h2 className="text-[28px] font-medium text-[#18181b] top-4">{sectionTitle || 'Your Blogs'}</h2>
 
       {error && <span>Something went wrong displaying latest blogs</span>}
