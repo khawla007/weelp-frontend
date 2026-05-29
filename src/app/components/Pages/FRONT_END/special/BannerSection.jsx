@@ -6,7 +6,12 @@ const bannerImage = '/assets/images/special.png';
 
 const BannerSection = () => {
   return (
-    <Reveal as="section" scale duration={700} className="min-h-[60vh] h-full bg-center bg-no-repeat flex items-center justify-center mb-10 md:mb-16 lg:mb-24" style={{ backgroundImage: `url(${bannerImage})` }}>
+    <Reveal
+      as="section"
+      variant="hero"
+      className="min-h-[60vh] h-full bg-center bg-no-repeat flex items-center justify-center mb-10 md:mb-16 lg:mb-24"
+      style={{ backgroundImage: `url(${bannerImage})` }}
+    >
       <div className="w-fit flex flex-col gap-2 mb-16 scale-75 sm:scale-100">
         <p className="font-medium text-white text-center sm:text-xl">Places to visit in</p>
         <h1 className="text-white font-semibold text-xl sm:text-5xl text-center">Winter Chills</h1>

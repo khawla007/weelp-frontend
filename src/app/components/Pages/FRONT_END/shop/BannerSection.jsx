@@ -11,7 +11,7 @@ const BannerSection = () => {
 
   return (
     <>
-      <Reveal as="div" scale duration={700} className={`bg-[#588f7a] shop_banner ${styles.shop_banner} `}>
+      <Reveal as="div" variant="hero" className={`bg-[#588f7a] shop_banner ${styles.shop_banner} `}>
         <BookingForm variant="searchPage" />
       </Reveal>
       {location && (

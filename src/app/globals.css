@@ -280,7 +280,7 @@ body {
   @keyframes weelpRevealZoom {
     from {
       opacity: 0;
-      transform: scale3d(var(--weelp-reveal-scale-from, 1.015), var(--weelp-reveal-scale-from, 1.015), 1);
+      transform: scale3d(1.015, 1.015, 1);
     }
 
     to {
@@ -289,6 +289,10 @@ body {
     }
   }
 
+  /* will-change is declared only on the pending (pre-animation) state; once
+     'shown', the running animation drives compositing and the browser drops the
+     layer when it ends — leaving will-change set permanently would retain a GPU
+     layer per revealed element for the life of the page. */
   [data-reveal='pending'] {
     opacity: 0;
     transform: translate3d(0, var(--weelp-fade-up-y, 12px), 0);
@@ -296,13 +300,12 @@ body {
   }
 
   [data-reveal='pending'][data-reveal-scale='true'] {
-    transform: scale3d(var(--weelp-reveal-scale-from, 1.015), var(--weelp-reveal-scale-from, 1.015), 1);
+    transform: scale3d(1.015, 1.015, 1);
   }
 
   [data-reveal='shown'] {
     animation: weelpFadeUp var(--weelp-motion-duration, var(--weelp-duration-slow)) var(--weelp-motion-ease, var(--weelp-ease-out)) both;
     animation-delay: var(--weelp-motion-delay, 0ms);
-    will-change: transform, opacity;
   }
 
   [data-reveal='shown'][data-reveal-scale='true'] {

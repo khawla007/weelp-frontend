@@ -4,7 +4,7 @@ import React from 'react';
 import Reveal from '@/app/components/ui/Reveal';
 const BannerSection = () => {
   return (
-    <Reveal as="section" scale duration={700} className="relative min-h-[320px] sm:min-h-[420px] h-full flex justify-center items-center bg-[#f8faf9] p-6">
+    <Reveal as="section" variant="hero" className="relative min-h-[320px] sm:min-h-[420px] h-full flex justify-center items-center bg-[#f8faf9] p-6">
       <div data-holiday-globe-background className="hidden 2xl:block absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <AnimatedGlobe
           activationMediaQuery="(min-width: 1536px)"

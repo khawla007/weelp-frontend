@@ -1,11 +1,17 @@
 'use client';
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { prefersReducedMotion } from '@/lib/motion';
 
 // SSR-safe layout effect (avoids the React warning when rendered on the server).
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
-const prefersReducedMotion = () => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Named reveal variants so a shared design decision lives in one place rather
+// than as repeated magic props at every call site. `hero` = the above-fold page
+// banner entrance (settle-zoom + 700ms).
+const VARIANT_PRESETS = {
+  hero: { scale: true, duration: 700 },
+};
 
 /**
  * Reveal-on-scroll wrapper. Renders children visible on the server (no-JS safe).
@@ -15,13 +21,17 @@ const prefersReducedMotion = () => typeof window !== 'undefined' && typeof windo
  *
  * @param {object} props
  * @param {string|React.ElementType} [props.as='div'] - element/tag for the reveal root
+ * @param {'hero'} [props.variant] - named preset (e.g. 'hero'); explicit props below override it
  * @param {number} [props.delay=0] - stagger delay in ms (-> --weelp-motion-delay)
  * @param {number} [props.y=12] - fade-up offset in px (-> --weelp-fade-up-y)
- * @param {boolean} [props.scale=false] - hero variant: 1.015 -> 1 settle (no translateY)
+ * @param {boolean} [props.scale=false] - settle-zoom 1.015 -> 1 (no translateY)
  * @param {number} [props.duration] - animation duration in ms (-> --weelp-motion-duration)
  * @param {boolean} [props.once=true] - disconnect observer after first reveal
  */
-const Reveal = ({ as: Tag = 'div', delay = 0, y = 12, scale = false, duration, once = true, className, style, children, ...rest }) => {
+const Reveal = ({ as: Tag = 'div', variant, delay = 0, y = 12, scale = false, duration, once = true, className, style, children, ...rest }) => {
+  const preset = (variant && VARIANT_PRESETS[variant]) || {};
+  const effectiveScale = scale || preset.scale || false;
+  const effectiveDuration = duration ?? preset.duration;
   const ref = useRef(null);
   // null = not yet evaluated (SSR / first paint -> visible). 'pending' | 'shown' after mount.
   const [state, setState] = useState(null);
@@ -69,12 +79,12 @@ const Reveal = ({ as: Tag = 'div', delay = 0, y = 12, scale = false, duration, o
     ...style,
     '--weelp-motion-delay': `${delay}ms`,
     '--weelp-fade-up-y': `${y}px`,
-    ...(duration ? { '--weelp-motion-duration': `${duration}ms` } : {}),
+    ...(effectiveDuration ? { '--weelp-motion-duration': `${effectiveDuration}ms` } : {}),
   };
 
   return (
     // {...rest} first so internal ref / data-reveal attrs always win over any caller-passed props.
-    <Tag {...rest} ref={ref} className={className} style={mergedStyle} data-reveal={state === null ? undefined : state} data-reveal-scale={scale ? 'true' : undefined}>
+    <Tag {...rest} ref={ref} className={className} style={mergedStyle} data-reveal={state === null ? undefined : state} data-reveal-scale={effectiveScale ? 'true' : undefined}>
       {children}
     </Tag>
   );

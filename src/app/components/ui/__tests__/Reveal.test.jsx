@@ -96,6 +96,23 @@ test('delay, y, scale, duration map to style vars and class', () => {
   expect(el).toHaveAttribute('data-reveal-scale', 'true');
 });
 
+test('variant="hero" applies preset scale + duration', () => {
+  render(<Reveal variant="hero">content</Reveal>);
+  const el = screen.getByText('content');
+  expect(el).toHaveAttribute('data-reveal-scale', 'true');
+  expect(el.style.getPropertyValue('--weelp-motion-duration')).toBe('700ms');
+});
+
+test('explicit duration overrides variant preset', () => {
+  render(
+    <Reveal variant="hero" duration={300}>
+      content
+    </Reveal>,
+  );
+  const el = screen.getByText('content');
+  expect(el.style.getPropertyValue('--weelp-motion-duration')).toBe('300ms');
+});
+
 test('renders custom element via `as`', () => {
   render(<Reveal as="section">content</Reveal>);
   expect(screen.getByText('content').tagName).toBe('SECTION');

@@ -28,8 +28,7 @@ const BannerSection = () => {
   return (
     <Reveal
       as="section"
-      scale
-      duration={700}
+      variant="hero"
       className="relative flex min-h-[420px] sm:min-h-[480px] md:min-h-[520px] lg:min-h-[60vh] page_country_banner mb-10 md:mb-16 lg:mb-24"
       style={{ background: 'linear-gradient(to bottom, #FFFFFF, #f2f7f5)' }}
     >
