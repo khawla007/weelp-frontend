@@ -10,7 +10,7 @@ import { BLOGSORT_OPTIONS } from '../../../DASHBOARD/admin/_rsc_pages/blogs/Filt
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Reveal from '@/app/components/ui/Reveal';
 
-const BlogFilterBar = () => {
+const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
   // Initialize form with default values
   const { control, setValue } = useForm({
     defaultValues: {
@@ -44,8 +44,11 @@ const BlogFilterBar = () => {
 
   return (
     <div className="flex flex-col gap-8 mt-4">
-      {/* Sort Bar */}
-      <form className="flex flex-wrap gap-4 justify-end">
+      {/* Heading + sort on one row */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h2 className="text-lg sm:text-[28px] font-medium text-[#18181b] capitalize">{title}</h2>
+        {/* Sort Bar */}
+        <form className="flex flex-wrap gap-4 justify-end">
         <div className="relative">
           {/* Sort Dropdown */}
           <div className="flex justify-start lg:justify-between flex-wrap">
@@ -74,7 +77,8 @@ const BlogFilterBar = () => {
             </div>
           </div>
         </div>
-      </form>
+        </form>
+      </div>
 
       {/* Results Grid */}
       {isLoading ? (
