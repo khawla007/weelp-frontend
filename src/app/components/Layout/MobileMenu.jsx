@@ -181,11 +181,7 @@ const NavigationMenuMobile = () => {
 };
 
 const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error, isCurrent }) => (
-  <div
-    className={`h-full w-1/3 overflow-y-auto px-4 py-5 transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-      isCurrent ? 'opacity-100' : 'opacity-0'
-    }`}
-  >
+  <div className={`h-full w-1/3 overflow-y-auto px-4 py-5 transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${isCurrent ? 'opacity-100' : 'opacity-0'}`}>
     <div className="flex flex-col gap-2">
       {HEADER_NAV_ITEMS.map(({ title, href, hasMegaMenu }) => {
         if (hasMegaMenu) return null;
@@ -239,11 +235,7 @@ const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error, isCurrent }
 );
 
 const PanelCountries = ({ region, onOpenCountry, isCurrent }) => (
-  <div
-    className={`h-full w-1/3 overflow-y-auto px-4 py-5 transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-      isCurrent ? 'opacity-100' : 'opacity-0'
-    }`}
-  >
+  <div className={`h-full w-1/3 overflow-y-auto px-4 py-5 transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${isCurrent ? 'opacity-100' : 'opacity-0'}`}>
     {region ? (
       <div className="overflow-hidden rounded-[18px] border border-[#e4e4e7] bg-white">
         {region.countries?.length > 0 ? (
@@ -267,11 +259,7 @@ const PanelCountries = ({ region, onOpenCountry, isCurrent }) => (
 );
 
 const PanelCities = ({ country, isCurrent }) => (
-  <div
-    className={`h-full w-1/3 overflow-y-auto px-4 py-5 transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-      isCurrent ? 'opacity-100' : 'opacity-0'
-    }`}
-  >
+  <div className={`h-full w-1/3 overflow-y-auto px-4 py-5 transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${isCurrent ? 'opacity-100' : 'opacity-0'}`}>
     {country ? (
       <div className="overflow-hidden rounded-[18px] border border-[#e4e4e7] bg-white">
         {country.cities?.length > 0 ? (
