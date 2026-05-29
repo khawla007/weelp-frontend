@@ -29,6 +29,7 @@ const BlogFilterBar = () => {
   const filterQuery = {
     sort_by: filters.sort_by,
     page: filters.page,
+    per_page: 5,
   };
 
   // Fetch blogs using the useBlogs hook
