@@ -3,6 +3,7 @@ import TabButton from '@/app/components/TabButton';
 import styles from './bannerSection.module.css';
 import { FALLBACK_IMAGE } from '@/constants/image';
 import GallerySlider from '@/app/components/sliders/GallerySlider';
+import Reveal from '@/app/components/ui/Reveal';
 
 /**
  *
@@ -11,7 +12,7 @@ import GallerySlider from '@/app/components/sliders/GallerySlider';
 
 const BannerSectionBlog = ({ title = '', excerpt = '', tags = [], media_gallery = [] }) => {
   return (
-    <section className={`flex p-6 md:px-0 max-h-[400px] h-full items-center mb-10 md:mb-16 lg:mb-24 ${styles.banner_single_blog}`}>
+    <Reveal as="section" scale duration={700} className={`flex p-6 md:px-0 max-h-[400px] h-full items-center mb-10 md:mb-16 lg:mb-24 ${styles.banner_single_blog}`}>
       <div className="w-full md:ps-28 md:pe-8 min-h-full flex flex-col justify-center">
         <div className="2xl:w-3/4 mx-auto">
           <div className="flex flex-col gap-4">
@@ -54,7 +55,7 @@ const BannerSectionBlog = ({ title = '', excerpt = '', tags = [], media_gallery 
           )}
         </div>
       )}
-    </section>
+    </Reveal>
   );
 };
 

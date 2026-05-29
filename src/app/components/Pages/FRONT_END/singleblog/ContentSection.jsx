@@ -2,10 +2,11 @@ import React from 'react';
 import { BlogAuthorInfo } from '@/app/components/singleproductguide';
 import { FollowUs, RelatedLinks } from './SingleBlogModules';
 import { TiptapPublic } from '../../DASHBOARD/admin/_rsc_pages/blogs/components/TiptapPublic';
+import Reveal from '@/app/components/ui/Reveal';
 
 const ContentSection = ({ content = '', categories = [] }) => {
   return (
-    <section className="flex flex-col lg:flex-row">
+    <Reveal as="section" className="flex flex-col lg:flex-row">
       <div className="flex-[2]">
         {/* Post Author */}
         <BlogAuthorInfo />
@@ -25,7 +26,7 @@ const ContentSection = ({ content = '', categories = [] }) => {
         <RelatedLinks categories={categories || []} />
         <FollowUs />
       </div>
-    </section>
+    </Reveal>
   );
 };
 
