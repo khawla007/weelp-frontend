@@ -13,6 +13,8 @@ export default function CityCard({ city, className = '', subtitleMode = 'count' 
     if (hasPrice) {
       subtitle = `Starting at ${formatCurrency(city.starting_price, city.currency)}`;
     }
+  } else if (subtitleMode === 'blogs') {
+    subtitle = activitiesCount > 0 ? `${activitiesCount} Blogs` : 'Blogs';
   } else {
     subtitle = `${activitiesCount} Activities`;
   }
