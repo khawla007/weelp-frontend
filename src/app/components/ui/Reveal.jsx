@@ -5,8 +5,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 // SSR-safe layout effect (avoids the React warning when rendered on the server).
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const prefersReducedMotion = () => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /**
  * Reveal-on-scroll wrapper. Renders children visible on the server (no-JS safe).
@@ -37,8 +36,11 @@ const Reveal = ({ as: Tag = 'div', delay = 0, y = 12, scale = false, duration, o
     }
 
     const rect = el.getBoundingClientRect();
-    const inView = rect.top < (window.innerHeight || 0) && rect.bottom > 0;
-    if (inView) {
+    // Reveal immediately if any part is at/above the viewport bottom — covers
+    // above-fold heroes AND scroll-restoration / anchor jumps that land the user
+    // mid-page (sections above the viewport must not stay hidden). Only strictly
+    // below-fold elements wait for the observer.
+    if (rect.top < (window.innerHeight || 0)) {
       setState('shown');
       return;
     }
@@ -47,7 +49,9 @@ const Reveal = ({ as: Tag = 'div', delay = 0, y = 12, scale = false, duration, o
     const observer = new IntersectionObserver(
       (entries, obs) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          // Reveal on intersect, or if a fast scroll carried it above the viewport
+          // before the observer sampled the in-view frame.
+          if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
             setState('shown');
             if (once) obs.disconnect();
           } else if (!once) {
@@ -69,7 +73,8 @@ const Reveal = ({ as: Tag = 'div', delay = 0, y = 12, scale = false, duration, o
   };
 
   return (
-    <Tag ref={ref} className={className} style={mergedStyle} data-reveal={state === null ? undefined : state} data-reveal-scale={scale ? 'true' : undefined} {...rest}>
+    // {...rest} first so internal ref / data-reveal attrs always win over any caller-passed props.
+    <Tag {...rest} ref={ref} className={className} style={mergedStyle} data-reveal={state === null ? undefined : state} data-reveal-scale={scale ? 'true' : undefined}>
       {children}
     </Tag>
   );

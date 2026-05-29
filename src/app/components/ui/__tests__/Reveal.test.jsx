@@ -17,8 +17,8 @@ class MockIO {
   disconnect() {
     this.disconnected = true;
   }
-  trigger(isIntersecting) {
-    act(() => this.cb([{ isIntersecting, target: this.observed[0] }], this));
+  trigger(isIntersecting, boundingClientRect = { top: 400 }) {
+    act(() => this.cb([{ isIntersecting, boundingClientRect, target: this.observed[0] }], this));
   }
 }
 
@@ -54,6 +54,16 @@ test('below-fold element starts pending then reveals on intersect', () => {
   const el = screen.getByText('content');
   expect(el).toHaveAttribute('data-reveal', 'pending');
   ioInstances[0].trigger(true);
+  expect(el).toHaveAttribute('data-reveal', 'shown');
+  expect(ioInstances[0].disconnected).toBe(true);
+});
+
+test('reveals when scrolled past (above viewport) even if not intersecting', () => {
+  render(<Reveal>content</Reveal>);
+  const el = screen.getByText('content');
+  expect(el).toHaveAttribute('data-reveal', 'pending');
+  // fast scroll carried it above the viewport: not intersecting, top < 0
+  ioInstances[0].trigger(false, { top: -500 });
   expect(el).toHaveAttribute('data-reveal', 'shown');
   expect(ioInstances[0].disconnected).toBe(true);
 });
