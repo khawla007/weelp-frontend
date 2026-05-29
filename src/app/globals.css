@@ -28,7 +28,7 @@ html body[data-scroll-locked] {
 #nprogress .bar {
   background: #588f7a;
   position: fixed;
-  z-index: 1600;
+  z-index: 100000;
   top: 0;
   left: 0;
   width: 100%;
