@@ -7,9 +7,15 @@ import { prefersReducedMotion } from '@/lib/motion';
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 /**
- * Reveal-on-scroll wrapper for BELOW-fold content. Renders children visible on
- * the server (no-JS safe); on the client, sections below the fold hide then fade
- * up when scrolled into view. Reduced-motion users stay fully visible.
+ * Reveal-on-scroll wrapper for BELOW-fold content. On the client, sections below
+ * the fold hide then fade up when scrolled into view. Reduced-motion users stay
+ * fully visible.
+ *
+ * Default: renders children visible on the server (no-JS safe) and only hides
+ * after hydration. Use `initialHidden` for genuinely below-fold sections to
+ * render them hidden in the server markup instead — this closes the pre-hydration
+ * window where the section would otherwise sit visible-but-static and skip its
+ * scroll reveal if the user scrolls in before the JS hydrates.
  *
  * Do NOT use this for above-fold heroes — gating their entrance behind hydration
  * replays the animation late and makes already-visible content blink. Heroes use
@@ -17,15 +23,17 @@ const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : use
  *
  * @param {object} props
  * @param {string|React.ElementType} [props.as='div'] - element/tag for the reveal root
+ * @param {boolean} [props.initialHidden=false] - render 'pending' (hidden) in SSR markup; for below-fold sections
  * @param {number} [props.delay=0] - stagger delay in ms (-> --weelp-motion-delay)
  * @param {number} [props.y=12] - fade-up offset in px (-> --weelp-fade-up-y)
  * @param {number} [props.duration] - animation duration in ms (-> --weelp-motion-duration)
  * @param {boolean} [props.once=true] - disconnect observer after first reveal
  */
-const Reveal = ({ as: Tag = 'div', delay = 0, y = 12, duration, once = true, className, style, children, ...rest }) => {
+const Reveal = ({ as: Tag = 'div', initialHidden = false, delay = 0, y = 12, duration, once = true, className, style, children, ...rest }) => {
   const ref = useRef(null);
   // null = not yet evaluated (SSR / first paint -> visible). 'pending' | 'shown' after mount.
-  const [state, setState] = useState(null);
+  // initialHidden seeds 'pending' so the server markup is hidden from first paint.
+  const [state, setState] = useState(initialHidden ? 'pending' : null);
 
   useIsoLayoutEffect(() => {
     const el = ref.current;

@@ -1,4 +1,5 @@
 import { render, screen, act } from '@testing-library/react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import Reveal from '../Reveal';
 
 // Controllable IntersectionObserver mock
@@ -93,6 +94,16 @@ test('delay, y, duration map to style vars', () => {
   expect(el.style.getPropertyValue('--weelp-motion-delay')).toBe('120ms');
   expect(el.style.getPropertyValue('--weelp-fade-up-y')).toBe('20px');
   expect(el.style.getPropertyValue('--weelp-motion-duration')).toBe('700ms');
+});
+
+test('default SSR markup is visible (no data-reveal attr)', () => {
+  const html = renderToStaticMarkup(<Reveal>content</Reveal>);
+  expect(html).not.toContain('data-reveal');
+});
+
+test('initialHidden SSR markup is hidden from first paint (data-reveal="pending")', () => {
+  const html = renderToStaticMarkup(<Reveal initialHidden>content</Reveal>);
+  expect(html).toContain('data-reveal="pending"');
 });
 
 test('renders custom element via `as`', () => {
