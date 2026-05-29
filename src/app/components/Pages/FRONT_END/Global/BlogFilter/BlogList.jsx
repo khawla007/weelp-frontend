@@ -4,7 +4,7 @@ import Reveal from '@/app/components/ui/Reveal';
 
 const BlogList = () => {
   return (
-    <Reveal as="section" className="container mx-auto flex flex-col gap-3 p-4 sm:my-4">
+    <Reveal as="section" className="container-page flex flex-col gap-3 pb-10 md:pb-16 lg:pb-24">
       <h2 className="text-lg sm:text-[28px] font-medium text-[#18181b] capitalize">Browse Blogs</h2>
       <BlogFilterBar />
     </Reveal>

@@ -33,7 +33,7 @@ describe('BannerSectionSearchForm', () => {
     expect(getByTestId('search-form-creator').parentElement).not.toHaveClass('mt-6');
 
     const hero = container.querySelector('section');
-    const background = container.querySelector('[data-explore-creators-globe-background]');
+    const background = container.querySelector('[data-banner-globe-background]');
     const stage = container.querySelector('[data-animated-globe]');
     const shell = container.querySelector('[data-personalised-cobe-shell]');
 
@@ -50,7 +50,7 @@ describe('BannerSectionSearchForm', () => {
     expect(container.querySelector('img[src="/assets/Group5.png"]')).not.toBeInTheDocument();
   });
 
-  it('keeps the blogs hero on the existing static image treatment', () => {
+  it('renders the shared animated globe and a hero-rise entrance for the blogs hero', () => {
     usePathname.mockReturnValue('/blogs');
     const BannerSectionSearchForm = require('../BannerSectionSearchForm').default;
 
@@ -58,7 +58,11 @@ describe('BannerSectionSearchForm', () => {
 
     expect(getByTestId('search-form-blogs')).toBeInTheDocument();
     expect(getByTestId('search-form-blogs').parentElement).toHaveClass('mt-6', 'w-full');
-    expect(container.querySelector('[data-animated-globe]')).not.toBeInTheDocument();
+    // blogs hero now shows the globe (same treatment as tours/holiday/explore-creators)
+    expect(container.querySelector('[data-banner-globe-background]')).toBeInTheDocument();
+    expect(container.querySelector('[data-animated-globe]')).toBeInTheDocument();
+    // CSS-at-paint entrance, and the blogs-only decorative corner image is kept
+    expect(container.querySelector('section')).toHaveClass('weelp-hero-rise');
     expect(container.querySelector('img[src="/assets/Group5.png"]')).toHaveClass('hidden', '2xl:block', 'absolute', '-top-8', 'right-0', 'scale-90', 'pointer-events-none');
   });
 });
