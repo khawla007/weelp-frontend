@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
+import { DashboardMotionFrame } from '@/app/components/DashboardShared';
 
 export default function MyItinerariesClientWrapper({ initialItineraries, lastPage, isCreator = false }) {
   const [itineraries, setItineraries] = useState(initialItineraries);
@@ -112,7 +113,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
   }
 
   return (
-    <div className="space-y-6">
+    <DashboardMotionFrame className="space-y-6">
       {headerButton && <div className="flex justify-end">{headerButton}</div>}
 
       {isCreator && (
@@ -291,6 +292,6 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </DashboardMotionFrame>
   );
 }

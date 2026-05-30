@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { getCreatorPayouts } from '@/lib/actions/creatorItineraries';
+import { DashboardMotionFrame } from '@/app/components/DashboardShared';
 
 const PRESETS = [
   {
@@ -82,7 +83,7 @@ export default function PayoutsClient({ initial }) {
   const pagination = data?.pagination ?? { current_page: 1, last_page: 1, total: 0 };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <DashboardMotionFrame className="p-4 sm:p-6 lg:p-8 space-y-6">
       <header>
         <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">Payouts</h1>
         <p className="text-[#71717a] mt-1">Paid commission batches grouped by date.</p>
@@ -169,6 +170,6 @@ export default function PayoutsClient({ initial }) {
           )}
         </>
       )}
-    </div>
+    </DashboardMotionFrame>
   );
 }

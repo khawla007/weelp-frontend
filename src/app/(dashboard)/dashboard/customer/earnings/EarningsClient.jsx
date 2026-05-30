@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { getCreatorEarnings } from '@/lib/actions/creatorItineraries';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
+import { DashboardMotionFrame } from '@/app/components/DashboardShared';
 
 const STATUS_TABS = ['all', 'pending', 'paid', 'cancelled'];
 
@@ -106,7 +107,7 @@ export default function EarningsClient({ initial }) {
   const pagination = data?.pagination ?? { current_page: 1, last_page: 1, total: 0 };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <DashboardMotionFrame className="p-4 sm:p-6 lg:p-8 space-y-6">
       <header>
         <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">Earnings</h1>
         <p className="text-[#71717a] mt-1">Commissions from your published itineraries.</p>
@@ -236,6 +237,6 @@ export default function EarningsClient({ initial }) {
           )}
         </>
       )}
-    </div>
+    </DashboardMotionFrame>
   );
 }
