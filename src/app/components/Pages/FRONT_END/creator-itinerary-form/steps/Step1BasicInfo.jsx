@@ -42,7 +42,7 @@ export default function Step1BasicInfo({ locations = [] }) {
             className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
             onBlur={handleBlur}
           />
-          {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+          {errors?.name && <p className="text-red-500 text-sm mt-1 animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors.name.message}</p>}
         </div>
 
         <div className="pb-2 space-y-2 w-full">
@@ -56,7 +56,7 @@ export default function Step1BasicInfo({ locations = [] }) {
             className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
             onBlur={handleBlur}
           />
-          {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
+          {errors?.slug && <p className="text-red-500 text-sm mt-1 animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors?.slug.message}</p>}
         </div>
       </div>
 
@@ -72,7 +72,7 @@ export default function Step1BasicInfo({ locations = [] }) {
           })}
           className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
         />
-        {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+        {errors?.description && <p className="text-red-500 text-sm mt-1 animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors.description.message}</p>}
       </div>
 
       {/* destination */}
@@ -87,7 +87,7 @@ export default function Step1BasicInfo({ locations = [] }) {
           rules={{ required: 'Locations Required' }}
           render={({ field: { value, onChange } }) => <ComboboxMultiple id={'locations'} name="locations" type={'locations'} items={locations} value={value ?? []} onChange={onChange} />}
         />
-        {errors?.locations && <span className="text-red-400">{errors?.locations?.message}</span>}
+        {errors?.locations && <span className="text-red-400 inline-block animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors?.locations?.message}</span>}
       </div>
     </div>
   );

@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, FormProvider, useWatch } from 'react-hook-form';
+import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -26,12 +27,47 @@ const STEPS = [
   { id: 2, title: 'Schedule' },
 ];
 
+// Single source for the directional slide classes so forward/back can't drift apart.
+const STEP_SLIDE = { forward: 'slide-in-from-right-2', back: 'slide-in-from-left-2' };
+
 export default function CreatorItineraryFormShell({ mode = 'create', draftId = null, initialData = null, locations = [], alltransfers = [] }) {
   const router = useRouter();
   const { toast } = useToast();
 
   const [currentStep, setCurrentStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
+  // Direction-aware step transition: +1 advancing, -1 going back.
+  const [direction, setDirection] = useState(1);
+  // Wrapper that holds the swapping step content (Step1 slot + Step2's display-toggled box).
+  const stepContentRef = useRef(null);
+  // First paint should fade only — the horizontal slide is reserved for real step changes.
+  const hasMounted = useRef(false);
+
+  const goToStep = (next) => {
+    setDirection(next >= currentStep ? 1 : -1);
+    setCurrentStep(next);
+  };
+
+  // React owns the steady enter-animation classes via the wrapper's JSX className (see below);
+  // this effect only *replays* that animation on each step change. We can't use a React `key`
+  // to remount-and-replay because Step2 lives inside this wrapper and must keep its local state,
+  // so we restart the CSS animation imperatively: strip the classes, force a reflow, re-add them.
+  // The reflow makes the browser treat the re-added classes as a fresh animation start.
+  useEffect(() => {
+    // Skip the very first paint — the wrapper's JSX className already played the fade once.
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      return;
+    }
+    const el = stepContentRef.current;
+    if (!el) return;
+    const slide = direction >= 0 ? STEP_SLIDE.forward : STEP_SLIDE.back;
+    const enterClasses = ['animate-in', 'fade-in-0', 'duration-200', 'motion-reduce:animate-none', slide];
+    el.classList.remove(...enterClasses, STEP_SLIDE.forward, STEP_SLIDE.back);
+    // Force reflow so the browser treats the re-added animation classes as a fresh start.
+    void el.offsetWidth;
+    el.classList.add(...enterClasses);
+  }, [currentStep, direction]);
 
   const methods = useForm({
     shouldUnregister: false,
@@ -66,7 +102,7 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
     const valid = await validateCurrentStep();
     if (!valid) return;
     if (currentStep < STEPS.length) {
-      setCurrentStep((prev) => prev + 1);
+      goToStep(currentStep + 1);
     }
   };
 
@@ -126,7 +162,7 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
                         const isValid = await validateCurrentStep();
                         if (!isValid) return;
                       }
-                      setCurrentStep(step?.id);
+                      goToStep(step?.id);
                     }}
                     className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-[#588f7a] border-b-2'}`}
                   >
@@ -148,16 +184,24 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
             }}
           >
             <fieldset className={`bg-white p-2 px-8 border shadow rounded-lg ${submitting && ' cursor-wait'}`} disabled={submitting}>
-              <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>
-                <Step2Schedule alltransfers={alltransfers} onSubmit={onStep2Submit} submitLabel={mode === 'edit' ? 'Save & Submit for Review' : 'Submit for Review'} submitting={submitting} />
+              {/* Animate only the step content wrapper, not individual inputs. React owns these
+                  enter classes (so a future className edit can't silently kill the animation);
+                  the effect above only replays them on each step change. No React `key` here —
+                  Step2 lives inside this wrapper (display toggled) and must keep its local state,
+                  so we replay via reflow instead of remounting. First paint fades with no slide;
+                  the directional slide (STEP_SLIDE) is added by the effect on real step changes. */}
+              <div ref={stepContentRef} className={cn('animate-in', 'fade-in-0', 'duration-200', 'motion-reduce:animate-none')}>
+                <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>
+                  <Step2Schedule alltransfers={alltransfers} onSubmit={onStep2Submit} submitLabel={mode === 'edit' ? 'Save & Submit for Review' : 'Submit for Review'} submitting={submitting} />
+                </div>
+                {currentStep === 1 && <Step1BasicInfo locations={locations} />}
               </div>
-              {currentStep === 1 && <Step1BasicInfo locations={locations} />}
 
               <div className="flex justify-between pt-4 pb-6">
                 {currentStep > 1 && (
                   <Button
                     type="button"
-                    onClick={() => setCurrentStep(currentStep - 1)}
+                    onClick={() => goToStep(currentStep - 1)}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Previous

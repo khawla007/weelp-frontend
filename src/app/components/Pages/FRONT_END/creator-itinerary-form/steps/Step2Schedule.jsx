@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useFormContext, useFieldArray, useWatch } from 'react-hook-form';
 import { isEmpty } from 'lodash';
-import { Activity, Car, Clock, Map, Settings, Trash2 } from 'lucide-react';
+import { Activity, Car, Clock, Loader2, Map, Settings, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -117,7 +117,7 @@ export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel
 
   return (
     <div className="py-4 relative">
-      {errors?.schedules && <p className="text-sm text-red-500">{errors?.schedules?.message}</p>}
+      {errors?.schedules && <p className="text-sm text-red-500 animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors?.schedules?.message}</p>}
 
       <div className="w-full flex justify-between items-center">
         <h3 className="text-base font-semibold text-[#18181b]">Daily Schedule</h3>
@@ -286,8 +286,9 @@ export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel
         type="button"
         onClick={handleValidationSchedule}
         disabled={submitting}
-        className={`absolute right-0 -bottom-14 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}
+        className={`absolute right-0 -bottom-14 ml-auto inline-flex items-center py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}
       >
+        {submitting ? <Loader2 className="size-4 animate-spin mr-2" /> : null}
         {submitting ? 'Submitting...' : submitLabel}
       </Button>
     </div>

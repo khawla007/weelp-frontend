@@ -92,7 +92,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
               Name <span className="text-red-500">*</span>
             </Label>
             <Input id="name" placeholder="Your full name" className="mt-1.5" {...register('name', { required: 'Name is required' })} />
-            {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+            {errors.name && <p className="text-red-500 text-xs mt-1 animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors.name.message}</p>}
           </div>
 
           {/* Email */}
@@ -110,7 +110,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
                 pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Invalid email address' },
               })}
             />
-            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+            {errors.email && <p className="text-red-500 text-xs mt-1 animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors.email.message}</p>}
           </div>
 
           {/* Gender */}
@@ -135,7 +135,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
                 </Select>
               )}
             />
-            {errors.gender && <p className="text-red-500 text-xs mt-1">{errors.gender.message}</p>}
+            {errors.gender && <p className="text-red-500 text-xs mt-1 animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors.gender.message}</p>}
           </div>
 
           {/* Instagram */}
@@ -144,7 +144,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
               Instagram <span className="text-red-500">*</span>
             </Label>
             <Input id="instagram" placeholder="@yourhandle" className="mt-1.5" {...register('instagram', { required: 'Instagram handle is required' })} />
-            {errors.instagram && <p className="text-red-500 text-xs mt-1">{errors.instagram.message}</p>}
+            {errors.instagram && <p className="text-red-500 text-xs mt-1 animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors.instagram.message}</p>}
           </div>
 
           {/* Phone */}
@@ -153,7 +153,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
               Phone <span className="text-red-500">*</span>
             </Label>
             <Input id="phone" type="tel" placeholder="+1 234 567 890" className="mt-1.5" {...register('phone', { required: 'Phone number is required' })} />
-            {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
+            {errors.phone && <p className="text-red-500 text-xs mt-1 animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors.phone.message}</p>}
           </div>
 
           {/* YouTube (optional) */}
