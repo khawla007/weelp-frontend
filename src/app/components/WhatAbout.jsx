@@ -22,10 +22,7 @@ export const WhatAboutCity = ({ location_details }) => {
             {metaData.map((val, index) => {
               if (val[0] && val[1]) {
                 return (
-                  <li
-                    key={index}
-                    className="capitalize flex flex-col items-start min-w-0 p-3 sm:p-4 md:py-5 md:px-8 odd:border-b odd:border-r even:border-b border-[var(--weelp-home-border)]"
-                  >
+                  <li key={index} className="capitalize flex flex-col items-start min-w-0 p-3 sm:p-4 md:py-5 md:px-8 odd:border-b odd:border-r even:border-b border-[var(--weelp-home-border)]">
                     <h3 className="font-bold w-full break-words text-sm sm:text-base md:text-lg text-[var(--weelp-home-ink)]">{stringSignRemover(val?.[0])}</h3>
                     <span className="capitalize w-full break-words text-xs sm:text-sm font-medium text-[var(--weelp-home-copy)]">{val[1]}</span>
                   </li>
