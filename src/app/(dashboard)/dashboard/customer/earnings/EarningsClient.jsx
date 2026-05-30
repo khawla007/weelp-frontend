@@ -168,9 +168,12 @@ export default function EarningsClient({ initial }) {
             ))}
           </div>
         ) : rows.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-lg border border-[#e4e4e7]">
+          <div className="weelp-fade-up text-center py-16 bg-white rounded-lg border border-[#e4e4e7]">
             <p className="text-lg font-semibold text-[#18181b]">No earnings in this period</p>
             <p className="text-[#71717a] mt-2">Once your itineraries get booked you&apos;ll see commissions here.</p>
+            <NavigationLink href="/dashboard/customer/my-itineraries">
+              <Button className="mt-4 bg-[#588f7a] hover:bg-[#588f7a]/90 text-white">View My Itineraries</Button>
+            </NavigationLink>
           </div>
         ) : (
           <>

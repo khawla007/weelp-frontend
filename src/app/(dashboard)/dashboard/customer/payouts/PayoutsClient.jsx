@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { getCreatorPayouts } from '@/lib/actions/creatorItineraries';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { DashboardMotionFrame } from '@/app/components/DashboardShared';
 
 const PRESETS = [
@@ -124,9 +125,12 @@ export default function PayoutsClient({ initial }) {
             ))}
           </div>
         ) : rows.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-lg border border-[#e4e4e7]">
+          <div className="weelp-fade-up text-center py-16 bg-white rounded-lg border border-[#e4e4e7]">
             <p className="text-lg font-semibold text-[#18181b]">No payouts in this period</p>
             <p className="text-[#71717a] mt-2">Paid commissions will appear here once your earnings are settled.</p>
+            <NavigationLink href="/dashboard/customer/earnings">
+              <Button className="mt-4 bg-[#588f7a] hover:bg-[#588f7a]/90 text-white">View Earnings</Button>
+            </NavigationLink>
           </div>
         ) : (
           <>
