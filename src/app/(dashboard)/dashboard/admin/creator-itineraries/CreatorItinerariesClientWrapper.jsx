@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CheckCircle, XCircle, ExternalLink, Pencil, Trash2, FileEdit, Ban } from 'lucide-react';
+import { CheckCircle, XCircle, ExternalLink, Pencil, Trash2, FileEdit, Ban, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -235,6 +235,13 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-2 justify-end flex-wrap">
+                        <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer">
+                          <Button variant="outline" size="sm" className="border-[#e4e4e7] text-[#52525b]" title="View itinerary">
+                            <Eye className="size-4 mr-1" />
+                            View
+                          </Button>
+                        </a>
+
                         {item.status === 'pending' && (
                           <>
                             <Button variant="outline" size="sm" onClick={() => handleReject(item.id)} disabled={processingId === item.id} className="border-red-300 text-red-600 hover:bg-red-50">
