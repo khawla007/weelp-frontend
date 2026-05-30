@@ -298,6 +298,18 @@ body {
     animation-delay: var(--weelp-motion-delay, 0ms);
   }
 
+  /* Dashboard content frame: CSS-at-paint fade-up for dashboard page content.
+     Quieter than the hero/page-load rise (6px travel, ~180ms). Runs at first
+     paint via `both` fill — no hydration gate, no blink. Distinct from Reveal,
+     which is for below-fold scroll reveal. */
+  .weelp-dashboard-frame {
+    opacity: 0;
+    --weelp-fade-up-y: 6px;
+    animation: weelpFadeUp var(--weelp-motion-duration, 180ms) var(--weelp-motion-ease, var(--weelp-ease-out)) both;
+    animation-delay: var(--weelp-motion-delay, 0ms);
+    will-change: transform, opacity;
+  }
+
   /* Scroll-reveal wrapper (Reveal.jsx) — below-fold sections only. They are
      off-screen at first paint, so the post-hydration state flip is invisible.
      will-change is declared only on the pending (pre-animation) state; once
@@ -425,6 +437,7 @@ body {
 
   @media (prefers-reduced-motion: reduce) {
     .weelp-fade-up,
+    .weelp-dashboard-frame,
     .weelp-scale-in,
     .weelp-popover,
     .weelp-hero-rise,

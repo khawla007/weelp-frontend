@@ -1,3 +1,4 @@
+export { DashboardMotionFrame, default as DashboardMotionFrameDefault } from './DashboardMotionFrame';
 export { DashboardSearch } from './DashboardSearch';
 export { SortDropdown } from './SortDropdown';
 export { ListingFilterSidebar } from './ListingFilterSidebar';
