@@ -13,7 +13,7 @@ export const WhatAboutCity = ({ location_details }) => {
   const metaData = Object.entries(location_details ?? {}).length > 2 ? Object.entries(location_details).slice(2, 9) : [];
 
   return (
-    <div className="p-4 sm:p-6 md:py-8 md:px-10 lg:px-12 xl:px-8 2xl:px-16">
+    <div className="p-[30px]">
       {metaData.length > 0 ? (
         <>
           <h5 className="font-semibold text-[var(--weelp-home-copy)] capitalize">What About</h5>
@@ -24,10 +24,10 @@ export const WhatAboutCity = ({ location_details }) => {
                 return (
                   <li
                     key={index}
-                    className="capitalize flex flex-col flex-wrap items-start p-3 sm:p-5 md:py-9 md:px-[3.25rem] odd:border-b odd:border-r even:border-b border-[var(--weelp-home-border)]"
+                    className="capitalize flex flex-col items-start min-w-0 p-3 sm:p-4 md:py-5 md:px-8 odd:border-b odd:border-r even:border-b border-[var(--weelp-home-border)]"
                   >
-                    <h3 className="font-bold px-8 text-base sm:text-lg md:text-xl text-[var(--weelp-home-ink)]">{stringSignRemover(val?.[0])}</h3>
-                    <span className="capitalize text-xs sm:text-sm md:text-base font-medium px-8 text-[var(--weelp-home-copy)]">{val[1]}</span>
+                    <h3 className="font-bold w-full break-words text-sm sm:text-base md:text-lg text-[var(--weelp-home-ink)]">{stringSignRemover(val?.[0])}</h3>
+                    <span className="capitalize w-full break-words text-xs sm:text-sm font-medium text-[var(--weelp-home-copy)]">{val[1]}</span>
                   </li>
                 );
               }
@@ -50,9 +50,9 @@ export const WhatAboutRegion = ({ regionMetaData, destinationInfo }) => {
         <ul className="bg-white grid grid-cols-2 justify-center shadow-sm rounded-md mt-8">
           {destinationInfo.map((val, index) => {
             return (
-              <li key={index} className="capitalize flex flex-col flex-wrap items-start p-2 sm:py-9 sm:px-13 odd:border-b odd:border-r even:border-b border-[var(--weelp-home-border)]">
-                <h3 className="font-bold px-8 text-sm sm:text-xl text-[var(--weelp-home-ink)]">{val.title}</h3>
-                <span className="capitalize text-xs sm:text-sm font-medium px-8 text-[var(--weelp-home-copy)]">{val.description}</span>
+              <li key={index} className="capitalize flex flex-col items-start min-w-0 p-2 sm:py-9 sm:px-13 odd:border-b odd:border-r even:border-b border-[var(--weelp-home-border)]">
+                <h3 className="font-bold w-full break-words text-sm sm:text-xl text-[var(--weelp-home-ink)]">{val.title}</h3>
+                <span className="capitalize w-full break-words text-xs sm:text-sm font-medium text-[var(--weelp-home-copy)]">{val.description}</span>
               </li>
             );
           })}
