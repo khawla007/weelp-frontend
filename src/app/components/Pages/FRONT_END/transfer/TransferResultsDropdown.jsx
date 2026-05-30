@@ -1,6 +1,7 @@
 'use client';
 
 import { X } from 'lucide-react';
+import Reveal from '@/app/components/ui/Reveal';
 import TransferResultCard from './TransferResultCard';
 
 /**
@@ -66,7 +67,10 @@ export default function TransferResultsDropdown({ open, loading, transfers = [],
       {CloseButton}
       <div className="bg-white rounded-xl shadow-xl max-h-[520px] overflow-y-auto flex flex-col gap-4 p-4">
         {transfers.map((transfer, idx) => (
-          <TransferResultCard key={transfer.id ?? transfer.transfer_id ?? `transfer-${idx}`} transfer={transfer} onSelect={onSelect} pickupAt={pickupAt} passengers={passengers} />
+          /* 60ms stagger, capped at 6 cards (~360ms) so later results aren't slow */
+          <Reveal key={transfer.id ?? transfer.transfer_id ?? `transfer-${idx}`} delay={Math.min(idx, 6) * 60} duration={400}>
+            <TransferResultCard transfer={transfer} onSelect={onSelect} pickupAt={pickupAt} passengers={passengers} />
+          </Reveal>
         ))}
       </div>
     </div>

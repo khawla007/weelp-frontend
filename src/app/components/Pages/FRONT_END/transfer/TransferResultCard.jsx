@@ -70,7 +70,7 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
   };
 
   return (
-    <Card className="p-0 overflow-hidden border border-[#e4e4e7] transition-shadow duration-200 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)]">
+    <Card className="group p-0 overflow-hidden border border-[#e4e4e7] transition-shadow duration-200 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)]">
       <div className="flex flex-row items-stretch">
         <div className="flex-[3] flex flex-col gap-2 py-4 px-8">
           <span className="text-xs text-[#71717a] font-medium">Private Transfer</span>
@@ -90,7 +90,12 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
           </p>
         </div>
 
-        <div style={{ backgroundImage: `url('${featuredImage}')` }} className="flex-[3] h-40 bg-cover bg-left" role="img" aria-label={routeTitle} />
+        <div
+          style={{ backgroundImage: `url('${featuredImage}')` }}
+          className="flex-[3] h-40 bg-cover bg-left transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none"
+          role="img"
+          aria-label={routeTitle}
+        />
       </div>
 
       <div className="bg-[#f4f4f5] py-4 px-8 flex flex-wrap gap-2 sm:gap-4">
