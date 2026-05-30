@@ -164,7 +164,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
           return (
             <div
               key={item.id || itinerary.id}
-              className="bg-white rounded-xl border border-[#e4e4e7] overflow-hidden group transition-shadow duration-200 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)]"
+              className="bg-white rounded-xl border border-[#e4e4e7] overflow-hidden group transition-[transform,box-shadow] duration-150 ease-out hover:-translate-y-0.5 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] focus-within:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:focus-within:translate-y-0"
             >
               <div className="h-[200px] bg-[#f4f4f5] relative overflow-hidden">
                 <img

@@ -16,7 +16,10 @@ import { Card } from '@/components/ui/card';
  */
 export function ListingCard({ children, className = '', ...props }) {
   return (
-    <Card className={`group hover:shadow-md rounded-lg w-full border relative overflow-hidden ${className}`} {...props}>
+    <Card
+      className={`group rounded-lg w-full border relative overflow-hidden transition-[transform,box-shadow] duration-150 ease-out hover:-translate-y-0.5 hover:shadow-md focus-within:-translate-y-0.5 focus-within:shadow-md motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:focus-within:translate-y-0 ${className}`}
+      {...props}
+    >
       {children}
     </Card>
   );
