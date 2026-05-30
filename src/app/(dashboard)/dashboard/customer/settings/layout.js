@@ -1,5 +1,6 @@
 import BreakSection from '@/app/components/BreakSection';
 import { AccountLinks } from '@/app/components/Pages/DASHBOARD/user/user_components/AccountLinks';
+import { DashboardMotionFrame } from '@/app/components/DashboardShared';
 
 // Setting Routes
 const AccountRoutes = [
@@ -23,7 +24,9 @@ const SettingLayout = ({ children }) => {
         <div className="flex md:flex-1 w-full">
           <AccountLinks AccountRoutes={AccountRoutes} />
         </div>
-        <div className="md:flex-[3] w-full flex">{children}</div>
+        <DashboardMotionFrame duration="160ms" className="md:flex-[3] w-full flex">
+          {children}
+        </DashboardMotionFrame>
       </div>
     </div>
   );
