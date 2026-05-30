@@ -300,7 +300,9 @@ body {
 
   /* Settings nav active indicator: slides vertically to the active route. */
   .weelp-settings-rail {
-    transition: transform 160ms var(--weelp-ease-out), height 160ms var(--weelp-ease-out);
+    transition:
+      transform 160ms var(--weelp-ease-out),
+      height 160ms var(--weelp-ease-out);
     will-change: transform, height;
   }
 
