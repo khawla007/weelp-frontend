@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { getCreatorPayouts } from '@/lib/actions/creatorItineraries';
 import { DashboardMotionFrame } from '@/app/components/DashboardShared';
@@ -111,64 +112,76 @@ export default function PayoutsClient({ initial }) {
         ))}
       </section>
 
-      {rows.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-lg border border-[#e4e4e7]">
-          <p className="text-lg font-semibold text-[#18181b]">No payouts in this period</p>
-          <p className="text-[#71717a] mt-2">Paid commissions will appear here once your earnings are settled.</p>
-        </div>
-      ) : (
-        <>
-          <div className="hidden md:block bg-white rounded-lg border border-[#e4e4e7]">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Payout Date</TableHead>
-                  <TableHead className="text-right">Commissions</TableHead>
-                  <TableHead className="text-right">Total Paid</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {rows.map((r) => (
-                  <TableRow key={r.payout_date}>
-                    <TableCell>{fmtDate(r.payout_date)}</TableCell>
-                    <TableCell className="text-right">{r.commission_count}</TableCell>
-                    <TableCell className="text-right font-semibold">{fmtCurrency(r.total_amount)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-
-          <div className="md:hidden space-y-3">
-            {rows.map((r) => (
-              <div key={r.payout_date} className="bg-white rounded-lg border border-[#e4e4e7] p-4 space-y-2">
-                <div className="flex justify-between items-start">
-                  <div className="font-medium text-[#18181b]">{fmtDate(r.payout_date)}</div>
-                  <div className="font-semibold text-[#18181b]">{fmtCurrency(r.total_amount)}</div>
-                </div>
-                <div className="text-sm text-[#71717a]">
-                  {r.commission_count} commission{r.commission_count === 1 ? '' : 's'}
-                </div>
+      <div key={loading ? 'loading' : preset} className="animate-fade-in">
+        {loading ? (
+          <div className="bg-white rounded-lg border border-[#e4e4e7] divide-y divide-[#e4e4e7]">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center justify-between p-4">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-24" />
               </div>
             ))}
           </div>
-
-          {pagination.last_page > 1 && (
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-[#71717a]">
-                Page {pagination.current_page} of {pagination.last_page}
-              </span>
-              <div className="flex gap-2">
-                <Button size="sm" variant="outline" disabled={page <= 1 || loading} onClick={() => setPage((p) => Math.max(1, p - 1))}>
-                  Previous
-                </Button>
-                <Button size="sm" variant="outline" disabled={page >= pagination.last_page || loading} onClick={() => setPage((p) => p + 1)}>
-                  Next
-                </Button>
-              </div>
+        ) : rows.length === 0 ? (
+          <div className="text-center py-16 bg-white rounded-lg border border-[#e4e4e7]">
+            <p className="text-lg font-semibold text-[#18181b]">No payouts in this period</p>
+            <p className="text-[#71717a] mt-2">Paid commissions will appear here once your earnings are settled.</p>
+          </div>
+        ) : (
+          <>
+            <div className="hidden md:block bg-white rounded-lg border border-[#e4e4e7]">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Payout Date</TableHead>
+                    <TableHead className="text-right">Commissions</TableHead>
+                    <TableHead className="text-right">Total Paid</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {rows.map((r) => (
+                    <TableRow key={r.payout_date}>
+                      <TableCell>{fmtDate(r.payout_date)}</TableCell>
+                      <TableCell className="text-right">{r.commission_count}</TableCell>
+                      <TableCell className="text-right font-semibold">{fmtCurrency(r.total_amount)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
-          )}
-        </>
+
+            <div className="md:hidden space-y-3">
+              {rows.map((r) => (
+                <div key={r.payout_date} className="bg-white rounded-lg border border-[#e4e4e7] p-4 space-y-2">
+                  <div className="flex justify-between items-start">
+                    <div className="font-medium text-[#18181b]">{fmtDate(r.payout_date)}</div>
+                    <div className="font-semibold text-[#18181b]">{fmtCurrency(r.total_amount)}</div>
+                  </div>
+                  <div className="text-sm text-[#71717a]">
+                    {r.commission_count} commission{r.commission_count === 1 ? '' : 's'}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+      {/* pagination moved out of the keyed wrapper so refetch never remounts it */}
+      {pagination.last_page > 1 && (
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-[#71717a]">
+            Page {pagination.current_page} of {pagination.last_page}
+          </span>
+          <div className="flex gap-2">
+            <Button size="sm" variant="outline" disabled={page <= 1 || loading} onClick={() => setPage((p) => Math.max(1, p - 1))}>
+              Previous
+            </Button>
+            <Button size="sm" variant="outline" disabled={page >= pagination.last_page || loading} onClick={() => setPage((p) => p + 1)}>
+              Next
+            </Button>
+          </div>
+        </div>
       )}
     </DashboardMotionFrame>
   );

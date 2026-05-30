@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { getCreatorEarnings } from '@/lib/actions/creatorItineraries';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
@@ -154,88 +155,101 @@ export default function EarningsClient({ initial }) {
         </div>
       </section>
 
-      {rows.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-lg border border-[#e4e4e7]">
-          <p className="text-lg font-semibold text-[#18181b]">No earnings in this period</p>
-          <p className="text-[#71717a] mt-2">Once your itineraries get booked you&apos;ll see commissions here.</p>
-        </div>
-      ) : (
-        <>
-          <div className="hidden md:block bg-white rounded-lg border border-[#e4e4e7]">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Itinerary</TableHead>
-                  <TableHead>Order</TableHead>
-                  <TableHead className="text-right">Gross</TableHead>
-                  <TableHead className="text-right">Rate</TableHead>
-                  <TableHead className="text-right">Earnings</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {rows.map((r) => (
-                  <TableRow key={r.id}>
-                    <TableCell>{fmtDate(r.created_at)}</TableCell>
-                    <TableCell>
-                      {r.itinerary?.slug ? (
-                        <NavigationLink href={`/itineraries/${r.itinerary.slug}`} className="text-[#588f7a] hover:underline">
-                          {r.itinerary.name}
-                        </NavigationLink>
-                      ) : (
-                        r.itinerary?.name || '-'
-                      )}
-                    </TableCell>
-                    <TableCell>#{r.order_id}</TableCell>
-                    <TableCell className="text-right">{fmtCurrency(r.gross_amount)}</TableCell>
-                    <TableCell className="text-right">{r.commission_rate}%</TableCell>
-                    <TableCell className="text-right font-semibold">{fmtCurrency(r.commission_amount)}</TableCell>
-                    <TableCell>
-                      <Badge variant={statusBadgeVariant(r.status)}>{r.status}</Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-
-          <div className="md:hidden space-y-3">
-            {rows.map((r) => (
-              <div key={r.id} className="bg-white rounded-lg border border-[#e4e4e7] p-4 space-y-2">
-                <div className="flex justify-between items-start">
-                  <div className="font-medium text-[#18181b]">{r.itinerary?.name || '-'}</div>
-                  <Badge variant={statusBadgeVariant(r.status)}>{r.status}</Badge>
-                </div>
-                <div className="text-sm text-[#71717a]">
-                  {fmtDate(r.created_at)} · Order #{r.order_id}
-                </div>
-                <div className="flex justify-between text-sm pt-2 border-t border-[#e4e4e7]">
-                  <span>
-                    Gross: {fmtCurrency(r.gross_amount)} · {r.commission_rate}%
-                  </span>
-                  <span className="font-semibold text-[#18181b]">+{fmtCurrency(r.commission_amount)}</span>
-                </div>
+      <div key={loading ? 'loading' : `${status}-${preset}`} className="animate-fade-in">
+        {loading ? (
+          <div className="bg-white rounded-lg border border-[#e4e4e7] divide-y divide-[#e4e4e7]">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4 p-4">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 flex-1" />
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-20" />
               </div>
             ))}
           </div>
-
-          {pagination.last_page > 1 && (
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-[#71717a]">
-                Page {pagination.current_page} of {pagination.last_page}
-              </span>
-              <div className="flex gap-2">
-                <Button size="sm" variant="outline" disabled={page <= 1 || loading} onClick={() => setPage((p) => Math.max(1, p - 1))}>
-                  Previous
-                </Button>
-                <Button size="sm" variant="outline" disabled={page >= pagination.last_page || loading} onClick={() => setPage((p) => p + 1)}>
-                  Next
-                </Button>
-              </div>
+        ) : rows.length === 0 ? (
+          <div className="text-center py-16 bg-white rounded-lg border border-[#e4e4e7]">
+            <p className="text-lg font-semibold text-[#18181b]">No earnings in this period</p>
+            <p className="text-[#71717a] mt-2">Once your itineraries get booked you&apos;ll see commissions here.</p>
+          </div>
+        ) : (
+          <>
+            <div className="hidden md:block bg-white rounded-lg border border-[#e4e4e7]">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Itinerary</TableHead>
+                    <TableHead>Order</TableHead>
+                    <TableHead className="text-right">Gross</TableHead>
+                    <TableHead className="text-right">Rate</TableHead>
+                    <TableHead className="text-right">Earnings</TableHead>
+                    <TableHead>Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {rows.map((r) => (
+                    <TableRow key={r.id}>
+                      <TableCell>{fmtDate(r.created_at)}</TableCell>
+                      <TableCell>
+                        {r.itinerary?.slug ? (
+                          <NavigationLink href={`/itineraries/${r.itinerary.slug}`} className="text-[#588f7a] hover:underline">
+                            {r.itinerary.name}
+                          </NavigationLink>
+                        ) : (
+                          r.itinerary?.name || '-'
+                        )}
+                      </TableCell>
+                      <TableCell>#{r.order_id}</TableCell>
+                      <TableCell className="text-right">{fmtCurrency(r.gross_amount)}</TableCell>
+                      <TableCell className="text-right">{r.commission_rate}%</TableCell>
+                      <TableCell className="text-right font-semibold">{fmtCurrency(r.commission_amount)}</TableCell>
+                      <TableCell>
+                        <Badge variant={statusBadgeVariant(r.status)}>{r.status}</Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
-          )}
-        </>
+
+            <div className="md:hidden space-y-3">
+              {rows.map((r) => (
+                <div key={r.id} className="bg-white rounded-lg border border-[#e4e4e7] p-4 space-y-2">
+                  <div className="flex justify-between items-start">
+                    <div className="font-medium text-[#18181b]">{r.itinerary?.name || '-'}</div>
+                    <Badge variant={statusBadgeVariant(r.status)}>{r.status}</Badge>
+                  </div>
+                  <div className="text-sm text-[#71717a]">
+                    {fmtDate(r.created_at)} · Order #{r.order_id}
+                  </div>
+                  <div className="flex justify-between text-sm pt-2 border-t border-[#e4e4e7]">
+                    <span>
+                      Gross: {fmtCurrency(r.gross_amount)} · {r.commission_rate}%
+                    </span>
+                    <span className="font-semibold text-[#18181b]">+{fmtCurrency(r.commission_amount)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+      {/* pagination moved out of the keyed wrapper so refetch never remounts it */}
+      {pagination.last_page > 1 && (
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-[#71717a]">
+            Page {pagination.current_page} of {pagination.last_page}
+          </span>
+          <div className="flex gap-2">
+            <Button size="sm" variant="outline" disabled={page <= 1 || loading} onClick={() => setPage((p) => Math.max(1, p - 1))}>
+              Previous
+            </Button>
+            <Button size="sm" variant="outline" disabled={page >= pagination.last_page || loading} onClick={() => setPage((p) => p + 1)}>
+              Next
+            </Button>
+          </div>
+        </div>
       )}
     </DashboardMotionFrame>
   );

@@ -41,8 +41,10 @@ describe('EarningsClient', () => {
     });
   });
 
-  it('shows empty-state copy when rows are empty', () => {
+  it('shows empty-state copy when rows are empty', async () => {
     render(<EarningsClient initial={initial} />);
-    expect(screen.getByText(/No earnings/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/No earnings/i)).toBeInTheDocument();
+    });
   });
 });

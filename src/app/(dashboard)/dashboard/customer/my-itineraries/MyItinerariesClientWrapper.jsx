@@ -139,7 +139,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
         </div>
       ) : null}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      <div key={activeTab} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 animate-fade-in">
         {filtered.map((item) => {
           const itinerary = item.itinerary || item;
           const featuredMedia = itinerary.media_gallery?.find((m) => m.is_featured)?.media?.url || itinerary.media_gallery?.[0]?.media?.url;
