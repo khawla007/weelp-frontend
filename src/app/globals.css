@@ -298,6 +298,12 @@ body {
     animation-delay: var(--weelp-motion-delay, 0ms);
   }
 
+  /* Settings nav active indicator: slides vertically to the active route. */
+  .weelp-settings-rail {
+    transition: transform 160ms var(--weelp-ease-out), height 160ms var(--weelp-ease-out);
+    will-change: transform, height;
+  }
+
   /* Dashboard content frame: CSS-at-paint fade-up for dashboard page content.
      Quieter than the hero/page-load rise (6px travel, ~180ms). Runs at first
      paint via `both` fill — no hydration gate, no blink. Distinct from Reveal,
@@ -466,6 +472,11 @@ body {
       opacity: 0;
       transform: none;
       animation: none;
+      will-change: auto;
+    }
+
+    .weelp-settings-rail {
+      transition: none;
       will-change: auto;
     }
   }
