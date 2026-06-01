@@ -30,6 +30,8 @@ import mapKeys from 'lodash/mapKeys';
 import set from 'lodash/set';
 import isEmpty from 'lodash/isEmpty';
 import dynamic from 'next/dynamic';
+import { useStepTransition } from '@/app/components/dashboard/shared/useStepTransition';
+import { StepPanel } from '@/app/components/dashboard/shared/StepPanel';
 
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnItinerary'), { ssr: false });
 
@@ -41,6 +43,7 @@ const pickFeatured = (gallery) => {
 
 export const CreateItineraryForm = ({ categories, attributes, tags, locations = [], allactivities, alltransfers }) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const { stepRef, goWithDirection } = useStepTransition(currentStep);
   const [formData, setFormData] = useState({});
   const router = useRouter();
   const { toast } = useToast();
@@ -146,7 +149,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
     const isValid = await validateCurrentStep();
     if (!isValid) return;
     if (currentStep < 8) {
-      setCurrentStep((prev) => prev + 1);
+      goWithDirection(currentStep + 1, currentStep, setCurrentStep);
     }
   };
 
@@ -379,7 +382,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
       }
 
       clearErrors('schedules');
-      setCurrentStep((prev) => prev + 1);
+      goWithDirection(currentStep + 1, currentStep, setCurrentStep);
     };
 
     // Modal Handle
@@ -1641,7 +1644,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
 
     if (currentStep < 8) {
       setFormData(mergedData);
-      setCurrentStep((prev) => prev + 1);
+      goWithDirection(currentStep + 1, currentStep, setCurrentStep);
       return;
     }
 
@@ -1697,7 +1700,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                           const isValid = await validateCurrentStep();
                           if (!isValid) return;
                         }
-                        setCurrentStep(step?.id);
+                        goWithDirection(step?.id, currentStep, setCurrentStep);
                       }}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-[#588f7a] border-b-2'}`}
                     >
@@ -1723,13 +1726,15 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
             }
           >
             <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
-              <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>{ScheduleTab()}</div>
-              {currentStep !== 2 && renderStep()}
+              <StepPanel stepRef={stepRef}>
+                <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>{ScheduleTab()}</div>
+                {currentStep !== 2 && renderStep()}
+              </StepPanel>
               <div className="flex justify-between pt-4">
                 {currentStep > 1 && (
                   <Button
                     type="button"
-                    onClick={() => setCurrentStep(currentStep - 1)}
+                    onClick={() => goWithDirection(currentStep - 1, currentStep, setCurrentStep)}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Previous
