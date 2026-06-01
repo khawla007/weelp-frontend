@@ -16,6 +16,7 @@ import {
   SortDropdown,
   ListingFilterSidebar,
   ListingCard,
+  ListingCardSkeleton,
   ListingCardImage,
   ListingCardBadge,
   ListingCardCheckbox,
@@ -194,7 +195,7 @@ const FilterPackage = ({ categories = [], difficulties = [], durations = [] }) =
         {/* Result  Found  */}
         <div className="flex flex-col gap-4 h-full">
           {/* Loading State */}
-          {isValidating && <span className="loader"></span>}
+          {isValidating && <ListingCardSkeleton />}
 
           {/* Error State */}
           {!isValidating && error && <div className="text-red-500 text-center">Failed to load data. Please try again.</div>}

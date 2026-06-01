@@ -1,3 +1,8 @@
-export default function AddOnLayout({ children }) {
-  return children;
+export default function AddOnLayout({ children, modal }) {
+  return (
+    <>
+      {children}
+      {modal}
+    </>
+  );
 }

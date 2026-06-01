@@ -17,6 +17,7 @@ import {
   SortDropdown,
   ListingFilterSidebar,
   ListingCard,
+  ListingCardSkeleton,
   ListingCardImage,
   ListingCardBadge,
   ListingCardCheckbox,
@@ -175,29 +176,26 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
       {/* Filtered Items Output */}
       <div className="lg:w-3/4 p-4 space-y-4">
         {/* Sidebar */}
-        <div className="flex justify-start lg:justify-end flex-wrap">
-          <div className="space-y-4 flex flex-col ">
-            {selectedItems.length > 0 ? (
-              <BulkActionButtons
-                selectedCount={selectedItems.length}
-                totalCount={items.length}
-                isAllSelected={isAllSelected}
-                onSelectAllToggle={handleSelectAllToggle}
-                onDelete={handleMultpleDelete}
-                deleteLabel="Delete"
-              />
-            ) : (
-              <AddNewButton label="Add New" href="/dashboard/admin/activities/new" />
-            )}
-
-            <SortDropdown control={control} />
-          </div>
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <SortDropdown control={control} />
+          {selectedItems.length > 0 ? (
+            <BulkActionButtons
+              selectedCount={selectedItems.length}
+              totalCount={items.length}
+              isAllSelected={isAllSelected}
+              onSelectAllToggle={handleSelectAllToggle}
+              onDelete={handleMultpleDelete}
+              deleteLabel="Delete"
+            />
+          ) : (
+            <AddNewButton label="Add New" href="/dashboard/admin/activities/new" />
+          )}
         </div>
 
         {/* Result  Found  */}
         <div className="flex flex-col gap-4 h-full">
           {/* Loading State */}
-          {isValidating && <span className="loader"></span>}
+          {isValidating && <ListingCardSkeleton count={per_page || 3} />}
 
           {/* Error State */}
           {!isValidating && error && <div className="text-red-500 text-center py-4">Failed to load data. Please try again.</div>}

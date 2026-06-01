@@ -6,6 +6,7 @@ import { Form } from '@/components/ui/form';
 import useSWR from 'swr';
 import { CustomPagination } from '@/app/components/Pagination';
 import { AddOnTable } from './components/table/Table';
+import { TableSkeleton } from '@/app/components/DashboardShared';
 import { useToast } from '@/hooks/use-toast';
 import { useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash';
@@ -173,7 +174,7 @@ export const FilteredAddOn = () => {
       </div>
 
       {/* Table Data */}
-      {isValidating && <span className="loader"></span>}
+      {isValidating && <TableSkeleton columns={6} headers={['', 'Name', 'Type', 'Price', 'Status', 'Actions']} />}
       {!isValidating && !error && (
         <>
           {addOns && addOns.length > 0 ? (

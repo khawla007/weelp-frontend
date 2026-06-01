@@ -6,6 +6,7 @@ import { Form } from '@/components/ui/form';
 import useSWR from 'swr';
 import { CustomPagination } from '@/app/components/Pagination';
 import { ReviewTable } from './components/table/Table';
+import { TableSkeleton } from '@/app/components/DashboardShared';
 import { useToast } from '@/hooks/use-toast';
 import { deleteReview, deleteMultipleReviews } from '@/lib/actions/reviews';
 import { useEffect, useMemo, useState } from 'react';
@@ -181,7 +182,7 @@ const FilteredReview = () => {
       </div>
 
       {/* Table Data */}
-      {isValidating && <span className="loader"></span>}
+      {isValidating && <TableSkeleton columns={7} headers={['', 'Date', 'Customer', 'Ratings', 'Status', 'Review', 'Actions']} />}
       {!isValidating && !error && (
         <>
           <ReviewTable

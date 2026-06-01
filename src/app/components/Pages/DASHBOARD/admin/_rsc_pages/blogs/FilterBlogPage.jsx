@@ -13,7 +13,17 @@ import { CustomPagination } from '@/app/components/Pagination';
 import useSWR from 'swr'; // for states cache and ui management
 import { fetcher } from '@/lib/fetchers'; // interceptors
 import { useToast } from '@/hooks/use-toast';
-import { DashboardSearch, ListingCard, ListingCardImage, ListingCardCheckbox, ListingCardContent, ListingCardTitle, ListingCardTags, ListingCardActions } from '@/app/components/DashboardShared';
+import {
+  DashboardSearch,
+  ListingCard,
+  ListingCardSkeleton,
+  ListingCardImage,
+  ListingCardCheckbox,
+  ListingCardContent,
+  ListingCardTitle,
+  ListingCardTags,
+  ListingCardActions,
+} from '@/app/components/DashboardShared';
 import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
 import { AddNewButton } from '@/app/components/Button/AddNewButton';
 import { deleteBlog, deleteMultipleBlogs } from '@/lib/actions/blogs';
@@ -317,7 +327,7 @@ const FilterBlog = () => {
         {/* Result  Found  */}
         <div className="flex flex-col gap-4 h-full">
           {/* Loading State */}
-          {isValidating && <span className="loader"></span>}
+          {isValidating && <ListingCardSkeleton />}
 
           {/* Error State */}
           {!isValidating && error && <div className="text-red-500 text-center">Failed to load data. Please try again.</div>}

@@ -1,3 +1,8 @@
-export default function ReviewsLayout({ children }) {
-  return children;
+export default function ReviewsLayout({ children, modal }) {
+  return (
+    <>
+      {children}
+      {modal}
+    </>
+  );
 }

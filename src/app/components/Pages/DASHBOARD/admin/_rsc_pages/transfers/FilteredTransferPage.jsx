@@ -17,6 +17,7 @@ import { useToast } from '@/hooks/use-toast'; // toast for notification
 import {
   DashboardSearch,
   ListingCard,
+  ListingCardSkeleton,
   ListingCardImage,
   ListingCardCheckbox,
   ListingCardActions,
@@ -346,47 +347,38 @@ const FilterTransfer = () => {
       {/* Filtered Items Output */}
       <div className="lg:w-3/4 p-4 space-y-4">
         {/* Sidebar */}
-        <div className="flex justify-start lg:justify-end flex-wrap">
-          <div className="space-y-4 flex flex-col">
-            {selectedItems.length > 0 ? (
-              <BulkActionButtons
-                selectedCount={selectedItems.length}
-                totalCount={items.length}
-                isAllSelected={isAllSelected}
-                onSelectAllToggle={handleSelectAllToggle}
-                onDelete={handleMultpleDelete}
-              />
-            ) : (
-              <AddNewButton label="Add New" href="/dashboard/admin/transfers/new" />
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <Controller
+            name="sort_by"
+            control={control}
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger className="w-64">
+                  <SelectValue placeholder="Default (Newest First)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {SORT_BY.map(({ name, value }) => (
+                      <SelectItem key={value} value={value} className="cursor-pointer">
+                        {name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             )}
-
-            <Controller
-              name="sort_by"
-              control={control}
-              render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="w-64">
-                    <SelectValue placeholder="Default (Newest First)" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {SORT_BY.map(({ name, value }) => (
-                        <SelectItem key={value} value={value} className="cursor-pointer">
-                          {name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              )}
-            />
-          </div>
+          />
+          {selectedItems.length > 0 ? (
+            <BulkActionButtons selectedCount={selectedItems.length} totalCount={items.length} isAllSelected={isAllSelected} onSelectAllToggle={handleSelectAllToggle} onDelete={handleMultpleDelete} />
+          ) : (
+            <AddNewButton label="Add New" href="/dashboard/admin/transfers/new" />
+          )}
         </div>
 
         {/* Result  Found  */}
         <div className="flex flex-col gap-4 h-full">
           {/* Loading State */}
-          {isValidating && <span className="loader"></span>}
+          {isValidating && <ListingCardSkeleton count={per_page || 3} />}
 
           {/* Error State */}
           {!isValidating && error && <div className="text-red-500 text-center">Failed to load data. Please try again.</div>}
