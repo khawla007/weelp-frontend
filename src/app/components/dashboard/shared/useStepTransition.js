@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 // Single source for the directional slide classes so forward/back can't drift apart.
 export const STEP_SLIDE = { forward: 'slide-in-from-right-2', back: 'slide-in-from-left-2' };
@@ -18,16 +18,22 @@ export const STEP_SLIDE = { forward: 'slide-in-from-right-2', back: 'slide-in-fr
  *
  * Reduced motion is handled by the `motion-reduce:animate-none` class on the wrapper.
  *
+ * Direction is kept in a ref, not state: it is only read by the replay effect, and keying
+ * the effect on `currentStep` alone means clicking the already-active step tab (a no-op step
+ * change) never replays the slide — even if the would-be direction differs from last time.
+ *
  * @param {number} currentStep - the form's current step (the hook watches this to replay)
- * @returns {{ stepRef: React.RefObject, direction: number, goWithDirection: (next:number, current:number, setCurrent:Function)=>void }}
+ * @returns {{ stepRef: React.RefObject, goWithDirection: (next:number, current:number, setCurrent:Function)=>void }}
  */
 export function useStepTransition(currentStep) {
-  const [direction, setDirection] = useState(1);
   const stepRef = useRef(null);
   const hasMounted = useRef(false);
+  // +1 advancing, -1 going back. A ref (not state) so it can't independently trigger the
+  // replay effect — only a real `currentStep` change replays.
+  const directionRef = useRef(1);
 
   const goWithDirection = (next, current, setCurrent) => {
-    setDirection(next >= current ? 1 : -1);
+    directionRef.current = next >= current ? 1 : -1;
     setCurrent(next);
   };
 
@@ -38,12 +44,12 @@ export function useStepTransition(currentStep) {
     }
     const el = stepRef.current;
     if (!el) return;
-    const slide = direction >= 0 ? STEP_SLIDE.forward : STEP_SLIDE.back;
+    const slide = directionRef.current >= 0 ? STEP_SLIDE.forward : STEP_SLIDE.back;
     const enterClasses = ['animate-in', 'fade-in-0', 'duration-200', 'motion-reduce:animate-none', slide];
     el.classList.remove(...enterClasses, STEP_SLIDE.forward, STEP_SLIDE.back);
     void el.offsetWidth;
     el.classList.add(...enterClasses);
-  }, [currentStep, direction]);
+  }, [currentStep]);
 
-  return { stepRef, direction, goWithDirection };
+  return { stepRef, goWithDirection };
 }
