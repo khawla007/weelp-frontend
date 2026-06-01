@@ -39,11 +39,14 @@ import set from 'lodash/set';
 import isEmpty from 'lodash/isEmpty';
 import { createPackage } from '@/lib/actions/packages';
 import dynamic from 'next/dynamic';
+import { useStepTransition } from '@/app/components/dashboard/shared/useStepTransition';
+import { StepPanel } from '@/app/components/dashboard/shared/StepPanel';
 
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnPackage'), { ssr: false });
 
 export const CreatePackageForm = ({ categories, attributes, tags, locations = [], allactivities, alltransfers, itineraries }) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const { stepRef, goWithDirection } = useStepTransition(currentStep);
   const [formData, setFormData] = useState({});
   const router = useRouter();
   const { open } = useSidebar();
@@ -335,7 +338,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
 
         // Step 3: All good, proceed
         clearErrors('information');
-        setCurrentStep((prev) => prev + 1);
+        goWithDirection(currentStep + 1, currentStep, setCurrentStep);
       };
 
       return (
@@ -497,7 +500,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
       }
 
       clearErrors('schedules');
-      setCurrentStep((prev) => prev + 1);
+      goWithDirection(currentStep + 1, currentStep, setCurrentStep);
     };
 
     // Modal Handle
@@ -1989,7 +1992,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
 
       // Step 3: All good, proceed
       clearErrors('faqs');
-      setCurrentStep(currentStep + 1);
+      goWithDirection(currentStep + 1, currentStep, setCurrentStep);
     };
 
     return (
@@ -2084,7 +2087,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
     //
     if (currentStep < 11) {
       setFormData(mergedData);
-      setCurrentStep((prev) => prev + 1);
+      goWithDirection(currentStep + 1, currentStep, setCurrentStep);
       return;
     }
 
@@ -2166,7 +2169,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
   const handleNext = async () => {
     const isValid = await validateCurrentStep();
     if (!isValid) return;
-    setCurrentStep((prev) => prev + 1);
+    goWithDirection(currentStep + 1, currentStep, setCurrentStep);
   };
 
   return (
@@ -2186,7 +2189,7 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
                           const isValid = await validateCurrentStep();
                           if (!isValid) return;
                         }
-                        setCurrentStep(step?.id);
+                        goWithDirection(step?.id, currentStep, setCurrentStep);
                       }}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-[#588f7a] border-b-2'}`}
                     >
@@ -2212,12 +2215,12 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
             }
           >
             <fieldset className={`${currentStep === 4 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
-              {renderStep()}
+              <StepPanel stepRef={stepRef}>{renderStep()}</StepPanel>
               <div className="flex justify-between pt-4">
                 {currentStep > 1 && (
                   <Button
                     type="button"
-                    onClick={() => setCurrentStep(currentStep - 1)}
+                    onClick={() => goWithDirection(currentStep - 1, currentStep, setCurrentStep)}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Previous
