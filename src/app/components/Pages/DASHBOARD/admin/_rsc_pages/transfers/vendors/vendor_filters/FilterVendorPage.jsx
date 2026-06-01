@@ -9,6 +9,7 @@ import { useAllVendorsAdmin } from '@/hooks/api/admin/vendors';
 import { Card } from '@/components/ui/card';
 import { CustomPagination } from '@/app/components/Pagination';
 import { CardVendor } from '../shared/vendor_cards';
+import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import { VendorNoResultFound } from '../shared/VendorNoResultFound';
 
 const FilterVendorPage = () => {
@@ -74,7 +75,7 @@ const FilterVendorPage = () => {
         </form>
       </Form>
 
-      {isLoading && <p className="loader"></p>}
+      {isLoading && <ListingCardSkeleton count={6} gridClassName="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" className="w-full" />}
 
       {!isLoading && vendors?.data && vendors.data.length === 0 && <VendorNoResultFound />}
 

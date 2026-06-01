@@ -7,6 +7,7 @@ import debounce from 'lodash.debounce';
 import { fetcher } from '@/lib/fetchers';
 import { DashboardSearch } from '@/app/components/DashboardShared';
 import { RouteCard } from '../components/cards/RouteCard';
+import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import { CustomPagination } from '@/app/components/Pagination';
 import { useToast } from '@/hooks/use-toast';
 import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
@@ -113,7 +114,7 @@ export const FilterCities = () => {
         <div className="flex flex-col gap-4 h-full">
           {/* Loading State */}
 
-          {isValidating && <span className="loader"></span>}
+          {isValidating && <ListingCardSkeleton count={8} gridClassName="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" className="w-full" />}
 
           {/* Error State */}
           {!isValidating && error && <div className="text-red-500 text-center py-4">Failed to load data. Please try again.</div>}

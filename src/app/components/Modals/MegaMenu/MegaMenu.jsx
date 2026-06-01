@@ -2,6 +2,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useMegaMenu } from '@/hooks/api/public/menu/megaMenu';
 import { MenuList, CountryCards, CityGrid } from './MegaMenuComponents';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const TRENDING_ID = 'trending';
 
@@ -41,8 +42,20 @@ const MegaMenu = () => {
 
   if (isLoading || !regions.length) {
     return (
-      <div className="flex h-[417px] w-[769px] items-center justify-center rounded-[12px] border border-[#eee] bg-white shadow-xl">
-        <span className="loader" />
+      <div className="flex h-[417px] w-[769px] overflow-hidden rounded-[12px] border border-[#eee] bg-white shadow-xl" aria-hidden="true">
+        <aside className="flex w-[244px] flex-col gap-3 border-r border-[#cccccc80] p-4">
+          {Array.from({ length: 7 }).map((_, index) => (
+            <Skeleton key={index} className="h-6 w-full rounded-md" />
+          ))}
+        </aside>
+        <section className="flex flex-1 flex-col gap-4 p-4">
+          <Skeleton className="h-5 w-32 rounded-md" />
+          <div className="grid grid-cols-3 gap-3">
+            {Array.from({ length: 9 }).map((_, index) => (
+              <Skeleton key={index} className="h-16 w-full rounded-lg" />
+            ))}
+          </div>
+        </section>
       </div>
     );
   }

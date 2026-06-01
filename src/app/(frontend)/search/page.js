@@ -1,5 +1,6 @@
 'use client';
 import React, { Suspense } from 'react';
+import { PageSkeleton } from '@/app/components/Animation/Cards';
 import dynamic from 'next/dynamic';
 import BannerSection from '@/app/components/Pages/FRONT_END/shop/BannerSection';
 import { redirect, useSearchParams } from 'next/navigation';
@@ -25,7 +26,7 @@ const Search = () => (
   <Suspense
     fallback={
       <div className="my-4 h-screen flex items-center justify-center">
-        <span className="loader"></span>
+        <PageSkeleton />
       </div>
     }
   >

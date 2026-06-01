@@ -3,6 +3,7 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import BookingCard from '@/app/components/BookingCard';
+import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAllOrdersCustomer } from '@/hooks/api/customer/orders';
 import { Label } from '@/components/ui/label';
@@ -137,7 +138,7 @@ export const CustomerBookingsList = () => {
             {filteredOrders.length > 0 ? filteredOrders.map((order) => <BookingCard key={order.id} bookingItem={order} />) : <p> No bookings found</p>}
 
             {/* isloading */}
-            {isloadingOrders && <span className="loader"></span>}
+            {isloadingOrders && <ListingCardSkeleton count={6} className="w-full" />}
 
             {/* If Error Exist */}
             {isOrderError && <span className="text-red-400">Something Went Wrong</span>}

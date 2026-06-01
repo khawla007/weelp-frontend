@@ -1,6 +1,7 @@
 'use client';
 
 import { MediaTab } from '@/app/components/Media';
+import { FieldSkeleton } from '@/app/components/Animation/Cards';
 import React, { useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { useAllCategoriesOptionsAdmin } from '@/hooks/api/admin/categories';
@@ -97,7 +98,7 @@ const BlogSidebar = () => {
 
       {/* { categories */}
       <WidgetCard cardTitle="Categories">
-        {isCategoryLoading && <span className="loader"></span>}
+        {isCategoryLoading && <FieldSkeleton />}
         {!isCategoryError && (
           <Controller
             name="categories"
@@ -117,7 +118,7 @@ const BlogSidebar = () => {
 
       {/* Tags */}
       <WidgetCard cardTitle="Tags">
-        {isTagLoading && <span className="loader"></span>}
+        {isTagLoading && <FieldSkeleton />}
         {!isTagError && (
           <Controller
             name="tags"

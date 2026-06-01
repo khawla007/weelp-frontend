@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useReactTable, getCoreRowModel, getPaginationRowModel, flexRender, ColumnDef } from '@tanstack/react-table';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { StatusBadge } from '@/app/components/Shared/StatusBadge';
 import { TableActions } from '@/app/components/Shared/TableActions';
 import { STATUS_TYPES } from '@/app/components/Shared/constants/statusConfig';
@@ -12,8 +13,9 @@ import { useToast } from '@/hooks/use-toast';
 import { deleteCategory } from '@/lib/actions/categories';
 import { Checkbox } from '@/components/ui/checkbox';
 import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
+import { TableSkeleton } from '@/app/components/DashboardShared/TableSkeleton';
 
-export function DataTableCategory({ categories = [], mutate, selectedItems = [], onSelectionChange, categoriesCount, onAllSelectedChange }) {
+export function DataTableCategory({ categories = [], isloading = false, mutate, selectedItems = [], onSelectionChange, categoriesCount, onAllSelectedChange }) {
   const { toast } = useToast();
   const [selectedId, setSelectedId] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -147,40 +149,48 @@ export function DataTableCategory({ categories = [], mutate, selectedItems = [],
     },
   });
 
+  if (isloading) {
+    return <TableSkeleton columns={columns.length} headers={['', 'Name', 'Slug', 'Status', 'Description', 'Actions']} rows={10} title="All Categories" description="A list of all categories for organizing activities" />;
+  }
+
   return (
     <div>
-      <div className="overflow-hidden rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>{flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.length > 0 ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell className="p-2 px-4" key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">All Categories</CardTitle>
+          <CardDescription>A list of all categories for organizing activities</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id}>{flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows.length > 0 ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="text-center">
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

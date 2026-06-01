@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { FieldSkeleton } from '@/app/components/Animation/Cards';
 import { SelectField, SelectField2 } from '../components/SelectField';
 import { useForm, useWatch } from 'react-hook-form';
 import { Rating } from '@/app/components/Ratings';
@@ -94,7 +95,7 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <fieldset className={isSubmitting ? 'cursor-wait space-y-8' : 'cursor-auto space-y-8'}>
               {/* Display User */}
-              {isLoadingUsers && <span className="loader"></span>}
+              {isLoadingUsers && <FieldSkeleton />}
               {!isLoadingUsers && !isErrorUser && (
                 <FormField
                   control={form.control}
@@ -131,7 +132,7 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
                 />
 
                 {/* Dynamic Items */}
-                {isLoadingItems && <span className="loader"></span>}
+                {isLoadingItems && <FieldSkeleton />}
                 {!isLoadingItems && !isErrorItems && (
                   <FormField
                     control={form.control}

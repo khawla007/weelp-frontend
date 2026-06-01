@@ -5,7 +5,7 @@ import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { GlobalCard } from '@/app/components/SingleProductCard';
 import { Star } from 'lucide-react';
-import { LoadingPage } from '@/app/components/Animation/Cards';
+import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import { log } from '@/lib/utils';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -214,14 +214,10 @@ export const ShopAllProduct = () => {
             {/* Product List */}
             <div className="w-full lg:flex-[4] flex flex-col h-full justify-between">
               {isLoading ? (
-                <div className="h-screen  flex items-center justify-center bg-white bg-opacity-50">
-                  <span className="loader"></span>
-                </div>
-              ) : null}
-
-              <div className={`flex flex-wrap gap-4 ${isLoading ? 'opacity-50' : ''}`}>
-                {!isLoading ? (
-                  products.length > 0 ? (
+                <ListingCardSkeleton count={6} className="w-full" />
+              ) : (
+                <div className="flex flex-wrap gap-4">
+                  {products.length > 0 ? (
                     products.map((product, index) => (
                       <GlobalCard
                         key={index}
@@ -234,11 +230,9 @@ export const ShopAllProduct = () => {
                     ))
                   ) : (
                     <span className="text-zinc-500 text-lg">No product found</span>
-                  )
-                ) : (
-                  <span className="loader">Loading...</span>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
               {/* Pagination Controls */}
               {pagination && pagination.total > pagination.per_page && (
                 <div className="flex justify-center items-center gap-2 mt-6">

@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import { PageSkeleton } from '@/app/components/Animation/Cards';
 import { auth } from '@/lib/auth/auth';
 import { redirect } from 'next/navigation';
 import { FormResetPassword } from '@/app/components/Form/FormResetPassword';
@@ -12,7 +13,7 @@ const ResetPassword = async () => {
     <Suspense
       fallback={
         <div className="my-4 h-screen flex items-center justify-center">
-          <span className="loader"></span>
+          <PageSkeleton />
         </div>
       }
     >

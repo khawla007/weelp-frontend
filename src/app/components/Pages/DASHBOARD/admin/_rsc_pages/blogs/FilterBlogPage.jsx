@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
+import { FieldSkeleton } from '@/app/components/Animation/Cards';
 import { useForm, Controller, useWatch } from 'react-hook-form';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
@@ -209,7 +210,7 @@ const FilterBlog = () => {
             </AccordionTrigger>
             <AccordionContent>
               {/* STATUS MESSAGE */}
-              {isCategoriesLoading && <span className="loader" />}
+              {isCategoriesLoading && <FieldSkeleton />}
 
               {!isCategoriesLoading && categoriesOptionError && (
                 <span className="text-sm text-red-500">{categoriesOptionError?.message || `Failed to load categories <br> ${JSON.stringify(categoriesOptionError)}`}</span>
@@ -250,7 +251,7 @@ const FilterBlog = () => {
             </AccordionTrigger>
             <AccordionContent>
               {/* STATUS MESSAGE */}
-              {isTagLoading && <span className="loader" />}
+              {isTagLoading && <FieldSkeleton />}
 
               {!isTagLoading && tagOptionsError && <span className="text-sm text-red-500">{tagOptionsError?.message || `Failed to load categories <br> ${JSON.stringify(tagOptionsError)}`}</span>}
               {!isTagLoading && !tagOptionsError && categoriesList.length === 0 && <span className="text-sm text-zinc-500">No categories found</span>}

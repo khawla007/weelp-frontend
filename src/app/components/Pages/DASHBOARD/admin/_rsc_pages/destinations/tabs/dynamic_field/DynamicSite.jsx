@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import { FieldSkeleton } from '@/app/components/Animation/Cards';
 import { usePathname } from 'next/navigation';
 import { Controller, useController, useFormContext } from 'react-hook-form';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -37,7 +38,7 @@ export const DynamicSelectField = ({ name, label, options = [], isLoading, isVal
   const fieldError = formState.errors[name];
 
   if (error) return <div className="text-red-400">Something Went Wrong</div>;
-  if (isValidating || isLoading) return <span className="loader"></span>;
+  if (isValidating || isLoading) return <FieldSkeleton />;
 
   return (
     <div className="space-y-2">

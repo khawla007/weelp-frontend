@@ -15,8 +15,9 @@ import { useToast } from '@/hooks/use-toast';
 import { deleteTag } from '@/lib/actions/tags';
 import { Checkbox } from '@/components/ui/checkbox';
 import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
+import { TableSkeleton } from '@/app/components/DashboardShared/TableSkeleton';
 
-export function DataTableTags({ tags = [], mutate, selectedItems = [], onSelectionChange, tagsCount, onAllSelectedChange }) {
+export function DataTableTags({ tags = [], isloading = false, mutate, selectedItems = [], onSelectionChange, tagsCount, onAllSelectedChange }) {
   const { toast } = useToast();
   const [selectedId, setSelectedId] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -142,6 +143,10 @@ export function DataTableTags({ tags = [], mutate, selectedItems = [], onSelecti
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  if (isloading) {
+    return <TableSkeleton columns={columns.length} headers={['', 'Name', 'Slug', 'Status', 'Description', 'Actions']} rows={10} title="All tags" description="A list of all tags for organizing activities" />;
+  }
 
   return (
     <div>

@@ -5,7 +5,68 @@ import React from 'react';
 export const LoadingPage = () => {
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-white bg-opacity-50">
-      <span className="loader"></span>
+      <PageSkeleton />
+    </div>
+  );
+};
+
+/**
+ * FieldSkeleton - Input-height placeholder for form fields / dropdowns while their
+ * options load. Use in place of an inline spinner next to a select or multiselect.
+ */
+export const FieldSkeleton = ({ className = '' }) => {
+  return <Skeleton className={`h-10 w-full rounded-md ${className}`} aria-hidden="true" />;
+};
+
+/**
+ * FormSkeleton - Stacked label+field rows plus a submit bar, shaped like a typical
+ * edit form. Shown while a form-edit route loads its record.
+ *
+ * @param {number} fields - How many label+field rows to render (default 5).
+ */
+export const FormSkeleton = ({ fields = 5, className = '' }) => {
+  return (
+    <div className={`w-full max-w-2xl mx-auto space-y-6 p-4 ${className}`} aria-hidden="true">
+      <Skeleton className="h-8 w-1/3" />
+      {Array.from({ length: fields }).map((_, index) => (
+        <div key={index} className="space-y-2">
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-10 w-full rounded-md" />
+        </div>
+      ))}
+      <Skeleton className="h-10 w-32 rounded-md" />
+    </div>
+  );
+};
+
+/**
+ * PageSkeleton - Generic page placeholder (title bar + content bars). Used for
+ * full-screen route loads and Suspense fallbacks where there's no specific shape.
+ */
+export const PageSkeleton = ({ className = '' }) => {
+  return (
+    <div className={`w-full max-w-3xl mx-auto space-y-4 p-4 ${className}`} aria-hidden="true">
+      <Skeleton className="h-8 w-1/2" />
+      <Skeleton className="h-4 w-3/4" />
+      <Skeleton className="h-4 w-2/3" />
+      <Skeleton className="h-48 w-full rounded-lg" />
+      <Skeleton className="h-4 w-1/2" />
+    </div>
+  );
+};
+
+/**
+ * MediaGridSkeleton - Square-aspect card grid matching the media library layout
+ * (grid-cols-2 → xl:grid-cols-5). Shown while media images load/paginate.
+ *
+ * @param {number} count - How many placeholder tiles to render (default 10).
+ */
+export const MediaGridSkeleton = ({ count = 10 }) => {
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4" aria-hidden="true">
+      {Array.from({ length: count }).map((_, index) => (
+        <Skeleton key={index} className="aspect-square w-full rounded-lg" />
+      ))}
     </div>
   );
 };

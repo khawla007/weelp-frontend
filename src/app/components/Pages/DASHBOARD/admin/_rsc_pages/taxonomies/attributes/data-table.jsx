@@ -15,8 +15,9 @@ import { deleteAttribute } from '@/lib/actions/attributes';
 import { useToast } from '@/hooks/use-toast';
 import { Checkbox } from '@/components/ui/checkbox';
 import { SelectableCardCheckbox } from '@/app/components/Checkbox/SelectableCardCheckbox';
+import { TableSkeleton } from '@/app/components/DashboardShared/TableSkeleton';
 
-export function DataTableAttributes({ attributes = [], mutate, selectedItems = [], onSelectionChange, attributesCount, onAllSelectedChange }) {
+export function DataTableAttributes({ attributes = [], isloading = false, mutate, selectedItems = [], onSelectionChange, attributesCount, onAllSelectedChange }) {
   const [selectedId, setSelectedId] = useState(''); // selected id for deletion
   const [isDialogOpen, setIsDialogOpen] = useState(false); // modal open for delete action
   const { toast } = useToast();
@@ -151,6 +152,10 @@ export function DataTableAttributes({ attributes = [], mutate, selectedItems = [
       },
     },
   });
+
+  if (isloading) {
+    return <TableSkeleton columns={columns.length} headers={['', 'Name', 'Status', 'Slug', 'Description', 'Values', 'Actions']} rows={10} title="All Attributes" description="A list of all attributes for organizing activities" />;
+  }
 
   return (
     <div>

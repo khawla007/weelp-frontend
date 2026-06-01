@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Plus } from 'lucide-react';
 import RouteListTable from './RouteListTable';
+import { TableSkeleton } from '@/app/components/DashboardShared/TableSkeleton';
 import { CustomPagination } from '@/app/components/Pagination';
 import { bulkDeleteTransferRoutes, deleteTransferRoute, toggleTransferRouteStatus, toggleTransferRoutePopular } from '@/lib/actions/transferRoute';
 
@@ -171,7 +172,7 @@ export default function FilteredRoutes() {
         )}
       </div>
 
-      {isValidating && <span className="loader" />}
+      {isValidating && <TableSkeleton columns={7} rows={10} headers={['', 'Route', 'Distance / Duration', 'Zones', 'Popular', 'Status', 'Actions']} />}
       {error && <span className="text-red-500">Failed to load routes</span>}
 
       {!error && (

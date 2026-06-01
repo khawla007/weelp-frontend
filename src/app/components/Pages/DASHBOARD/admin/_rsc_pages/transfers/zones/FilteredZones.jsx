@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Plus, Grid3x3, Map } from 'lucide-react';
 import ZoneListTable from './ZoneListTable';
+import { TableSkeleton } from '@/app/components/DashboardShared/TableSkeleton';
 import { CustomPagination } from '@/app/components/Pagination';
 import { bulkDeleteTransferZones, deleteTransferZone, toggleTransferZoneStatus } from '@/lib/actions/transferZone';
 
@@ -127,7 +128,7 @@ export default function FilteredZones() {
         )}
       </div>
 
-      {isValidating && <span className="loader" />}
+      {isValidating && <TableSkeleton columns={8} rows={10} headers={['', 'Name', 'Slug', 'Description', 'Locations', 'Sort Order', 'Status', 'Actions']} />}
       {error && <span className="text-red-500">Failed to load zones</span>}
 
       {!error && (

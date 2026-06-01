@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { CustomPagination } from '@/app/components/Pagination';
 import { CardVendorDriver } from '../shared/vendor_cards';
+import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import { useParams } from 'next/navigation';
 import { fetcher } from '@/lib/fetchers';
 import { VendorNoResultFound } from '../shared/VendorNoResultFound';
@@ -70,7 +71,7 @@ const FilterVendorDriverPage = () => {
           />
         </form>
       </Form>
-      {isLoading && <p className="loader"></p>}
+      {isLoading && <ListingCardSkeleton count={6} gridClassName="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" className="w-full" />}
 
       {error && <p className="text-red-400">{error.message || 'Something Went Wrong'}</p>}
 

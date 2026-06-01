@@ -1,4 +1,5 @@
 import React from 'react';
+import { FieldSkeleton } from '@/app/components/Animation/Cards';
 import { Controller, useFormContext } from 'react-hook-form';
 import { ComboboxMultiple } from '@/components/ui/combobox_multi';
 import { Label } from '@/components/ui/label';
@@ -18,7 +19,7 @@ const SmartAddOnMultiSelectActivity = () => {
 
   const apiData = data?.data || [];
 
-  if (isLoading) return <div className="loader"></div>;
+  if (isLoading) return <FieldSkeleton />;
   if (error) return <div className="text-red-400">Error loading add-ons</div>;
 
   return (

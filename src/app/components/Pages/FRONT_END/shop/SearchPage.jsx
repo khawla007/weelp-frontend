@@ -7,7 +7,7 @@ import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { GlobalCard } from '@/app/components/SingleProductCard';
 import { Star } from 'lucide-react';
-import { LoadingPage } from '@/app/components/Animation/Cards';
+import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import Link from 'next/link';
 import { Button, buttonVariants } from '@/components/ui/button';
 
@@ -195,9 +195,7 @@ export const SearchPage = () => {
         {/* Product Display */}
         <div className="flex-1 flex items-center justify-center h-full w-full">
           {isLoading ? (
-            <div className="h-screen flex items-center justify-center bg-white bg-opacity-50">
-              <span className="loader"></span>
-            </div>
+            <ListingCardSkeleton count={6} className="w-full" />
           ) : (
             <div className="w-full flex flex-wrap gap-6">
               {products.length > 0 ? (

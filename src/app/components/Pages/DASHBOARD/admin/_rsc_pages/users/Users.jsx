@@ -7,6 +7,7 @@ import { Plus } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { UserDataTable } from './UserDataTable';
+import { TableSkeleton } from '@/app/components/DashboardShared/TableSkeleton';
 import { useToast } from '@/hooks/use-toast';
 import { deleteMultipleUsers, deleteUser } from '@/lib/actions/userActions';
 import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
@@ -218,7 +219,7 @@ const UsersPageComponent = () => {
           )}
         </div>
 
-        {isValidating && <span className="loader"></span>}
+        {isValidating && <TableSkeleton columns={6} rows={10} />}
         {!isValidating && !error && (
           <>
             <UserDataTable data={users} selectedItems={selectedItems} onSelectionChange={setSelectedItems} usersCount={users.length} onAllSelectedChange={setIsAllSelected} onDelete={handleDelete} />

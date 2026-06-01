@@ -7,6 +7,7 @@ import { Form, FormDescription, FormItem, FormControl, FormMessage, FormField, F
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { CustomPagination } from '@/app/components/Pagination';
 import { CardVendorSchedule } from '../shared/vendor_cards';
+import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import { useParams } from 'next/navigation';
 import { fetcher } from '@/lib/fetchers';
 import { VendorNoResultFound } from '../shared/VendorNoResultFound';
@@ -192,7 +193,7 @@ const FilterVendorSchedulePage = () => {
         </Form>
       </CardHeader>
       <CardContent className="flex-col w-full space-y-4">
-        {isLoading && <p className="loader"></p>}
+        {isLoading && <ListingCardSkeleton count={6} gridClassName="grid-cols-1" className="w-full" />}
 
         {error && <p className="text-red-400">{error.message || 'Something Went Wrong'}</p>}
 

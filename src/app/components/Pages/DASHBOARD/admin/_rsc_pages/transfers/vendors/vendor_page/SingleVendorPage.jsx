@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import dynamic from 'next/dynamic';
 import { ArrowLeft } from 'lucide-react';
+import { PageSkeleton } from '@/app/components/Animation/Cards';
 
 const CardSingleContactInformation = dynamic(() => import('../shared/vendor_cards').then((mod) => mod.CardSingleContactInformation), { ssr: false });
 const CardSingleServiceInformation = dynamic(() => import('../shared/vendor_cards').then((mod) => mod.CardSingleServiceInformation), { ssr: false });
@@ -20,7 +21,7 @@ const SingleVendorPage = () => {
   const router = useRouter();
 
   const vendorData = data?.data || {}; // destructure data
-  if (isLoading) return <p className="loader"></p>; // loading ui
+  if (isLoading) return <PageSkeleton />; // loading ui
 
   if (error) return <p className="text-red-400">Some thing went Wrong: {error.message}</p>; // handle error boundaries
 

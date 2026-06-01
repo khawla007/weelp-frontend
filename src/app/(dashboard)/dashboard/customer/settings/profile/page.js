@@ -1,5 +1,6 @@
 'use client';
 import { ProfileSettings } from '@/app/components/Pages/DASHBOARD/customer/settings/ProfileSettings';
+import { PageSkeleton } from '@/app/components/Animation/Cards';
 import { UserNotFound } from '@/app/components/Pages/DASHBOARD/UserNotFound';
 import { useUserProfile } from '@/hooks/api/customer/profile';
 
@@ -9,7 +10,7 @@ const ProfilePage = () => {
   if (isLoading) {
     return (
       <div className="w-full flex flex-col items-center justify-center min-h-[400px]">
-        <span className="loader"></span>
+        <PageSkeleton />
         <p className="text-sm text-zinc-500 mt-4">Loading profile data...</p>
       </div>
     );

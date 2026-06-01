@@ -1,6 +1,7 @@
 'use client';
 
 import { authFetcher } from '@/lib/fetchers';
+import { FormSkeleton } from '@/app/components/Animation/Cards';
 import useSWR from 'swr';
 import { useParams } from 'next/navigation';
 import { AddOnForm } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/addons/forms/AddOnForm';
@@ -10,7 +11,7 @@ export default function SingleAddOnPage() {
   const { id } = useParams();
   const { data, error, isLoading } = useSWR(`/api/admin/addons/${id}`, authFetcher);
 
-  if (isLoading) return <p className="loader"></p>;
+  if (isLoading) return <FormSkeleton />;
   if (error) return <p className="text-red-400">Error loading add-on</p>;
   if (!data?.success) return <p className="text-red-400">Add-on not found</p>;
 

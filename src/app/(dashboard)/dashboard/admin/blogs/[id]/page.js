@@ -4,6 +4,7 @@ import React from 'react';
 import { useParams } from 'next/navigation';
 import useSWR from 'swr';
 import { fetcher } from '@/lib/fetchers';
+import { FormSkeleton } from '@/app/components/Animation/Cards';
 import { NotFoundComponent } from '@/app/components/NotFound';
 import { BlogForm } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/blogs/form/BlogForm';
 
@@ -19,7 +20,7 @@ const EditBlogPage = () => {
 
   // Loading state
   if (isLoading) {
-    return <span className="loader"></span>;
+    return <FormSkeleton />;
   }
 
   // Error state

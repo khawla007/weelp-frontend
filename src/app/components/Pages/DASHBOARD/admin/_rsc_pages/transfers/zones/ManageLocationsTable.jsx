@@ -6,6 +6,7 @@ import { debounce } from 'lodash';
 import { authFetcher } from '@/lib/fetchers';
 import { useToast } from '@/hooks/use-toast';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { TableSkeleton } from '@/app/components/DashboardShared/TableSkeleton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -188,7 +189,7 @@ export default function ManageLocationsTable({ zone }) {
         )}
       </div>
 
-      {isValidating && <span className="loader" />}
+      {isValidating && <TableSkeleton columns={7} rows={10} headers={['', 'Location', 'City', 'Country', 'Type', 'Current Zone(s)', 'Action']} />}
       {error && <span className="text-red-500">Failed to load locations</span>}
 
       {!error && (

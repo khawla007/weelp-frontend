@@ -6,6 +6,7 @@ import { notFound, useParams } from 'next/navigation';
 import useSWR from 'swr';
 import { AddOnForm } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/addons/forms/AddOnForm';
 import { fetcher } from '@/lib/fetchers';
+import { FormSkeleton } from '@/app/components/Animation/Cards';
 
 const EditAddOn = () => {
   const { id } = useParams();
@@ -14,7 +15,7 @@ const EditAddOn = () => {
 
   // Handle Data Cases
   if (error) return <p className="text-red-400">Something went wrong</p>;
-  if (isLoading) return <span className="loader"></span>;
+  if (isLoading) return <FormSkeleton />;
 
   const { success = false, data: addOnData = {} } = data;
 

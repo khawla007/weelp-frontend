@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { PageSkeleton } from '@/app/components/Animation/Cards';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useBookingData } from '@/hooks/api/public/checkout';
@@ -28,7 +29,7 @@ export default function PaymentSuccessClient({ sessionId }) {
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <span className="loader"></span>
+        <PageSkeleton />
       </div>
     );
   }

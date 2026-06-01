@@ -1,6 +1,7 @@
 'use client';
 
 import React, { Suspense, useEffect } from 'react';
+import { PageSkeleton } from '@/app/components/Animation/Cards';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -38,7 +39,7 @@ const SucceceedPageContent = () => {
   if (isValidating) {
     return (
       <div className="my-4 h-screen flex items-center justify-center">
-        <span className="loader"></span>
+        <PageSkeleton />
       </div>
     );
   }
@@ -235,7 +236,7 @@ const SucceceedPage = () => (
   <Suspense
     fallback={
       <div className="my-4 h-screen flex items-center justify-center">
-        <span className="loader"></span>
+        <PageSkeleton />
       </div>
     }
   >

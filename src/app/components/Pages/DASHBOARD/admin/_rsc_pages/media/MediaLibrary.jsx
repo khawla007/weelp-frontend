@@ -18,6 +18,7 @@ import { useIsClient } from '@/hooks/useIsClient';
 import { useToast } from '@/hooks/use-toast';
 import { CustomPagination } from '@/app/components/Pagination';
 import { DASHBOARD_PLACEHOLDER_IMAGE } from '@/app/components/DashboardShared/Card/CardImage';
+import { MediaGridSkeleton } from '@/app/components/Animation/Cards';
 
 export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelectionChange }) {
   const isClient = useIsClient(); // hydration
@@ -233,9 +234,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
         {/* ✅ Media Gallery Section */}
         <div className="w-fulll">
           {isValidating ? (
-            <div className="h-auto flex items-center justify-center">
-              <span className="loader" />
-            </div>
+            <MediaGridSkeleton count={isMediaPage ? 15 : 10} />
           ) : error ? (
             <div className="flex items-center justify-center text-red-500">Failed to load media.</div>
           ) : displayImages.length === 0 ? (

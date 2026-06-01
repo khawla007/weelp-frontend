@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useCallback, useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
+import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -131,7 +132,7 @@ export const FilterRegions = () => {
         {/* RESULT Found */}
         <div className="flex flex-col gap-4 h-full">
           {/* Loading State */}
-          {isValidating && <span className="loader"></span>}
+          {isValidating && <ListingCardSkeleton count={8} gridClassName="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" className="w-full" />}
 
           {/* Error State */}
           {!isValidating && error && <div className="text-red-500 text-center py-4">Failed to load data. Please try again.</div>}
