@@ -30,11 +30,14 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import dynamic from 'next/dynamic';
 import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 import { authApi } from '@/lib/axiosInstance';
+import { useStepTransition } from '@/app/components/dashboard/shared/useStepTransition';
+import { StepPanel } from '@/app/components/dashboard/shared/StepPanel';
 
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnActivity'), { ssr: false });
 
 export const CreateActivityForm = ({ categories, attributes, tags, locations = [] }) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const { stepRef, goWithDirection } = useStepTransition(currentStep);
   const [formData, setFormData] = useState({});
   const router = useRouter();
   const { toast } = useToast();
@@ -1127,7 +1130,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
     }
     const currentData = methods.getValues();
     setFormData({ ...formData, ...currentData });
-    setCurrentStep((prev) => prev + 1);
+    goWithDirection(currentStep + 1, currentStep, setCurrentStep);
   };
 
   // Handle final form submission (step 6) - with validation
@@ -1178,7 +1181,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                           const isValid = await methods.trigger(['name', 'slug', 'description', 'short_description']);
                           if (!isValid) return;
                         }
-                        setCurrentStep(step?.id);
+                        goWithDirection(step?.id, currentStep, setCurrentStep);
                       }}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && 'bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-[#588f7a] border-b-2'}`}
                     >
@@ -1202,12 +1205,12 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
             }
           >
             <fieldset className={`space-y-6 ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
-              <div key={currentStep}>{renderStep()}</div>
+              <StepPanel stepRef={stepRef}>{renderStep()}</StepPanel>
               <div className="flex justify-between pt-4">
                 {currentStep > 1 && (
                   <Button
                     type="button"
-                    onClick={() => setCurrentStep(currentStep - 1)}
+                    onClick={() => goWithDirection(currentStep - 1, currentStep, setCurrentStep)}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Previous
