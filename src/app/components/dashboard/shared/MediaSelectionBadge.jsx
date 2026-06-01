@@ -25,7 +25,7 @@ export function MediaSelectionBadge({ isSelected, className }) {
         className,
       )}
     >
-      {isSelected && <Check size={16} strokeWidth={3} className="text-white" />}
+      {isSelected && <Check size={16} strokeWidth={3} className="text-white animate-in zoom-in-50 fade-in-0 duration-200 ease-[var(--weelp-ease-out)] motion-reduce:animate-none" />}
     </div>
   );
 }
