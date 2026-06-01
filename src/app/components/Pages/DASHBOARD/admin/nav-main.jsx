@@ -108,13 +108,18 @@ function ParentItem({ item, itemKey, pathname, openItem, setOpenItem }) {
         {!item.comingSoon && <ChevronDown className={`ml-auto size-4 transition-transform duration-200 ${open ? '-rotate-180' : ''}`} />}
         {item.comingSoon && <ComingSoonBadge />}
       </SidebarMenuButton>
-      {open && (
-        <SidebarMenuSub>
-          {item.children.map((child) => (
-            <ChildItem key={child.title} child={child} pathname={pathname} />
-          ))}
-        </SidebarMenuSub>
-      )}
+      <div
+        className={`grid transition-[grid-template-rows] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+        inert={!open ? true : undefined}
+      >
+        <div className="overflow-hidden min-h-0">
+          <SidebarMenuSub>
+            {item.children.map((child) => (
+              <ChildItem key={child.title} child={child} pathname={pathname} />
+            ))}
+          </SidebarMenuSub>
+        </div>
+      </div>
     </SidebarMenuItem>
   );
 }
