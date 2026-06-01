@@ -44,7 +44,7 @@ const SelectTransferOption = () => {
                     <p className="text-sm font-semibold">{route.label}</p>
                   </div>
                   {/* Coming Soon Badge */}
-                  <Badge variant="success" className="text-[12px] animate-pulse absolute bottom-2">
+                  <Badge variant="success" className="text-[12px] absolute bottom-2">
                     Coming Soon
                   </Badge>
                 </>
