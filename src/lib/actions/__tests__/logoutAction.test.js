@@ -64,10 +64,14 @@ describe('logoutAction', () => {
   });
 
   it('reassembles a chunked session cookie in numeric order before decoding', async () => {
-    // Intentionally out of order to exercise the sort.
+    // Out of order AND spanning past index 9, so a lexicographic sort would
+    // place .10/.11 before .2 (-> AABBDDEECC). Expecting AABBCCDDEE proves the
+    // source sorts numerically.
     mockCookieStore([
       { name: 'authjs.session-token.1', value: 'BB' },
+      { name: 'authjs.session-token.10', value: 'DD' },
       { name: 'authjs.session-token.0', value: 'AA' },
+      { name: 'authjs.session-token.11', value: 'EE' },
       { name: 'authjs.session-token.2', value: 'CC' },
     ]);
     decode.mockResolvedValue({ accessToken: 'AT' });
@@ -75,7 +79,7 @@ describe('logoutAction', () => {
 
     await logoutAction();
 
-    expect(decode).toHaveBeenCalledWith(expect.objectContaining({ token: 'AABBCC', salt: 'authjs.session-token' }));
+    expect(decode).toHaveBeenCalledWith(expect.objectContaining({ token: 'AABBCCDDEE', salt: 'authjs.session-token' }));
   });
 
   it('returns { ok: false } when decode throws', async () => {
