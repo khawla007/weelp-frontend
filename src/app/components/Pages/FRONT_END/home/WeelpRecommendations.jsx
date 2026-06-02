@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import SectionFallback from '@/app/components/ui/SectionFallback';
+import Reveal from '@/app/components/ui/Reveal';
 import { getFeaturedItineraries } from '@/lib/services/itineraries';
 
 const fontIT = 'var(--font-interTight), Inter Tight, sans-serif';
@@ -34,7 +35,7 @@ const WeelpRecommendations = async () => {
   const itineraries = getRandomItems(items, 32);
 
   return (
-    <section className="w-full bg-[#f8faf9] pb-10 md:pb-16 lg:pb-24">
+    <Reveal as="section" initialHidden className="w-full bg-[#f8faf9] pb-10 md:pb-16 lg:pb-24">
       <div className="w-full px-4 lg:px-[60px]">
         <h3 className="text-[20px] text-[#18181b] mb-4">Weelp Recommendations</h3>
         <div className="mb-4 border-t border-[#e4e4e7]" />
@@ -47,7 +48,7 @@ const WeelpRecommendations = async () => {
               <Link
                 key={`${slug}-${city_slug}`}
                 href={href}
-                className="text-[16px] text-[#71717a] transition hover:text-[#18181b]"
+                className="text-[16px] text-[#71717a] bg-gradient-to-r from-[#18181b] to-[#18181b] bg-[length:0%_1px] bg-no-repeat bg-[position:0_100%] transition-[color,background-size] duration-300 ease-[var(--weelp-ease-out)] hover:text-[#18181b] hover:bg-[length:100%_1px] motion-reduce:transition-none"
                 style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px', lineHeight: 2.06 }}
               >
                 {name}
@@ -56,7 +57,7 @@ const WeelpRecommendations = async () => {
           })}
         </div>
       </div>
-    </section>
+    </Reveal>
   );
 };
 
