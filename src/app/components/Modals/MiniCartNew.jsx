@@ -160,7 +160,7 @@ const MiniCartNew = () => {
                     setMiniCartOpen(!isMiniCartOpen);
                   }}
                 >
-                  Sorry Not Item In Cart
+                  Your cart is empty
                 </span>
               </div>
             </div>
