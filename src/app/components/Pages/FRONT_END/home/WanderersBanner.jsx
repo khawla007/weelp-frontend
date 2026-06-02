@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import Reveal from '@/app/components/ui/Reveal';
 
 const AVATARS = Array.from({ length: 6 }, (_, i) => i);
 
@@ -7,7 +8,7 @@ const SAGE_LEAF_PATH = 'M0 571.5c4.16667-99 64.89999-297 274.5-297-219.60001 0-2
 
 const WanderersBanner = () => {
   return (
-    <section aria-labelledby="wanderers-heading" className="relative h-[260px] w-full overflow-hidden bg-white md:h-[300px] mb-10 md:mb-16 lg:mb-24">
+    <Reveal as="section" initialHidden aria-labelledby="wanderers-heading" className="relative h-[260px] w-full overflow-hidden bg-white md:h-[300px] mb-10 md:mb-16 lg:mb-24">
       <svg
         aria-hidden="true"
         viewBox="0 0 275 572"
@@ -54,7 +55,7 @@ const WanderersBanner = () => {
         </Link>
         <span aria-hidden="true" className="h-px flex-1 bg-[#e4e4e7]" />
       </div>
-    </section>
+    </Reveal>
   );
 };
 
