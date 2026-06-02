@@ -30,6 +30,11 @@ export function AdminDashboardPage() {
 
   const hasError = metricsError || chartError || salesError;
 
+  // Synchronize all sections: every box (incl. Quick Actions) shows its skeleton
+  // until all dashboard data is ready, then they reveal together. Prevents the
+  // staggered skeleton->data flips that shifted the layout up and down.
+  const isLoading = metricsLoading || chartLoading || salesLoading;
+
   return (
     <div className="flex-1 space-y-4">
       <div className="flex items-center justify-between space-y-2">
@@ -41,11 +46,11 @@ export function AdminDashboardPage() {
 
       {hasError && <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">Couldn&apos;t load some dashboard data. Showing placeholders where possible.</div>}
 
-      <MetricCards loading={metricsLoading} data={metricsError ? null : metricsData} />
+      <MetricCards loading={isLoading} data={metricsError ? null : metricsData} />
 
       <div className="space-y-4">
         <h3 className="text-lg font-medium">Quick Actions</h3>
-        <QuickActions loading={false} />
+        <QuickActions loading={isLoading} />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
@@ -54,7 +59,7 @@ export function AdminDashboardPage() {
             <CardTitle>Overview</CardTitle>
           </CardHeader>
           <CardContent className="pl-2">
-            <Overview loading={chartLoading} data={chartError ? null : chartData} />
+            <Overview loading={isLoading} data={chartError ? null : chartData} />
           </CardContent>
         </Card>
         <Card className="col-span-3">
@@ -63,7 +68,7 @@ export function AdminDashboardPage() {
             <CardDescription>Monthly sales: ${monthlyTotal.toLocaleString()}</CardDescription>
           </CardHeader>
           <CardContent>
-            <RecentSales loading={salesLoading} data={salesData} />
+            <RecentSales loading={isLoading} data={salesData} />
           </CardContent>
         </Card>
       </div>

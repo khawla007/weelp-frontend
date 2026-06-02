@@ -34,13 +34,18 @@ export const Overview: React.FC<OverviewProps> = ({ loading = false, data }) => 
   // Use API data if available (and has content), otherwise use static data
   const chartData = data && data.length > 0 ? data : overviewChartData;
 
+  // Fixed-height wrapper (matches OverviewSkeleton's h-[350px]) so the chart box
+  // reserves its space even during recharts' initial zero-size measure frame.
+  // Without it, ResponsiveContainer briefly collapses and shifts the layout.
   return (
-    <ResponsiveContainer width="100%" height={chartConfig.height} className={''}>
-      <BarChart data={chartData}>
-        <XAxis dataKey="name" stroke={chartConfig.axisColor} fontSize={chartConfig.axisFontSize} tickLine={false} axisLine={false} />
-        <YAxis stroke={chartConfig.axisColor} fontSize={chartConfig.axisFontSize} tickLine={false} axisLine={false} tickFormatter={chartConfig.valueFormatter} />
-        <Bar dataKey="total" fill="currentColor" radius={[4, 4, 0, 0]} className="fill-[#588f7a]" />
-      </BarChart>
-    </ResponsiveContainer>
+    <div style={{ height: chartConfig.height }}>
+      <ResponsiveContainer width="100%" height="100%" className={''}>
+        <BarChart data={chartData}>
+          <XAxis dataKey="name" stroke={chartConfig.axisColor} fontSize={chartConfig.axisFontSize} tickLine={false} axisLine={false} />
+          <YAxis stroke={chartConfig.axisColor} fontSize={chartConfig.axisFontSize} tickLine={false} axisLine={false} tickFormatter={chartConfig.valueFormatter} />
+          <Bar dataKey="total" fill="currentColor" radius={[4, 4, 0, 0]} className="fill-[#588f7a]" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   );
 };

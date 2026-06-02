@@ -1,23 +1,26 @@
 import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { quickActionsData } from './constants/quick-actions.constants';
+import { chartConfig } from './constants/overview-chart.constants';
 
 /**
  * Skeleton loader for Metric Cards
- * Displays 4 placeholder cards while data is loading
+ * Mirrors the exact DOM of StatCard (padding via inner divs, no extra Card padding)
+ * so the skeleton occupies the same height and swapping in data causes no layout shift.
  */
 export function MetricCardsSkeleton() {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {[1, 2, 3, 4].map((i) => (
-        <Card key={i} className="p-6">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-5 w-5 rounded-full" />
-          </CardHeader>
-          <CardContent>
-            <Skeleton className="h-8 w-32 mt-4" />
-            <Skeleton className="h-3 w-40 mt-4" />
-          </CardContent>
+        <Card key={i}>
+          <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
+            <Skeleton className="h-5 w-24" />
+            <Skeleton className="h-4 w-4 rounded" />
+          </div>
+          <div className="p-6 pt-0">
+            <Skeleton className="h-8 w-32" />
+            <Skeleton className="h-4 w-40 mt-1" />
+          </div>
         </Card>
       ))}
     </div>
@@ -26,19 +29,29 @@ export function MetricCardsSkeleton() {
 
 /**
  * Skeleton loader for Quick Actions
- * Displays 6 placeholder action cards while loading
+ * Mirrors the real QuickActions card DOM (CardHeader/CardContent own the padding,
+ * no extra Card padding) so each placeholder matches a real card's height.
  */
 export function QuickActionsSkeleton() {
   return (
     <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-      {[1, 2, 3, 4, 5, 6].map((i) => (
-        <Card key={i} className="p-6">
+      {/* One placeholder per real action so the skeleton row count matches the
+          loaded layout exactly — prevents the grid shrinking (and shifting the
+          chart row up) when data arrives. */}
+      {quickActionsData.map((_, i) => (
+        <Card key={i}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Skeleton className="h-5 w-32" />
-            <Skeleton className="h-5 w-5 rounded-full" />
+            <div className="flex items-center justify-between w-full gap-2">
+              <Skeleton className="h-5 w-32" />
+              <Skeleton className="h-4 w-4 rounded" />
+            </div>
           </CardHeader>
           <CardContent>
-            <Skeleton className="h-4 w-24" />
+            {/* h-10 wrapper mirrors the real "Get Started" Button box (h-10) so the
+                card height matches and the skeleton->data swap causes no layout shift */}
+            <div className="h-10 flex items-center">
+              <Skeleton className="h-5 w-24" />
+            </div>
           </CardContent>
         </Card>
       ))}
@@ -55,7 +68,7 @@ export function OverviewSkeleton() {
   const heights = [45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 55];
 
   return (
-    <div className="w-full h-[350px] flex items-end justify-between gap-2 px-4">
+    <div className="w-full flex items-end justify-between gap-2 px-4" style={{ height: chartConfig.height }}>
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
         <div key={i} className="flex-1 flex flex-col items-center gap-2">
           <Skeleton
@@ -78,15 +91,15 @@ export function OverviewSkeleton() {
  */
 export function RecentSalesSkeleton() {
   return (
-    <div className="space-y-6 w-full max-w-full">
+    <div className="space-y-8 w-full max-w-full grid grid-cols-1">
       {[1, 2, 3, 4, 5].map((i) => (
-        <div key={i} className="flex items-center gap-4">
+        <div key={i} className="flex flex-wrap items-center gap-4 sm:gap-0">
           <Skeleton className="h-9 w-9 rounded-full" />
-          <div className="ml-4 space-y-2 flex-1">
+          <div className="ml-4 space-y-1 flex-1">
             <Skeleton className="h-4 w-32" />
-            <Skeleton className="h-3 w-40" />
+            <Skeleton className="h-4 w-40" />
           </div>
-          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-4 w-16 sm:ml-auto" />
         </div>
       ))}
     </div>
