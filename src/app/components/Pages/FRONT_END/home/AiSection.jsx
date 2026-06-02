@@ -4,6 +4,7 @@ import TravelBuddyWidget from '@/app/components/Home/TravelBuddyWidget';
 import PersonalisedGlobe from '@/app/components/Home/PersonalisedGlobe';
 import { getAllFeaturedActivities } from '@/lib/services/activites';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
+import Reveal from '@/app/components/ui/Reveal';
 
 const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_6px_rgba(0,0,0,0.05)] ring-1 ring-[#eaeaea]';
 
@@ -13,7 +14,7 @@ const AiSection = async () => {
   const buddyItems = featured.map((a) => mapProductToItemCard(a));
 
   return (
-    <section className="container-page flex flex-col items-center gap-12 pb-10 md:pb-16 lg:pb-24">
+    <Reveal as="section" initialHidden className="container-page flex flex-col items-center gap-12 pb-10 md:pb-16 lg:pb-24">
       <h2 className="text-center text-[28px] font-medium text-[#18181b]">Your AI Travel Buddy</h2>
 
       <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
@@ -27,7 +28,7 @@ const AiSection = async () => {
             sizes="(max-width: 1024px) 100vw, 33vw"
             placeholder="blur"
             blurDataURL={IMAGE_BLUR_DATA_URL}
-            className="object-cover"
+            className="object-cover transition-transform duration-500 ease-[var(--weelp-ease-out)] group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
           />
           <div
             data-overlay
@@ -51,7 +52,7 @@ const AiSection = async () => {
           </div>
         </article>
       </div>
-    </section>
+    </Reveal>
   );
 };
 

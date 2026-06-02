@@ -83,6 +83,19 @@ describe('AiSection', () => {
     expect(container.querySelector('animateMotion')).not.toBeInTheDocument();
   });
 
+  it('wraps the section in a Reveal (data-reveal present) and gives the Save-Money image a capped hover-zoom', async () => {
+    const ui = await AiSection();
+    const { container } = render(ui);
+
+    const section = container.querySelector('section');
+    expect(section).toHaveAttribute('data-reveal');
+
+    const moneyImg = container.querySelector('img[alt="AI suggesting price-aware combinations"]');
+    expect(moneyImg).toBeTruthy();
+    expect(moneyImg.className).toContain('group-hover:scale-[1.02]');
+    expect(moneyImg.className).toContain('motion-reduce:group-hover:scale-100');
+  });
+
   it('uses black copy on the light personalised globe card', async () => {
     const ui = await AiSection();
     const { getByText } = render(ui);
