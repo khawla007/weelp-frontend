@@ -11,11 +11,26 @@ export const LoadingPage = () => {
 };
 
 /**
- * FieldSkeleton - Input-height placeholder for form fields / dropdowns while their
- * options load. Use in place of an inline spinner next to a select or multiselect.
+ * FieldSkeleton - Input-height placeholder for a form field / dropdown while its
+ * options load. The label row is OFF by default, because most callsites keep their
+ * title/label always visible and only swap the control (WidgetCard cardTitle in
+ * BlogSidebar, AccordionTrigger in FilterBlogPage, the shared add-on tabs,
+ * DynamicSite) — reserving a label there would double-stack under the real title
+ * and cause a layout jump.
+ *
+ * Pass `withLabel` only where the real swapped-in content includes its own
+ * FormLabel inside the conditionally-rendered block (e.g. ReviewForm's user/item
+ * FormItems), so the skeleton reserves the label row to match.
+ *
+ * @param {boolean} withLabel - Render a label-row placeholder above the field (default false).
  */
-export const FieldSkeleton = ({ className = '' }) => {
-  return <Skeleton className={`h-10 w-full rounded-md ${className}`} aria-hidden="true" />;
+export const FieldSkeleton = ({ withLabel = false, className = '' }) => {
+  return (
+    <div className={`space-y-2 ${className}`} aria-hidden="true">
+      {withLabel && <Skeleton className="h-4 w-24" />}
+      <Skeleton className="h-10 w-full rounded-md" />
+    </div>
+  );
 };
 
 /**
@@ -40,18 +55,42 @@ export const FormSkeleton = ({ fields = 5, className = '' }) => {
 };
 
 /**
- * PageSkeleton - Generic page placeholder (title bar + content bars). Used for
- * full-screen route loads and Suspense fallbacks where there's no specific shape.
+ * PageSkeleton - Generic page placeholder. Used for full-screen route loads and
+ * Suspense fallbacks where there's no page-specific shape (SingleVendorPage with a
+ * md:grid-cols-2 card body, PaymentSuccessClient with an ~85vh lg:grid-cols-3 layout
+ * plus a long table).
+ *
+ * Since one shared skeleton can't pixel-match both, it aims for generic fidelity
+ * rather than overfitting either page: a tall min-height so it doesn't collapse far
+ * below a full-screen page, a title + subtitle row, a responsive two-column grid of
+ * card-shaped blocks (echoing the side-by-side card bodies), and a stack of row
+ * placeholders below (echoing the success-page table).
  */
 export const PageSkeleton = ({ className = '' }) => {
   return (
-    <div className={`w-full max-w-3xl mx-auto space-y-4 p-4 ${className}`} aria-hidden="true">
-      <Skeleton className="h-8 w-1/2" />
-      <Skeleton className="h-4 w-3/4" />
-      <Skeleton className="h-4 w-2/3" />
-      <Skeleton className="h-48 w-full rounded-lg" />
-      <Skeleton className="h-4 w-1/2" />
-    </div>
+    <Card className={`w-full max-w-4xl mx-auto min-h-[60vh] space-y-6 p-6 ${className}`} aria-hidden="true">
+      {/* Title + subtitle */}
+      <div className="space-y-2">
+        <Skeleton className="h-8 w-1/2" />
+        <Skeleton className="h-4 w-2/3" />
+      </div>
+
+      {/* Two card-shaped blocks side by side (stack on mobile) */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <Skeleton className="h-40 w-full rounded-lg" />
+        <Skeleton className="h-40 w-full rounded-lg" />
+      </div>
+
+      {/* Stacked rows echoing a detail table */}
+      <div className="space-y-3">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div key={index} className="flex items-center justify-between gap-4">
+            <Skeleton className="h-4 w-1/3" />
+            <Skeleton className="h-4 w-1/4" />
+          </div>
+        ))}
+      </div>
+    </Card>
   );
 };
 

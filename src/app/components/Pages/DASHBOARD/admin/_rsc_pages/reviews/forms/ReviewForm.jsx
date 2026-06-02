@@ -95,7 +95,7 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <fieldset className={isSubmitting ? 'cursor-wait space-y-8' : 'cursor-auto space-y-8'}>
               {/* Display User */}
-              {isLoadingUsers && <FieldSkeleton />}
+              {isLoadingUsers && <FieldSkeleton withLabel />}
               {!isLoadingUsers && !isErrorUser && (
                 <FormField
                   control={form.control}
@@ -132,7 +132,7 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
                 />
 
                 {/* Dynamic Items */}
-                {isLoadingItems && <FieldSkeleton />}
+                {isLoadingItems && <FieldSkeleton withLabel />}
                 {!isLoadingItems && !isErrorItems && (
                   <FormField
                     control={form.control}
