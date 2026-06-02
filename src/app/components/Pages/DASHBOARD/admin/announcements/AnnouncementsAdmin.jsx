@@ -60,16 +60,28 @@ export default function AnnouncementsAdmin() {
       resetForm();
       mutate();
     } catch (err) {
-      setError(err?.response?.data?.title?.[0] || err?.response?.data?.message || 'Save failed. Check the fields.');
+      const data = err?.response?.data;
+      const firstFieldError =
+        data && typeof data === 'object'
+          ? Object.values(data)
+              .flat()
+              .find((m) => typeof m === 'string')
+          : null;
+      setError(firstFieldError || data?.message || 'Save failed. Check the fields.');
     } finally {
       setSaving(false);
     }
   };
 
   const remove = async (id) => {
-    await authApi.delete(`/api/admin/announcements/${id}`);
-    if (editingId === id) resetForm();
-    mutate();
+    if (typeof window !== 'undefined' && !window.confirm('Delete this announcement?')) return;
+    try {
+      await authApi.delete(`/api/admin/announcements/${id}`);
+      if (editingId === id) resetForm();
+      mutate();
+    } catch {
+      setError('Delete failed. Please try again.');
+    }
   };
 
   return (

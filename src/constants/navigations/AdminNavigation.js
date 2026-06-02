@@ -25,6 +25,7 @@ import {
   BookImage,
   MessageSquare,
   Plus,
+  Bell,
 } from 'lucide-react';
 
 /**
@@ -117,6 +118,7 @@ const adminRoutes = [
     section: 'EDITORIAL',
     items: [
       { title: 'Blogs', icon: FileText, url: '/dashboard/admin/blogs' },
+      { title: 'Announcements', icon: Bell, url: '/dashboard/admin/announcements' },
       { title: 'Media', icon: BookImage, url: '/dashboard/admin/media' },
     ],
   },
