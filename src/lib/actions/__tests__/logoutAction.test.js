@@ -19,6 +19,16 @@ function mockCookieStore(cookieList) {
   cookies.mockResolvedValue({ getAll: () => cookieList });
 }
 
+/**
+ * Arrange a standard authjs session: one direct session cookie, a decoded
+ * token, and a resolved fetch. Each test overrides only the axis it exercises.
+ */
+function arrangeSession(decoded = { accessToken: 'AT', refreshToken: 'RT' }, fetchResult = { ok: true }) {
+  mockCookieStore([{ name: 'authjs.session-token', value: 'rawtoken' }]);
+  decode.mockResolvedValue(decoded);
+  global.fetch.mockResolvedValue(fetchResult);
+}
+
 describe('logoutAction', () => {
   const ORIGINAL_ENV = process.env;
 
@@ -49,9 +59,7 @@ describe('logoutAction', () => {
   });
 
   it('reads a direct (unchunked) session cookie and passes it to decode', async () => {
-    mockCookieStore([{ name: 'authjs.session-token', value: 'rawtoken' }]);
-    decode.mockResolvedValue({ accessToken: 'AT', refreshToken: 'RT' });
-    global.fetch.mockResolvedValue({ ok: true });
+    arrangeSession();
 
     const result = await logoutAction();
 
@@ -94,8 +102,7 @@ describe('logoutAction', () => {
   });
 
   it('returns { ok: true } without calling the backend when no accessToken is present', async () => {
-    mockCookieStore([{ name: 'authjs.session-token', value: 'rawtoken' }]);
-    decode.mockResolvedValue({ refreshToken: 'RT' }); // no accessToken
+    arrangeSession({ refreshToken: 'RT' }); // no accessToken
 
     const result = await logoutAction();
 
@@ -104,9 +111,7 @@ describe('logoutAction', () => {
   });
 
   it('calls the backend logout with bearer + refreshToken body and returns { ok: res.ok }', async () => {
-    mockCookieStore([{ name: 'authjs.session-token', value: 'rawtoken' }]);
-    decode.mockResolvedValue({ accessToken: 'AT', refreshToken: 'RT' });
-    global.fetch.mockResolvedValue({ ok: true });
+    arrangeSession();
 
     const result = await logoutAction();
 
@@ -123,9 +128,7 @@ describe('logoutAction', () => {
   });
 
   it('sends an empty body when no refreshToken is present', async () => {
-    mockCookieStore([{ name: 'authjs.session-token', value: 'rawtoken' }]);
-    decode.mockResolvedValue({ accessToken: 'AT' });
-    global.fetch.mockResolvedValue({ ok: true });
+    arrangeSession({ accessToken: 'AT' });
 
     await logoutAction();
 
@@ -133,9 +136,7 @@ describe('logoutAction', () => {
   });
 
   it('returns { ok: false } when the backend responds non-ok', async () => {
-    mockCookieStore([{ name: 'authjs.session-token', value: 'rawtoken' }]);
-    decode.mockResolvedValue({ accessToken: 'AT' });
-    global.fetch.mockResolvedValue({ ok: false });
+    arrangeSession({ accessToken: 'AT' }, { ok: false });
 
     const result = await logoutAction();
 
@@ -143,8 +144,7 @@ describe('logoutAction', () => {
   });
 
   it('returns { ok: false } when the backend fetch throws', async () => {
-    mockCookieStore([{ name: 'authjs.session-token', value: 'rawtoken' }]);
-    decode.mockResolvedValue({ accessToken: 'AT' });
+    arrangeSession({ accessToken: 'AT' });
     global.fetch.mockRejectedValue(new Error('network down'));
 
     const result = await logoutAction();
