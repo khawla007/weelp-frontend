@@ -92,7 +92,7 @@ and the matching closing `</section>` (line 54) to `</Reveal>`.
 (c) Add the hover-scale to the Save-Money `<Image>` className (line 30) — from `"object-cover"` to:
 
 ```jsx
-className = 'object-cover transition-transform duration-500 ease-[var(--weelp-ease-out)] group-hover:scale-[1.02] motion-reduce:group-hover:scale-100';
+className = 'object-cover transition-transform duration-500 ease-[var(--weelp-ease-out)] group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100';
 ```
 
 Do NOT touch the second (`data-personalised-card` / globe) article — hover-scale there would fight the Cobe globe. The Save-Money `<article>` already has `group` and `SHARED_CARD` (line 8) already has `overflow-hidden`, so the zoom clips and the `data-overlay` slide/fade is unchanged.
@@ -255,7 +255,7 @@ git commit -m "feat(home): reveal WeelpRecommendations + link underline (§7)"
 
 **Files:**
 
-- Modify: `docs/frontend-animation-implementation-steps-2026-05-15.md`
+- Modify (absolute, top-level — this roadmap lives in `weelp/docs/`, NOT the frontend repo, and is git-untracked like `weelp/Reports/`): `/run/media/ashish-khawla/Website data/Fanatic Developement/weelp/docs/frontend-animation-implementation-steps-2026-05-15.md`
 
 - [ ] **Step 1: Type-check + lint whole repo.**
 
@@ -277,14 +277,9 @@ Expected: `Tests: 144 passed, 144 total` (the 4 wraps must not regress any suite
 
 Record evidence (final state + any error verbatim). PASS = all six hold.
 
-- [ ] **Step 4: Update the roadmap.** In `docs/frontend-animation-implementation-steps-2026-05-15.md` §7: flip `Status: [ ] Not started` to `[x]`, tick the implemented step checkboxes (Reveal wrapper reused; hero kept; section reveal on the 4; opacity+12px/520ms via Reveal default; AI image hover-scale; recommendation underline; reduced-motion fallback; heavy modules left deferred), tick the acceptance checks, and fill "Verification evidence" with the Task-5 browser results. Note the two NOT-done sub-steps that were out of scope by decision (no per-section deferral changes beyond existing lazy/gated state).
+- [ ] **Step 4: Update the roadmap.** Edit the absolute top-level file `/run/media/ashish-khawla/Website data/Fanatic Developement/weelp/docs/frontend-animation-implementation-steps-2026-05-15.md` §7: flip `Status: [ ] Not started` to `[x]`, tick the implemented step checkboxes (Reveal wrapper reused; hero kept; section reveal on the 4; opacity+12px/520ms via Reveal default; AI image hover-scale; recommendation underline; reduced-motion fallback; heavy modules left deferred), tick the acceptance checks, and fill "Verification evidence" with the Task-5 browser results. Note the two NOT-done sub-steps that were out of scope by decision (no per-section deferral changes beyond existing lazy/gated state).
 
-- [ ] **Step 5: Commit the roadmap update.**
-
-```bash
-git add docs/frontend-animation-implementation-steps-2026-05-15.md
-git commit -m "docs(roadmap): mark §7 homepage section reveals complete"
-```
+- [ ] **Step 5: NO git commit for the roadmap.** It is git-untracked (top-level `weelp/docs/`, like `weelp/Reports/`) — the file edit IS the deliverable. Also update `weelp/Reports/daily-work-report.md` with a §7 completion session entry (untracked too — edit, no commit).
 
 ---
 
