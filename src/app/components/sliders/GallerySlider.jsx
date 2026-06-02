@@ -51,12 +51,12 @@ const GallerySlider = ({ data, classNames = '', navColor = '#fff', collapseHidde
           className="main-slider w-full relative has-[.swiper-slide-active]:odd:rounded-xl"
         >
           {imageData.map((val, index) => (
-            <SwiperSlide key={index}>
+            <SwiperSlide key={index} className="group overflow-hidden">
               <img
                 loading="lazy"
                 src={val?.url || val?.image}
                 alt={val?.alt_text || `Slide ${index + 1}`}
-                className="max-w-full xs:max-w-80 w-full h-[240px] sm:h-[280px] md:h-[280px] lg:h-[400px] object-cover"
+                className="max-w-full xs:max-w-80 w-full h-[240px] sm:h-[280px] md:h-[280px] lg:h-[400px] object-cover transition-transform duration-500 ease-[var(--weelp-ease-out)] group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:transform-none"
               />
             </SwiperSlide>
           ))}
