@@ -15,7 +15,7 @@ describe('HeroSection', () => {
     const { container } = render(<HeroSection />);
 
     const section = container.querySelector('section');
-    expect(section.style.backgroundImage).toContain('hero_redesigned_bg.jpeg');
+    expect(section.style.backgroundImage).toContain('weelp-home-hero.png');
   });
 
   it('renders the homepage heading text from the pen design', () => {

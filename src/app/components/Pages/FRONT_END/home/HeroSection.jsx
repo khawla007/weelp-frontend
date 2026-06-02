@@ -9,7 +9,7 @@ const HeroSection = () => {
     <section
       className="relative w-full flex items-center justify-center mb-10 md:mb-16 lg:mb-24"
       style={{
-        backgroundImage: 'url(/assets/images/hero_redesigned_bg.jpeg)',
+        backgroundImage: 'url(/assets/images/weelp-home-hero.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundColor: '#f2f7f5',
@@ -22,17 +22,10 @@ const HeroSection = () => {
           Plan calmer escapes
         </span>
         <div className="relative mb-4 flex flex-col items-center">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute left-1/2 top-1/2 -z-10 -ml-[269px] -mt-[111px] h-[222px] w-[538px] max-w-[90vw] rounded-[150px] blur-[30px]"
-            style={{
-              background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.89) 34%, rgba(255,255,255,0.50) 72%, rgba(255,255,255,0) 100%)',
-            }}
-          />
-          <h1 className="hero-rise mb-2.5 text-[28px] sm:text-[38px] md:text-[48px] leading-[1.05] text-[#18181b]" style={{ '--hero-rise-delay': '80ms' }}>
+          <h1 className="hero-rise mb-2.5 text-[28px] sm:text-[38px] md:text-[48px] leading-[1.05] text-white" style={{ '--hero-rise-delay': '80ms' }}>
             Find your next escape
           </h1>
-          <p className="hero-rise max-w-[44ch] text-base sm:text-lg font-medium leading-[1.4] text-[#435a67]" style={{ '--hero-rise-delay': '160ms' }}>
+          <p className="hero-rise max-w-[44ch] text-base sm:text-lg font-medium leading-[1.4] text-white" style={{ '--hero-rise-delay': '160ms' }}>
             Beach stays, marina views, and easy city plans in one place.
           </p>
         </div>
