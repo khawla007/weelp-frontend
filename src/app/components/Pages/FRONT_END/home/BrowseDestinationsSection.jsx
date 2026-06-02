@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import SectionHeader from '@/app/components/ui/SectionHeader';
 import CarouselShell from '@/app/components/ui/CarouselShell';
 import CityCard from '@/app/components/CityCard';
+import Reveal from '@/app/components/ui/Reveal';
 
 const DESTINATION_BREAKPOINTS = {
   450: { slidesPerView: 1.5, spaceBetween: 12 },
@@ -26,7 +27,7 @@ export default function BrowseDestinationsSection({ cities = [], title = 'Top De
   if (!items.length) return null;
 
   return (
-    <section className={`container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24 ${className}`}>
+    <Reveal as="section" initialHidden className={`container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24 ${className}`}>
       <div className="flex items-center justify-between">
         <SectionHeader title={title} />
         <div className="flex items-center gap-2">
@@ -55,6 +56,6 @@ export default function BrowseDestinationsSection({ cities = [], title = 'Top De
         showMobilePagination
         renderSlide={(city) => <CityCard city={city} subtitleMode={subtitleMode} />}
       />
-    </section>
+    </Reveal>
   );
 }
