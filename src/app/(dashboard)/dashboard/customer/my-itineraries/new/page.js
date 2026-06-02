@@ -17,6 +17,13 @@ export default async function CreateItineraryPage() {
     redirect('/user/login');
   }
 
+  // Building an itinerary is creator-only (this page fetches /api/creator/transfers).
+  // Match the sibling creator pages (earnings/payouts/analytics) and send non-creators
+  // back to their dashboard instead of letting the creator-only fetch 403.
+  if (!session.user.is_creator) {
+    redirect('/dashboard/customer');
+  }
+
   const [citiesRes, transfers] = await Promise.all([getAllCitiesListPublic(), getAllTransfersCreator()]);
 
   const locations = citiesRes?.data || [];

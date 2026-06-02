@@ -18,6 +18,13 @@ export default async function EditItineraryDraftPage({ params }) {
     redirect('/user/login');
   }
 
+  // Editing an itinerary is creator-only (this page fetches /api/creator/transfers).
+  // Match the sibling creator pages (earnings/payouts/analytics) and send non-creators
+  // back to their dashboard instead of letting the creator-only fetch 403.
+  if (!session.user.is_creator) {
+    redirect('/dashboard/customer');
+  }
+
   const { id } = await params;
 
   const [draftResult, citiesRes, transfers] = await Promise.all([getDraftItinerary(id), getAllCitiesListPublic(), getAllTransfersCreator()]);
