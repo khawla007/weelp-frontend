@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import { authApi } from '@/lib/axiosInstance';
 
 const TYPES = ['offer', 'update', 'news'];
-const EMPTY = { type: 'offer', title: '', message: '', link: '', is_active: true, publish_at: '', expires_at: '' };
+const EMPTY = { type: 'offer', title: '', message: '', link: '', display_style: 'inline', image_url: '', coupon_code: '', is_active: true, publish_at: '', expires_at: '' };
 
 const listFetcher = async () => {
   // Admin index returns { success, data: [...] } (plain collection, not paginated).
@@ -35,6 +35,9 @@ export default function AnnouncementsAdmin() {
       title: a.title,
       message: a.message,
       link: a.link || '',
+      display_style: a.display_style || 'inline',
+      image_url: a.image_url || '',
+      coupon_code: a.coupon_code || '',
       is_active: !!a.is_active,
       publish_at: a.publish_at ? a.publish_at.slice(0, 16) : '',
       expires_at: a.expires_at ? a.expires_at.slice(0, 16) : '',
@@ -48,6 +51,9 @@ export default function AnnouncementsAdmin() {
     const payload = {
       ...form,
       link: form.link || null,
+      display_style: form.display_style,
+      image_url: form.image_url || null,
+      coupon_code: form.coupon_code || null,
       publish_at: form.publish_at || null,
       expires_at: form.expires_at || null,
     };
@@ -122,6 +128,24 @@ export default function AnnouncementsAdmin() {
         <label className="block text-sm">
           Link (optional)
           <input value={form.link} onChange={(e) => set('link', e.target.value)} placeholder="https://..." className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2" />
+        </label>
+
+        <label className="block text-sm">
+          Display style
+          <select value={form.display_style} onChange={(e) => set('display_style', e.target.value)} className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2">
+            <option value="inline">Inline (bell only)</option>
+            <option value="popup">Popup (auto-shows to all visitors)</option>
+          </select>
+        </label>
+
+        <label className="block text-sm">
+          Image URL (optional)
+          <input value={form.image_url} onChange={(e) => set('image_url', e.target.value)} placeholder="https://… or /api/media/123" className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2" />
+        </label>
+
+        <label className="block text-sm">
+          Coupon code (optional)
+          <input value={form.coupon_code} onChange={(e) => set('coupon_code', e.target.value)} placeholder="e.g. SAVE10" className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2" />
         </label>
 
         <div className="grid grid-cols-2 gap-4">
