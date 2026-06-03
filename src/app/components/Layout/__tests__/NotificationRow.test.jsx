@@ -1,4 +1,11 @@
-jest.mock('../../Navigation/NavigationLink', () => ({ __esModule: true, default: ({ href, children, onClick }) => <a href={href} onClick={onClick}>{children}</a> }));
+jest.mock('../../Navigation/NavigationLink', () => ({
+  __esModule: true,
+  default: ({ href, children, onClick }) => (
+    <a href={href} onClick={onClick}>
+      {children}
+    </a>
+  ),
+}));
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import NotificationRow from '../NotificationRow';

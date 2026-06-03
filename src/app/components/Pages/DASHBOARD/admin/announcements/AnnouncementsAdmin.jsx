@@ -140,7 +140,12 @@ export default function AnnouncementsAdmin() {
 
         <label className="block text-sm">
           Image URL (optional)
-          <input value={form.image_url} onChange={(e) => set('image_url', e.target.value)} placeholder="https://… or /api/media/123" className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2" />
+          <input
+            value={form.image_url}
+            onChange={(e) => set('image_url', e.target.value)}
+            placeholder="https://… or /api/media/123"
+            className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2"
+          />
         </label>
 
         <label className="block text-sm">

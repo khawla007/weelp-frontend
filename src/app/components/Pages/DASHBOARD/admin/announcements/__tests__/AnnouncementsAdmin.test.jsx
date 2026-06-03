@@ -3,7 +3,9 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 const postMock = jest.fn().mockResolvedValue({ data: { success: true } });
 // MANDATORY relative path — the @/ alias does NOT resolve inside jest.mock (next/jest).
 // 7 ../ from .../admin/announcements/__tests__/ to src/lib/axiosInstance.
-jest.mock('../../../../../../../lib/axiosInstance', () => ({ authApi: { get: jest.fn().mockResolvedValue({ data: { data: [] } }), post: (...a) => postMock(...a), put: jest.fn(), delete: jest.fn() } }));
+jest.mock('../../../../../../../lib/axiosInstance', () => ({
+  authApi: { get: jest.fn().mockResolvedValue({ data: { data: [] } }), post: (...a) => postMock(...a), put: jest.fn(), delete: jest.fn() },
+}));
 jest.mock('swr', () => ({ __esModule: true, default: () => ({ data: [], mutate: jest.fn(), isLoading: false }) }));
 
 import AnnouncementsAdmin from '../AnnouncementsAdmin';
