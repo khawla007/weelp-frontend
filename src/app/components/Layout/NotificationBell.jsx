@@ -5,12 +5,14 @@ import { Bell, CheckCheck, Tag, Megaphone, Newspaper } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
 import { Badge } from '@/components/ui/badge';
-import { fetchUnreadCount, fetchNotifications, markAsRead, markAllAsRead, markSeen } from '@/lib/services/notifications';
+import { fetchUnreadCount, fetchNotifications, markAsRead, markAllAsRead, markSeen, markUnread } from '@/lib/services/notifications';
 import { fetchAnnouncements } from '@/lib/services/announcements';
 import { getDismissedIds, dismissIds } from '@/lib/announcements/readState';
 import { mergeFeed } from '@/lib/announcements/merge';
 import { useIsClient } from '@/hooks/useIsClient';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
+import NotificationRow from '@/app/components/Layout/NotificationRow';
+import NotificationDetailModal from '@/app/components/Layout/NotificationDetailModal';
 import { timeAgo } from '@/lib/utils';
 
 function isInternalLink(href) {
@@ -29,6 +31,7 @@ export default function NotificationBell() {
   const [notifications, setNotifications] = useState([]);
   const [loadingNotifs, setLoadingNotifs] = useState(false);
   const [dismissed, setDismissed] = useState([]);
+  const [selectedNotif, setSelectedNotif] = useState(null);
   const dropdownRef = useRef(null);
   const announcementsRef = useRef([]);
   const isClient = useIsClient();
@@ -98,6 +101,22 @@ export default function NotificationBell() {
   const handleMarkAsRead = async (id) => {
     await markAsRead(id);
     setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read_at: new Date().toISOString() } : n)));
+    mutateCount();
+  };
+
+  const openNotif = (notif) => {
+    setSelectedNotif(notif);
+    if (!notif.read_at) handleMarkAsRead(notif.id);
+  };
+
+  const toggleNotifRead = async (notif) => {
+    if (notif.read_at) {
+      await markUnread(notif.id);
+      setNotifications((prev) => prev.map((n) => (n.id === notif.id ? { ...n, read_at: null } : n)));
+    } else {
+      await markAsRead(notif.id);
+      setNotifications((prev) => prev.map((n) => (n.id === notif.id ? { ...n, read_at: new Date().toISOString() } : n)));
+    }
     mutateCount();
   };
 
@@ -178,22 +197,7 @@ export default function NotificationBell() {
                   );
                 }
 
-                return (
-                  <button
-                    key={`p-${item.id}`}
-                    onClick={() => !item.read_at && handleMarkAsRead(item.id)}
-                    className={`w-full text-left px-4 py-3 border-b border-[#eaeaea] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#588f7a]/40 transition-colors ${!item.read_at ? 'bg-[#588f7a]/5' : ''}`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className={`mt-1 w-2 h-2 rounded-full flex-shrink-0 ${!item.read_at ? 'bg-[#588f7a]' : 'bg-transparent'}`} />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-[#18181b] truncate">{item.title}</p>
-                        <p className="text-xs text-[#71717a] line-clamp-2 mt-0.5">{item.message}</p>
-                        <p className="text-xs text-[#71717a] mt-1">{timeAgo(item.created_at)}</p>
-                      </div>
-                    </div>
-                  </button>
-                );
+                return <NotificationRow key={`p-${item.id}`} notif={item} onOpen={openNotif} onToggleRead={toggleNotifRead} />;
               })
             )}
           </div>
@@ -202,7 +206,7 @@ export default function NotificationBell() {
           {userId && (
             <div className="px-4 py-2 border-t border-[#eaeaea] text-center">
               <NavigationLink
-                href="/dashboard/customer/settings/notifications"
+                href="/dashboard/customer/notifications"
                 className="text-xs text-[#588f7a] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
                 onClick={() => setOpen(false)}
               >
@@ -212,6 +216,8 @@ export default function NotificationBell() {
           )}
         </div>
       )}
+
+      <NotificationDetailModal notif={selectedNotif} onClose={() => setSelectedNotif(null)} />
     </div>
   );
 }
