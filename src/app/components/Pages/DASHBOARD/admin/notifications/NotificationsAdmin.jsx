@@ -22,6 +22,7 @@ export default function NotificationsAdmin() {
   const [userQuery, setUserQuery] = useState('');
   const [userResults, setUserResults] = useState([]);
   const [targetUser, setTargetUser] = useState(null);
+  const [displayStyle, setDisplayStyle] = useState('inline');
   const [mediaOpen, setMediaOpen] = useState(false);
   const [error, setError] = useState('');
   const [okMsg, setOkMsg] = useState('');
@@ -47,6 +48,7 @@ export default function NotificationsAdmin() {
       image_media_ids: selectedMedia.map((m) => m.id),
       target_type: targetType,
       ...(targetType === 'user' ? { target_user_id: targetUser?.id } : { target_role: targetRole }),
+      display_style: displayStyle,
     };
     setSaving(true);
     try {
@@ -57,6 +59,7 @@ export default function NotificationsAdmin() {
       setActionUrl('');
       setTargetUser(null);
       setUserQuery('');
+      setDisplayStyle('inline');
       resetMedia();
     } catch (err) {
       const data = err?.response?.data;
@@ -100,6 +103,16 @@ export default function NotificationsAdmin() {
             className="w-full rounded-md border border-[#e4e4e7] px-3 py-2 text-sm"
           />
         </div>
+
+        <fieldset className="space-y-1">
+          <legend className="text-sm font-medium mb-1">Display style</legend>
+          <label className="flex items-center gap-2 text-sm">
+            <input type="radio" name="display_style" checked={displayStyle === 'inline'} onChange={() => setDisplayStyle('inline')} /> Inline (visit button)
+          </label>
+          <label className="flex items-center gap-2 text-sm">
+            <input type="radio" name="display_style" checked={displayStyle === 'popup'} onChange={() => setDisplayStyle('popup')} /> Popup (modal with image)
+          </label>
+        </fieldset>
 
         <div>
           <span className="block text-sm font-medium mb-1">Images</span>
