@@ -53,3 +53,12 @@ export async function markUnread(id) {
     return { success: false };
   }
 }
+
+export async function fetchPopupNotifications() {
+  try {
+    const res = await authApi.get('/api/notifications/popup');
+    return res.data?.data || [];
+  } catch {
+    return [];
+  }
+}
