@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { useSWRConfig } from 'swr';
 import { fetchPopupNotifications, markAsRead } from '@/lib/services/notifications';
 import NotificationDetailModal from '@/app/components/Layout/NotificationDetailModal';
 
 export default function NotificationPopupHost() {
   const { data: session } = useSession();
+  const { mutate } = useSWRConfig();
   const userId = session?.user?.id;
   const [popup, setPopup] = useState(null);
 
@@ -24,7 +26,10 @@ export default function NotificationPopupHost() {
   }, [userId]);
 
   const close = () => {
-    if (popup) markAsRead(popup.id); // dismiss = read → won't auto-show next load
+    if (popup) {
+      markAsRead(popup.id); // dismiss = read → won't auto-show next load
+      mutate(['notifications-unread', userId]); // refresh the bell badge so it decrements now
+    }
     setPopup(null);
   };
 
