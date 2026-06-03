@@ -11,3 +11,18 @@ export function notificationLink(type) {
   if (type === 'new_booking') return '/dashboard/customer/earnings';
   return null;
 }
+
+const SAFE_URL = /^(\/(?!\/)|https?:\/\/)/i;
+
+// Resolves the CTA for a notification: an explicit, scheme-safe action_url wins
+// (external when it isn't an internal path); otherwise fall back to the derived
+// per-type route. Returns { href, external } or null. Pure.
+export function resolveNotificationCta(notif) {
+  if (!notif) return null;
+  const explicit = notif.action_url;
+  if (typeof explicit === 'string' && SAFE_URL.test(explicit)) {
+    return { href: explicit, external: !explicit.startsWith('/') };
+  }
+  const derived = notificationLink(notif.type);
+  return derived ? { href: derived, external: false } : null;
+}
