@@ -87,16 +87,50 @@ const updateFlightOverlay = ({ pathElement, planeElement, staticPlaneElement, ph
   staticPlaneElement.style.opacity = String(planeVisibility);
 };
 
-const AnimatedGlobe = ({ activationMediaQuery, stageClassName = '', shellClassName = '', showSparkles = true, showLeftSparkles = true, showVignette = true }) => {
+const AnimatedGlobe = ({ activationMediaQuery, activateOnVisible = false, stageClassName = '', shellClassName = '', showSparkles = true, showLeftSparkles = true, showVignette = true }) => {
+  const rootRef = useRef(null);
   const canvasRef = useRef(null);
   const flightPathRef = useRef(null);
   const flightPlaneRef = useRef(null);
   const staticFlightPlaneRef = useRef(null);
-  const [isActive, setIsActive] = useState(!activationMediaQuery);
+  // Both gates start the globe inactive so the heavy modules (cobe + tsparticles)
+  // wait for their trigger; with neither, it activates on mount as before.
+  const [isActive, setIsActive] = useState(!activationMediaQuery && !activateOnVisible);
+
+  // Viewport gate: only load the heavy globe once it scrolls near the fold.
+  // Falls back to immediate activation where IntersectionObserver is absent
+  // (no-JS / jsdom) so server markup and tests stay unchanged.
+  useEffect(() => {
+    if (!activateOnVisible) return undefined;
+
+    const el = rootRef.current;
+    if (!el) return undefined;
+
+    if (typeof IntersectionObserver === 'undefined') {
+      setIsActive(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
+            setIsActive(true);
+            obs.disconnect();
+          }
+        });
+      },
+      { rootMargin: '0px 0px 200px 0px', threshold: 0 },
+    );
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [activateOnVisible]);
 
   useEffect(() => {
     if (!activationMediaQuery) {
-      setIsActive(true);
+      // No media gate: activation is owned by the initial state (default-on)
+      // or by the viewport effect when activateOnVisible is set.
       return undefined;
     }
 
@@ -195,7 +229,7 @@ const AnimatedGlobe = ({ activationMediaQuery, stageClassName = '', shellClassNa
   }, [isActive]);
 
   return (
-    <span data-animated-globe data-animated-globe-activation-query={activationMediaQuery} data-personalised-globe-stage aria-hidden="true" className={cn(DEFAULT_STAGE_CLASS, stageClassName)}>
+    <span ref={rootRef} data-animated-globe data-animated-globe-activation-query={activationMediaQuery} data-personalised-globe-stage aria-hidden="true" className={cn(DEFAULT_STAGE_CLASS, stageClassName)}>
       {showSparkles && isActive ? <GlobeSparkles className="absolute inset-0 z-[1]" /> : null}
       {showLeftSparkles ? <span data-personalised-left-sparkles className="personalised-left-sparkles" /> : null}
       <span data-personalised-cobe-shell className={cn(DEFAULT_SHELL_CLASS, shellClassName)}>
