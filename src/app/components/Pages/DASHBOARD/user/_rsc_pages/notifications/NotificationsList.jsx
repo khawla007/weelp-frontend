@@ -9,7 +9,7 @@ export default function NotificationsList() {
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedNotif, setSelectedNotif] = useState(null);
 
   const load = useCallback(async (p) => {
@@ -18,7 +18,7 @@ export default function NotificationsList() {
       const res = await fetchNotifications(p);
       const payload = res?.data;
       const rows = payload?.data || [];
-      setItems((prev) => (p === 1 ? rows : [...prev, ...rows]));
+      setItems((prev) => [...prev, ...rows]);
       setLastPage(payload?.last_page || 1);
     } finally {
       setLoading(false);
@@ -28,11 +28,15 @@ export default function NotificationsList() {
   useEffect(() => {
     let active = true;
     (async () => {
-      const res = await fetchNotifications(1);
-      if (!active) return;
-      const payload = res?.data;
-      setItems(payload?.data || []);
-      setLastPage(payload?.last_page || 1);
+      try {
+        const res = await fetchNotifications(1);
+        if (!active) return;
+        const payload = res?.data;
+        setItems(payload?.data || []);
+        setLastPage(payload?.last_page || 1);
+      } finally {
+        if (active) setLoading(false);
+      }
     })();
     return () => {
       active = false;
