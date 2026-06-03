@@ -6,14 +6,11 @@ describe('notificationLink', () => {
     expect(notificationLink('application_rejected', {})).toBe('/dashboard/customer/application-status');
   });
 
-  test('itinerary_* with itinerary_id → my-itineraries/{id}', () => {
-    expect(notificationLink('itinerary_approved', { itinerary_id: 42 })).toBe('/dashboard/customer/my-itineraries/42');
-    expect(notificationLink('itinerary_edit_rejected', { itinerary_id: 7 })).toBe('/dashboard/customer/my-itineraries/7');
-  });
-
-  test('itinerary_* without itinerary_id → null', () => {
-    expect(notificationLink('itinerary_approved', null)).toBeNull();
-    expect(notificationLink('itinerary_approved', {})).toBeNull();
+  test('itinerary_* → my-itineraries list (no per-id detail route exists)', () => {
+    expect(notificationLink('itinerary_approved', { itinerary_id: 42 })).toBe('/dashboard/customer/my-itineraries');
+    expect(notificationLink('itinerary_edit_rejected', { itinerary_id: 7 })).toBe('/dashboard/customer/my-itineraries');
+    expect(notificationLink('itinerary_approved', null)).toBe('/dashboard/customer/my-itineraries');
+    expect(notificationLink('itinerary_removal_approved', {})).toBe('/dashboard/customer/my-itineraries');
   });
 
   test('new_booking → earnings', () => {
