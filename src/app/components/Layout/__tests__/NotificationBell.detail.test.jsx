@@ -7,11 +7,9 @@ jest.mock('swr', () => ({ __esModule: true, default: (key) => ({ data: Array.isA
 jest.mock('../../../../hooks/useIsClient', () => ({ __esModule: true, useIsClient: () => true }));
 jest.mock('../../../../lib/services/notifications', () => ({
   fetchUnreadCount: jest.fn().mockResolvedValue({ success: true, count: 1 }),
-  fetchNotifications: jest
-    .fn()
-    .mockResolvedValue({
-      data: { data: [{ id: 11, type: 'new_booking', display_style: 'popup', title: 'Booking 11', message: 'long message body here', created_at: new Date().toISOString(), read_at: null, data: {} }] },
-    }),
+  fetchNotifications: jest.fn().mockResolvedValue({
+    data: { data: [{ id: 11, type: 'new_booking', display_style: 'popup', title: 'Booking 11', message: 'long message body here', created_at: new Date().toISOString(), read_at: null, data: {} }] },
+  }),
   markAsRead: (...a) => markAsReadMock(...a),
   markAllAsRead: jest.fn().mockResolvedValue({ success: true }),
   markUnread: jest.fn().mockResolvedValue({ success: true }),
