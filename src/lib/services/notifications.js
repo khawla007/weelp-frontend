@@ -44,3 +44,12 @@ export async function markSeen() {
     return { success: false };
   }
 }
+
+export async function markUnread(id) {
+  try {
+    const res = await authApi.put(`/api/notifications/${id}/unread`);
+    return res.data;
+  } catch {
+    return { success: false };
+  }
+}
