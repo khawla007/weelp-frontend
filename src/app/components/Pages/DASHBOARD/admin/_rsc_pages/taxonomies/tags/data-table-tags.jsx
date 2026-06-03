@@ -145,7 +145,15 @@ export function DataTableTags({ tags = [], isloading = false, mutate, selectedIt
   });
 
   if (isloading) {
-    return <TableSkeleton columns={columns.length} headers={['', 'Name', 'Slug', 'Status', 'Description', 'Actions']} rows={10} title="All tags" description="A list of all tags for organizing activities" />;
+    return (
+      <TableSkeleton
+        columns={columns.length}
+        headers={['', 'Name', 'Slug', 'Status', 'Description', 'Actions']}
+        rows={10}
+        title="All tags"
+        description="A list of all tags for organizing activities"
+      />
+    );
   }
 
   return (

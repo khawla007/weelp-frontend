@@ -154,7 +154,15 @@ export function DataTableAttributes({ attributes = [], isloading = false, mutate
   });
 
   if (isloading) {
-    return <TableSkeleton columns={columns.length} headers={['', 'Name', 'Status', 'Slug', 'Description', 'Values', 'Actions']} rows={10} title="All Attributes" description="A list of all attributes for organizing activities" />;
+    return (
+      <TableSkeleton
+        columns={columns.length}
+        headers={['', 'Name', 'Status', 'Slug', 'Description', 'Values', 'Actions']}
+        rows={10}
+        title="All Attributes"
+        description="A list of all attributes for organizing activities"
+      />
+    );
   }
 
   return (

@@ -150,7 +150,15 @@ export function DataTableCategory({ categories = [], isloading = false, mutate, 
   });
 
   if (isloading) {
-    return <TableSkeleton columns={columns.length} headers={['', 'Name', 'Slug', 'Status', 'Description', 'Actions']} rows={10} title="All Categories" description="A list of all categories for organizing activities" />;
+    return (
+      <TableSkeleton
+        columns={columns.length}
+        headers={['', 'Name', 'Slug', 'Status', 'Description', 'Actions']}
+        rows={10}
+        title="All Categories"
+        description="A list of all categories for organizing activities"
+      />
+    );
   }
 
   return (
