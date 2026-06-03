@@ -5,7 +5,7 @@ import { Bell, CheckCheck, Tag, Megaphone, Newspaper } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
 import { Badge } from '@/components/ui/badge';
-import { fetchUnreadCount, fetchNotifications, markAsRead, markAllAsRead } from '@/lib/services/notifications';
+import { fetchUnreadCount, fetchNotifications, markAsRead, markAllAsRead, markSeen } from '@/lib/services/notifications';
 import { fetchAnnouncements } from '@/lib/services/announcements';
 import { getDismissedIds, dismissIds } from '@/lib/announcements/readState';
 import { mergeFeed } from '@/lib/announcements/merge';
@@ -58,7 +58,8 @@ export default function NotificationBell() {
   const announcementUnread = announcements.filter((a) => !dismissedSet.has(a.id)).length;
   const unreadCount = personalUnread + announcementUnread;
 
-  // Load personal notifications when the dropdown opens (logged in only).
+  // Load personal notifications when the dropdown opens (logged in only),
+  // and mark them "seen" so the badge zeroes without touching per-item read_at.
   useEffect(() => {
     if (!open || !userId) return;
     const load = async () => {
@@ -66,6 +67,8 @@ export default function NotificationBell() {
       const res = await fetchNotifications(1);
       setNotifications(res?.data?.data || []);
       setLoadingNotifs(false);
+      await markSeen();
+      mutateCount();
     };
     load();
   }, [open, userId]);
