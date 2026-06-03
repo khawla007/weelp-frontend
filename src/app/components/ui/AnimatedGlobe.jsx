@@ -229,7 +229,14 @@ const AnimatedGlobe = ({ activationMediaQuery, activateOnVisible = false, stageC
   }, [isActive]);
 
   return (
-    <span ref={rootRef} data-animated-globe data-animated-globe-activation-query={activationMediaQuery} data-personalised-globe-stage aria-hidden="true" className={cn(DEFAULT_STAGE_CLASS, stageClassName)}>
+    <span
+      ref={rootRef}
+      data-animated-globe
+      data-animated-globe-activation-query={activationMediaQuery}
+      data-personalised-globe-stage
+      aria-hidden="true"
+      className={cn(DEFAULT_STAGE_CLASS, stageClassName)}
+    >
       {showSparkles && isActive ? <GlobeSparkles className="absolute inset-0 z-[1]" /> : null}
       {showLeftSparkles ? <span data-personalised-left-sparkles className="personalised-left-sparkles" /> : null}
       <span data-personalised-cobe-shell className={cn(DEFAULT_SHELL_CLASS, shellClassName)}>
