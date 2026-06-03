@@ -62,13 +62,7 @@ export default function NotificationRow({ notif, onOpen, onToggleRead }) {
         <p className="text-xs text-[#71717a] mt-1">{timeAgo(notif.created_at)}</p>
         {cta &&
           (cta.external ? (
-            <a
-              href={cta.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={handleVisit}
-              className="mt-2 inline-block text-xs font-medium text-[#588f7a] hover:underline"
-            >
+            <a href={cta.href} target="_blank" rel="noopener noreferrer" onClick={handleVisit} className="mt-2 inline-block text-xs font-medium text-[#588f7a] hover:underline">
               Visit
             </a>
           ) : (
