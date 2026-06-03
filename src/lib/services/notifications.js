@@ -35,3 +35,12 @@ export async function markAllAsRead() {
     return { success: false };
   }
 }
+
+export async function markSeen() {
+  try {
+    const res = await authApi.put('/api/notifications/seen');
+    return res.data;
+  } catch {
+    return { success: false };
+  }
+}
