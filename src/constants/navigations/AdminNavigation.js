@@ -119,6 +119,7 @@ const adminRoutes = [
     items: [
       { title: 'Blogs', icon: FileText, url: '/dashboard/admin/blogs' },
       { title: 'Announcements', icon: Bell, url: '/dashboard/admin/announcements' },
+      { title: 'Send Notification', icon: Bell, url: '/dashboard/admin/notifications' },
       { title: 'Media', icon: BookImage, url: '/dashboard/admin/media' },
     ],
   },
