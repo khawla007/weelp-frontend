@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor, within } from '@testing-library/rea
 
 const markAsReadMock = jest.fn().mockResolvedValue({ success: true });
 
+jest.mock('next/navigation', () => ({ useRouter: () => ({ push: jest.fn() }) }));
 jest.mock('next-auth/react', () => ({ useSession: () => ({ data: { user: { id: 7 } } }) }));
 jest.mock('swr', () => ({ __esModule: true, default: (key) => ({ data: Array.isArray(key) ? { count: 1 } : [], mutate: jest.fn() }) }));
 jest.mock('../../../../hooks/useIsClient', () => ({ __esModule: true, useIsClient: () => true }));

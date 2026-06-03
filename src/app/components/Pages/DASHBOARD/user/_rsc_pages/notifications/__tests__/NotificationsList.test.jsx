@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
 const markAsReadMock = jest.fn().mockResolvedValue({ success: true });
 
+jest.mock('next/navigation', () => ({ useRouter: () => ({ push: jest.fn() }) }));
 jest.mock('../../../../../../../../lib/services/notifications', () => ({
   fetchNotifications: jest.fn().mockResolvedValue({
     data: {

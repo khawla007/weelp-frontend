@@ -1,16 +1,19 @@
 'use client';
 
 import { Mail, MailOpen } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { resolveNotificationCta } from '@/lib/notifications/link';
 import { timeAgo } from '@/lib/utils';
 
 export default function NotificationRow({ notif, onOpen, onToggleRead }) {
+  const router = useRouter();
   const isUnread = !notif.read_at;
   const isPopup = notif.display_style === 'popup';
+  // Envelope = read status: closed (Mail) while unread, open (MailOpen) once read.
   const ToggleIcon = isUnread ? Mail : MailOpen;
   const toggleLabel = isUnread ? 'Mark as read' : 'Mark as unread';
-  // Inline tier shows a Visit button in-row; popup tier carries its CTA in the modal.
+  // Inline tier shows a Visit link + the whole row navigates; popup tier opens the modal.
   const cta = isPopup ? null : resolveNotificationCta(notif);
 
   const handleToggle = (e) => {
@@ -18,15 +21,36 @@ export default function NotificationRow({ notif, onOpen, onToggleRead }) {
     onToggleRead(notif);
   };
 
+  const goToCta = () => {
+    if (!cta) return;
+    if (cta.external) window.open(cta.href, '_blank', 'noopener,noreferrer');
+    else router.push(cta.href);
+  };
+
+  // Clicking anywhere on the row marks it read (via onOpen) and, for inline
+  // notifications with a target, navigates to the same page the Visit link uses.
+  // Popup rows have no cta — onOpen opens the modal instead.
+  const handleRowClick = () => {
+    onOpen(notif);
+    goToCta();
+  };
+
+  // The Visit link marks read + navigates via its own href; stopPropagation keeps
+  // the row handler from navigating a second time.
+  const handleVisit = (e) => {
+    e.stopPropagation();
+    onOpen(notif);
+  };
+
   return (
     <div
       role="button"
       tabIndex={0}
-      onClick={() => onOpen(notif)}
+      onClick={handleRowClick}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onOpen(notif);
+          handleRowClick();
         }
       }}
       className={`flex items-start gap-3 w-full text-left px-4 py-3 border-b border-[#eaeaea] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#588f7a]/40 transition-colors cursor-pointer ${isUnread ? 'bg-[#588f7a]/5' : ''}`}
@@ -38,11 +62,17 @@ export default function NotificationRow({ notif, onOpen, onToggleRead }) {
         <p className="text-xs text-[#71717a] mt-1">{timeAgo(notif.created_at)}</p>
         {cta &&
           (cta.external ? (
-            <a href={cta.href} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs font-medium text-[#588f7a] hover:underline">
+            <a
+              href={cta.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleVisit}
+              className="mt-2 inline-block text-xs font-medium text-[#588f7a] hover:underline"
+            >
               Visit
             </a>
           ) : (
-            <NavigationLink href={cta.href} className="mt-2 inline-block text-xs font-medium text-[#588f7a] hover:underline">
+            <NavigationLink href={cta.href} onClick={handleVisit} className="mt-2 inline-block text-xs font-medium text-[#588f7a] hover:underline">
               Visit
             </NavigationLink>
           ))}
