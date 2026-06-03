@@ -17,6 +17,7 @@ export default function NotificationsAdmin() {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const [actionUrl, setActionUrl] = useState('');
+  const [couponCode, setCouponCode] = useState('');
   const [targetType, setTargetType] = useState('role');
   const [targetRole, setTargetRole] = useState('customer');
   const [userQuery, setUserQuery] = useState('');
@@ -45,6 +46,7 @@ export default function NotificationsAdmin() {
       title,
       message,
       action_url: actionUrl || null,
+      coupon_code: couponCode || null,
       image_media_ids: selectedMedia.map((m) => m.id),
       target_type: targetType,
       ...(targetType === 'user' ? { target_user_id: targetUser?.id } : { target_role: targetRole }),
@@ -57,6 +59,7 @@ export default function NotificationsAdmin() {
       setTitle('');
       setMessage('');
       setActionUrl('');
+      setCouponCode('');
       setTargetUser(null);
       setUserQuery('');
       setDisplayStyle('inline');
@@ -100,6 +103,18 @@ export default function NotificationsAdmin() {
             value={actionUrl}
             onChange={(e) => setActionUrl(e.target.value)}
             placeholder="/path or https://…"
+            className="w-full rounded-md border border-[#e4e4e7] px-3 py-2 text-sm"
+          />
+        </div>
+        <div>
+          <label htmlFor="notif-coupon" className="block text-sm font-medium mb-1">
+            Coupon code (optional)
+          </label>
+          <input
+            id="notif-coupon"
+            value={couponCode}
+            onChange={(e) => setCouponCode(e.target.value)}
+            placeholder="e.g. SUMMER50"
             className="w-full rounded-md border border-[#e4e4e7] px-3 py-2 text-sm"
           />
         </div>

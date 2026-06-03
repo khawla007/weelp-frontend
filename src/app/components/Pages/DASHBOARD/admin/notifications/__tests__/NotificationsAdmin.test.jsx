@@ -45,4 +45,14 @@ describe('NotificationsAdmin', () => {
     await waitFor(() => expect(createMock).toHaveBeenCalledTimes(1));
     expect(createMock).toHaveBeenCalledWith(expect.objectContaining({ display_style: 'popup' }));
   });
+
+  test('sends coupon_code when entered', async () => {
+    render(<NotificationsAdmin />);
+    fireEvent.change(screen.getByLabelText(/title/i), { target: { value: 'Coupon' } });
+    fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Save' } });
+    fireEvent.change(screen.getByLabelText(/coupon code/i), { target: { value: 'SUMMER50' } });
+    fireEvent.click(screen.getByRole('button', { name: /send/i }));
+    await waitFor(() => expect(createMock).toHaveBeenCalledTimes(1));
+    expect(createMock).toHaveBeenCalledWith(expect.objectContaining({ coupon_code: 'SUMMER50' }));
+  });
 });
