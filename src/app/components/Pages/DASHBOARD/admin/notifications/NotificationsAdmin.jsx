@@ -36,6 +36,10 @@ export default function NotificationsAdmin() {
     e.preventDefault();
     setError('');
     setOkMsg('');
+    if (targetType === 'user' && !targetUser) {
+      setError('Pick a user to send to.');
+      return;
+    }
     const payload = {
       title,
       message,
@@ -163,8 +167,10 @@ export default function NotificationsAdmin() {
           )}
         </fieldset>
 
-        {error && <p className="text-sm text-red-500">{error}</p>}
-        {okMsg && <p className="text-sm text-[#588f7a]">{okMsg}</p>}
+        <div role="status" aria-live="polite">
+          {error && <p className="text-sm text-red-500">{error}</p>}
+          {okMsg && <p className="text-sm text-[#588f7a]">{okMsg}</p>}
+        </div>
         <button type="submit" disabled={saving} className="rounded-md bg-[#588f7a] px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] disabled:opacity-50">
           {saving ? 'Sending…' : 'Send notification'}
         </button>
