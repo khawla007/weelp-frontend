@@ -1,4 +1,4 @@
-jest.mock('../../Navigation/NavigationLink', () => ({ __esModule: true, default: ({ href, children }) => <a href={href}>{children}</a> }));
+jest.mock('../../Navigation/NavigationLink', () => ({ __esModule: true, default: ({ href, children, onClick }) => <a href={href} onClick={onClick}>{children}</a> }));
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import NotificationRow from '../NotificationRow';
@@ -40,5 +40,13 @@ describe('NotificationRow', () => {
     const popup = { ...baseNotif, display_style: 'popup', type: 'custom', action_url: '/x', data: {} };
     render(<NotificationRow notif={popup} onOpen={jest.fn()} onToggleRead={jest.fn()} />);
     expect(screen.queryByRole('link', { name: /visit/i })).not.toBeInTheDocument();
+  });
+
+  test('clicking the inline Visit button marks the row read (calls onOpen)', () => {
+    const onOpen = jest.fn();
+    const inline = { ...baseNotif, display_style: 'inline', type: 'new_booking', data: {} };
+    render(<NotificationRow notif={inline} onOpen={onOpen} onToggleRead={jest.fn()} />);
+    fireEvent.click(screen.getByRole('link', { name: /visit/i }));
+    expect(onOpen).toHaveBeenCalledWith(inline);
   });
 });
