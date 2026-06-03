@@ -5,7 +5,6 @@ import { SessionProvider } from 'next-auth/react';
 import { useIsClient } from '@/hooks/useIsClient';
 import { Toaster } from '@/components/ui/toaster';
 import AuthModalDialog from '@/app/components/Modals/AuthModalDialog';
-import NotificationPopupHost from '@/app/components/Layout/NotificationPopupHost';
 import { SWRConfig } from 'swr';
 import { fetcher } from '@/lib/fetchers';
 
@@ -22,7 +21,6 @@ export default function AppProviders({ children, session }) {
         {children}
         <Toaster />
         <AuthModalDialog />
-        <NotificationPopupHost />
       </SWRConfig>
     </SessionProvider>
   );
