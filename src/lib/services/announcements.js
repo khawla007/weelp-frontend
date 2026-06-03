@@ -12,3 +12,12 @@ export async function fetchAnnouncements() {
     return [];
   }
 }
+
+export async function fetchPopupAnnouncements() {
+  try {
+    const res = await publicApi.get('/api/announcements/popup');
+    return res.data?.data || [];
+  } catch {
+    return [];
+  }
+}
