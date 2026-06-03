@@ -1,6 +1,6 @@
 'use client';
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { notificationLink } from '@/lib/notifications/link';
 import { timeAgo } from '@/lib/utils';
@@ -22,7 +22,7 @@ export default function NotificationDetailModal({ notif, onClose }) {
             <DialogHeader>
               <DialogTitle className="text-[#18181b]">{notif.title}</DialogTitle>
             </DialogHeader>
-            <p className="text-sm text-[#3f3f46] whitespace-pre-wrap">{notif.message}</p>
+            <DialogDescription className="text-sm text-[#3f3f46] whitespace-pre-wrap">{notif.message}</DialogDescription>
             <p className="text-xs text-[#71717a] mt-2">{timeAgo(notif.created_at)}</p>
             {href && (
               <DialogFooter>
