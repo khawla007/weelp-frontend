@@ -4,7 +4,11 @@ const markAsReadMock = jest.fn().mockResolvedValue({ success: true });
 
 jest.mock('../../../../../../../../lib/services/notifications', () => ({
   fetchNotifications: jest.fn().mockResolvedValue({
-    data: { data: [{ id: 21, type: 'new_booking', title: 'List Item 21', message: 'full body text', created_at: new Date().toISOString(), read_at: null, data: {} }], current_page: 1, last_page: 1 },
+    data: {
+      data: [{ id: 21, type: 'new_booking', display_style: 'popup', title: 'List Item 21', message: 'full body text', created_at: new Date().toISOString(), read_at: null, data: {} }],
+      current_page: 1,
+      last_page: 1,
+    },
   }),
   markAsRead: (...a) => markAsReadMock(...a),
   markUnread: jest.fn().mockResolvedValue({ success: true }),

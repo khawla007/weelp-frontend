@@ -105,7 +105,7 @@ export default function NotificationBell() {
   };
 
   const openNotif = (notif) => {
-    setSelectedNotif(notif);
+    if (notif.display_style === 'popup') setSelectedNotif(notif);
     if (!notif.read_at) handleMarkAsRead(notif.id);
   };
 

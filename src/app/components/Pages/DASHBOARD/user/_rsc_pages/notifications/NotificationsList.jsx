@@ -44,7 +44,7 @@ export default function NotificationsList() {
   }, []);
 
   const openNotif = (notif) => {
-    setSelectedNotif(notif);
+    if (notif.display_style === 'popup') setSelectedNotif(notif);
     if (!notif.read_at) {
       markAsRead(notif.id);
       setItems((prev) => prev.map((n) => (n.id === notif.id ? { ...n, read_at: new Date().toISOString() } : n)));
