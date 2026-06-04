@@ -175,13 +175,7 @@ export default function NotificationBell() {
               feed.slice(0, 8).map((item) => {
                 if (item.source === 'announcement') {
                   return (
-                    <AnnouncementRow
-                      key={`a-${item.id}`}
-                      announcement={item}
-                      isRead={readAnnouncementsSet.has(item.id)}
-                      onOpenDetail={openAnnouncementDetail}
-                      onToggleRead={toggleAnnouncementRead}
-                    />
+                    <AnnouncementRow key={`a-${item.id}`} announcement={item} isRead={readAnnouncementsSet.has(item.id)} onOpenDetail={openAnnouncementDetail} onToggleRead={toggleAnnouncementRead} />
                   );
                 }
 

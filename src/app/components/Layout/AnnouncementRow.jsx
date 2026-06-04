@@ -70,8 +70,8 @@ export default function AnnouncementRow({ announcement, isRead, onOpenDetail, on
         <p className="text-xs text-[#71717a] line-clamp-2 mt-0.5">{announcement.message}</p>
         <p className="text-xs text-[#71717a] mt-1">{timeAgo(announcement.created_at)}</p>
 
-        {mode === 'visit' && (
-          isInternalLink(announcement.link) ? (
+        {mode === 'visit' &&
+          (isInternalLink(announcement.link) ? (
             <NavigationLink href={announcement.link} onClick={handleVisitClick} className="mt-2 inline-block text-xs font-medium text-[#588f7a] hover:underline">
               Visit
             </NavigationLink>
@@ -79,8 +79,7 @@ export default function AnnouncementRow({ announcement, isRead, onOpenDetail, on
             <a href={announcement.link} target="_blank" rel="noopener noreferrer" onClick={handleVisitClick} className="mt-2 inline-block text-xs font-medium text-[#588f7a] hover:underline">
               Visit
             </a>
-          )
-        )}
+          ))}
 
         {mode === 'detail' && (
           <button type="button" onClick={handleDetailClick} className="mt-2 inline-flex items-center text-xs font-medium text-[#588f7a] hover:underline">

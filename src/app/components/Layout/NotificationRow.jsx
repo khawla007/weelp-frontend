@@ -61,11 +61,7 @@ export default function NotificationRow({ notif, onOpen, onToggleRead }) {
         <p className="text-xs text-[#71717a] line-clamp-2 mt-0.5">{notif.message}</p>
         <p className="text-xs text-[#71717a] mt-1">{timeAgo(notif.created_at)}</p>
         {isPopup && (
-          <button
-            type="button"
-            onClick={handleVisit}
-            className="mt-2 inline-flex items-center text-xs font-medium text-[#588f7a] hover:underline"
-          >
+          <button type="button" onClick={handleVisit} className="mt-2 inline-flex items-center text-xs font-medium text-[#588f7a] hover:underline">
             View detail
           </button>
         )}
