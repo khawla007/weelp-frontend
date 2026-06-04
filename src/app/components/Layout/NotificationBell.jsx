@@ -1,30 +1,20 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Bell, CheckCheck, Tag, Megaphone, Newspaper } from 'lucide-react';
+import { Bell, CheckCheck } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
 import { Badge } from '@/components/ui/badge';
 import { fetchUnreadCount, fetchNotifications, markAsRead, markAllAsRead, markSeen, markUnread } from '@/lib/services/notifications';
 import { fetchAnnouncements } from '@/lib/services/announcements';
-import { getDismissedIds, dismissIds } from '@/lib/announcements/readState';
+import { getDismissedIds, dismissIds, getReadAnnouncementIds, markAnnouncementRead, markAnnouncementUnread } from '@/lib/announcements/readState';
 import { mergeFeed } from '@/lib/announcements/merge';
-import { opensModal, announcementToModalNotif } from '@/lib/announcements/modalAdapter';
+import { announcementToModalNotif } from '@/lib/announcements/modalAdapter';
 import { useIsClient } from '@/hooks/useIsClient';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import NotificationRow from '@/app/components/Layout/NotificationRow';
+import AnnouncementRow from '@/app/components/Layout/AnnouncementRow';
 import NotificationDetailModal from '@/app/components/Layout/NotificationDetailModal';
-import { timeAgo } from '@/lib/utils';
-
-function isInternalLink(href) {
-  return typeof href === 'string' && href.startsWith('/');
-}
-
-const TYPE_ICON = {
-  offer: Tag,
-  update: Megaphone,
-  news: Newspaper,
-};
 
 export default function NotificationBell() {
   const { data: session } = useSession();
@@ -32,6 +22,7 @@ export default function NotificationBell() {
   const [notifications, setNotifications] = useState([]);
   const [loadingNotifs, setLoadingNotifs] = useState(false);
   const [dismissed, setDismissed] = useState([]);
+  const [readAnnouncements, setReadAnnouncements] = useState([]);
   const [selectedNotif, setSelectedNotif] = useState(null);
   const dropdownRef = useRef(null);
   const announcementsRef = useRef([]);
@@ -53,10 +44,27 @@ export default function NotificationBell() {
   const { data: countData, mutate: mutateCount } = useSWR(userId ? ['notifications-unread', userId] : null, () => fetchUnreadCount(), { refreshInterval: 30000 });
   const personalUnread = countData?.count || 0;
 
-  // Hydrate dismissed ids from localStorage on mount (client-only).
+  // Hydrate dismissed + read ids from localStorage on mount (client-only).
   useEffect(() => {
     setDismissed(getDismissedIds()); // eslint-disable-line react-hooks/set-state-in-effect -- syncing client-only localStorage into state on mount
+    setReadAnnouncements(getReadAnnouncementIds());
   }, []);
+
+  const readAnnouncementsSet = new Set(readAnnouncements);
+
+  const openAnnouncementDetail = (a) => {
+    setSelectedNotif(announcementToModalNotif(a));
+  };
+
+  const toggleAnnouncementRead = (a, nextRead) => {
+    const liveIds = announcementsRef.current.map((x) => x.id);
+    if (nextRead) {
+      markAnnouncementRead(a.id, liveIds);
+    } else {
+      markAnnouncementUnread(a.id);
+    }
+    setReadAnnouncements(getReadAnnouncementIds());
+  };
 
   const dismissedSet = new Set(dismissed);
   const announcementUnread = announcements.filter((a) => !dismissedSet.has(a.id)).length;
@@ -166,55 +174,14 @@ export default function NotificationBell() {
             ) : (
               feed.slice(0, 8).map((item) => {
                 if (item.source === 'announcement') {
-                  const Icon = TYPE_ICON[item.type] || Megaphone;
-                  const body = (
-                    <div className="flex items-start gap-3">
-                      <Icon className="mt-0.5 size-4 flex-shrink-0 text-[#588f7a]" strokeWidth={1.5} />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-[#18181b] truncate">{item.title}</p>
-                        <p className="text-xs text-[#71717a] line-clamp-2 mt-0.5">{item.message}</p>
-                        <p className="text-xs text-[#71717a] mt-1">{timeAgo(item.created_at)}</p>
-                      </div>
-                    </div>
-                  );
-                  const rowClass = 'block px-4 py-3 border-b border-[#eaeaea] hover:bg-[#f4f4f5] transition-colors';
-                  if (opensModal(item)) {
-                    const openModal = () => setSelectedNotif(announcementToModalNotif(item));
-                    return (
-                      <div
-                        key={`a-${item.id}`}
-                        role="button"
-                        tabIndex={0}
-                        onClick={openModal}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            openModal();
-                          }
-                        }}
-                        className={`${rowClass} cursor-pointer w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#588f7a]/40`}
-                      >
-                        {body}
-                      </div>
-                    );
-                  }
-                  if (!item.link) {
-                    return (
-                      <div key={`a-${item.id}`} className="px-4 py-3 border-b border-[#eaeaea]">
-                        {body}
-                      </div>
-                    );
-                  }
-                  // Internal deep-links go through NavigationLink (loading states,
-                  // per CLAUDE.md); external/absolute links use a plain anchor.
-                  return isInternalLink(item.link) ? (
-                    <NavigationLink key={`a-${item.id}`} href={item.link} className={rowClass} onClick={() => setOpen(false)}>
-                      {body}
-                    </NavigationLink>
-                  ) : (
-                    <a key={`a-${item.id}`} href={item.link} target="_blank" rel="noopener noreferrer" className={rowClass}>
-                      {body}
-                    </a>
+                  return (
+                    <AnnouncementRow
+                      key={`a-${item.id}`}
+                      announcement={item}
+                      isRead={readAnnouncementsSet.has(item.id)}
+                      onOpenDetail={openAnnouncementDetail}
+                      onToggleRead={toggleAnnouncementRead}
+                    />
                   );
                 }
 

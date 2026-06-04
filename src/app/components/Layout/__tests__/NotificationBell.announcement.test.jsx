@@ -42,25 +42,40 @@ jest.mock('../../../../lib/services/notifications', () => ({
   markSeen: jest.fn().mockResolvedValue({ success: true }),
 }));
 jest.mock('../../../../lib/services/announcements', () => ({ fetchAnnouncements: jest.fn().mockResolvedValue([]) }));
-jest.mock('../../../../lib/announcements/readState', () => ({ getDismissedIds: () => [], dismissIds: jest.fn() }));
+jest.mock('../../../../lib/announcements/readState', () => ({
+  getDismissedIds: () => [],
+  dismissIds: jest.fn(),
+  getReadAnnouncementIds: () => [],
+  markAnnouncementRead: jest.fn(),
+  markAnnouncementUnread: jest.fn(),
+}));
 
 import NotificationBell from '../NotificationBell';
 
-describe('NotificationBell — announcement modal', () => {
-  test('clicking a popup announcement opens the modal with its coupon', async () => {
+describe('NotificationBell — announcement rows', () => {
+  test('clicking "View detail" on a popup announcement opens the modal with its coupon', async () => {
     render(<NotificationBell />);
     fireEvent.click(screen.getByRole('button', { name: /notifications/i }));
-    const row = await screen.findByText('Site-wide Coupon');
-    fireEvent.click(row);
+    await screen.findByText('Site-wide Coupon');
+    const buttons = screen.getAllByRole('button', { name: /view detail/i });
+    fireEvent.click(buttons[0]);
     const dialog = await screen.findByRole('dialog');
     await waitFor(() => expect(within(dialog).getByText(/Copy code: WELCOME20/)).toBeInTheDocument());
   });
 
-  test('an inline announcement with a link does not open the modal', async () => {
+  test('an inline announcement with a link renders a Visit link and no View detail', async () => {
     render(<NotificationBell />);
     fireEvent.click(screen.getByRole('button', { name: /notifications/i }));
-    const row = await screen.findByText('Summer Sale');
-    fireEvent.click(row);
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    const summerRow = (await screen.findByText('Summer Sale')).closest('[role="button"]');
+    expect(within(summerRow).getByRole('link', { name: /visit/i })).toHaveAttribute('href', '/cities/dubai/activities/desert-safari');
+    expect(within(summerRow).queryByRole('button', { name: /view detail/i })).not.toBeInTheDocument();
+  });
+
+  test('every announcement row has an envelope toggle (read/unread)', async () => {
+    render(<NotificationBell />);
+    fireEvent.click(screen.getByRole('button', { name: /notifications/i }));
+    await screen.findByText('Site-wide Coupon');
+    const toggles = screen.getAllByRole('button', { name: /mark as (read|unread)/i });
+    expect(toggles.length).toBeGreaterThanOrEqual(2);
   });
 });
