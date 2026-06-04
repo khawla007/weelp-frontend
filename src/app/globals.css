@@ -400,6 +400,17 @@ body {
     animation-delay: var(--weelp-motion-delay, 0ms);
   }
 
+  /* Above-fold hero UI entrance for whole controls: badges, filter bars, and
+     chip rows lift as complete objects. Do not use the masked text rise here;
+     overflow clipping would trap dropdown panels inside search controls. */
+  .weelp-hero-ui-rise {
+    opacity: 0;
+    transform: translate3d(0, var(--weelp-reveal-y, 40px), 0);
+    animation: weelpRevealUp var(--weelp-motion-duration, var(--weelp-duration-reveal)) var(--weelp-motion-ease, var(--weelp-ease-out)) both;
+    animation-delay: var(--weelp-motion-delay, 0ms);
+    will-change: transform, opacity;
+  }
+
   /* Grid child stagger. A Reveal container with `stagger` set emits
      [data-reveal-cards] and clones each child with --weelp-reveal-index.
      Children start hidden and animate in sequence once the container is
@@ -534,6 +545,7 @@ body {
     .weelp-scale-in,
     .weelp-popover,
     .weelp-hero-rise,
+    .weelp-hero-ui-rise,
     .weelp-rise-item,
     [data-reveal],
     [data-reveal-cards] > * {

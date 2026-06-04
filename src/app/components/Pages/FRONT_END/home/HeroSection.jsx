@@ -15,11 +15,12 @@ const HeroSection = () => {
       }}
     >
       <div className="container-page relative z-0 flex flex-col items-center justify-center text-center">
-        <span className="weelp-rise-mask mb-4 inline-flex items-center gap-2 rounded-full border border-[#e4e4e7] bg-white/85 px-4 py-2 text-xs font-bold text-[#588f7a]">
-          <span className="weelp-rise-item inline-flex items-center gap-2" style={{ '--weelp-rise-delay': '120ms' }}>
-            <span className="inline-block h-[7px] w-[7px] rounded-full bg-[#588f7a]" />
-            Plan calmer escapes
-          </span>
+        <span
+          className="weelp-hero-ui-rise mb-4 inline-flex items-center gap-2 rounded-full border border-[#e4e4e7] bg-white/85 px-4 py-2 text-xs font-bold text-[#588f7a]"
+          style={{ '--weelp-motion-delay': '120ms' }}
+        >
+          <span className="inline-block h-[7px] w-[7px] rounded-full bg-[#588f7a]" />
+          Plan calmer escapes
         </span>
         <div className="relative mb-4 flex flex-col items-center">
           <h1 className="mb-2.5 text-[28px] sm:text-[38px] md:text-[48px] leading-[1.05] text-white">
@@ -37,10 +38,10 @@ const HeroSection = () => {
             </span>
           </p>
         </div>
-        <span className="weelp-hero-rise relative z-30 mb-4 inline-block" style={{ '--weelp-motion-delay': '360ms' }}>
+        <span className="weelp-hero-ui-rise relative z-30 mb-4 inline-block" style={{ '--weelp-motion-delay': '360ms' }}>
           <FilterBar />
         </span>
-        <div className="weelp-hero-rise relative z-0 flex flex-wrap items-center justify-center gap-3" style={{ '--weelp-motion-delay': '440ms' }}>
+        <div className="weelp-hero-ui-rise relative z-0 flex flex-wrap items-center justify-center gap-3" style={{ '--weelp-motion-delay': '440ms' }}>
           {chips.map((label) => (
             <span
               key={label}

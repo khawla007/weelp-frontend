@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
+import Reveal from '@/app/components/ui/Reveal';
 
 export default function CarouselShell({ items = [], navigationPrefix, renderSlide, breakpoints, className = '', slideClassName = '', showMobilePagination = false }) {
   const swiperRef = useRef(null);
@@ -15,7 +16,7 @@ export default function CarouselShell({ items = [], navigationPrefix, renderSlid
   if (!items.length) return null;
 
   return (
-    <div className={`carousel-shell-wrapper ${showMobilePagination ? 'has-mobile-pagination' : ''}`}>
+    <Reveal initialHidden variant="lift" className={`carousel-shell-wrapper ${showMobilePagination ? 'has-mobile-pagination' : ''}`}>
       <Swiper
         modules={modules}
         onBeforeInit={(swiper) => {
@@ -45,6 +46,6 @@ export default function CarouselShell({ items = [], navigationPrefix, renderSlid
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </Reveal>
   );
 }

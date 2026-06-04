@@ -28,7 +28,7 @@ export default function BrowseDestinationsSection({ cities = [], title = 'Top De
 
   return (
     <Reveal as="section" initialHidden className={`container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24 ${className}`}>
-      <div className="flex items-center justify-between">
+      <Reveal variant="lift" className="flex items-center justify-between">
         <SectionHeader title={title} />
         <div className="flex items-center gap-2">
           <button
@@ -46,7 +46,7 @@ export default function BrowseDestinationsSection({ cities = [], title = 'Top De
             <ChevronRight className="size-4" />
           </button>
         </div>
-      </div>
+      </Reveal>
 
       <CarouselShell
         items={items}

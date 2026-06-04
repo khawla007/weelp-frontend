@@ -37,8 +37,10 @@ const WeelpRecommendations = async () => {
   return (
     <Reveal as="section" initialHidden className="w-full bg-[#f8faf9] pb-10 md:pb-16 lg:pb-24">
       <div className="w-full px-4 lg:px-[60px]">
-        <h3 className="text-[20px] text-[#18181b] mb-4">Weelp Recommendations</h3>
-        <div className="mb-4 border-t border-[#e4e4e7]" />
+        <Reveal variant="lift">
+          <h3 className="text-[20px] text-[#18181b] mb-4">Weelp Recommendations</h3>
+          <div className="mb-4 border-t border-[#e4e4e7]" />
+        </Reveal>
         <Reveal stagger={45} variant="lift" className="grid grid-cols-2 gap-x-6 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
           {itineraries.map((itinerary) => {
             const { name, slug, city_slug } = itinerary;

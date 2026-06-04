@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import Testimonial from '../Testimonial';
+import Reveal from '@/app/components/ui/Reveal';
 
 export const TestmonialSlider = ({ reviews = [] }) => {
   const [reducedMotion, setReducedMotion] = useState(() => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -26,7 +27,7 @@ export const TestmonialSlider = ({ reviews = [] }) => {
   if (!reviews.length) return null;
 
   return (
-    <div className="carousel-shell-wrapper testimonial-slider">
+    <Reveal initialHidden variant="lift" className="carousel-shell-wrapper testimonial-slider">
       <Swiper
         modules={[Autoplay]}
         autoplay={autoplayConfig}
@@ -46,6 +47,6 @@ export const TestmonialSlider = ({ reviews = [] }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </Reveal>
   );
 };

@@ -51,11 +51,22 @@ describe('HeroSection', () => {
     expect(item.getAttribute('style')).toContain('--weelp-rise-delay: 280ms');
   });
 
+  it('animates the hero badge as a whole pill, not just the badge text', () => {
+    const { getByText } = render(<HeroSection />);
+
+    const badge = getByText('Plan calmer escapes').closest('span');
+    expect(badge).not.toBeNull();
+    expect(badge).toHaveClass('weelp-hero-ui-rise');
+    expect(badge).not.toHaveClass('weelp-rise-mask');
+    expect(badge.querySelector('.weelp-rise-item')).toBeNull();
+    expect(badge.getAttribute('style')).toContain('--weelp-motion-delay: 120ms');
+  });
+
   it('layers FilterBar above the hero chips so dropdowns are not covered', () => {
     const { container } = render(<HeroSection />);
 
-    const wrapper = container.querySelector('span.weelp-hero-rise.inline-block');
-    const chipRow = container.querySelector('div.weelp-hero-rise.flex');
+    const wrapper = container.querySelector('span.weelp-hero-ui-rise.inline-block');
+    const chipRow = container.querySelector('div.weelp-hero-ui-rise.flex');
 
     expect(wrapper).not.toBeNull();
     expect(wrapper).toHaveClass('relative');

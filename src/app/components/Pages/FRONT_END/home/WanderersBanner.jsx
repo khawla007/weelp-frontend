@@ -28,7 +28,7 @@ const WanderersBanner = () => {
         <path d={SAGE_LEAF_PATH} fill="#588f7a" />
       </svg>
 
-      <div className="container-page relative z-10 flex h-full flex-col items-center gap-4 pt-[42px] text-center md:pt-[56px]">
+      <Reveal variant="lift" className="container-page relative z-10 flex h-full flex-col items-center gap-4 pt-[42px] text-center md:pt-[56px]">
         <ul className="flex items-center gap-1.5" aria-hidden="true">
           {AVATARS.map((i) => (
             <li key={i} className="size-7 overflow-hidden rounded-full border border-white shadow-sm ring-1 ring-[#e4e4e7] md:size-8">
@@ -40,20 +40,22 @@ const WanderersBanner = () => {
         <p id="wanderers-heading" className="text-xs font-normal leading-5 text-[#52525b] md:text-sm">
           Be among 400+ other wanderers!
         </p>
-      </div>
+      </Reveal>
 
-      <div className="container-page absolute inset-x-0 top-[calc(50%-4px)] z-10 flex -translate-y-1/2 items-center justify-center gap-4">
-        <span aria-hidden="true" className="h-px flex-1 bg-[#e4e4e7]" />
-        <Link
-          href="/cities"
-          className="group relative inline-flex h-[34px] w-[77px] shrink-0 items-center justify-center text-xs font-medium leading-none !text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#588f7a]"
-        >
-          <svg aria-hidden="true" viewBox="0 0 64 28" className="absolute inset-0 size-full">
-            <path d="M9 3H59L55 25H5L9 3Z" className="fill-[#588f7a] transition-colors group-hover:fill-[#4d8069]" />
-          </svg>
-          <span className="relative z-10">Curate</span>
-        </Link>
-        <span aria-hidden="true" className="h-px flex-1 bg-[#e4e4e7]" />
+      <div className="container-page absolute inset-x-0 top-[calc(50%-4px)] z-10 -translate-y-1/2">
+        <Reveal variant="lift" delay={120} className="flex items-center justify-center gap-4">
+          <span aria-hidden="true" className="h-px flex-1 bg-[#e4e4e7]" />
+          <Link
+            href="/cities"
+            className="group relative inline-flex h-[34px] w-[77px] shrink-0 items-center justify-center text-xs font-medium leading-none !text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#588f7a]"
+          >
+            <svg aria-hidden="true" viewBox="0 0 64 28" className="absolute inset-0 size-full">
+              <path d="M9 3H59L55 25H5L9 3Z" className="fill-[#588f7a] transition-colors group-hover:fill-[#4d8069]" />
+            </svg>
+            <span className="relative z-10">Curate</span>
+          </Link>
+          <span aria-hidden="true" className="h-px flex-1 bg-[#e4e4e7]" />
+        </Reveal>
       </div>
     </Reveal>
   );

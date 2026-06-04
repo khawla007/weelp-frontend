@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import SectionHeader from '@/app/components/ui/SectionHeader';
 import CarouselShell from '@/app/components/ui/CarouselShell';
 import ItemCard from '@/app/components/ui/item-card';
+import Reveal from '@/app/components/ui/Reveal';
 
 const PRODUCT_BREAKPOINTS = {
   450: { slidesPerView: 1, spaceBetween: 18 },
@@ -30,7 +31,7 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
 
   return (
     <section className={`container-page flex flex-col gap-6 md:gap-8 pb-10 md:pb-16 lg:pb-24 ${className}`}>
-      <div className="flex items-center justify-between">
+      <Reveal initialHidden variant="lift" className="flex items-center justify-between">
         <SectionHeader title={title} />
 
         {headerAction === 'navigation' && (
@@ -61,7 +62,7 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
             {ctaLabel}
           </Link>
         )}
-      </div>
+      </Reveal>
 
       <CarouselShell
         items={items}

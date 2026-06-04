@@ -15,7 +15,9 @@ const AiSection = async () => {
 
   return (
     <Reveal as="section" initialHidden className="container-page flex flex-col items-center gap-12 pb-10 md:pb-16 lg:pb-24">
-      <h2 className="text-center text-[28px] font-medium text-[#18181b]">Your AI Travel Buddy</h2>
+      <Reveal variant="lift" as="h2" className="text-center text-[28px] font-medium text-[#18181b]">
+        Your AI Travel Buddy
+      </Reveal>
 
       <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
         <TravelBuddyWidget items={buddyItems} />
