@@ -29,19 +29,24 @@ export default function NotificationDetailModal({ notif, onClose }) {
         if (!o) onClose();
       }}
     >
-      <DialogContent className="max-w-[480px]">
+      <DialogContent className="max-w-[480px] overflow-hidden">
         {notif && (
           <>
-            <DialogHeader>
-              <DialogTitle className="text-[#18181b]">{notif.title}</DialogTitle>
-            </DialogHeader>
             {images.length > 0 && (
-              <div className="flex flex-col gap-2">
+              <div className="-mt-6 -mx-6 mb-1 flex flex-col">
                 {images.map((src, i) => (
-                  <img key={i} src={src} alt={notif.title} className="w-full rounded-md object-cover" />
+                  <img
+                    key={i}
+                    src={src}
+                    alt={notif.title}
+                    className={`w-full h-48 object-cover ${i === 0 ? 'rounded-t-lg' : ''}`}
+                  />
                 ))}
               </div>
             )}
+            <DialogHeader>
+              <DialogTitle className="text-[#18181b]">{notif.title}</DialogTitle>
+            </DialogHeader>
             <DialogDescription className="text-sm text-[#3f3f46] whitespace-pre-wrap">{notif.message}</DialogDescription>
             <p className="text-xs text-[#71717a] mt-2">{timeAgo(notif.created_at)}</p>
             {couponCode ? (
