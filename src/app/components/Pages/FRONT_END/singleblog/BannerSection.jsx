@@ -17,7 +17,9 @@ const BannerSectionBlog = ({ title = '', excerpt = '', tags = [], media_gallery 
           <div className="flex flex-col gap-4">
             <h1 className="text-base sm:text-[52px] font-semibold leading-none first-letter:capitalize text-wrap">
               <span className="weelp-rise-mask weelp-rise-mask--block">
-                <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>{title || '32 Best Places and Tours to See Autumn Leaves'}</span>
+                <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
+                  {title || '32 Best Places and Tours to See Autumn Leaves'}
+                </span>
               </span>
             </h1>
             <p className="text-[#435a67] font-medium text-sm sm:text-lg  text-wrap">

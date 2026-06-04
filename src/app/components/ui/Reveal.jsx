@@ -35,20 +35,7 @@ const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : use
  *   `[data-reveal-cards][data-reveal='shown'] > *` rule fires them in sequence
  *   once the container is in view
  */
-const Reveal = ({
-  as: Tag = 'div',
-  initialHidden = false,
-  delay = 0,
-  y = 12,
-  duration,
-  once = true,
-  variant,
-  stagger,
-  className,
-  style,
-  children,
-  ...rest
-}) => {
+const Reveal = ({ as: Tag = 'div', initialHidden = false, delay = 0, y = 12, duration, once = true, variant, stagger, className, style, children, ...rest }) => {
   const ref = useRef(null);
   // null = not yet evaluated (SSR / first paint -> visible). 'pending' | 'shown' after mount.
   // initialHidden seeds 'pending' so the server markup is hidden from first paint.
@@ -113,15 +100,7 @@ const Reveal = ({
 
   return (
     // {...rest} first so internal ref / data-reveal attrs always win over any caller-passed props.
-    <Tag
-      {...rest}
-      ref={ref}
-      className={className}
-      style={mergedStyle}
-      data-reveal={state === null ? undefined : state}
-      data-reveal-variant={variant}
-      data-reveal-cards={stagger ? '' : undefined}
-    >
+    <Tag {...rest} ref={ref} className={className} style={mergedStyle} data-reveal={state === null ? undefined : state} data-reveal-variant={variant} data-reveal-cards={stagger ? '' : undefined}>
       {staggered}
     </Tag>
   );

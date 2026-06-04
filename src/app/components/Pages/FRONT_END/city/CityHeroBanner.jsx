@@ -18,18 +18,24 @@ const CityHeroBanner = ({ city }) => {
           <BreadCrumb className="mb-4 text-[#71717a]" />
           <h2 className="text-xl md:text-2xl font-medium mb-4 capitalize text-[#18181b]">
             <span className="weelp-rise-mask weelp-rise-mask--block">
-              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '120ms' }}>Things to do In</span>
+              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '120ms' }}>
+                Things to do In
+              </span>
             </span>
           </h2>
           <h1 className="section-opener leading-[1.1] text-pretty mb-4 capitalize">
             <span className="weelp-rise-mask weelp-rise-mask--block">
-              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>{name}</span>
+              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
+                {name}
+              </span>
             </span>
           </h1>
           {description ? (
             <p className="text-base md:text-lg max-w-full md:max-w-[391px] leading-relaxed text-wrap text-[#71717a]" style={{ fontWeight: 500, lineHeight: 1.55 }}>
               <span className="weelp-rise-mask weelp-rise-mask--block">
-                <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>{description}</span>
+                <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
+                  {description}
+                </span>
               </span>
             </p>
           ) : null}

@@ -24,12 +24,16 @@ const HeroSection = () => {
         <div className="relative mb-4 flex flex-col items-center">
           <h1 className="mb-2.5 text-[28px] sm:text-[38px] md:text-[48px] leading-[1.05] text-white">
             <span className="weelp-rise-mask weelp-rise-mask--block">
-              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>Find your next escape</span>
+              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
+                Find your next escape
+              </span>
             </span>
           </h1>
           <p className="max-w-[44ch] text-base sm:text-lg font-medium leading-[1.4] text-white">
             <span className="weelp-rise-mask weelp-rise-mask--block">
-              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>Beach stays, marina views, and easy city plans in one place.</span>
+              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
+                Beach stays, marina views, and easy city plans in one place.
+              </span>
             </span>
           </p>
         </div>

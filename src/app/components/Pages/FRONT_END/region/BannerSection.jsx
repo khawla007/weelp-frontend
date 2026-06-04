@@ -35,14 +35,18 @@ const BannerSection = () => {
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold capitalize text-[#18181b]">
               {name ? (
                 <span className="weelp-rise-mask weelp-rise-mask--block">
-                  <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>{name}</span>
+                  <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
+                    {name}
+                  </span>
                 </span>
               ) : null}
             </h1>
             <p className="mb-4 text-base sm:text-lg font-medium text-[#435a67]">
               {description ? (
                 <span className="weelp-rise-mask weelp-rise-mask--block">
-                  <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>{description}</span>
+                  <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
+                    {description}
+                  </span>
                 </span>
               ) : null}
             </p>

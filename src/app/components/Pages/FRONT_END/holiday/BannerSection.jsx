@@ -16,7 +16,9 @@ const BannerSection = () => {
       <div className="max-w-xl w-full flex flex-col items-center gap-2 relative z-[60]">
         <h1 className="text-xl sm:text-5xl font-semibold text-[#18181b] text-center">
           <span className="weelp-rise-mask weelp-rise-mask--block">
-            <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>Plan your Holiday.</span>
+            <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
+              Plan your Holiday.
+            </span>
           </span>
         </h1>
         <p className="text-sm sm:text-lg font-medium text-[#435a67] text-center">

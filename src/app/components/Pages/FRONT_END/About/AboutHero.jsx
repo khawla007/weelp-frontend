@@ -4,12 +4,16 @@ const AboutHero = () => {
       <div className="container mx-auto px-4 flex flex-col items-center justify-center text-center">
         <h1 className="mb-3">
           <span className="weelp-rise-mask weelp-rise-mask--block">
-            <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>About Weelp</span>
+            <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
+              About Weelp
+            </span>
           </span>
         </h1>
         <p className="lead max-w-[640px]">
           <span className="weelp-rise-mask weelp-rise-mask--block">
-            <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>Connecting travelers with unforgettable experiences worldwide</span>
+            <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
+              Connecting travelers with unforgettable experiences worldwide
+            </span>
           </span>
         </p>
       </div>

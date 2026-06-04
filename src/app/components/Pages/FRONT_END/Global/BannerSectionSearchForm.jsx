@@ -23,12 +23,16 @@ const BannerSectionSearchForm = ({ title, description }) => {
         <div className="w-full max-w-xl sm:max-w-3xl flex flex-col items-center gap-2 relative z-[60]">
           <h1 className="text-xl sm:text-5xl font-semibold text-[#18181b] text-center">
             <span className="weelp-rise-mask weelp-rise-mask--block">
-              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>{title}</span>
+              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
+                {title}
+              </span>
             </span>
           </h1>
           <p className="max-w-xl text-sm sm:text-lg font-medium text-[#435a67] text-center">
             <span className="weelp-rise-mask weelp-rise-mask--block">
-              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>{description}</span>
+              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
+                {description}
+              </span>
             </span>
           </p>
           <div className="weelp-hero-rise mt-2 w-full" style={{ '--weelp-motion-delay': '360ms' }}>
