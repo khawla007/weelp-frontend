@@ -9,6 +9,7 @@ import { fetchUnreadCount, fetchNotifications, markAsRead, markAllAsRead, markSe
 import { fetchAnnouncements } from '@/lib/services/announcements';
 import { getDismissedIds, dismissIds } from '@/lib/announcements/readState';
 import { mergeFeed } from '@/lib/announcements/merge';
+import { opensModal, announcementToModalNotif } from '@/lib/announcements/modalAdapter';
 import { useIsClient } from '@/hooks/useIsClient';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import NotificationRow from '@/app/components/Layout/NotificationRow';
@@ -177,6 +178,26 @@ export default function NotificationBell() {
                     </div>
                   );
                   const rowClass = 'block px-4 py-3 border-b border-[#eaeaea] hover:bg-[#f4f4f5] transition-colors';
+                  if (opensModal(item)) {
+                    const openModal = () => setSelectedNotif(announcementToModalNotif(item));
+                    return (
+                      <div
+                        key={`a-${item.id}`}
+                        role="button"
+                        tabIndex={0}
+                        onClick={openModal}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            openModal();
+                          }
+                        }}
+                        className={`${rowClass} cursor-pointer w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#588f7a]/40`}
+                      >
+                        {body}
+                      </div>
+                    );
+                  }
                   if (!item.link) {
                     return (
                       <div key={`a-${item.id}`} className="px-4 py-3 border-b border-[#eaeaea]">
