@@ -124,9 +124,13 @@ body {
     --weelp-city-tab-active-border: #cfdbe580;
     --weelp-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --weelp-ease-panel: cubic-bezier(0.32, 0.72, 0, 1);
+    --weelp-ease-ui: cubic-bezier(0.2, 0.7, 0.3, 1);
     --weelp-duration-fast: 160ms;
     --weelp-duration-base: 260ms;
     --weelp-duration-slow: 520ms;
+    --weelp-duration-rise: 1000ms;
+    --weelp-duration-reveal: 900ms;
+    --weelp-reveal-stagger: 90ms;
 
     /* Canonical text tokens — element binding source of truth.
        See docs/frontend-design-correction/typography.md (Element binding). */
@@ -298,6 +302,56 @@ body {
     animation-delay: var(--weelp-motion-delay, 0ms);
   }
 
+  /* Hero text mask-clip rise. The outer .weelp-rise-mask clips with overflow
+     hidden; the inner .weelp-rise-item translates from below the clip into
+     place. Text glyphs are only ever translated (never scaled), so they stay
+     pixel-aligned during the animation — no sub-pixel blur. CSS-at-paint via
+     `both` fill matches the `from` state, so first paint shows the clipped
+     start frame and there is no FOUC. */
+  @keyframes weelpRiseClip {
+    from {
+      transform: translate3d(0, 130%, 0);
+    }
+
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .weelp-rise-mask {
+    display: inline-block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    vertical-align: top;
+  }
+
+  .weelp-rise-mask--block {
+    display: block;
+  }
+
+  .weelp-rise-item {
+    display: inline-block;
+    transform: translate3d(0, 130%, 0);
+    animation: weelpRiseClip var(--weelp-duration-rise) var(--weelp-ease-out) both;
+    animation-delay: var(--weelp-rise-delay, 0ms);
+    will-change: transform;
+  }
+
+  /* Scroll reveal variant — 40px lift / 900ms — used by Reveal `variant="lift"`
+     and by [data-reveal-cards] grid stagger. Separate keyframe from weelpFadeUp
+     so existing Reveal callers (12px / 520ms) stay untouched. */
+  @keyframes weelpRevealUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, var(--weelp-reveal-y, 40px), 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
   /* Settings nav active indicator: slides vertically to the active route. */
   .weelp-settings-rail {
     transition:
@@ -332,6 +386,37 @@ body {
   [data-reveal='shown'] {
     animation: weelpFadeUp var(--weelp-motion-duration, var(--weelp-duration-slow)) var(--weelp-motion-ease, var(--weelp-ease-out)) both;
     animation-delay: var(--weelp-motion-delay, 0ms);
+  }
+
+  /* Reveal variant="lift": 40px / 900ms lift, matches the reference design-4
+     section reveal. Selector specificity beats the base [data-reveal='shown']
+     rule above by combining two attribute selectors. */
+  [data-reveal='pending'][data-reveal-variant='lift'] {
+    transform: translate3d(0, var(--weelp-reveal-y, 40px), 0);
+  }
+
+  [data-reveal='shown'][data-reveal-variant='lift'] {
+    animation: weelpRevealUp var(--weelp-duration-reveal) var(--weelp-ease-out) both;
+    animation-delay: var(--weelp-motion-delay, 0ms);
+  }
+
+  /* Grid child stagger. A Reveal container with `stagger` set emits
+     [data-reveal-cards] and clones each child with --weelp-reveal-index.
+     Children start hidden and animate in sequence once the container is
+     in view (the container drives the IntersectionObserver, not each child). */
+  [data-reveal-cards] > * {
+    --weelp-reveal-delay: calc(var(--weelp-reveal-index, 0) * var(--weelp-reveal-stagger));
+  }
+
+  [data-reveal-cards][data-reveal='pending'] > * {
+    opacity: 0;
+    transform: translate3d(0, var(--weelp-reveal-y, 40px), 0);
+    will-change: transform, opacity;
+  }
+
+  [data-reveal-cards][data-reveal='shown'] > * {
+    animation: weelpRevealUp var(--weelp-duration-reveal) var(--weelp-ease-out) both;
+    animation-delay: var(--weelp-reveal-delay, 0ms);
   }
 
   .weelp-popover {
@@ -449,7 +534,9 @@ body {
     .weelp-scale-in,
     .weelp-popover,
     .weelp-hero-rise,
-    [data-reveal] {
+    .weelp-rise-item,
+    [data-reveal],
+    [data-reveal-cards] > * {
       opacity: 1;
       transform: none;
       filter: none;
@@ -1100,31 +1187,6 @@ body {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
-}
-
-@keyframes heroRise {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 8px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.hero-rise {
-  opacity: 0;
-  animation: heroRise 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: var(--hero-rise-delay, 0ms);
-  will-change: transform, opacity;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-rise {
-    animation-duration: 0.01ms;
-    animation-delay: 0ms;
-  }
 }
 
 @keyframes personalisedGlobeReveal {

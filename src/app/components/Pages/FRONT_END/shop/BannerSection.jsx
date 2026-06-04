@@ -18,8 +18,11 @@ const BannerSection = () => {
           {/* <Icon className={"hidden sm:block -translate-x-20 "} /> */}
           <div className="flex flex-col gap-2">
             <h1 className="font-semibold sm:text-3xl text-center text-[#18181b] ">
-              You Searched for &quot;
-              <span className=" capitalize">{location}&apos;</span>&quot;
+              <span className="weelp-rise-mask weelp-rise-mask--block">
+                <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
+                  You Searched for &quot;<span className="capitalize">{location}&apos;</span>&quot;
+                </span>
+              </span>
             </h1>
             {/* <p className="text-center font-medium text-[#18181b] text-sm sm:text-lg">
               {location.length} Result Founds

@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ItemCard from '@/app/components/ui/item-card';
 import SectionHeader from '@/app/components/ui/SectionHeader';
 import BreadCrumb from '@/app/components/BreadCrumb';
+import Reveal from '@/app/components/ui/Reveal';
 import { getCityData, getCityItemsByType } from '@/lib/services/cities';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 
@@ -64,12 +65,12 @@ export default async function CityItemsListing({ citySlug, itemType, searchParam
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <Reveal initialHidden stagger={90} variant="lift" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {items.map((item) => {
               const cardProps = mapProductToItemCard(item, citySlug);
               return <ItemCard key={cardProps.id} {...cardProps} />;
             })}
-          </div>
+          </Reveal>
 
           {lastPage > 1 && <Pagination currentPage={currentPage} lastPage={lastPage} basePath={basePath} />}
         </>

@@ -16,14 +16,26 @@ const CityHeroBanner = ({ city }) => {
       <div className="container-page relative z-10 flex h-full flex-col items-center justify-center gap-4 lg:flex-row">
         <div className="relative flex-1 w-full lg:w-1/3">
           <BreadCrumb className="mb-4 text-[#71717a]" />
-          <h2 className="text-xl md:text-2xl font-medium mb-4 capitalize text-[#18181b]">Things to do In</h2>
-          <h1 className="section-opener leading-[1.1] text-pretty mb-4 capitalize">{name}</h1>
-          <p className="text-base md:text-lg max-w-full md:max-w-[391px] leading-relaxed text-wrap text-[#71717a]" style={{ fontWeight: 500, lineHeight: 1.55 }}>
-            {description}
-          </p>
+          <h2 className="text-xl md:text-2xl font-medium mb-4 capitalize text-[#18181b]">
+            <span className="weelp-rise-mask weelp-rise-mask--block">
+              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '120ms' }}>Things to do In</span>
+            </span>
+          </h2>
+          <h1 className="section-opener leading-[1.1] text-pretty mb-4 capitalize">
+            <span className="weelp-rise-mask weelp-rise-mask--block">
+              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>{name}</span>
+            </span>
+          </h1>
+          {description ? (
+            <p className="text-base md:text-lg max-w-full md:max-w-[391px] leading-relaxed text-wrap text-[#71717a]" style={{ fontWeight: 500, lineHeight: 1.55 }}>
+              <span className="weelp-rise-mask weelp-rise-mask--block">
+                <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>{description}</span>
+              </span>
+            </p>
+          ) : null}
         </div>
 
-        <div className="w-full lg:w-2/3">
+        <div className="weelp-hero-rise w-full lg:w-2/3" style={{ '--weelp-motion-delay': '360ms' }}>
           <GallerySlider data={media_gallery} collapseHiddenThumbnails />
         </div>
       </div>

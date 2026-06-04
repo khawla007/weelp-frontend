@@ -88,17 +88,21 @@ const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
       ) : blogs.length === 0 ? (
         <div className="text-center py-8 text-zinc-500">No blogs found</div>
       ) : (
-        <Reveal as="div" key={`grid-${current_page}`}>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {blogs.map((blog) => {
-              const item = mapBlogToItemCard(blog);
-              return (
-                <li key={blog.id || blog.slug}>
-                  <ItemCard href={item.href} image={item.image} title={item.title} category={item.category} variant="compact" />
-                </li>
-              );
-            })}
-          </ul>
+        <Reveal
+          as="ul"
+          key={`grid-${current_page}`}
+          stagger={90}
+          variant="lift"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
+        >
+          {blogs.map((blog) => {
+            const item = mapBlogToItemCard(blog);
+            return (
+              <li key={blog.id || blog.slug}>
+                <ItemCard href={item.href} image={item.image} title={item.title} category={item.category} variant="compact" />
+              </li>
+            );
+          })}
         </Reveal>
       )}
 

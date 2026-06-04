@@ -39,7 +39,7 @@ const WeelpRecommendations = async () => {
       <div className="w-full px-4 lg:px-[60px]">
         <h3 className="text-[20px] text-[#18181b] mb-4">Weelp Recommendations</h3>
         <div className="mb-4 border-t border-[#e4e4e7]" />
-        <div className="grid grid-cols-2 gap-x-6 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
+        <Reveal stagger={45} variant="lift" className="grid grid-cols-2 gap-x-6 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
           {itineraries.map((itinerary) => {
             const { name, slug, city_slug } = itinerary;
             const href = city_slug ? `/cities/${city_slug}/itineraries/${slug}` : `/cities/itineraries/${slug}`;
@@ -55,7 +55,7 @@ const WeelpRecommendations = async () => {
               </Link>
             );
           })}
-        </div>
+        </Reveal>
       </div>
     </Reveal>
   );

@@ -14,11 +14,19 @@ export default function ToursHero() {
         />
       </div>
       <div className="w-full max-w-xl sm:max-w-3xl flex flex-col items-center gap-2 relative z-[60]">
-        <h1 className="text-xl sm:text-5xl font-semibold text-[#18181b] text-center">Plan your Holiday.</h1>
+        <h1 className="text-xl sm:text-5xl font-semibold text-[#18181b] text-center">
+          <span className="weelp-rise-mask weelp-rise-mask--block">
+            <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>Plan your Holiday.</span>
+          </span>
+        </h1>
         <p className="max-w-xl text-sm sm:text-lg font-medium text-[#435a67] text-center">
-          You&apos;ll discover everything from whisky to Harry Potter, or even some bodysnatchers, in Scotland&apos;s captivating capital.
+          <span className="weelp-rise-mask weelp-rise-mask--block">
+            <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
+              You&apos;ll discover everything from whisky to Harry Potter, or even some bodysnatchers, in Scotland&apos;s captivating capital.
+            </span>
+          </span>
         </p>
-        <div className="mt-2 w-full">
+        <div className="weelp-hero-rise mt-2 w-full" style={{ '--weelp-motion-delay': '360ms' }}>
           <ToursFilterBar />
         </div>
       </div>

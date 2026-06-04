@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Children, cloneElement, isValidElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { prefersReducedMotion } from '@/lib/motion';
 
 // SSR-safe layout effect (avoids the React warning when rendered on the server).
@@ -28,8 +28,27 @@ const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : use
  * @param {number} [props.y=12] - fade-up offset in px (-> --weelp-fade-up-y)
  * @param {number} [props.duration] - animation duration in ms (-> --weelp-motion-duration)
  * @param {boolean} [props.once=true] - disconnect observer after first reveal
+ * @param {string} [props.variant] - reveal variant. 'lift' opts into the 40px / 900ms
+ *   reference design-4 keyframe instead of the default 12px / 520ms one
+ * @param {number} [props.stagger] - if set (ms), the root becomes a stagger container:
+ *   each direct child is cloned with an inline --weelp-reveal-index, and the CSS
+ *   `[data-reveal-cards][data-reveal='shown'] > *` rule fires them in sequence
+ *   once the container is in view
  */
-const Reveal = ({ as: Tag = 'div', initialHidden = false, delay = 0, y = 12, duration, once = true, className, style, children, ...rest }) => {
+const Reveal = ({
+  as: Tag = 'div',
+  initialHidden = false,
+  delay = 0,
+  y = 12,
+  duration,
+  once = true,
+  variant,
+  stagger,
+  className,
+  style,
+  children,
+  ...rest
+}) => {
   const ref = useRef(null);
   // null = not yet evaluated (SSR / first paint -> visible). 'pending' | 'shown' after mount.
   // initialHidden seeds 'pending' so the server markup is hidden from first paint.
@@ -79,12 +98,31 @@ const Reveal = ({ as: Tag = 'div', initialHidden = false, delay = 0, y = 12, dur
     '--weelp-motion-delay': `${delay}ms`,
     '--weelp-fade-up-y': `${y}px`,
     ...(duration ? { '--weelp-motion-duration': `${duration}ms` } : {}),
+    ...(stagger ? { '--weelp-reveal-stagger': `${stagger}ms` } : {}),
   };
+
+  const staggered = stagger
+    ? Children.map(children, (child, i) =>
+        isValidElement(child)
+          ? cloneElement(child, {
+              style: { ...(child.props.style || {}), '--weelp-reveal-index': i },
+            })
+          : child,
+      )
+    : children;
 
   return (
     // {...rest} first so internal ref / data-reveal attrs always win over any caller-passed props.
-    <Tag {...rest} ref={ref} className={className} style={mergedStyle} data-reveal={state === null ? undefined : state}>
-      {children}
+    <Tag
+      {...rest}
+      ref={ref}
+      className={className}
+      style={mergedStyle}
+      data-reveal={state === null ? undefined : state}
+      data-reveal-variant={variant}
+      data-reveal-cards={stagger ? '' : undefined}
+    >
+      {staggered}
     </Tag>
   );
 };

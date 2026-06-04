@@ -110,3 +110,39 @@ test('renders custom element via `as`', () => {
   render(<Reveal as="section">content</Reveal>);
   expect(screen.getByText('content').tagName).toBe('SECTION');
 });
+
+test('variant="lift" emits data-reveal-variant on root', () => {
+  render(<Reveal variant="lift">content</Reveal>);
+  const el = screen.getByText('content');
+  expect(el).toHaveAttribute('data-reveal-variant', 'lift');
+});
+
+test('stagger emits data-reveal-cards on root and indexes each child', () => {
+  render(
+    <Reveal stagger={90}>
+      <span>a</span>
+      <span>b</span>
+      <span>c</span>
+    </Reveal>,
+  );
+  const a = screen.getByText('a');
+  const root = a.parentElement;
+  expect(root).toHaveAttribute('data-reveal-cards', '');
+  expect(root.style.getPropertyValue('--weelp-reveal-stagger')).toBe('90ms');
+  expect(a.style.getPropertyValue('--weelp-reveal-index')).toBe('0');
+  expect(screen.getByText('b').style.getPropertyValue('--weelp-reveal-index')).toBe('1');
+  expect(screen.getByText('c').style.getPropertyValue('--weelp-reveal-index')).toBe('2');
+});
+
+test('stagger + reduced motion still reveals immediately', () => {
+  setReducedMotion(true);
+  render(
+    <Reveal stagger={90}>
+      <span>a</span>
+      <span>b</span>
+    </Reveal>,
+  );
+  const root = screen.getByText('a').parentElement;
+  expect(root).toHaveAttribute('data-reveal', 'shown');
+  expect(ioInstances.length).toBe(0);
+});

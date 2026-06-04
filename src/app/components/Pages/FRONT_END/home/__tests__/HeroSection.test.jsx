@@ -32,34 +32,39 @@ describe('HeroSection', () => {
     expect(heroSection).not.toHaveClass('overflow-hidden');
   });
 
-  it('applies hero-rise to the heading', () => {
+  it('wraps the heading in a mask-clip rise with the 200ms delay slot', () => {
     const { container } = render(<HeroSection />);
 
     const heading = container.querySelector('h1');
-    expect(heading).toHaveClass('hero-rise');
+    const mask = heading.querySelector('.weelp-rise-mask');
+    const item = mask.querySelector('.weelp-rise-item');
+    expect(item).not.toBeNull();
+    expect(item.getAttribute('style')).toContain('--weelp-rise-delay: 200ms');
   });
 
-  it('applies hero-rise with 120ms delay to the subtitle', () => {
+  it('wraps the subtitle in a mask-clip rise with the 280ms delay slot', () => {
     const { container } = render(<HeroSection />);
 
     const subtitle = container.querySelector('p');
-    expect(subtitle).toHaveClass('hero-rise');
-    expect(subtitle.getAttribute('style')).toContain('--hero-rise-delay: 160ms');
+    const item = subtitle.querySelector('.weelp-rise-mask .weelp-rise-item');
+    expect(item).not.toBeNull();
+    expect(item.getAttribute('style')).toContain('--weelp-rise-delay: 280ms');
   });
 
   it('layers FilterBar above the hero chips so dropdowns are not covered', () => {
     const { container } = render(<HeroSection />);
 
-    const wrapper = container.querySelector('span.hero-rise.inline-block');
-    const chipRow = container.querySelector('div.hero-rise.flex');
+    const wrapper = container.querySelector('span.weelp-hero-rise.inline-block');
+    const chipRow = container.querySelector('div.weelp-hero-rise.flex');
 
     expect(wrapper).not.toBeNull();
     expect(wrapper).toHaveClass('relative');
     expect(wrapper).toHaveClass('z-30');
-    expect(wrapper.getAttribute('style')).toContain('--hero-rise-delay: 240ms');
+    expect(wrapper.getAttribute('style')).toContain('--weelp-motion-delay: 360ms');
 
     expect(chipRow).not.toBeNull();
     expect(chipRow).toHaveClass('relative');
     expect(chipRow).toHaveClass('z-0');
+    expect(chipRow.getAttribute('style')).toContain('--weelp-motion-delay: 440ms');
   });
 });
