@@ -35,12 +35,7 @@ export default function NotificationDetailModal({ notif, onClose }) {
             {images.length > 0 && (
               <div className="-mt-6 -mx-6 mb-1 flex flex-col">
                 {images.map((src, i) => (
-                  <img
-                    key={i}
-                    src={src}
-                    alt={notif.title}
-                    className={`w-full h-48 object-cover ${i === 0 ? 'rounded-t-lg' : ''}`}
-                  />
+                  <img key={i} src={src} alt={notif.title} className={`w-full h-48 object-cover ${i === 0 ? 'rounded-t-lg' : ''}`} />
                 ))}
               </div>
             )}
