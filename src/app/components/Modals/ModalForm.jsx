@@ -94,14 +94,14 @@ const ModalForm = ({ showForm, setShowForm, handleShowForm }) => {
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay
           data-search-modal-layer=""
-          className="fixed inset-0 z-50 bg-black/90 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:duration-300 data-[state=closed]:duration-200 motion-reduce:animate-none"
+          className="fixed inset-0 z-[100000] bg-black/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:duration-300 data-[state=closed]:duration-200 motion-reduce:animate-none"
         />
         <DialogPrimitive.Content
           ref={contentRef}
           id="portal_form"
           data-search-modal-layer=""
           data-testid="search-modal-panel"
-          className="fixed inset-x-0 top-0 z-50 flex w-full items-center justify-center bg-transparent pt-14 outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:[--tw-enter-scale:0.98] data-[state=closed]:[--tw-exit-scale:0.98] data-[state=open]:zoom-in data-[state=closed]:zoom-out data-[state=open]:duration-300 data-[state=closed]:duration-200 motion-reduce:animate-none"
+          className="fixed inset-x-0 top-0 z-[100001] flex w-full items-start justify-center bg-transparent px-4 pt-[140px] pb-10 outline-none sm:pt-[160px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:[--tw-enter-scale:0.98] data-[state=closed]:[--tw-exit-scale:0.98] data-[state=open]:zoom-in data-[state=closed]:zoom-out data-[state=open]:duration-300 data-[state=closed]:duration-200 motion-reduce:animate-none"
           onOpenAutoFocus={handleOpenAutoFocus}
           onCloseAutoFocus={handleCloseAutoFocus}
         >
