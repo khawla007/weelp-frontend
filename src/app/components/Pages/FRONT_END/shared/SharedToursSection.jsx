@@ -7,6 +7,7 @@ import axios from 'axios';
 import ItemCard from '@/app/components/ui/item-card';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import { ProductCardSkelton } from '@/app/components/Animation/Cards';
+import Reveal from '@/app/components/ui/Reveal';
 
 const SORT_OPTIONS = [
   { value: 'id_desc', label: 'Newest First' },
@@ -116,7 +117,9 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
 
   return (
     <section ref={sectionRef} className={sectionClassName}>
-      <h2 className="text-xl md:text-2xl lg:text-[28px] font-semibold text-pretty text-[#18181b] capitalize">{title} Tours</h2>
+      <Reveal as="h2" variant="lift" className="text-xl md:text-2xl lg:text-[28px] font-semibold text-pretty text-[#18181b] capitalize">
+        {title} Tours
+      </Reveal>
 
       <div className="flex flex-wrap items-center gap-4">
         {/* Featured Tags — Simple Box Design */}
@@ -228,7 +231,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
           ))}
         </div>
       ) : cards.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-[18px]">
+        <Reveal stagger={60} variant="lift" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-[18px]">
           {cards.map((card, index) => (
             <ItemCard
               key={card.id || `${card.href}-${index}`}
@@ -242,7 +245,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
               variant="full"
             />
           ))}
-        </div>
+        </Reveal>
       ) : (
         <div className="flex min-h-[220px] items-center justify-center">
           <span className="text-sm md:text-base text-[#71717a]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500 }}>

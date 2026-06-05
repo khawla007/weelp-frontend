@@ -7,16 +7,24 @@ const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible
 
 const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null, primaryLocation = null, city = null, scheduleDisplay = null }) => {
   return (
-    <section className="bg-white mb-10 md:mb-16 lg:mb-24">
+    <section className="weelp-hero-rise bg-white mb-10 md:mb-16 lg:mb-24">
       <div className="max-w-pen mx-auto px-4">
         {/* Breadcrumb + Title + Stats */}
         <div className="flex flex-col gap-2 pt-[70px]">
-          <BreadCrumb className="mb-2" />
+          <div className="weelp-hero-ui-rise" style={{ '--weelp-motion-delay': '120ms' }}>
+            <BreadCrumb className="mb-2" />
+          </div>
 
-          <h1 className="text-[#18181b] text-2xl lg:text-[38px] capitalize">{activityName ?? 'Melaka Wonderland Water Theme Park Ticket'}</h1>
+          <h1 className="text-[#18181b] text-2xl lg:text-[38px] capitalize">
+            <span className="weelp-rise-mask weelp-rise-mask--block">
+              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
+                {activityName ?? 'Melaka Wonderland Water Theme Park Ticket'}
+              </span>
+            </span>
+          </h1>
 
           {/* Stats Row + Save to Wishlist */}
-          <div className="flex flex-wrap items-center justify-between pb-4">
+          <div className="weelp-hero-ui-rise flex flex-wrap items-center justify-between pb-4" style={{ '--weelp-motion-delay': '280ms' }}>
             <ul className="flex flex-wrap items-center gap-4">
               <li className="flex items-center gap-2 pr-4 border-r border-[#e4e4e7]">
                 <span className="flex">
@@ -57,7 +65,7 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
 
         {/* Image Gallery */}
         {media_gallery?.length > 0 && (
-          <div className="mt-6">
+          <div className="weelp-hero-ui-rise mt-6" style={{ '--weelp-motion-delay': '360ms' }}>
             <GallerySlider data={media_gallery} collapseHiddenThumbnails />
           </div>
         )}

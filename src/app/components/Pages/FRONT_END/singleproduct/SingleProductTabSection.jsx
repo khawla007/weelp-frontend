@@ -8,6 +8,7 @@ import SimilarExperiences from './SimilarExperiences';
 import ProductSidebar from './ProductSidebar';
 import ItineraryPanel from './ItineraryPanel';
 import ItineraryEditActionBar from './ItineraryEditActionBar';
+import Reveal from '@/app/components/ui/Reveal';
 
 const HEADER_HEIGHT = 66;
 const TAB_BAR_HEIGHT = 60;
@@ -178,42 +179,50 @@ const SingleProductTabSection = ({
           <div className="w-full xl:w-[58%]">
             <div className="xl:pr-[15px]">
               {/* Tab 1: varies by productType */}
-              <div id="tab_1" ref={(el) => (sectionRefs.current['tab_1'] = el)} className="pt-[70px] lg:mb-[35px]">
-                {productType === 'activity' ? (
-                  <OverViewPanel description={productData?.description} />
-                ) : (
-                  productData?.schedules?.length > 0 && (
-                    <ItineraryPanel schedules={productData.schedules} startDate={selectedStartDate} title={TAB_1_LABELS[productType]} session={session} itinerary={itinerary} readOnly={readOnly} />
-                  )
-                )}
-              </div>
+              <Reveal variant="lift">
+                <div id="tab_1" ref={(el) => (sectionRefs.current['tab_1'] = el)} className="pt-[70px] lg:mb-[35px]">
+                  {productType === 'activity' ? (
+                    <OverViewPanel description={productData?.description} />
+                  ) : (
+                    productData?.schedules?.length > 0 && (
+                      <ItineraryPanel schedules={productData.schedules} startDate={selectedStartDate} title={TAB_1_LABELS[productType]} session={session} itinerary={itinerary} readOnly={readOnly} />
+                    )
+                  )}
+                </div>
+              </Reveal>
 
               {/* Tab 2: What's Included */}
-              <div id="tab_2" ref={(el) => (sectionRefs.current['tab_2'] = el)} className="pt-[35px] lg:mb-[35px]">
-                <WhatIncludedPanel />
-              </div>
+              <Reveal variant="lift">
+                <div id="tab_2" ref={(el) => (sectionRefs.current['tab_2'] = el)} className="pt-[35px] lg:mb-[35px]">
+                  <WhatIncludedPanel />
+                </div>
+              </Reveal>
 
               {/* Tab 3: Reviews (conditional) */}
               {hasReviews && (
-                <div id="tab_3" ref={(el) => (sectionRefs.current['tab_3'] = el)} className="pt-[35px] lg:mb-[35px]">
-                  <ReviewPanel productData={productData} activitySlug={activitySlug} />
-                </div>
+                <Reveal variant="lift">
+                  <div id="tab_3" ref={(el) => (sectionRefs.current['tab_3'] = el)} className="pt-[35px] lg:mb-[35px]">
+                    <ReviewPanel productData={productData} activitySlug={activitySlug} />
+                  </div>
+                </Reveal>
               )}
 
               {/* Tab 4: FAQs */}
-              <div id="tab_4" ref={(el) => (sectionRefs.current['tab_4'] = el)} className="pt-[35px] lg:mb-[35px]">
-                <FaqPanel faqs={faqs} />
-              </div>
+              <Reveal variant="lift">
+                <div id="tab_4" ref={(el) => (sectionRefs.current['tab_4'] = el)} className="pt-[35px] lg:mb-[35px]">
+                  <FaqPanel faqs={faqs} />
+                </div>
+              </Reveal>
 
               {/* Similar Experiences */}
-              <div className="lg:mb-[70px]">
+              <Reveal variant="lift" className="lg:mb-[70px]">
                 <SimilarExperiences activities={similarActivities} />
-              </div>
+              </Reveal>
             </div>
           </div>
 
           {/* Right Column — Booking Sidebar */}
-          <div className="w-full xl:w-[42%] relative bg-[#f8faf9]">
+          <Reveal variant="lift" delay={120} className="w-full xl:w-[42%] relative bg-[#f8faf9]">
             {/* Bottom decorative image */}
             <div className="absolute bottom-0 left-0 w-full pointer-events-none overflow-hidden" style={{ maxHeight: '150px' }} aria-hidden="true">
               <Image src={bottomImage} alt="" width={640} height={150} sizes="(max-width: 1280px) 100vw, 640px" className="w-full h-auto object-cover opacity-70" />
@@ -228,7 +237,7 @@ const SingleProductTabSection = ({
               onDateChange={isScheduleType ? handleDateChange : null}
               scheduleCount={isScheduleType ? scheduleCount : 0}
             />
-          </div>
+          </Reveal>
         </div>
       </div>
 

@@ -6,6 +6,7 @@ import TransferSearchForm from '@/app/components/Pages/FRONT_END/transfer/Transf
 import TransferResultsDropdown from '@/app/components/Pages/FRONT_END/transfer/TransferResultsDropdown';
 import ReviewSlider from '@/app/components/sliders/ReviewSlider';
 import AnimatedGlobe from '@/app/components/ui/AnimatedGlobe';
+import Reveal from '@/app/components/ui/Reveal';
 import { faqItems } from '@/app/Data/ShopData';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 
@@ -66,14 +67,24 @@ const TransfersPage = () => {
 
   return (
     <>
-      <section className="relative z-50 min-h-[320px] sm:min-h-[420px] flex justify-center items-center bg-[#f8faf9] p-6 mb-10 md:mb-16 lg:mb-24">
+      <section className="weelp-hero-rise relative z-50 min-h-[320px] sm:min-h-[420px] flex justify-center items-center bg-[#f8faf9] p-6 mb-10 md:mb-16 lg:mb-24">
         <div className="w-full max-w-xl sm:max-w-3xl flex flex-col items-center gap-2 relative z-[60]">
-          <h1 className="text-xl sm:text-5xl font-semibold text-[#18181b] text-center">Book Your Taxi</h1>
+          <h1 className="text-xl sm:text-5xl font-semibold text-[#18181b] text-center">
+            <span className="weelp-rise-mask weelp-rise-mask--block">
+              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
+                Book Your Taxi
+              </span>
+            </span>
+          </h1>
           <p className="max-w-xl text-sm sm:text-lg font-medium text-[#435a67] text-center">
-            You&apos;ll discover everything from whisky to Harry Potter, or even some bodysnatchers, in Scotland&apos;s captivating capital.
+            <span className="weelp-rise-mask weelp-rise-mask--block">
+              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
+                You&apos;ll discover everything from whisky to Harry Potter, or even some bodysnatchers, in Scotland&apos;s captivating capital.
+              </span>
+            </span>
           </p>
 
-          <div className="mt-2 w-full relative z-[70]">
+          <div className="weelp-hero-ui-rise mt-2 w-full relative z-[70]" style={{ '--weelp-motion-delay': '360ms' }}>
             <TransferSearchForm
               onResults={setResults}
               onLoadingChange={setLoading}
@@ -102,13 +113,19 @@ const TransfersPage = () => {
         </div>
       </section>
 
-      <section className="relative">
+      <Reveal as="section" initialHidden className="relative">
         <div className="container-page productSlider space-y-8 pb-10 md:pb-16 lg:pb-24">
-          <h2 className="text-3xl font-semibold text-[#18181b]">Featured Review</h2>
-          <ReviewSlider />
-          <Accordion items={faqItems} />
+          <Reveal as="h2" variant="lift" className="text-3xl font-semibold text-[#18181b]">
+            Featured Review
+          </Reveal>
+          <Reveal variant="lift" delay={120}>
+            <ReviewSlider />
+          </Reveal>
+          <Reveal variant="lift" delay={200}>
+            <Accordion items={faqItems} />
+          </Reveal>
         </div>
-      </section>
+      </Reveal>
     </>
   );
 };
