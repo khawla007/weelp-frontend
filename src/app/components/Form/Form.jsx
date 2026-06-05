@@ -178,10 +178,8 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
     }
   };
 
-  // display form based on data
-  if (locations && locations.length > 0) {
-    return (
-      <div className={`p-4 sm:p-6 px-6 sm:px-0 mx-auto w-full relative bannerForm ${isSearchPage ? 'md:w-[700px]' : 'md:w-[560px]'} ${isModal ? 'pt-0' : ''}`}>
+  return (
+    <div className={`p-4 sm:p-6 px-6 sm:px-0 mx-auto w-full relative bannerForm ${isSearchPage ? 'md:w-[700px]' : 'md:w-[560px]'} ${isModal ? 'pt-0' : ''}`}>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-around items-center gap-4 w-full">
           <div data-testid="booking-filter-bar" className="relative flex border-y-[1px] shadow-sm border w-full bg-white rounded-l-xl rounded-r-xl">
             {controlsSlot}
@@ -366,9 +364,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
               {isSearching ? <LoaderCircle data-testid="search-submit-loader" className="h-5 w-5 animate-spin motion-reduce:animate-none" aria-hidden="true" /> : 'Search'}
             </button>
           )}
-        </form>
-      </div>
-    );
-  }
-  return <></>;
+      </form>
+    </div>
+  );
 }
