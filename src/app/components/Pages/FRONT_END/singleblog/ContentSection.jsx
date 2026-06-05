@@ -6,8 +6,8 @@ import Reveal from '@/app/components/ui/Reveal';
 
 const ContentSection = ({ content = '', categories = [] }) => {
   return (
-    <Reveal as="section" className="flex flex-col lg:flex-row">
-      <div className="flex-[2]">
+    <section className="flex flex-col lg:flex-row">
+      <Reveal variant="lift" initialHidden className="flex-[2]">
         {/* Post Author */}
         <BlogAuthorInfo />
 
@@ -19,14 +19,14 @@ const ContentSection = ({ content = '', categories = [] }) => {
             </div>
           </div>
         )}
-      </div>
+      </Reveal>
 
-      <div className="flex flex-col gap-4 lg:gap-12 flex-1 p-6 px-8">
+      <Reveal variant="lift" initialHidden delay={120} className="flex flex-col gap-4 lg:gap-12 flex-1 p-6 px-8">
         <h3 className="text-lg sm:text-[28px] lg:mt-4 font-semibold text-[#18181b] capitalize">Categories</h3>
         <RelatedLinks categories={categories || []} />
         <FollowUs />
-      </div>
-    </Reveal>
+      </Reveal>
+    </section>
   );
 };
 

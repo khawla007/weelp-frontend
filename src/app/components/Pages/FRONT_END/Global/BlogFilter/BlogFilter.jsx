@@ -45,7 +45,7 @@ const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
   return (
     <div className="flex flex-col gap-8 mt-4">
       {/* Heading + sort on one row */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <Reveal variant="lift" className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-lg sm:text-[28px] font-medium text-[#18181b] capitalize">{title}</h2>
         {/* Sort Bar */}
         <form className="flex flex-wrap gap-4 justify-end">
@@ -78,7 +78,7 @@ const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
             </div>
           </div>
         </form>
-      </div>
+      </Reveal>
 
       {/* Results Grid */}
       {isLoading ? (
@@ -88,7 +88,7 @@ const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
       ) : blogs.length === 0 ? (
         <div className="text-center py-8 text-zinc-500">No blogs found</div>
       ) : (
-        <Reveal as="ul" key={`grid-${current_page}`} stagger={90} variant="lift" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <Reveal as="ul" key={`grid-${current_page}`} initialHidden stagger={60} variant="lift" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {blogs.map((blog) => {
             const item = mapBlogToItemCard(blog);
             return (

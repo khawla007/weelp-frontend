@@ -8,6 +8,7 @@ import { Star } from 'lucide-react';
 import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import { log } from '@/lib/utils';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import Reveal from '@/app/components/ui/Reveal';
 
 import ShopProduct from '../Global/Shop/Shop';
 import Styles from './BannerSection.module.css';
@@ -105,7 +106,7 @@ export const ShopAllProduct = () => {
 
   return (
     <>
-      <section className={`bg-[#588f7a] shop_banner ${Styles.shop_banner}`}>
+      <Reveal as="section" variant="lift" className={`bg-[#588f7a] shop_banner ${Styles.shop_banner}`}>
         <div className="flex items-center justify-center sm:justify-between  bg-[#f8faf9] h-full min-h-20 sm:min-h-36">
           <Icon className={'hidden sm:block -translate-x-20 '} />
           <div className="flex flex-col gap-2">
@@ -114,13 +115,13 @@ export const ShopAllProduct = () => {
           </div>
           <Icon className={'hidden sm:block -translate-x-20 '} />
         </div>
-      </section>
+      </Reveal>
 
       <div className="flex flex-col sm:flex-row gap-4 lg:gap-8 p-8 md:px-12 py-0 mx-auto">
         {/* Top Bar Filter */}
         <div className="w-full flex flex-col gap-4 p-4 md:px-8 ">
           {/* Sorting Bar */}
-          <div className="w-full flex justify-end  p-4 rounded-lg">
+          <Reveal variant="lift" delay={120} className="w-full flex justify-end  p-4 rounded-lg">
             <Select value={sortby} onValueChange={setSortBy}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Sort" />
@@ -137,7 +138,7 @@ export const ShopAllProduct = () => {
                 </SelectGroup>
               </SelectContent>
             </Select>
-          </div>
+          </Reveal>
 
           <div className="w-full flex gap-4 flex-col sm:flex-row">
             {/* Sidebar Filters */}
@@ -216,7 +217,7 @@ export const ShopAllProduct = () => {
               {isLoading ? (
                 <ListingCardSkeleton count={6} className="w-full" />
               ) : (
-                <div className="flex flex-wrap gap-4">
+                <Reveal initialHidden stagger={60} variant="lift" className="flex flex-wrap gap-4">
                   {products.length > 0 ? (
                     products.map((product, index) => (
                       <GlobalCard
@@ -231,7 +232,7 @@ export const ShopAllProduct = () => {
                   ) : (
                     <span className="text-zinc-500 text-lg">No product found</span>
                   )}
-                </div>
+                </Reveal>
               )}
               {/* Pagination Controls */}
               {pagination && pagination.total > pagination.per_page && (

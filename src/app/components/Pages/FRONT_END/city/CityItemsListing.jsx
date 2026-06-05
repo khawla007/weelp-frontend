@@ -46,7 +46,11 @@ export default async function CityItemsListing({ citySlug, itemType, searchParam
   return (
     <section className="container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24">
       <BreadCrumb />
-      <SectionHeader superTitle={`Explore ${cityName}`} title={`All ${label}`} titleSize="lg" subtitle={`Discover the best ${label.toLowerCase()} in ${cityName}.`} />
+      <div className="weelp-rise-mask weelp-rise-mask--block">
+        <div className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
+          <SectionHeader superTitle={`Explore ${cityName}`} title={`All ${label}`} titleSize="lg" subtitle={`Discover the best ${label.toLowerCase()} in ${cityName}.`} />
+        </div>
+      </div>
 
       {isError ? (
         <div className="flex flex-col items-center gap-4 py-20 text-center">
@@ -65,7 +69,7 @@ export default async function CityItemsListing({ citySlug, itemType, searchParam
         </div>
       ) : (
         <>
-          <Reveal initialHidden stagger={90} variant="lift" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <Reveal initialHidden stagger={60} variant="lift" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {items.map((item) => {
               const cardProps = mapProductToItemCard(item, citySlug);
               return <ItemCard key={cardProps.id} {...cardProps} />;

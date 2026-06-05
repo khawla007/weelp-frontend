@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import CityCard from '@/app/components/CityCard';
-import SectionHeader from '@/app/components/ui/SectionHeader';
 import BreadCrumb from '@/app/components/BreadCrumb';
+import Reveal from '@/app/components/ui/Reveal';
 import { getAllCities } from '@/lib/services/cities';
 
 export const metadata = {
@@ -23,7 +23,23 @@ export default async function CitiesPage({ searchParams }) {
   return (
     <section className="container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24">
       <BreadCrumb />
-      <SectionHeader superTitle="Discover your next adventure" title="All Cities" titleSize="lg" subtitle="Browse all destinations and find the perfect city for your next trip." />
+
+      <section className="weelp-hero-rise flex flex-col items-center gap-3 pt-6 text-center">
+        <h1 className="text-3xl font-semibold text-[#18181b] sm:text-5xl">
+          <span className="weelp-rise-mask weelp-rise-mask--block">
+            <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
+              Cities
+            </span>
+          </span>
+        </h1>
+        <p className="max-w-xl text-sm font-medium text-[#435a67] sm:text-lg">
+          <span className="weelp-rise-mask weelp-rise-mask--block">
+            <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
+              Explore destinations city by city and find the perfect place for your next trip.
+            </span>
+          </span>
+        </p>
+      </section>
 
       {isError ? (
         <div className="flex flex-col items-center gap-4 py-20 text-center">
@@ -40,11 +56,11 @@ export default async function CitiesPage({ searchParams }) {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <Reveal as="section" initialHidden stagger={60} variant="lift" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {cities.map((city) => (
               <CityCard key={city.id} city={city} />
             ))}
-          </div>
+          </Reveal>
 
           {lastPage > 1 && <Pagination currentPage={currentPage} lastPage={lastPage} />}
         </>

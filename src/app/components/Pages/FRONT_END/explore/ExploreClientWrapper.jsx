@@ -5,6 +5,7 @@ import CreatorFilter from './SectionCreatorFilter';
 import CreatorStatCards from './CreatorStatCards';
 import CreatorApplicationForm from './CreatorApplicationForm';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
+import Reveal from '@/app/components/ui/Reveal';
 import { getApplicationStatus } from '@/lib/actions/creatorApplications';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -74,7 +75,7 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
 
       {/* Creator Welcome / Pending / Apply Banner */}
       {isLoggedIn && !statusLoading && (
-        <div className="relative z-10 max-w-[95%] mx-auto px-6 py-4">
+        <Reveal variant="lift" className="relative z-10 max-w-[95%] mx-auto px-6 py-4">
           {isCreator ? (
             <div className="flex items-center justify-between bg-gradient-to-r from-[#588f7a]/10 to-[#588f7a]/5 rounded-xl p-6">
               <div>
@@ -117,7 +118,7 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
               </Button>
             </div>
           )}
-        </div>
+        </Reveal>
       )}
 
       {/* Itinerary Feed */}

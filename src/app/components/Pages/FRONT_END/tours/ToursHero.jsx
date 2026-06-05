@@ -28,7 +28,7 @@ export default function ToursHero() {
             </span>
           </span>
         </p>
-        <div className="weelp-hero-rise mt-2 w-full" style={{ '--weelp-motion-delay': '360ms' }}>
+        <div className="weelp-hero-ui-rise mt-2 w-full" style={{ '--weelp-motion-delay': '360ms' }}>
           <ToursFilterBar />
         </div>
       </div>

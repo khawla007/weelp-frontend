@@ -16,9 +16,11 @@ const AboutMission = () => {
   ];
 
   return (
-    <Reveal as="section" className="container-page pb-10 md:pb-16 lg:pb-24">
-      <h2 className="mb-12 text-center text-[28px] text-[#18181b] md:text-[28px]">Our Purpose</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <section className="container-page pb-10 md:pb-16 lg:pb-24">
+      <Reveal as="h2" variant="lift" className="mb-12 text-center text-[28px] text-[#18181b] md:text-[28px]">
+        Our Purpose
+      </Reveal>
+      <Reveal initialHidden stagger={60} variant="lift" className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {cards.map((card, index) => {
           const Icon = card.icon;
           return (
@@ -35,8 +37,8 @@ const AboutMission = () => {
             </div>
           );
         })}
-      </div>
-    </Reveal>
+      </Reveal>
+    </section>
   );
 };
 

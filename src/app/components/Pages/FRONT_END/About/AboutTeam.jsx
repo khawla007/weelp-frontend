@@ -19,9 +19,11 @@ const AboutTeam = () => {
   };
 
   return (
-    <Reveal as="section" className="container-page pb-10 md:pb-16 lg:pb-24">
-      <h2 className="mb-12 text-center text-[28px] text-[#18181b] md:text-[28px]">Meet the Team</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <section className="container-page pb-10 md:pb-16 lg:pb-24">
+      <Reveal as="h2" variant="lift" className="mb-12 text-center text-[28px] text-[#18181b] md:text-[28px]">
+        Meet the Team
+      </Reveal>
+      <Reveal initialHidden stagger={60} variant="lift" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {team.map((member, index) => (
           <div
             key={index}
@@ -40,8 +42,8 @@ const AboutTeam = () => {
             <p className="text-sm font-normal leading-[1.5] text-[#71717a]">{member.role}</p>
           </div>
         ))}
-      </div>
-    </Reveal>
+      </Reveal>
+    </section>
   );
 };
 

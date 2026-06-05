@@ -1,15 +1,22 @@
 import React from 'react';
 import ProductSlider from '../../../sliders/ProductSlider';
+import Reveal from '@/app/components/ui/Reveal';
 
 // sliders
 const ProductSliderSection = ({ sliderTitle, destinations = [] }) => {
   return (
-    <section className="container-page flex flex-col gap-3 pb-10 md:pb-16 lg:pb-24 productSlider">
-      <h2 className="text-lg sm:text-[28px] font-medium text-[#18181b] top-4 capitalize">{sliderTitle || 'Top activities'}</h2>
+    <Reveal as="section" initialHidden className="container-page flex flex-col gap-3 pb-10 md:pb-16 lg:pb-24 productSlider">
+      <Reveal as="h2" variant="lift" className="text-lg sm:text-[28px] font-medium text-[#18181b] top-4 capitalize">
+        {sliderTitle || 'Top activities'}
+      </Reveal>
 
       {/* Check Items */}
-      {destinations && destinations.length > 0 && <ProductSlider data={destinations} />}
-    </section>
+      {destinations && destinations.length > 0 && (
+        <Reveal variant="lift" delay={120}>
+          <ProductSlider data={destinations} />
+        </Reveal>
+      )}
+    </Reveal>
   );
 };
 

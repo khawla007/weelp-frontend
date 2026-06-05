@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import CreatorItineraryCard from './CreatorItineraryCard';
+import Reveal from '@/app/components/ui/Reveal';
 import { ChevronDown, Check, UserPlus, Sparkles, TrendingUp, Home, Clock } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -145,7 +146,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
   return (
     <section className="relative max-w-[95%] mx-auto">
       {/* Top Bar */}
-      <div className="flex justify-between items-center flex-col sm:flex-row px-6">
+      <Reveal variant="lift" className="flex justify-between items-center flex-col sm:flex-row px-6">
         {/* Sort Dropdown — hidden on Trending tab */}
         <div className="mt-[1.5rem]">
           {activeTab === 'home' ? (
@@ -236,7 +237,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </div>
+      </Reveal>
 
       {/* Results Section */}
       <div className="flex flex-col gap-4 py-6">
@@ -250,13 +251,13 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
             <p className="text-sm mt-2">{activeSource === 'mine' ? 'Share your travel experiences with the community!' : 'Be the first creator to share your travel experience!'}</p>
           </div>
         ) : (
-          <ul className="w-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+          <Reveal as="ul" initialHidden stagger={60} variant="lift" className="w-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
             {displayItineraries.map((itinerary) => (
               <li key={itinerary.id}>
                 <CreatorItineraryCard itinerary={itinerary} isLoggedIn={isAuthenticated} />
               </li>
             ))}
-          </ul>
+          </Reveal>
         )}
 
         {/* Infinite scroll sentinel — disabled on trending tab */}

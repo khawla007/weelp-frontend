@@ -5,6 +5,7 @@ import TopBarFilter from '../../shop/shoppagefilter/TopBarFilter';
 import SingleProductCard from '@/app/components/SingleProductCard';
 import { fakeData } from '@/app/Data/ShopData';
 import { ChevronRight } from 'lucide-react';
+import Reveal from '@/app/components/ui/Reveal';
 
 // Reducer Logic
 const reducer = (state, action) => {
@@ -88,15 +89,17 @@ export const SpecialFilter = () => {
           <Sidebar dispatch={dispatch} data={fakeData} />
         </div>
         <div className="flex-[2] py-4">
-          <TopBarFilter dispatch={dispatch} />
+          <Reveal variant="lift">
+            <TopBarFilter dispatch={dispatch} />
+          </Reveal>
           {/* Filtered data */}
           <div className="flex flex-col py-4">
             {currentItems.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <Reveal initialHidden stagger={60} variant="lift" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {currentItems.map((item, index) => (
                   <SingleProductCard key={item.id} productId={item.id} imgsrc={item.image} productTitle={item.name} />
                 ))}
-              </div>
+              </Reveal>
             ) : (
               <p className="text-center text-zinc-500">No items match the selected filters.</p>
             )}

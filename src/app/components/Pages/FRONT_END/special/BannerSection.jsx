@@ -33,7 +33,7 @@ const BannerSection = () => {
             </span>
           </span>
         </p>
-        <div className="weelp-hero-rise" style={{ '--weelp-motion-delay': '360ms' }}>
+        <div className="weelp-hero-ui-rise" style={{ '--weelp-motion-delay': '360ms' }}>
           <BannerSelectBox />
         </div>
       </div>

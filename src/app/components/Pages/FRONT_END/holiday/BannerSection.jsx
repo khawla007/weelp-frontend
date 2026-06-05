@@ -28,7 +28,7 @@ const BannerSection = () => {
             </span>
           </span>
         </p>
-        <div className="weelp-hero-rise mt-2 w-full [&_.bannerForm]:pt-0 [&_.bannerForm]:sm:pt-0" style={{ '--weelp-motion-delay': '360ms' }}>
+        <div className="weelp-hero-ui-rise mt-2 w-full [&_.bannerForm]:pt-0 [&_.bannerForm]:sm:pt-0" style={{ '--weelp-motion-delay': '360ms' }}>
           <BookingForm />
         </div>
       </div>
