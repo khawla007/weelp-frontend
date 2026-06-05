@@ -42,7 +42,10 @@ const Footer = () => {
                             {link.label}
                           </Link>
                         ) : (
-                          <span className="text-[14px] md:text-[15px] lg:text-[18px] text-black cursor-pointer transition-colors duration-200 ease-out hover:text-[#18181b]/70" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
+                          <span
+                            className="text-[14px] md:text-[15px] lg:text-[18px] text-black cursor-pointer transition-colors duration-200 ease-out hover:text-[#18181b]/70"
+                            style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}
+                          >
                             {link.label}
                           </span>
                         )}
