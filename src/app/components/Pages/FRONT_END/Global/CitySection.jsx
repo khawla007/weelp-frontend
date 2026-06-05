@@ -5,12 +5,7 @@ import Reveal from '@/app/components/ui/Reveal';
 const CitySection = ({ data }) => {
   if (data && data.length > 0) {
     return (
-      <Reveal
-        as="section"
-        initialHidden
-        stagger={60}
-        className="container-page grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 pb-10 md:pb-16 lg:pb-24"
-      >
+      <Reveal as="section" initialHidden stagger={60} className="container-page grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 pb-10 md:pb-16 lg:pb-24">
         {data.slice(0, 6).map(({ name, icon: Icon }, index) => (
           <Card
             key={index}
