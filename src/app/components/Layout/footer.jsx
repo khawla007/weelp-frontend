@@ -27,7 +27,7 @@ const Footer = () => {
             <div className="relative z-10 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 md:grid-cols-4 md:gap-8 lg:grid-cols-5">
               {FOOTER_COLUMNS.map((column) => (
                 <div key={column.title} className="space-y-4">
-                  <h3 className="text-[15px] md:text-[16px] lg:text-[18px] text-[#18181b]" style={{ fontFamily: fontIT, fontWeight: 600, letterSpacing: '-0.38px' }}>
+                  <h3 className="text-[15px] md:text-[16px] lg:text-[18px] text-[#18181b]" style={{ fontFamily: fontIT, fontWeight: 700, letterSpacing: '-0.38px' }}>
                     {column.title}
                   </h3>
                   <div className="space-y-3">
@@ -36,13 +36,13 @@ const Footer = () => {
                         {link.href ? (
                           <Link
                             href={link.href}
-                            className="text-[14px] md:text-[15px] lg:text-[18px] text-black transition-colors duration-200 ease-out hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+                            className="text-[14px] md:text-[15px] lg:text-[18px] text-black visited:text-black cursor-pointer transition-colors duration-200 ease-out hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
                             style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}
                           >
                             {link.label}
                           </Link>
                         ) : (
-                          <span className="text-[14px] md:text-[15px] lg:text-[18px] text-black" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
+                          <span className="text-[14px] md:text-[15px] lg:text-[18px] text-black cursor-pointer transition-colors duration-200 ease-out hover:text-[#18181b]/70" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
                             {link.label}
                           </span>
                         )}
@@ -62,7 +62,7 @@ const Footer = () => {
 
               {/* Payment Partners column */}
               <div className="col-span-2 space-y-4 sm:col-span-1">
-                <h3 className="text-[15px] md:text-[16px] lg:text-[18px] text-[#18181b]" style={{ fontFamily: fontIT, fontWeight: 600, letterSpacing: '-0.38px' }}>
+                <h3 className="text-[15px] md:text-[16px] lg:text-[18px] text-[#18181b]" style={{ fontFamily: fontIT, fontWeight: 700, letterSpacing: '-0.38px' }}>
                   Payment Partners
                 </h3>
                 <img src="/assets/images/payment-partners.png" alt="Payment Partners - Visa, Mastercard, PayPal, Apple Pay, Google Pay" className="w-full max-w-[355px] h-auto" />
@@ -116,7 +116,7 @@ const Footer = () => {
                   <Link
                     key={item.label}
                     href={item.href}
-                    className="text-[13px] md:text-[15px] lg:text-[18px] text-black cursor-pointer transition-colors duration-200 ease-out hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+                    className="text-[13px] md:text-[15px] lg:text-[18px] text-black visited:text-black cursor-pointer transition-colors duration-200 ease-out hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
                     style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}
                   >
                     {item.label}
