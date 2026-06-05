@@ -118,10 +118,10 @@ const ModalForm = ({ showForm, setShowForm, handleShowForm }) => {
                   ref={closeButtonRef}
                   type="button"
                   aria-label="Close search"
-                  className="absolute -right-3 -top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-red-100 bg-white text-red-600 shadow-lg shadow-black/10 transition-[background-color,color,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-red-50 hover:text-red-700 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+                  className="absolute -right-2.5 -top-2.5 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-red-100 bg-white text-red-600 shadow-md shadow-black/10 transition-[background-color,color,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-red-50 hover:text-red-700 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                   onClick={handleShowForm}
                 >
-                  <X size={18} strokeWidth={2.5} />
+                  <X size={14} strokeWidth={2.5} />
                 </button>
               </DialogPrimitive.Close>
             }
