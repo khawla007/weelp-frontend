@@ -6,8 +6,9 @@ import { MapPin, Calendar, Users, ChevronRight, X } from 'lucide-react';
 import { useForm, Controller, useWatch } from 'react-hook-form';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import { getCitiesRegions, homeSearch } from '@/lib/services/global';
+import { homeSearch } from '@/lib/services/global';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
+import { useCitiesRegions } from '@/hooks/useCitiesRegions';
 
 const PANEL_MOTION_CLASS = 'transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none motion-reduce:transform-none';
 const OPEN_PANEL_MOTION_CLASS = 'opacity-100 translate-y-0 scale-100 animate-in fade-in-0 slide-in-from-top-1';
@@ -24,7 +25,7 @@ const PANEL_EXIT_MS = 160;
 const CLOSED_PANEL_A11Y_PROPS = { 'aria-hidden': true, inert: true };
 
 export default function FilterBar() {
-  const [allLocations, setAllLocations] = useState([]);
+  const { data: allLocations, loading: locationsLoading } = useCitiesRegions();
   const [showLocation, setShowLocation] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showHowMany, setShowHowMany] = useState(false);
@@ -114,22 +115,13 @@ export default function FilterBar() {
     };
   }, []);
 
-  // fetch locations
+  // Mirror the shared cities/regions list into the filtered state once it arrives,
+  // unless the user has already started typing a filter.
   useEffect(() => {
-    const fetchAllLocations = async () => {
-      try {
-        const response = await getCitiesRegions();
-        const locations = response?.data || response || [];
-        setAllLocations(Array.isArray(locations) ? locations : []);
-        setFilteredLocations(Array.isArray(locations) ? locations : []);
-      } catch (error) {
-        console.log('Error fetching cities:', error);
-        setAllLocations([]);
-        setFilteredLocations([]);
-      }
-    };
-    fetchAllLocations();
-  }, []);
+    if (!hasTyped) {
+      setFilteredLocations(allLocations);
+    }
+  }, [allLocations, hasTyped]);
 
   // Close location dropdown on click outside
   useEffect(() => {
@@ -311,7 +303,7 @@ export default function FilterBar() {
                       <span className="text-[12px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded">{loc.type}</span>
                     </button>
                   ))
-                ) : (
+                ) : locationsLoading ? null : (
                   <div className="px-4 py-3 text-sm text-zinc-400 text-center">No cities match that yet.</div>
                 )}
               </div>

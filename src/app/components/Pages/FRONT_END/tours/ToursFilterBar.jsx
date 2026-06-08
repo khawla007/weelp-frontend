@@ -4,12 +4,12 @@ import { useState, useEffect, useRef } from 'react';
 import { MapPin, Calendar, Users, Loader2, X } from 'lucide-react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import { getCitiesRegions } from '@/lib/services/global';
 import { toursSearch } from '@/lib/services/tours';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
+import { useCitiesRegions } from '@/hooks/useCitiesRegions';
 
 export default function ToursFilterBar() {
-  const [cities, setCities] = useState([]);
+  const { data: cities, loading: citiesLoading } = useCitiesRegions();
 
   // From / To state
   const [from, setFrom] = useState(null);
@@ -44,22 +44,16 @@ export default function ToursFilterBar() {
   const [resultsLoading, setResultsLoading] = useState(false);
   const resultsRef = useRef(null);
 
-  // Fetch cities on mount
+  // Mirror the shared cities list into each filtered subset once it arrives,
+  // unless the user has already started typing in that field. Split per
+  // field so typing in From doesn't re-fire the To setter (and vice versa).
   useEffect(() => {
-    const fetchCities = async () => {
-      try {
-        const response = await getCitiesRegions();
-        const cityList = Array.isArray(response) ? response : response?.data || [];
-        setCities(cityList);
-        setFilteredFromCities(cityList);
-        setFilteredToCities(cityList);
-      } catch (error) {
-        console.error('Error fetching cities:', error);
-        setCities([]);
-      }
-    };
-    fetchCities();
-  }, []);
+    if (!fromHasTyped) setFilteredFromCities(cities);
+  }, [cities, fromHasTyped]);
+
+  useEffect(() => {
+    if (!toHasTyped) setFilteredToCities(cities);
+  }, [cities, toHasTyped]);
 
   // Close from dropdown on click outside
   useEffect(() => {
@@ -278,7 +272,7 @@ export default function ToursFilterBar() {
                     <span className="text-[12px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
                   </div>
                 ))
-              ) : (
+              ) : citiesLoading ? null : (
                 <div className="px-4 py-3 text-sm text-zinc-400 text-center">No locations found</div>
               )}
             </div>
@@ -326,7 +320,7 @@ export default function ToursFilterBar() {
                     <span className="text-[12px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
                   </div>
                 ))
-              ) : (
+              ) : citiesLoading ? null : (
                 <div className="px-4 py-3 text-sm text-zinc-400 text-center">No locations found</div>
               )}
             </div>

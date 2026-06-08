@@ -9,7 +9,7 @@ import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { useRouter } from 'next/navigation';
 import { log } from '@/lib/utils';
-import { getCitiesRegions } from '@/lib/services/global';
+import { useCitiesRegions } from '@/hooks/useCitiesRegions';
 
 // Zod Schema
 const bookingSchema = z.object({
@@ -32,7 +32,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
   const isModal = variant === 'modal';
   const isSearchPage = variant === 'searchPage';
 
-  const [allLocations, setAllLocations] = useState([]);
+  const { data: allLocations, loading: locationsLoading } = useCitiesRegions();
   const [showLocation, setShowLocation] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showHowMany, setShowHowMany] = useState(false);
@@ -47,23 +47,13 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
     infants: 0,
   });
 
-  // fetch locations
+  // Mirror the hook's source list into the filtered state when it arrives,
+  // unless the user has already started typing a filter.
   useEffect(() => {
-    const fetchAllLocations = async () => {
-      try {
-        const response = await getCitiesRegions();
-        const locations = response?.data || response || [];
-        const safe = Array.isArray(locations) ? locations : [];
-        setAllLocations(safe);
-        setFilteredLocations(safe);
-      } catch (error) {
-        console.log('Error fetching cities:', error);
-        setAllLocations([]);
-        setFilteredLocations([]);
-      }
-    };
-    fetchAllLocations();
-  }, []);
+    if (!hasTyped) {
+      setFilteredLocations(allLocations); // eslint-disable-line react-hooks/set-state-in-effect -- syncing external fetch result into a derived list the consumer also mutates from input handlers
+    }
+  }, [allLocations, hasTyped]);
 
   // React Hook Form setup with Zod
   const {
@@ -277,7 +267,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
                           {loc.name}
                         </li>
                       ))
-                    ) : (
+                    ) : locationsLoading ? null : (
                       <li className="px-4 py-2 text-gray-500 cursor-default">No locations found</li>
                     )}
                   </ul>
