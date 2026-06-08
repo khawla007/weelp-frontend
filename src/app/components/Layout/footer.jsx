@@ -36,10 +36,14 @@ const Footer = () => {
                         {link.href ? (
                           <Link
                             href={link.href}
-                            className="text-[14px] md:text-[15px] lg:text-[18px] text-black visited:text-black cursor-pointer transition-colors duration-200 ease-out hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+                            className="group/nav relative inline-flex text-[14px] md:text-[15px] lg:text-[18px] text-black visited:text-black cursor-pointer transition-[color] duration-200 ease-out motion-reduce:transition-none hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
                             style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}
                           >
                             {link.label}
+                            <span
+                              aria-hidden="true"
+                              className="pointer-events-none absolute -bottom-2 left-0 h-px w-full origin-left rounded-full bg-[#588f7a] scale-x-0 opacity-0 transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none group-hover/nav:scale-x-100 group-hover/nav:opacity-100"
+                            />
                           </Link>
                         ) : (
                           <span
