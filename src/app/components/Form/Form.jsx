@@ -37,7 +37,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
   const [showCalendar, setShowCalendar] = useState(false);
   const [showHowMany, setShowHowMany] = useState(false);
   const [showResponse, setShowResponse] = useState(false);
-  const [filteredLocations, setFilteredLocations] = useState(allLocations || []);
+  const [filteredLocations, setFilteredLocations] = useState([]);
   const [inputValue, setInputValue] = useState(''); // input for filtering
   const [hasTyped, setHasTyped] = useState(false); // track if user typed
 
@@ -52,10 +52,14 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
     const fetchAllLocations = async () => {
       try {
         const response = await getCitiesRegions();
-        setAllLocations(response); // Assuming API returns an array of cities && region
+        const locations = response?.data || response || [];
+        const safe = Array.isArray(locations) ? locations : [];
+        setAllLocations(safe);
+        setFilteredLocations(safe);
       } catch (error) {
         console.log('Error fetching cities:', error);
         setAllLocations([]);
+        setFilteredLocations([]);
       }
     };
     fetchAllLocations();
@@ -151,20 +155,18 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
     setShowResponse(false);
   };
 
-  //all location
-  const { data: locations = [] } = allLocations;
-
   // onchange handle
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInputValue(value);
-    setHasTyped(true); // user has typed
+    setHasTyped(true);
 
     if (value.trim() === '') {
-      setFilteredLocations(locations); // show full list if input empty
-      setHasTyped(false); // no longer considered typed
+      setFilteredLocations(allLocations);
+      setHasTyped(false);
     } else {
-      const filtered = locations.filter((loc) => loc.name.toLowerCase().includes(value.toLowerCase()));
+      const lower = value.toLowerCase();
+      const filtered = allLocations.filter((loc) => loc.name.toLowerCase().includes(lower));
       setFilteredLocations(filtered);
     }
   };
@@ -173,8 +175,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
   const handleInputClick = () => {
     setShowLocation(true);
     if (!hasTyped) {
-      // first time click → show all locations
-      setFilteredLocations(locations);
+      setFilteredLocations(allLocations);
     }
   };
 
