@@ -126,8 +126,8 @@ const NavMenuDesktop = () => {
   const isMegaActive = pathname ? DESTINATION_ACTIVE_PREFIXES.some((p) => pathname.startsWith(p)) : false;
 
   const linkClass = (active) =>
-    `group/nav relative flex items-center gap-2 whitespace-nowrap rounded-sm text-[15px] font-medium transition-[color] duration-200 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#18181b]/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white xl:text-[16px] hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 ${
-      active ? 'text-[#18181b]/70 visited:text-[#18181b]/70' : 'text-black visited:text-black'
+    `group/nav relative flex items-center gap-2 whitespace-nowrap rounded-sm text-[15px] font-medium transition-[color] duration-200 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#18181b]/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white xl:text-[16px] hover:text-[#18181b]/70 ${
+      active ? 'text-[#18181b]/70' : 'text-black'
     }`;
 
   const indicator = (active) => (

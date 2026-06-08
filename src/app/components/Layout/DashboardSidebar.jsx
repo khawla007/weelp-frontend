@@ -29,7 +29,7 @@ function isActive(pathname, url) {
   return pathname.startsWith(url);
 }
 
-export default function DashboardSidebar({ nav, user, accent = 'text-black visited:text-black' }) {
+export default function DashboardSidebar({ nav, user, accent = 'text-black' }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -86,7 +86,7 @@ export default function DashboardSidebar({ nav, user, accent = 'text-black visit
                 href={route.url}
                 data-active={active ? 'true' : 'false'}
                 className={`flex items-center gap-2 px-3 py-2 text-md transition-colors duration-200 ease-out rounded-full ${
-                  active ? accent : 'text-black visited:text-black hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70'
+                  active ? accent : 'text-black hover:text-[#18181b]/70'
                 }`}
               >
                 <route.icon strokeWidth={2} className="size-5" />

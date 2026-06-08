@@ -189,7 +189,7 @@ const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error, isCurrent }
           <Link
             key={title}
             href={href}
-            className="rounded-[18px] border border-[#e4e4e7] bg-white px-4 py-3.5 text-[15px] font-semibold text-black visited:text-black hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 shadow-[0_18px_32px_-28px_rgba(18,51,71,0.7)]"
+            className="rounded-[18px] border border-[#e4e4e7] bg-white px-4 py-3.5 text-[15px] font-semibold text-black hover:text-[#18181b]/70 shadow-[0_18px_32px_-28px_rgba(18,51,71,0.7)]"
           >
             {title}
           </Link>

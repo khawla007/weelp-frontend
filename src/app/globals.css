@@ -139,7 +139,6 @@ body {
     --label: #71717a;
     --link-default: #588f7a;
     --link-hover: #4d8069;
-    --link-visited: #4d8069;
   }
 
   .dark {
@@ -686,7 +685,7 @@ body {
   }
 
   a:visited {
-    color: var(--link-visited);
+    color: inherit;
   }
 
   button {

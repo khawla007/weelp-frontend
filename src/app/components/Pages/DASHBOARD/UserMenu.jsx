@@ -42,7 +42,7 @@ export default function UserMenu({ session }) {
                 size="lg"
                 className={cn(
                   'data-[state=open]:text-black',
-                  'gap-2 px-2 py-1.5 text-black visited:text-black hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 transition-colors duration-200 ease-out',
+                  'gap-2 px-2 py-1.5 text-black hover:text-[#18181b]/70 transition-colors duration-200 ease-out',
                 )}
               >
                 <Avatar className="h-9 w-9 rounded-lg border-2 border-white shadow-sm">
@@ -64,19 +64,19 @@ export default function UserMenu({ session }) {
           </div>
           <DropdownMenuContent className="w-56 rounded-lg shadow-lg border-gray-200 dark:border-gray-700" side="bottom" align="end" sideOffset={8}>
             <DropdownMenuGroup>
-              <DropdownMenuItem asChild className="cursor-pointer text-black visited:text-black hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 focus:text-[#18181b]/70">
+              <DropdownMenuItem asChild className="cursor-pointer text-black hover:text-[#18181b]/70 focus:text-[#18181b]/70">
                 <Link href="/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <Home className="h-4 w-4" />
                   <span>Back to Site</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer text-black visited:text-black hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 focus:text-[#18181b]/70">
+              <DropdownMenuItem asChild className="cursor-pointer text-black hover:text-[#18181b]/70 focus:text-[#18181b]/70">
                 <Link href="/dashboard/admin/settings" className="flex items-center gap-2">
                   <Settings className="h-4 w-4" />
                   <span>Settings</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer text-black visited:text-black hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 focus:text-[#18181b]/70">
+              <DropdownMenuItem asChild className="cursor-pointer text-black hover:text-[#18181b]/70 focus:text-[#18181b]/70">
                 <Link href="/dashboard/admin/users" className="flex items-center gap-2">
                   <Users className="h-4 w-4" />
                   <span>Users</span>

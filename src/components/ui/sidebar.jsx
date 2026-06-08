@@ -325,7 +325,7 @@ const SidebarMenuItem = React.forwardRef(({ className, ...props }, ref) => <li r
 SidebarMenuItem.displayName = 'SidebarMenuItem';
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm text-black visited:text-black outline-none ring-sidebar-ring transition-colors duration-200 ease-out hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 focus-visible:ring-2 active:text-[#18181b]/70 disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium data-[active=true]:text-black data-[state=open]:hover:text-[#18181b]/70 group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+  'peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm text-black outline-none ring-sidebar-ring transition-colors duration-200 ease-out hover:text-[#18181b]/70 focus-visible:ring-2 active:text-[#18181b]/70 disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium data-[active=true]:text-black data-[state=open]:hover:text-[#18181b]/70 group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -455,7 +455,7 @@ const SidebarMenuSubButton = React.forwardRef(({ asChild = false, size = 'md', i
       data-size={size}
       data-active={isActive}
       className={cn(
-        'flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-black visited:text-black outline-none ring-sidebar-ring transition-colors duration-200 ease-out hover:text-[#18181b]/70 visited:hover:text-[#18181b]/70 focus-visible:ring-2 active:text-[#18181b]/70 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+        'flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-black outline-none ring-sidebar-ring transition-colors duration-200 ease-out hover:text-[#18181b]/70 focus-visible:ring-2 active:text-[#18181b]/70 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
         'data-[active=true]:text-black',
         size === 'sm' && 'text-xs',
         size === 'md' && 'text-sm',
