@@ -38,13 +38,7 @@ export default function UserMenu({ session }) {
         <DropdownMenu>
           <div suppressHydrationWarning>
             <DropdownMenuTrigger asChild>
-              <SidebarMenuButton
-                size="lg"
-                className={cn(
-                  'data-[state=open]:text-black',
-                  'gap-2 px-2 py-1.5 text-black hover:text-[#18181b]/70 transition-colors duration-200 ease-out',
-                )}
-              >
+              <SidebarMenuButton size="lg" className={cn('data-[state=open]:text-black', 'gap-2 px-2 py-1.5 text-black hover:text-[#18181b]/70 transition-colors duration-200 ease-out')}>
                 <Avatar className="h-9 w-9 rounded-lg border-2 border-white shadow-sm">
                   {avatarSrc && <AvatarImage src={avatarSrc} alt={name || 'user'} />}
                   <AvatarFallback className="text-white font-semibold rounded-lg" style={{ backgroundColor: '#568f7c' }}>

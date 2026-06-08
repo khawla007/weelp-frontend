@@ -85,9 +85,7 @@ export default function DashboardSidebar({ nav, user, accent = 'text-black' }) {
                 key={route.url}
                 href={route.url}
                 data-active={active ? 'true' : 'false'}
-                className={`flex items-center gap-2 px-3 py-2 text-md transition-colors duration-200 ease-out rounded-full ${
-                  active ? accent : 'text-black hover:text-[#18181b]/70'
-                }`}
+                className={`flex items-center gap-2 px-3 py-2 text-md transition-colors duration-200 ease-out rounded-full ${active ? accent : 'text-black hover:text-[#18181b]/70'}`}
               >
                 <route.icon strokeWidth={2} className="size-5" />
                 {!collapsed && <span>{route.title}</span>}
