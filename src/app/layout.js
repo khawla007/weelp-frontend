@@ -37,7 +37,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html suppressHydrationWarning={true}>
+    <html lang="en" suppressHydrationWarning={true}>
       <body className={`${interTight.variable} ${inter.variable} ${outfit.variable} ${montez.variable} font-sans antialiased tfc_scroll`}>{children}</body>
     </html>
   );

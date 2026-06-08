@@ -1,7 +1,7 @@
 import React from 'react';
 import { BannerSelectBox } from './bannermodules';
 
-const bannerImage = '/assets/images/special.png';
+const bannerImage = '/assets/images/special.webp';
 
 const BannerSection = () => {
   return (

@@ -111,7 +111,9 @@ export const ShopAllProduct = () => {
           <Icon className={'hidden sm:block -translate-x-20 '} />
           <div className="flex flex-col gap-2">
             <h1 className="font-semibold sm:text-3xl text-center text-[#18181b] ">Shop</h1>
-            {products && products.length > 0 && <p className="text-center font-medium text-[#18181b] text-sm sm:text-lg">{products.length} Result Founds</p>}
+            <p aria-live="polite" className="text-center font-medium text-[#18181b] text-sm sm:text-lg min-h-[1.25rem] sm:min-h-[1.75rem]">
+              {products && products.length > 0 ? `${products.length} Result Founds` : ' '}
+            </p>
           </div>
           <Icon className={'hidden sm:block -translate-x-20 '} />
         </div>
@@ -123,7 +125,7 @@ export const ShopAllProduct = () => {
           {/* Sorting Bar */}
           <Reveal variant="lift" delay={120} className="w-full flex justify-end  p-4 rounded-lg">
             <Select value={sortby} onValueChange={setSortBy}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger aria-label="Sort products" className="w-[180px]">
                 <SelectValue placeholder="Sort" />
               </SelectTrigger>
               <SelectContent>
@@ -145,7 +147,7 @@ export const ShopAllProduct = () => {
             <div className="w-full h-fit sm:max-w-xs p-4 bg-white shadow-md rounded-lg">
               {/* Category Filters */}
               <h2 className="text-lg font-medium text-[#18181b] my-4">Category</h2>
-              <div className="w-full max-w-full flex flex-col space-y-2">
+              <div className="w-full max-w-full flex flex-col space-y-2 min-h-[14rem]">
                 <label className="flex items-center space-x-2 cursor-pointer text-[#435a67]">
                   <input type="checkbox" checked={!selectedCategories.length} onChange={() => setSelectedCategories([])} className="size-5 cursor-pointer checked:accent-[#588f7a]" />
                   <span>All Categories</span>
@@ -170,7 +172,15 @@ export const ShopAllProduct = () => {
 
               {/* Price Range Filter */}
               <h2 className="text-lg font-medium text-[#18181b] mt-6 mb-4">Price Range</h2>
-              <ReactRangeSliderInput min={100} max={5000} step={10} value={priceRange} onInput={setPriceRange} className="w-full" />
+              <ReactRangeSliderInput
+                min={100}
+                max={5000}
+                step={10}
+                value={priceRange}
+                onInput={setPriceRange}
+                ariaLabel={['Minimum price', 'Maximum price']}
+                className="w-full"
+              />
               <div className="w-full flex justify-between text-sm text-zinc-600 mt-2">
                 <span>${priceRange[0]}</span>
                 <span>${priceRange[1]}</span>
@@ -193,6 +203,7 @@ export const ShopAllProduct = () => {
 
               {/* Location Filter */}
               <h2 className="text-lg font-medium text-[#18181b] my-4">Location</h2>
+              <div className="w-full max-w-full flex flex-col space-y-2 min-h-[14rem]">
               {useMemo(
                 () =>
                   locations.map((location) => (
@@ -210,6 +221,7 @@ export const ShopAllProduct = () => {
                   )),
                 [locations, selectedLocation],
               )}
+              </div>
             </div>
 
             {/* Product List */}

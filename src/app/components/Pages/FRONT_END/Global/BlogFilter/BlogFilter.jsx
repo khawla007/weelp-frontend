@@ -82,7 +82,11 @@ const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
 
       {/* Results Grid */}
       {isLoading ? (
-        <div className="text-center py-8 text-zinc-500">Loading...</div>
+        <ul aria-hidden className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <li key={i} className="h-[270px] sm:h-[280px] lg:h-[297px] rounded-lg bg-zinc-100 animate-pulse" />
+          ))}
+        </ul>
       ) : error ? (
         <div className="text-center py-8 text-red-500">Error loading blogs</div>
       ) : blogs.length === 0 ? (
