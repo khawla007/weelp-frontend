@@ -16,9 +16,7 @@ const BlogSliderSection = ({ sectionTitle }) => {
   // the carousel hydrates — eliminates the CLS spike Lighthouse flagged on /blogs.
   return (
     <div className="min-h-[400px] md:min-h-[460px]">
-      {latestBlogs.length > 0 && (
-        <BlogSection blogs={latestBlogs} title={sectionTitle || 'Latest Blogs'} navigationId="latest-blogs" className="weelp-fade-up" />
-      )}
+      {latestBlogs.length > 0 && <BlogSection blogs={latestBlogs} title={sectionTitle || 'Latest Blogs'} navigationId="latest-blogs" className="weelp-fade-up" />}
     </div>
   );
 };

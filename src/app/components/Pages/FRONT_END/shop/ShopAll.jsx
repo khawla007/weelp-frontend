@@ -172,15 +172,7 @@ export const ShopAllProduct = () => {
 
               {/* Price Range Filter */}
               <h2 className="text-lg font-medium text-[#18181b] mt-6 mb-4">Price Range</h2>
-              <ReactRangeSliderInput
-                min={100}
-                max={5000}
-                step={10}
-                value={priceRange}
-                onInput={setPriceRange}
-                ariaLabel={['Minimum price', 'Maximum price']}
-                className="w-full"
-              />
+              <ReactRangeSliderInput min={100} max={5000} step={10} value={priceRange} onInput={setPriceRange} ariaLabel={['Minimum price', 'Maximum price']} className="w-full" />
               <div className="w-full flex justify-between text-sm text-zinc-600 mt-2">
                 <span>${priceRange[0]}</span>
                 <span>${priceRange[1]}</span>
@@ -204,23 +196,23 @@ export const ShopAllProduct = () => {
               {/* Location Filter */}
               <h2 className="text-lg font-medium text-[#18181b] my-4">Location</h2>
               <div className="w-full max-w-full flex flex-col space-y-2 min-h-[14rem]">
-              {useMemo(
-                () =>
-                  locations.map((location) => (
-                    <label key={location.id} className="flex items-center space-x-2 cursor-pointer text-[#435a67]">
-                      <input
-                        type="radio"
-                        name="location"
-                        value={location.id}
-                        checked={selectedLocation?.id === location.id}
-                        onChange={() => setSelectedLocation(location)}
-                        className="size-5 cursor-pointer checked:accent-[#588f7a]"
-                      />
-                      <span>{location.name}</span>
-                    </label>
-                  )),
-                [locations, selectedLocation],
-              )}
+                {useMemo(
+                  () =>
+                    locations.map((location) => (
+                      <label key={location.id} className="flex items-center space-x-2 cursor-pointer text-[#435a67]">
+                        <input
+                          type="radio"
+                          name="location"
+                          value={location.id}
+                          checked={selectedLocation?.id === location.id}
+                          onChange={() => setSelectedLocation(location)}
+                          className="size-5 cursor-pointer checked:accent-[#588f7a]"
+                        />
+                        <span>{location.name}</span>
+                      </label>
+                    )),
+                  [locations, selectedLocation],
+                )}
               </div>
             </div>
 
