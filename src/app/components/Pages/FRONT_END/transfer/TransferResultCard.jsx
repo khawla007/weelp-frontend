@@ -92,7 +92,7 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
 
         <div
           style={{ backgroundImage: `url('${featuredImage}')` }}
-          className="flex-[3] h-40 bg-cover bg-left transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none"
+          className="flex-[3] h-40 bg-cover bg-left transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:group-hover:scale-100"
           role="img"
           aria-label={routeTitle}
         />

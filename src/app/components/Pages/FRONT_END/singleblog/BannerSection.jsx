@@ -51,7 +51,7 @@ const BannerSectionBlog = ({ title = '', excerpt = '', tags = [], media_gallery 
                   key={index}
                   src={media.url}
                   alt={media.alt ?? `Gallery Image ${index + 1}`}
-                  className=" object-center rounded-lg max-w-80 w-full h-[400px] scale-95 hover:scale-100 ease-in-out duration-500 mr-4"
+                  className=" object-center rounded-lg max-w-80 w-full h-[400px] scale-95 hover:scale-100 ease-in-out duration-500 mr-4 motion-reduce:hover:scale-95"
                 />
               ))}
             </div>

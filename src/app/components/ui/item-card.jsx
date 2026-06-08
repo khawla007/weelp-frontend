@@ -38,7 +38,7 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
           sizes="(max-width: 640px) 90vw, (max-width: 1024px) 33vw, (max-width: 1440px) 25vw, 20vw"
           placeholder="blur"
           blurDataURL={IMAGE_BLUR_DATA_URL}
-          className="object-cover transition duration-500 group-hover:scale-105"
+          className="object-cover transition duration-500 group-hover:scale-105 motion-reduce:group-hover:scale-100"
         />
       </div>
 
