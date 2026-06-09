@@ -18,9 +18,9 @@ const ROW_MOTION_CLASS =
 const COUNT_MOTION_CLASS = 'transition-[opacity,transform] duration-150 ease-out motion-reduce:transition-none motion-reduce:transform-none';
 const COUNT_NUMBER_MOTION_CLASS = 'inline-block animate-in fade-in-0 zoom-in-95 transition-[opacity,transform] duration-150 ease-out motion-reduce:transition-none motion-reduce:transform-none';
 const CONTROL_BUTTON_CLASS =
-  'w-8 h-8 rounded-full border flex items-center justify-center hover:bg-zinc-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40';
+  'w-8 h-8 rounded-full border flex items-center justify-center hover:bg-zinc-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
 const FIELD_TRIGGER_CLASS =
-  'flex w-full items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] text-left shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40';
+  'flex w-full items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] text-left shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
 const PANEL_EXIT_MS = 160;
 const CLOSED_PANEL_A11Y_PROPS = { 'aria-hidden': true, inert: true };
 
@@ -502,13 +502,13 @@ export default function FilterBar() {
                   className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-zinc-50 transition-colors border-b border-zinc-50 last:border-b-0 pr-10"
                 >
                   <span className="text-sm font-semibold text-[#18181b] truncate text-left">{item.title}</span>
-                  <span className="rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[12px] font-semibold uppercase tracking-wider text-[#588f7a]">{item.category}</span>
+                  <span className="rounded-md bg-weelp-sage-deep/15 px-2 py-0.5 text-[12px] font-semibold uppercase tracking-wider text-weelp-copy">{item.category}</span>
                   <span className="text-sm font-medium text-[#71717a] text-right">{item.price || ''}</span>
                 </Link>
               ))}
               <Link
                 href={buildSearchUrl(watchedWhereTo, watchedFrom, watchedhowMany)}
-                className="flex items-center justify-center gap-1.5 px-4 py-3 text-sm font-semibold text-[#588f7a] hover:bg-[#588f7a]/5 transition-colors border-t border-zinc-100"
+                className="flex items-center justify-center gap-1.5 px-4 py-3 text-sm font-semibold text-weelp-copy hover:text-weelp-sage-deep hover:bg-weelp-sage-deep/5 transition-colors border-t border-zinc-100"
               >
                 See all matches
                 <ChevronRight size={14} />

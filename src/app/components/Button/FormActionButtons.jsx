@@ -77,7 +77,7 @@ export function FormActionButtons({
   );
 
   const submitButton = (
-    <Button type="submit" className="bg-[#588f7a] hover:bg-[#588f7a]/90 text-white min-w-[100px]" disabled={isSubmitting || isDisabled}>
+    <Button type="submit" className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white min-w-[100px]" disabled={isSubmitting || isDisabled}>
       {isSubmitting ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" />

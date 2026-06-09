@@ -159,7 +159,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
           <Button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full h-auto py-3 rounded-lg text-base border border-[#588f7a] transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed border-zinc-400' : 'bg-[#588f7a] text-white hover:bg-white hover:text-[#588f7a]'}`}
+            className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed border-zinc-400' : 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep'}`}
           >
             {isSubmitting ? 'Logging in...' : 'Continue'}
           </Button>

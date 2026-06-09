@@ -76,7 +76,7 @@ export function EnhancedUrlInput({ value = [], onChange, className = '' }) {
           </div>
         );
       })}
-      <button type="button" onClick={addField} className="text-sm text-secondary-foreground hover:text-[#588f7a]">
+      <button type="button" onClick={addField} className="text-sm text-secondary-foreground hover:text-weelp-sage-deep">
         + Add URL
       </button>
     </div>

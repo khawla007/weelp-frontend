@@ -164,7 +164,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
             variant={activeTab === tab ? 'default' : 'outline'}
             size="sm"
             onClick={() => setActiveTab(tab)}
-            className={activeTab === tab ? 'bg-[#588f7a] hover:bg-[#588f7a]/90' : 'border-[#e4e4e7] text-[#52525b]'}
+            className={activeTab === tab ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-[#e4e4e7] text-[#52525b]'}
           >
             {formatStatus(tab)}
           </Button>
@@ -209,7 +209,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     <TableCell>{item.name || item.title || '-'}</TableCell>
                     <TableCell>
                       {parentSlug ? (
-                        <a href={`/itineraries/${parentSlug}`} target="_blank" rel="noopener noreferrer" className="text-[#588f7a] hover:underline inline-flex items-center gap-1">
+                        <a href={`/itineraries/${parentSlug}`} target="_blank" rel="noopener noreferrer" className="text-weelp-sage-deep hover:underline inline-flex items-center gap-1">
                           {item.parent_itinerary?.name || 'View'}
                           <ExternalLink className="size-3" />
                         </a>
@@ -218,7 +218,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                       )}
                     </TableCell>
                     <TableCell>
-                      <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer" className="text-[#588f7a] hover:underline inline-flex items-center gap-1">
+                      <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer" className="text-weelp-sage-deep hover:underline inline-flex items-center gap-1">
                         Preview
                         <ExternalLink className="size-3" />
                       </a>
@@ -248,7 +248,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                               <XCircle className="size-4 mr-1" />
                               Reject
                             </Button>
-                            <Button size="sm" onClick={() => handleApprove(item.id)} disabled={processingId === item.id} className="bg-[#588f7a] hover:bg-[#588f7a]/90">
+                            <Button size="sm" onClick={() => handleApprove(item.id)} disabled={processingId === item.id} className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90">
                               <CheckCircle className="size-4 mr-1" />
                               Approve
                             </Button>
@@ -267,7 +267,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                               <XCircle className="size-4 mr-1" />
                               Reject Edit
                             </Button>
-                            <Button size="sm" onClick={() => handleApproveEdit(item.id)} disabled={processingId === item.id} className="bg-[#588f7a] hover:bg-[#588f7a]/90">
+                            <Button size="sm" onClick={() => handleApproveEdit(item.id)} disabled={processingId === item.id} className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90">
                               <CheckCircle className="size-4 mr-1" />
                               Approve Edit
                             </Button>
@@ -339,7 +339,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel className="border-[#588f7a] text-[#18181b] hover:bg-[#588f7a] hover:text-white">Cancel</AlertDialogCancel>
+                                <AlertDialogCancel className="border-weelp-sage-deep text-[#18181b] hover:bg-weelp-sage-deep hover:text-white">Cancel</AlertDialogCancel>
                                 <AlertDialogAction onClick={() => handleDelete(item.id)} className="border-red-500 text-[#18181b] bg-white hover:bg-red-500 hover:text-white">
                                   Delete
                                 </AlertDialogAction>

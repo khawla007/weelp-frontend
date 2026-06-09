@@ -14,7 +14,7 @@ const AboutStats = () => {
         <Reveal initialHidden stagger={60} variant="lift" className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
-              <h3 className="mb-2 text-4xl font-bold tracking-[-0.01em] text-[#588f7a] md:text-5xl">{stat.number}</h3>
+              <h3 className="mb-2 text-4xl font-bold tracking-[-0.01em] text-weelp-sage-deep md:text-5xl">{stat.number}</h3>
               <p className="text-sm font-medium leading-[1.4] text-[#52525b] md:text-base">{stat.label}</p>
             </div>
           ))}

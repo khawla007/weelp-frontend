@@ -52,7 +52,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                   checked={selectedItemType === type.value}
                   onChange={() => onItemTypeChange(type.value)}
                   disabled={disabled}
-                  className="size-[19px] accent-[#588f7a] transition-colors duration-200 motion-reduce:transition-none"
+                  className="size-[19px] accent-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none"
                 />
                 <span
                   className="text-[18px] transition-colors duration-200 motion-reduce:transition-none"
@@ -77,8 +77,8 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                 checked={selectedCategories.length === 0}
                 onChange={() => handleCheckbox('all')}
                 disabled={disabled}
-                className={`size-[19px] rounded-[2px] border-2 accent-[#588f7a] transition-colors duration-200 motion-reduce:transition-none ${
-                  selectedCategories.length === 0 ? 'border-[#588f7a]' : 'border-[#e4e4e7]'
+                className={`size-[19px] rounded-[2px] border-2 accent-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${
+                  selectedCategories.length === 0 ? 'border-weelp-sage-deep' : 'border-[#e4e4e7]'
                 }`}
               />
               <span
@@ -97,7 +97,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                     checked={active}
                     onChange={() => handleCheckbox(cat?.name)}
                     disabled={disabled}
-                    className={`size-[19px] rounded-[2px] border-2 accent-[#588f7a] transition-colors duration-200 motion-reduce:transition-none ${active ? 'border-[#588f7a]' : 'border-[#e4e4e7]'}`}
+                    className={`size-[19px] rounded-[2px] border-2 accent-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${active ? 'border-weelp-sage-deep' : 'border-[#e4e4e7]'}`}
                   />
                   <span className="text-[18px] transition-colors duration-200 motion-reduce:transition-none" style={{ ...FONT, fontWeight: 500, color: active ? '#588f7a' : '#435a67' }}>
                     {cat?.name}
@@ -140,7 +140,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                   checked={ratingFilter === r}
                   onChange={() => onRatingChange(r)}
                   disabled={disabled}
-                  className="size-[19px] accent-[#588f7a] transition-colors duration-200 motion-reduce:transition-none"
+                  className="size-[19px] accent-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none"
                 />
                 <div className="flex">
                   {Array.from({ length: 5 }).map((_, i) => (

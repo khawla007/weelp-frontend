@@ -148,7 +148,7 @@ export const SearchPage = () => {
                   value={category.name}
                   checked={selectedCategories.includes(category.name)}
                   onChange={() => setSelectedCategories((prev) => (prev.includes(category.name) ? prev.filter((c) => c !== category.name) : [...prev, category.name]))}
-                  className="size-5 cursor-pointer checked:accent-[#588f7a]"
+                  className="size-5 cursor-pointer checked:accent-weelp-sage-deep"
                 />
                 <span>{category.name}</span>
               </label>
@@ -166,7 +166,7 @@ export const SearchPage = () => {
           <div className="flex flex-col gap-4">
             {[3, 4, 5].map((rating) => (
               <label key={rating} className="flex cursor-pointer items-center space-x-1">
-                <input type="radio" name="rating" value={rating} checked={ratingFilter === rating} onChange={() => setRatingFilter(rating)} className="size-5 checked:accent-[#588f7a]" />
+                <input type="radio" name="rating" value={rating} checked={ratingFilter === rating} onChange={() => setRatingFilter(rating)} className="size-5 checked:accent-weelp-sage-deep" />
                 <div className="flex">
                   {Array.from({ length: rating }).map((_, i) => (
                     <Star key={i} size={20} className="fill-yellow-500 stroke-yellow-400" />
@@ -185,7 +185,7 @@ export const SearchPage = () => {
                 value={location.id}
                 checked={selectedLocation?.id === location.id}
                 onChange={() => setSelectedLocation(location)}
-                className="size-5 cursor-pointer checked:accent-[#588f7a]"
+                className="size-5 cursor-pointer checked:accent-weelp-sage-deep"
               />
               <span>{location.name}</span>
             </label>
@@ -219,7 +219,7 @@ export const SearchPage = () => {
                 <div className="grid h-full  ">
                   <span className="text-zinc-500">Sorry No Items</span>
                   <Button asChild>
-                    <Link className={'bg-[#588f7a]'} href={'/shop'}>
+                    <Link className={'bg-weelp-sage-deep'} href={'/shop'}>
                       Back To Shop
                     </Link>
                   </Button>

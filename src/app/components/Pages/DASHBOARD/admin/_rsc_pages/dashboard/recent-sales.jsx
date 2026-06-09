@@ -31,7 +31,7 @@ export function RecentSales({ loading = false, data = null }) {
           <div key={index} className="flex  flex-wrap items-center gap-4 sm:gap-0">
             <Avatar className="h-9 w-9">
               {hasCustomAvatar && <AvatarImage src={item.icon} alt="Avatar" />}
-              <AvatarFallback className="bg-[#588f7a] text-white font-medium">{initials}</AvatarFallback>
+              <AvatarFallback className="bg-weelp-sage-deep text-white font-medium">{initials}</AvatarFallback>
             </Avatar>
             <div className="ml-4 space-y-1">
               <p className="text-sm font-medium leading-none">{item.username}</p>

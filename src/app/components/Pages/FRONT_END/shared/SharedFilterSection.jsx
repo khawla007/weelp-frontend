@@ -177,7 +177,7 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
                   <button
                     type="button"
                     onClick={clearFilters}
-                    className="inline-flex min-h-[44px] items-center rounded-[11.5px] border border-[#588f7a] bg-white px-5 py-2.5 text-[16px] font-medium text-[#588f7a] transition-colors duration-200 motion-reduce:transition-none hover:bg-[#588f7a] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                    className="inline-flex min-h-[44px] items-center rounded-[11.5px] border border-weelp-sage-deep bg-white px-5 py-2.5 text-[16px] font-medium text-weelp-copy transition-colors duration-200 motion-reduce:transition-none hover:bg-weelp-sage-deep hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                   >
                     Clear filters
                   </button>

@@ -56,7 +56,7 @@ const AdditionalInformationTab = () => {
                 <FormItem className="px-4 space-y-2">
                   <FormLabel>Section Title</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Enter section title" className="text-xs focus-visible:ring-[#588f7a]" />
+                    <Input {...field} placeholder="Enter section title" className="text-xs focus-visible:ring-weelp-sage-deep" />
                   </FormControl>
                   <FormMessage className="px-2 text-red-500 text-sm" />
                 </FormItem>
@@ -71,7 +71,7 @@ const AdditionalInformationTab = () => {
                 <FormItem className="px-4 space-y-2">
                   <FormLabel>Content</FormLabel>
                   <FormControl>
-                    <Textarea {...field} placeholder="Enter section content" className="text-xs focus-visible:ring-[#588f7a]" />
+                    <Textarea {...field} placeholder="Enter section content" className="text-xs focus-visible:ring-weelp-sage-deep" />
                   </FormControl>
                   <FormMessage className="px-2 text-red-500 text-sm" />
                 </FormItem>

@@ -73,7 +73,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
   // Header — creator-only Create button
   const headerButton = isCreator ? (
     <NavigationLink href="/dashboard/customer/my-itineraries/new">
-      <Button className="bg-[#588f7a] hover:bg-[#588f7a]/90 text-white">
+      <Button className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white">
         <Sparkles className="size-4 mr-2" />
         Create Itinerary
       </Button>
@@ -91,7 +91,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
             <p className="text-[#71717a] mt-2">Create your first itinerary and submit it for approval.</p>
             <div className="mt-4 flex justify-center">
               <NavigationLink href="/dashboard/customer/my-itineraries/new">
-                <Button className="bg-[#588f7a] hover:bg-[#588f7a]/90 text-white">
+                <Button className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white">
                   <Sparkles className="size-4 mr-2" />
                   Create Itinerary
                 </Button>
@@ -106,7 +106,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
         <p className="text-lg font-semibold text-[#18181b]">No itineraries yet</p>
         <p className="text-[#71717a] mt-2">Browse and save itineraries from the explore page to see them here.</p>
         <NavigationLink href="/explore-creators">
-          <Button className="mt-4 bg-[#588f7a] hover:bg-[#588f7a]/90">Explore Itineraries</Button>
+          <Button className="mt-4 bg-weelp-sage-deep hover:bg-weelp-sage-deep/90">Explore Itineraries</Button>
         </NavigationLink>
       </div>
     );
@@ -124,7 +124,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
               size="sm"
               variant={activeTab === tab ? 'default' : 'outline'}
               onClick={() => setActiveTab(tab)}
-              className={activeTab === tab ? 'bg-[#588f7a] hover:bg-[#588f7a]/90' : 'border-[#e4e4e7] text-[#52525b]'}
+              className={activeTab === tab ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-[#e4e4e7] text-[#52525b]'}
             >
               {tab === 'all' ? 'All Itineraries' : 'Drafts'}
             </Button>

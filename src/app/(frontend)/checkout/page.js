@@ -31,7 +31,7 @@ const CheckoutPage = () => {
   if (status === 'loading' || status === 'unauthenticated') {
     return (
       <div className="h-[80vh] flex flex-col items-center justify-center py-16 gap-4">
-        <LoaderCircle className="h-8 w-8 animate-spin text-[#588f7a]" />
+        <LoaderCircle className="h-8 w-8 animate-spin text-weelp-sage-deep" />
         <p className="text-[#52525b]">Please log in to continue to checkout.</p>
       </div>
     );
@@ -42,7 +42,7 @@ const CheckoutPage = () => {
       <div className="h-[80vh] flex items-center justify-center py-16">
         <p className="flex flex-col gap-4 text-center">
           Your cart is empty.{' '}
-          <Link href="/" className={buttonVariants({ variant: 'secondary' }) + ' bg-[#588f7a]'}>
+          <Link href="/" className={buttonVariants({ variant: 'secondary' }) + ' bg-weelp-sage-deep'}>
             Back to Home
           </Link>
         </p>

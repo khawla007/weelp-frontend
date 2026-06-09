@@ -169,7 +169,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                     setIsAllSelected(!isAllSelected);
                   }}
                   variant="outline"
-                  className="bg-[#588f7a] text-white hover:bg-[#588f7a]/90"
+                  className="bg-weelp-sage-deep text-white hover:bg-weelp-sage-deep/90"
                 >
                   {isAllSelected ? 'Unselect All' : `Select All (${images.length})`}
                 </Button>
@@ -249,7 +249,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                   <Card
                     key={index}
                     className={`group relative aspect-square overflow-hidden rounded-lg bg-muted cursor-pointer border-4 transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none
-                      ${isSelected ? 'border-[#588f7a]' : 'border-transparent'}
+                      ${isSelected ? 'border-weelp-sage-deep' : 'border-transparent'}
                     `}
                     onClick={() => {
                       if (isMediaPage) {
@@ -341,7 +341,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
 
         {/* If Images Are Selected Outside of the Media Library */}
         {!isMediaPage && !isEmpty(selectedImages) && (
-          <Button onClick={selectedImagesHandleStore} className="bg-[#588f7a] w-fit col-span-full">
+          <Button onClick={selectedImagesHandleStore} className="bg-weelp-sage-deep w-fit col-span-full">
             Select Images
           </Button>
         )}

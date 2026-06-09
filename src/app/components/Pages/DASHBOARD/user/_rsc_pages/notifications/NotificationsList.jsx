@@ -79,7 +79,7 @@ export default function NotificationsList() {
       </div>
       {page < lastPage && (
         <div className="text-center mt-4">
-          <button onClick={loadMore} disabled={loading} className="text-sm text-[#588f7a] hover:underline disabled:opacity-50">
+          <button onClick={loadMore} disabled={loading} className="text-sm text-weelp-sage-deep hover:underline disabled:opacity-50">
             {loading ? 'Loading…' : 'Load more'}
           </button>
         </div>

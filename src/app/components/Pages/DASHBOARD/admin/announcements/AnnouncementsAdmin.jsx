@@ -165,7 +165,7 @@ export default function AnnouncementsAdmin() {
         </div>
 
         <div className="flex gap-3">
-          <button type="submit" disabled={saving} className="rounded-md bg-[#588f7a] px-4 py-2 text-sm text-white disabled:opacity-60">
+          <button type="submit" disabled={saving} className="rounded-md bg-weelp-sage-deep px-4 py-2 text-sm text-white disabled:opacity-60">
             {saving ? 'Saving...' : editingId ? 'Update' : 'Create'}
           </button>
           {editingId && (
@@ -198,7 +198,7 @@ export default function AnnouncementsAdmin() {
                   <td className="px-4 py-2">{a.type}</td>
                   <td className="px-4 py-2">{a.is_active ? 'Yes' : 'No'}</td>
                   <td className="px-4 py-2 space-x-3">
-                    <button type="button" onClick={() => startEdit(a)} className="text-[#588f7a] hover:underline">
+                    <button type="button" onClick={() => startEdit(a)} className="text-weelp-sage-deep hover:underline">
                       Edit
                     </button>
                     <button type="button" onClick={() => remove(a.id)} className="text-[#ff725e] hover:underline">

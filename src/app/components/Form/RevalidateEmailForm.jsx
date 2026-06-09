@@ -91,7 +91,7 @@ export const FormRevalidateEmail = () => {
             Click Here To Login
           </Link>
           {/* Submit Button */}
-          <Button type="submit" disabled={isSubmitting} className={`w-full p-4 rounded-md ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#588f7a] hover:bg-[#b5d8cb] text-white'}`}>
+          <Button type="submit" disabled={isSubmitting} className={`w-full p-4 rounded-md ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-weelp-sage-deep hover:bg-[#b5d8cb] text-white'}`}>
             {isSubmitting ? 'Processing...' : 'Continue'}
           </Button>
         </form>

@@ -211,10 +211,10 @@ const CreatePlaceForm = ({ apiFormData = {} }) => {
                     <li
                       key={step.id}
                       onClick={() => setCurrentStep(step?.id)}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-[#588f7a] border-b-2'}`}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'}`}
                     >
                       <div
-                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-[#588f7a] ' : 'text-[#71717a]'}`}
+                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-[#71717a]'}`}
                       >
                         {step.title}
                       </div>
@@ -262,7 +262,7 @@ const CreatePlaceForm = ({ apiFormData = {} }) => {
                   )}
 
                   <div className="flex gap-4">
-                    <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}>
+                    <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}>
                       {isSubmitting ? (currentStep === 8 ? 'Submitting...' : 'Submit') : currentStep === 8 ? 'Submit' : 'Next'}
                     </Button>
                   </div>

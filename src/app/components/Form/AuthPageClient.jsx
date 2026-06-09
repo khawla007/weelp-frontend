@@ -25,7 +25,7 @@ export function AuthPageClient({ defaultTab = 'login', returnUrl = null }) {
   return (
     <div className="w-screen min-h-screen bg-[#f8faf9] flex flex-col lg:flex-row -mx-6">
       {/* Left Side - Hero Image (50% on desktop, 35% on mobile) */}
-      <div className="lg:w-1/2 h-[35vh] lg:h-auto relative bg-gradient-to-br from-[#588f7a]/20 to-[#b5d8cb]/20">
+      <div className="lg:w-1/2 h-[35vh] lg:h-auto relative bg-gradient-to-br from-weelp-sage-deep/20 to-[#b5d8cb]/20">
         <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: 'url("/assets/images/auth-hero.jpg")' }} />
         <div className="relative z-10 flex flex-col items-center justify-center h-full p-8 text-center">
           <img src="/assets/images/SiteLogo.png" alt="Weelp" width={150} height={52} className="mb-4" />
@@ -46,13 +46,13 @@ export function AuthPageClient({ defaultTab = 'login', returnUrl = null }) {
           <div className="flex mb-6 gap-3">
             <button
               onClick={() => handleTabSwitch('login')}
-              className={`flex-1 py-3 rounded-lg text-center font-medium border border-[#588f7a] transition-colors duration-200 motion-reduce:transition-none ${isLogin ? 'bg-[#588f7a] text-white hover:bg-white hover:text-[#588f7a]' : 'bg-white text-[#588f7a] hover:bg-[#588f7a] hover:text-white'}`}
+              className={`flex-1 py-3 rounded-lg text-center font-medium border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isLogin ? 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep' : 'bg-white text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white'}`}
             >
               Log In
             </button>
             <button
               onClick={() => handleTabSwitch('signup')}
-              className={`flex-1 py-3 rounded-lg text-center font-medium border border-[#588f7a] transition-colors duration-200 motion-reduce:transition-none ${!isLogin ? 'bg-[#588f7a] text-white hover:bg-white hover:text-[#588f7a]' : 'bg-white text-[#588f7a] hover:bg-[#588f7a] hover:text-white'}`}
+              className={`flex-1 py-3 rounded-lg text-center font-medium border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${!isLogin ? 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep' : 'bg-white text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white'}`}
             >
               Sign Up
             </button>

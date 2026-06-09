@@ -90,7 +90,7 @@ export const NotificationSetting = () => {
                   <CardDescription className="text-xs text-gray-500">Get updates about your account activity.</CardDescription>
                 </Card>
                 <FormControl>
-                  <Switch className={'self-start data-[state=checked]:bg-[#588f7a]'} checked={field.value} onCheckedChange={field.onChange} />
+                  <Switch className={'self-start data-[state=checked]:bg-weelp-sage-deep'} checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
@@ -107,7 +107,7 @@ export const NotificationSetting = () => {
                   <CardDescription className="text-xs text-gray-500">Receive emails abouts new products, features, and more.</CardDescription>
                 </Card>
                 <FormControl>
-                  <Switch className={'self-start data-[state=checked]:bg-[#588f7a]'} checked={field.value} onCheckedChange={field.onChange} />
+                  <Switch className={'self-start data-[state=checked]:bg-weelp-sage-deep'} checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
@@ -124,7 +124,7 @@ export const NotificationSetting = () => {
                   <CardDescription className="text-xs text-gray-500">Receive emails for friend requests, follows and more.</CardDescription>
                 </Card>
                 <FormControl>
-                  <Switch className={'self-start data-[state=checked]:bg-[#588f7a]'} checked={field.value} onCheckedChange={field.onChange} />
+                  <Switch className={'self-start data-[state=checked]:bg-weelp-sage-deep'} checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
@@ -141,13 +141,13 @@ export const NotificationSetting = () => {
                   <CardDescription className="text-xs text-gray-500">Receive emails about your account activity and security.</CardDescription>
                 </Card>
                 <FormControl>
-                  <Switch className={'self-start data-[state=checked]:bg-[#588f7a]'} checked={field.value} onCheckedChange={field.onChange} />
+                  <Switch className={'self-start data-[state=checked]:bg-weelp-sage-deep'} checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
           />
 
-          <Button disabled={!isDirty} type="submit" className={'bg-[#588f7a]'}>
+          <Button disabled={!isDirty} type="submit" className={'bg-weelp-sage-deep'}>
             Update notifications
           </Button>
         </form>

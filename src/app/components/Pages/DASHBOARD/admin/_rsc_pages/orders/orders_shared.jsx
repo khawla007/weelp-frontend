@@ -36,7 +36,7 @@ export const NavigationOrder = ({ title, desciption, url, labelUrl }) => {
 
         {url && labelUrl && (
           <Button asChild>
-            <Link href={url} className="bg-[#588f7a]">
+            <Link href={url} className="bg-weelp-sage-deep">
               <Plus size={16} />
               Create {labelUrl}
             </Link>

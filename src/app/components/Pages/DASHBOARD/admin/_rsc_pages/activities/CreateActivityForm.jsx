@@ -211,7 +211,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                 placeholder="Activity name"
                 id="name"
                 {...register('name', { required: 'Name is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus:outline-[#588f7a]"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus:outline-weelp-sage-deep"
                 onBlur={handleBlur}
               />
               {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
@@ -225,7 +225,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                 placeholder="Enter Url slug"
                 id="slug"
                 {...register('slug', { required: 'Slug is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
                 onBlur={handleBlur}
               />
               {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
@@ -242,7 +242,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
               {...register('description', {
                 required: 'Description is required',
               })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm h-28 focus:outline-[#588f7a]"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm h-28 focus:outline-weelp-sage-deep"
             />
             {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
           </div>
@@ -257,7 +257,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
               {...register('short_description', {
                 required: 'Field is required',
               })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 h-20 focus:outline-[#588f7a]"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 h-20 focus:outline-weelp-sage-deep"
             />
             {errors?.short_description && <p className="text-red-500 text-sm mt-1">{errors.short_description.message}</p>}
           </div>
@@ -272,7 +272,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-[#588f7a]"
+                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-weelp-sage-deep"
                 >
                   <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
                 </Switch>
@@ -349,7 +349,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
               rules={{ required: 'Type required' }}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="w-full rounded-md text-start focus:outline-[#588f7a]">
+                  <SelectTrigger className="w-full rounded-md text-start focus:outline-weelp-sage-deep">
                     <SelectValue placeholder="Location Type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -406,7 +406,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                     control={methods.control}
                     render={({ field }) => (
                       <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger className="w-full rounded-md text-start focus:outline-[#588f7a]">
+                        <SelectTrigger className="w-full rounded-md text-start focus:outline-weelp-sage-deep">
                           <SelectValue placeholder="Location Type" />
                         </SelectTrigger>
                         <SelectContent>
@@ -551,7 +551,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
             defaultValue="easy"
             render={({ field }) => (
               <Select id={'difficulty_level'} onValueChange={field.onChange} defaultValue={field.value}>
-                <SelectTrigger className="mt-1 w-full capitalize rounded-md p-2 focus:outline-[#588f7a]">
+                <SelectTrigger className="mt-1 w-full capitalize rounded-md p-2 focus:outline-weelp-sage-deep">
                   <SelectValue placeholder="Select a unit" />
                 </SelectTrigger>
                 <SelectContent>
@@ -696,9 +696,9 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                     fill={isFeatured ? '#588f7a' : 'white'}
                     strokeWidth={2}
                     onClick={() => handleSetFeatured(image.media_id)}
-                    className={`absolute top-4 right-4 transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#588f7a]' : 'text-[#588f7a] hover:scale-110'}`}
+                    className={`absolute top-4 right-4 transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-weelp-sage-deep' : 'text-weelp-sage-deep hover:scale-110'}`}
                   />
-                  {isFeatured && <div className="absolute top-4 left-4 bg-[#588f7a] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
+                  {isFeatured && <div className="absolute top-4 left-4 bg-weelp-sage-deep text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
                   <Trash2
                     onClick={() => handleDeleteImage(image)}
                     className="absolute bottom-4 right-4 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-red-500 bg-white rounded-full shadow p-1"
@@ -841,7 +841,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
             {/* Switch for Seasonal Pricing*/}
             <div className="flex items-center gap-4">
               <Switch
-                className="data-[state=checked]:bg-[#588f7a] ease-in-out duration-500"
+                className="data-[state=checked]:bg-weelp-sage-deep ease-in-out duration-500"
                 checked={isSeasonPricing}
                 onCheckedChange={() => {
                   setSeasonPricing(!isSeasonPricing);
@@ -991,7 +991,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                       enable_seasonal_pricing: true,
                     })
                   }
-                  className="mt-4 bg-[#588f7a]"
+                  className="mt-4 bg-weelp-sage-deep"
                 >
                   Add Season
                 </Button>
@@ -1183,11 +1183,11 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                         }
                         goWithDirection(step?.id, currentStep, setCurrentStep);
                       }}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && 'bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-[#588f7a] border-b-2'}`}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && 'bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'}`}
                     >
-                      <Separator className={`pt-1 rounded-full ${currentStep >= step?.id ? 'bg-[#588f7a] group-hover:bg-[#eaeaea]' : 'bg-zinc-200 group-hover:bg-[#588f7a]'}`} />
+                      <Separator className={`pt-1 rounded-full ${currentStep >= step?.id ? 'bg-weelp-sage-deep group-hover:bg-[#eaeaea]' : 'bg-zinc-200 group-hover:bg-weelp-sage-deep'}`} />
 
-                      <div className={`text-sm font-medium pt-2 ${currentStep == step?.id ? 'text-[#588f7a]' : 'text-[#71717a]'}`}>{step.title}</div>
+                      <div className={`text-sm font-medium pt-2 ${currentStep == step?.id ? 'text-weelp-sage-deep' : 'text-[#71717a]'}`}>{step.title}</div>
                       <span className="text-sm text-zinc-500">{step?.description}</span>
                     </li>
                   ))}
@@ -1234,7 +1234,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                 {currentStep === 6 ? (
                   <FormActionButtons mode="create" isSubmitting={isSubmitting} isDisabled={!isStep1Valid} cancelAlwaysEnabled={true} containerType="div" className="flex gap-4" />
                 ) : (
-                  <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}>
+                  <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}>
                     {isSubmitting ? 'Next' : 'Next'}
                   </Button>
                 )}

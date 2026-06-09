@@ -212,7 +212,7 @@ export default function RouteForm({ initialData = null }) {
                       <FormDescription>Enable this route for booking.</FormDescription>
                     </div>
                     <FormControl>
-                      <Switch checked={Boolean(field.value)} onCheckedChange={(checked) => field.onChange(Boolean(checked))} className="data-[state=checked]:bg-[#588f7a]" />
+                      <Switch checked={Boolean(field.value)} onCheckedChange={(checked) => field.onChange(Boolean(checked))} className="data-[state=checked]:bg-weelp-sage-deep" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -229,7 +229,7 @@ export default function RouteForm({ initialData = null }) {
                       <FormDescription>Mark this route as a featured/popular route.</FormDescription>
                     </div>
                     <FormControl>
-                      <Switch checked={Boolean(field.value)} onCheckedChange={(checked) => field.onChange(Boolean(checked))} className="data-[state=checked]:bg-[#588f7a]" />
+                      <Switch checked={Boolean(field.value)} onCheckedChange={(checked) => field.onChange(Boolean(checked))} className="data-[state=checked]:bg-weelp-sage-deep" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

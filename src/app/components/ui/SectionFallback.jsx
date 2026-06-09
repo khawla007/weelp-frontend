@@ -36,7 +36,7 @@ export default function SectionFallback({ eyebrow, message, pivotHref, pivotLabe
           {pivotHref && pivotLabel && (
             <Link
               href={pivotHref}
-              className="inline-flex items-center gap-2 rounded-sm text-[15px] font-semibold text-[#588f7a] transition-colors hover:text-[#4d8069] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40"
+              className="inline-flex items-center gap-2 rounded-sm text-[15px] font-semibold text-weelp-sage-deep transition-colors hover:text-[#4d8069] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
             >
               {pivotLabel}
               <ArrowRight className="size-4" aria-hidden="true" />
@@ -47,7 +47,7 @@ export default function SectionFallback({ eyebrow, message, pivotHref, pivotLabe
             <button
               type="button"
               onClick={handleRetry}
-              className="inline-flex items-center gap-1.5 rounded-[8px] border border-[#e4e4e7] bg-white px-3.5 py-2 text-[14px] font-semibold text-[#18181b] transition-colors hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40"
+              className="inline-flex items-center gap-1.5 rounded-[8px] border border-[#e4e4e7] bg-white px-3.5 py-2 text-[14px] font-semibold text-[#18181b] transition-colors hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
             >
               <RotateCcw className="size-4" aria-hidden="true" />
               Try again

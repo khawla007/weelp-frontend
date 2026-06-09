@@ -163,7 +163,7 @@ export const ImagePreviewForm = ({ isDialogOpen, setIsDialogOpen, selectedImage 
               )}
             />
             <div className="flex justify-between items-center pt-6">
-              <Button type="submit" className="bg-[#588f7a]">
+              <Button type="submit" className="bg-weelp-sage-deep">
                 {isSubmitting ? 'Submitting' : 'Submit'}
               </Button>
 
@@ -181,7 +181,7 @@ export const ImagePreviewForm = ({ isDialogOpen, setIsDialogOpen, selectedImage 
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                      className="bg-[#588f7a]"
+                      className="bg-weelp-sage-deep"
                       onClick={(e) => {
                         e.preventDefault();
                         handleDeleteImage(selectedImage.id);

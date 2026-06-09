@@ -50,7 +50,7 @@ export default function NotificationWidget({ session }) {
           {unreadCount > 0 && <span className="text-xs bg-red-500 text-white rounded-full px-2 py-0.5">{unreadCount}</span>}
         </div>
         {unreadCount > 0 && (
-          <button onClick={handleMarkAllRead} className="text-xs text-[#52525b] hover:text-[#588f7a] hover:underline flex items-center gap-1">
+          <button onClick={handleMarkAllRead} className="text-xs text-[#52525b] hover:text-weelp-sage-deep hover:underline flex items-center gap-1">
             <CheckCheck size={14} /> Mark all read
           </button>
         )}
@@ -66,7 +66,7 @@ export default function NotificationWidget({ session }) {
             const IconComponent = TYPE_ICONS[notif.type] || Bell;
             const iconColor = TYPE_COLORS[notif.type] || 'text-zinc-400';
             return (
-              <div key={notif.id} className={`flex items-start gap-3 p-3 rounded-lg ${!notif.read_at ? 'bg-[#588f7a]/5' : 'bg-zinc-50'}`}>
+              <div key={notif.id} className={`flex items-start gap-3 p-3 rounded-lg ${!notif.read_at ? 'bg-weelp-sage-deep/5' : 'bg-zinc-50'}`}>
                 <IconComponent size={18} className={`mt-0.5 flex-shrink-0 ${iconColor}`} />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-[#18181b]">{notif.title}</p>
@@ -80,7 +80,7 @@ export default function NotificationWidget({ session }) {
       )}
 
       <div className="mt-4 text-center">
-        <NavigationLink href="/dashboard/customer/settings/notifications" className="text-xs text-[#52525b] hover:text-[#588f7a] hover:underline">
+        <NavigationLink href="/dashboard/customer/settings/notifications" className="text-xs text-[#52525b] hover:text-weelp-sage-deep hover:underline">
           View All Notifications
         </NavigationLink>
       </div>

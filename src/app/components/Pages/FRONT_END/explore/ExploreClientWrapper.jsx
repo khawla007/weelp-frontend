@@ -77,19 +77,19 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
       {isLoggedIn && !statusLoading && (
         <Reveal variant="lift" className="relative z-10 max-w-[95%] mx-auto px-6 py-4">
           {isCreator ? (
-            <div className="flex items-center justify-between bg-gradient-to-r from-[#588f7a]/10 to-[#588f7a]/5 rounded-xl p-6">
+            <div className="flex items-center justify-between bg-gradient-to-r from-weelp-sage-deep/10 to-weelp-sage-deep/5 rounded-xl p-6">
               <div>
                 <h3 className="text-lg font-semibold text-[#18181b]">Welcome, Creator!</h3>
                 <p className="text-sm text-[#71717a] mt-1">Share your travel experiences and inspire the community.</p>
               </div>
               <div className="flex items-center gap-3">
                 <NavigationLink href="/dashboard/customer/my-itineraries/new">
-                  <Button className="bg-[#588f7a] hover:bg-[#588f7a]/90 text-white">
+                  <Button className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white">
                     <Sparkles className="size-4 mr-2" />
                     Create Itinerary
                   </Button>
                 </NavigationLink>
-                <Button onClick={() => setGuideOpen(true)} variant="outline" className="border-[#588f7a] text-[#588f7a] hover:bg-[#588f7a]/10">
+                <Button onClick={() => setGuideOpen(true)} variant="outline" className="border-weelp-sage-deep text-weelp-copy hover:text-weelp-sage-deep hover:bg-weelp-sage-deep/10">
                   <HelpCircle className="size-4 mr-2" />
                   How to Create Itinerary
                 </Button>
@@ -107,12 +107,12 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
               </div>
             </div>
           ) : (
-            <div className="flex items-center justify-between bg-gradient-to-r from-[#588f7a]/10 to-[#588f7a]/5 rounded-xl p-6">
+            <div className="flex items-center justify-between bg-gradient-to-r from-weelp-sage-deep/10 to-weelp-sage-deep/5 rounded-xl p-6">
               <div>
                 <h3 className="text-lg font-semibold text-[#18181b]">Become a Creator</h3>
                 <p className="text-sm text-[#71717a] mt-1">Share your travel experiences and earn commissions on bookings.</p>
               </div>
-              <Button onClick={() => setApplicationFormOpen(true)} className="bg-[#588f7a] hover:bg-[#588f7a]/90 text-white">
+              <Button onClick={() => setApplicationFormOpen(true)} className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white">
                 <Sparkles className="size-4 mr-2" />
                 Apply Now
               </Button>
@@ -153,8 +153,8 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
               { step: 6, title: 'Track in My Itineraries', desc: 'View and manage all your created itineraries from the My Itineraries section in your dashboard.' },
             ].map((item) => (
               <div key={item.step} className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#588f7a]/10 flex items-center justify-center">
-                  <span className="text-sm font-semibold text-[#588f7a]">{item.step}</span>
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-weelp-sage-deep/10 flex items-center justify-center">
+                  <span className="text-sm font-semibold text-weelp-copy">{item.step}</span>
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-[#18181b]">{item.title}</h4>

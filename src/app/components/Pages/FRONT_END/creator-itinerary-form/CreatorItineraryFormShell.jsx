@@ -164,10 +164,10 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
                       }
                       goToStep(step?.id);
                     }}
-                    className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-[#588f7a] border-b-2'}`}
+                    className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-weelp-sage-deep border-b-2'}`}
                   >
                     <div
-                      className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-[#588f7a] ' : 'text-weelp-steel'}`}
+                      className={`text-sm pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-weelp-copy font-bold' : 'text-weelp-steel font-medium'}`}
                     >
                       {step.title}
                     </div>
@@ -219,7 +219,7 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
                 )}
 
                 {currentStep === 2 ? null : (
-                  <Button type="submit" disabled={submitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}>
+                  <Button type="submit" disabled={submitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}>
                     Next
                   </Button>
                 )}

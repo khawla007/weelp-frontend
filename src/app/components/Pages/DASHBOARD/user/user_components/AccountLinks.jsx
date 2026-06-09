@@ -47,7 +47,7 @@ export function AccountLinks({ AccountRoutes }) {
         {/* Sliding active indicator (transform only — no layout shift). */}
         <span
           aria-hidden="true"
-          className={`absolute left-0 w-0.5 rounded-full bg-[#588f7a] ${indicator.ready ? 'weelp-settings-rail' : ''}`}
+          className={`absolute left-0 w-0.5 rounded-full bg-weelp-sage-deep ${indicator.ready ? 'weelp-settings-rail' : ''}`}
           style={{
             transform: `translateY(${indicator.top}px)`,
             height: `${indicator.height}px`,
@@ -63,7 +63,7 @@ export function AccountLinks({ AccountRoutes }) {
                 ref={(node) => {
                   itemRefs.current[index] = node;
                 }}
-                className={`w-full py-2 rounded-md font-medium transition-colors ${isActive ? 'font-semibold text-[#588f7a]' : 'text-[#52525b] hover:text-[#588f7a]'}`}
+                className={`w-full py-2 rounded-md font-medium transition-colors ${isActive ? 'font-semibold text-weelp-sage-deep' : 'text-[#52525b] hover:text-weelp-sage-deep'}`}
               >
                 <NavigationMenuLink asChild className="w-full px-4">
                   <Link className="inline-block w-full" href={val?.url} aria-current={isActive ? 'page' : undefined}>

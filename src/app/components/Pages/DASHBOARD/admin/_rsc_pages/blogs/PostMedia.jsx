@@ -123,11 +123,11 @@ export const PostMedia = ({ setDialogOpen, onSelectionChange }) => {
                   fill={isFeatured ? '#588f7a' : 'white'}
                   strokeWidth={2}
                   onClick={() => handleSetFeatured(image.media_id)}
-                  className={`absolute top-4 right-4 transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#588f7a]' : 'text-[#588f7a] hover:scale-110'}`}
+                  className={`absolute top-4 right-4 transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-weelp-sage-deep' : 'text-weelp-sage-deep hover:scale-110'}`}
                 />
 
                 {/* Featured Badge - Top Left */}
-                {isFeatured && <div className="absolute top-4 left-4 bg-[#588f7a] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
+                {isFeatured && <div className="absolute top-4 left-4 bg-weelp-sage-deep text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
 
                 {/* Trash - Bottom Right */}
                 <Trash2

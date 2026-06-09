@@ -173,7 +173,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
           </div>
 
           {/* Submit */}
-          <Button type="submit" disabled={submitting} className="w-full bg-[#588f7a] hover:bg-[#588f7a]/90 text-white">
+          <Button type="submit" disabled={submitting} className="w-full bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white">
             {submitting ? <Loader2 className="size-4 animate-spin mr-2" /> : null}
             {submitting ? 'Submitting...' : 'Submit Application'}
           </Button>

@@ -46,7 +46,7 @@ export default function ZoneListTable({ zones = [], selectedIds = [], onToggleSe
               </TableCell>
               <TableCell>{z.sort_order ?? 0}</TableCell>
               <TableCell>
-                <Switch checked={Boolean(z.is_active)} onCheckedChange={(v) => onToggleStatus?.(z.id, Boolean(v))} className="data-[state=checked]:bg-[#588f7a]" />
+                <Switch checked={Boolean(z.is_active)} onCheckedChange={(v) => onToggleStatus?.(z.id, Boolean(v))} className="data-[state=checked]:bg-weelp-sage-deep" />
               </TableCell>
               <TableCell className="text-right">
                 <DropdownMenu>

@@ -533,7 +533,7 @@ const EditOrderForm = ({ order = {} }) => {
                   id="payment.is_custom_amount"
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-[#588f7a]"
+                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-weelp-sage-deep"
                 >
                   <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
                 </Switch>
@@ -684,10 +684,10 @@ const EditOrderForm = ({ order = {} }) => {
               steps.map((step) => (
                 <li
                   key={step.id}
-                  className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-[#588f7a] border-b-2'}`}
+                  className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'}`}
                 >
                   <div
-                    className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-[#588f7a] ' : 'text-[#71717a]'}`}
+                    className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-[#71717a]'}`}
                   >
                     {step.title}
                   </div>
@@ -748,7 +748,7 @@ const EditOrderForm = ({ order = {} }) => {
                         isValid && currentStep < 3 && setCurrentStep(currentStep + 1);
                       }}
                       disabled={isSubmitting}
-                      className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}
+                      className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}
                     >
                       {isSubmitting ? (currentStep === 3 ? 'Submitting...' : 'Submit') : currentStep === 3 ? 'Submit' : 'Next'}
                     </Button>

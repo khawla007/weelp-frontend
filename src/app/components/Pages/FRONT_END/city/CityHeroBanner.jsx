@@ -47,8 +47,8 @@ const CityHeroBanner = ({ city }) => {
       </div>
 
       {/* Decorative SVG vectors */}
-      <Icons.Vector2 aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 z-0 hidden text-[#588f7a] lg:block" />
-      <Icons.VectorArrow aria-hidden="true" className="pointer-events-none absolute bottom-[125px] left-[167.1px] z-0 hidden -rotate-[27.247deg] text-[#588f7a] lg:block" />
+      <Icons.Vector2 aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 z-0 hidden text-weelp-sage-deep lg:block" />
+      <Icons.VectorArrow aria-hidden="true" className="pointer-events-none absolute bottom-[125px] left-[167.1px] z-0 hidden -rotate-[27.247deg] text-weelp-sage-deep lg:block" />
     </section>
   );
 };

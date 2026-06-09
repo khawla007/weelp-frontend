@@ -49,7 +49,7 @@ export default function NotificationDetailModal({ notif, onClose }) {
                 <button
                   type="button"
                   onClick={copyCode}
-                  className="inline-flex items-center gap-2 rounded-md bg-[#588f7a] px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40"
+                  className="inline-flex items-center gap-2 rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
                 >
                   {copied ? 'Copied!' : `Copy code: ${couponCode}`}
                 </button>
@@ -63,7 +63,7 @@ export default function NotificationDetailModal({ notif, onClose }) {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={onClose}
-                      className="inline-flex items-center rounded-md bg-[#588f7a] px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40"
+                      className="inline-flex items-center rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
                     >
                       View details
                     </a>
@@ -71,7 +71,7 @@ export default function NotificationDetailModal({ notif, onClose }) {
                     <NavigationLink
                       href={cta.href}
                       onClick={onClose}
-                      className="inline-flex items-center rounded-md bg-[#588f7a] px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40"
+                      className="inline-flex items-center rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
                     >
                       View details
                     </NavigationLink>

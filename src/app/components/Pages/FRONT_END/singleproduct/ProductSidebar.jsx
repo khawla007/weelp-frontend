@@ -234,7 +234,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                         pricing.groupHint.type === 'upgrade'
                           ? `Add ${needed} more to unlock ${min}-person group discount (${discountLabel}).`
                           : `Add ${needed} more to bundle another ${min}-person group discount.`;
-                      return <div className="text-xs text-[#588f7a]">{hintText}</div>;
+                      return <div className="text-xs text-weelp-copy">{hintText}</div>;
                     })()}
                   {pricing.earlyBirdDiscount && (
                     <RowPulse value={pricing.earlyBirdDiscount.amount} className="flex justify-between text-green-700">
@@ -284,7 +284,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
 
         {/* Discount rule hints for activities */}
         {productType === 'activity' && (showEbHint || showLmHint) && (
-          <div className="mt-3 flex flex-col gap-1 text-xs text-[#588f7a]">
+          <div className="mt-3 flex flex-col gap-1 text-xs text-weelp-copy">
             {showEbHint && (
               <span>
                 Early bird: book {Number(eb.days_before_start)}+ days ahead for{' '}
@@ -337,7 +337,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                   >
                     <span
                       className={`w-5 h-5 rounded-[4px] flex items-center justify-center flex-shrink-0 transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-                        isChecked ? 'bg-[#588f7a]' : 'border-2 border-zinc-300 bg-white'
+                        isChecked ? 'bg-weelp-sage-deep' : 'border-2 border-zinc-300 bg-white'
                       }`}
                     >
                       <Check
@@ -376,7 +376,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
               <button
                 type="button"
                 onClick={() => setMiniCartOpen(true)}
-                className="px-8 py-3 text-base font-medium bg-[#588f7a] hover:bg-[#4d8069] text-white rounded-md cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="px-8 py-3 text-base font-medium bg-weelp-sage-deep hover:bg-[#4d8069] text-white rounded-md cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 Show Cart
               </button>
@@ -393,7 +393,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                   </p>
                 ) : selectedAddons.length > 0 ? (
                   <>
-                    <p className="text-sm font-medium text-[#588f7a]">
+                    <p className="text-sm font-medium text-weelp-copy">
                       + Add-ons:{' '}
                       <span key={`card-ad-${addonsTotal}`} className="inline-block animate-price-fade">
                         ${addonsTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -417,7 +417,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
               <button
                 type="submit"
                 form={`booking-form-${productId}`}
-                className="px-8 py-3 text-base font-medium bg-[#588f7a] hover:bg-[#4d8069] text-white rounded-md disabled:bg-zinc-400 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="px-8 py-3 text-base font-medium bg-weelp-sage-deep hover:bg-[#4d8069] text-white rounded-md disabled:bg-zinc-400 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 Select
               </button>
@@ -435,7 +435,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             </div>
             <button
               type="button"
-              className="px-6 py-3 border border-[#e4e4e7] rounded-lg text-sm font-medium text-[#18181b] whitespace-nowrap hover:bg-[#f4f4f5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              className="px-6 py-3 border border-[#e4e4e7] rounded-lg text-sm font-medium text-[#18181b] whitespace-nowrap hover:bg-[#f4f4f5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             >
               Help Center
             </button>

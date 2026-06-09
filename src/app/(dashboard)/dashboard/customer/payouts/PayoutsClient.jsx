@@ -106,7 +106,7 @@ export default function PayoutsClient({ initial }) {
               setPreset(p.key);
               setPage(1);
             }}
-            className={preset === p.key ? 'bg-[#588f7a] hover:bg-[#588f7a]/90' : 'border-[#e4e4e7] text-[#52525b]'}
+            className={preset === p.key ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-[#e4e4e7] text-[#52525b]'}
           >
             {p.label}
           </Button>
@@ -129,7 +129,7 @@ export default function PayoutsClient({ initial }) {
             <p className="text-lg font-semibold text-[#18181b]">No payouts in this period</p>
             <p className="text-[#71717a] mt-2">Paid commissions will appear here once your earnings are settled.</p>
             <NavigationLink href="/dashboard/customer/earnings">
-              <Button className="mt-4 bg-[#588f7a] hover:bg-[#588f7a]/90 text-white">View Earnings</Button>
+              <Button className="mt-4 bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white">View Earnings</Button>
             </NavigationLink>
           </div>
         ) : (

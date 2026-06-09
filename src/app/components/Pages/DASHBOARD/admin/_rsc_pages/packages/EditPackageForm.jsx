@@ -256,7 +256,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
               placeholder="Package name"
               id="name"
               {...register('name', { required: 'Name is required' })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
               onBlur={handleBlur}
             />
             {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
@@ -270,7 +270,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
               placeholder="Enter Url slug"
               id="slug"
               {...register('slug', { required: 'Slug is required' })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
               onBlur={handleBlur}
             />
             {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
@@ -287,7 +287,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
             {...register('description', {
               required: 'Description is required',
             })}
-            className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-[#588f7a]"
+            className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
           />
           {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
         </div>
@@ -326,7 +326,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                   id="featured_package"
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-[#588f7a]"
+                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-weelp-sage-deep"
                 >
                   <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
                 </Switch>
@@ -344,7 +344,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                   id="private_package"
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-[#588f7a]"
+                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-weelp-sage-deep"
                 >
                   <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
                 </Switch>
@@ -482,7 +482,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                     required: ' Title Required',
                   })}
                   placeholder="Enter section title"
-                  className="text-xs focus-visible:ring-[#588f7a]"
+                  className="text-xs focus-visible:ring-weelp-sage-deep"
                 />
                 {errors?.information?.[index]?.section_title && <p className="px-2 text-red-500 text-sm">{errors.information?.[index]?.section_title?.message}</p>}
               </div>
@@ -496,7 +496,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                     required: 'Content Required',
                   })}
                   placeholder="Enter section content"
-                  className="text-xs focus-visible:ring-[#588f7a]"
+                  className="text-xs focus-visible:ring-weelp-sage-deep"
                 />
                 {errors?.information?.[index]?.content && <p className="px-2 text-red-500 text-sm">{errors.information?.[index]?.content?.message}</p>}
               </div>
@@ -507,7 +507,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
           <Button
             type="submit"
             onClick={handleValidationInformation}
-            className={`absolute right-0 -bottom-10 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}
+            className={`absolute right-0 -bottom-10 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}
           >
             {isSubmitting ? (currentStep === 7 ? 'Submitting...' : 'Submit') : currentStep === 7 ? 'Submit' : 'Next'}
           </Button>
@@ -830,7 +830,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
 
         <div className="w-full flex justify-between items-center">
           <h3 className="text-base font-semibold text-[#18181b]">Daily Schedule</h3>
-          <Button type="button" onClick={handleAddDay} className="bg-[#588f7a] hover:bg-[#588f7a]">
+          <Button type="button" onClick={handleAddDay} className="bg-weelp-sage-deep hover:bg-weelp-sage-deep">
             + Add Day
           </Button>
         </div>
@@ -839,7 +839,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
         {dayFields.map((item, index) => (
           <div key={item?.id} className="space-y-4">
             <div className="flex items-center gap-4 mt-4 justify-between">
-              <Input type="number" {...register(`schedules.${index}.day`)} defaultValue={item?.day} className="max-w-xs focus-visible:ring-[#588f7a] focus-visible:ring-1" placeholder="Day" readOnly />
+              <Input type="number" {...register(`schedules.${index}.day`)} defaultValue={item?.day} className="max-w-xs focus-visible:ring-weelp-sage-deep focus-visible:ring-1" placeholder="Day" readOnly />
               <Trash onClick={() => handleRemoveDay(item, id, index)} className=" cursor-pointer " size={20} />
             </div>
 
@@ -957,7 +957,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                   }}
                 >
                   <DropdownMenuTrigger>
-                    <p className="bg-[#588f7a] hover:bg-[#588f7a] rounded-3xl p-2 text-white px-6 self-center">+ Add Item</p>
+                    <p className="bg-weelp-sage-deep hover:bg-weelp-sage-deep rounded-3xl p-2 text-white px-6 self-center">+ Add Item</p>
                   </DropdownMenuTrigger>
 
                   <DropdownMenuContent>
@@ -1036,7 +1036,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
         <Button
           type="submit"
           onClick={handleValidationSchedule}
-          className={`absolute right-0 -bottom-10 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}
+          className={`absolute right-0 -bottom-10 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}
         >
           {isSubmitting ? (currentStep === 7 ? 'Submitting...' : 'Submit') : currentStep === 7 ? 'Submit' : 'Next'}
         </Button>
@@ -1494,7 +1494,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
             <Controller
               control={control}
               name="availability.date_based_package"
-              render={({ field }) => <Switch id="date_based_package" className="data-[state=checked]:bg-[#588f7a]" checked={field.value} onCheckedChange={field.onChange} />}
+              render={({ field }) => <Switch id="date_based_package" className="data-[state=checked]:bg-weelp-sage-deep" checked={field.value} onCheckedChange={field.onChange} />}
             />
           </div>
 
@@ -1590,7 +1590,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
             <Controller
               control={control}
               name="availability.quantity_based_package"
-              render={({ field }) => <Switch id="quantity_based_package" checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-[#588f7a]" />}
+              render={({ field }) => <Switch id="quantity_based_package" checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-weelp-sage-deep" />}
             />
           </div>
 
@@ -1708,7 +1708,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                 defaultValue=""
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} value={String(field.value).toLowerCase()}>
-                    <SelectTrigger className="w-[180px] focus:ring-[#588f7a]">
+                    <SelectTrigger className="w-[180px] focus:ring-weelp-sage-deep">
                       <SelectValue placeholder="activity" />
                     </SelectTrigger>
                     <SelectContent>
@@ -1729,7 +1729,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
               </Label>
               <Input
                 id={`inclusions_exclusions.${index}.title`}
-                className="focus-visible:ring-[#588f7a]"
+                className="focus-visible:ring-weelp-sage-deep"
                 placeholder="Enter Title"
                 {...register(`inclusions_exclusions.${index}.title`, {
                   required: 'Field Required',
@@ -1742,7 +1742,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
               <Label htmlFor={`inclusions_exclusions.${index}.description`}>Description</Label>
               <Textarea
                 id={`inclusions_exclusions.${index}.description`}
-                className="focus-visible:ring-[#588f7a]"
+                className="focus-visible:ring-weelp-sage-deep"
                 placeholder="Enter Description"
                 {...register(`inclusions_exclusions.${index}.description`)}
               />
@@ -1753,7 +1753,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                 control={control}
                 name={`inclusions_exclusions.${index}.included`}
                 defaultValue={false}
-                render={({ field }) => <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-[#588f7a]" />}
+                render={({ field }) => <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-weelp-sage-deep" />}
               />
               <Label htmlFor={`inclusions_exclusions.${index}.included`}>Included</Label>
             </div>
@@ -1891,9 +1891,9 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                     fill={isFeatured ? '#588f7a' : 'white'}
                     strokeWidth={2}
                     onClick={() => handleSetFeatured(image.media_id)}
-                    className={`absolute top-4 right-4 transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-[#588f7a]' : 'text-[#588f7a] hover:scale-110'}`}
+                    className={`absolute top-4 right-4 transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-weelp-sage-deep' : 'text-weelp-sage-deep hover:scale-110'}`}
                   />
-                  {isFeatured && <div className="absolute top-4 left-4 bg-[#588f7a] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
+                  {isFeatured && <div className="absolute top-4 left-4 bg-weelp-sage-deep text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
                   <Trash2
                     onClick={() => handleDeleteImage(image)}
                     className="absolute bottom-4 right-4 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-red-500 bg-white rounded-full shadow p-1"
@@ -1992,7 +1992,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
             defaultValue="easy"
             render={({ field }) => (
               <Select id={'difficulty'} onValueChange={field.onChange} defaultValue={field.value}>
-                <SelectTrigger className="mt-1 w-full capitalize rounded-md p-2 focus:outline-[#588f7a]">
+                <SelectTrigger className="mt-1 w-full capitalize rounded-md p-2 focus:outline-weelp-sage-deep">
                   <SelectValue placeholder="Select a unit" />
                 </SelectTrigger>
                 <SelectContent>
@@ -2200,7 +2200,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                 type="text"
                 maxLength="60"
                 placeholder="Enter meta title"
-                className="focus-visible:ring-[#588f7a]"
+                className="focus-visible:ring-weelp-sage-deep"
                 {...register('seo.meta_title', {
                   required: 'Meta Title Required',
                 })}
@@ -2215,7 +2215,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                 type="text"
                 placeholder="Enter meta description"
                 maxLength="160"
-                className="focus-visible:ring-[#588f7a]"
+                className="focus-visible:ring-weelp-sage-deep"
                 {...register('seo.meta_description', {
                   required: 'Meta Description Required',
                 })}
@@ -2229,7 +2229,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
               <Input
                 type="text"
                 placeholder="Enter keywords separated by commas"
-                className="focus-visible:ring-[#588f7a]"
+                className="focus-visible:ring-weelp-sage-deep"
                 {...register('seo.keywords', {
                   required: 'Keywords Required',
                   onBlur: (e) => {
@@ -2246,7 +2246,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
               <Input
                 type="text"
                 placeholder="Enter OG Image Url"
-                className="focus-visible:ring-[#588f7a]"
+                className="focus-visible:ring-weelp-sage-deep"
                 {...register('seo.og_image_url', {
                   required: 'og_image_url Required',
                 })}
@@ -2259,7 +2259,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
               <Input
                 type="text"
                 placeholder="Enter canonical URL"
-                className="focus-visible:ring-[#588f7a]"
+                className="focus-visible:ring-weelp-sage-deep"
                 {...register('seo.canonical_url', {
                   required: 'canonical_url Required',
                 })}
@@ -2453,7 +2453,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                   required: 'Fields Required',
                 })}
                 placeholder="Enter the Question"
-                className="text-xs focus-visible:ring-[#588f7a]"
+                className="text-xs focus-visible:ring-weelp-sage-deep"
               />
               {errors?.faqs?.[index]?.question && <p className="px-2 text-red-500 text-sm">{errors.faqs?.[index]?.question?.message}</p>}
             </div>
@@ -2467,14 +2467,14 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                   required: 'Answer Required',
                 })}
                 placeholder="Enter section answer"
-                className="text-xs focus-visible:ring-[#588f7a]"
+                className="text-xs focus-visible:ring-weelp-sage-deep"
               />
               {errors?.faqs?.[index]?.answer && <p className="px-2 text-red-500 text-sm">{errors.faqs?.[index]?.answer?.message}</p>}
             </div>
           </Card>
         ))}
         {/* Next Button */}
-        <Button type="submit" onClick={handleValidationFaq} className={`absolute right-0 -bottom-10 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}>
+        <Button type="submit" onClick={handleValidationFaq} className={`absolute right-0 -bottom-10 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}>
           Next
         </Button>
       </div>
@@ -2626,12 +2626,12 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                         goWithDirection(step?.id, currentStep, setCurrentStep);
                       }}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${
-                        currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-[#588f7a] border-b-2'
+                        currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'
                       }`}
                     >
                       <div
                         className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${
-                          currentStep == step?.id ? 'text-[#588f7a] ' : 'text-[#71717a]'
+                          currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-[#71717a]'
                         }`}
                       >
                         {step.title}
@@ -2684,7 +2684,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                             Cancel
                           </Button>
                         )}
-                        <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}>
+                        <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}>
                           {isSubmitting ? 'Next' : 'Next'}
                         </Button>
                       </div>

@@ -47,10 +47,10 @@ const WanderersBanner = () => {
           <span aria-hidden="true" className="h-px flex-1 bg-[#e4e4e7]" />
           <Link
             href="/cities"
-            className="group relative inline-flex h-[34px] w-[77px] shrink-0 items-center justify-center text-xs font-medium leading-none !text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#588f7a]"
+            className="group relative inline-flex h-[34px] w-[77px] shrink-0 items-center justify-center text-xs font-medium leading-none !text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-weelp-sage-deep"
           >
             <svg aria-hidden="true" viewBox="0 0 64 28" className="absolute inset-0 size-full">
-              <path d="M9 3H59L55 25H5L9 3Z" className="fill-[#588f7a] transition-colors group-hover:fill-[#4d8069]" />
+              <path d="M9 3H59L55 25H5L9 3Z" className="fill-weelp-sage-deep transition-colors group-hover:fill-[#4d8069]" />
             </svg>
             <span className="relative z-10">Curate</span>
           </Link>

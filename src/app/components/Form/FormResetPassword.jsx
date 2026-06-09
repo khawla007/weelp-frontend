@@ -209,7 +209,7 @@ export const FormResetPassword = () => {
             type="submit"
             disabled={isSubmitting || !password || !isPasswordValid(password) || password !== passwordConfirmation}
             className={`w-full p-4 rounded-md ${
-              isSubmitting || !password || !isPasswordValid(password) || password !== passwordConfirmation ? 'bg-zinc-400 cursor-not-allowed' : 'bg-[#588f7a] hover:bg-[#b5d8cb] text-white'
+              isSubmitting || !password || !isPasswordValid(password) || password !== passwordConfirmation ? 'bg-zinc-400 cursor-not-allowed' : 'bg-weelp-sage-deep hover:bg-[#b5d8cb] text-white'
             }`}
           >
             {isSubmitting ? 'Processing...' : 'Continue'}

@@ -303,7 +303,7 @@ export const AddOnForm = ({ formData = {} }) => {
                         onCheckedChange={(checked) => {
                           field.onChange(Boolean(checked));
                         }}
-                        className="data-[state=checked]:bg-[#588f7a] data-[state=checked]:accent-[#588f7a]"
+                        className="data-[state=checked]:bg-weelp-sage-deep data-[state=checked]:accent-weelp-sage-deep"
                       />
                     </FormControl>
                     <FormMessage />

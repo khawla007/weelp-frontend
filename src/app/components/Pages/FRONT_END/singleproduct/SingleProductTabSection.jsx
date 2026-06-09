@@ -12,7 +12,7 @@ import Reveal from '@/app/components/ui/Reveal';
 
 const HEADER_HEIGHT = 66;
 const TAB_BAR_HEIGHT = 60;
-const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
+const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
 
 const SIDEBAR_IMAGES = {
   activity: '/assets/images/activity-sidebar-bottom.png',
@@ -162,7 +162,7 @@ const SingleProductTabSection = ({
             >
               {tab.label}
               <span
-                className={`absolute bottom-0 left-0 w-full h-[2px] bg-[#588f7a] origin-left transition-transform duration-[180ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+                className={`absolute bottom-0 left-0 w-full h-[2px] bg-weelp-sage-deep origin-left transition-transform duration-[180ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
                   activeTab === tab.id ? 'scale-x-100' : 'scale-x-0'
                 }`}
                 aria-hidden="true"

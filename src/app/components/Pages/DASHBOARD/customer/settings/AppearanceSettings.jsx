@@ -81,7 +81,7 @@ export function AppearanceSettings({ user }) {
                 <Label>Theme</Label>
                 <FormControl>
                   <RadioGroup onValueChange={field.onChange} value={field.value} className="flex space-x-4">
-                    <FormItem className={`p-4 cursor-pointer border-2 flex items-center gap-2 rounded-md ${selectedTheme === 'light' ? 'border-[#588f7a] bg-[#f2f7f5]' : ''}`}>
+                    <FormItem className={`p-4 cursor-pointer border-2 flex items-center gap-2 rounded-md ${selectedTheme === 'light' ? 'border-weelp-sage-deep bg-[#f2f7f5]' : ''}`}>
                       <FormControl>
                         <RadioGroupItem value="light" id="light" className="hidden" />
                       </FormControl>
@@ -91,7 +91,7 @@ export function AppearanceSettings({ user }) {
                       </Label>
                     </FormItem>
 
-                    <FormItem className={`p-4 cursor-pointer border-2 flex items-center gap-2 rounded-md ${selectedTheme === 'dark' ? 'border-[#588f7a] bg-[#f2f7f5]' : ''}`}>
+                    <FormItem className={`p-4 cursor-pointer border-2 flex items-center gap-2 rounded-md ${selectedTheme === 'dark' ? 'border-weelp-sage-deep bg-[#f2f7f5]' : ''}`}>
                       <FormControl>
                         <RadioGroupItem value="dark" id="dark" className="hidden" />
                       </FormControl>
@@ -108,7 +108,7 @@ export function AppearanceSettings({ user }) {
             )}
           />
 
-          <Button disabled={!isDirty} type="submit" className="bg-[#588f7a]">
+          <Button disabled={!isDirty} type="submit" className="bg-weelp-sage-deep">
             Update Preferences
           </Button>
         </form>

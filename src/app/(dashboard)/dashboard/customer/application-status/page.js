@@ -58,7 +58,7 @@ export default async function ApplicationStatusPage() {
         <Card icon={ClipboardCheck} tone="neutral" title="You haven't applied yet">
           <p>Apply to become a Weelp creator and start sharing your itineraries.</p>
           <NavigationLink href="/become-a-creator">
-            <Button className="mt-4 bg-[#588f7a] hover:bg-[#588f7a]/90">Apply Now</Button>
+            <Button className="mt-4 bg-weelp-sage-deep hover:bg-weelp-sage-deep/90">Apply Now</Button>
           </NavigationLink>
         </Card>
       )}
@@ -79,7 +79,7 @@ export default async function ApplicationStatusPage() {
           )}
           <p>You can re-apply with updated information.</p>
           <NavigationLink href="/become-a-creator">
-            <Button className="mt-4 bg-[#588f7a] hover:bg-[#588f7a]/90">Re-apply</Button>
+            <Button className="mt-4 bg-weelp-sage-deep hover:bg-weelp-sage-deep/90">Re-apply</Button>
           </NavigationLink>
         </Card>
       )}
@@ -88,7 +88,7 @@ export default async function ApplicationStatusPage() {
         <Card icon={CheckCircle2} tone="success" title="You're a creator!">
           <p>Your application was approved. Sign out and back in to see the creator dashboard.</p>
           <NavigationLink href="/dashboard/customer/overview">
-            <Button className="mt-4 bg-[#588f7a] hover:bg-[#588f7a]/90">Go to Overview</Button>
+            <Button className="mt-4 bg-weelp-sage-deep hover:bg-weelp-sage-deep/90">Go to Overview</Button>
           </NavigationLink>
         </Card>
       )}

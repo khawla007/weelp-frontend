@@ -297,16 +297,16 @@ The Sage Deep ratio is the operative constraint. Sage on white below 18px / 14px
 
 **Tailwind token mapping.** The hexes above ship as a `weelp` color namespace in `tailwind.config.js`. New work uses these utilities; do not introduce fresh `text-[#...]`, `bg-[#...]`, or `border-[#...]` literals for these values.
 
-| Hex       | Token key            | Utility                                             |
-| --------- | -------------------- | --------------------------------------------------- |
-| `#18181b` | `weelp.ink`          | `text-weelp-ink`, `bg-weelp-ink`                    |
-| `#52525b` | `weelp.copy`         | `text-weelp-copy`                                   |
-| `#71717a` | `weelp.label`        | `text-weelp-label`                                  |
-| `#435a67` | `weelp.steel`        | `text-weelp-steel`, `bg-weelp-steel`                |
-| `#588f7a` | `weelp.sage-deep`    | `text-weelp-sage-deep`, `bg-weelp-sage-deep`, `border-weelp-sage-deep`, `hover:text-weelp-sage-deep` |
-| `#4d8069` | `weelp.sage-hover`   | `hover:bg-weelp-sage-hover`                         |
-| `#b5d8cb` | `weelp.sage-tint`    | `bg-weelp-sage-tint`                                |
-| `#f2f7f5` | `weelp.sage-wash`    | `bg-weelp-sage-wash`                                |
+| Hex       | Token key          | Utility                                                                                              |
+| --------- | ------------------ | ---------------------------------------------------------------------------------------------------- |
+| `#18181b` | `weelp.ink`        | `text-weelp-ink`, `bg-weelp-ink`                                                                     |
+| `#52525b` | `weelp.copy`       | `text-weelp-copy`                                                                                    |
+| `#71717a` | `weelp.label`      | `text-weelp-label`                                                                                   |
+| `#435a67` | `weelp.steel`      | `text-weelp-steel`, `bg-weelp-steel`                                                                 |
+| `#588f7a` | `weelp.sage-deep`  | `text-weelp-sage-deep`, `bg-weelp-sage-deep`, `border-weelp-sage-deep`, `hover:text-weelp-sage-deep` |
+| `#4d8069` | `weelp.sage-hover` | `hover:bg-weelp-sage-hover`                                                                          |
+| `#b5d8cb` | `weelp.sage-tint`  | `bg-weelp-sage-tint`                                                                                 |
+| `#f2f7f5` | `weelp.sage-wash`  | `bg-weelp-sage-wash`                                                                                 |
 
 Alpha-suffixed callsites (`#435a6742`, `#435a6730`, `#588f7a4D`, etc.) remain as arbitrary literals until the token system grows a `weelp.steel/26` alpha syntax — a separate cleanup, not blocking on contrast.
 

@@ -44,7 +44,7 @@ export default function CreatorStatCards({ className = 'max-w-[95%] mx-auto px-6
       label: 'Total Sales',
       value: (stats.total_sales || 0).toLocaleString(),
       icon: TrendingUp,
-      color: 'text-[#588f7a]',
+      color: 'text-weelp-sage-deep',
       bg: 'bg-green-50',
     },
     {

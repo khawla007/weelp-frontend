@@ -62,9 +62,9 @@ export default function AnnouncementRow({ announcement, isRead, onOpenDetail, on
           handleRowClick();
         }
       }}
-      className={`flex items-start gap-3 w-full text-left px-4 py-3 border-b border-[#eaeaea] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#588f7a]/40 transition-colors cursor-pointer ${!isRead ? 'bg-[#588f7a]/5' : ''}`}
+      className={`flex items-start gap-3 w-full text-left px-4 py-3 border-b border-[#eaeaea] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40 transition-colors cursor-pointer ${!isRead ? 'bg-weelp-sage-deep/5' : ''}`}
     >
-      <div className={`mt-1 w-2 h-2 rounded-full flex-shrink-0 ${!isRead ? 'bg-[#588f7a]' : 'bg-transparent'}`} />
+      <div className={`mt-1 w-2 h-2 rounded-full flex-shrink-0 ${!isRead ? 'bg-weelp-sage-deep' : 'bg-transparent'}`} />
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-[#18181b] truncate">{announcement.title}</p>
         <p className="text-xs text-[#71717a] line-clamp-2 mt-0.5">{announcement.message}</p>
@@ -72,17 +72,17 @@ export default function AnnouncementRow({ announcement, isRead, onOpenDetail, on
 
         {mode === 'visit' &&
           (isInternalLink(announcement.link) ? (
-            <NavigationLink href={announcement.link} onClick={handleVisitClick} className="mt-2 inline-block text-xs font-medium text-[#588f7a] hover:underline">
+            <NavigationLink href={announcement.link} onClick={handleVisitClick} className="mt-2 inline-block text-xs font-medium text-weelp-copy hover:text-weelp-sage-deep hover:underline">
               Visit
             </NavigationLink>
           ) : (
-            <a href={announcement.link} target="_blank" rel="noopener noreferrer" onClick={handleVisitClick} className="mt-2 inline-block text-xs font-medium text-[#588f7a] hover:underline">
+            <a href={announcement.link} target="_blank" rel="noopener noreferrer" onClick={handleVisitClick} className="mt-2 inline-block text-xs font-medium text-weelp-copy hover:text-weelp-sage-deep hover:underline">
               Visit
             </a>
           ))}
 
         {mode === 'detail' && (
-          <button type="button" onClick={handleDetailClick} className="mt-2 inline-flex items-center text-xs font-medium text-[#588f7a] hover:underline">
+          <button type="button" onClick={handleDetailClick} className="mt-2 inline-flex items-center text-xs font-medium text-weelp-copy hover:text-weelp-sage-deep hover:underline">
             View detail
           </button>
         )}
@@ -92,7 +92,7 @@ export default function AnnouncementRow({ announcement, isRead, onOpenDetail, on
         type="button"
         aria-label={toggleLabel}
         onClick={handleToggle}
-        className="flex-shrink-0 text-[#71717a] hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 rounded-sm p-1"
+        className="flex-shrink-0 text-[#71717a] hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 rounded-sm p-1"
       >
         <ToggleIcon className="size-4" strokeWidth={1.5} />
       </button>

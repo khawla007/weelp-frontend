@@ -144,7 +144,7 @@ export default function NotificationBell() {
         aria-label="Notifications"
         aria-haspopup="menu"
         aria-expanded={open}
-        className="relative flex items-center justify-center text-[#18181b] transition hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+        className="relative flex items-center justify-center text-[#18181b] transition hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
         onClick={() => setOpen(!open)}
       >
         <Bell className="size-5" strokeWidth={1.5} />
@@ -159,7 +159,7 @@ export default function NotificationBell() {
           <div className="flex items-center justify-between px-4 py-3 border-b border-[#eaeaea]">
             <h3 className="text-sm font-semibold text-[#18181b]">Notifications</h3>
             {userId && personalUnread > 0 && (
-              <button onClick={handleMarkAllRead} className="text-xs text-[#588f7a] hover:underline flex items-center gap-1">
+              <button onClick={handleMarkAllRead} className="text-xs text-weelp-copy hover:text-weelp-sage-deep hover:underline flex items-center gap-1">
                 <CheckCheck size={14} /> Mark all as read
               </button>
             )}
@@ -189,7 +189,7 @@ export default function NotificationBell() {
             <div className="px-4 py-2 border-t border-[#eaeaea] text-center">
               <NavigationLink
                 href="/dashboard/customer/notifications"
-                className="text-xs text-[#588f7a] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+                className="text-xs text-weelp-copy hover:text-weelp-sage-deep hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
                 onClick={() => setOpen(false)}
               >
                 View All

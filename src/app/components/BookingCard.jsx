@@ -76,7 +76,7 @@ const BookingCard = ({ bookingItem = {} }) => {
           height={400} // intrinsic height of the image
           className="w-12 h-auto"
         />
-        <Button className="bg-[#588f7a] text-base font-normal hover:bg-[#588f7a] dark:hover:bg-[#588f7a] dark:hover:text-white">View Booking</Button>
+        <Button className="bg-weelp-sage-deep text-base font-normal hover:bg-weelp-sage-deep dark:hover:bg-weelp-sage-deep dark:hover:text-white">View Booking</Button>
       </Card>
     </Card>
   );

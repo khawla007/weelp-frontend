@@ -130,7 +130,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
 
         {/* Action buttons */}
         {canEdit && !isEditing && (
-          <button onClick={handleStartEdit} className="px-6 py-2.5 bg-[#588f7a] hover:bg-[#4d8069] text-white font-medium rounded-lg transition-colors flex items-center gap-2">
+          <button onClick={handleStartEdit} className="px-6 py-2.5 bg-weelp-sage-deep hover:bg-[#4d8069] text-white font-medium rounded-lg transition-colors flex items-center gap-2">
             <Pencil size={16} />
             {isLoggedIn ? 'Customize This Itinerary' : 'Login to Customize'}
           </button>
@@ -168,8 +168,8 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
                     px-[18px] py-3 text-base font-medium whitespace-nowrap rounded-[6px] transition-colors
                     ${
                       isActive
-                        ? 'bg-gradient-to-b from-[#f3f5f5] to-[#588f7a]/10 border border-[#588f7a] text-[#588f7a]'
-                        : 'bg-white border border-[#e4e4e7]/50 text-[#71717a] hover:border-[#588f7a] hover:text-[#588f7a]'
+                        ? 'bg-gradient-to-b from-[#f3f5f5] to-weelp-sage-deep/10 border border-weelp-sage-deep text-weelp-copy'
+                        : 'bg-white border border-[#e4e4e7]/50 text-[#71717a] hover:border-weelp-sage-deep hover:text-weelp-sage-deep'
                     }
                   `}
                 >
@@ -182,7 +182,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
             {isEditing && (
               <button
                 onClick={() => useItineraryEditStore.getState().addDay()}
-                className="px-[18px] py-3 text-base font-medium whitespace-nowrap rounded-[6px] transition-colors border border-dashed border-[#588f7a] text-[#588f7a] hover:bg-[#588f7a]/5 flex items-center justify-center gap-2"
+                className="px-[18px] py-3 text-base font-medium whitespace-nowrap rounded-[6px] transition-colors border border-dashed border-weelp-sage-deep text-weelp-copy hover:text-weelp-sage-deep hover:bg-weelp-sage-deep/5 flex items-center justify-center gap-2"
               >
                 <Plus size={16} /> Add Day
               </button>
@@ -266,7 +266,7 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
             value={dayTitle === `Day ${dayNumber}` ? '' : dayTitle}
             onChange={(e) => useItineraryEditStore.getState().updateDayTitle(dayIndex, e.target.value)}
             placeholder={`Day ${dayNumber}`}
-            className="text-[#18181b] text-lg font-semibold bg-transparent border-b border-dashed border-[#e4e4e7] focus:border-[#588f7a] outline-none flex-1 min-w-0"
+            className="text-[#18181b] text-lg font-semibold bg-transparent border-b border-dashed border-[#e4e4e7] focus:border-weelp-sage-deep outline-none flex-1 min-w-0"
           />
         ) : (
           <span className="text-[#18181b] text-lg font-semibold">{dayTitle}</span>
@@ -412,13 +412,13 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
         <div className="flex gap-3">
           <button
             onClick={() => setActiveModal({ type: 'addActivity' })}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-[#588f7a] border border-dashed border-[#588f7a] rounded-lg hover:bg-[#588f7a]/5 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-weelp-copy hover:text-weelp-sage-deep border border-dashed border-weelp-sage-deep rounded-lg hover:bg-weelp-sage-deep/5 transition-colors"
           >
             <Plus size={14} /> Add Activity
           </button>
           <button
             onClick={() => setActiveModal({ type: 'addTransfer' })}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-[#588f7a] border border-dashed border-[#588f7a] rounded-lg hover:bg-[#588f7a]/5 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-weelp-copy hover:text-weelp-sage-deep border border-dashed border-weelp-sage-deep rounded-lg hover:bg-weelp-sage-deep/5 transition-colors"
           >
             <Plus size={14} /> Add Transfer
           </button>

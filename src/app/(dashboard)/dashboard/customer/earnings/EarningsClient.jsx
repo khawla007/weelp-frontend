@@ -131,7 +131,7 @@ export default function EarningsClient({ initial }) {
                 setStatus(tab);
                 setPage(1);
               }}
-              className={status === tab ? 'bg-[#588f7a] hover:bg-[#588f7a]/90' : 'border-[#e4e4e7] text-[#52525b]'}
+              className={status === tab ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-[#e4e4e7] text-[#52525b]'}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </Button>
@@ -147,7 +147,7 @@ export default function EarningsClient({ initial }) {
                 setPreset(p.key);
                 setPage(1);
               }}
-              className={preset === p.key ? 'bg-[#588f7a] hover:bg-[#588f7a]/90' : 'border-[#e4e4e7] text-[#52525b]'}
+              className={preset === p.key ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-[#e4e4e7] text-[#52525b]'}
             >
               {p.label}
             </Button>
@@ -172,7 +172,7 @@ export default function EarningsClient({ initial }) {
             <p className="text-lg font-semibold text-[#18181b]">No earnings in this period</p>
             <p className="text-[#71717a] mt-2">Once your itineraries get booked you&apos;ll see commissions here.</p>
             <NavigationLink href="/dashboard/customer/my-itineraries">
-              <Button className="mt-4 bg-[#588f7a] hover:bg-[#588f7a]/90 text-white">View My Itineraries</Button>
+              <Button className="mt-4 bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white">View My Itineraries</Button>
             </NavigationLink>
           </div>
         ) : (
@@ -196,7 +196,7 @@ export default function EarningsClient({ initial }) {
                       <TableCell>{fmtDate(r.created_at)}</TableCell>
                       <TableCell>
                         {r.itinerary?.slug ? (
-                          <NavigationLink href={`/itineraries/${r.itinerary.slug}`} className="text-[#588f7a] hover:underline">
+                          <NavigationLink href={`/itineraries/${r.itinerary.slug}`} className="text-weelp-sage-deep hover:underline">
                             {r.itinerary.name}
                           </NavigationLink>
                         ) : (

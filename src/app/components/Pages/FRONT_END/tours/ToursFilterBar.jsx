@@ -245,7 +245,7 @@ export default function ToursFilterBar() {
               value={fromInputValue}
               onChange={handleFromInputChange}
               onClick={handleFromInputClick}
-              className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-[#71717a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
+              className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-[#71717a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
               style={{ color: '#52525b', fontFamily: 'inherit' }}
               autoComplete="off"
             />
@@ -293,7 +293,7 @@ export default function ToursFilterBar() {
               value={toInputValue}
               onChange={handleToInputChange}
               onClick={handleToInputClick}
-              className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-[#71717a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
+              className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-[#71717a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
               style={{ color: '#52525b', fontFamily: 'inherit' }}
               autoComplete="off"
             />
@@ -450,7 +450,7 @@ export default function ToursFilterBar() {
                   className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-zinc-50 transition-colors border-b border-zinc-50 last:border-b-0 pr-10"
                 >
                   <span className="text-sm font-semibold text-[#18181b] truncate text-left">{item.name || item.title}</span>
-                  <span className="rounded-md bg-[#588f7a]/15 px-2 py-0.5 text-[12px] font-semibold uppercase tracking-wider text-[#588f7a]">{item.type || 'item'}</span>
+                  <span className="rounded-md bg-weelp-sage-deep/15 px-2 py-0.5 text-[12px] font-semibold uppercase tracking-wider text-weelp-copy">{item.type || 'item'}</span>
                   <span className="text-sm font-medium text-[#71717a] text-right">{item.price ? `$${item.price}` : ''}</span>
                 </NavigationLink>
               ))}

@@ -43,7 +43,7 @@ export const Overview: React.FC<OverviewProps> = ({ loading = false, data }) => 
         <BarChart data={chartData}>
           <XAxis dataKey="name" stroke={chartConfig.axisColor} fontSize={chartConfig.axisFontSize} tickLine={false} axisLine={false} />
           <YAxis stroke={chartConfig.axisColor} fontSize={chartConfig.axisFontSize} tickLine={false} axisLine={false} tickFormatter={chartConfig.valueFormatter} />
-          <Bar dataKey="total" fill="currentColor" radius={[4, 4, 0, 0]} className="fill-[#588f7a]" />
+          <Bar dataKey="total" fill="currentColor" radius={[4, 4, 0, 0]} className="fill-weelp-sage-deep" />
         </BarChart>
       </ResponsiveContainer>
     </div>

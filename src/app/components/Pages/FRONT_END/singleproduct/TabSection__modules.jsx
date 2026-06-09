@@ -6,7 +6,7 @@ import SectionHeader from '@/app/components/ui/SectionHeader';
 import { SingleProductReview } from './SingleProductReview';
 import { activityHighlights, inclusionsList, activityFaqs } from '@/app/Data/SingleActivityData';
 
-const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
+const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
 
 // OverView Panel
 export const OverViewPanel = ({ description }) => {
@@ -17,7 +17,7 @@ export const OverViewPanel = ({ description }) => {
       <ul className="flex flex-col gap-3 mt-2">
         {activityHighlights.map((item, index) => (
           <li key={index} className="flex items-start gap-3 text-base text-[#18181b] leading-[1.6]">
-            <span className="mt-2 w-1.5 h-1.5 rounded-full bg-[#588f7a] flex-shrink-0" aria-hidden="true" />
+            <span className="mt-2 w-1.5 h-1.5 rounded-full bg-weelp-sage-deep flex-shrink-0" aria-hidden="true" />
             {item}
           </li>
         ))}
@@ -38,7 +38,7 @@ export const WhatIncludedPanel = () => {
         <ul className="flex flex-col gap-4">
           {included.map((item, index) => (
             <li key={index} className="flex items-start gap-3 text-base text-[#18181b]">
-              <Check className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#588f7a]" size={20} aria-hidden="true" />
+              <Check className="w-5 h-5 flex-shrink-0 mt-0.5 text-weelp-sage-deep" size={20} aria-hidden="true" />
               {item.text}
             </li>
           ))}
@@ -83,7 +83,7 @@ export const FaqPanel = ({ faqs = [] }) => {
             .filter((i) => i.included)
             .map((item, index) => (
               <li key={index} className="flex items-start gap-3 text-base text-[#18181b]">
-                <Check className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#588f7a]" size={20} aria-hidden="true" />
+                <Check className="w-5 h-5 flex-shrink-0 mt-0.5 text-weelp-sage-deep" size={20} aria-hidden="true" />
                 {item.text}
               </li>
             ))}

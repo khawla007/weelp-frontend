@@ -24,7 +24,7 @@ export default function TransferResultsDropdown({ open, loading, transfers = [],
       type="button"
       onClick={onClose}
       aria-label="Close results"
-      className="absolute -top-3 -right-3 z-10 w-8 h-8 rounded-full bg-white border border-[#e4e4e7] shadow-[4px_4px_12px_rgba(0,0,0,0.1)] flex items-center justify-center text-[#18181b] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+      className="absolute -top-3 -right-3 z-10 w-8 h-8 rounded-full bg-white border border-[#e4e4e7] shadow-[4px_4px_12px_rgba(0,0,0,0.1)] flex items-center justify-center text-[#18181b] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
     >
       <X size={16} />
     </button>

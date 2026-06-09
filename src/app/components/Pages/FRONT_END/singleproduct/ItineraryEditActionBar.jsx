@@ -83,12 +83,12 @@ export default function ItineraryEditActionBar({ session }) {
 
         {/* Right: Role-based action */}
         {!isLoggedIn ? (
-          <Button onClick={handleGuestBookNow} className="bg-[#588f7a] hover:bg-[#588f7a]/90">
+          <Button onClick={handleGuestBookNow} className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90">
             <ShoppingCart className="h-4 w-4 mr-2" />
             Book Now
           </Button>
         ) : (
-          <Button onClick={handleCustomerSave} disabled={submitting} className="bg-[#588f7a] hover:bg-[#588f7a]/90">
+          <Button onClick={handleCustomerSave} disabled={submitting} className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90">
             {submitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <ShoppingCart className="h-4 w-4 mr-2" />}
             Save &amp; Book
           </Button>

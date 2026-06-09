@@ -61,7 +61,7 @@ export const BlogHeader = ({ editPage = false }) => {
                 id="publish"
                 checked={field.value} // true / false
                 onCheckedChange={field.onChange} // updates RHF state
-                className="data-[state=checked]:bg-[#588f7a]"
+                className="data-[state=checked]:bg-weelp-sage-deep"
               />
             </div>
           )}

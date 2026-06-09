@@ -3,7 +3,7 @@ import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { CircleCheckBig, Clock4, MapPin, Star, Heart } from 'lucide-react';
 import GallerySlider from '@/app/components/sliders/GallerySlider';
 
-const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
+const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
 
 const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null, primaryLocation = null, city = null, scheduleDisplay = null }) => {
   return (

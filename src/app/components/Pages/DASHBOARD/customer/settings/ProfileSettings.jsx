@@ -249,7 +249,7 @@ export function ProfileSettings({ user }) {
           <Button
             type="submit"
             disabled={!isDirty || !isValid || isSubmitting}
-            className="bg-[#588f7a] border border-[#588f7a] text-white hover:bg-[#4d8069] hover:border-[#4d8069] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:opacity-50 disabled:pointer-events-none"
+            className="bg-weelp-sage-deep border border-weelp-sage-deep text-white hover:bg-[#4d8069] hover:border-[#4d8069] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:opacity-50 disabled:pointer-events-none"
           >
             {isSubmitting ? 'Saving...' : 'Save Changes'}
           </Button>

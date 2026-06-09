@@ -157,7 +157,7 @@ export default function ZoneForm({ initialData = null }) {
                       <FormDescription>Enable this zone for fare resolution.</FormDescription>
                     </div>
                     <FormControl>
-                      <Switch checked={Boolean(field.value)} onCheckedChange={(checked) => field.onChange(Boolean(checked))} className="data-[state=checked]:bg-[#588f7a]" />
+                      <Switch checked={Boolean(field.value)} onCheckedChange={(checked) => field.onChange(Boolean(checked))} className="data-[state=checked]:bg-weelp-sage-deep" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

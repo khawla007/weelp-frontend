@@ -901,7 +901,7 @@ body {
 
 .swiper-button-prev:hover,
 .swiper-button-next:hover {
-  @apply bg-[#588f7a] border-[#588f7a] !important;
+  @apply bg-weelp-sage-deep border-weelp-sage-deep !important;
   --swiper-navigation-color: #ffffff !important;
   box-shadow: 4px 4px 15px rgba(88, 143, 122, 0.3) !important;
 }
@@ -1010,14 +1010,14 @@ body {
 .bannerForm .rdp-day_range_end,
 .singleProducform .rdp-day_range_start,
 .singleProducform .rdp-day_range_end {
-  @apply bg-[#588f7a] border-none rounded-lg text-white;
+  @apply bg-weelp-sage-deep border-none rounded-lg text-white;
 }
 
 .bannerForm .rdp-nav_button_previous,
 .bannerForm .rdp-nav_button_next,
 .singleProducform .rdp-nav_button_previous,
 .singleProducform .rdp-nav_button_next {
-  @apply bg-[#588f7a] text-white rounded-lg mx-1;
+  @apply bg-weelp-sage-deep text-white rounded-lg mx-1;
 }
 
 .bannerForm .rdp-nav_button_previous:hover,
@@ -1033,7 +1033,7 @@ body {
 .bannerForm .rdp-range_end .rdp-day_button,
 .singleProducform .rdp-range_start .rdp-day_button,
 .singleProducform .rdp-range_end .rdp-day_button {
-  @apply bg-[#588f7a] border-none rounded-lg;
+  @apply bg-weelp-sage-deep border-none rounded-lg;
 }
 
 /* Activity seasonal date range picker (tfc_calendar) */
@@ -1320,7 +1320,7 @@ a,
 div,
 li,
 button {
-  @apply dark:text-white dark:bg-black hover:dark:bg-black hover:dark:text-[#588f7a];
+  @apply dark:text-white dark:bg-black hover:dark:bg-black hover:dark:text-weelp-sage-deep;
 }
 
 p,
@@ -1362,7 +1362,7 @@ span {
 .tfc_calendar .rdp-day_range_start:focus,
 .tfc_calendar .day-range-end,
 .tfc_calendar .day-range-end:focus {
-  @apply bg-[#588f7a] text-white;
+  @apply bg-weelp-sage-deep text-white;
 }
 
 /* City page filter price slider — green theme */

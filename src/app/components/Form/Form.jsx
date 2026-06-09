@@ -229,7 +229,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
               <button
                 type="submit"
                 aria-label="Search trips"
-                className="flex min-w-[112px] items-center justify-center rounded-r-xl bg-white px-6 text-sm font-semibold text-Bluewhale transition-[background-color,color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#f8faf9] hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+                className="flex min-w-[112px] items-center justify-center rounded-r-xl bg-white px-6 text-sm font-semibold text-Bluewhale transition-[background-color,color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#f8faf9] hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
               >
                 Search
               </button>
@@ -328,7 +328,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
                       <button
                         type="button"
                         onClick={() => handleIncrement(type)}
-                        className="w-8 h-8 rounded-full border border-[#b5d8cb] text-lg flex items-center justify-center text-[#588f7a] hover:bg-[#e9f5ed] hover:opacity-80 "
+                        className="w-8 h-8 rounded-full border border-[#b5d8cb] text-lg flex items-center justify-center text-weelp-sage-deep hover:bg-[#e9f5ed] hover:opacity-80 "
                       >
                         <Plus size={14} />
                       </button>
@@ -336,7 +336,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
                   </div>
                 ))}
                 {!isModal && !isSearchPage && (
-                  <button type="submit" className="w-full py-2 bg-[#588f7a] text-white rounded-md shadow">
+                  <button type="submit" className="w-full py-2 bg-weelp-sage-deep text-white rounded-md shadow">
                     Submit
                   </button>
                 )}
@@ -350,7 +350,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
             type="submit"
             aria-label="Search trips"
             disabled={isSearching}
-            className="flex h-11 min-w-[160px] items-center justify-center rounded-full bg-[#588f7a] px-8 text-sm font-semibold text-white shadow-lg shadow-black/10 transition-[background-color,box-shadow,transform] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#477665] hover:shadow-black/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/45 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:cursor-wait disabled:opacity-90 motion-reduce:transition-none"
+            className="flex h-11 min-w-[160px] items-center justify-center rounded-full bg-weelp-sage-deep px-8 text-sm font-semibold text-white shadow-lg shadow-black/10 transition-[background-color,box-shadow,transform] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#477665] hover:shadow-black/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/45 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:cursor-wait disabled:opacity-90 motion-reduce:transition-none"
           >
             {isSearching ? <LoaderCircle data-testid="search-submit-loader" className="h-5 w-5 animate-spin motion-reduce:animate-none" aria-hidden="true" /> : 'Search'}
           </button>

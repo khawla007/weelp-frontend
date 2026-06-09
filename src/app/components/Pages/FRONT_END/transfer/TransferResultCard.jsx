@@ -100,11 +100,11 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
 
       <div className="bg-[#f4f4f5] py-4 px-8 flex flex-wrap gap-2 sm:gap-4">
         <span className="flex items-center gap-2 text-sm text-[#18181b]">
-          <CircleCheckBig className="h-4 w-4 text-[#588f7a]" />
+          <CircleCheckBig className="h-4 w-4 text-weelp-sage-deep" />
           <span>Live Guide</span>
         </span>
         <span className="flex items-center gap-2 text-sm text-[#18181b]">
-          <Clock className="h-4 w-4 text-[#588f7a]" />
+          <Clock className="h-4 w-4 text-weelp-sage-deep" />
           <span>Duration - {durationHours} Hours</span>
         </span>
       </div>
@@ -155,7 +155,7 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
-            className="text-[#71717a] text-xs flex items-center gap-1 hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded transition-colors mt-1"
+            className="text-[#71717a] text-xs flex items-center gap-1 hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded transition-colors mt-1"
             aria-expanded={expanded}
           >
             <span>Detailed Breakdown</span>
@@ -165,7 +165,7 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
         <Button
           type="button"
           onClick={handleSelectClick}
-          className="bg-[#588f7a] hover:bg-[#4d8069] text-white px-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          className="bg-weelp-sage-deep hover:bg-[#4d8069] text-white px-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
         >
           Select
         </Button>

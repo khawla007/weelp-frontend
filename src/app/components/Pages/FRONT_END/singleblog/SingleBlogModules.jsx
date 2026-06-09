@@ -12,7 +12,7 @@ export const RelatedLinks = ({ categories = [] }) => {
           return (
             <li
               key={index}
-              className="font-medium capitalize px-6 py-4 text-Lynchcolor hover:text-[#588f7a] text-base border hover:border-[#588f7a] hover:bg-[#f2f7f5] cursor-pointer rounded-md w-fit"
+              className="font-medium capitalize px-6 py-4 text-Lynchcolor hover:text-weelp-sage-deep text-base border hover:border-weelp-sage-deep hover:bg-[#f2f7f5] cursor-pointer rounded-md w-fit"
             >
               {category.name}
             </li>

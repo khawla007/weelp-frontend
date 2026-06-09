@@ -91,7 +91,7 @@ export function DataTableTags({ tags = [], isloading = false, mutate, selectedIt
               onAllSelectedChange(false);
             }
           }}
-          className="h-5 w-5 rounded border-2 border-[#588f7a] bg-white data-[state=checked]:bg-[#588f7a] data-[state=checked]:text-white data-[state=checked]:border-[#588f7a] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
+          className="h-5 w-5 rounded border-2 border-weelp-sage-deep bg-white data-[state=checked]:bg-weelp-sage-deep data-[state=checked]:text-white data-[state=checked]:border-weelp-sage-deep [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
         />
       ),
       cell: ({ row }) => <SelectableCardCheckbox checked={selectedItems.includes(row.original.id)} onCheckedChange={handleSelectionChange} itemId={row.original.id} />,

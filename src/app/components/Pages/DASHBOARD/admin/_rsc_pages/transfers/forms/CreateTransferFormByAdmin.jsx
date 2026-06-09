@@ -217,12 +217,12 @@ export const CreateTransferFormByAdmin = ({}) => {
                         setCurrentStep(step?.id);
                       }}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${
-                        currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-[#588f7a] border-b-2'
+                        currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'
                       }`}
                     >
                       <div
                         className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${
-                          currentStep == step?.id ? 'text-[#588f7a] ' : 'text-[#71717a]'
+                          currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-[#71717a]'
                         }`}
                       >
                         {step.title}
@@ -282,7 +282,7 @@ export const CreateTransferFormByAdmin = ({}) => {
                     className="flex gap-4 ml-auto"
                   />
                 ) : (
-                  <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-[#588f7a] cursor-pointer`}>
+                  <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}>
                     Next
                   </Button>
                 )}

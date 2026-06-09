@@ -53,7 +53,7 @@ const FaqTab = ({ currentStep, setCurrentStep }) => {
                 <FormItem className="px-4 space-y-2">
                   <FormLabel>Question</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Enter the Question" className="text-xs focus-visible:ring-[#588f7a]" />
+                    <Input {...field} placeholder="Enter the Question" className="text-xs focus-visible:ring-weelp-sage-deep" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -69,7 +69,7 @@ const FaqTab = ({ currentStep, setCurrentStep }) => {
                 <FormItem className="px-4 space-y-2">
                   <FormLabel>Answer</FormLabel>
                   <FormControl>
-                    <Textarea {...field} placeholder="Enter the Answer" className="text-xs focus-visible:ring-[#588f7a]" />
+                    <Textarea {...field} placeholder="Enter the Answer" className="text-xs focus-visible:ring-weelp-sage-deep" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

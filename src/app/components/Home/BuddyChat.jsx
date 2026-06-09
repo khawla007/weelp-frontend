@@ -105,7 +105,7 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
   return (
     <div className="flex h-full min-h-0 flex-col bg-white">
       <header className="flex items-center gap-3 border-b border-[#eaeaea] px-4 py-3">
-        <span aria-hidden="true" className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#588f7a] text-white">
+        <span aria-hidden="true" className="relative flex h-9 w-9 items-center justify-center rounded-full bg-weelp-sage-deep text-white">
           <Sparkles className="h-4 w-4" />
           <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500" />
         </span>
@@ -125,7 +125,7 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
                   key={preset}
                   type="button"
                   onClick={() => handlePreset(preset)}
-                  className="rounded-full border border-[#eaeaea] bg-white px-3 py-1.5 text-[12px] font-medium text-[#18181b] transition-colors hover:border-[#588f7a] hover:bg-[#588f7a]/5 hover:text-[#4d8069] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40"
+                  className="rounded-full border border-[#eaeaea] bg-white px-3 py-1.5 text-[12px] font-medium text-[#18181b] transition-colors hover:border-weelp-sage-deep hover:bg-weelp-sage-deep/5 hover:text-[#4d8069] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
                 >
                   {preset}
                 </button>
@@ -142,7 +142,7 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
                   <span
                     className={
                       isUser
-                        ? 'max-w-[80%] whitespace-pre-line rounded-2xl rounded-br-sm bg-[#588f7a] px-3 py-2 text-[13px] font-medium text-white'
+                        ? 'max-w-[80%] whitespace-pre-line rounded-2xl rounded-br-sm bg-weelp-sage-deep px-3 py-2 text-[13px] font-medium text-white'
                         : 'max-w-[80%] whitespace-pre-line rounded-2xl rounded-bl-sm bg-zinc-100 px-3 py-2 text-[13px] font-medium text-[#18181b]'
                     }
                   >
@@ -184,13 +184,13 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
           onChange={(event) => setDraft(event.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask Buddy: weekend in Paris…"
-          className="max-h-24 min-h-[40px] w-full flex-1 resize-none rounded-lg border border-[#eaeaea] bg-white px-3 py-2 text-[13px] font-medium text-[#18181b] placeholder:text-[#a1a1aa] focus:border-[#588f7a] focus:outline-none focus:ring-2 focus:ring-[#588f7a]/30"
+          className="max-h-24 min-h-[40px] w-full flex-1 resize-none rounded-lg border border-[#eaeaea] bg-white px-3 py-2 text-[13px] font-medium text-[#18181b] placeholder:text-[#a1a1aa] focus:border-weelp-sage-deep focus:outline-none focus:ring-2 focus:ring-weelp-sage-deep/30"
         />
         <button
           type="submit"
           aria-label="Send message"
           disabled={!draft.trim() || isThinking}
-          className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-lg bg-[#588f7a] text-white transition-colors hover:bg-[#4d8069] disabled:cursor-not-allowed disabled:bg-[#588f7a]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 sm:w-10"
+          className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-lg bg-weelp-sage-deep text-white transition-colors hover:bg-[#4d8069] disabled:cursor-not-allowed disabled:bg-weelp-sage-deep/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:w-10"
         >
           <Send className="h-4 w-4" />
         </button>

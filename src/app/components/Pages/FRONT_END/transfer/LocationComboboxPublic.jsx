@@ -59,7 +59,7 @@ export default function LocationComboboxPublic({ value, onChange, placeholder = 
       <PopoverTrigger asChild>
         <button
           type="button"
-          className="flex w-full items-center gap-2 py-[18px] px-4 text-left bg-transparent outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 rounded-xl"
+          className="flex w-full items-center gap-2 py-[18px] px-4 text-left bg-transparent outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 rounded-xl"
           aria-label={placeholder}
         >
           <Icon className="h-5 w-5 shrink-0 text-[#71717a]" />

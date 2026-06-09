@@ -152,7 +152,7 @@ export default function CheckoutMainManual() {
           <button
             type="button"
             onClick={() => location.reload()}
-            className="self-start px-4 py-2 bg-[#588f7a] hover:bg-[#4d8069] text-white text-sm font-medium rounded-md transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40"
+            className="self-start px-4 py-2 bg-weelp-sage-deep hover:bg-[#4d8069] text-white text-sm font-medium rounded-md transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
           >
             Try Again
           </button>

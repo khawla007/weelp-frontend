@@ -157,7 +157,7 @@ export default function DiffViewClient({ approved, draft, itineraryId }) {
           <XCircle className="size-4 mr-1" />
           Reject Edit
         </Button>
-        <Button onClick={handleApprove} disabled={processing} className="bg-[#588f7a] hover:bg-[#588f7a]/90">
+        <Button onClick={handleApprove} disabled={processing} className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90">
           <CheckCircle className="size-4 mr-1" />
           Approve Edit
         </Button>

@@ -267,7 +267,7 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
                       {tags.length > 0 && (
                         <ListingCardTags>
                           {tags.map(({ tag_name }, index) => (
-                            <Badge key={index} className={`bg-[#588f7a] text-white hover:text-white hover:bg-[#588f7a] ${index === 0 && 'bg-zinc-400'}`}>
+                            <Badge key={index} className={`bg-weelp-sage-deep text-white hover:text-white hover:bg-weelp-sage-deep ${index === 0 && 'bg-zinc-400'}`}>
                               {tag_name}
                             </Badge>
                           ))}
@@ -276,7 +276,7 @@ const FilterActivity = ({ categories = [], difficulties = [], durations = [] }) 
 
                       {/* Stats */}
                       <ListingCardStats>
-                        <Badge className="bg-[#b5d8cb] hover:bg-[#b5d8cb] text-[#588f7a]">4.8</Badge>
+                        <Badge className="bg-[#b5d8cb] hover:bg-[#b5d8cb] text-weelp-sage-deep">4.8</Badge>
                         <ListingCardMeta icon={Users}>1200 Bookings</ListingCardMeta>
                       </ListingCardStats>
                     </ListingCardContent>

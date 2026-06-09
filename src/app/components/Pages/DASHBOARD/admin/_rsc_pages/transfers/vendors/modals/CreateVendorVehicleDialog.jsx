@@ -29,7 +29,7 @@ const CreateVendorVehicleDialog = ({ title, desciption, label }) => {
         {label && (
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button onClick={() => setOpen(true)} className="bg-[#588f7a] text-white">
+              <Button onClick={() => setOpen(true)} className="bg-weelp-sage-deep text-white">
                 <span className="flex items-center gap-2">
                   <Plus size={16} />
                   {label}

@@ -133,7 +133,7 @@ const NavMenuDesktop = () => {
   const indicator = (active) => (
     <span
       aria-hidden="true"
-      className={`pointer-events-none absolute -bottom-2 left-0 h-px w-full origin-left rounded-full bg-[#588f7a] transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none group-hover/nav:scale-x-100 group-hover/nav:opacity-100 ${
+      className={`pointer-events-none absolute -bottom-2 left-0 h-px w-full origin-left rounded-full bg-weelp-sage-deep transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none group-hover/nav:scale-x-100 group-hover/nav:opacity-100 ${
         active ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'
       }`}
     />
@@ -348,7 +348,7 @@ export const HeaderAccount = () => {
           <button
             type="button"
             aria-label={cartItemCount > 0 ? `Open cart, ${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'}` : 'Open cart'}
-            className="relative flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="relative flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             onClick={handleShowCart}
           >
             <span className="relative inline-flex">
@@ -368,7 +368,7 @@ export const HeaderAccount = () => {
           <button
             type="button"
             aria-label="Open search"
-            className="flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-[#588f7a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             onClick={handleShowForm}
           >
             <Search className="size-5" strokeWidth={1.5} />
@@ -380,13 +380,13 @@ export const HeaderAccount = () => {
             type="button"
             aria-label="Open account menu"
             aria-expanded={!!showSubmenu}
-            className="flex h-11 w-[65px] items-center justify-center gap-2 rounded-[30px] border border-[#e4e4e7] transition-[background-color,border-color,color] duration-200 ease-out motion-reduce:transition-none hover:bg-[#f4f4f5] overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="flex h-11 w-[65px] items-center justify-center gap-2 rounded-[30px] border border-[#e4e4e7] transition-[background-color,border-color,color] duration-200 ease-out motion-reduce:transition-none hover:bg-[#f4f4f5] overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             onClick={handleSubmenu}
           >
             {isLoggedIn && avatarSrc ? (
               <img src={avatarSrc} alt={name || 'user'} className="h-8 w-8 rounded-full object-cover shrink-0" />
             ) : isLoggedIn ? (
-              <span className="h-8 w-8 rounded-full flex items-center justify-center bg-[#588f7a] text-white font-semibold text-sm shrink-0">{userInitials}</span>
+              <span className="h-8 w-8 rounded-full flex items-center justify-center bg-weelp-sage-deep text-white font-semibold text-sm shrink-0">{userInitials}</span>
             ) : (
               <svg width="32" height="32" viewBox="0 0 36 36" fill="none" className="shrink-0">
                 <defs>

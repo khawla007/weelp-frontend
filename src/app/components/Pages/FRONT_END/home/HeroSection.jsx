@@ -16,10 +16,10 @@ const HeroSection = () => {
     >
       <div className="container-page relative z-0 flex flex-col items-center justify-center text-center">
         <span
-          className="weelp-hero-ui-rise mb-4 inline-flex items-center gap-2 rounded-full border border-[#e4e4e7] bg-white/85 px-4 py-2 text-xs font-bold text-[#588f7a]"
+          className="weelp-hero-ui-rise mb-4 inline-flex items-center gap-2 rounded-full border border-[#e4e4e7] bg-white/85 px-4 py-2 text-xs font-bold text-weelp-sage-deep"
           style={{ '--weelp-motion-delay': '120ms' }}
         >
-          <span className="inline-block h-[7px] w-[7px] rounded-full bg-[#588f7a]" />
+          <span className="inline-block h-[7px] w-[7px] rounded-full bg-weelp-sage-deep" />
           Plan calmer escapes
         </span>
         <div className="relative mb-4 flex flex-col items-center">
@@ -47,7 +47,7 @@ const HeroSection = () => {
               key={label}
               className="inline-flex items-center gap-2 rounded-full border border-[#e4e4e7] bg-white/90 px-4 py-2 text-xs font-semibold text-[#18181b] transition-[transform,background-color,color] duration-[180ms] ease-[var(--weelp-ease-ui)] hover:-translate-y-0.5 motion-reduce:transform-none motion-reduce:transition-none"
             >
-              <span className="inline-block h-2 w-2 rounded-full bg-[#588f7a]" />
+              <span className="inline-block h-2 w-2 rounded-full bg-weelp-sage-deep" />
               {label}
             </span>
           ))}

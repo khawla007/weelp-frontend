@@ -176,7 +176,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
           type="button"
           onClick={handleSwap}
           aria-label="Swap pickup and destination"
-          className="absolute left-1/2 top-[29px] z-20 flex h-[27px] w-[27px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#e4e4e7] bg-white shadow-[4px_4px_12px_rgba(0,0,0,0.1)] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:left-1/4 sm:top-1/2"
+          className="absolute left-1/2 top-[29px] z-20 flex h-[27px] w-[27px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#e4e4e7] bg-white shadow-[4px_4px_12px_rgba(0,0,0,0.1)] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:left-1/4 sm:top-1/2"
         >
           <ArrowLeftRight className="h-3 w-3 text-[#18181b]" />
         </button>
@@ -217,8 +217,8 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                       const next = { ...parts, [key]: v };
                       field.onChange(to24h(next.hour, next.minute, next.ampm));
                     };
-                    const triggerCls = 'h-8 rounded-full border-0 bg-[#588f7a] px-3 text-sm font-medium text-white focus:ring-2 focus:ring-[#588f7a]/40 [&>svg]:text-white [&>svg]:opacity-100';
-                    const itemCls = 'text-sm focus:bg-[#588f7a] focus:text-white data-[state=checked]:bg-[#588f7a] data-[state=checked]:text-white';
+                    const triggerCls = 'h-8 rounded-full border-0 bg-weelp-sage-deep px-3 text-sm font-medium text-white focus:ring-2 focus:ring-weelp-sage-deep/40 [&>svg]:text-white [&>svg]:opacity-100';
+                    const itemCls = 'text-sm focus:bg-weelp-sage-deep focus:text-white data-[state=checked]:bg-weelp-sage-deep data-[state=checked]:text-white';
                     return (
                       <div className="flex items-center gap-1 flex-1">
                         <Select value={parts.hour} onValueChange={(v) => setPart('hour', v)}>
@@ -266,7 +266,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                   type="button"
                   onClick={() => setDateOpen(false)}
                   disabled={!date}
-                  className="rounded-md bg-[#588f7a] px-3 py-1 text-xs font-medium text-white hover:bg-[#4d8069] disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  className="rounded-md bg-weelp-sage-deep px-3 py-1 text-xs font-medium text-white hover:bg-[#4d8069] disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 >
                   Done
                 </button>
@@ -280,7 +280,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                     selected={field.value || undefined}
                     disabled={{ before: new Date() }}
                     onSelect={(value) => field.onChange(value || null)}
-                    className="scale-90 origin-top-right [&_.rdp-selected_.rdp-day\_button]:!bg-[#588f7a] [&_.rdp-selected_.rdp-day\_button]:!text-white [&_.rdp-selected_.rdp-day\_button]:!border-0"
+                    className="scale-90 origin-top-right [&_.rdp-selected_.rdp-day\_button]:!bg-weelp-sage-deep [&_.rdp-selected_.rdp-day\_button]:!text-white [&_.rdp-selected_.rdp-day\_button]:!border-0"
                     style={{ '--rdp-accent-color': '#588f7a', '--rdp-accent-background': '#588f7a' }}
                   />
                 )}
@@ -326,7 +326,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                       <button
                         type="button"
                         onClick={() => increment(row.key)}
-                        className="w-8 h-8 rounded-full border border-[#588f7a] flex items-center justify-center text-[#588f7a] hover:bg-[#f4f4f5]"
+                        className="w-8 h-8 rounded-full border border-weelp-sage-deep flex items-center justify-center text-weelp-sage-deep hover:bg-[#f4f4f5]"
                         aria-label={`Increase ${row.label}`}
                       >
                         <Plus size={14} />
