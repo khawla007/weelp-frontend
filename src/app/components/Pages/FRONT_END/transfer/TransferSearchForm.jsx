@@ -217,7 +217,8 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                       const next = { ...parts, [key]: v };
                       field.onChange(to24h(next.hour, next.minute, next.ampm));
                     };
-                    const triggerCls = 'h-8 rounded-full border-0 bg-weelp-sage-deep px-3 text-sm font-medium text-white focus:ring-2 focus:ring-weelp-sage-deep/40 [&>svg]:text-white [&>svg]:opacity-100';
+                    const triggerCls =
+                      'h-8 rounded-full border-0 bg-weelp-sage-deep px-3 text-sm font-medium text-white focus:ring-2 focus:ring-weelp-sage-deep/40 [&>svg]:text-white [&>svg]:opacity-100';
                     const itemCls = 'text-sm focus:bg-weelp-sage-deep focus:text-white data-[state=checked]:bg-weelp-sage-deep data-[state=checked]:text-white';
                     return (
                       <div className="flex items-center gap-1 flex-1">

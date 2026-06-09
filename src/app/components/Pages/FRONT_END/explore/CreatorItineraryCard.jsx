@@ -10,7 +10,7 @@ const formatCount = (count) => {
   return count;
 };
 
-export default function CreatorItineraryCard({ itinerary, isLoggedIn }) {
+export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleTag = 'h3' }) {
   const [liked, setLiked] = useState(itinerary?.is_liked || false);
   const [likesCount, setLikesCount] = useState(itinerary?.likes_count || 0);
   const [viewsCount, setViewsCount] = useState(itinerary?.views_count || 0);
@@ -104,7 +104,7 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn }) {
 
       {/* Title + creator avatar row */}
       <div className="px-2 pt-1 flex items-center justify-between">
-        <h3 className="text-[#18181b] text-lg font-medium line-clamp-1 flex-1 mr-2">{title}</h3>
+        <TitleTag className="text-[#18181b] text-lg font-medium line-clamp-1 flex-1 mr-2">{title}</TitleTag>
         {creatorAvatar ? (
           <img src={creatorAvatar} alt={creatorName || 'creator'} className="size-9 rounded-full object-cover flex-shrink-0" />
         ) : (

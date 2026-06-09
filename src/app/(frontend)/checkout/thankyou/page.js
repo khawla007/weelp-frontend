@@ -179,7 +179,10 @@ const SucceceedPageContent = () => {
               <Link href="/" className="bg-white text-black border border-weelp-sage-deep p-2 rounded-2xl text-sm font-medium px-4 transition-colors hover:bg-weelp-sage-deep hover:text-white">
                 Back to Home
               </Link>
-              <Link href={dashboardUrl} className="bg-weelp-sage-deep text-white border border-weelp-sage-deep p-2 px-4 rounded-2xl text-sm font-medium transition-colors hover:bg-white hover:text-black">
+              <Link
+                href={dashboardUrl}
+                className="bg-weelp-sage-deep text-white border border-weelp-sage-deep p-2 px-4 rounded-2xl text-sm font-medium transition-colors hover:bg-white hover:text-black"
+              >
                 Go To Bookings
               </Link>
             </div>

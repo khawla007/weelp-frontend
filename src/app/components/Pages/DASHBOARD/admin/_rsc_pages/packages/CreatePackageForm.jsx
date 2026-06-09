@@ -584,7 +584,14 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
         {dayFields.map((item, index) => (
           <div key={item?.id} className="space-y-4">
             <div className="flex items-center gap-4 mt-4 justify-between">
-              <Input type="number" {...register(`schedules.${index}.day`)} defaultValue={item?.day} className="max-w-xs focus-visible:ring-weelp-sage-deep focus-visible:ring-1" placeholder="Day" readOnly />
+              <Input
+                type="number"
+                {...register(`schedules.${index}.day`)}
+                defaultValue={item?.day}
+                className="max-w-xs focus-visible:ring-weelp-sage-deep focus-visible:ring-1"
+                placeholder="Day"
+                readOnly
+              />
               <Trash onClick={() => removeDay(index)} className=" cursor-pointer " size={20} />
             </div>
 
@@ -1371,7 +1378,9 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
                 control={control}
                 name={`inclusions_exclusions.${index}.included`}
                 defaultValue={false}
-                render={({ field }) => <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-weelp-sage-deep" />}
+                render={({ field }) => (
+                  <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-weelp-sage-deep" />
+                )}
               />
               <Label htmlFor={`inclusions_exclusions.${index}.included`}>Included</Label>
             </div>
@@ -2040,7 +2049,11 @@ export const CreatePackageForm = ({ categories, attributes, tags, locations = []
           </Card>
         ))}
         {/* Next Button */}
-        <Button type="submit" onClick={handleValidationFaq} className={`absolute right-0 -bottom-10 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}>
+        <Button
+          type="submit"
+          onClick={handleValidationFaq}
+          className={`absolute right-0 -bottom-10 ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}
+        >
           Next
         </Button>
       </div>

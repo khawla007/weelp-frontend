@@ -23,7 +23,7 @@ export function ListingCardContent({ children, className = '' }) {
 export function ListingCardTitle({ children, actions = null, className = '' }) {
   return (
     <div className={`flex justify-between items-start ${className}`}>
-      <h2 className="m-0 text-lg font-semibold">{children}</h2>
+      <h3 className="m-0 text-lg font-semibold">{children}</h3>
       {actions}
     </div>
   );

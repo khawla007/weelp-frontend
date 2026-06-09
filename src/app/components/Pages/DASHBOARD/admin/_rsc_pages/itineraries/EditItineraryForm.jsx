@@ -681,7 +681,14 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
             ) => (
               <div key={item?.id} className="space-y-4">
                 <div className="flex items-center gap-4 mt-4 justify-between">
-                  <Input type="number" {...register(`schedules.${index}.day`)} defaultValue={item?.day} className="w-20 focus-visible:ring-weelp-sage-deep focus-visible:ring-1" placeholder="Day" readOnly />
+                  <Input
+                    type="number"
+                    {...register(`schedules.${index}.day`)}
+                    defaultValue={item?.day}
+                    className="w-20 focus-visible:ring-weelp-sage-deep focus-visible:ring-1"
+                    placeholder="Day"
+                    readOnly
+                  />
                   <Input type="text" {...register(`schedules.${index}.title`)} className="flex-1 focus-visible:ring-weelp-sage-deep focus-visible:ring-1" placeholder="e.g., Arrival in Port Blair" />
                   <Trash2 onClick={() => setPendingRemoval({ kind: 'day', payload: { item, itineraryId: id, dayIndex: index } })} className="text-red-400 cursor-pointer" size={16} />
                 </div>
@@ -1453,7 +1460,9 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                 control={control}
                 name={`inclusions_exclusions.${index}.included`}
                 defaultValue={false}
-                render={({ field }) => <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-weelp-sage-deep" />}
+                render={({ field }) => (
+                  <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-weelp-sage-deep" />
+                )}
               />
               <Label htmlFor={`inclusions_exclusions.${index}.included`}>Included</Label>
             </div>
@@ -2199,7 +2208,12 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                     {currentStep === 8 ? (
                       <div className="flex gap-4 ml-auto">
                         {isCreatorItinerary && status === 'pending' ? (
-                          <Button type="button" onClick={methods.handleSubmit(handleSubmitAndApprove)} disabled={isSubmitting || isApproving} className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white">
+                          <Button
+                            type="button"
+                            onClick={methods.handleSubmit(handleSubmitAndApprove)}
+                            disabled={isSubmitting || isApproving}
+                            className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white"
+                          >
                             {isApproving ? 'Approving...' : 'Approve'}
                           </Button>
                         ) : (
@@ -2214,7 +2228,11 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                         )}
                       </div>
                     ) : (
-                      <Button type="submit" disabled={isSubmitting || isApproving} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}>
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting || isApproving}
+                        className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}
+                      >
                         {isSubmitting ? 'Next' : 'Next'}
                       </Button>
                     )}

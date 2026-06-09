@@ -429,7 +429,14 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
         {dayFields.map((item, index) => (
           <div key={item?.id} className="space-y-4">
             <div className="flex items-center gap-4 mt-4 justify-between">
-              <Input type="number" {...register(`schedules.${index}.day`)} defaultValue={item?.day} className="w-20 focus-visible:ring-weelp-sage-deep focus-visible:ring-1" placeholder="Day" readOnly />
+              <Input
+                type="number"
+                {...register(`schedules.${index}.day`)}
+                defaultValue={item?.day}
+                className="w-20 focus-visible:ring-weelp-sage-deep focus-visible:ring-1"
+                placeholder="Day"
+                readOnly
+              />
               <Input type="text" {...register(`schedules.${index}.title`)} className="flex-1 focus-visible:ring-weelp-sage-deep focus-visible:ring-1" placeholder="e.g., Arrival in Port Blair" />
               <Trash2 onClick={() => removeDay(index)} className="text-red-400 cursor-pointer" size={16} />
             </div>
@@ -1042,7 +1049,9 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                 control={control}
                 name={`inclusions_exclusions.${index}.included`}
                 defaultValue={false}
-                render={({ field }) => <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-weelp-sage-deep" />}
+                render={({ field }) => (
+                  <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-weelp-sage-deep" />
+                )}
               />
               <Label htmlFor={`inclusions_exclusions.${index}.included`}>Included</Label>
             </div>

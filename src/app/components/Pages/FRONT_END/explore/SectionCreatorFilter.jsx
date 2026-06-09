@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import CreatorItineraryCard from './CreatorItineraryCard';
 import Reveal from '@/app/components/ui/Reveal';
+import SectionHeader from '@/app/components/ui/SectionHeader';
 import { ChevronDown, Check, UserPlus, Sparkles, TrendingUp, Home, Clock } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -145,6 +146,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
 
   return (
     <section className="relative max-w-[95%] mx-auto">
+      <SectionHeader className="sr-only" title="Creator itineraries" />
       {/* Top Bar */}
       <Reveal variant="lift" className="flex justify-between items-center flex-col sm:flex-row px-6">
         {/* Sort Dropdown — hidden on Trending tab */}

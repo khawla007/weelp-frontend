@@ -112,7 +112,13 @@ export default function TransferSearchModalPublic({ open, onOpenChange, cityIds 
             <div className="flex gap-2 items-center">
               <div className="relative flex-1">
                 <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input type="text" placeholder="Search transfers..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9 focus-visible:ring-weelp-sage-deep focus-visible:ring-1" />
+                <Input
+                  type="text"
+                  placeholder="Search transfers..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-9 focus-visible:ring-weelp-sage-deep focus-visible:ring-1"
+                />
               </div>
             </div>
 

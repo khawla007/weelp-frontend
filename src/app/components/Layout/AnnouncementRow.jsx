@@ -76,7 +76,13 @@ export default function AnnouncementRow({ announcement, isRead, onOpenDetail, on
               Visit
             </NavigationLink>
           ) : (
-            <a href={announcement.link} target="_blank" rel="noopener noreferrer" onClick={handleVisitClick} className="mt-2 inline-block text-xs font-medium text-weelp-copy hover:text-weelp-sage-deep hover:underline">
+            <a
+              href={announcement.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleVisitClick}
+              className="mt-2 inline-block text-xs font-medium text-weelp-copy hover:text-weelp-sage-deep hover:underline"
+            >
               Visit
             </a>
           ))}

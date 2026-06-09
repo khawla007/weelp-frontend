@@ -5,10 +5,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from '@/components/ui/separator';
 import Link from 'next/link';
 
-const ReviewCard = ({ title, rating, comment }) => {
+const ReviewCard = ({ title, rating, comment, as: TitleTag = 'h3' }) => {
   return (
     <div className="w-full sm:w-[360px] bg-white border rounded-2xl p-5 sm:p-6 md:p-8 min-h-[200px] shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-2 overflow-hidden">
-      <h5 className="text-black font-medium text-sm md:text-base font-semibold line-clamp-1">{title}</h5>
+      <TitleTag className="text-black font-medium text-sm md:text-base font-semibold line-clamp-1">{title}</TitleTag>
       <div className="flex">
         {Array(rating)
           .fill()
@@ -31,9 +31,9 @@ export const ReviewCard2 = ({ userImageSrc, userName, galleryImages, date, title
       <div className="flex gap-4">
         {userImageSrc ? <img className="size-12 rounded-full" alt="userImage" src={`${userImageSrc}`} /> : <UserRound size={42} className="stroke-gray-400 border-gray-400 border-2 rounded-full" />}
         {userName ? (
-          <h5 className="flex flex-col gap-1 sm:text-base font-medium capitalize">
+          <div className="flex flex-col gap-1 sm:text-base font-medium capitalize">
             {userName} {date && <span className="text-xs text-gray-400">{date}</span>}
-          </h5>
+          </div>
         ) : null}
       </div>
 
@@ -48,7 +48,7 @@ export const ReviewCard2 = ({ userImageSrc, userName, galleryImages, date, title
       )}
       {galleryImages && galleryImages.length > 0 && <SingleProductPhotoGallery photos={galleryImages} />}
 
-      {title && <h5 className="text-black font-medium sm:text-lg pt-3 capitalize">{title}</h5>}
+      {title && <h3 className="text-black font-medium sm:text-lg pt-3 capitalize">{title}</h3>}
       {comment && <p className="text-base text-black capitalize h-24 overflow-y-scroll tfc_scroll">{comment}</p>}
       <BreakSection marginTop={'mt-2'} className={'mb-4'} />
       <button className="w-fit flex gap-2 items-center group-active:first:fill-weelp-sage-deep ">
@@ -62,7 +62,7 @@ export const ReviewCard2 = ({ userImageSrc, userName, galleryImages, date, title
 export const SingleProductReviewCard = ({ title, rating, comment }) => {
   return (
     <div className="bg-white p-8 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-1 w-full h-[200px]">
-      <h5 className="text-black font-medium text-base">{title}</h5>
+      <h3 className="text-black font-medium text-base">{title}</h3>
       <div className="flex">
         {Array(rating)
           .fill()

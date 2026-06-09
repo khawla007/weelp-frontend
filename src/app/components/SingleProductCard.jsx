@@ -13,7 +13,7 @@ const ITEM_TYPE_PLURAL = {
   transfer: 'transfers',
 };
 
-export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productRating, productTitle, productPrice, currency, is_featured, citySlug: citySlugProp }) => {
+export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productRating, productTitle, productPrice, currency, is_featured, citySlug: citySlugProp, as: TitleTag = 'h3' }) => {
   const params = useParams();
   const citySlug = citySlugProp || params?.city;
   const pluralType = ITEM_TYPE_PLURAL[item_type] || item_type;
@@ -37,7 +37,7 @@ export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productR
             {productRating || 4.5}
             <span className="text-[#5A5A5A]" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
           </div>
-          <h3 className="text-[#142A38] text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</h3>
+          <TitleTag className="text-[#142A38] text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
           <hr className=" border-t border-dashed border-gray-300 mb-3" />
           <div className="flex justify-between flex-wrap gap-2">
             <h5 className="flex flex-col  text-gray-500 font-semibold space-y-4">
@@ -87,7 +87,7 @@ export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productR
   );
 };
 
-const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, productPrice, discount, productSlug, featured_activity }) => {
+const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, productPrice, discount, productSlug, featured_activity, as: TitleTag = 'h3' }) => {
   const params = useParams();
   const { region, city } = params;
 
@@ -109,7 +109,7 @@ const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, pro
             {productRating || 4.5}
             <span className="text-[#5A5A5A]" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
           </div>
-          <h3 className="text-black text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</h3>
+          <TitleTag className="text-black text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
           <hr className=" border-t border-dashed border-gray-300 mb-1" />
           <div className="flex justify-between flex-wrap gap-2">
             <h5 className="flex flex-col  text-gray-500 font-semibold">
@@ -131,7 +131,7 @@ const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, pro
 export default SingleProductCard;
 
 // Itinerary card
-export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, productTitle, productPrice, discount, productSlug, is_featured }) => {
+export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, productTitle, productPrice, discount, productSlug, is_featured, as: TitleTag = 'h3' }) => {
   const params = useParams();
   const { region, city } = params;
   return (
@@ -152,7 +152,7 @@ export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, p
             {productRating || 4.5}
             <span className="text-[#5A5A5A]" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
           </div>
-          <h3 className="text-black text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</h3>
+          <TitleTag className="text-black text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
           <hr className=" border-t border-dashed border-gray-300 mb-1" />
           <div className="flex justify-between flex-wrap gap-2">
             <h5 className="flex flex-col  text-gray-500 font-semibold">
@@ -168,7 +168,7 @@ export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, p
 };
 
 // package card
-export const SingleProductCardPackage = ({ productId, imgsrc, productRating, productTitle, productPrice, discount, productSlug, is_featured }) => {
+export const SingleProductCardPackage = ({ productId, imgsrc, productRating, productTitle, productPrice, discount, productSlug, is_featured, as: TitleTag = 'h3' }) => {
   const params = useParams();
   const { region, city } = params;
 
@@ -190,7 +190,7 @@ export const SingleProductCardPackage = ({ productId, imgsrc, productRating, pro
             {productRating || 4.5}
             <span className="text-[#5A5A5A]" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
           </div>
-          <h3 className="text-black text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</h3>
+          <TitleTag className="text-black text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
           <hr className=" border-t border-dashed border-gray-300 mb-1" />
           <div className="flex justify-between flex-wrap gap-2">
             <h5 className="flex flex-col  text-gray-500 font-semibold">

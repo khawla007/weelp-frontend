@@ -67,7 +67,13 @@ export default function NotificationRow({ notif, onOpen, onToggleRead }) {
         )}
         {cta &&
           (cta.external ? (
-            <a href={cta.href} target="_blank" rel="noopener noreferrer" onClick={handleVisit} className="mt-2 inline-block text-xs font-medium text-weelp-copy hover:text-weelp-sage-deep hover:underline">
+            <a
+              href={cta.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleVisit}
+              className="mt-2 inline-block text-xs font-medium text-weelp-copy hover:text-weelp-sage-deep hover:underline"
+            >
               Visit
             </a>
           ) : (

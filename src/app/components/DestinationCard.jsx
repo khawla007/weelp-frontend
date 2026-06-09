@@ -21,7 +21,7 @@ const DestinationCard = ({ url, imgHeight, imgWidth, imgUrl, title, description 
 
         {/* Text Overlay */}
         <div className="absolute bottom-0 w-full p-6 rounded-b-lg">
-          <h2 className="text-[24px] font-semibold text-white">{title}</h2>
+          <h3 className="text-[24px] font-semibold text-white">{title}</h3>
 
           {description && <p className="text-[16px] font-medium text-white">{description}</p>}
         </div>
@@ -44,7 +44,7 @@ export const DestinationCard2 = ({ imgUrl, title, description }) => {
 
         {/* Text Overlay */}
         <div className="absolute bottom-0 w-full p-2 rounded-b-lg">
-          <h2 className=" text-left text-base font-semibold text-white">3. China</h2>
+          <h3 className=" text-left text-base font-semibold text-white">3. China</h3>
           <p className=" text-left text-xs font-medium text-solitude">140 Activities</p>
         </div>
       </Link>
