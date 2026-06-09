@@ -136,12 +136,14 @@ export default function NotificationBell() {
   };
 
   const feed = mergeFeed({ announcements, personal: notifications });
+  const showBadge = isClient && unreadCount > 0;
+  const displayCount = unreadCount > 99 ? '99+' : unreadCount;
 
   return (
     <div className="relative" ref={dropdownRef}>
       <button
         type="button"
-        aria-label={isClient && unreadCount > 0 ? `Notifications ${unreadCount > 99 ? '99+' : unreadCount}` : 'Notifications'}
+        aria-label={showBadge ? `Notifications ${displayCount}` : 'Notifications'}
         aria-haspopup="menu"
         aria-expanded={open}
         className="relative flex items-center justify-center text-[#18181b] transition hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
@@ -150,7 +152,7 @@ export default function NotificationBell() {
         <Bell className="size-5" strokeWidth={1.5} />
         {/* Gate the badge on isClient so the server render (no badge) matches the
             first client render, then reveal once data + localStorage resolve. */}
-        {isClient && unreadCount > 0 && <Badge className="absolute -right-3 -top-2 scale-75 bg-[#ff725e] text-white border-0">{unreadCount > 99 ? '99+' : unreadCount}</Badge>}
+        {showBadge && <Badge className="absolute -right-3 -top-2 scale-75 bg-[#ff725e] text-white border-0">{displayCount}</Badge>}
       </button>
 
       {open && (
