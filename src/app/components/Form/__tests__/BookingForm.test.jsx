@@ -22,8 +22,7 @@ jest.doMock(srcPath('lib/utils.js'), () => ({
 
 const BookingForm = require('../Form').default;
 
-const renderWithSWR = (ui) =>
-  render(<SWRConfig value={{ provider: () => new Map(), dedupingInterval: 0 }}>{ui}</SWRConfig>);
+const renderWithSWR = (ui) => render(<SWRConfig value={{ provider: () => new Map(), dedupingInterval: 0 }}>{ui}</SWRConfig>);
 
 describe('BookingForm', () => {
   beforeEach(() => {
