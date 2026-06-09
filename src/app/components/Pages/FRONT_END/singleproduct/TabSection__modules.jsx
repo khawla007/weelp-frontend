@@ -76,30 +76,6 @@ export const FaqPanel = ({ faqs = [] }) => {
     <div className="flex flex-col border-t border-[#eaeaea] pt-6">
       <SectionHeader title="FAQs" className="mb-4" />
 
-      {/* Inclusion checklist repeated per design */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 mb-6">
-        <ul className="flex flex-col gap-4">
-          {inclusionsList
-            .filter((i) => i.included)
-            .map((item, index) => (
-              <li key={index} className="flex items-start gap-3 text-base text-[#18181b]">
-                <Check className="w-5 h-5 flex-shrink-0 mt-0.5 text-weelp-sage-deep" size={20} aria-hidden="true" />
-                {item.text}
-              </li>
-            ))}
-        </ul>
-        <ul className="flex flex-col gap-4">
-          {inclusionsList
-            .filter((i) => !i.included)
-            .map((item, index) => (
-              <li key={index} className="flex items-start gap-3 text-base text-[#71717a]">
-                <X className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#71717a]" size={20} aria-hidden="true" />
-                {item.text}
-              </li>
-            ))}
-        </ul>
-      </div>
-
       {/* Accordion FAQ items */}
       <div className="flex flex-col gap-3">
         {faqData.map((faq, index) => (
