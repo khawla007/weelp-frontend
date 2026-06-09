@@ -40,7 +40,7 @@ export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productR
           <TitleTag className="text-[#142A38] text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
           <hr className=" border-t border-dashed border-gray-300 mb-3" />
           <div className="flex justify-between flex-wrap gap-2">
-            <h5 className="flex flex-col  text-gray-500 font-semibold space-y-4">
+            <div className="flex flex-col  text-gray-500 font-semibold space-y-4">
               {/* For activity */}
               {item_type === 'activity' && (
                 <>
@@ -77,7 +77,7 @@ export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productR
                   {`$ ${productPrice}`}
                 </>
               )}
-            </h5>
+            </div>
 
             <button className="border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-1 px-4 uppercase rounded-md text-xs">40% off</button>
           </div>
@@ -112,14 +112,14 @@ const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, pro
           <TitleTag className="text-black text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
           <hr className=" border-t border-dashed border-gray-300 mb-1" />
           <div className="flex justify-between flex-wrap gap-2">
-            <h5 className="flex flex-col  text-gray-500 font-semibold">
+            <div className="flex flex-col  text-gray-500 font-semibold">
               {productPrice && (
                 <>
                   <span className="font-normal">From</span>
                   {`$ ${productPrice}`}
                 </>
               )}
-            </h5>
+            </div>
             <button className=" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
           </div>
         </div>
@@ -155,10 +155,10 @@ export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, p
           <TitleTag className="text-black text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
           <hr className=" border-t border-dashed border-gray-300 mb-1" />
           <div className="flex justify-between flex-wrap gap-2">
-            <h5 className="flex flex-col  text-gray-500 font-semibold">
+            <div className="flex flex-col  text-gray-500 font-semibold">
               <span className="font-normal">From</span>
               {productPrice || '$1200'}
-            </h5>
+            </div>
             <button className=" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
           </div>
         </div>
@@ -193,10 +193,10 @@ export const SingleProductCardPackage = ({ productId, imgsrc, productRating, pro
           <TitleTag className="text-black text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
           <hr className=" border-t border-dashed border-gray-300 mb-1" />
           <div className="flex justify-between flex-wrap gap-2">
-            <h5 className="flex flex-col  text-gray-500 font-semibold">
+            <div className="flex flex-col  text-gray-500 font-semibold">
               <span className="font-normal">From</span>
               {productPrice || '$1200'}
-            </h5>
+            </div>
             <button className=" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
           </div>
         </div>

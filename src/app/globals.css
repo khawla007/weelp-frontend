@@ -137,8 +137,11 @@ body {
     --ink: #18181b;
     --copy: #52525b;
     --label: #71717a;
-    --link-default: #588f7a;
-    --link-hover: #4d8069;
+    /* Per DESIGN.md §Accessibility: plain link rest-state escalates to Copy
+       (7.4:1 AAA) so anchor text below 18px / 14px-bold passes 4.5:1; sage
+       moves to hover where the contrast-large threshold is acceptable. */
+    --link-default: #52525b;
+    --link-hover: #588f7a;
   }
 
   .dark {

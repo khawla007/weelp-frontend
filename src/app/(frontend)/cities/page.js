@@ -56,6 +56,7 @@ export default async function CitiesPage({ searchParams }) {
         </div>
       ) : (
         <>
+          <h2 className="sr-only">All cities</h2>
           <Reveal as="section" initialHidden stagger={60} variant="lift" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {cities.map((city) => (
               <CityCard key={city.id} city={city} />

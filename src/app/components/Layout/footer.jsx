@@ -18,6 +18,8 @@ const Footer = () => {
           <div className="relative overflow-hidden">
             {/* Watermark behind columns — bottom-left */}
             <p
+              aria-hidden="true"
+              role="presentation"
               className="absolute bottom-0 left-0 select-none pointer-events-none text-[56px] sm:text-[96px] md:text-[140px] lg:text-[180px] xl:text-[217px] leading-none text-[#18181b]"
               style={{ fontFamily: fontIT, fontWeight: 700, opacity: 0.04 }}
             >
