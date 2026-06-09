@@ -15,7 +15,7 @@ import { Plus, Upload } from 'lucide-react';
 export function AddNewButton({ label = 'Add New', href, icon = <Plus size={16} className="mr-2" />, className = '' }) {
   return (
     <Button asChild className="shrink-0 whitespace-nowrap">
-      <Link className={`bg-weelp-sage-deep text-black hover:bg-weelp-sage-deep/90 ${className}`} href={href}>
+      <Link className={`bg-weelp-sage-deep text-white hover:bg-weelp-sage-deep/90 hover:text-white ${className}`} href={href}>
         {icon}
         {label}
       </Link>

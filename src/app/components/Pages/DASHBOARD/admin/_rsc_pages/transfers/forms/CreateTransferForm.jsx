@@ -9,6 +9,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { createTransferByAdmin } from '@/lib/actions/transfer';
+import { defaultSeoValues } from '../../shared/SeoFields';
+import { getRecommendedSchemaType } from '@/lib/seo/schemaGenerator';
 
 // Create Dynamic Import For Performance Optimization
 const NavigationTransfer = dynamic(() => import('../transfer_shared').then((mod) => mod.NavigationTransfer), { ssr: false }); // for export
@@ -34,15 +36,7 @@ export const CreateTransferForm = ({}) => {
       is_vendor: true,
       media_gallery: [],
       addons: [],
-      seo: {
-        meta_title: '',
-        meta_description: '',
-        keywords: '',
-        og_image_url: '',
-        canonical_url: '',
-        schema_type: 'Product',
-        schema_data: {},
-      },
+      seo: { ...defaultSeoValues, schema_type: getRecommendedSchemaType('transfer') },
     },
   });
 

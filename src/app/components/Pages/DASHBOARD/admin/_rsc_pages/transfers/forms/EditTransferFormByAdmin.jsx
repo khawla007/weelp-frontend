@@ -10,6 +10,8 @@ import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { Card } from '@/components/ui/card';
 import { editTransferByAdmin } from '@/lib/actions/transfer'; // edit actions
+import { defaultSeoValues, parseSeoSchemaData } from '../../shared/SeoFields';
+import { getRecommendedSchemaType } from '@/lib/seo/schemaGenerator';
 
 // Create Dynamic Import For Performance Optimization
 const NavigationTransfer = dynamic(() => import('../transfer_shared').then((mod) => mod.NavigationTransfer), { ssr: false }); // for export
@@ -83,8 +85,10 @@ export const EditTransferFormByAdmin = ({ transferData }) => {
 
       // seo - handle null case from API
       seo: {
+        ...defaultSeoValues,
         ...(seo || {}),
-        schema_data: seo?.schema_data ? (typeof seo.schema_data === 'string' ? JSON.parse(seo.schema_data) : seo.schema_data) : {},
+        schema_type: seo?.schema_type || getRecommendedSchemaType('transfer'),
+        schema_data: parseSeoSchemaData(seo?.schema_data),
       },
       media_gallery: media_gallery,
       addons: initialAddons,

@@ -7,6 +7,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { createBlog, updateBlog } from '@/lib/actions/blogs';
+import { defaultSeoValues, parseSeoSchemaData } from '../../shared/SeoFields';
+import { getRecommendedSchemaType } from '@/lib/seo/schemaGenerator';
 
 /**
  * Shape of Form Data
@@ -32,6 +34,8 @@ export const BlogForm = ({ editPage = false, data: blogData, mutate }) => {
       }))
     : [];
 
+  const sourceSeo = blogData?.seo || blogData || {};
+
   //check it is edit page
   const methods = useForm({
     defaultValues: {
@@ -42,6 +46,22 @@ export const BlogForm = ({ editPage = false, data: blogData, mutate }) => {
       media_gallery: blogData?.media_gallery ?? [],
       categories: predefinedCategories,
       tags: predefinedTags,
+      seo: {
+        ...defaultSeoValues,
+        ...(blogData?.seo || {
+          meta_title: sourceSeo?.meta_title,
+          meta_description: sourceSeo?.meta_description,
+          keywords: sourceSeo?.keywords,
+          og_image_url: sourceSeo?.og_image_url,
+          canonical_url: sourceSeo?.canonical_url,
+          schema_type: sourceSeo?.schema_type,
+          head_code: sourceSeo?.head_code,
+          body_code: sourceSeo?.body_code,
+          footer_code: sourceSeo?.footer_code,
+        }),
+        schema_type: sourceSeo?.schema_type || getRecommendedSchemaType('blog'),
+        schema_data: parseSeoSchemaData(sourceSeo?.schema_data),
+      },
     },
     mode: 'onTouched',
   });

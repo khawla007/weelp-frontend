@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Check, X, ChevronRight } from 'lucide-react';
 import SectionHeader from '@/app/components/ui/SectionHeader';
 import { SingleProductReview } from './SingleProductReview';
-import { activityHighlights, inclusionsList, activityFaqs } from '@/app/Data/SingleActivityData';
+import { activityHighlights, inclusionsList } from '@/app/Data/SingleActivityData';
 
 const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
 
@@ -70,7 +70,12 @@ export const ReviewPanel = ({ productData, activitySlug }) => {
 
 // FAQ Panel
 export const FaqPanel = ({ faqs = [] }) => {
-  const faqData = faqs.length > 0 ? faqs : activityFaqs;
+  const dynamicFaqs = (Array.isArray(faqs) ? faqs : [])
+    .map((faq) => ({
+      question: faq?.question || faq?.title,
+      answer: faq?.answer || faq?.content,
+    }))
+    .filter((faq) => faq.question || faq.answer);
 
   return (
     <div className="flex flex-col border-t border-[#eaeaea] pt-6">
@@ -78,8 +83,8 @@ export const FaqPanel = ({ faqs = [] }) => {
 
       {/* Accordion FAQ items */}
       <div className="flex flex-col gap-3">
-        {faqData.map((faq, index) => (
-          <FaqAccordionItem key={index} question={faq.title} answer={faq.content} defaultOpen={index === 0} />
+        {dynamicFaqs.map((faq, index) => (
+          <FaqAccordionItem key={index} question={faq.question} answer={faq.answer} defaultOpen={index === 0} />
         ))}
       </div>
     </div>

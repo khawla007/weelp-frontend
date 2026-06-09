@@ -36,6 +36,7 @@ import { useStepTransition } from '@/app/components/dashboard/shared/useStepTran
 import { StepPanel } from '@/app/components/dashboard/shared/StepPanel';
 
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnItinerary'), { ssr: false });
+const FaqFields = dynamic(() => import('../shared/FaqFields'), { ssr: false });
 
 // Pick the featured image from a gallery, falling back to the first entry.
 // Galleries come in two shapes here:
@@ -74,6 +75,9 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
     blackout_dates = [],
     inclusions_exclusions = [],
     media_gallery = [],
+    faqs = [],
+    reviews = [],
+    review_summary = {},
     seo,
     categories: presetCategories = [],
     tags: presetTags = [],
@@ -124,6 +128,9 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       blackout_dates: blackout_dates,
       inclusions_exclusions: inclusions_exclusions,
       media_gallery: media_gallery,
+      faqs,
+      reviews,
+      review_summary,
       seo: { ...(seo || {}), schema_data: JSON.parse(schema_data || '{}') },
       categories: presetCategories?.length ? presetCategories.map(({ category_id }) => category_id) : [],
       tags: presetTags?.length ? presetTags.map(({ tag_id }) => tag_id) : [],
@@ -197,10 +204,14 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
     },
     {
       id: 7,
-      title: 'Seo',
+      title: 'FAQ',
     },
     {
       id: 8,
+      title: 'Seo',
+    },
+    {
+      id: 9,
       title: 'Taxonomy',
     },
   ];
@@ -234,7 +245,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
   const handleNext = async () => {
     const isValid = await validateCurrentStep();
     if (!isValid) return;
-    if (currentStep < 8) {
+    if (currentStep < steps.length) {
       goWithDirection(currentStep + 1, currentStep, setCurrentStep);
     }
   };
@@ -2028,8 +2039,10 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
       case 6:
         return <MediaTab />;
       case 7:
-        return <SeoTab />;
+        return <FaqFields />;
       case 8:
+        return <SeoTab />;
+      case 9:
         return <TaxonomiesAttributesTab />;
       default:
         return null;
@@ -2040,24 +2053,26 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
   const onSubmit = async (data) => {
     const mergedData = { ...formData, ...data };
 
-    if (currentStep < 8) {
+    if (currentStep < steps.length) {
       setFormData(mergedData);
       goWithDirection(currentStep + 1, currentStep, setCurrentStep);
       return;
     }
 
     // Cleaning of Data
-    const { activities: dirtyActivities, transfers: dirtyTransfers, inclusions_exclusions: dirty_inclusions_exclusions, media_gallery: dirtyMedia_gallery } = mergedData;
+    const { activities: dirtyActivities, transfers: dirtyTransfers, inclusions_exclusions: dirty_inclusions_exclusions, media_gallery: dirtyMedia_gallery, faqs: dirtyFaqs } = mergedData;
 
     const activities = removeNestedKey(dirtyActivities, 'media_url');
     const transfers = removeNestedKey(dirtyTransfers, 'media_url');
     const inclusions_exclusions = removeNestedKey(dirty_inclusions_exclusions, ['created_at', 'updated_at']);
     const media_gallery = removeNestedKey(dirtyMedia_gallery, ['name', 'url', 'alt_text', 'itinerary_id']);
+    const cleanFaqs = Array.isArray(dirtyFaqs) ? dirtyFaqs.map(({ fieldArrayId, ...faq }) => faq) : [];
 
     let finalData = set(mergedData, 'activities', activities); // add new activites
     finalData = set(mergedData, 'transfers', transfers); // add new transfers
     finalData = set(finalData, 'inclusions_exclusions', inclusions_exclusions); // add new inclusion exclusion
     finalData = set(finalData, 'media_gallery', media_gallery);
+    finalData = set(finalData, 'faqs', cleanFaqs);
 
     // Final step: submit full data
     try {
@@ -2089,24 +2104,26 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
   const handleSubmitAndApprove = async (data) => {
     const mergedData = { ...formData, ...data };
 
-    if (currentStep < 8) {
+    if (currentStep < steps.length) {
       setFormData(mergedData);
       goWithDirection(currentStep + 1, currentStep, setCurrentStep);
       return;
     }
 
     // Cleaning of Data
-    const { activities: dirtyActivities, transfers: dirtyTransfers, inclusions_exclusions: dirty_inclusions_exclusions, media_gallery: dirtyMedia_gallery } = mergedData;
+    const { activities: dirtyActivities, transfers: dirtyTransfers, inclusions_exclusions: dirty_inclusions_exclusions, media_gallery: dirtyMedia_gallery, faqs: dirtyFaqs } = mergedData;
 
     const activities = removeNestedKey(dirtyActivities, 'media_url');
     const transfers = removeNestedKey(dirtyTransfers, 'media_url');
     const inclusions_exclusions = removeNestedKey(dirty_inclusions_exclusions, ['created_at', 'updated_at']);
     const media_gallery = removeNestedKey(dirtyMedia_gallery, ['name', 'url', 'alt_text', 'itinerary_id']);
+    const cleanFaqs = Array.isArray(dirtyFaqs) ? dirtyFaqs.map(({ fieldArrayId, ...faq }) => faq) : [];
 
     let finalData = set(mergedData, 'activities', activities); // add new activites
     finalData = set(mergedData, 'transfers', transfers); // add new transfers
     finalData = set(finalData, 'inclusions_exclusions', inclusions_exclusions); // add new inclusion exclusion
     finalData = set(finalData, 'media_gallery', media_gallery);
+    finalData = set(finalData, 'faqs', cleanFaqs);
 
     // Final step: submit and approve
     setIsApproving(true);
@@ -2164,7 +2181,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
           </div>
           <form
             onSubmit={
-              currentStep === 8
+              currentStep === steps.length
                 ? methods.handleSubmit(onSubmit)
                 : (e) => {
                     e.preventDefault();
@@ -2204,8 +2221,8 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                 {/* Prevent Button On Schedules */}
                 {currentStep === 2 ? null : (
                   <>
-                    {/* Step 8: Use FormActionButtons, Steps 1-7: Use Next button */}
-                    {currentStep === 8 ? (
+                    {/* Final step: Use FormActionButtons, previous steps: Use Next button */}
+                    {currentStep === steps.length ? (
                       <div className="flex gap-4 ml-auto">
                         {isCreatorItinerary && status === 'pending' ? (
                           <Button

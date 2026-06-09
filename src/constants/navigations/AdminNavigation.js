@@ -27,6 +27,7 @@ import {
   Plus,
   Bell,
   Megaphone,
+  Code2,
 } from 'lucide-react';
 
 /**
@@ -126,7 +127,10 @@ const adminRoutes = [
   },
   {
     section: 'SYSTEM',
-    items: [{ title: 'Settings', icon: Settings, url: '/dashboard/admin/settings' }],
+    items: [
+      { title: 'Settings', icon: Settings, url: '/dashboard/admin/settings' },
+      { title: 'Global Scripts', icon: Code2, url: '/dashboard/admin/global-scripts' },
+    ],
   },
   {
     section: 'COMING SOON',

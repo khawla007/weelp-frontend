@@ -34,8 +34,11 @@ import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 import { authApi } from '@/lib/axiosInstance';
 import { useStepTransition } from '@/app/components/dashboard/shared/useStepTransition';
 import { StepPanel } from '@/app/components/dashboard/shared/StepPanel';
+import { defaultSeoValues, parseSeoSchemaData } from '../shared/SeoFields';
 
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnActivity'), { ssr: false });
+const SeoFields = dynamic(() => import('../shared/SeoFields'), { ssr: false });
+const FaqFields = dynamic(() => import('../shared/FaqFields'), { ssr: false });
 
 export const EditActivityForm = ({ categories, attributes, tags, locations = [], activitydata }) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -155,6 +158,10 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
     early_bird_discount,
     last_minute_discount,
     addons = [],
+    faqs = [],
+    reviews = [],
+    review_summary = {},
+    seo = {},
   } = activitydata;
 
   // total location retrive of activity
@@ -224,7 +231,15 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       early_bird_discount: early_bird_discount,
       last_minute_discount: last_minute_discount,
       addons: initialAdd,
+      faqs,
+      reviews,
+      review_summary,
       difficulty_level: initialDifficultyLevel,
+      seo: {
+        ...defaultSeoValues,
+        ...(seo || {}),
+        schema_data: parseSeoSchemaData(seo?.schema_data),
+      },
     },
   });
 
@@ -284,6 +299,16 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       id: 6,
       title: 'Pricing & Booking',
       description: 'Prices , group sizes, and booking info',
+    },
+    {
+      id: 7,
+      title: 'FAQ',
+      description: 'Questions and answers for this activity',
+    },
+    {
+      id: 8,
+      title: 'Seo',
+      description: 'Metadata, schema, and trusted scripts',
     },
   ];
 
@@ -1465,6 +1490,10 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
         return <MediaTab />;
       case 6:
         return <PricingTab />;
+      case 7:
+        return <FaqFields />;
+      case 8:
+        return <SeoFields itemType="activity" />;
       default:
         return null;
     }
@@ -1503,6 +1532,8 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       early_bird_discount,
       last_minute_discount,
       addons,
+      faqs,
+      seo,
     } = mergedData;
 
     const finalData = {
@@ -1522,6 +1553,8 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       early_bird_discount,
       last_minute_discount,
       addons,
+      faqs: Array.isArray(faqs) ? faqs.map(({ fieldArrayId, ...faq }) => faq) : [],
+      seo: seo || {},
     };
 
     // Handle Submission
@@ -1579,7 +1612,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
           </div>
           <form
             onSubmit={
-              currentStep === 6
+              currentStep === steps.length
                 ? methods.handleSubmit(onSubmit)
                 : (e) => {
                     e.preventDefault();
@@ -1613,8 +1646,8 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                   </Button>
                 )}
 
-                {/* Step 6: Use FormActionButtons, Steps 1-5: Use Next button */}
-                {currentStep === 6 ? (
+                {/* Final step: Use FormActionButtons, previous steps: Use Next button */}
+                {currentStep === steps.length ? (
                   <FormActionButtons mode="update" isSubmitting={isSubmitting} isDisabled={!isValid || !isDirty} cancelAlwaysEnabled={true} containerType="div" className="flex gap-4" />
                 ) : (
                   <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}>

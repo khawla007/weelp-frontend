@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Medialibrary } from '../media/MediaLibrary';
 import { Upload } from 'lucide-react';
+import SeoFields from '../shared/SeoFields';
 
 const BlogSidebar = () => {
   const { control, setValue } = useFormContext(); // conext provider
@@ -135,6 +136,10 @@ const BlogSidebar = () => {
             }}
           />
         )}
+      </WidgetCard>
+
+      <WidgetCard cardTitle="SEO & Schema">
+        <SeoFields itemType="blog" />
       </WidgetCard>
     </div>
   );

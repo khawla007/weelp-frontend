@@ -32,7 +32,11 @@ export async function getSingleActivityAdmin(id) {
     });
     return response.data;
   } catch (error) {
-    return {};
+    if (error?.response?.status === 404) {
+      return {};
+    }
+
+    throw error;
   }
 }
 
