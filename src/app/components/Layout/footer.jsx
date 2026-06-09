@@ -123,7 +123,7 @@ const Footer = () => {
                   <Link
                     key={item.label}
                     href={item.href}
-                    className="text-[13px] md:text-[15px] lg:text-[18px] text-black cursor-pointer transition-colors duration-200 ease-out hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+                    className="text-[13px] md:text-[15px] lg:text-[18px] text-black cursor-pointer transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-[#18181b]/70 hover:underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#588f7a]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
                     style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}
                   >
                     {item.label}
