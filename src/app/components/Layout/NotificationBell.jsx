@@ -141,7 +141,7 @@ export default function NotificationBell() {
     <div className="relative" ref={dropdownRef}>
       <button
         type="button"
-        aria-label="Notifications"
+        aria-label={isClient && unreadCount > 0 ? `Notifications ${unreadCount > 99 ? '99+' : unreadCount}` : 'Notifications'}
         aria-haspopup="menu"
         aria-expanded={open}
         className="relative flex items-center justify-center text-[#18181b] transition hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
