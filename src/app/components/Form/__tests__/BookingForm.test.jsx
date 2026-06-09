@@ -1,5 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { SWRConfig } from 'swr';
 import path from 'path';
 
 const pushMock = jest.fn();
@@ -21,13 +22,16 @@ jest.doMock(srcPath('lib/utils.js'), () => ({
 
 const BookingForm = require('../Form').default;
 
+const renderWithSWR = (ui) =>
+  render(<SWRConfig value={{ provider: () => new Map(), dedupingInterval: 0 }}>{ui}</SWRConfig>);
+
 describe('BookingForm', () => {
   beforeEach(() => {
     pushMock.mockClear();
   });
 
   it('places the search page submit button next to the filter bar and removes the guest dropdown submit', async () => {
-    render(<BookingForm variant="searchPage" />);
+    renderWithSWR(<BookingForm variant="searchPage" />);
 
     const searchButton = await screen.findByRole('button', { name: /search trips/i });
     expect(searchButton).toHaveTextContent('Search');

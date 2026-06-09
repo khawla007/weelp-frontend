@@ -1,5 +1,6 @@
 import React from 'react';
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { SWRConfig } from 'swr';
 
 import FilterBar from '../FilterBar';
 import { getCitiesRegions, homeSearch } from '../../../../../../lib/services/global';
@@ -8,6 +9,9 @@ jest.mock('../../../../../../lib/services/global', () => ({
   getCitiesRegions: jest.fn().mockResolvedValue([]),
   homeSearch: jest.fn().mockResolvedValue({ data: [] }),
 }));
+
+const renderWithSWR = (ui) =>
+  render(<SWRConfig value={{ provider: () => new Map(), dedupingInterval: 0 }}>{ui}</SWRConfig>);
 
 describe('FilterBar', () => {
   const locations = [
@@ -33,7 +37,7 @@ describe('FilterBar', () => {
   });
 
   it('renders the old design filter fields (Where to, When, How Many)', async () => {
-    render(<FilterBar />);
+    renderWithSWR(<FilterBar />);
     await waitFor(() => expect(getCitiesRegions).toHaveBeenCalled());
 
     expect(screen.getByPlaceholderText('Where to?')).toBeInTheDocument();
@@ -43,7 +47,7 @@ describe('FilterBar', () => {
   });
 
   it('keeps the filter fields stable across small and desktop layouts', async () => {
-    const { container } = render(<FilterBar />);
+    const { container } = renderWithSWR(<FilterBar />);
     await waitFor(() => expect(getCitiesRegions).toHaveBeenCalled());
 
     const fieldGroup = container.querySelector('form > div');
@@ -53,7 +57,7 @@ describe('FilterBar', () => {
   });
 
   it('animates the location suggestions panel and staggers accessible result rows', async () => {
-    render(<FilterBar />);
+    renderWithSWR(<FilterBar />);
     await waitFor(() => expect(getCitiesRegions).toHaveBeenCalled());
 
     fireEvent.click(screen.getByPlaceholderText('Where to?'));
@@ -78,7 +82,7 @@ describe('FilterBar', () => {
   });
 
   it('uses keyboard-accessible matching transform/opacity panel animation for calendar and guest selectors', async () => {
-    render(<FilterBar />);
+    renderWithSWR(<FilterBar />);
     await waitFor(() => expect(getCitiesRegions).toHaveBeenCalled());
 
     const dateTrigger = screen.getByRole('button', { name: /choose dates/i });
@@ -108,7 +112,7 @@ describe('FilterBar', () => {
       }),
     );
 
-    render(<FilterBar />);
+    renderWithSWR(<FilterBar />);
     await waitFor(() => expect(getCitiesRegions).toHaveBeenCalled());
 
     fireEvent.click(screen.getByPlaceholderText('Where to?'));
@@ -151,7 +155,7 @@ describe('FilterBar', () => {
       })),
     });
 
-    render(<FilterBar />);
+    renderWithSWR(<FilterBar />);
     await waitFor(() => expect(getCitiesRegions).toHaveBeenCalled());
 
     fireEvent.click(screen.getByPlaceholderText('Where to?'));
@@ -171,7 +175,7 @@ describe('FilterBar', () => {
         }),
     );
 
-    render(<FilterBar />);
+    renderWithSWR(<FilterBar />);
     await waitFor(() => expect(getCitiesRegions).toHaveBeenCalled());
 
     await chooseLocation(/Dubai city/i);
@@ -212,7 +216,7 @@ describe('FilterBar', () => {
   });
 
   it('transitions guest count changes immediately with reduced-motion fallback', async () => {
-    render(<FilterBar />);
+    renderWithSWR(<FilterBar />);
     await waitFor(() => expect(getCitiesRegions).toHaveBeenCalled());
 
     fireEvent.click(screen.getByRole('button', { name: /choose guests/i }));
@@ -226,7 +230,7 @@ describe('FilterBar', () => {
   });
 
   it('refreshes preview results from filter changes without a search submit button', async () => {
-    render(<FilterBar />);
+    renderWithSWR(<FilterBar />);
     await waitFor(() => expect(getCitiesRegions).toHaveBeenCalled());
 
     fireEvent.click(screen.getByPlaceholderText('Where to?'));
