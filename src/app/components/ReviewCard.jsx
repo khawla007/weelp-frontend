@@ -99,13 +99,13 @@ export const UserDashboardReviewCard = ({ review, onDelete }) => {
         {/* First Row: Item Name and Date */}
         <div className="flex justify-between items-center w-full">
           {item_name && <CardTitle className="text-[#143042] text-xl font-medium">{item_name}</CardTitle>}
-          {created_at && formatDate(created_at) && <span className="text-[#435a67] text-base font-normal">{formatDate(created_at)}</span>}
+          {created_at && formatDate(created_at) && <span className="text-weelp-steel text-base font-normal">{formatDate(created_at)}</span>}
         </div>
 
         {/* Second Row: Location/Type and Booking ID */}
         <div className="flex justify-between items-center w-full">
           <div className="flex items-center gap-2">
-            {item_type && <span className="text-[#435a67] text-base capitalize font-normal">{item_type}</span>}
+            {item_type && <span className="text-weelp-steel text-base capitalize font-normal">{item_type}</span>}
             {!has_live_item && <span className="text-xs text-gray-400">(Archived)</span>}
           </div>
           {order_id && <span className="text-[#747474] text-base font-medium opacity-40 text-right">Booking ID : {order_id}</span>}

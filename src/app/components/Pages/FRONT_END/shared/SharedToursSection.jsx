@@ -130,7 +130,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
               setSelectedTags([]);
               setCurrentPage(1);
             }}
-            className="min-h-[44px] sm:min-h-0 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
+            className="min-h-[44px] sm:min-h-0 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
             style={{
               backgroundColor: '#f4f4f5',
               borderColor: 'rgba(67, 90, 103, 0.26)',
@@ -151,7 +151,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
                   key={tag.id || tag.name}
                   type="button"
                   onClick={() => handleTagToggle(tag.name)}
-                  className="min-h-[44px] sm:min-h-0 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
+                  className="min-h-[44px] sm:min-h-0 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
                   style={{
                     backgroundColor: '#f4f4f5',
                     borderColor: 'rgba(67, 90, 103, 0.26)',
@@ -174,7 +174,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
             <button
               type="button"
               onClick={() => setShowSortDropdown((prev) => !prev)}
-              className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
+              className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
               style={{
                 backgroundColor: '#f4f4f5',
                 borderColor: 'rgba(67, 90, 103, 0.26)',
@@ -194,7 +194,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
                     key={option.value}
                     type="button"
                     onClick={() => handleSortChange(option.value)}
-                    className={`block w-full px-4 py-2 text-left text-sm transition hover:bg-zinc-50 ${sortBy === option.value ? 'font-semibold text-[#18181b]' : 'text-[#435a67]'}`}
+                    className={`block w-full px-4 py-2 text-left text-sm transition hover:bg-zinc-50 ${sortBy === option.value ? 'font-semibold text-[#18181b]' : 'text-weelp-steel'}`}
                     style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
                   >
                     {option.label}
@@ -207,7 +207,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
           {/* View on Map — static */}
           <button
             type="button"
-            className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-[#435a67] transition text-sm md:text-base"
+            className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
             style={{
               backgroundColor: '#f4f4f5',
               borderColor: 'rgba(67, 90, 103, 0.26)',

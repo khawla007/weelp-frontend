@@ -80,7 +80,7 @@ export const CustomerBookingsList = () => {
     <Card className="shadow-none border-none bg-inherit  bg-white ">
       <CardHeader className="px-4 md:px-8">
         <CardTitle className="text-xl text-Blueish font-medium">Your Bookings</CardTitle>
-        <CardDescription className="text-lg text-[#435a67]">Manage your bookings, plans.</CardDescription>
+        <CardDescription className="text-lg text-weelp-steel">Manage your bookings, plans.</CardDescription>
       </CardHeader>
 
       <div className="p-4 md:p-8 pt-0 md:pt-0 flex justify-between flex-wrap gap-4">

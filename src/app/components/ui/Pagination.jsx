@@ -46,7 +46,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, alig
 
       {pages.map((page, index) =>
         page === '...' ? (
-          <span key={`ellipsis-${index}`} className="flex size-10 md:size-[35px] items-center justify-center text-[#435a67]" style={BTN_STYLE}>
+          <span key={`ellipsis-${index}`} className="flex size-10 md:size-[35px] items-center justify-center text-weelp-steel" style={BTN_STYLE}>
             ...
           </span>
         ) : (

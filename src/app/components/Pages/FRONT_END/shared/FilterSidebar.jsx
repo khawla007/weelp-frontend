@@ -116,10 +116,10 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
           <div className={disabled ? 'opacity-50 pointer-events-none' : ''}>
             <ReactRangeSliderInput min={0} max={5000} step={10} value={priceRange} onInput={onPriceChange} className="w-full city-price-slider" disabled={disabled} />
             <div className="flex justify-between mt-2">
-              <span className="text-[14px] text-[#435a67]" style={{ ...FONT, fontWeight: 500 }}>
+              <span className="text-[14px] text-weelp-steel" style={{ ...FONT, fontWeight: 500 }}>
                 ${priceRange[0]}
               </span>
-              <span className="text-[14px] text-[#435a67]" style={{ ...FONT, fontWeight: 500 }}>
+              <span className="text-[14px] text-weelp-steel" style={{ ...FONT, fontWeight: 500 }}>
                 ${priceRange[1]}
               </span>
             </div>

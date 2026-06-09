@@ -22,7 +22,7 @@ const BannerSectionBlog = ({ title = '', excerpt = '', tags = [], media_gallery 
                 </span>
               </span>
             </h1>
-            <p className="text-[#435a67] font-medium text-sm sm:text-lg  text-wrap">
+            <p className="text-weelp-steel font-medium text-sm sm:text-lg  text-wrap">
               <span className="weelp-rise-mask weelp-rise-mask--block">
                 <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
                   {excerpt || 'You&apos;ll discover everything from whisky to Harry Potter, or even some bodysnatchers, in Scotland.'}

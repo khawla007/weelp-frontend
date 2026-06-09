@@ -148,14 +148,14 @@ export const ShopAllProduct = () => {
               {/* Category Filters */}
               <h2 className="text-lg font-medium text-[#18181b] my-4">Category</h2>
               <div className="w-full max-w-full flex flex-col space-y-2 min-h-[14rem]">
-                <label className="flex items-center space-x-2 cursor-pointer text-[#435a67]">
+                <label className="flex items-center space-x-2 cursor-pointer text-weelp-steel">
                   <input type="checkbox" checked={!selectedCategories.length} onChange={() => setSelectedCategories([])} className="size-5 cursor-pointer checked:accent-[#588f7a]" />
                   <span>All Categories</span>
                 </label>
                 {useMemo(
                   () =>
                     categories.map((category) => (
-                      <label key={category.id} className="flex items-center space-x-2 cursor-pointer text-[#435a67]">
+                      <label key={category.id} className="flex items-center space-x-2 cursor-pointer text-weelp-steel">
                         <input
                           type="checkbox"
                           value={category.name}
@@ -199,7 +199,7 @@ export const ShopAllProduct = () => {
                 {useMemo(
                   () =>
                     locations.map((location) => (
-                      <label key={location.id} className="flex items-center space-x-2 cursor-pointer text-[#435a67]">
+                      <label key={location.id} className="flex items-center space-x-2 cursor-pointer text-weelp-steel">
                         <input
                           type="radio"
                           name="location"

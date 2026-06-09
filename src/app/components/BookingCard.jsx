@@ -21,7 +21,7 @@ const BookingCard = ({ bookingItem = {} }) => {
       <CardHeader className="grid grid-cols-2 py-2 flex-wrap">
         <CardTitle className={'text-[#143042] text-xl font-semibold'}>{name}</CardTitle>
         <span className="text-[#143042] text-base font-normal text-end ">{travel_date}</span>
-        <span className="text-[#435a67] text-base font-normal">{city}</span>
+        <span className="text-weelp-steel text-base font-normal">{city}</span>
 
         <span className="text-gray-400  text-base text-end font-medium">Booking Id :{id}</span>
       </CardHeader>

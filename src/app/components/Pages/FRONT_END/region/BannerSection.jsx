@@ -41,7 +41,7 @@ const BannerSection = () => {
                 </span>
               ) : null}
             </h1>
-            <p className="mb-4 text-base sm:text-lg font-medium text-[#435a67]">
+            <p className="mb-4 text-base sm:text-lg font-medium text-weelp-steel">
               {description ? (
                 <span className="weelp-rise-mask weelp-rise-mask--block">
                   <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>

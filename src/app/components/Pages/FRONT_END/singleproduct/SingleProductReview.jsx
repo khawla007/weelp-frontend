@@ -352,18 +352,18 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
           <button
             type="button"
             onClick={() => handleFilterChange('all')}
-            className={`px-[21px] py-[7px] rounded-[8px] text-sm font-medium ${activeFilter === 'all' ? 'bg-[#cfdbe3] text-[#435a67]' : 'bg-transparent text-[#435a67]'}`}
+            className={`px-[21px] py-[7px] rounded-[8px] text-sm font-medium ${activeFilter === 'all' ? 'bg-[#cfdbe3] text-weelp-steel' : 'bg-transparent text-weelp-steel'}`}
           >
             All
           </button>
           <button
             type="button"
             onClick={() => handleFilterChange('photos')}
-            className={`px-[21px] py-[7px] rounded-[8px] text-sm font-medium ${activeFilter === 'photos' ? 'bg-[#cfdbe3] text-[#435a67]' : 'bg-transparent text-[#435a67]'}`}
+            className={`px-[21px] py-[7px] rounded-[8px] text-sm font-medium ${activeFilter === 'photos' ? 'bg-[#cfdbe3] text-weelp-steel' : 'bg-transparent text-weelp-steel'}`}
           >
             With Photos Only
           </button>
-          <span className="px-[21px] py-[7px] rounded-[8px] text-sm font-medium text-[#435a67]">Influencers</span>
+          <span className="px-[21px] py-[7px] rounded-[8px] text-sm font-medium text-weelp-steel">Influencers</span>
         </div>
 
         {/* Sort Dropdown - Newest/Oldest */}
@@ -373,11 +373,11 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
             onClick={() => setShowSortDropdown((prev) => !prev)}
             aria-expanded={showSortDropdown}
             aria-haspopup="true"
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[#435a67] border border-[#e4e4e7] bg-white min-w-[141px]"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-weelp-steel border border-[#e4e4e7] bg-white min-w-[141px]"
           >
             <span className="sr-only">Sort reviews by </span>
             {sortOrder === 'newest' ? 'Newest' : 'Oldest'}
-            <ChevronDown size={16} className="text-[#435a67]" />
+            <ChevronDown size={16} className="text-weelp-steel" />
           </button>
           {showSortDropdown && (
             <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg border border-[#e4e4e7] py-1 min-w-[141px] z-20">

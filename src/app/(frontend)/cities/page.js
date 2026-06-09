@@ -32,7 +32,7 @@ export default async function CitiesPage({ searchParams }) {
             </span>
           </span>
         </h1>
-        <p className="max-w-xl text-sm font-medium text-[#435a67] sm:text-lg">
+        <p className="max-w-xl text-sm font-medium text-weelp-steel sm:text-lg">
           <span className="weelp-rise-mask weelp-rise-mask--block">
             <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
               Explore destinations city by city and find the perfect place for your next trip.

@@ -76,7 +76,7 @@ const TransfersPage = () => {
               </span>
             </span>
           </h1>
-          <p className="max-w-xl text-sm sm:text-lg font-medium text-[#435a67] text-center">
+          <p className="max-w-xl text-sm sm:text-lg font-medium text-weelp-steel text-center">
             <span className="weelp-rise-mask weelp-rise-mask--block">
               <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
                 You&apos;ll discover everything from whisky to Harry Potter, or even some bodysnatchers, in Scotland&apos;s captivating capital.

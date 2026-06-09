@@ -167,7 +167,7 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
                     className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#c7ffc02e] to-slate-50 border-b-[#588f7a] border-b-2'}`}
                   >
                     <div
-                      className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-[#588f7a] ' : 'text-[#435a67]'}`}
+                      className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-[#588f7a] ' : 'text-weelp-steel'}`}
                     >
                       {step.title}
                     </div>

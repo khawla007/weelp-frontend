@@ -75,7 +75,7 @@ const FilterBar = ({ filters, setFilters }) => {
                   checked={filters.categories.includes(category)}
                   onChange={handleCategoryChange}
                 />
-                <label className="ml-2 text-md font-medium text-[#435a67]">{category}</label>
+                <label className="ml-2 text-md font-medium text-weelp-steel">{category}</label>
               </div>
             ))}
           </div>
@@ -85,7 +85,7 @@ const FilterBar = ({ filters, setFilters }) => {
         <div>
           <h3 className="text-lg font-medium text-#18181b mt-6 mb-4">Price Range</h3>
           <div className="flex items-center space-x-2">
-            <span className="text-md font-medium text-[#435a67]">$0</span>
+            <span className="text-md font-medium text-weelp-steel">$0</span>
             <input
               type="range"
               min="0"
@@ -94,7 +94,7 @@ const FilterBar = ({ filters, setFilters }) => {
               value={filters.priceRange}
               onChange={handlePriceRangeChange}
             />
-            <span className="text-md font-medium text-[#435a67]">${price || 5000}</span>
+            <span className="text-md font-medium text-weelp-steel">${price || 5000}</span>
           </div>
         </div>
 
@@ -137,7 +137,7 @@ const FilterBar = ({ filters, setFilters }) => {
                   checked={filters.locations.includes(location)}
                   onChange={handleLocationChange}
                 />
-                <label className="ml-2 text-md font-medium text-[#435a67]">{location}</label>
+                <label className="ml-2 text-md font-medium text-weelp-steel">{location}</label>
               </div>
             ))}
           </div>

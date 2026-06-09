@@ -152,7 +152,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
           {activeTab === 'home' ? (
             <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center justify-between gap-2 bg-transparent border border-[#435a6742] rounded-[8px] px-4 py-2 text-[16px] font-medium text-[#435a67] outline-none min-w-[160px]">
+                <button className="flex items-center justify-between gap-2 bg-transparent border border-[#435a6742] rounded-[8px] px-4 py-2 text-[16px] font-medium text-weelp-steel outline-none min-w-[160px]">
                   {activeSortLabel}
                   <ChevronDown size={16} className="shrink-0" />
                 </button>
@@ -214,7 +214,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
         <div className="mt-4">
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center justify-between gap-2 bg-transparent border border-[#435a6742] rounded-[7.86px] px-4 py-2 text-[16px] font-medium text-[#435a67] outline-none min-w-[160px]">
+              <button className="flex items-center justify-between gap-2 bg-transparent border border-[#435a6742] rounded-[7.86px] px-4 py-2 text-[16px] font-medium text-weelp-steel outline-none min-w-[160px]">
                 {activeSourceLabel}
                 <ChevronDown size={16} className="shrink-0" />
               </button>
@@ -246,7 +246,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
             <div className="w-8 h-8 border-2 border-[#588f7a] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : displayItineraries.length === 0 ? (
-          <div className="text-center py-12 text-[#435a67]">
+          <div className="text-center py-12 text-weelp-steel">
             <p className="text-lg font-medium">{activeSource === 'mine' ? "You haven't created any itineraries yet" : 'No itineraries yet'}</p>
             <p className="text-sm mt-2">{activeSource === 'mine' ? 'Share your travel experiences with the community!' : 'Be the first creator to share your travel experience!'}</p>
           </div>

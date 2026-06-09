@@ -2,7 +2,7 @@ import React from 'react';
 
 const TabButton = ({ text, className }) => {
   if (text) {
-    return <button className={`${className} bg-graycolor text-[#435a67] font-medium text-md py-2 px-4 rounded-lg capitalize w-fit`}>{text}</button>;
+    return <button className={`${className} bg-graycolor text-weelp-steel font-medium text-md py-2 px-4 rounded-lg capitalize w-fit`}>{text}</button>;
   }
   return;
 };
