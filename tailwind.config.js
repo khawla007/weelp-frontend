@@ -65,6 +65,16 @@ const config = {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+        weelp: {
+          'sage-deep': '#588f7a',
+          'sage-hover': '#4d8069',
+          'sage-tint': '#b5d8cb',
+          'sage-wash': '#f2f7f5',
+          steel: '#435a67',
+          copy: '#52525b',
+          label: '#71717a',
+          ink: '#18181b',
+        },
       },
       keyframes: {
         'accordion-down': {

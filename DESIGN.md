@@ -295,6 +295,21 @@ The Buddy is a chat + map widget on the homepage (`src/app/components/Home/Trave
 
 The Sage Deep ratio is the operative constraint. Sage on white below 18px / 14px-bold is a WCAG failure; escalate to `#52525b` (Copy) for the resting state and use sage on hover (or move sage to a non-text role — icon, underline, border). Phase 12d migrated two `text-xs text-[#588f7a]` action links on `NotificationWidget.jsx` (Mark all read, View all) to this ink-default + sage-hover pattern.
 
+**Tailwind token mapping.** The hexes above ship as a `weelp` color namespace in `tailwind.config.js`. New work uses these utilities; do not introduce fresh `text-[#...]`, `bg-[#...]`, or `border-[#...]` literals for these values.
+
+| Hex       | Token key            | Utility                                             |
+| --------- | -------------------- | --------------------------------------------------- |
+| `#18181b` | `weelp.ink`          | `text-weelp-ink`, `bg-weelp-ink`                    |
+| `#52525b` | `weelp.copy`         | `text-weelp-copy`                                   |
+| `#71717a` | `weelp.label`        | `text-weelp-label`                                  |
+| `#435a67` | `weelp.steel`        | `text-weelp-steel`, `bg-weelp-steel`                |
+| `#588f7a` | `weelp.sage-deep`    | `text-weelp-sage-deep`, `bg-weelp-sage-deep`, `border-weelp-sage-deep`, `hover:text-weelp-sage-deep` |
+| `#4d8069` | `weelp.sage-hover`   | `hover:bg-weelp-sage-hover`                         |
+| `#b5d8cb` | `weelp.sage-tint`    | `bg-weelp-sage-tint`                                |
+| `#f2f7f5` | `weelp.sage-wash`    | `bg-weelp-sage-wash`                                |
+
+Alpha-suffixed callsites (`#435a6742`, `#435a6730`, `#588f7a4D`, etc.) remain as arbitrary literals until the token system grows a `weelp.steel/26` alpha syntax — a separate cleanup, not blocking on contrast.
+
 **Focus visibility.** `globals.css` ships a global `:focus-visible` outline at `rgba(88, 143, 122, 0.45)` 2px + 2px offset on every `<input>`/`<textarea>`/`<select>`/`<button>`. Component-level Tailwind utilities (e.g. `focus-visible:ring-2 focus-visible:ring-[#588f7a]/40`) layer on top for non-default surfaces — never strip the global outline.
 
 **Reduced motion.** `globals.css` honors `prefers-reduced-motion: reduce` globally — animations and transitions collapse to 0.01ms; smooth scroll falls back to auto. Components that need motion semantics under reduced-motion (e.g. crossfade in place of slide) can opt back in via `@media (prefers-reduced-motion: no-preference)` inside their own scope.
