@@ -40,7 +40,8 @@ export const BlogForm = ({ editPage = false, data: blogData, mutate }) => {
   const methods = useForm({
     defaultValues: {
       name: blogData?.name ?? '',
-      content: '',
+      slug: blogData?.slug ?? '',
+      content: blogData?.content ?? '',
       excerpt: blogData?.excerpt ?? '',
       publish: blogData?.publish ?? true,
       media_gallery: blogData?.media_gallery ?? [],
@@ -141,7 +142,7 @@ export const BlogForm = ({ editPage = false, data: blogData, mutate }) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col space-y-4">
-        <BlogHeader editPage={editPage} />
+        <BlogHeader editPage={editPage} blogData={blogData} />
 
         <div className="flex flex-col md:flex-row w-full  gap-4 ">
           {/* Content Area */}

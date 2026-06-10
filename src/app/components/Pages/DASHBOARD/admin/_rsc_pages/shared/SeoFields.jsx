@@ -124,7 +124,9 @@ const getGeneratedSchemaType = (schema, fallbackType) => {
   return graphMainEntity?.['@type'] || fallbackType;
 };
 
-const SeoFields = ({ itemType = 'activity' }) => {
+const getRequiredRule = (enabled, message) => (enabled ? { required: message } : {});
+
+const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
   const [openItem, setOpenItem] = useState('item-1');
   const {
     register,
@@ -254,9 +256,7 @@ const SeoFields = ({ itemType = 'activity' }) => {
               maxLength="60"
               placeholder="Enter meta title"
               className="focus-visible:ring-weelp-sage-deep"
-              {...register('seo.meta_title', {
-                required: 'Meta Title Required',
-              })}
+              {...register('seo.meta_title', getRequiredRule(requiredBasicFields, 'Meta Title Required'))}
             />
             <span className="block text-xs p-1 text-zinc-500">{`${String(metaTitle || '').length}/60`} Characters</span>
             {errors?.seo?.meta_title && <p className="text-red-400 text-sm">{errors?.seo?.meta_title?.message}</p>}
@@ -269,9 +269,7 @@ const SeoFields = ({ itemType = 'activity' }) => {
               placeholder="Enter meta description"
               maxLength="160"
               className="focus-visible:ring-weelp-sage-deep"
-              {...register('seo.meta_description', {
-                required: 'Meta Description Required',
-              })}
+              {...register('seo.meta_description', getRequiredRule(requiredBasicFields, 'Meta Description Required'))}
             />
             <span className="block text-xs p-1 text-zinc-500">{`${String(metaDescription || '').length}/160`} Characters</span>
             {errors?.seo?.meta_description && <p className="text-red-400 text-sm">{errors?.seo?.meta_description.message}</p>}
@@ -284,7 +282,7 @@ const SeoFields = ({ itemType = 'activity' }) => {
               placeholder="Enter keywords separated by commas"
               className="focus-visible:ring-weelp-sage-deep"
               {...register('seo.keywords', {
-                required: 'Keywords Required',
+                ...getRequiredRule(requiredBasicFields, 'Keywords Required'),
                 onBlur: (e) => {
                   const formatted = addCommabetweenString(e.target.value);
                   setValue('seo.keywords', formatted);
@@ -300,9 +298,7 @@ const SeoFields = ({ itemType = 'activity' }) => {
               type="text"
               placeholder="Enter OG Image Url"
               className="focus-visible:ring-weelp-sage-deep"
-              {...register('seo.og_image_url', {
-                required: 'og_image_url Required',
-              })}
+              {...register('seo.og_image_url', getRequiredRule(requiredBasicFields, 'og_image_url Required'))}
             />
             {errors?.seo?.og_image_url && <p className="text-red-400 text-sm">{errors?.seo?.og_image_url?.message}</p>}
           </div>
@@ -313,9 +309,7 @@ const SeoFields = ({ itemType = 'activity' }) => {
               type="text"
               placeholder="Enter canonical URL"
               className="focus-visible:ring-weelp-sage-deep"
-              {...register('seo.canonical_url', {
-                required: 'canonical_url Required',
-              })}
+              {...register('seo.canonical_url', getRequiredRule(requiredBasicFields, 'canonical_url Required'))}
             />
             {errors?.seo?.canonical_url && <p className="text-red-400 text-sm">{errors?.seo?.canonical_url?.message}</p>}
           </div>

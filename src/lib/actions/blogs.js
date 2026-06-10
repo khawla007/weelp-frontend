@@ -5,6 +5,18 @@ import { getAuthApi } from '../axiosInstance';
 import { delay, log } from '../utils';
 import { redirect } from 'next/navigation';
 
+const formatValidationErrors = (data, fallback = 'Validation error') => {
+  const errors = data?.errors || data;
+
+  if (!errors || typeof errors !== 'object') return fallback;
+
+  return (
+    Object.entries(errors)
+      .map(([field, messages]) => `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`)
+      .join('\n') || fallback
+  );
+};
+
 /**
  * Action for Create Blog
  * @param {BlogPostForm} data form data related to create blog
@@ -32,19 +44,10 @@ export const createBlog = async (data = {}) => {
     const status = err?.response?.status;
 
     if (status === 400) {
-      const errors = err?.response?.data?.errors;
-      let errorMessage = 'Validation error';
-      if (errors) {
-        // Format validation errors for display
-        const errorMessages = Object.entries(errors)
-          .map(([field, messages]) => `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`)
-          .join('\n');
-        errorMessage = errorMessages || 'Validation error';
-      }
       return {
         success: false,
-        message: errorMessage,
-        errors,
+        message: formatValidationErrors(err?.response?.data),
+        errors: err?.response?.data?.errors || err?.response?.data,
       };
     }
 
@@ -88,7 +91,9 @@ export const createBlog = async (data = {}) => {
  */
 export const updateBlog = async (id, data) => {
   try {
-    if (!Number.isFinite(id)) {
+    const blogId = Number(id);
+
+    if (!Number.isFinite(blogId)) {
       return {
         success: false,
         message: 'Invalid blog id',
@@ -98,7 +103,7 @@ export const updateBlog = async (id, data) => {
     await delay(500);
 
     const api = await getAuthApi();
-    const res = await api.put(`/api/admin/blogs/${id}`, data, {
+    const res = await api.put(`/api/admin/blogs/${blogId}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -119,8 +124,8 @@ export const updateBlog = async (id, data) => {
       case 400:
         return {
           success: false,
-          message: 'Validation error',
-          errors: apiError?.errors,
+          message: formatValidationErrors(apiError),
+          errors: apiError?.errors || apiError,
         };
 
       case 409:

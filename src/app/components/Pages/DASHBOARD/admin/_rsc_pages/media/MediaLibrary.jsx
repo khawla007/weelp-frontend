@@ -20,7 +20,7 @@ import { CustomPagination } from '@/app/components/Pagination';
 import { DASHBOARD_PLACEHOLDER_IMAGE } from '@/app/components/DashboardShared/Card/CardImage';
 import { MediaGridSkeleton } from '@/app/components/Animation/Cards';
 
-export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelectionChange }) {
+export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelectionChange, onSelectImages, selectionMode = 'multi' }) {
   const isClient = useIsClient(); // hydration
   const [selectedImage, setSelectedImage] = useState({}); // Media Page View Popup
   const [selectedImages, setSelectedImages] = useState([]); // Selecting list of Images for store
@@ -33,6 +33,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
   const { toast } = useToast();
   const { addMedia, removeMedia, selectedMedia } = useMediaStore();
   const isMediaPage = pathname === '/dashboard/admin/media';
+  const isSingleSelect = selectionMode === 'single';
 
   // Handle page change - clears selections
   const handlePageChange = (newPage) => {
@@ -107,6 +108,20 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
 
   // Select image Store Functionality - normal toggle for all images
   const handleSelect = (image) => {
+    if (isSingleSelect) {
+      onSelectImages?.({
+        added: [image],
+        removed: [],
+        selected: [image],
+      });
+      onSelectionChange?.({
+        added: [image],
+        removed: [],
+      });
+      closeDialog?.();
+      return;
+    }
+
     setSelectedImages((prev) => (prev.some((img) => img.id === image.id) ? prev.filter((img) => img.id !== image.id) : [...prev, image]));
   };
 
@@ -129,8 +144,13 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
       return !finalSelectedIds.has(imgId);
     });
 
-    // Add newly selected images to store
-    if (newlySelected.length > 0) {
+    if (onSelectImages) {
+      onSelectImages({
+        added: newlySelected,
+        removed: unselected,
+        selected: selectedImages,
+      });
+    } else if (newlySelected.length > 0) {
       addMedia(newlySelected);
     }
 
@@ -291,18 +311,28 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                     <div className="absolute inset-0 bg-[#18181b]/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none" />
 
                     {/* Edit pencil icon - shown on hover */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent Card click
-                        handleSelectMedia(image);
-                      }}
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white rounded-full p-2 shadow-lg hover:bg-zinc-100 pointer-events-auto"
-                    >
-                      <Edit size={20} className="text-zinc-700" />
-                    </button>
+                    {!isSingleSelect && (
+                      <button
+                        type="button"
+                        aria-label={`Edit ${image?.name || image?.alt_text || 'media image'}`}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent Card click
+                          handleSelectMedia(image);
+                        }}
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white rounded-full p-2 shadow-lg hover:bg-zinc-100 pointer-events-auto"
+                      >
+                        <Edit size={20} className="text-zinc-700" />
+                      </button>
+                    )}
+
+                    {isSingleSelect && (
+                      <div className="absolute inset-x-2 bottom-2 rounded-md bg-white/95 px-2 py-1 text-center text-xs font-medium text-zinc-800 opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
+                        Insert image
+                      </div>
+                    )}
 
                     {/* Selection badge - shows in both selected and unselected states */}
-                    {!isMediaPage && <MediaSelectionBadge isSelected={isSelected} />}
+                    {!isMediaPage && !isSingleSelect && <MediaSelectionBadge isSelected={isSelected} />}
                   </Card>
                 );
               })}

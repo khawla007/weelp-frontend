@@ -135,7 +135,7 @@ const adminRoutes = [
   {
     section: 'COMING SOON',
     items: [
-      { title: 'Pages', icon: FileText, url: '/dashboard/admin/pages', comingSoon: true },
+      { title: 'Pages', icon: FileText, url: '/dashboard/admin/pages' },
       {
         title: 'Marketing',
         icon: Gift,

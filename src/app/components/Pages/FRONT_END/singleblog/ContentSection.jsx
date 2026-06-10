@@ -1,7 +1,7 @@
 import React from 'react';
 import { BlogAuthorInfo } from '@/app/components/singleproductguide';
 import { FollowUs, RelatedLinks } from './SingleBlogModules';
-import { TiptapPublic } from '../../DASHBOARD/admin/_rsc_pages/blogs/components/TiptapPublic';
+import { RichTextRenderer } from '../../DASHBOARD/admin/_rsc_pages/shared/RichTextRenderer';
 import Reveal from '@/app/components/ui/Reveal';
 
 const ContentSection = ({ content = '', categories = [] }) => {
@@ -15,7 +15,7 @@ const ContentSection = ({ content = '', categories = [] }) => {
         {content.length > 50 && (
           <div className="bg-[#f4f4f5]">
             <div className="max-w-4xl mx-auto p-6  flex flex-col gap-4">
-              <TiptapPublic content={content} />
+              <RichTextRenderer content={content} />
             </div>
           </div>
         )}

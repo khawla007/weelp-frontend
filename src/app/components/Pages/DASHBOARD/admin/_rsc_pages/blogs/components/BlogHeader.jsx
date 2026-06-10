@@ -1,44 +1,65 @@
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Loader } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Eye } from 'lucide-react';
 import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { hasEditorContent } from '../../shared/richTextContent';
 
-export const BlogHeader = ({ editPage = false }) => {
+const previewStorageKey = 'weelp:blog-preview';
+
+const mapOptionsToLabels = (items = []) =>
+  Array.isArray(items)
+    ? items.map((item) => ({
+        id: item.value ?? item.id,
+        name: item.label ?? item.name ?? item.tag_name ?? item.category_name ?? '',
+        slug: item.slug,
+      }))
+    : [];
+
+export const BlogHeader = ({ editPage = false, blogData }) => {
   const router = useRouter();
 
   const {
     control,
+    getValues,
     formState: { isSubmitting, isValid, isDirty },
   } = useFormContext();
 
   // Watch required fields for create mode validation
   const nameValue = useWatch({ control, name: 'name' });
+  const slugValue = useWatch({ control, name: 'slug' });
   const contentValue = useWatch({ control, name: 'content' });
 
-  // Extract text from Tiptap JSON to check if content is actually filled
-  const hasContent = (() => {
-    if (!contentValue) return false;
-    try {
-      const parsed = JSON.parse(contentValue);
-      const extractText = (node) => {
-        if (node.text) return node.text;
-        if (node.content) return node.content.map(extractText).join('');
-        return '';
-      };
-      return extractText(parsed).trim().length > 0;
-    } catch {
-      return !!contentValue?.trim();
-    }
-  })();
+  const hasContent = hasEditorContent(contentValue || blogData?.content);
 
   // Create: enabled when name and content are filled
   // Edit: enabled when any field is changed (dirty)
-  const isCreateValid = !!(nameValue?.trim() && hasContent);
+  const isCreateValid = !!(nameValue?.trim() && slugValue?.trim() && hasContent);
   const computedDisabled = editPage ? !isDirty : !isCreateValid;
+  const originalSlug = blogData?.slug;
+
+  const handlePreview = () => {
+    const values = getValues();
+    const payload = {
+      id: blogData?.id,
+      name: values.name || blogData?.name || 'Blog preview',
+      title: values.name || blogData?.name || 'Blog preview',
+      slug: values.slug || blogData?.slug || '',
+      excerpt: values.excerpt || blogData?.excerpt || '',
+      content: values.content || blogData?.content || '',
+      publish: values.publish ?? blogData?.publish ?? false,
+      categories: mapOptionsToLabels(values.categories),
+      tags: mapOptionsToLabels(values.tags),
+      media_gallery: values.media_gallery || blogData?.media_gallery || [],
+      original_url: originalSlug ? `/blogs/${originalSlug}` : null,
+    };
+
+    window.localStorage.setItem(previewStorageKey, JSON.stringify(payload));
+    window.open('/preview/blog', '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <div className="flex items-center justify-between w-full">
@@ -51,6 +72,20 @@ export const BlogHeader = ({ editPage = false }) => {
 
       {/* On Submit Control */}
       <div className="flex items-center gap-2">
+        <Button type="button" variant="outline" onClick={handlePreview} disabled={!hasContent}>
+          <Eye className="size-4" />
+          Preview
+        </Button>
+
+        {editPage && originalSlug && (
+          <Button type="button" variant="outline" asChild>
+            <a href={`/blogs/${originalSlug}`} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="size-4" />
+              View Original
+            </a>
+          </Button>
+        )}
+
         <Controller
           control={control}
           name="publish"
