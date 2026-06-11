@@ -3,7 +3,10 @@
 import { useState } from 'react';
 import { Heart, Eye } from 'lucide-react';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
+import MediaImage from '@/app/components/MediaImage';
 import { toggleItineraryLike, recordItineraryView } from '@/lib/actions/creatorItineraries';
+
+const FALLBACK_COVER = '/assets/Card.webp';
 
 const formatCount = (count) => {
   if (count >= 1000) return (count / 1000).toFixed(1) + 'k';
@@ -16,7 +19,9 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
   const [viewsCount, setViewsCount] = useState(itinerary?.views_count || 0);
 
   const featuredMedia = itinerary?.media_gallery?.find((m) => m.is_featured)?.media?.url || itinerary?.media_gallery?.[0]?.media?.url;
-  const featuredImage = featuredMedia || itinerary?.featured_image || '/assets/Card.webp';
+  const initialCover = featuredMedia || itinerary?.featured_image || FALLBACK_COVER;
+  const [coverSrc, setCoverSrc] = useState(initialCover);
+  const [avatarBroken, setAvatarBroken] = useState(false);
   const price = itinerary?.display_price;
   const currency = itinerary?.display_currency ?? '';
   const title = itinerary?.name || 'Untitled Itinerary';
@@ -70,13 +75,13 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
       {/* Image with price overlay */}
       <NavigationLink href={href} onClick={handleCardClick}>
         <div className="group relative w-full aspect-[93/100] overflow-hidden rounded-lg">
-          <img
-            src={featuredImage}
+          <MediaImage
+            src={coverSrc}
             alt={title}
-            className="absolute inset-0 w-full h-full object-cover"
-            onError={(e) => {
-              e.target.src = '/assets/Card.webp';
-            }}
+            fill
+            sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+            className="object-cover"
+            onError={() => setCoverSrc(FALLBACK_COVER)}
           />
 
           {/* Price overlay - slides up on hover */}
@@ -105,8 +110,16 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
       {/* Title + creator avatar row */}
       <div className="px-2 pt-1 flex items-center justify-between">
         <TitleTag className="text-[#18181b] text-lg font-medium line-clamp-1 flex-1 mr-2">{title}</TitleTag>
-        {creatorAvatar ? (
-          <img src={creatorAvatar} alt={creatorName || 'creator'} className="size-9 rounded-full object-cover flex-shrink-0" />
+        {creatorAvatar && !avatarBroken ? (
+          <MediaImage
+            src={creatorAvatar}
+            alt={creatorName || 'creator'}
+            width={36}
+            height={36}
+            sizes="36px"
+            className="size-9 rounded-full object-cover flex-shrink-0"
+            onError={() => setAvatarBroken(true)}
+          />
         ) : (
           <span className="size-9 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0" style={{ backgroundColor: '#588f7a' }}>
             {creatorInitials}

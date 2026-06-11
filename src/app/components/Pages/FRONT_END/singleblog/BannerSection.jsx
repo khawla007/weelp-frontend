@@ -3,6 +3,7 @@ import TabButton from '@/app/components/TabButton';
 import styles from './bannerSection.module.css';
 import { FALLBACK_IMAGE } from '@/constants/image';
 import GallerySlider from '@/app/components/sliders/GallerySlider';
+import MediaImage from '@/app/components/MediaImage';
 
 /**
  *
@@ -47,20 +48,27 @@ const BannerSectionBlog = ({ title = '', excerpt = '', tags = [], media_gallery 
           {media_gallery?.length > 1 ? (
             <div className="flex flex-row overflow-scroll overflow-y-hidden gap-2 tfc_scroll">
               {media_gallery.map((media, index) => (
-                <img
+                <MediaImage
                   key={index}
                   src={media.url}
                   alt={media.alt ?? `Gallery Image ${index + 1}`}
-                  className=" object-center rounded-lg max-w-80 w-full h-[400px] scale-95 hover:scale-100 ease-in-out duration-500 mr-4 motion-reduce:hover:scale-95"
+                  width={320}
+                  height={400}
+                  sizes="320px"
+                  className="object-center rounded-lg max-w-80 w-full h-[400px] scale-95 hover:scale-100 ease-in-out duration-500 mr-4 motion-reduce:hover:scale-95"
                 />
               ))}
             </div>
           ) : (
-            <img
-              src={media_gallery?.find((img) => img.is_featured)?.url || media_gallery?.[0]?.url}
-              alt={media_gallery?.[0]?.alt ?? `Gallery Image`}
-              className=" object-center w-full rounded-lg h-[400px]"
-            />
+            <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
+              <MediaImage
+                src={media_gallery?.find((img) => img.is_featured)?.url || media_gallery?.[0]?.url}
+                alt={media_gallery?.[0]?.alt ?? `Gallery Image`}
+                fill
+                sizes="800px"
+                className="object-center"
+              />
+            </div>
           )}
         </div>
       )}
