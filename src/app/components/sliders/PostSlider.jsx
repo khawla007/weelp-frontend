@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import Singleproductguide from '../singleproductguide';
 import { DestinationCarouselAnimation } from '../Animation/ProductAnimation';
+import '@/app/styles/swiper.css';
 
 const PostSlider = ({ data }) => {
   return (

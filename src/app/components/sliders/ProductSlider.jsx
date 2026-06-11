@@ -5,6 +5,7 @@ import { Navigation } from 'swiper/modules';
 import { ProductCarouselAnimation } from '../Animation/ProductAnimation';
 import { GlobalCard } from '../SingleProductCard'; // global card for items
 import { useIsClient } from '@/hooks/useIsClient';
+import '@/app/styles/swiper.css';
 
 const ProductSlider = ({ data }) => {
   const isClient = useIsClient(); // intialize hydration

@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import DestinationCard from '../DestinationCard';
 import { DestinationCarouselAnimation } from '../Animation/ProductAnimation';
+import '@/app/styles/swiper.css';
 
 const DestinationSlider = ({ data }) => {
   const postData = useMemo(() => data || [], [data]);

@@ -4,6 +4,7 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
 import ReviewCard from '../ReviewCard';
+import '@/app/styles/swiper.css';
 
 const ReviewSlider = ({ reviews = [] }) => {
   if (reviews.length === 0) return null;

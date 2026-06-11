@@ -8,7 +8,7 @@ import useSWR from 'swr';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import SectionHeader from '@/app/components/ui/SectionHeader';
-import 'swiper/css';
+import '@/app/styles/swiper.css';
 
 export const SingleProductReview = ({ productData, activitySlug }) => {
   const [activeFilter, setActiveFilter] = useState('all'); // all, photos

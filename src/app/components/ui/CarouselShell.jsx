@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import Reveal from '@/app/components/ui/Reveal';
+import '@/app/styles/swiper.css';
 
 export default function CarouselShell({ items = [], navigationPrefix, renderSlide, breakpoints, className = '', slideClassName = '', showMobilePagination = false }) {
   const swiperRef = useRef(null);

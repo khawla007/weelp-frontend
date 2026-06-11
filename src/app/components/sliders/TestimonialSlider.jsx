@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import Testimonial from '../Testimonial';
 import Reveal from '@/app/components/ui/Reveal';
+import '@/app/styles/swiper.css';
 
 export const TestmonialSlider = ({ reviews = [] }) => {
   const [reducedMotion, setReducedMotion] = useState(() => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);

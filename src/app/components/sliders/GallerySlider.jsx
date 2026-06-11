@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // Import required modules
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import { ProductGalleryAnimation } from '../Animation/ProductAnimation';
+import '@/app/styles/swiper.css';
 
 // Slider for City Page and
 const GallerySlider = ({ data, classNames = '', navColor = '#fff', collapseHiddenThumbnails = false }) => {
