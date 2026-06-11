@@ -1,7 +1,9 @@
 /* React Day Picker (rdp-*) + tfc_calendar overrides.
    Imported by every form that mounts react-day-picker / shadcn Calendar /
-   tfc_calendar (FilterSidebar, admin Create/Edit ActivityForm). Routes
-   without a date picker skip these bytes. */
+   tfc_calendar — TransferSearchForm, FilterBar, ToursFilterBar, Form,
+   SingleProductForm, FilterSidebar, admin Create/Edit ActivityForm, plus
+   src/components/ui/calendar.jsx (shadcn wrapper used by 8+ admin forms).
+   Routes without a date picker skip these bytes. */
 
 /* day picker  Latest Version 8.0+ */
 .bannerForm .rdp-day_selected,

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import GlobeSparkles from '@/app/components/ui/GlobeSparkles';
+import '@/app/styles/globe.css';
 
 const CANVAS_SIZE = 1000;
 const ROTATION_SPEED = 0.0065;
