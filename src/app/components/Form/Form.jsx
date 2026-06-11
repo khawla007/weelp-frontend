@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import '@/app/styles/date-picker.css';
 import { useRouter } from 'next/navigation';
 import { log } from '@/lib/utils';
 import { useCitiesRegions } from '@/hooks/useCitiesRegions';

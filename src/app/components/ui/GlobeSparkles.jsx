@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import '@/app/styles/globe.css';
 
 const isJsdom = () => typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('jsdom');
 const prefersReducedMotion = () => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

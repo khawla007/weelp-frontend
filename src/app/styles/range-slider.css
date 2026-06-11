@@ -1,0 +1,28 @@
+/* react-range-slider-input overrides.
+   Imported by every component that mounts the range slider (FilterSidebar,
+   ShopAll, SearchPage, FilterBlogPage, ListingFilterSidebar). Routes without
+   a price filter skip these bytes. */
+
+.range-slider__thumb {
+  background-color: #588f7a !important;
+}
+
+.range-slider__range {
+  background-color: rgb(229 231 235) !important;
+}
+
+/* City page filter price slider — green theme */
+.city-price-slider .range-slider__range {
+  background: var(--weelp-city-brand) !important;
+}
+
+.city-price-slider .range-slider__thumb {
+  background: #fff !important;
+  border: 2px solid var(--weelp-city-brand) !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.city-price-slider .range-slider__bar {
+  background: #f1f5f9 !important;
+}

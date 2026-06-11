@@ -7,6 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import '@/app/styles/date-picker.css';
 import LocationComboboxPublic from './LocationComboboxPublic';
 import { getPublicTransfersFiltered } from '@/lib/services/transfers';
 

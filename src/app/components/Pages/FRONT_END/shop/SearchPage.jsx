@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
+import '@/app/styles/range-slider.css';
 import { GlobalCard } from '@/app/components/SingleProductCard';
 import { Star } from 'lucide-react';
 import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';

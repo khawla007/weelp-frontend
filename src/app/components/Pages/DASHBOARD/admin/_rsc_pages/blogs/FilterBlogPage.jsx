@@ -10,6 +10,7 @@ import { Plus, Star, Tag } from 'lucide-react';
 import debounce from 'lodash.debounce';
 import { Badge } from '@/components/ui/badge';
 import 'react-range-slider-input/dist/style.css';
+import '@/app/styles/range-slider.css';
 import { CustomPagination } from '@/app/components/Pagination';
 import useSWR from 'swr'; // for states cache and ui management
 import { fetcher } from '@/lib/fetchers'; // interceptors

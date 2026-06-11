@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Calendar, Clock, Star, Tag } from 'lucide-react';
 import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
+import '@/app/styles/range-slider.css';
 import { DashboardSearch } from './DashboardSearch';
 
 const seasons = ['Spring', 'Summer', 'Autumn', 'Winter'];

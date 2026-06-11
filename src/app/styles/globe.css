@@ -1,0 +1,102 @@
+/* Personalised globe + sparkles + flight + vignette.
+   Imported by GlobeSparkles.jsx and AnimatedGlobe.jsx so routes without
+   a hero globe skip these bytes. */
+
+@keyframes personalisedGlobeReveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.personalised-cobe-globe {
+  animation: personalisedGlobeReveal 700ms ease-out 160ms both;
+  backface-visibility: hidden;
+  contain: layout paint size;
+  display: block;
+  transform: translate3d(0, 0, 0);
+  will-change: opacity;
+}
+
+.personalised-flight {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: visible;
+}
+
+.personalised-flight-path {
+  fill: none;
+  stroke: rgba(17, 17, 17, 0.36);
+  stroke-width: 0.2;
+  stroke-linecap: round;
+  stroke-dasharray: 1.4 2.1;
+}
+
+.personalised-flight-plane {
+  overflow: visible;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.18));
+}
+
+.personalised-flight-plane-motion {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.personalised-flight-plane-static {
+  display: none;
+}
+
+.weelp-sparkles-fallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 17% 24%, rgba(85, 142, 123, 0.82) 0 1.2px, transparent 2.4px), radial-gradient(circle at 33% 68%, rgba(111, 169, 150, 0.84) 0 1px, transparent 2.2px),
+    radial-gradient(circle at 58% 18%, rgba(60, 121, 101, 0.78) 0 1.3px, transparent 2.6px), radial-gradient(circle at 74% 49%, rgba(143, 194, 178, 0.8) 0 1px, transparent 2.2px),
+    radial-gradient(circle at 88% 29%, rgba(85, 142, 123, 0.74) 0 1.2px, transparent 2.5px), radial-gradient(circle at 43% 42%, rgba(111, 169, 150, 0.68) 0 1px, transparent 2.4px);
+  filter: drop-shadow(0 0 10px rgba(85, 142, 123, 0.32));
+  opacity: 0.9;
+}
+
+.personalised-left-sparkles {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    radial-gradient(circle at 13% 34%, rgba(85, 142, 123, 0.95) 0 1.5px, transparent 3px), radial-gradient(circle at 22% 42%, rgba(143, 194, 178, 0.9) 0 1.2px, transparent 2.8px),
+    radial-gradient(circle at 31% 30%, rgba(85, 142, 123, 0.85) 0 1.6px, transparent 3.2px), radial-gradient(circle at 38% 47%, rgba(111, 169, 150, 0.82) 0 1px, transparent 2.5px),
+    radial-gradient(circle at 18% 55%, rgba(60, 121, 101, 0.78) 0 1.2px, transparent 2.8px), radial-gradient(circle at 34% 61%, rgba(143, 194, 178, 0.78) 0 1.1px, transparent 2.7px);
+  filter: drop-shadow(0 0 9px rgba(85, 142, 123, 0.42));
+  opacity: 0.92;
+}
+
+.personalised-globe-vignette {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background:
+    radial-gradient(circle at 82% 72%, transparent 0 45%, rgba(255, 255, 255, 0.08) 64%, rgba(255, 255, 255, 0.34) 100%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.55), transparent 50%, rgba(255, 255, 255, 0.04));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .personalised-cobe-globe,
+  .weelp-sparkles-fallback,
+  .personalised-left-sparkles {
+    animation: none;
+  }
+
+  .personalised-flight-plane-motion {
+    display: none;
+  }
+
+  .personalised-flight-plane-static {
+    display: block;
+  }
+}

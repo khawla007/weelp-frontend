@@ -6,6 +6,7 @@ import { MapPin, Calendar, Users, ChevronRight, X } from 'lucide-react';
 import { useForm, Controller, useWatch } from 'react-hook-form';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import '@/app/styles/date-picker.css';
 import { homeSearch } from '@/lib/services/global';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import { useCitiesRegions } from '@/hooks/useCitiesRegions';

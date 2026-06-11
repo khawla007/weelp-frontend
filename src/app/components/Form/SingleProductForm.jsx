@@ -6,6 +6,7 @@ import { Calendar, Users, Minus, Plus } from 'lucide-react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import '@/app/styles/date-picker.css';
 import { useRouter } from 'next/navigation';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { log } from '@/lib/utils';

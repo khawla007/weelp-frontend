@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { MapPin, Calendar, Users, Loader2, X } from 'lucide-react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import '@/app/styles/date-picker.css';
 import { toursSearch } from '@/lib/services/tours';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { useCitiesRegions } from '@/hooks/useCitiesRegions';

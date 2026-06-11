@@ -1,0 +1,95 @@
+/* React Day Picker (rdp-*) + tfc_calendar overrides.
+   Imported by every form that mounts react-day-picker / shadcn Calendar /
+   tfc_calendar (FilterSidebar, admin Create/Edit ActivityForm). Routes
+   without a date picker skip these bytes. */
+
+/* day picker  Latest Version 8.0+ */
+.bannerForm .rdp-day_selected,
+.singleProducform .rdp-day_selected {
+  @apply bg-[#f2f7f5] text-inherit;
+}
+
+.bannerForm .rdp-day_selected:hover,
+.singleProducform .rdp-day_selected:hover {
+  @apply bg-[#b5d8cb] text-black;
+}
+
+.bannerForm .rdp-day_range_start,
+.bannerForm .rdp-day_range_end,
+.singleProducform .rdp-day_range_start,
+.singleProducform .rdp-day_range_end {
+  @apply bg-weelp-sage-deep border-none rounded-lg text-white;
+}
+
+.bannerForm .rdp-nav_button_previous,
+.bannerForm .rdp-nav_button_next,
+.singleProducform .rdp-nav_button_previous,
+.singleProducform .rdp-nav_button_next {
+  @apply bg-weelp-sage-deep text-white rounded-lg mx-1;
+}
+
+.bannerForm .rdp-nav_button_previous:hover,
+.bannerForm .rdp-nav_button_next:hover,
+.singleProducform .rdp-nav_button_previous:hover,
+.singleProducform .rdp-nav_button_next:hover {
+  background-color: #588f7a !important;
+  color: white !important;
+}
+
+/* Day Picker 9.0+ Version Latest */
+.bannerForm .rdp-range_start .rdp-day_button,
+.bannerForm .rdp-range_end .rdp-day_button,
+.singleProducform .rdp-range_start .rdp-day_button,
+.singleProducform .rdp-range_end .rdp-day_button {
+  @apply bg-weelp-sage-deep border-none rounded-lg;
+}
+
+/* Activity seasonal date range picker (tfc_calendar) */
+.tfc_calendar .day-selected:not(.day-range-middle) > button {
+  background-color: #588f7a !important;
+  color: #fff !important;
+  border-radius: 0.375rem !important;
+}
+.tfc_calendar .day-selected:not(.day-range-middle) > button:hover,
+.tfc_calendar .day-selected:not(.day-range-middle) > button:focus {
+  background-color: #588f7a !important;
+  color: #fff !important;
+}
+.tfc_calendar .day-range-middle > button:hover,
+.tfc_calendar .day-range-middle > button:focus {
+  background-color: rgba(85, 142, 123, 0.4) !important;
+  color: #111827 !important;
+}
+
+.bannerForm .rdp-day_button,
+.bannerForm .rdp-range_middle .rdp-day_button .singleProducform .rdp-day_button,
+.singleProducform .rdp-range_middle .rdp-day_button {
+  @apply text-base font-normal;
+}
+
+.bannerForm .rdp-range_middle .rdp-day_button,
+.singleProducform .rdp-range_middle .rdp-day_button {
+  @apply bg-[#f2f7f5];
+}
+
+.bannerForm .rdp-button_next,
+.bannerForm .rdp-button_previous,
+.singleProducform .rdp-button_next,
+.singleProducform .rdp-button_previous {
+  @apply text-sm rounded-md mx-1 scale-90;
+  border: 1px solid #cccccc;
+  background-color: white;
+}
+
+.bannerForm .rdp-chevron,
+.singleProducform .rdp-chevron {
+  @apply fill-weelp-steel size-4 stroke-none;
+}
+
+/* tfc_calendar rdp_day_range_start (was lower in globals.css) */
+.tfc_calendar .rdp-day_range_start,
+.tfc_calendar .rdp-day_range_start:focus,
+.tfc_calendar .day-range-end,
+.tfc_calendar .day-range-end:focus {
+  @apply bg-weelp-sage-deep text-white;
+}

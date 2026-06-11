@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
+import '@/app/styles/range-slider.css';
+import '@/app/styles/date-picker.css';
 import { Star } from 'lucide-react';
 
 const FONT = { fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' };
