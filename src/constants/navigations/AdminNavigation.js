@@ -119,6 +119,7 @@ const adminRoutes = [
   {
     section: 'EDITORIAL',
     items: [
+      { title: 'Pages', icon: FileText, url: '/dashboard/admin/pages' },
       { title: 'Blogs', icon: FileText, url: '/dashboard/admin/blogs' },
       { title: 'Announcements', icon: Bell, url: '/dashboard/admin/announcements' },
       { title: 'Send Notification', icon: Megaphone, url: '/dashboard/admin/notifications' },
@@ -135,7 +136,6 @@ const adminRoutes = [
   {
     section: 'COMING SOON',
     items: [
-      { title: 'Pages', icon: FileText, url: '/dashboard/admin/pages' },
       {
         title: 'Marketing',
         icon: Gift,
