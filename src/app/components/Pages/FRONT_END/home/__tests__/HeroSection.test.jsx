@@ -11,11 +11,21 @@ jest.mock(
 );
 
 describe('HeroSection', () => {
-  it('uses the homepage hero background image', () => {
+  it('renders the homepage hero background image via next/image', () => {
+    const { container } = render(<HeroSection />);
+
+    const img = container.querySelector('img');
+    expect(img).not.toBeNull();
+    expect(img.getAttribute('src') || '').toContain('weelp-home-hero');
+    expect(img.getAttribute('alt')).toBe('');
+  });
+
+  it('fills the viewport minus the header at every breakpoint', () => {
     const { container } = render(<HeroSection />);
 
     const section = container.querySelector('section');
-    expect(section.style.backgroundImage).toContain('weelp-home-hero.png');
+    expect(section.className).toContain('min-h-[calc(100dvh-94px)]');
+    expect(section.className).toContain('lg:min-h-[calc(100dvh-112px)]');
   });
 
   it('renders the homepage heading text from the pen design', () => {
@@ -54,7 +64,7 @@ describe('HeroSection', () => {
   it('animates the hero badge as a whole pill, not just the badge text', () => {
     const { getByText } = render(<HeroSection />);
 
-    const badge = getByText('Plan calmer escapes').closest('span');
+    const badge = getByText('Plan calmer escapes').closest('span.weelp-hero-ui-rise');
     expect(badge).not.toBeNull();
     expect(badge).toHaveClass('weelp-hero-ui-rise');
     expect(badge).not.toHaveClass('weelp-rise-mask');
