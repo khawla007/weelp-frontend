@@ -7,7 +7,7 @@ const chips = ['Beach stays', 'Marina views', 'City plans'];
 const HeroSection = () => {
   return (
     <section className="weelp-hero-rise relative w-full flex items-center justify-center min-h-[calc(100dvh-94px)] lg:min-h-[calc(100dvh-112px)] mb-16 lg:mb-24 bg-weelp-sage-wash">
-      <Image src="/assets/images/weelp-home-hero-v2.png" alt="" fill priority sizes="100vw" className="object-cover object-center -z-20" />
+      <Image src="/assets/images/weelp-home-hero-2.png" alt="" fill priority sizes="100vw" className="object-cover object-center -z-20" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-weelp-ink/35 via-weelp-ink/20 to-weelp-ink/45" />
       <div className="container-page relative z-0 flex flex-col items-center justify-center text-center py-16 lg:py-20">
         <span
