@@ -75,14 +75,7 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
       {/* Image with price overlay */}
       <NavigationLink href={href} onClick={handleCardClick}>
         <div className="group relative w-full aspect-[93/100] overflow-hidden rounded-lg">
-          <MediaImage
-            src={coverSrc}
-            alt={title}
-            fill
-            sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
-            className="object-cover"
-            onError={() => setCoverSrc(FALLBACK_COVER)}
-          />
+          <MediaImage src={coverSrc} alt={title} fill sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw" className="object-cover" onError={() => setCoverSrc(FALLBACK_COVER)} />
 
           {/* Price overlay - slides up on hover */}
           {price && (
