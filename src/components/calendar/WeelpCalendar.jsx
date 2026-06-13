@@ -10,8 +10,7 @@ import '@/app/styles/date-picker.css';
 
 export const EMPTY_DATE_RANGE = { from: null, to: null };
 
-const FORMAT_WEEKDAY = (date, options) =>
-  date.toLocaleDateString(options?.locale?.code || 'en-US', { weekday: 'short' }).slice(0, 2);
+const FORMAT_WEEKDAY = (date, options) => date.toLocaleDateString(options?.locale?.code || 'en-US', { weekday: 'short' }).slice(0, 2);
 
 const FORMATTERS = { formatWeekdayName: FORMAT_WEEKDAY };
 
@@ -27,21 +26,7 @@ const DEFAULT_CLASSNAMES = {
 };
 
 const WeelpCalendar = React.forwardRef(function WeelpCalendar(
-  {
-    mode = 'range',
-    months: monthsProp = 2,
-    showClear = false,
-    onSelect,
-    disablePast = false,
-    disabled,
-    className,
-    footer,
-    classNames,
-    components,
-    showOutsideDays = false,
-    weekStartsOn = 1,
-    ...rest
-  },
+  { mode = 'range', months: monthsProp = 2, showClear = false, onSelect, disablePast = false, disabled, className, footer, classNames, components, showOutsideDays = false, weekStartsOn = 1, ...rest },
   ref,
 ) {
   const isMobile = useIsMobile();

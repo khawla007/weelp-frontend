@@ -274,16 +274,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
               <Controller
                 name="date"
                 control={control}
-                render={({ field }) => (
-                  <WeelpCalendar
-                    mode="single"
-                    months={1}
-                    selected={field.value || undefined}
-                    disablePast
-                    onSelect={(value) => field.onChange(value || null)}
-                    showClear
-                  />
-                )}
+                render={({ field }) => <WeelpCalendar mode="single" months={1} selected={field.value || undefined} disablePast onSelect={(value) => field.onChange(value || null)} showClear />}
               />
             </PopoverContent>
           </Popover>

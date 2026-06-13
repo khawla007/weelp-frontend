@@ -285,16 +285,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
               <Controller
                 name="dateRange"
                 control={control}
-                render={({ field }) => (
-                  <WeelpCalendar
-                    mode="range"
-                    months={2}
-                    selected={field.value}
-                    disablePast
-                    onSelect={(value) => field.onChange(value)}
-                    showClear
-                  />
-                )}
+                render={({ field }) => <WeelpCalendar mode="range" months={2} selected={field.value} disablePast onSelect={(value) => field.onChange(value)} showClear />}
               />
             </div>
           )}
