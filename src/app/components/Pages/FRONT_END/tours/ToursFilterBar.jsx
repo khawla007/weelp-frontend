@@ -331,9 +331,6 @@ export default function ToursFilterBar() {
           <div
             onClick={() => {
               const opening = !showCalendar;
-              if (opening && dateRange.from && dateRange.to) {
-                setDateRange({ from: null, to: null });
-              }
               setShowCalendar(opening);
               setShowFromDropdown(false);
               setShowToDropdown(false);

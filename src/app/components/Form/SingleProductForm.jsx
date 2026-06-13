@@ -1,7 +1,7 @@
 'use client';
 
 // This Form Is Used in Single Product Page
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Calendar, Users, Minus, Plus } from 'lucide-react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { WeelpCalendar, EMPTY_DATE_RANGE } from '@/components/calendar';
@@ -11,12 +11,20 @@ import { log } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { calculateActivityPrice } from '@/lib/pricing/calculateActivityPrice';
 
+const PANEL_MOTION_CLASS = 'transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none motion-reduce:transform-none';
+const OPEN_PANEL_MOTION_CLASS = 'opacity-100 translate-y-0 scale-100 animate-in fade-in-0 slide-in-from-top-1';
+const CLOSED_PANEL_MOTION_CLASS = 'pointer-events-none opacity-0 -translate-y-1 scale-[0.98]';
+const PANEL_EXIT_MS = 160;
+const CLOSED_PANEL_A11Y_PROPS = { 'aria-hidden': true, inert: true };
+
 // activity
 export default function SingleProductForm({ productId, productData, selectedAddons = [], formId, defaultDateRange = null, onDateChange = null, scheduleCount = 0 }) {
   const [initform] = useState(() => true);
   const [showCalendar, setShowCalendar] = useState(false); // date & howmany
   const [showHowMany, setShowHowMany] = useState(false); // date & howmany
   const [showResponse, setShowResponse] = useState(false);
+  const panelTimersRef = useRef({});
+  const [calendarPresence, setCalendarPresence] = useState({ isMounted: false, state: 'closed' });
   const { setMiniCartOpen, addItem, clearCart } = useMiniCartStore();
   const { toast } = useToast();
 
@@ -34,8 +42,53 @@ export default function SingleProductForm({ productId, productData, selectedAddo
   } = useFormContext();
 
   const [selectedDates, setSelectedDates] = useState(defaultDateRange ?? { from: null, to: null });
-  const previousRangeRef = useRef(null);
   const isSingleDateMode = scheduleCount > 0;
+
+  const getPanelMotionClass = (state) => `${PANEL_MOTION_CLASS} ${state === 'open' ? OPEN_PANEL_MOTION_CLASS : CLOSED_PANEL_MOTION_CLASS}`;
+
+  const clearPanelTimer = useCallback((panelName) => {
+    if (panelTimersRef.current[panelName]) {
+      window.clearTimeout(panelTimersRef.current[panelName]);
+      panelTimersRef.current[panelName] = null;
+    }
+  }, []);
+
+  const openPanel = useCallback(
+    (panelName, setPanelPresence) => {
+      clearPanelTimer(panelName);
+      setPanelPresence({ isMounted: true, state: 'open' });
+    },
+    [clearPanelTimer],
+  );
+
+  const closePanel = useCallback(
+    (panelName, setPanelPresence) => {
+      clearPanelTimer(panelName);
+      setPanelPresence((current) => (current.isMounted ? { isMounted: true, state: 'closed' } : current));
+      panelTimersRef.current[panelName] = window.setTimeout(() => {
+        setPanelPresence({ isMounted: false, state: 'closed' });
+      }, PANEL_EXIT_MS);
+    },
+    [clearPanelTimer],
+  );
+
+  const openCalendarPanel = useCallback(() => {
+    setShowCalendar(true);
+    openPanel('calendar', setCalendarPresence);
+  }, [openPanel]);
+
+  const closeCalendarPanel = useCallback(() => {
+    setShowCalendar(false);
+    closePanel('calendar', setCalendarPresence);
+  }, [closePanel]);
+
+  useEffect(() => {
+    return () => {
+      Object.values(panelTimersRef.current).forEach((timer) => {
+        if (timer) window.clearTimeout(timer);
+      });
+    };
+  }, []);
 
   // For itinerary/package: compute end date from start date + schedule days
   const computeEndDate = (startDate) => {
@@ -138,6 +191,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     setMiniCartOpen(true);
     setShowResponse(!showResponse);
     setShowCalendar(false);
+    setCalendarPresence({ isMounted: false, state: 'closed' });
     setShowHowMany(false);
   };
 
@@ -165,25 +219,23 @@ export default function SingleProductForm({ productId, productData, selectedAddo
 
   // Toggle Calendar
   const toggleCalendar = () => {
-    const opening = !showCalendar;
-    setShowCalendar(opening);
+    if (showCalendar) {
+      closeCalendarPanel();
+    } else {
+      openCalendarPanel();
+    }
     setShowHowMany(false);
     setShowResponse(false);
     clearErrors('dateRange');
 
-    // Save current range and reset so user starts a fresh selection
-    if (opening) {
-      previousRangeRef.current = selectedDates;
-      const cleared = { from: null, to: null };
-      setValue('dateRange', cleared);
-      setSelectedDates(cleared);
-    }
+    // Keep the selected range visible when reopening. The shared calendar
+    // starts a fresh range when the user clicks a new start date.
   };
 
   // Toggle How Many
   const toggleHowMany = () => {
     setShowHowMany(!showHowMany);
-    setShowCalendar(false);
+    closeCalendarPanel();
     clearErrors('howMany');
 
     // handleReponse
@@ -229,18 +281,15 @@ export default function SingleProductForm({ productId, productData, selectedAddo
 
             {/* Toggle Fields */}
             <div className="flex rounded-lg absolute z-50 pointer-events-auto  top-[30%] w-full scale-90 sm:scale-[unset]">
-              {showCalendar && (
+              {calendarPresence.isMounted && (
                 <div
-                  onMouseLeave={() => {
-                    // If user leaves without completing a range, restore the previous one
-                    const current = watch('dateRange');
-                    if ((!current?.from || !current?.to) && previousRangeRef.current?.from) {
-                      setValue('dateRange', previousRangeRef.current);
-                      setSelectedDates(previousRangeRef.current);
-                    }
-                    setShowCalendar(false);
-                  }}
-                  className="flex justify-center mx-auto bg-white w-fit rounded-2xl p-2"
+                  data-testid="single-product-calendar-panel"
+                  data-state={calendarPresence.state}
+                  role="dialog"
+                  aria-label="Date selector"
+                  {...(calendarPresence.state === 'closed' ? CLOSED_PANEL_A11Y_PROPS : {})}
+                  onMouseLeave={closeCalendarPanel}
+                  className={`flex justify-center mx-auto bg-white w-fit rounded-lg shadow-lg border p-2 ${getPanelMotionClass(calendarPresence.state)}`}
                 >
                   <Controller
                     name="dateRange"
@@ -258,7 +307,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                               field.onChange(range);
                               setSelectedDates(range);
                               if (onDateChange) onDateChange(range);
-                              setShowCalendar(false);
+                              closeCalendarPanel();
                             } else {
                               field.onChange(EMPTY_DATE_RANGE);
                               setSelectedDates(EMPTY_DATE_RANGE);
@@ -269,7 +318,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                       ) : (
                         <WeelpCalendar
                           mode="range"
-                          months={1}
+                          months={2}
                           selected={field.value}
                           disablePast
                           onSelect={(value) => {
@@ -278,7 +327,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                             setSelectedDates(next);
                             if (onDateChange && next.from) onDateChange(next);
                             if (next.from && next.to && next.from.getTime() !== next.to.getTime()) {
-                              setShowCalendar(false);
+                              closeCalendarPanel();
                             }
                           }}
                           showClear

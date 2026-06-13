@@ -25,11 +25,25 @@ const DEFAULT_CLASSNAMES = {
   months: 'rdp-months flex flex-col sm:flex-row relative',
 };
 
+function toValidDate(value) {
+  if (!value) return null;
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function getSelectedDisplayMonth(mode, selected) {
+  if (mode === 'range') {
+    return toValidDate(selected?.from) || toValidDate(selected?.to);
+  }
+
+  return toValidDate(selected);
+}
+
 const WeelpCalendar = React.forwardRef(function WeelpCalendar(
   {
     mode = 'range',
     months: monthsProp = 2,
-    showClear = false,
+    showClear = true,
     onSelect,
     selected,
     disablePast = false,
@@ -47,6 +61,7 @@ const WeelpCalendar = React.forwardRef(function WeelpCalendar(
 ) {
   const isMobile = useIsMobile();
   const numberOfMonths = isMobile ? 1 : monthsProp;
+  const selectedDisplayMonth = React.useMemo(() => getSelectedDisplayMonth(mode, selected), [mode, selected]);
 
   const effectiveDisabled = disablePast ? (disabled ? [disabled, { before: new Date() }] : { before: new Date() }) : disabled;
 
@@ -85,7 +100,7 @@ const WeelpCalendar = React.forwardRef(function WeelpCalendar(
   const mergedClassNames = classNames ? { ...DEFAULT_CLASSNAMES, ...classNames } : DEFAULT_CLASSNAMES;
 
   return (
-    <div ref={ref} role="group" aria-label="Calendar" className={cn('weelp-calendar', className)}>
+    <div ref={ref} role="group" aria-label="Calendar" data-mode={mode} className={cn('weelp-calendar', className)}>
       <DayPicker
         mode={mode}
         numberOfMonths={numberOfMonths}
@@ -97,6 +112,7 @@ const WeelpCalendar = React.forwardRef(function WeelpCalendar(
         classNames={mergedClassNames}
         disabled={effectiveDisabled}
         selected={selected}
+        defaultMonth={selectedDisplayMonth || new Date()}
         onSelect={handleSelect}
         footer={composedFooter}
         {...rest}

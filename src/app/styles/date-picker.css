@@ -5,47 +5,6 @@
    src/components/ui/calendar.jsx (shadcn wrapper used by 8+ admin forms).
    Routes without a date picker skip these bytes. */
 
-/* day picker  Latest Version 8.0+ */
-.bannerForm .rdp-day_selected,
-.singleProducform .rdp-day_selected {
-  @apply bg-[#f2f7f5] text-inherit;
-}
-
-.bannerForm .rdp-day_selected:hover,
-.singleProducform .rdp-day_selected:hover {
-  @apply bg-[#b5d8cb] text-black;
-}
-
-.bannerForm .rdp-day_range_start,
-.bannerForm .rdp-day_range_end,
-.singleProducform .rdp-day_range_start,
-.singleProducform .rdp-day_range_end {
-  @apply bg-weelp-sage-deep border-none rounded-lg text-white;
-}
-
-.bannerForm .rdp-nav_button_previous,
-.bannerForm .rdp-nav_button_next,
-.singleProducform .rdp-nav_button_previous,
-.singleProducform .rdp-nav_button_next {
-  @apply bg-weelp-sage-deep text-white rounded-lg mx-1;
-}
-
-.bannerForm .rdp-nav_button_previous:hover,
-.bannerForm .rdp-nav_button_next:hover,
-.singleProducform .rdp-nav_button_previous:hover,
-.singleProducform .rdp-nav_button_next:hover {
-  background-color: #588f7a !important;
-  color: white !important;
-}
-
-/* Day Picker 9.0+ Version Latest */
-.bannerForm .rdp-range_start .rdp-day_button,
-.bannerForm .rdp-range_end .rdp-day_button,
-.singleProducform .rdp-range_start .rdp-day_button,
-.singleProducform .rdp-range_end .rdp-day_button {
-  @apply bg-weelp-sage-deep border-none rounded-lg;
-}
-
 /* Activity seasonal date range picker (tfc_calendar) */
 .tfc_calendar .day-selected:not(.day-range-middle) > button {
   background-color: #588f7a !important;
@@ -61,31 +20,6 @@
 .tfc_calendar .day-range-middle > button:focus {
   background-color: rgba(85, 142, 123, 0.4) !important;
   color: #111827 !important;
-}
-
-.bannerForm .rdp-day_button,
-.bannerForm .rdp-range_middle .rdp-day_button .singleProducform .rdp-day_button,
-.singleProducform .rdp-range_middle .rdp-day_button {
-  @apply text-base font-normal;
-}
-
-.bannerForm .rdp-range_middle .rdp-day_button,
-.singleProducform .rdp-range_middle .rdp-day_button {
-  @apply bg-[#f2f7f5];
-}
-
-.bannerForm .rdp-button_next,
-.bannerForm .rdp-button_previous,
-.singleProducform .rdp-button_next,
-.singleProducform .rdp-button_previous {
-  @apply text-sm rounded-md mx-1 scale-90;
-  border: 1px solid #cccccc;
-  background-color: white;
-}
-
-.bannerForm .rdp-chevron,
-.singleProducform .rdp-chevron {
-  @apply fill-weelp-steel size-4 stroke-none;
 }
 
 /* tfc_calendar rdp_day_range_start (was lower in globals.css) */
@@ -105,16 +39,25 @@
 .weelp-calendar {
   --weelp-cal-fg: #1f2937;
   --weelp-cal-muted: #6b7280;
+  --weelp-cal-selected: #588f7a;
+  --weelp-cal-selected-soft: rgb(181 216 203 / 0.68);
+  --weelp-cal-selected-hover: #4c7d6b;
+  --weelp-cal-single: #eeeeec;
+  --weelp-cal-single-hover: #e5e5e2;
 
   /* Override react-day-picker defaults that ship blue accents/borders. */
-  --rdp-accent-color: #588f7a;
-  --rdp-accent-background-color: rgb(88 143 122 / 40%);
+  --rdp-accent-color: var(--weelp-cal-selected);
+  --rdp-accent-background-color: var(--weelp-cal-selected-soft);
   --rdp-day_button-border: 0;
   --rdp-selected-border: 0;
+  --rdp-range_start-background: transparent;
+  --rdp-range_end-background: transparent;
+  --rdp-range_middle-background-color: transparent;
   --rdp-range_start-date-background-color: transparent;
   --rdp-range_end-date-background-color: transparent;
   --rdp-range_middle-color: var(--weelp-cal-fg);
-  --rdp-range_start-color: #ffffff;
+  --rdp-range_start-color: var(--weelp-cal-fg);
+  --rdp-range_end-color: var(--weelp-cal-fg);
 }
 
 /* Default `.rdp-root` ships at one-month width; grow to fit
@@ -149,59 +92,148 @@
   @apply h-10 w-10 text-sm font-normal;
 }
 
+.weelp-calendar .rdp-day {
+  overflow: hidden;
+}
+
 .weelp-calendar .rdp-day_button {
-  @apply rounded-md text-[var(--weelp-cal-fg)] outline-none hover:bg-neutral-100 transition-colors motion-reduce:transition-none;
+  @apply inline-flex items-center justify-center rounded-full text-[var(--weelp-cal-fg)] outline-none transition-colors motion-reduce:transition-none;
   border: 0;
 }
+.weelp-calendar .rdp-day_button:hover {
+  background-color: var(--weelp-cal-single);
+}
 
-/* In-range middle: soft horizontal strip flush across the cell.
-   Tone matches the soft half of the endpoint cells. */
+.weelp-calendar .rdp-selected {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* Each selected date owns its cell color. Range endpoints split the cell:
+   start is dark sage on the left + light sage on the right; end reverses it.
+   Matches Designs/image copy.png reference. */
 .weelp-calendar .rdp-range_middle {
-  @apply bg-weelp-sage-deep/40;
+  background: transparent !important;
 }
 .weelp-calendar .rdp-range_middle .rdp-day_button {
-  @apply bg-transparent text-[var(--weelp-cal-fg)] rounded-none hover:bg-weelp-sage-deep/55;
+  @apply text-[var(--weelp-cal-fg)] rounded-none;
+  width: calc(100% - 4px);
+  height: 2rem;
+  margin-inline: 2px;
+  background-color: var(--weelp-cal-selected-soft);
+}
+.weelp-calendar .rdp-range_middle .rdp-day_button:hover {
+  background-color: var(--weelp-cal-selected-soft);
 }
 
-/* Range endpoints: cell carries the soft strip on the half that meets the
-   middle; the dark pill anchors to the opposite half (start → left,
-   end → right) so the cell reads as half-dark + half-light. */
 .weelp-calendar .rdp-range_start,
 .weelp-calendar .rdp-range_end {
-  position: relative;
+  background: transparent !important;
+  overflow: hidden !important;
+  contain: paint;
 }
-.weelp-calendar .rdp-range_start {
-  background: linear-gradient(to right, transparent 0, transparent 50%, rgb(88 143 122 / 40%) 50%, rgb(88 143 122 / 40%) 100%);
+.weelp-calendar .rdp-range_start:not(.rdp-range_end) {
+  background: transparent !important;
+  border-radius: 0;
 }
-.weelp-calendar .rdp-range_end {
-  background: linear-gradient(to right, rgb(88 143 122 / 40%) 0, rgb(88 143 122 / 40%) 50%, transparent 50%, transparent 100%);
+.weelp-calendar .rdp-range_end:not(.rdp-range_start) {
+  background: transparent !important;
+  border-radius: 0;
 }
 .weelp-calendar .rdp-range_start.rdp-range_end {
-  background: transparent;
-}
-.weelp-calendar .rdp-range_start .rdp-day_button,
-.weelp-calendar .rdp-range_end .rdp-day_button,
-.weelp-calendar .rdp-range_start.rdp-range_end .rdp-day_button {
-  @apply bg-weelp-sage-deep text-white rounded-full hover:bg-weelp-sage-deep hover:text-white;
-}
-.weelp-calendar .rdp-range_start:not(.rdp-range_end) .rdp-day_button,
-.weelp-calendar .rdp-range_end:not(.rdp-range_start) .rdp-day_button {
-  position: absolute;
-  top: 50%;
-  width: 28px;
-  height: 28px;
-  transform: translateY(-50%);
-}
-.weelp-calendar .rdp-range_start:not(.rdp-range_end) .rdp-day_button {
-  left: 0;
-}
-.weelp-calendar .rdp-range_end:not(.rdp-range_start) .rdp-day_button {
-  right: 0;
+  background: transparent !important;
 }
 
-/* Single mode selected day — solid pill. */
+.weelp-calendar .rdp-range_start .rdp-day_button,
+.weelp-calendar .rdp-range_end .rdp-day_button {
+  @apply text-[var(--weelp-cal-fg)] hover:text-[var(--weelp-cal-fg)];
+  width: calc(100% - 4px);
+  height: 2rem;
+  margin-inline: 2px;
+  overflow: hidden !important;
+  background-clip: padding-box;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.weelp-calendar .rdp-range_start:not(.rdp-range_end) .rdp-day_button {
+  background: linear-gradient(to right, var(--weelp-cal-selected) 0 50%, var(--weelp-cal-selected-soft) 50% 100%) !important;
+  border-radius: 9999px 0 0 9999px !important;
+  clip-path: inset(0 round 9999px 0 0 9999px);
+  justify-content: flex-start;
+  padding-left: 0.625rem;
+}
+.weelp-calendar .rdp-range_end:not(.rdp-range_start) .rdp-day_button {
+  background: linear-gradient(to right, var(--weelp-cal-selected-soft) 0 50%, var(--weelp-cal-selected) 50% 100%) !important;
+  border-radius: 0 9999px 9999px 0 !important;
+  clip-path: inset(0 round 0 9999px 9999px 0);
+  justify-content: flex-end;
+  padding-right: 0.625rem;
+}
+.weelp-calendar .rdp-range_start.rdp-range_end .rdp-day_button {
+  background-color: var(--weelp-cal-selected);
+  border-radius: 9999px;
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+.weelp-calendar .rdp-range_start .rdp-day_button:hover,
+.weelp-calendar .rdp-range_end .rdp-day_button:hover {
+  background-clip: padding-box;
+  color: var(--weelp-cal-fg);
+}
+
+/* Range mode start-only selection. DayPicker applies only `.rdp-selected`
+   while a range is in progress, before start/end classes exist. */
+.weelp-calendar[data-mode='range'] .rdp-selected:not(.rdp-range_middle):not(.rdp-range_start):not(.rdp-range_end) .rdp-day_button {
+  @apply text-[var(--weelp-cal-fg)] rounded-full hover:text-[var(--weelp-cal-fg)];
+  background-color: var(--weelp-cal-selected);
+}
+.weelp-calendar[data-mode='range'] .rdp-selected:not(.rdp-range_middle):not(.rdp-range_start):not(.rdp-range_end) .rdp-day_button:hover {
+  background-color: var(--weelp-cal-selected);
+}
+
+/* Single mode selected day — soft gray circle like the reference. */
 .weelp-calendar .rdp-selected:not(.rdp-range_middle):not(.rdp-range_start):not(.rdp-range_end) .rdp-day_button {
-  @apply bg-weelp-sage-deep text-white rounded-full hover:bg-weelp-sage-deep hover:text-white;
+  @apply text-[var(--weelp-cal-fg)] rounded-full hover:text-[var(--weelp-cal-fg)];
+  background-color: var(--weelp-cal-single);
+}
+.weelp-calendar .rdp-selected:not(.rdp-range_middle):not(.rdp-range_start):not(.rdp-range_end) .rdp-day_button:hover {
+  background-color: var(--weelp-cal-single-hover);
+}
+
+.weelp-calendar[data-mode='single'] .rdp-selected:not(.rdp-range_middle):not(.rdp-range_start):not(.rdp-range_end) .rdp-day_button {
+  background-color: var(--weelp-cal-single);
+}
+.weelp-calendar[data-mode='single'] .rdp-selected:not(.rdp-range_middle):not(.rdp-range_start):not(.rdp-range_end) .rdp-day_button:hover {
+  background-color: var(--weelp-cal-single-hover);
+}
+
+.day-range-start > button,
+.day-range-end > button {
+  overflow: hidden !important;
+  background-clip: padding-box;
+  border: 0 !important;
+  box-shadow: none !important;
+  contain: paint;
+}
+
+.day-range-start,
+.day-range-end,
+.day-range-middle {
+  background: transparent !important;
+  overflow: hidden !important;
+}
+
+.day-range-start:not(.day-range-end) > button {
+  background: linear-gradient(to right, #588f7a 0 50%, #d5e8df 50% 100%) !important;
+  border-radius: 9999px 0 0 9999px !important;
+  clip-path: inset(0 round 9999px 0 0 9999px);
+}
+
+.day-range-end:not(.day-range-start) > button {
+  background: linear-gradient(to right, #d5e8df 0 50%, #588f7a 50% 100%) !important;
+  border-radius: 0 9999px 9999px 0 !important;
+  clip-path: inset(0 round 0 9999px 9999px 0);
 }
 
 .weelp-calendar .rdp-today:not(.rdp-selected) .rdp-day_button {

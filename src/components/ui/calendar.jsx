@@ -26,10 +26,12 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
         week: 'flex w-full mt-2',
         day: 'h-9 w-9 p-0 font-normal aria-selected:opacity-100 rounded-none first:aria-selected:rounded-l-md last:aria-selected:rounded-r-md',
         day_button: cn(buttonVariants({ variant: 'ghost' }), 'h-9 w-9 text-center text-sm p-0 relative focus-within:relative focus-within:z-20'),
-        range_start: 'day-range-start !bg-weelp-sage-deep/25 rounded-l-md [&>button]:!bg-weelp-sage-deep [&>button]:!text-white [&>button]:hover:!bg-weelp-sage-deep [&>button]:hover:!text-white',
-        range_end: 'day-range-end !bg-weelp-sage-deep/25 rounded-r-md [&>button]:!bg-weelp-sage-deep [&>button]:!text-white [&>button]:hover:!bg-weelp-sage-deep [&>button]:hover:!text-white',
-        range_middle: 'day-range-middle aria-selected:!bg-weelp-sage-deep/25 aria-selected:!text-gray-900',
-        selected: cn(props.mode === 'range' ? 'day-selected' : '[&>button]:focus:bg-weelp-sage-deep [&>button]:focus:text-white'),
+        range_start:
+          'day-range-start !bg-transparent [&>button]:mx-0.5 [&>button]:h-8 [&>button]:w-8 [&>button]:justify-start [&>button]:pl-2.5 [&>button]:!text-gray-900 [&>button]:hover:!text-gray-900',
+        range_end: 'day-range-end !bg-transparent [&>button]:mx-0.5 [&>button]:h-8 [&>button]:w-8 [&>button]:justify-end [&>button]:pr-2.5 [&>button]:!text-gray-900 [&>button]:hover:!text-gray-900',
+        range_middle:
+          'day-range-middle aria-selected:!bg-transparent aria-selected:!text-gray-900 [&>button]:mx-0.5 [&>button]:h-8 [&>button]:w-8 [&>button]:rounded-none [&>button]:!bg-[#d5e8df] [&>button]:hover:!bg-[#d5e8df]',
+        selected: cn(props.mode === 'range' ? 'day-selected' : '[&>button]:!bg-[#eeeeec] [&>button]:!text-gray-900 [&>button]:focus:!bg-[#eeeeec] [&>button]:focus:!text-gray-900'),
         today: 'bg-accent text-accent-foreground !rounded-md',
         outside: 'day-outside text-muted-foreground opacity-50 !aria-selected:bg-accent/50 !aria-selected:text-muted-foreground !aria-selected:opacity-30',
         disabled: 'text-muted-foreground opacity-50',
