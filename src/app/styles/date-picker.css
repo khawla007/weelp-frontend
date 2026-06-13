@@ -140,36 +140,40 @@
 }
 
 .weelp-calendar .rdp-day_button {
-  @apply rounded-md text-[var(--weelp-cal-fg)] hover:bg-neutral-100 transition-colors motion-reduce:transition-none;
+  @apply rounded-md text-[var(--weelp-cal-fg)] outline-none hover:bg-neutral-100 transition-colors motion-reduce:transition-none;
 }
 
+.weelp-calendar .rdp-day_button:focus,
 .weelp-calendar .rdp-day_button:focus-visible {
-  @apply outline-none ring-2 ring-weelp-sage-deep/40;
+  outline: none;
+  box-shadow: none;
 }
 
-/* In-range middle: soft horizontal strip flush across the cell. */
+/* In-range middle: soft horizontal strip flush across the cell.
+   Tone matches the soft half of the endpoint cells. */
 .weelp-calendar .rdp-range_middle {
-  @apply bg-weelp-sage-deep/25;
+  @apply bg-weelp-sage-deep/40;
 }
 .weelp-calendar .rdp-range_middle .rdp-day_button {
-  @apply bg-transparent text-[var(--weelp-cal-fg)] rounded-none hover:bg-weelp-sage-deep/35;
+  @apply bg-transparent text-[var(--weelp-cal-fg)] rounded-none hover:bg-weelp-sage-deep/55;
 }
 
-/* Range endpoints render as the cell itself — half-pill on one side, flat on
-   the strip side. The inner day button stays transparent so the cell carries
-   the visual treatment in a single layer (matches Designs/image.png). */
+/* Range endpoints: cell shows the soft strip on the side that meets the
+   middle; the day button is a solid pill centered in the cell.
+   start → strip on the right; end → strip on the left. */
 .weelp-calendar .rdp-range_start {
-  @apply bg-weelp-sage-deep rounded-l-full;
+  background: linear-gradient(to right, transparent 0, transparent 50%, rgb(88 143 122 / 40%) 50%, rgb(88 143 122 / 40%) 100%);
 }
 .weelp-calendar .rdp-range_end {
-  @apply bg-weelp-sage-deep rounded-r-full;
+  background: linear-gradient(to right, rgb(88 143 122 / 40%) 0, rgb(88 143 122 / 40%) 50%, transparent 50%, transparent 100%);
 }
 .weelp-calendar .rdp-range_start.rdp-range_end {
-  @apply rounded-full;
+  background: transparent;
 }
 .weelp-calendar .rdp-range_start .rdp-day_button,
-.weelp-calendar .rdp-range_end .rdp-day_button {
-  @apply bg-transparent text-white rounded-none hover:bg-transparent hover:text-white;
+.weelp-calendar .rdp-range_end .rdp-day_button,
+.weelp-calendar .rdp-range_start.rdp-range_end .rdp-day_button {
+  @apply bg-weelp-sage-deep text-white rounded-full hover:bg-weelp-sage-deep hover:text-white;
 }
 
 /* Single mode selected day — solid pill. */

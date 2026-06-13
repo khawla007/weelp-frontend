@@ -353,7 +353,7 @@ export default function FilterBar() {
                 aria-label="Date selector"
                 {...(calendarPresence.state === 'closed' ? CLOSED_PANEL_A11Y_PROPS : {})}
                 onMouseLeave={closeCalendarPanel}
-                className={`absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-2 z-[70] ${getPanelMotionClass(calendarPresence.state)}`}
+                className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-lg shadow-lg border p-2 z-[70] ${getPanelMotionClass(calendarPresence.state)}`}
               >
                 <Controller
                   name="dateRange"
