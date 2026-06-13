@@ -26,13 +26,44 @@ const DEFAULT_CLASSNAMES = {
 };
 
 const WeelpCalendar = React.forwardRef(function WeelpCalendar(
-  { mode = 'range', months: monthsProp = 2, showClear = false, onSelect, disablePast = false, disabled, className, footer, classNames, components, showOutsideDays = false, weekStartsOn = 1, ...rest },
+  {
+    mode = 'range',
+    months: monthsProp = 2,
+    showClear = false,
+    onSelect,
+    selected,
+    disablePast = false,
+    disabled,
+    className,
+    footer,
+    classNames,
+    components,
+    showOutsideDays = false,
+    weekStartsOn = 1,
+    resetRangeOnNewClick = true,
+    ...rest
+  },
   ref,
 ) {
   const isMobile = useIsMobile();
   const numberOfMonths = isMobile ? 1 : monthsProp;
 
   const effectiveDisabled = disablePast ? (disabled ? [disabled, { before: new Date() }] : { before: new Date() }) : disabled;
+
+  const fromTime = selected?.from ? selected.from.getTime?.() ?? new Date(selected.from).getTime() : null;
+  const toTime = selected?.to ? selected.to.getTime?.() ?? new Date(selected.to).getTime() : null;
+  const hasCompleteRange = mode === 'range' && fromTime && toTime && fromTime !== toTime;
+
+  const handleSelect = React.useCallback(
+    (value, triggerDate, modifiers, e) => {
+      if (resetRangeOnNewClick && hasCompleteRange && triggerDate) {
+        onSelect?.({ from: triggerDate, to: undefined }, triggerDate, modifiers, e);
+        return;
+      }
+      onSelect?.(value, triggerDate, modifiers, e);
+    },
+    [resetRangeOnNewClick, hasCompleteRange, onSelect],
+  );
 
   const clearButton =
     showClear && onSelect ? (
@@ -65,7 +96,8 @@ const WeelpCalendar = React.forwardRef(function WeelpCalendar(
         components={mergedComponents}
         classNames={mergedClassNames}
         disabled={effectiveDisabled}
-        onSelect={onSelect}
+        selected={selected}
+        onSelect={handleSelect}
         footer={composedFooter}
         {...rest}
       />

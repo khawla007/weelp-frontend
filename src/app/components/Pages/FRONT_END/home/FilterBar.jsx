@@ -325,9 +325,6 @@ export default function FilterBar() {
                 }
                 closeLocationPanel();
                 closeGuestsPanel();
-                if (opening) {
-                  setValue('dateRange', { from: null, to: null });
-                }
               }}
               onKeyDown={(event) => {
                 if (event.key === 'Enter' || event.key === ' ') {
@@ -335,7 +332,6 @@ export default function FilterBar() {
                   openCalendarPanel();
                   closeLocationPanel();
                   closeGuestsPanel();
-                  setValue('dateRange', { from: null, to: null });
                 }
               }}
               className={`${FIELD_TRIGGER_CLASS} sm:rounded-none`}
