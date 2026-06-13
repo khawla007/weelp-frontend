@@ -16,3 +16,18 @@ process.setMaxListeners(0);
 // jsdom, so stub the module globally here. Suites that assert on these (e.g.
 // logoutAction) re-mock locally, which overrides this per file.
 jest.mock('next-auth/jwt', () => ({ decode: jest.fn(), encode: jest.fn(), getToken: jest.fn() }));
+
+// jsdom doesn't implement `window.matchMedia`; useIsMobile (and any
+// suite that mounts WeelpCalendar) reaches for it on first render.
+if (typeof window !== 'undefined' && !window.matchMedia) {
+  window.matchMedia = (query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    addListener: () => {},
+    removeListener: () => {},
+    dispatchEvent: () => false,
+  });
+}

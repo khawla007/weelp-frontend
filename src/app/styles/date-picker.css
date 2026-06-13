@@ -95,3 +95,119 @@
 .tfc_calendar .day-range-end:focus {
   @apply bg-weelp-sage-deep text-white;
 }
+
+/* --------------------------------------------------------------------
+   Shared <WeelpCalendar> chrome — Designs/image.png canonical look.
+   All rules scoped under `.weelp-calendar` so legacy `.rdp-*` and
+   `.tfc_calendar` rules above remain untouched. Brand green only.
+   -------------------------------------------------------------------- */
+
+.weelp-calendar {
+  --weelp-cal-fg: #1f2937;
+  --weelp-cal-muted: #6b7280;
+}
+
+/* Default `.rdp-root` ships at one-month width; grow to fit
+   the requested numberOfMonths so dual-month renders side-by-side. */
+.weelp-calendar .rdp-root {
+  width: max-content;
+  max-width: 100%;
+}
+
+.weelp-calendar .rdp-months {
+  @apply gap-6;
+}
+
+.weelp-calendar .rdp-month {
+  @apply space-y-3;
+}
+
+.weelp-calendar .rdp-month_caption {
+  @apply h-9 flex items-center justify-center text-base font-medium text-[var(--weelp-cal-fg)];
+}
+
+.weelp-calendar .rdp-weekdays {
+  @apply mb-1;
+}
+
+.weelp-calendar .rdp-weekday {
+  @apply w-10 text-xs font-normal text-[var(--weelp-cal-muted)] text-center;
+}
+
+.weelp-calendar .rdp-day,
+.weelp-calendar .rdp-day_button {
+  @apply h-10 w-10 text-sm font-normal;
+}
+
+.weelp-calendar .rdp-day_button {
+  @apply rounded-md text-[var(--weelp-cal-fg)] hover:bg-neutral-100 transition-colors motion-reduce:transition-none;
+}
+
+.weelp-calendar .rdp-day_button:focus-visible {
+  @apply outline-none ring-2 ring-weelp-sage-deep/40;
+}
+
+/* In-range middle: soft horizontal strip (no cell radius, no hover scale). */
+.weelp-calendar .rdp-range_middle {
+  @apply bg-weelp-sage-deep/20;
+}
+.weelp-calendar .rdp-range_middle .rdp-day_button {
+  @apply bg-transparent text-[var(--weelp-cal-fg)] hover:bg-weelp-sage-deep/30 rounded-none;
+}
+
+/* Range endpoints: half-pill caps + solid green button. */
+.weelp-calendar .rdp-range_start {
+  @apply bg-weelp-sage-deep/20 rounded-l-full;
+}
+.weelp-calendar .rdp-range_end {
+  @apply bg-weelp-sage-deep/20 rounded-r-full;
+}
+.weelp-calendar .rdp-range_start.rdp-range_end {
+  @apply rounded-full;
+}
+.weelp-calendar .rdp-range_start .rdp-day_button,
+.weelp-calendar .rdp-range_end .rdp-day_button {
+  @apply bg-weelp-sage-deep text-white rounded-full hover:bg-weelp-sage-deep hover:text-white;
+}
+
+/* Single mode selected day. */
+.weelp-calendar .rdp-selected:not(.rdp-range_middle) .rdp-day_button {
+  @apply bg-weelp-sage-deep text-white rounded-full hover:bg-weelp-sage-deep hover:text-white;
+}
+
+.weelp-calendar .rdp-today:not(.rdp-selected) .rdp-day_button {
+  @apply font-medium;
+}
+
+.weelp-calendar .rdp-disabled .rdp-day_button {
+  @apply text-neutral-300 hover:bg-transparent cursor-not-allowed;
+}
+
+/* Outside days hidden (showOutsideDays={false}); rule kept as safety. */
+.weelp-calendar .rdp-outside {
+  @apply invisible;
+}
+
+/* Prev/next chevron buttons — square outlined per screenshot. */
+.weelp-calendar .rdp-button_previous,
+.weelp-calendar .rdp-button_next {
+  @apply h-8 w-8 inline-flex items-center justify-center rounded-md border border-neutral-200 bg-white text-[var(--weelp-cal-fg)] hover:bg-neutral-50 transition-colors motion-reduce:transition-none;
+}
+.weelp-calendar .rdp-button_previous:focus-visible,
+.weelp-calendar .rdp-button_next:focus-visible {
+  @apply outline-none ring-2 ring-weelp-sage-deep/40;
+}
+.weelp-calendar .rdp-chevron {
+  @apply h-4 w-4 fill-current stroke-none;
+}
+
+/* Footer slot (Clear button, separator). */
+.weelp-calendar .rdp-footer {
+  @apply mt-3 pt-3 border-t border-neutral-200;
+}
+.weelp-calendar .weelp-cal-clear {
+  @apply text-sm text-[var(--weelp-cal-muted)] hover:text-[var(--weelp-cal-fg)] transition-colors motion-reduce:transition-none px-1 py-1 rounded-md;
+}
+.weelp-calendar .weelp-cal-clear:focus-visible {
+  @apply outline-none ring-2 ring-weelp-sage-deep/40;
+}

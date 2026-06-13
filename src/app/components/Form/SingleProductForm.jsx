@@ -4,9 +4,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Calendar, Users, Minus, Plus } from 'lucide-react';
 import { useFormContext, Controller } from 'react-hook-form';
-import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/dist/style.css';
-import '@/app/styles/date-picker.css';
+import { WeelpCalendar, EMPTY_DATE_RANGE } from '@/components/calendar';
 import { useRouter } from 'next/navigation';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { log } from '@/lib/utils';
@@ -249,10 +247,11 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                     control={control}
                     render={({ field }) =>
                       isSingleDateMode ? (
-                        <DayPicker
+                        <WeelpCalendar
                           mode="single"
+                          months={1}
                           selected={field.value?.from}
-                          disabled={{ before: new Date() }}
+                          disablePast
                           onSelect={(day) => {
                             if (day) {
                               const range = { from: day, to: computeEndDate(day) };
@@ -260,28 +259,29 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                               setSelectedDates(range);
                               if (onDateChange) onDateChange(range);
                               setShowCalendar(false);
+                            } else {
+                              field.onChange(EMPTY_DATE_RANGE);
+                              setSelectedDates(EMPTY_DATE_RANGE);
                             }
                           }}
-                          className="scale-90"
-                          classNames={{ today: 'text-black' }}
+                          showClear
                         />
                       ) : (
-                        <DayPicker
+                        <WeelpCalendar
                           mode="range"
+                          months={1}
                           selected={field.value}
-                          disabled={{ before: new Date() }}
+                          disablePast
                           onSelect={(value) => {
-                            field.onChange(value);
-                            setSelectedDates(value ?? { from: null, to: null });
-                            if (onDateChange && value?.from) {
-                              onDateChange(value);
-                            }
-                            if (value?.from && value?.to && value.from.getTime() !== value.to.getTime()) {
+                            const next = value ?? EMPTY_DATE_RANGE;
+                            field.onChange(next);
+                            setSelectedDates(next);
+                            if (onDateChange && next.from) onDateChange(next);
+                            if (next.from && next.to && next.from.getTime() !== next.to.getTime()) {
                               setShowCalendar(false);
                             }
                           }}
-                          className="scale-90"
-                          classNames={{ today: 'text-black' }}
+                          showClear
                         />
                       )
                     }

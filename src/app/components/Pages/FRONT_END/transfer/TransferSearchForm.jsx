@@ -5,9 +5,7 @@ import { ArrowLeftRight, Calendar as CalendarIcon, MapPin, Minus, Plus, Users } 
 import { Controller, useForm } from 'react-hook-form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/dist/style.css';
-import '@/app/styles/date-picker.css';
+import { WeelpCalendar } from '@/components/calendar';
 import LocationComboboxPublic from './LocationComboboxPublic';
 import { getPublicTransfersFiltered } from '@/lib/services/transfers';
 
@@ -277,13 +275,13 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                 name="date"
                 control={control}
                 render={({ field }) => (
-                  <DayPicker
+                  <WeelpCalendar
                     mode="single"
+                    months={1}
                     selected={field.value || undefined}
-                    disabled={{ before: new Date() }}
+                    disablePast
                     onSelect={(value) => field.onChange(value || null)}
-                    className="scale-90 origin-top-right [&_.rdp-selected_.rdp-day\_button]:!bg-weelp-sage-deep [&_.rdp-selected_.rdp-day\_button]:!text-white [&_.rdp-selected_.rdp-day\_button]:!border-0"
-                    style={{ '--rdp-accent-color': '#588f7a', '--rdp-accent-background': '#588f7a' }}
+                    showClear
                   />
                 )}
               />

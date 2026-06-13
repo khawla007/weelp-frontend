@@ -4,9 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { MapPin, Calendar, Users, ChevronRight, X } from 'lucide-react';
 import { useForm, Controller, useWatch } from 'react-hook-form';
-import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/dist/style.css';
-import '@/app/styles/date-picker.css';
+import { WeelpCalendar, formatRange } from '@/components/calendar';
 import { homeSearch } from '@/lib/services/global';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import { useCitiesRegions } from '@/hooks/useCitiesRegions';
@@ -344,16 +342,8 @@ export default function FilterBar() {
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <Calendar size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
-              <span className="block min-w-[136px] truncate whitespace-nowrap text-sm font-medium" style={{ color: '#71717a' }}>
-                {watchedFrom?.from && watchedFrom?.to
-                  ? `${new Date(watchedFrom.from).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: '2-digit',
-                    })} - ${new Date(watchedFrom.to).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: '2-digit',
-                    })}`
-                  : 'When?'}
+              <span className="block min-w-[180px] truncate whitespace-nowrap text-sm font-medium" style={{ color: '#71717a' }}>
+                {watchedFrom?.from && watchedFrom?.to ? formatRange(new Date(watchedFrom.from), new Date(watchedFrom.to)) : 'When?'}
               </span>
             </button>
 
@@ -373,10 +363,11 @@ export default function FilterBar() {
                   name="dateRange"
                   control={control}
                   render={({ field }) => (
-                    <DayPicker
+                    <WeelpCalendar
                       mode="range"
+                      months={2}
                       selected={field.value}
-                      disabled={{ before: new Date() }}
+                      disablePast
                       onSelect={(value) => {
                         field.onChange(value);
                         if (value?.from && value?.to && value.from.getTime() !== value.to.getTime()) {
@@ -384,8 +375,7 @@ export default function FilterBar() {
                           fetchPreviewResults(watchedWhereTo, value, howMany);
                         }
                       }}
-                      className="scale-90 origin-top-right"
-                      style={{ '--rdp-accent-color': '#588f7a', '--rdp-accent-background': '#588f7a' }}
+                      showClear
                     />
                   )}
                 />

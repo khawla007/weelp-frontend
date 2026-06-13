@@ -5,9 +5,7 @@ import { MapPin, Calendar, Users, Minus, Plus, LoaderCircle } from 'lucide-react
 import { useForm, Controller, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/dist/style.css';
-import '@/app/styles/date-picker.css';
+import { WeelpCalendar } from '@/components/calendar';
 import { useRouter } from 'next/navigation';
 import { log } from '@/lib/utils';
 import { useCitiesRegions } from '@/hooks/useCitiesRegions';
@@ -288,15 +286,13 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
                 name="dateRange"
                 control={control}
                 render={({ field }) => (
-                  <DayPicker
+                  <WeelpCalendar
                     mode="range"
+                    months={2}
                     selected={field.value}
-                    disabled={{
-                      before: new Date(),
-                    }}
+                    disablePast
                     onSelect={(value) => field.onChange(value)}
-                    className="scale-90"
-                    classNames={{ today: 'text-black' }}
+                    showClear
                   />
                 )}
               />

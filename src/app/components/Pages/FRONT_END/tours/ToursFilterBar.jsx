@@ -2,9 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, Calendar, Users, Loader2, X } from 'lucide-react';
-import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/dist/style.css';
-import '@/app/styles/date-picker.css';
+import { WeelpCalendar, EMPTY_DATE_RANGE } from '@/components/calendar';
 import { toursSearch } from '@/lib/services/tours';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { useCitiesRegions } from '@/hooks/useCitiesRegions';
@@ -361,18 +359,19 @@ export default function ToursFilterBar() {
           {/* Calendar Dropdown */}
           {showCalendar && (
             <div onMouseLeave={() => setShowCalendar(false)} className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-2 z-[110]">
-              <DayPicker
+              <WeelpCalendar
                 mode="range"
+                months={2}
                 selected={dateRange}
-                disabled={{ before: new Date() }}
+                disablePast
                 onSelect={(value) => {
-                  setDateRange(value || { from: null, to: null });
-                  if (value?.from && value?.to && value.from.getTime() !== value.to.getTime()) {
+                  const next = value || EMPTY_DATE_RANGE;
+                  setDateRange(next);
+                  if (next.from && next.to && next.from.getTime() !== next.to.getTime()) {
                     setShowCalendar(false);
                   }
                 }}
-                className="scale-90 origin-top-right"
-                style={{ '--rdp-accent-color': '#588f7a', '--rdp-accent-background': '#588f7a' }}
+                showClear
               />
             </div>
           )}
