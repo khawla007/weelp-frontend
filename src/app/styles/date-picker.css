@@ -163,9 +163,13 @@
   @apply bg-transparent text-[var(--weelp-cal-fg)] rounded-none hover:bg-weelp-sage-deep/55;
 }
 
-/* Range endpoints: cell shows the soft strip on the side that meets the
-   middle; the day button is a solid pill centered in the cell.
-   start → strip on the right; end → strip on the left. */
+/* Range endpoints: cell carries the soft strip on the half that meets the
+   middle; the dark pill anchors to the opposite half (start → left,
+   end → right) so the cell reads as half-dark + half-light. */
+.weelp-calendar .rdp-range_start,
+.weelp-calendar .rdp-range_end {
+  position: relative;
+}
 .weelp-calendar .rdp-range_start {
   background: linear-gradient(to right, transparent 0, transparent 50%, rgb(88 143 122 / 40%) 50%, rgb(88 143 122 / 40%) 100%);
 }
@@ -179,6 +183,20 @@
 .weelp-calendar .rdp-range_end .rdp-day_button,
 .weelp-calendar .rdp-range_start.rdp-range_end .rdp-day_button {
   @apply bg-weelp-sage-deep text-white rounded-full hover:bg-weelp-sage-deep hover:text-white;
+}
+.weelp-calendar .rdp-range_start:not(.rdp-range_end) .rdp-day_button,
+.weelp-calendar .rdp-range_end:not(.rdp-range_start) .rdp-day_button {
+  position: absolute;
+  top: 50%;
+  width: 28px;
+  height: 28px;
+  transform: translateY(-50%);
+}
+.weelp-calendar .rdp-range_start:not(.rdp-range_end) .rdp-day_button {
+  left: 0;
+}
+.weelp-calendar .rdp-range_end:not(.rdp-range_start) .rdp-day_button {
+  right: 0;
 }
 
 /* Single mode selected day — solid pill. */
