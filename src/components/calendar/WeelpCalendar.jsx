@@ -50,8 +50,8 @@ const WeelpCalendar = React.forwardRef(function WeelpCalendar(
 
   const effectiveDisabled = disablePast ? (disabled ? [disabled, { before: new Date() }] : { before: new Date() }) : disabled;
 
-  const fromTime = selected?.from ? selected.from.getTime?.() ?? new Date(selected.from).getTime() : null;
-  const toTime = selected?.to ? selected.to.getTime?.() ?? new Date(selected.to).getTime() : null;
+  const fromTime = selected?.from ? (selected.from.getTime?.() ?? new Date(selected.from).getTime()) : null;
+  const toTime = selected?.to ? (selected.to.getTime?.() ?? new Date(selected.to).getTime()) : null;
   const hasCompleteRange = mode === 'range' && fromTime && toTime && fromTime !== toTime;
 
   const handleSelect = React.useCallback(
