@@ -11,17 +11,13 @@ jest.mock('next/navigation', () => ({
 }));
 
 jest.mock('../NavigationMenu', () => {
-  const DesktopMenuMock = ({ stickyHeader, variant }) => (
-    <div data-testid="desktop-menu" data-sticky={stickyHeader ? 'true' : 'false'} data-variant={variant} />
-  );
+  const DesktopMenuMock = ({ stickyHeader, variant }) => <div data-testid="desktop-menu" data-sticky={stickyHeader ? 'true' : 'false'} data-variant={variant} />;
   DesktopMenuMock.displayName = 'DesktopMenuMock';
   return DesktopMenuMock;
 });
 
 jest.mock('../MobileMenu', () => {
-  const MobileMenuMock = ({ stickyHeader, variant }) => (
-    <div data-testid="mobile-menu" data-sticky={stickyHeader ? 'true' : 'false'} data-variant={variant} />
-  );
+  const MobileMenuMock = ({ stickyHeader, variant }) => <div data-testid="mobile-menu" data-sticky={stickyHeader ? 'true' : 'false'} data-variant={variant} />;
   MobileMenuMock.displayName = 'MobileMenuMock';
   return MobileMenuMock;
 });
