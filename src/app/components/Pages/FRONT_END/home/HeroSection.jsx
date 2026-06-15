@@ -12,14 +12,7 @@ const TRUST_ITEMS = [
 const HeroSection = () => {
   return (
     <section className="weelp-hero-rise relative w-full min-h-[100dvh] overflow-hidden bg-weelp-sage-wash">
-      <Image
-        src="/assets/images/home-hero-bg-new.png"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-[60%_50%] -z-10"
-      />
+      <Image src="/assets/images/home-hero-bg-new.png" alt="" fill priority sizes="100vw" className="object-cover object-[60%_50%] -z-10" />
 
       <div className="container-page relative z-0 flex flex-col items-start gap-8 pt-[180px] pb-24 lg:pt-[200px] lg:pb-32">
         <span
@@ -37,10 +30,7 @@ const HeroSection = () => {
           style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
         >
           <span className="weelp-rise-mask weelp-rise-mask--block">
-            <span
-              className="weelp-rise-item block font-medium"
-              style={{ '--weelp-rise-delay': '160ms' }}
-            >
+            <span className="weelp-rise-item block font-medium" style={{ '--weelp-rise-delay': '160ms' }}>
               Find your next
             </span>
           </span>
@@ -59,26 +49,17 @@ const HeroSection = () => {
 
         <p className="max-w-[28ch] text-base sm:text-lg leading-[1.4] text-weelp-ink/80">
           <span className="weelp-rise-mask weelp-rise-mask--block">
-            <span
-              className="weelp-rise-item block"
-              style={{ '--weelp-rise-delay': '320ms' }}
-            >
+            <span className="weelp-rise-item block" style={{ '--weelp-rise-delay': '320ms' }}>
               Beach stays, marina views, and easy city plans in one place.
             </span>
           </span>
         </p>
 
-        <div
-          className="weelp-hero-ui-rise w-full max-w-[920px]"
-          style={{ '--weelp-motion-delay': '400ms' }}
-        >
+        <div className="weelp-hero-ui-rise w-full max-w-[920px]" style={{ '--weelp-motion-delay': '400ms' }}>
           <HeroSearchPill />
         </div>
 
-        <ul
-          className="weelp-hero-ui-rise mt-[15px] flex flex-wrap items-center gap-x-10 gap-y-4"
-          style={{ '--weelp-motion-delay': '480ms' }}
-        >
+        <ul className="weelp-hero-ui-rise mt-[15px] flex flex-wrap items-center gap-x-10 gap-y-4" style={{ '--weelp-motion-delay': '480ms' }}>
           {TRUST_ITEMS.map(({ Icon, label, sub }) => (
             <li key={label} className="flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-weelp-sage-deep text-white">
