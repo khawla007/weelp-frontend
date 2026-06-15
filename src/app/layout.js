@@ -1,4 +1,4 @@
-import { Inter, Inter_Tight, Montez, Outfit } from 'next/font/google';
+import { Cormorant_Garamond, Inter, Inter_Tight, Montez, Outfit } from 'next/font/google';
 import './globals.css';
 
 const interTight = Inter_Tight({
@@ -30,6 +30,14 @@ const outfit = Outfit({
   display: 'swap',
 });
 
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['500'],
+  style: ['italic'],
+  variable: '--font-cormorant',
+  display: 'swap',
+});
+
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   title: 'Weelp - Travel Booking Platform',
@@ -39,7 +47,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body className={`${interTight.variable} ${inter.variable} ${outfit.variable} ${montez.variable} font-sans antialiased tfc_scroll`}>{children}</body>
+      <body className={`${interTight.variable} ${inter.variable} ${outfit.variable} ${montez.variable} ${cormorant.variable} font-sans antialiased tfc_scroll`}>{children}</body>
     </html>
   );
 }
