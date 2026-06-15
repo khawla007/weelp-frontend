@@ -1,52 +1,96 @@
 import Image from 'next/image';
+import { Calendar, Leaf, MapPin } from 'lucide-react';
 
-import FilterBar from './FilterBar';
+import HeroSearchPill from './HeroSearchPill';
 
-const chips = ['Beach stays', 'Marina views', 'City plans'];
+const TRUST_ITEMS = [
+  { Icon: Leaf, label: 'Handpicked stays', sub: 'Curated for calm' },
+  { Icon: MapPin, label: 'Local experiences', sub: 'Authentic & unique' },
+  { Icon: Calendar, label: 'Flexible bookings', sub: 'Peace of mind' },
+];
 
 const HeroSection = () => {
   return (
-    <section className="weelp-hero-rise relative w-full flex items-center justify-center min-h-[calc(100dvh-94px)] lg:min-h-[calc(100dvh-112px)] mb-16 lg:mb-24 bg-weelp-sage-wash">
-      <Image src="/assets/images/weelp-home-hero-2.png" alt="" fill priority sizes="100vw" className="object-cover object-[65%_60%] md:object-center -z-20" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-weelp-ink/35 via-weelp-ink/20 to-weelp-ink/45" />
-      <div className="container-page relative z-0 flex flex-col items-center justify-center gap-8 text-center pt-12 pb-24 lg:pt-16 lg:pb-32">
+    <section className="weelp-hero-rise relative w-full min-h-[100dvh] overflow-hidden bg-weelp-sage-wash">
+      <Image
+        src="/assets/images/home-hero-bg-new.png"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover object-[60%_50%] -z-10"
+      />
+
+      <div className="container-page relative z-0 flex flex-col items-start gap-8 pt-[180px] pb-24 lg:pt-[200px] lg:pb-32">
         <span
-          className="weelp-hero-ui-rise inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white backdrop-blur"
-          style={{ '--weelp-motion-delay': '120ms' }}
+          className="weelp-hero-ui-rise inline-flex items-center gap-2 rounded-full border border-weelp-sage-deep/15 bg-white/70 px-4 py-2 text-xs font-bold text-weelp-sage-deep backdrop-blur-sm"
+          style={{ '--weelp-motion-delay': '80ms' }}
         >
-          <span className="inline-block h-[7px] w-[7px] rounded-full bg-weelp-sage-tint" />
+          <Leaf className="size-[14px]" strokeWidth={2} />
           Plan calmer escapes
         </span>
-        <div className="relative flex flex-col items-center gap-4">
-          <h1 className="text-[28px] sm:text-[38px] md:text-[48px] lg:text-[52px] leading-[1.05] text-white">
-            <span className="weelp-rise-mask weelp-rise-mask--block">
-              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
-                Find your next escape
-              </span>
-            </span>
-          </h1>
-          <p className="max-w-[44ch] text-base sm:text-lg font-medium leading-[1.4] text-white/90">
-            <span className="weelp-rise-mask weelp-rise-mask--block">
-              <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
-                Beach stays, marina views, and easy city plans in one place.
-              </span>
-            </span>
-          </p>
-          <span className="weelp-hero-ui-rise relative z-30 inline-block" style={{ '--weelp-motion-delay': '360ms' }}>
-            <FilterBar />
-          </span>
-        </div>
-        <div className="weelp-hero-ui-rise relative z-0 mt-[15px] flex flex-wrap items-center justify-center gap-3" style={{ '--weelp-motion-delay': '440ms' }}>
-          {chips.map((label) => (
+
+        {/* eslint-disable-next-line weelp/no-inline-heading-font */}
+        <h1
+          // eslint-disable-next-line weelp/no-noncanonical-fontsize
+          className="text-[56px] leading-[1.02] tracking-tight text-weelp-ink sm:text-[72px] lg:text-[96px]"
+          style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
+        >
+          <span className="weelp-rise-mask weelp-rise-mask--block">
             <span
-              key={label}
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-semibold text-white backdrop-blur transition-[transform,background-color,color] duration-[180ms] ease-[var(--weelp-ease-ui)] hover:-translate-y-0.5 hover:bg-white/25 motion-reduce:transform-none motion-reduce:transition-none"
+              className="weelp-rise-item block font-medium"
+              style={{ '--weelp-rise-delay': '160ms' }}
             >
-              <span className="inline-block h-2 w-2 rounded-full bg-weelp-sage-tint" />
-              {label}
+              Find your next
             </span>
-          ))}
+          </span>
+          <span className="weelp-rise-mask weelp-rise-mask--block">
+            <span
+              className="weelp-rise-item block italic font-medium text-weelp-sage-deep"
+              style={{
+                '--weelp-rise-delay': '240ms',
+                fontFamily: 'var(--font-cormorant), "Cormorant Garamond", serif',
+              }}
+            >
+              escape
+            </span>
+          </span>
+        </h1>
+
+        <p className="max-w-[28ch] text-base sm:text-lg leading-[1.4] text-weelp-ink/80">
+          <span className="weelp-rise-mask weelp-rise-mask--block">
+            <span
+              className="weelp-rise-item block"
+              style={{ '--weelp-rise-delay': '320ms' }}
+            >
+              Beach stays, marina views, and easy city plans in one place.
+            </span>
+          </span>
+        </p>
+
+        <div
+          className="weelp-hero-ui-rise w-full max-w-[920px]"
+          style={{ '--weelp-motion-delay': '400ms' }}
+        >
+          <HeroSearchPill />
         </div>
+
+        <ul
+          className="weelp-hero-ui-rise mt-[15px] flex flex-wrap items-center gap-x-10 gap-y-4"
+          style={{ '--weelp-motion-delay': '480ms' }}
+        >
+          {TRUST_ITEMS.map(({ Icon, label, sub }) => (
+            <li key={label} className="flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-weelp-sage-deep text-white">
+                <Icon className="size-[18px]" strokeWidth={1.8} />
+              </span>
+              <span className="flex flex-col leading-tight">
+                <span className="text-sm font-semibold text-weelp-ink">{label}</span>
+                <span className="text-xs text-weelp-ink/65">{sub}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
