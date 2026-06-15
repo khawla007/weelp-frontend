@@ -56,9 +56,7 @@ const MobileMenu = ({ stickyHeader, variant = 'solid' }) => {
 
       <div
         className={`${stickyHeader ? 'fixed top-0 left-0 right-0 z-40 shadow-md' : ''} ${
-          mainBarTransparent
-            ? 'border-b border-transparent bg-transparent'
-            : 'border-b border-[#e4e4e7] bg-[#f8faf9]'
+          mainBarTransparent ? 'border-b border-transparent bg-transparent' : 'border-b border-[#e4e4e7] bg-[#f8faf9]'
         } px-4 py-3 transition-[background-color,border-color,box-shadow,opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none`}
       >
         <MobileMenuSlider />
