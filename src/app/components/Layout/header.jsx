@@ -1,26 +1,51 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import DesktopMenu from './NavigationMenu';
 import MobileMenu from './MobileMenu';
 
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
 const Header = () => {
+  const pathname = usePathname();
+  const variant = pathname === '/' ? 'over-hero' : 'solid';
+  const threshold = variant === 'over-hero' ? 80 : 46;
+
   const [isScrolled, setIsScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // When scrolled past 46px (height of top bar), activate sticky header
-      setIsScrolled(window.scrollY > 46);
+  useIsomorphicLayoutEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      setIsScrolled(window.scrollY > threshold);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    update();
+
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [threshold]);
+
+  const positionClass =
+    variant === 'over-hero'
+      ? 'fixed top-0 left-0 right-0 z-[99999]'
+      : 'block w-full relative z-40 lg:sticky lg:top-[-47px] lg:z-[99999]';
 
   return (
-    <header className="block w-full relative z-40 lg:sticky lg:top-[-47px] lg:z-[99999]">
-      <DesktopMenu stickyHeader={isScrolled} />
-      <MobileMenu stickyHeader={isScrolled} />
+    <header className={positionClass} data-weelp-header-variant={variant}>
+      <DesktopMenu stickyHeader={isScrolled} variant={variant} />
+      <MobileMenu stickyHeader={isScrolled} variant={variant} />
     </header>
   );
 };
