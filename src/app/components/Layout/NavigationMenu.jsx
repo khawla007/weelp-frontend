@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronDown, Globe, Headphones, MapPin, Search, ShoppingCart, Smartphone } from 'lucide-react';
+import { ChevronDown, Globe, Headphones, MapPin, ShoppingCart, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { useSession } from 'next-auth/react';
-import ModalForm from '../Modals/ModalForm';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { Badge } from '@/components/ui/badge';
 import MiniCartNew from '../Modals/MiniCartNew';
@@ -30,8 +29,11 @@ const getInitials = (name) => {
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 };
 
-const DesktopMenu = ({ stickyHeader }) => {
+const DesktopMenu = ({ stickyHeader, variant = 'solid' }) => {
   const headerBarRef = useRef(null);
+  const isOverHero = variant === 'over-hero';
+  const topStripVisible = isOverHero ? stickyHeader : !stickyHeader;
+  const mainBarTransparent = isOverHero && !stickyHeader;
 
   useEffect(() => {
     const headerBar = headerBarRef.current;
@@ -49,8 +51,10 @@ const DesktopMenu = ({ stickyHeader }) => {
   return (
     <div className="hidden lg:block w-full">
       <div
-        aria-hidden={stickyHeader ? true : undefined}
-        className={`${stickyHeader ? 'invisible pointer-events-none' : 'visible'} border-b border-[#ededed] bg-[linear-gradient(180deg,#eaeaea_0%,#ffffff66_100%)]`}
+        aria-hidden={topStripVisible ? undefined : true}
+        className={`overflow-hidden border-b border-[#ededed] bg-[linear-gradient(180deg,#eaeaea_0%,#ffffff66_100%)] transition-[max-height,opacity] duration-200 ease-out motion-reduce:transition-none ${
+          topStripVisible ? 'max-h-[46px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+        }`}
       >
         <div className="mx-auto flex h-[46px] w-full items-center justify-between gap-4 px-4 md:px-8 xl:px-[60px]">
           <div className="flex items-center gap-4">
@@ -82,12 +86,16 @@ const DesktopMenu = ({ stickyHeader }) => {
           data-testid="desktop-header-bar"
           data-weelp-sticky-header={stickyHeader ? 'true' : undefined}
           data-weelp-sticky-settled={stickyHeader ? 'false' : undefined}
-          className={`weelp-sticky-header-transition h-[66px] border-b border-[#ededed] transition-[background-color,border-color,box-shadow,backdrop-filter] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-            stickyHeader ? 'bg-[#ffffffd9] shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] backdrop-blur-[47px]' : 'bg-white/95 shadow-none backdrop-blur-[24px]'
+          className={`weelp-sticky-header-transition h-[66px] transition-[background-color,border-color,box-shadow,backdrop-filter] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+            mainBarTransparent
+              ? 'border-b border-transparent bg-transparent shadow-none backdrop-blur-0'
+              : stickyHeader
+                ? 'border-b border-[#ededed] bg-[#ffffffd9] shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] backdrop-blur-[47px]'
+                : 'border-b border-[#ededed] bg-white/95 shadow-none backdrop-blur-[24px]'
           }`}
         >
           <div className="grid h-full w-full items-center gap-4 px-4 py-[8px] md:px-8 xl:px-[60px]" style={{ gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)' }}>
-            <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start focus:outline-none">
+            <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start focus:outline-none" aria-label="Weelp home">
               <img src={getLogoUrl()} alt="Weelp" className="h-9 w-auto" />
               <span className="text-[18px] font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
                 Weelp.
@@ -317,7 +325,6 @@ export const HeaderAccount = () => {
   const cartItems = useMiniCartStore((state) => state.cartItems);
   const cartItemCount = cartItems?.length ?? 0;
   const [showSubmenu, setShowSubmenu] = useState(null);
-  const [showForm, setShowForm] = useState(null);
 
   // Extract user data
   const user = session?.user || {};
@@ -331,11 +338,6 @@ export const HeaderAccount = () => {
     setShowSubmenu(!showSubmenu);
   };
 
-  // Handle handleShowForm
-  const handleShowForm = () => {
-    setShowForm(!showForm);
-  };
-
   // HanldeShowCart
   const handleShowCart = () => {
     setMiniCartOpen(!isMiniCartOpen);
@@ -347,8 +349,20 @@ export const HeaderAccount = () => {
         <li>
           <button
             type="button"
+            aria-label="Language and currency, English US dollars"
+            className="inline-flex h-11 items-center gap-2 rounded-full px-3 text-[14px] text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+          >
+            <Globe className="size-[18px]" strokeWidth={1.5} />
+            <span>
+              {HEADER_SECONDARY_META[0]} ({HEADER_SECONDARY_META[1]})
+            </span>
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
             aria-label={cartItemCount > 0 ? `Open cart, ${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'}` : 'Open cart'}
-            className="relative flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="relative flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
             onClick={handleShowCart}
           >
             <span className="relative inline-flex">
@@ -367,20 +381,9 @@ export const HeaderAccount = () => {
         <li>
           <button
             type="button"
-            aria-label="Open search"
-            className="flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-            onClick={handleShowForm}
-          >
-            <Search className="size-5" strokeWidth={1.5} />
-          </button>
-        </li>
-
-        <li>
-          <button
-            type="button"
             aria-label="Open account menu"
             aria-expanded={!!showSubmenu}
-            className="flex h-11 w-[65px] items-center justify-center gap-2 rounded-[30px] border border-[#e4e4e7] transition-[background-color,border-color,color] duration-200 ease-out motion-reduce:transition-none hover:bg-[#f4f4f5] overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="flex h-11 w-[65px] items-center justify-center gap-2 rounded-[30px] border border-[#e4e4e7] transition-[background-color,border-color,color] duration-200 ease-out motion-reduce:transition-none hover:bg-[#f4f4f5] overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
             onClick={handleSubmenu}
           >
             {isLoggedIn && avatarSrc ? (
@@ -408,9 +411,6 @@ export const HeaderAccount = () => {
 
       {/* AccountSubMenu */}
       {showSubmenu && <SubmenuAccount showSubmenu={showSubmenu} setShowSubmenu={setShowSubmenu} />}
-
-      {/* Show Form */}
-      <ModalForm showForm={showForm} setShowForm={setShowForm} handleShowForm={handleShowForm} />
 
       {/* Mini Cart With React Portal */}
       {isMiniCartOpen && createPortal(<MiniCartNew />, document.body)}
