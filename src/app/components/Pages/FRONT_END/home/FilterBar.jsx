@@ -251,7 +251,7 @@ export default function FilterBar({ appearance = 'card' }) {
               onClick={handleInputClick}
               className={
                 isPill
-                  ? 'flex items-center gap-3 bg-transparent px-6 h-14 cursor-pointer relative sm:border-l sm:border-[#e4e4e7] sm:first:border-l-0'
+                  ? 'relative flex items-center gap-3 bg-transparent px-7 h-24 cursor-pointer sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-[#e4e4e7] sm:first:before:hidden'
                   : 'flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none'
               }
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
@@ -347,7 +347,7 @@ export default function FilterBar({ appearance = 'card' }) {
               }}
               className={
                 isPill
-                  ? 'flex w-full items-center gap-3 bg-transparent px-6 h-14 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:border-l sm:border-[#e4e4e7]'
+                  ? 'relative flex w-full items-center gap-3 bg-transparent px-7 h-24 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-[#e4e4e7]'
                   : `${FIELD_TRIGGER_CLASS} sm:rounded-none`
               }
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
@@ -420,7 +420,7 @@ export default function FilterBar({ appearance = 'card' }) {
               }}
               className={
                 isPill
-                  ? 'flex w-full items-center gap-3 bg-transparent px-6 h-14 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:border-l sm:border-[#e4e4e7]'
+                  ? 'relative flex w-full items-center gap-3 bg-transparent px-7 h-24 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-[#e4e4e7]'
                   : `${FIELD_TRIGGER_CLASS} sm:rounded-l-none`
               }
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
@@ -469,10 +469,10 @@ export default function FilterBar({ appearance = 'card' }) {
           </div>
 
           {isPill && (
-            <div className="flex items-center justify-end p-2 sm:p-1.5">
+            <div className="flex items-center justify-end pr-4 sm:pr-5">
               <Link
                 href={buildSearchUrl(watchedWhereTo, watchedFrom, watchedhowMany)}
-                className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-weelp-sage-deep px-7 text-sm font-semibold text-white transition-colors duration-200 ease-out hover:bg-weelp-sage-deep/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none"
+                className="inline-flex h-16 items-center justify-center gap-2 rounded-[18px] bg-weelp-sage-deep px-7 text-sm font-semibold text-white transition-colors duration-200 ease-out hover:bg-weelp-sage-deep/85 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none"
               >
                 <Search className="size-4" strokeWidth={2} />
                 Search escapes

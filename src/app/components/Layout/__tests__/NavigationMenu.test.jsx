@@ -230,7 +230,7 @@ describe('DesktopMenu', () => {
       jest.advanceTimersByTime(80);
     });
     expect(headerBar()).toHaveAttribute('data-weelp-sticky-settled', 'true');
-    expect(headerBar().className).toContain('backdrop-blur');
+    expect(headerBar().className).toContain('bg-white');
     expect(headerBar().className).toContain('shadow-');
     expect(headerBar().className).not.toMatch(/transition-\[[^\]]*(opacity|transform)/);
     expect(container.innerHTML).not.toMatch(/transition-all|transition:\s*all/);

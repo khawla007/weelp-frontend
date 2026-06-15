@@ -16,7 +16,7 @@ const HeroSection = () => {
 
       <div className="container-page relative z-0 flex flex-col items-start gap-8 pt-[180px] pb-24 lg:pt-[200px] lg:pb-32">
         <span
-          className="weelp-hero-ui-rise inline-flex items-center gap-2 rounded-full border border-weelp-sage-deep/15 bg-white/70 px-4 py-2 text-xs font-bold text-weelp-sage-deep backdrop-blur-sm"
+          className="weelp-hero-ui-rise inline-flex items-center gap-2 rounded-full border border-weelp-sage-deep/30 bg-transparent px-4 py-2 text-xs font-bold text-weelp-sage-deep"
           style={{ '--weelp-motion-delay': '80ms' }}
         >
           <Leaf className="size-[14px]" strokeWidth={2} />
@@ -59,15 +59,18 @@ const HeroSection = () => {
           <HeroSearchPill />
         </div>
 
-        <ul className="weelp-hero-ui-rise mt-[15px] flex flex-wrap items-center gap-x-10 gap-y-4" style={{ '--weelp-motion-delay': '480ms' }}>
+        <ul
+          className="weelp-hero-ui-rise mt-[15px] flex w-full max-w-[920px] flex-wrap items-center gap-x-12 gap-y-4 rounded-2xl bg-[#588f7a]/30 px-6 py-4"
+          style={{ '--weelp-motion-delay': '480ms' }}
+        >
           {TRUST_ITEMS.map(({ Icon, label, sub }) => (
             <li key={label} className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-weelp-sage-deep text-white">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-weelp-sage-deep/70 text-white">
                 <Icon className="size-[18px]" strokeWidth={1.8} />
               </span>
               <span className="flex flex-col leading-tight">
-                <span className="text-sm font-semibold text-weelp-ink">{label}</span>
-                <span className="text-xs text-weelp-ink/65">{sub}</span>
+                <span className="text-sm font-semibold text-white">{label}</span>
+                <span className="text-xs text-white/85">{sub}</span>
               </span>
             </li>
           ))}

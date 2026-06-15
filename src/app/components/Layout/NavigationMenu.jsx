@@ -90,7 +90,7 @@ const DesktopMenu = ({ stickyHeader, variant = 'solid' }) => {
             mainBarTransparent
               ? 'border-b border-transparent bg-transparent shadow-none backdrop-blur-0'
               : stickyHeader
-                ? 'border-b border-[#ededed] bg-[#ffffffd9] shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] backdrop-blur-[47px]'
+                ? 'border-b border-[#ededed] bg-white shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)]'
                 : 'border-b border-[#ededed] bg-white/95 shadow-none backdrop-blur-[24px]'
           }`}
         >
