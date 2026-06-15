@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { MapPin, Calendar, Users, ChevronRight, X, Search } from 'lucide-react';
+import { MapPin, Calendar, Users, ChevronRight, ChevronDown, X, Search } from 'lucide-react';
 import { useForm, Controller, useWatch } from 'react-hook-form';
 import { WeelpCalendar, formatRange } from '@/components/calendar';
 import { homeSearch } from '@/lib/services/global';
@@ -257,22 +257,44 @@ export default function FilterBar({ appearance = 'card' }) {
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <MapPin size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
-              <input
-                type="text"
-                placeholder="Where to?"
-                aria-label="Where to?"
-                aria-autocomplete="list"
-                aria-controls="filter-location-panel"
-                aria-expanded={showLocation ? 'true' : 'false'}
-                aria-haspopup="listbox"
-                role="combobox"
-                value={inputValue}
-                onChange={handleInputChange}
-                onClick={handleInputClick}
-                className="w-full bg-transparent border-0 focus:outline-none text-sm font-medium placeholder:text-[#71717a]"
-                style={{ color: '#71717a', fontFamily: 'inherit' }}
-                autoComplete="off"
-              />
+              {isPill ? (
+                <div className="flex flex-1 flex-col leading-tight">
+                  <span className="text-base font-semibold text-weelp-sage-deep">Where to?</span>
+                  <input
+                    type="text"
+                    placeholder="Search destinations"
+                    aria-label="Where to?"
+                    aria-autocomplete="list"
+                    aria-controls="filter-location-panel"
+                    aria-expanded={showLocation ? 'true' : 'false'}
+                    aria-haspopup="listbox"
+                    role="combobox"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    onClick={handleInputClick}
+                    className="w-full bg-transparent border-0 focus:outline-none text-sm font-normal placeholder:text-[#71717a]"
+                    style={{ color: '#71717a', fontFamily: 'inherit' }}
+                    autoComplete="off"
+                  />
+                </div>
+              ) : (
+                <input
+                  type="text"
+                  placeholder="Where to?"
+                  aria-label="Where to?"
+                  aria-autocomplete="list"
+                  aria-controls="filter-location-panel"
+                  aria-expanded={showLocation ? 'true' : 'false'}
+                  aria-haspopup="listbox"
+                  role="combobox"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  onClick={handleInputClick}
+                  className="w-full bg-transparent border-0 focus:outline-none text-sm font-medium placeholder:text-[#71717a]"
+                  style={{ color: '#71717a', fontFamily: 'inherit' }}
+                  autoComplete="off"
+                />
+              )}
             </div>
 
             {/* Location Dropdown */}
@@ -353,9 +375,18 @@ export default function FilterBar({ appearance = 'card' }) {
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <Calendar size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
-              <span className="block min-w-[180px] truncate whitespace-nowrap text-sm font-medium" style={{ color: '#71717a' }}>
-                {watchedFrom?.from && watchedFrom?.to ? formatRange(new Date(watchedFrom.from), new Date(watchedFrom.to)) : 'When?'}
-              </span>
+              {isPill ? (
+                <span className="flex flex-1 flex-col leading-tight">
+                  <span className="text-base font-semibold text-weelp-sage-deep">When?</span>
+                  <span className="block min-w-[140px] truncate whitespace-nowrap text-sm font-normal" style={{ color: '#71717a' }}>
+                    {watchedFrom?.from && watchedFrom?.to ? formatRange(new Date(watchedFrom.from), new Date(watchedFrom.to)) : 'Add dates'}
+                  </span>
+                </span>
+              ) : (
+                <span className="block min-w-[180px] truncate whitespace-nowrap text-sm font-medium" style={{ color: '#71717a' }}>
+                  {watchedFrom?.from && watchedFrom?.to ? formatRange(new Date(watchedFrom.from), new Date(watchedFrom.to)) : 'When?'}
+                </span>
+              )}
             </button>
 
             {/* Calendar Dropdown */}
@@ -426,12 +457,25 @@ export default function FilterBar({ appearance = 'card' }) {
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <Users size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
-              <span data-testid="filter-guest-total" className={`text-sm font-medium ${COUNT_MOTION_CLASS}`} style={{ color: '#71717a' }}>
-                <span key={total || 1} className={COUNT_NUMBER_MOTION_CLASS}>
-                  {total || 1}
+              {isPill ? (
+                <span className="flex flex-1 flex-col leading-tight">
+                  <span className="text-base font-semibold text-weelp-sage-deep">Who?</span>
+                  <span data-testid="filter-guest-total" className={`text-sm font-normal ${COUNT_MOTION_CLASS}`} style={{ color: '#71717a' }}>
+                    <span key={total || 1} className={COUNT_NUMBER_MOTION_CLASS}>
+                      {total || 1}
+                    </span>
+                    {` ${total === 1 ? 'Guest' : 'Guests'}`}
+                  </span>
                 </span>
-                {` ${total === 1 ? 'Guest' : 'Guests'}`}
-              </span>
+              ) : (
+                <span data-testid="filter-guest-total" className={`text-sm font-medium ${COUNT_MOTION_CLASS}`} style={{ color: '#71717a' }}>
+                  <span key={total || 1} className={COUNT_NUMBER_MOTION_CLASS}>
+                    {total || 1}
+                  </span>
+                  {` ${total === 1 ? 'Guest' : 'Guests'}`}
+                </span>
+              )}
+              {isPill && <ChevronDown size={18} className="ml-auto flex-shrink-0" style={{ color: '#71717a' }} />}
             </button>
 
             {/* Guests Dropdown */}
@@ -472,7 +516,7 @@ export default function FilterBar({ appearance = 'card' }) {
             <div className="flex items-center justify-end pr-4 sm:pr-5">
               <Link
                 href={buildSearchUrl(watchedWhereTo, watchedFrom, watchedhowMany)}
-                className="inline-flex h-16 items-center justify-center gap-2 rounded-[18px] bg-weelp-sage-deep px-7 text-sm font-semibold text-white transition-colors duration-200 ease-out hover:bg-weelp-sage-deep/85 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none"
+                className="inline-flex h-16 min-w-[200px] items-center justify-center gap-2 rounded-[18px] bg-weelp-sage-deep px-10 text-sm font-semibold text-white transition-colors duration-200 ease-out hover:bg-weelp-sage-deep/85 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none"
               >
                 <Search className="size-4" strokeWidth={2} />
                 Search escapes

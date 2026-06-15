@@ -14,7 +14,7 @@ const HeroSection = () => {
     <section className="weelp-hero-rise relative w-full min-h-[100dvh] overflow-hidden bg-weelp-sage-wash">
       <Image src="/assets/images/home-hero-bg-new.png" alt="" fill priority sizes="100vw" className="object-cover object-[60%_50%] -z-10" />
 
-      <div className="container-page relative z-0 flex flex-col items-start gap-8 pt-[180px] pb-24 lg:pt-[200px] lg:pb-32">
+      <div className="container-page relative z-0 flex flex-col items-start gap-6 pt-[180px] pb-24 lg:pt-[200px] lg:pb-32">
         <span
           className="weelp-hero-ui-rise inline-flex items-center gap-2 rounded-full border border-weelp-sage-deep/30 bg-transparent px-4 py-2 text-xs font-bold text-weelp-sage-deep"
           style={{ '--weelp-motion-delay': '80ms' }}
@@ -26,7 +26,7 @@ const HeroSection = () => {
         {/* eslint-disable-next-line weelp/no-inline-heading-font */}
         <h1
           // eslint-disable-next-line weelp/no-noncanonical-fontsize
-          className="text-[56px] leading-[1.02] tracking-tight text-weelp-ink sm:text-[72px] lg:text-[96px]"
+          className="text-[56px] leading-[0.9] tracking-tight text-weelp-ink sm:text-[72px] lg:text-[96px]"
           style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
         >
           <span className="weelp-rise-mask weelp-rise-mask--block">
@@ -34,6 +34,13 @@ const HeroSection = () => {
               Find your next
             </span>
           </span>
+        </h1>
+
+        <span
+          // eslint-disable-next-line weelp/no-noncanonical-fontsize
+          className="block text-[56px] leading-[0.9] tracking-tight sm:text-[72px] lg:text-[96px]"
+          style={{ marginTop: '-40px' }}
+        >
           <span className="weelp-rise-mask weelp-rise-mask--block">
             <span
               className="weelp-rise-item block italic font-medium text-weelp-sage-deep"
@@ -45,9 +52,9 @@ const HeroSection = () => {
               escape
             </span>
           </span>
-        </h1>
+        </span>
 
-        <p className="max-w-[28ch] text-base sm:text-lg leading-[1.4] text-weelp-ink/80">
+        <p className="-mt-2 max-w-[28ch] text-base sm:text-lg leading-[1.4] text-weelp-ink/80">
           <span className="weelp-rise-mask weelp-rise-mask--block">
             <span className="weelp-rise-item block" style={{ '--weelp-rise-delay': '320ms' }}>
               Beach stays, marina views, and easy city plans in one place.
@@ -55,12 +62,12 @@ const HeroSection = () => {
           </span>
         </p>
 
-        <div className="weelp-hero-ui-rise w-full max-w-[920px]" style={{ '--weelp-motion-delay': '400ms' }}>
+        <div className="weelp-hero-ui-rise w-full max-w-[920px]" style={{ '--weelp-motion-delay': '400ms', marginTop: '-6px' }}>
           <HeroSearchPill />
         </div>
 
         <ul
-          className="weelp-hero-ui-rise mt-[15px] flex w-full max-w-[920px] flex-wrap items-center gap-x-12 gap-y-4 rounded-2xl bg-[#588f7a]/30 px-6 py-4"
+          className="weelp-hero-ui-rise flex w-full max-w-[920px] flex-wrap items-center gap-x-12 gap-y-4 rounded-2xl bg-[#588f7a]/30 px-6 py-4"
           style={{ '--weelp-motion-delay': '480ms' }}
         >
           {TRUST_ITEMS.map(({ Icon, label, sub }) => (

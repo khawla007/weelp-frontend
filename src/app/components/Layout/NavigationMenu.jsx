@@ -52,7 +52,7 @@ const DesktopMenu = ({ stickyHeader, variant = 'solid' }) => {
     <div className="hidden lg:block w-full">
       <div
         aria-hidden={topStripVisible ? undefined : true}
-        className={`overflow-hidden border-b border-[#ededed] bg-[linear-gradient(180deg,#eaeaea_0%,#ffffff66_100%)] transition-[max-height,opacity] duration-200 ease-out motion-reduce:transition-none ${
+        className={`overflow-hidden border-b border-[#ededed] bg-white transition-[max-height,opacity] duration-200 ease-out motion-reduce:transition-none ${
           topStripVisible ? 'max-h-[46px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
         }`}
       >
