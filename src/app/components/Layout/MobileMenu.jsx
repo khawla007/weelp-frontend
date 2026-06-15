@@ -26,13 +26,17 @@ const getInitials = (name) => {
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 };
 
-const MobileMenu = ({ stickyHeader }) => {
+const MobileMenu = ({ stickyHeader, variant = 'solid' }) => {
+  const isOverHero = variant === 'over-hero';
+  const topStripVisible = isOverHero ? stickyHeader : !stickyHeader;
+  const mainBarTransparent = isOverHero && !stickyHeader;
+
   return (
     <div className="lg:hidden w-full">
       <div
-        aria-hidden={stickyHeader ? true : undefined}
+        aria-hidden={topStripVisible ? undefined : true}
         className={`border-b border-[#e4e4e7] bg-[#f2f7f5] overflow-hidden transition-[opacity,max-height,padding] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-          stickyHeader ? 'opacity-0 max-h-0 pointer-events-none' : 'opacity-100 max-h-24'
+          topStripVisible ? 'opacity-100 max-h-24' : 'opacity-0 max-h-0 pointer-events-none'
         }`}
       >
         <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#18181b] sm:px-4 sm:py-3 sm:text-[11px] sm:tracking-[0.16em]">
@@ -51,7 +55,11 @@ const MobileMenu = ({ stickyHeader }) => {
       </div>
 
       <div
-        className={`${stickyHeader ? 'fixed top-0 left-0 right-0 z-40 shadow-md' : ''} border-b border-[#e4e4e7] bg-[#f8faf9] px-4 py-3 transition-[background-color,border-color,box-shadow,opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none`}
+        className={`${stickyHeader ? 'fixed top-0 left-0 right-0 z-40 shadow-md' : ''} ${
+          mainBarTransparent
+            ? 'border-b border-transparent bg-transparent'
+            : 'border-b border-[#e4e4e7] bg-[#f8faf9]'
+        } px-4 py-3 transition-[background-color,border-color,box-shadow,opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none`}
       >
         <MobileMenuSlider />
       </div>
