@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { MapPin, Calendar, Users, ChevronRight, X } from 'lucide-react';
+import { MapPin, Calendar, Users, ChevronRight, X, Search } from 'lucide-react';
 import { useForm, Controller, useWatch } from 'react-hook-form';
 import { WeelpCalendar, formatRange } from '@/components/calendar';
 import { homeSearch } from '@/lib/services/global';
@@ -23,8 +23,9 @@ const FIELD_TRIGGER_CLASS =
 const PANEL_EXIT_MS = 160;
 const CLOSED_PANEL_A11Y_PROPS = { 'aria-hidden': true, inert: true };
 
-export default function FilterBar() {
+export default function FilterBar({ appearance = 'card' }) {
   const { data: allLocations, loading: locationsLoading } = useCitiesRegions();
+  const isPill = appearance === 'pill';
   const [showLocation, setShowLocation] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showHowMany, setShowHowMany] = useState(false);
@@ -230,19 +231,29 @@ export default function FilterBar() {
   };
 
   return (
-    <div className="relative w-full max-w-[860px]">
+    <div className={isPill ? 'relative w-full' : 'relative w-full max-w-[860px]'}>
       <form
         onSubmit={(event) => {
           event.preventDefault();
         }}
       >
         {/* Connected Filter Fields */}
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(210px,1fr)_minmax(0,1fr)] sm:gap-0">
+        <div
+          className={
+            isPill
+              ? 'grid grid-cols-1 items-stretch sm:grid-cols-[minmax(0,1fr)_minmax(210px,1fr)_minmax(0,1fr)_auto] sm:gap-0'
+              : 'grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(210px,1fr)_minmax(0,1fr)] sm:gap-0'
+          }
+        >
           {/* Where To */}
           <div className="flex-1 relative" ref={locationRef}>
             <div
               onClick={handleInputClick}
-              className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none"
+              className={
+                isPill
+                  ? 'flex items-center gap-3 bg-transparent px-6 h-14 cursor-pointer relative sm:border-l sm:border-[#e4e4e7] sm:first:border-l-0'
+                  : 'flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none'
+              }
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <MapPin size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
@@ -334,7 +345,11 @@ export default function FilterBar() {
                   closeGuestsPanel();
                 }
               }}
-              className={`${FIELD_TRIGGER_CLASS} sm:rounded-none`}
+              className={
+                isPill
+                  ? 'flex w-full items-center gap-3 bg-transparent px-6 h-14 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:border-l sm:border-[#e4e4e7]'
+                  : `${FIELD_TRIGGER_CLASS} sm:rounded-none`
+              }
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <Calendar size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
@@ -403,7 +418,11 @@ export default function FilterBar() {
                   closeCalendarPanel();
                 }
               }}
-              className={`${FIELD_TRIGGER_CLASS} sm:rounded-l-none`}
+              className={
+                isPill
+                  ? 'flex w-full items-center gap-3 bg-transparent px-6 h-14 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:border-l sm:border-[#e4e4e7]'
+                  : `${FIELD_TRIGGER_CLASS} sm:rounded-l-none`
+              }
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
               <Users size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
@@ -448,6 +467,18 @@ export default function FilterBar() {
               </div>
             )}
           </div>
+
+          {isPill && (
+            <div className="flex items-center justify-end p-2 sm:p-1.5">
+              <Link
+                href={buildSearchUrl(watchedWhereTo, watchedFrom, watchedhowMany)}
+                className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-weelp-sage-deep px-7 text-sm font-semibold text-white transition-colors duration-200 ease-out hover:bg-weelp-sage-deep/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none"
+              >
+                <Search className="size-4" strokeWidth={2} />
+                Search escapes
+              </Link>
+            </div>
+          )}
         </div>
       </form>
 
