@@ -54,7 +54,7 @@ const HeroSection = () => {
           </span>
         </span>
 
-        <p className="-mt-2 max-w-[28ch] text-base sm:text-lg leading-[1.4] text-weelp-ink/80">
+        <p className="-mt-2 w-fit max-w-[28ch] px-6 py-3 text-base leading-[1.4] text-weelp-ink/80 [background:radial-gradient(ellipse_at_center,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0.25)_45%,rgba(255,255,255,0)_75%)] sm:text-lg">
           <span className="weelp-rise-mask weelp-rise-mask--block">
             <span className="weelp-rise-item block" style={{ '--weelp-rise-delay': '320ms' }}>
               Beach stays, marina views, and easy city plans in one place.
