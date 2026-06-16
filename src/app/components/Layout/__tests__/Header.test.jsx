@@ -75,13 +75,13 @@ describe('Header', () => {
     expect(screen.getByTestId('desktop-menu')).toHaveAttribute('data-sticky', 'true');
   });
 
-  it('applies the 46px threshold on non-home routes', async () => {
+  it('applies the 80px threshold on non-home routes', async () => {
     usePathnameMock.mockReturnValue('/cities/dubai');
-    setScroll(40);
+    setScroll(70);
     render(<Header />);
     expect(screen.getByTestId('desktop-menu')).toHaveAttribute('data-sticky', 'false');
 
-    setScroll(60);
+    setScroll(120);
     await flushRaf();
     expect(screen.getByTestId('desktop-menu')).toHaveAttribute('data-sticky', 'true');
   });

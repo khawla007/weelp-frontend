@@ -32,7 +32,7 @@ const getInitials = (name) => {
 const DesktopMenu = ({ stickyHeader, variant = 'solid' }) => {
   const headerBarRef = useRef(null);
   const isOverHero = variant === 'over-hero';
-  const topStripVisible = isOverHero ? stickyHeader : !stickyHeader;
+  const topStripVisible = stickyHeader;
   const mainBarTransparent = isOverHero && !stickyHeader;
 
   useEffect(() => {

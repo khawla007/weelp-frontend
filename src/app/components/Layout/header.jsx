@@ -10,7 +10,7 @@ const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffec
 const Header = () => {
   const pathname = usePathname();
   const variant = pathname === '/' ? 'over-hero' : 'solid';
-  const threshold = variant === 'over-hero' ? 80 : 46;
+  const threshold = 80;
 
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -37,7 +37,7 @@ const Header = () => {
     };
   }, [threshold]);
 
-  const positionClass = variant === 'over-hero' ? 'fixed top-0 left-0 right-0 z-[99999]' : 'block w-full relative z-40 lg:sticky lg:top-[-47px] lg:z-[99999]';
+  const positionClass = variant === 'over-hero' ? 'fixed top-0 left-0 right-0 z-[99999]' : 'block w-full relative z-40 lg:sticky lg:top-0 lg:z-[99999]';
 
   return (
     <header className={positionClass} data-weelp-header-variant={variant}>
