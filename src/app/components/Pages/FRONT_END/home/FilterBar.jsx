@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { MapPin, Calendar, Users, ChevronRight, ChevronDown, X, Search } from 'lucide-react';
 import { useForm, Controller, useWatch } from 'react-hook-form';
+import * as PopoverPrimitive from '@radix-ui/react-popover';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { WeelpCalendar, formatRange } from '@/components/calendar';
 import { homeSearch } from '@/lib/services/global';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
@@ -11,7 +13,6 @@ import { useCitiesRegions } from '@/hooks/useCitiesRegions';
 
 const PANEL_MOTION_CLASS = 'transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none motion-reduce:transform-none';
 const OPEN_PANEL_MOTION_CLASS = 'opacity-100 translate-y-0 scale-100 animate-in fade-in-0 slide-in-from-top-1';
-const CLOSED_PANEL_MOTION_CLASS = 'pointer-events-none opacity-0 -translate-y-1 scale-[0.98]';
 const ROW_MOTION_CLASS =
   'animate-in fade-in-0 slide-in-from-top-1 transition-[opacity,transform] duration-150 ease-out opacity-100 translate-y-0 motion-reduce:transition-none motion-reduce:transform-none';
 const COUNT_MOTION_CLASS = 'transition-[opacity,transform] duration-150 ease-out motion-reduce:transition-none motion-reduce:transform-none';
@@ -20,8 +21,7 @@ const CONTROL_BUTTON_CLASS =
   'w-8 h-8 rounded-full border flex items-center justify-center hover:bg-zinc-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
 const FIELD_TRIGGER_CLASS =
   'flex w-full items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] text-left shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
-const PANEL_EXIT_MS = 160;
-const CLOSED_PANEL_A11Y_PROPS = { 'aria-hidden': true, inert: true };
+const PANEL_BASE_CLASS = 'border border-[#e4e4e7] bg-white shadow-lg rounded-lg';
 
 export default function FilterBar({ appearance = 'card' }) {
   const { data: allLocations, loading: locationsLoading } = useCitiesRegions();
@@ -32,8 +32,6 @@ export default function FilterBar({ appearance = 'card' }) {
   const [filteredLocations, setFilteredLocations] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [hasTyped, setHasTyped] = useState(false);
-  const locationRef = useRef(null);
-
   const [howMany, setHowMany] = useState({
     adults: 1,
     children: 0,
@@ -44,75 +42,11 @@ export default function FilterBar({ appearance = 'card' }) {
   const [showPreview, setShowPreview] = useState(false);
   const previewRef = useRef(null);
   const previewRequestIdRef = useRef(0);
-  const panelTimersRef = useRef({});
-  const [locationPresence, setLocationPresence] = useState({ isMounted: false, state: 'closed' });
-  const [calendarPresence, setCalendarPresence] = useState({ isMounted: false, state: 'closed' });
-  const [guestsPresence, setGuestsPresence] = useState({ isMounted: false, state: 'closed' });
 
-  const getPanelMotionClass = (state) => `${PANEL_MOTION_CLASS} ${state === 'open' ? OPEN_PANEL_MOTION_CLASS : CLOSED_PANEL_MOTION_CLASS}`;
-
-  const clearPanelTimer = useCallback((panelName) => {
-    if (panelTimersRef.current[panelName]) {
-      window.clearTimeout(panelTimersRef.current[panelName]);
-      panelTimersRef.current[panelName] = null;
-    }
-  }, []);
-
-  const openPanel = useCallback(
-    (panelName, setPanelPresence) => {
-      clearPanelTimer(panelName);
-      setPanelPresence({ isMounted: true, state: 'open' });
-    },
-    [clearPanelTimer],
-  );
-
-  const closePanel = useCallback(
-    (panelName, setPanelPresence) => {
-      clearPanelTimer(panelName);
-      setPanelPresence((current) => (current.isMounted ? { isMounted: true, state: 'closed' } : current));
-      panelTimersRef.current[panelName] = window.setTimeout(() => {
-        setPanelPresence({ isMounted: false, state: 'closed' });
-      }, PANEL_EXIT_MS);
-    },
-    [clearPanelTimer],
-  );
-
-  const openLocationPanel = useCallback(() => {
-    setShowLocation(true);
-    openPanel('location', setLocationPresence);
-  }, [openPanel]);
-
-  const closeLocationPanel = useCallback(() => {
-    setShowLocation(false);
-    closePanel('location', setLocationPresence);
-  }, [closePanel]);
-
-  const openCalendarPanel = useCallback(() => {
-    setShowCalendar(true);
-    openPanel('calendar', setCalendarPresence);
-  }, [openPanel]);
-
-  const closeCalendarPanel = useCallback(() => {
-    setShowCalendar(false);
-    closePanel('calendar', setCalendarPresence);
-  }, [closePanel]);
-
-  const openGuestsPanel = useCallback(() => {
-    setShowHowMany(true);
-    openPanel('guests', setGuestsPresence);
-  }, [openPanel]);
-
-  const closeGuestsPanel = useCallback(() => {
-    setShowHowMany(false);
-    closePanel('guests', setGuestsPresence);
-  }, [closePanel]);
-
-  useEffect(() => {
-    return () => {
-      Object.values(panelTimersRef.current).forEach((timer) => {
-        if (timer) window.clearTimeout(timer);
-      });
-    };
+  const openOnly = useCallback((panel) => {
+    setShowLocation(panel === 'location');
+    setShowCalendar(panel === 'calendar');
+    setShowHowMany(panel === 'guests');
   }, []);
 
   // Mirror the shared cities/regions list into the filtered state once it arrives,
@@ -122,17 +56,6 @@ export default function FilterBar({ appearance = 'card' }) {
       setFilteredLocations(allLocations);
     }
   }, [allLocations, hasTyped]);
-
-  // Close location dropdown on click outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (locationRef.current && !locationRef.current.contains(e.target)) {
-        closeLocationPanel();
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [closeLocationPanel]);
 
   // Build search query URL from current filter values
   const buildSearchUrl = useCallback((location, dateRange, guests) => {
@@ -210,7 +133,7 @@ export default function FilterBar({ appearance = 'card' }) {
     const value = e.target.value;
     setInputValue(value);
     setHasTyped(true);
-    openLocationPanel();
+    openOnly('location');
 
     if (value.trim() === '') {
       setFilteredLocations(allLocations);
@@ -222,9 +145,7 @@ export default function FilterBar({ appearance = 'card' }) {
   };
 
   const handleInputClick = () => {
-    openLocationPanel();
-    closeCalendarPanel();
-    closeGuestsPanel();
+    openOnly('location');
     if (!hasTyped) {
       setFilteredLocations(allLocations);
     }
@@ -246,7 +167,18 @@ export default function FilterBar({ appearance = 'card' }) {
           }
         >
           {/* Where To */}
-          <div className="flex-1 relative" ref={locationRef}>
+          <Popover
+            open={showLocation}
+            onOpenChange={(open) => {
+              setShowLocation(open);
+              if (open) {
+                setShowCalendar(false);
+                setShowHowMany(false);
+              }
+            }}
+          >
+            <PopoverPrimitive.Anchor asChild>
+              <div className="flex-1 relative">
             <div
               onClick={handleInputClick}
               className={
@@ -297,220 +229,200 @@ export default function FilterBar({ appearance = 'card' }) {
               )}
             </div>
 
-            {/* Location Dropdown */}
-            {locationPresence.isMounted && (
-              <div
-                data-testid="filter-location-panel"
-                id="filter-location-panel"
-                data-state={locationPresence.state}
-                role="listbox"
-                aria-label="Location suggestions"
-                {...(locationPresence.state === 'closed' ? CLOSED_PANEL_A11Y_PROPS : {})}
-                className={`absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border max-h-72 overflow-y-auto z-[70] ${getPanelMotionClass(locationPresence.state)}`}
-              >
-                {filteredLocations.length > 0 ? (
-                  filteredLocations.map((loc, index) => (
-                    <button
-                      key={loc.id}
-                      type="button"
-                      role="option"
-                      aria-label={`${loc.name} ${loc.type}`}
-                      aria-selected={inputValue === loc.name ? 'true' : 'false'}
-                      onClick={() => {
-                        const locValue = loc.slug || loc.name;
-                        setValue('whereTo', locValue);
-                        setInputValue(loc.name);
-                        setHasTyped(false);
-                        setFilteredLocations(allLocations);
-                        closeLocationPanel();
-                        fetchPreviewResults(locValue, watchedFrom, howMany);
-                      }}
-                      className={`flex w-full items-center justify-between px-4 py-2 hover:bg-zinc-100 cursor-pointer text-left text-sm ${ROW_MOTION_CLASS}`}
-                      style={{ transitionDelay: `${index * 35}ms` }}
-                    >
-                      <div className="flex items-center gap-2">
-                        <MapPin size={14} className="text-zinc-400 flex-shrink-0" />
-                        <span>{loc.name}</span>
-                      </div>
-                      <span className="text-[12px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded">{loc.type}</span>
-                    </button>
-                  ))
-                ) : locationsLoading ? null : (
-                  <div className="px-4 py-3 text-sm text-zinc-400 text-center">No cities match that yet.</div>
-                )}
               </div>
-            )}
-          </div>
+            </PopoverPrimitive.Anchor>
+            <PopoverContent
+              data-testid="filter-location-panel"
+              id="filter-location-panel"
+              role="listbox"
+              aria-label="Location suggestions"
+              align="start"
+              sideOffset={4}
+              collisionPadding={16}
+              onOpenAutoFocus={(event) => event.preventDefault()}
+              className={`${PANEL_BASE_CLASS} w-[var(--radix-popover-trigger-width)] min-w-[260px] max-h-[min(18rem,var(--radix-popover-content-available-height,18rem))] overflow-y-auto p-0 text-zinc-950`}
+            >
+              {filteredLocations.length > 0 ? (
+                filteredLocations.map((loc, index) => (
+                  <button
+                    key={loc.id}
+                    type="button"
+                    role="option"
+                    aria-label={`${loc.name} ${loc.type}`}
+                    aria-selected={inputValue === loc.name ? 'true' : 'false'}
+                    onClick={() => {
+                      const locValue = loc.slug || loc.name;
+                      setValue('whereTo', locValue);
+                      setInputValue(loc.name);
+                      setHasTyped(false);
+                      setFilteredLocations(allLocations);
+                      setShowLocation(false);
+                      fetchPreviewResults(locValue, watchedFrom, howMany);
+                    }}
+                    className={`flex w-full items-center justify-between px-4 py-2 hover:bg-zinc-100 cursor-pointer text-left text-sm ${ROW_MOTION_CLASS}`}
+                    style={{ transitionDelay: `${index * 35}ms` }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <MapPin size={14} className="text-zinc-400 flex-shrink-0" />
+                      <span>{loc.name}</span>
+                    </div>
+                    <span className="text-[12px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded">{loc.type}</span>
+                  </button>
+                ))
+              ) : locationsLoading ? null : (
+                <div className="px-4 py-3 text-sm text-zinc-400 text-center">No cities match that yet.</div>
+              )}
+            </PopoverContent>
+          </Popover>
 
           {/* When */}
-          <div className="flex-1 relative">
-            <button
-              type="button"
-              aria-label="Choose dates"
-              aria-expanded={showCalendar ? 'true' : 'false'}
-              aria-haspopup="dialog"
-              onClick={() => {
-                const opening = !showCalendar;
-                if (opening) {
-                  openCalendarPanel();
-                } else {
-                  closeCalendarPanel();
-                }
-                closeLocationPanel();
-                closeGuestsPanel();
-              }}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault();
-                  openCalendarPanel();
-                  closeLocationPanel();
-                  closeGuestsPanel();
-                }
-              }}
-              className={
-                isPill
-                  ? 'relative flex w-full items-center gap-3 bg-transparent px-7 h-24 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-[#e4e4e7]'
-                  : `${FIELD_TRIGGER_CLASS} sm:rounded-none`
+          <Popover
+            open={showCalendar}
+            onOpenChange={(open) => {
+              setShowCalendar(open);
+              if (open) {
+                setShowLocation(false);
+                setShowHowMany(false);
               }
-              style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
-            >
-              <Calendar size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
-              {isPill ? (
-                <span className="flex flex-1 flex-col leading-tight">
-                  <span className="text-base font-semibold text-weelp-sage-deep">When?</span>
-                  <span className="block min-w-[140px] truncate whitespace-nowrap text-sm font-normal" style={{ color: '#71717a' }}>
-                    {watchedFrom?.from && watchedFrom?.to ? formatRange(new Date(watchedFrom.from), new Date(watchedFrom.to)) : 'Add dates'}
-                  </span>
-                </span>
-              ) : (
-                <span className="block min-w-[180px] truncate whitespace-nowrap text-sm font-medium" style={{ color: '#71717a' }}>
-                  {watchedFrom?.from && watchedFrom?.to ? formatRange(new Date(watchedFrom.from), new Date(watchedFrom.to)) : 'When?'}
-                </span>
-              )}
-            </button>
-
-            {/* Calendar Dropdown */}
-            {calendarPresence.isMounted && (
-              <div
-                data-testid="filter-calendar-panel"
-                id="filter-calendar-panel"
-                data-state={calendarPresence.state}
-                role="dialog"
-                aria-label="Date selector"
-                {...(calendarPresence.state === 'closed' ? CLOSED_PANEL_A11Y_PROPS : {})}
-                onMouseLeave={closeCalendarPanel}
-                className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-lg shadow-lg border p-2 z-[70] ${getPanelMotionClass(calendarPresence.state)}`}
-              >
-                <Controller
-                  name="dateRange"
-                  control={control}
-                  render={({ field }) => (
-                    <WeelpCalendar
-                      mode="range"
-                      months={2}
-                      selected={field.value}
-                      disablePast
-                      onSelect={(value) => {
-                        field.onChange(value);
-                        if (value?.from && value?.to && value.from.getTime() !== value.to.getTime()) {
-                          closeCalendarPanel();
-                          fetchPreviewResults(watchedWhereTo, value, howMany);
-                        }
-                      }}
-                      showClear
-                    />
+            }}
+          >
+            <div className="flex-1 relative">
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Choose dates"
+                  className={
+                    isPill
+                      ? 'relative flex w-full items-center gap-3 bg-transparent px-7 h-24 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-[#e4e4e7]'
+                      : `${FIELD_TRIGGER_CLASS} sm:rounded-none`
+                  }
+                  style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
+                >
+                  <Calendar size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
+                  {isPill ? (
+                    <span className="flex flex-1 flex-col leading-tight">
+                      <span className="text-base font-semibold text-weelp-sage-deep">When?</span>
+                      <span className="block min-w-[140px] truncate whitespace-nowrap text-sm font-normal" style={{ color: '#71717a' }}>
+                        {watchedFrom?.from && watchedFrom?.to ? formatRange(new Date(watchedFrom.from), new Date(watchedFrom.to)) : 'Add dates'}
+                      </span>
+                    </span>
+                  ) : (
+                    <span className="block min-w-[180px] truncate whitespace-nowrap text-sm font-medium" style={{ color: '#71717a' }}>
+                      {watchedFrom?.from && watchedFrom?.to ? formatRange(new Date(watchedFrom.from), new Date(watchedFrom.to)) : 'When?'}
+                    </span>
                   )}
-                />
-              </div>
-            )}
-          </div>
+                </button>
+              </PopoverTrigger>
+            </div>
+            <PopoverContent
+              data-testid="filter-calendar-panel"
+              id="filter-calendar-panel"
+              role="dialog"
+              aria-label="Date selector"
+              align="center"
+              sideOffset={4}
+              collisionPadding={16}
+              className={`${PANEL_BASE_CLASS} w-auto max-w-[min(640px,calc(100vw-2rem))] p-2 text-zinc-950`}
+            >
+              <Controller
+                name="dateRange"
+                control={control}
+                render={({ field }) => (
+                  <WeelpCalendar
+                    mode="range"
+                    months={2}
+                    selected={field.value}
+                    disablePast
+                    onSelect={(value) => {
+                      field.onChange(value);
+                      if (value?.from && value?.to && value.from.getTime() !== value.to.getTime()) {
+                        setShowCalendar(false);
+                        fetchPreviewResults(watchedWhereTo, value, howMany);
+                      }
+                    }}
+                    showClear
+                  />
+                )}
+              />
+            </PopoverContent>
+          </Popover>
 
           {/* How Many */}
-          <div className="flex-1 relative">
-            <button
-              type="button"
-              aria-label="Choose guests"
-              aria-expanded={showHowMany ? 'true' : 'false'}
-              aria-haspopup="dialog"
-              onClick={() => {
-                if (showHowMany) {
-                  closeGuestsPanel();
-                } else {
-                  openGuestsPanel();
-                }
-                closeLocationPanel();
-                closeCalendarPanel();
-              }}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault();
-                  openGuestsPanel();
-                  closeLocationPanel();
-                  closeCalendarPanel();
-                }
-              }}
-              className={
-                isPill
-                  ? 'relative flex w-full items-center gap-3 bg-transparent px-7 h-24 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-[#e4e4e7]'
-                  : `${FIELD_TRIGGER_CLASS} sm:rounded-l-none`
+          <Popover
+            open={showHowMany}
+            onOpenChange={(open) => {
+              setShowHowMany(open);
+              if (open) {
+                setShowLocation(false);
+                setShowCalendar(false);
               }
-              style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
-            >
-              <Users size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
-              {isPill ? (
-                <span className="flex flex-1 flex-col leading-tight">
-                  <span className="text-base font-semibold text-weelp-sage-deep">Who?</span>
-                  <span data-testid="filter-guest-total" className={`text-sm font-normal ${COUNT_MOTION_CLASS}`} style={{ color: '#71717a' }}>
-                    <span key={total || 1} className={COUNT_NUMBER_MOTION_CLASS}>
-                      {total || 1}
+            }}
+          >
+            <div className="flex-1 relative">
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Choose guests"
+                  className={
+                    isPill
+                      ? 'relative flex w-full items-center gap-3 bg-transparent px-7 h-24 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-[#e4e4e7]'
+                      : `${FIELD_TRIGGER_CLASS} sm:rounded-l-none`
+                  }
+                  style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
+                >
+                  <Users size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
+                  {isPill ? (
+                    <span className="flex flex-1 flex-col leading-tight">
+                      <span className="text-base font-semibold text-weelp-sage-deep">Who?</span>
+                      <span data-testid="filter-guest-total" className={`text-sm font-normal ${COUNT_MOTION_CLASS}`} style={{ color: '#71717a' }}>
+                        <span key={total || 1} className={COUNT_NUMBER_MOTION_CLASS}>
+                          {total || 1}
+                        </span>
+                        {` ${total === 1 ? 'Guest' : 'Guests'}`}
+                      </span>
                     </span>
-                    {` ${total === 1 ? 'Guest' : 'Guests'}`}
-                  </span>
-                </span>
-              ) : (
-                <span data-testid="filter-guest-total" className={`text-sm font-medium ${COUNT_MOTION_CLASS}`} style={{ color: '#71717a' }}>
-                  <span key={total || 1} className={COUNT_NUMBER_MOTION_CLASS}>
-                    {total || 1}
-                  </span>
-                  {` ${total === 1 ? 'Guest' : 'Guests'}`}
-                </span>
-              )}
-              {isPill && <ChevronDown size={18} className="ml-auto flex-shrink-0" style={{ color: '#71717a' }} />}
-            </button>
-
-            {/* Guests Dropdown */}
-            {guestsPresence.isMounted && (
-              <div
-                data-testid="filter-guests-panel"
-                id="filter-guests-panel"
-                data-state={guestsPresence.state}
-                role="dialog"
-                aria-label="Guest selector"
-                {...(guestsPresence.state === 'closed' ? CLOSED_PANEL_A11Y_PROPS : {})}
-                onMouseLeave={closeGuestsPanel}
-                className={`absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-4 z-[70] w-64 ${getPanelMotionClass(guestsPresence.state)}`}
-              >
-                <p className="text-[12px] text-[#52525b] mb-3 pb-2 border-b border-[#e4e4e7] leading-snug">Adults 13+, children 2 to 12, infants under 2.</p>
-                {['adults', 'children', 'infants'].map((type) => (
-                  <div key={type} className="flex justify-between items-center mb-3">
-                    <div>
-                      <span className="font-medium capitalize text-sm">{type}</span>
-                      <span className="text-xs text-zinc-500 block">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <button type="button" aria-label={`Decrease ${type}`} onClick={() => handleDecrement(type)} className={CONTROL_BUTTON_CLASS}>
-                        -
-                      </button>
-                      <span className={`w-6 text-center ${COUNT_MOTION_CLASS}`}>{howMany[type]}</span>
-                      <button type="button" aria-label={`Increase ${type}`} onClick={() => handleIncrement(type)} className={CONTROL_BUTTON_CLASS}>
-                        +
-                      </button>
-                    </div>
+                  ) : (
+                    <span data-testid="filter-guest-total" className={`text-sm font-medium ${COUNT_MOTION_CLASS}`} style={{ color: '#71717a' }}>
+                      <span key={total || 1} className={COUNT_NUMBER_MOTION_CLASS}>
+                        {total || 1}
+                      </span>
+                      {` ${total === 1 ? 'Guest' : 'Guests'}`}
+                    </span>
+                  )}
+                  {isPill && <ChevronDown size={18} className="ml-auto flex-shrink-0" style={{ color: '#71717a' }} />}
+                </button>
+              </PopoverTrigger>
+            </div>
+            <PopoverContent
+              data-testid="filter-guests-panel"
+              id="filter-guests-panel"
+              role="dialog"
+              aria-label="Guest selector"
+              align="end"
+              sideOffset={4}
+              collisionPadding={16}
+              className={`${PANEL_BASE_CLASS} w-64 p-4 text-zinc-950`}
+            >
+              <p className="text-[12px] text-[#52525b] mb-3 pb-2 border-b border-[#e4e4e7] leading-snug">Adults 13+, children 2 to 12, infants under 2.</p>
+              {['adults', 'children', 'infants'].map((type) => (
+                <div key={type} className="flex justify-between items-center mb-3">
+                  <div>
+                    <span className="font-medium capitalize text-sm">{type}</span>
+                    <span className="text-xs text-zinc-500 block">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
+                  <div className="flex items-center gap-3">
+                    <button type="button" aria-label={`Decrease ${type}`} onClick={() => handleDecrement(type)} className={CONTROL_BUTTON_CLASS}>
+                      -
+                    </button>
+                    <span className={`w-6 text-center ${COUNT_MOTION_CLASS}`}>{howMany[type]}</span>
+                    <button type="button" aria-label={`Increase ${type}`} onClick={() => handleIncrement(type)} className={CONTROL_BUTTON_CLASS}>
+                      +
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </PopoverContent>
+          </Popover>
 
           {isPill && (
             <div className="flex items-center justify-end pr-4 sm:pr-5">
