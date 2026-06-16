@@ -179,56 +179,55 @@ export default function FilterBar({ appearance = 'card' }) {
           >
             <PopoverPrimitive.Anchor asChild>
               <div className="flex-1 relative">
-            <div
-              onClick={handleInputClick}
-              className={
-                isPill
-                  ? 'relative flex items-center gap-3 bg-transparent px-7 h-24 cursor-pointer sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-[#e4e4e7] sm:first:before:hidden'
-                  : 'flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none'
-              }
-              style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
-            >
-              <MapPin size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
-              {isPill ? (
-                <div className="flex flex-1 flex-col leading-tight">
-                  <span className="text-base font-semibold text-weelp-sage-deep">Where to?</span>
-                  <input
-                    type="text"
-                    placeholder="Search destinations"
-                    aria-label="Where to?"
-                    aria-autocomplete="list"
-                    aria-controls="filter-location-panel"
-                    aria-expanded={showLocation ? 'true' : 'false'}
-                    aria-haspopup="listbox"
-                    role="combobox"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    onClick={handleInputClick}
-                    className="w-full bg-transparent border-0 focus:outline-none text-sm font-normal placeholder:text-[#71717a]"
-                    style={{ color: '#71717a', fontFamily: 'inherit' }}
-                    autoComplete="off"
-                  />
-                </div>
-              ) : (
-                <input
-                  type="text"
-                  placeholder="Where to?"
-                  aria-label="Where to?"
-                  aria-autocomplete="list"
-                  aria-controls="filter-location-panel"
-                  aria-expanded={showLocation ? 'true' : 'false'}
-                  aria-haspopup="listbox"
-                  role="combobox"
-                  value={inputValue}
-                  onChange={handleInputChange}
+                <div
                   onClick={handleInputClick}
-                  className="w-full bg-transparent border-0 focus:outline-none text-sm font-medium placeholder:text-[#71717a]"
-                  style={{ color: '#71717a', fontFamily: 'inherit' }}
-                  autoComplete="off"
-                />
-              )}
-            </div>
-
+                  className={
+                    isPill
+                      ? 'relative flex items-center gap-3 bg-transparent px-7 h-24 cursor-pointer sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-[#e4e4e7] sm:first:before:hidden'
+                      : 'flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none'
+                  }
+                  style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
+                >
+                  <MapPin size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
+                  {isPill ? (
+                    <div className="flex flex-1 flex-col leading-tight">
+                      <span className="text-base font-semibold text-weelp-sage-deep">Where to?</span>
+                      <input
+                        type="text"
+                        placeholder="Search destinations"
+                        aria-label="Where to?"
+                        aria-autocomplete="list"
+                        aria-controls="filter-location-panel"
+                        aria-expanded={showLocation ? 'true' : 'false'}
+                        aria-haspopup="listbox"
+                        role="combobox"
+                        value={inputValue}
+                        onChange={handleInputChange}
+                        onClick={handleInputClick}
+                        className="w-full bg-transparent border-0 focus:outline-none text-sm font-normal placeholder:text-[#71717a]"
+                        style={{ color: '#71717a', fontFamily: 'inherit' }}
+                        autoComplete="off"
+                      />
+                    </div>
+                  ) : (
+                    <input
+                      type="text"
+                      placeholder="Where to?"
+                      aria-label="Where to?"
+                      aria-autocomplete="list"
+                      aria-controls="filter-location-panel"
+                      aria-expanded={showLocation ? 'true' : 'false'}
+                      aria-haspopup="listbox"
+                      role="combobox"
+                      value={inputValue}
+                      onChange={handleInputChange}
+                      onClick={handleInputClick}
+                      className="w-full bg-transparent border-0 focus:outline-none text-sm font-medium placeholder:text-[#71717a]"
+                      style={{ color: '#71717a', fontFamily: 'inherit' }}
+                      autoComplete="off"
+                    />
+                  )}
+                </div>
               </div>
             </PopoverPrimitive.Anchor>
             <PopoverContent
