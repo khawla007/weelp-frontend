@@ -27,19 +27,21 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
     <Link
       href={href}
       style={style}
-      className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-white border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] hover:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${className}`}
+      className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-white transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${className}`}
     >
-      {/* Image */}
-      <div className="relative h-[190px] w-full overflow-hidden bg-[#f2f7f5] sm:h-[200px] lg:h-[217px]">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          sizes="(max-width: 640px) 90vw, (max-width: 1024px) 33vw, (max-width: 1440px) 25vw, 20vw"
-          placeholder="blur"
-          blurDataURL={IMAGE_BLUR_DATA_URL}
-          className="object-cover transition duration-500 group-hover:scale-105 motion-reduce:group-hover:scale-100"
-        />
+      {/* Image — inset inside card with own rounded corners to match reference */}
+      <div className="px-3 pt-3">
+        <div className="relative h-[175px] w-full overflow-hidden rounded-lg bg-[#f2f7f5] sm:h-[185px] lg:h-[200px]">
+          <Image
+            src={image}
+            alt={title}
+            fill
+            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 33vw, (max-width: 1440px) 25vw, 20vw"
+            placeholder="blur"
+            blurDataURL={IMAGE_BLUR_DATA_URL}
+            className="object-cover transition duration-500 group-hover:scale-105 motion-reduce:group-hover:scale-100"
+          />
+        </div>
       </div>
 
       {/* Content */}
@@ -68,16 +70,16 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
 
         {isFull && excerpt && <p className="text-sm leading-relaxed text-[#71717a] line-clamp-2">{excerpt}</p>}
 
-        {/* Divider + Price row — full variant */}
+        {/* Divider + Price row — full variant. Equal gap above bar and below bar via parent gap-1.5. */}
         {isFull && price && (
           <>
-            <div className="mt-auto border-t border-[#e4e4e7]" />
-            <div className="flex items-center justify-between pt-1">
+            <div className="border-t border-[#e4e4e7]" />
+            <div className="flex items-center justify-between">
               <div className="flex flex-col">
                 <span className="text-sm lg:text-[15.6px] leading-[1.37] text-[#71717a]" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontWeight: 400 }}>
                   From
                 </span>
-                <span className="text-sm lg:text-[15.6px] leading-[1.37] text-[#71717a]" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontWeight: 400 }}>
+                <span className="text-sm lg:text-[15.6px] leading-[1.37] text-[#18181b]" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontWeight: 700 }}>
                   {price}
                 </span>
               </div>
