@@ -62,11 +62,11 @@ const HeroSection = () => {
           </span>
         </p>
 
-        <div className="weelp-hero-ui-rise w-full max-w-[920px]" style={{ '--weelp-motion-delay': '400ms', marginTop: '-6px' }}>
+        <div className="weelp-hero-ui-rise relative z-20 w-full max-w-[920px]" style={{ '--weelp-motion-delay': '400ms', marginTop: '-6px' }}>
           <HeroSearchPill />
         </div>
 
-        <ul className="weelp-hero-ui-rise flex w-full max-w-[920px] flex-wrap items-center gap-x-12 gap-y-4 rounded-2xl bg-[#588f7a]/30 px-6 py-4" style={{ '--weelp-motion-delay': '480ms' }}>
+        <ul className="weelp-hero-ui-rise relative z-10 flex w-full max-w-[920px] flex-wrap items-center gap-x-12 gap-y-4 rounded-2xl bg-[#588f7a]/30 px-6 py-4" style={{ '--weelp-motion-delay': '480ms' }}>
           {TRUST_ITEMS.map(({ Icon, label, sub }) => (
             <li key={label} className="flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-weelp-sage-deep/70 text-white">
