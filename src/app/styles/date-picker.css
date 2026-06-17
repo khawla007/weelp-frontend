@@ -61,10 +61,14 @@
 }
 
 /* Default `.rdp-root` ships at one-month width; grow to fit
-   the requested numberOfMonths so dual-month renders side-by-side. */
+   the requested numberOfMonths so dual-month renders side-by-side.
+   Also re-override `--rdp-disabled-opacity` here because `.rdp-root` is the
+   closest ancestor to `.rdp-disabled` and otherwise wins the cascade for
+   custom-property lookups, reintroducing the 0.5 fade. */
 .weelp-calendar .rdp-root {
   width: max-content;
   max-width: 100%;
+  --rdp-disabled-opacity: 1;
 }
 
 .weelp-calendar .rdp-months {
@@ -240,8 +244,14 @@
   @apply font-medium;
 }
 
+/* Past-date buttons own their muted color; we neutralize the two ambient
+   fades that would otherwise stack and render them near-invisible:
+   - global `button:disabled { opacity: 0.5 }` from app-level styles
+   - default `.rdp-disabled` opacity (already overridden via --rdp-disabled-opacity
+     on `.rdp-root` above; reasserted here for safety against future changes). */
 .weelp-calendar .rdp-disabled .rdp-day_button {
-  @apply text-neutral-300 hover:bg-transparent cursor-not-allowed;
+  @apply text-neutral-500 hover:bg-transparent cursor-not-allowed;
+  opacity: 1;
 }
 
 /* Outside days hidden (showOutsideDays={false}); rule kept as safety. */
