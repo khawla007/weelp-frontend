@@ -247,16 +247,11 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
             {errors.dateRange && <p className="text-red-500 text-xs mt-1 px-1">{errors.dateRange.message}</p>}
 
             {showCalendar && (
-              <div
-                onMouseLeave={() => setShowCalendar(false)}
-                className="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-2xl shadow-lg border border-zinc-100 p-2 z-[110]"
-              >
+              <div onMouseLeave={() => setShowCalendar(false)} className="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-2xl shadow-lg border border-zinc-100 p-2 z-[110]">
                 <Controller
                   name="dateRange"
                   control={control}
-                  render={({ field }) => (
-                    <WeelpCalendar mode="range" months={2} selected={field.value} disablePast onSelect={(value) => field.onChange(value)} showClear />
-                  )}
+                  render={({ field }) => <WeelpCalendar mode="range" months={2} selected={field.value} disablePast onSelect={(value) => field.onChange(value)} showClear />}
                 />
               </div>
             )}
@@ -277,10 +272,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
             {errors.howMany && <p className="text-red-500 text-xs mt-1 px-1">{errors.howMany?.adults?.message || ''}</p>}
 
             {showHowMany && (
-              <div
-                onMouseLeave={() => setShowHowMany(false)}
-                className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border border-zinc-100 p-4 z-[110] w-64"
-              >
+              <div onMouseLeave={() => setShowHowMany(false)} className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border border-zinc-100 p-4 z-[110] w-64">
                 {['adults', 'children', 'infants'].map((type) => (
                   <div key={type} className="flex justify-between items-center mb-3 last:mb-0 gap-6">
                     <div>
