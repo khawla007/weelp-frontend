@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronDown, Globe, Headphones, MapPin, ShoppingCart, Smartphone } from 'lucide-react';
+import { ChevronDown, Globe, Headphones, MapPin, Search, ShoppingCart, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { createPortal } from 'react-dom';
@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { Badge } from '@/components/ui/badge';
 import MiniCartNew from '../Modals/MiniCartNew';
+import ModalForm from '../Modals/ModalForm';
 import SubmenuAccount from '../Modals/SubmenuAccount';
 import { HEADER_NAV_ITEMS, HEADER_PRIMARY_META, HEADER_SECONDARY_META } from './shellContent';
 import NotificationBell from './NotificationBell';
@@ -32,7 +33,8 @@ const getInitials = (name) => {
 const DesktopMenu = ({ stickyHeader, variant = 'solid' }) => {
   const headerBarRef = useRef(null);
   const isOverHero = variant === 'over-hero';
-  const topStripVisible = stickyHeader;
+  const topStripVisible = !stickyHeader;
+  const topStripOverHero = isOverHero && topStripVisible;
   const mainBarTransparent = isOverHero && !stickyHeader;
 
   useEffect(() => {
@@ -52,28 +54,28 @@ const DesktopMenu = ({ stickyHeader, variant = 'solid' }) => {
     <div className="hidden lg:block w-full">
       <div
         aria-hidden={topStripVisible ? undefined : true}
-        className={`overflow-hidden border-b border-[#ededed] bg-white transition-[max-height,opacity] duration-200 ease-out motion-reduce:transition-none ${
-          topStripVisible ? 'max-h-[46px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
-        }`}
+        className={`overflow-hidden transition-[max-height,opacity,background-color,border-color] duration-200 ease-out motion-reduce:transition-none ${
+          topStripVisible ? (topStripOverHero ? 'border-b border-transparent bg-transparent' : 'border-b border-[#ededed] bg-white') : 'border-b-0 bg-transparent'
+        } ${topStripVisible ? 'max-h-[46px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}
       >
-        <div className="mx-auto flex h-[46px] w-full items-center justify-between gap-4 px-4 md:px-8 xl:px-[60px]">
+        <div className="mx-auto flex h-[46px] w-full items-center justify-between gap-4 px-4 md:px-8 xl:px-[60px] text-[#18181b]">
           <div className="flex items-center gap-4">
-            <div className="inline-flex items-center gap-2 text-[14px] text-[#18181b]">
-              <Smartphone className="size-[18px] text-[#18181b]" />
+            <div className="inline-flex items-center gap-2 text-[14px]">
+              <Smartphone className="size-[18px]" />
               <span>{HEADER_PRIMARY_META[0].label}</span>
             </div>
-            <div className="inline-flex items-center gap-2 text-[14px] text-[#18181b]">
-              <Headphones className="size-[18px] text-[#18181b]" />
+            <div className="inline-flex items-center gap-2 text-[14px]">
+              <Headphones className="size-[18px]" />
               <span>{HEADER_PRIMARY_META[1].label}</span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="inline-flex items-center gap-[13px] text-[14px] text-[#18181b]">
-              <Globe className="size-[18px] text-[#18181b]" />
+            <div className="inline-flex items-center gap-[13px] text-[14px]">
+              <Globe className="size-[18px]" />
               <span>{HEADER_SECONDARY_META[0]}</span>
             </div>
-            <div className="inline-flex items-center gap-[13px] text-[14px] text-[#18181b]">
+            <div className="inline-flex items-center gap-[13px] text-[14px]">
               <span>{HEADER_SECONDARY_META[1]}</span>
             </div>
           </div>
@@ -104,7 +106,7 @@ const DesktopMenu = ({ stickyHeader, variant = 'solid' }) => {
 
             <NavMenuDesktop />
 
-            <HeaderAccount />
+            <HeaderAccount overHero={mainBarTransparent} />
           </div>
         </div>
       </div>
@@ -318,13 +320,39 @@ const NavMenuDesktop = () => {
   );
 };
 
-export const HeaderAccount = () => {
+export const HeaderAccount = ({ overHero = false }) => {
   const { data: session } = useSession();
   const isMiniCartOpen = useMiniCartStore((state) => state.isMiniCartOpen);
   const setMiniCartOpen = useMiniCartStore((state) => state.setMiniCartOpen);
   const cartItems = useMiniCartStore((state) => state.cartItems);
   const cartItemCount = cartItems?.length ?? 0;
-  const [showSubmenu, setShowSubmenu] = useState(null);
+  const [showSubmenu, setShowSubmenu] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const submenuOpenTimer = useRef(null);
+  const submenuCloseTimer = useRef(null);
+
+  const iconChip = overHero ? 'bg-white/85 backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)]' : '';
+
+  const clearSubmenuTimers = useCallback(() => {
+    if (submenuOpenTimer.current) clearTimeout(submenuOpenTimer.current);
+    if (submenuCloseTimer.current) clearTimeout(submenuCloseTimer.current);
+  }, []);
+
+  const openSubmenu = useCallback(() => {
+    clearSubmenuTimers();
+    setShowSubmenu(true);
+  }, [clearSubmenuTimers]);
+
+  const scheduleCloseSubmenu = useCallback(() => {
+    clearSubmenuTimers();
+    submenuCloseTimer.current = setTimeout(() => setShowSubmenu(false), 180);
+  }, [clearSubmenuTimers]);
+
+  useEffect(() => () => clearSubmenuTimers(), [clearSubmenuTimers]);
+
+  const handleShowForm = () => {
+    setShowForm((prev) => !prev);
+  };
 
   // Extract user data
   const user = session?.user || {};
@@ -332,11 +360,6 @@ export const HeaderAccount = () => {
   const userInitials = getInitials(name);
   const avatarSrc = avatar;
   const isLoggedIn = !!session;
-
-  // for handle Submenu
-  const handleSubmenu = () => {
-    setShowSubmenu(!showSubmenu);
-  };
 
   // HanldeShowCart
   const handleShowCart = () => {
@@ -349,20 +372,18 @@ export const HeaderAccount = () => {
         <li>
           <button
             type="button"
-            aria-label="Language and currency, English US dollars"
-            className="inline-flex h-11 items-center gap-2 rounded-full px-3 text-[14px] text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+            aria-label="Search trips"
+            onClick={() => setShowForm(true)}
+            className={`relative flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${iconChip}`}
           >
-            <Globe className="size-[18px]" strokeWidth={1.5} />
-            <span>
-              {HEADER_SECONDARY_META[0]} ({HEADER_SECONDARY_META[1]})
-            </span>
+            <Search className="size-5" strokeWidth={1.5} />
           </button>
         </li>
         <li>
           <button
             type="button"
             aria-label={cartItemCount > 0 ? `Open cart, ${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'}` : 'Open cart'}
-            className="relative flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+            className={`relative flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${iconChip}`}
             onClick={handleShowCart}
           >
             <span className="relative inline-flex">
@@ -375,16 +396,16 @@ export const HeaderAccount = () => {
             </span>
           </button>
         </li>
-        <li>
+        <li className={overHero ? `flex h-11 w-11 items-center justify-center rounded-full ${iconChip}` : undefined}>
           <NotificationBell />
         </li>
-        <li>
+        <li onMouseEnter={openSubmenu} onMouseLeave={scheduleCloseSubmenu}>
           <button
             type="button"
             aria-label="Open account menu"
             aria-expanded={!!showSubmenu}
-            className="flex h-11 w-[65px] items-center justify-center gap-2 rounded-[30px] border border-[#e4e4e7] transition-[background-color,border-color,color] duration-200 ease-out motion-reduce:transition-none hover:bg-[#f4f4f5] overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
-            onClick={handleSubmenu}
+            onFocus={openSubmenu}
+            className={`flex h-11 w-[65px] items-center justify-center gap-2 rounded-[30px] border border-[#e4e4e7] overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${iconChip}`}
           >
             {isLoggedIn && avatarSrc ? (
               <img src={avatarSrc} alt={name || 'user'} className="h-8 w-8 rounded-full object-cover shrink-0" />
@@ -410,10 +431,17 @@ export const HeaderAccount = () => {
       </ul>
 
       {/* AccountSubMenu */}
-      {showSubmenu && <SubmenuAccount showSubmenu={showSubmenu} setShowSubmenu={setShowSubmenu} />}
+      {showSubmenu && (
+        <div onMouseEnter={openSubmenu} onMouseLeave={scheduleCloseSubmenu}>
+          <SubmenuAccount showSubmenu={showSubmenu} setShowSubmenu={setShowSubmenu} />
+        </div>
+      )}
 
       {/* Mini Cart With React Portal */}
       {isMiniCartOpen && createPortal(<MiniCartNew />, document.body)}
+
+      {/* Search Modal */}
+      {showForm && createPortal(<ModalForm showForm={showForm} setShowForm={setShowForm} handleShowForm={handleShowForm} />, document.body)}
     </div>
   );
 };
