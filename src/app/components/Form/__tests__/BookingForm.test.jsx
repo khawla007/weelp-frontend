@@ -38,7 +38,7 @@ describe('BookingForm', () => {
     expect(searchButton).toHaveClass('bg-white', 'text-Bluewhale');
     expect(searchButton).not.toHaveClass('bg-[#18181b]');
 
-    fireEvent.click(screen.getByText('1'));
+    fireEvent.click(screen.getByText(/^1\s+Guest$/));
 
     await waitFor(() => {
       expect(screen.getByText(/adults/i)).toBeInTheDocument();

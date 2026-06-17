@@ -171,152 +171,135 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
   return (
     <div className={`p-4 sm:p-6 px-6 sm:px-0 mx-auto w-full relative bannerForm ${isSearchPage ? 'md:w-[700px]' : 'md:w-[560px]'} ${isModal ? 'pt-0' : ''}`}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-around items-center gap-4 w-full">
-        <div data-testid="booking-filter-bar" className="relative flex border-y-[1px] shadow-sm border w-full bg-white rounded-l-xl rounded-r-xl">
+        <div data-testid="booking-filter-bar" className="relative flex flex-col gap-2 sm:flex-row sm:gap-0 sm:-space-x-px w-full">
           {controlsSlot}
+
           {/* Where To? */}
-          <div className="flex flex-col items-center border-x border-l-0 w-full  justify-center">
-            <div className="p-2 sm:py-2 sm:px-4">
-              <label className="flex cursor-pointer justify-center items-center gap-2 text-Bluewhale text-[12px] sm:text-base" onClick={toggleLocation}>
-                <MapPin size={20} />
-                {/* <input onChange={handleInputChange} value={watchedWhereTo || ''} placeholder="Where to" type="text" /> */}
-                <input
-                  type="text"
-                  id="search-destination"
-                  name="search-destination"
-                  placeholder="Where to"
-                  value={inputValue} // input only tracks user typing
-                  onChange={handleInputChange} // filter locations
-                  onClick={handleInputClick}
-                  className="w-full bg-inherit focus-visible:outline-none rounded px-3 py-2 placeholder:text-inherit"
-                />
-                {/* <span>{watchedWhereTo || 'Where to'}</span> */}
-              </label>
-              {errors.whereTo && <p className="text-red-500 text-sm text-center">{errors.whereTo.message}</p>}
-            </div>
-          </div>
-
-          {/* When? */}
-          <div className="flex flex-col items-center border-x border-l-0 w-full  justify-center">
-            <div className="p-2 sm:py-2 sm:px-4">
-              <label className="flex cursor-pointer justify-center items-center gap-2 text-Bluewhale text-[12px] sm:text-base" onClick={toggleCalendar}>
-                <Calendar size={20} />
-                {watchedFrom?.from && watchedFrom?.to
-                  ? `${new Date(watchedFrom.from).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: '2-digit',
-                      year: 'numeric',
-                    })} `
-                  : 'When?'}
-              </label>
-              {errors.dateRange && <p className="text-red-500 text-sm text-center">{errors.dateRange.message}</p>}
-            </div>
-          </div>
-
-          {/* How Many? */}
-          <div className="flex flex-col items-center border-x border-r-0 w-full  justify-center">
-            <div className="p-2 sm:py-2 sm:px-4">
-              <label className="flex cursor-pointer justify-center items-center gap-2 text-Bluewhale text-[12px] sm:text-base" onClick={toggleHowMany}>
-                <Users size={20} />
-                <span>{total ?? 'How Many?'}</span>
-              </label>
-              {errors.howMany && <p className="text-red-500 text-sm text-center">{errors.howMany?.adults?.message || ''}</p>}
-            </div>
-          </div>
-
-          {isSearchPage && (
-            <div className="flex shrink-0 items-stretch border-l border-[#e4e4e7]">
-              <button
-                type="submit"
-                aria-label="Search trips"
-                className="flex min-w-[112px] items-center justify-center rounded-r-xl bg-white px-6 text-sm font-semibold text-Bluewhale transition-[background-color,color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#f8faf9] hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
-              >
-                Search
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Toggle Fields */}
-        <div className="flex rounded-lg absolute z-50 pointer-events-auto top-3/4 translate-y-4 w-full scale-90 sm:scale-[unset]">
-          {showLocation && (
+          <div className="flex-1 relative min-w-0">
             <div
-              onMouseLeave={(e) => {
-                (e.stopPropagation(), setShowLocation(!showLocation));
-              }}
-              className="flex w-full justify-center sm:justify-start"
+              onClick={toggleLocation}
+              className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none"
+              style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
-              {/* Controller for handling form state */}
+              <MapPin size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
+              <input
+                type="text"
+                id="search-destination"
+                name="search-destination"
+                placeholder="Where to"
+                value={inputValue}
+                onChange={handleInputChange}
+                onClick={handleInputClick}
+                className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-[#71717a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
+                style={{ color: '#52525b', fontFamily: 'inherit' }}
+                autoComplete="off"
+              />
+            </div>
+            {errors.whereTo && <p className="text-red-500 text-xs mt-1 px-1">{errors.whereTo.message}</p>}
+
+            {showLocation && (
               <Controller
                 name="whereTo"
                 control={control}
-                defaultValue="" // Default value for the select
-                render={({ field }) => (
-                  <ul className="absolute bg-white rounded-xl w-[220px] max-h-48 overflow-y-auto border mt-1 z-50">
+                defaultValue=""
+                render={() => (
+                  <ul
+                    onMouseLeave={() => setShowLocation(false)}
+                    className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-zinc-100 max-h-52 overflow-y-auto z-[110] min-w-full w-max"
+                  >
                     {filteredLocations.length > 0 ? (
                       filteredLocations.map((loc, idx) => (
                         <li
                           key={idx}
                           onClick={() => {
-                            setValue('whereTo', loc.name); // update form value
-                            setInputValue(loc.name); // update input display
-                            setShowLocation(false); // close dropdown
+                            setValue('whereTo', loc.name);
+                            setInputValue(loc.name);
+                            setShowLocation(false);
                           }}
-                          className={`px-6 py-2 cursor-pointer hover:bg-gray-100 ${watchedWhereTo === loc.name ? 'bg-green-100' : ''}`}
+                          className={`px-4 py-2 cursor-pointer hover:bg-zinc-100 text-sm whitespace-nowrap ${watchedWhereTo === loc.name ? 'bg-green-100' : ''}`}
                         >
                           {loc.name}
                         </li>
                       ))
                     ) : locationsLoading ? null : (
-                      <li className="px-4 py-2 text-gray-500 cursor-default">No locations found</li>
+                      <li className="px-4 py-2 text-zinc-400 text-sm cursor-default">No locations found</li>
                     )}
                   </ul>
                 )}
               />
-            </div>
-          )}
+            )}
+          </div>
 
-          {showCalendar && (
+          {/* When? */}
+          <div className="flex-1 relative min-w-0">
             <div
-              onMouseLeave={(e) => {
-                (e.stopPropagation(), setShowCalendar(!showCalendar));
-              }}
-              className="flex justify-center mx-auto bg-white w-fit rounded-2xl p-2"
+              onClick={toggleCalendar}
+              className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
+              style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
-              <Controller
-                name="dateRange"
-                control={control}
-                render={({ field }) => <WeelpCalendar mode="range" months={2} selected={field.value} disablePast onSelect={(value) => field.onChange(value)} showClear />}
-              />
+              <Calendar size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
+              <span className="text-sm font-medium whitespace-nowrap" style={{ color: '#52525b' }}>
+                {watchedFrom?.from && watchedFrom?.to
+                  ? `${new Date(watchedFrom.from).toLocaleDateString('en-US', { month: 'short', day: '2-digit' })} - ${new Date(watchedFrom.to).toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}`
+                  : 'When?'}
+              </span>
             </div>
-          )}
+            {errors.dateRange && <p className="text-red-500 text-xs mt-1 px-1">{errors.dateRange.message}</p>}
 
-          {showHowMany && (
+            {showCalendar && (
+              <div
+                onMouseLeave={() => setShowCalendar(false)}
+                className="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-2xl shadow-lg border border-zinc-100 p-2 z-[110]"
+              >
+                <Controller
+                  name="dateRange"
+                  control={control}
+                  render={({ field }) => (
+                    <WeelpCalendar mode="range" months={2} selected={field.value} disablePast onSelect={(value) => field.onChange(value)} showClear />
+                  )}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* How Many? */}
+          <div className="flex-1 relative min-w-0">
             <div
-              onMouseLeave={(e) => {
-                (e.stopPropagation(), setShowHowMany(!showHowMany));
-              }}
-              className="text-nowrap flex flex-col gap-4  w-full items-center sm:items-end"
+              onClick={toggleHowMany}
+              className={`flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer ${isSearchPage ? 'sm:rounded-none' : 'sm:rounded-l-none'}`}
+              style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
-              <div className="bg-white w-fit p-4 px-6 rounded-lg flex flex-col gap-4 border">
-                {['adults', 'children', 'infants'].map((type, index) => (
-                  <div key={index} className="flex justify-between items-center w-full gap-6">
+              <Users size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
+              <span className="text-sm font-medium whitespace-nowrap" style={{ color: '#52525b' }}>
+                {total != null && total > 0 ? `${total} ${total === 1 ? 'Guest' : 'Guests'}` : 'How Many?'}
+              </span>
+            </div>
+            {errors.howMany && <p className="text-red-500 text-xs mt-1 px-1">{errors.howMany?.adults?.message || ''}</p>}
+
+            {showHowMany && (
+              <div
+                onMouseLeave={() => setShowHowMany(false)}
+                className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border border-zinc-100 p-4 z-[110] w-64"
+              >
+                {['adults', 'children', 'infants'].map((type) => (
+                  <div key={type} className="flex justify-between items-center mb-3 last:mb-0 gap-6">
                     <div>
-                      <h3 className="font-semibold capitalize">{type}</h3>
-                      <span className="text-sm">{type == 'adults' ? 'Above 13 or above' : type == 'children' ? 'Age 2-12' : type == 'infants' ? 'Under 2' : null}</span>
+                      <h3 className="font-semibold capitalize text-sm">{type}</h3>
+                      <span className="text-xs text-zinc-500">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
                       <button
                         type="button"
                         onClick={() => handleDecrement(type)}
-                        className="w-8 h-8 rounded-full border text-lg flex items-center justify-center text-gray-700 bg-graycolor hover:bg-[#e9f5ed] hover:opacity-80"
+                        className="w-8 h-8 rounded-full border flex items-center justify-center text-gray-700 bg-graycolor hover:bg-[#e9f5ed]"
                       >
                         <Minus size={14} />
                       </button>
-                      <span className="font-semibold">{howMany[type]}</span>
+                      <span className="w-6 text-center font-semibold">{howMany[type]}</span>
                       <button
                         type="button"
                         onClick={() => handleIncrement(type)}
-                        className="w-8 h-8 rounded-full border border-[#b5d8cb] text-lg flex items-center justify-center text-weelp-sage-deep hover:bg-[#e9f5ed] hover:opacity-80 "
+                        className="w-8 h-8 rounded-full border border-[#b5d8cb] flex items-center justify-center text-weelp-sage-deep hover:bg-[#e9f5ed]"
                       >
                         <Plus size={14} />
                       </button>
@@ -324,12 +307,23 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
                   </div>
                 ))}
                 {!isModal && !isSearchPage && (
-                  <button type="submit" className="w-full py-2 bg-weelp-sage-deep text-white rounded-md shadow">
+                  <button type="submit" className="w-full py-2 bg-weelp-sage-deep text-white rounded-md shadow mt-2">
                     Submit
                   </button>
                 )}
               </div>
-            </div>
+            )}
+          </div>
+
+          {/* Search button (search page only) */}
+          {isSearchPage && (
+            <button
+              type="submit"
+              aria-label="Search trips"
+              className="flex shrink-0 min-w-[112px] items-center justify-center rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-[background-color,color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#f8faf9] hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:rounded-l-none motion-reduce:transition-none"
+            >
+              Search
+            </button>
           )}
         </div>
 
