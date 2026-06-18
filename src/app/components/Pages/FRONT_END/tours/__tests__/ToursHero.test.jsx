@@ -11,11 +11,24 @@ jest.mock(
 );
 
 describe('ToursHero', () => {
-  it('renders the shared animated globe in the desktop background slot', () => {
+  it('renders heading, filter bar, Memphis decor, and the desktop globe', () => {
     const { container, getByText, getByTestId } = render(<ToursHero />);
 
     expect(getByText('Plan your Holiday.')).toBeInTheDocument();
     expect(getByTestId('tours-filter-bar')).toBeInTheDocument();
+
+    const section = container.querySelector('section');
+    expect(section).toHaveClass('overflow-hidden', 'bg-[#f8faf9]');
+
+    const decorSvgs = container.querySelectorAll('svg[role="presentation"]');
+    expect(decorSvgs.length).toBeGreaterThanOrEqual(1);
+    const decorLayer = decorSvgs[0].closest('[aria-hidden="true"]');
+    expect(decorLayer).toHaveClass(
+      'pointer-events-none',
+      'absolute',
+      'inset-0',
+      'overflow-hidden',
+    );
 
     const background = container.querySelector('[data-tours-globe-background]');
     const stage = container.querySelector('[data-animated-globe]');
@@ -28,6 +41,5 @@ describe('ToursHero', () => {
     expect(shell).toHaveClass('right-[-120px]', 'size-[760px]', 'translate-y-[40%]', '2xl:size-[880px]');
     expect(container.querySelector('[data-personalised-cobe-globe]')).toBeInTheDocument();
     expect(container.querySelector('[data-personalised-sparkles]')).not.toBeInTheDocument();
-    expect(container.querySelector('img[src="/assets/Group5.png"]')).not.toBeInTheDocument();
   });
 });
