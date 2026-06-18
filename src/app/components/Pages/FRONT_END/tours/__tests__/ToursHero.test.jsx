@@ -23,12 +23,7 @@ describe('ToursHero', () => {
     const decorSvgs = container.querySelectorAll('svg[role="presentation"]');
     expect(decorSvgs.length).toBeGreaterThanOrEqual(1);
     const decorLayer = decorSvgs[0].closest('[aria-hidden="true"]');
-    expect(decorLayer).toHaveClass(
-      'pointer-events-none',
-      'absolute',
-      'inset-0',
-      'overflow-hidden',
-    );
+    expect(decorLayer).toHaveClass('pointer-events-none', 'absolute', 'inset-0', 'overflow-hidden');
 
     const background = container.querySelector('[data-tours-globe-background]');
     const stage = container.querySelector('[data-animated-globe]');

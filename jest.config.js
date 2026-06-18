@@ -10,6 +10,9 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jsdom',
   coverageProvider: 'v8',
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
   // Next 16's unhandled-rejection instrumentation accumulates listeners
   // across test files on Node 23, causing a recursive setImmediate stack
   // overflow during teardown. forceExit short-circuits teardown after
