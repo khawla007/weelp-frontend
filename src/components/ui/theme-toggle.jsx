@@ -3,12 +3,7 @@
 import { Sun, Moon, Monitor } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useIsClient } from '@/hooks/useIsClient';
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 
 export function ThemeToggle({ className = '', compact = false }) {
