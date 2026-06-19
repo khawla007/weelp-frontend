@@ -50,8 +50,8 @@ body {
 }
 
 body {
-  color: var(--background);
-  background: var(--foreground);
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
   font-family: var(--font-interTight), 'Inter Tight', sans-serif;
 }
 
@@ -173,6 +173,40 @@ body {
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Canonical text tokens — dark parity */
+    --ink: #fafafa;
+    --copy: #d4d4d8;
+    --label: #a1a1aa;
+    --link-default: #d4d4d8;
+    --link-hover: #7fb59c;
+
+    /* Weelp home surfaces — dark parity */
+    --weelp-home-page: #0a0a0a;
+    --weelp-home-ink: #fafafa;
+    --weelp-home-copy: #d4d4d8;
+    --weelp-home-label: #a1a1aa;
+    --weelp-home-soft: #18181b;
+    --weelp-home-surface: #0f0f10;
+    --weelp-home-border: #27272a;
+    --weelp-home-accent: #f59e0b;
+    --weelp-home-brand: #6a7d88;
+    --weelp-home-muted: #8b9ba6;
+    --weelp-home-search-shell: rgba(15, 15, 16, 0.95);
+    --weelp-home-search-border: #2a3338;
+
+    /* Weelp card — dark parity */
+    --weelp-card-border: #27272a;
+    --weelp-card-hover-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.5);
+    --weelp-card-badge-bg: #27272a;
+    --weelp-card-badge-text: #d4d4d8;
+    --weelp-card-category-text: #4ade80;
+
+    /* Weelp city tabs — dark parity */
+    --weelp-city-tab-text: #cfdbe5;
+    --weelp-city-tab-bg: rgba(207, 219, 229, 0.06);
+    --weelp-city-tab-active-bg: rgba(207, 219, 229, 0.1);
+    --weelp-city-tab-active-border: rgba(207, 219, 229, 0.3);
   }
 }
 

@@ -145,7 +145,7 @@ export function ProfileSettings({ user }) {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input {...field} readOnly tabIndex={-1} className="bg-gray-100 text-gray-700 opacity-100 dark:bg-zinc-800 dark:text-gray-300 pointer-events-none cursor-default" />
+                  <Input {...field} readOnly tabIndex={-1} className="bg-muted text-muted-foreground opacity-100 pointer-events-none cursor-default" />
                 </FormControl>
                 <FormDescription>Your unique username. Cannot be changed.</FormDescription>
                 <FormMessage />
@@ -161,7 +161,7 @@ export function ProfileSettings({ user }) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input {...field} readOnly tabIndex={-1} className="bg-gray-100 text-gray-700 opacity-100 dark:bg-zinc-800 dark:text-gray-300 pointer-events-none cursor-default" />
+                  <Input {...field} readOnly tabIndex={-1} className="bg-muted text-muted-foreground opacity-100 pointer-events-none cursor-default" />
                 </FormControl>
                 <FormDescription>Manage email in Account settings.</FormDescription>
                 <FormMessage />

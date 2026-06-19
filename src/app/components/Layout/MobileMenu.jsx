@@ -11,6 +11,7 @@ import dynamic from 'next/dynamic';
 import { useMegaMenu } from '@/hooks/api/public/menu/megaMenu';
 import { HEADER_NAV_ITEMS, HEADER_SECONDARY_META } from './shellContent';
 import { getLogoUrl } from '@/lib/config/brand';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const brandFont = 'var(--font-interTight), Inter Tight, sans-serif';
 
@@ -309,6 +310,7 @@ const HeaderAccountMobile = () => {
   return (
     <div>
       <div className="flex gap-2">
+        <ThemeToggle />
         <button
           type="button"
           aria-label={cartItemCount > 0 ? `Open cart, ${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'}` : 'Open cart'}

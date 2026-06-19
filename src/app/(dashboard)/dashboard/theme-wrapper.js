@@ -12,30 +12,18 @@ const fontMap = {
   Roboto: roboto.className,
 };
 
-export function ThemeWrapper({ children }) {
-  const theme = useUIStore((state) => state.theme);
+export function FontWrapper({ children }) {
   const font = useUIStore((state) => state.font);
 
-  // Apply theme and font to the HTML element
   useEffect(() => {
     const html = document.documentElement;
-
-    // Clear existing font and theme classes
-    html.classList.remove('dark');
     html.className = html.className
       .split(' ')
       .filter((cls) => !cls.startsWith('font-'))
       .join(' ');
-
-    // Apply theme class
-    if (theme === 'dark') {
-      html.classList.add('dark');
-    }
-
-    // Apply font class from store
     const fontClassName = fontMap[font] || fontMap.Inter;
     html.classList.add(...fontClassName.split(' '));
-  }, [theme, font]);
+  }, [font]);
 
   return <>{children}</>;
 }

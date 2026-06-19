@@ -7,6 +7,7 @@ import { Menu, Search, X, ExternalLink, FileText, User, Package, Activity } from
 import UserMenu from '../UserMenu';
 import { searchDashboard } from '@/lib/services/dashboard';
 import Link from 'next/link';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 /**
  * Admin Header with search functionality
@@ -198,7 +199,8 @@ const AdminHeader = ({ session }) => {
           )}
         </div>
 
-        <div className="flex sm:w-full max-w-fit justify-center items-start">
+        <div className="flex sm:w-full max-w-fit justify-center items-center gap-2">
+          <ThemeToggle compact />
           <UserMenu session={session} />
         </div>
       </div>

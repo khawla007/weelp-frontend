@@ -13,11 +13,11 @@ export default function UserLayout({ children }) {
   const user = session?.user || {};
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-background">
       <Header />
-      <div className="flex flex-1 relative bg-[#f8faf9]">
+      <div className="flex flex-1 relative bg-muted/40 dark:bg-background">
         <DashboardSidebar nav={DashboardUserNav.userRoutes} user={user} />
-        <main className="flex-1 w-full dark:bg-[#18181b]">
+        <main className="flex-1 w-full bg-background">
           <DashboardContentWrapper>{children}</DashboardContentWrapper>
           <Toaster />
         </main>

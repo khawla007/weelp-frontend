@@ -13,6 +13,7 @@ import { HEADER_NAV_ITEMS, HEADER_PRIMARY_META, HEADER_SECONDARY_META } from './
 import NotificationBell from './NotificationBell';
 import { getLogoUrl } from '@/lib/config/brand';
 import dynamic from 'next/dynamic';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const MegaMenu = dynamic(() => import('../Modals/MegaMenu/MegaMenu'), { ssr: false });
 const MEGA_MENU_ENTER_START_MS = 20;
@@ -410,6 +411,9 @@ export const HeaderAccount = ({ overHero = false }) => {
         </li>
         <li className={overHero ? `flex h-11 w-11 items-center justify-center rounded-full ${iconChip}` : undefined}>
           <NotificationBell />
+        </li>
+        <li>
+          <ThemeToggle />
         </li>
         <li onMouseEnter={openSubmenu} onMouseLeave={scheduleCloseSubmenu}>
           <button

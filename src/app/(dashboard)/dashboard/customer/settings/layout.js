@@ -14,8 +14,8 @@ const SettingLayout = ({ children }) => {
   return (
     <div className="max-w-6xl p-4 md:p-10 w-full mx-auto space-y-4">
       <div className="space-y-2 ">
-        <h1 className={'font-bold text-2xl'}>Settings</h1>
-        <p className={'text-base text-[#71717A]'}>Manage your account settings and set e-mail preferences</p>
+        <h1 className={'font-bold text-2xl text-foreground'}>Settings</h1>
+        <p className={'text-base text-muted-foreground'}>Manage your account settings and set e-mail preferences</p>
       </div>
       <BreakSection />
 

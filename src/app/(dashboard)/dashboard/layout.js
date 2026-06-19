@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense } from 'react';
-import { ThemeWrapper } from './theme-wrapper';
+import { FontWrapper } from './theme-wrapper';
 import AppProviders from '@/app/components/Layout/ProviderWrapper';
 import { useNavigationEvents } from '@/hooks/useNavigationEvents';
 import { NavigationProgressBar } from '@/app/components/Navigation/NavigationProgressBar';
@@ -13,7 +13,7 @@ function DashboardNavigationHandler() {
 
 export default function DashboardLayout({ children }) {
   return (
-    <ThemeWrapper>
+    <FontWrapper>
       <AppProviders>
         <Suspense fallback={null}>
           <DashboardNavigationHandler />
@@ -21,6 +21,6 @@ export default function DashboardLayout({ children }) {
         <NavigationProgressBar />
         {children}
       </AppProviders>
-    </ThemeWrapper>
+    </FontWrapper>
   );
 }

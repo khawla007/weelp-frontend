@@ -1,5 +1,6 @@
 import { Cormorant_Garamond, Inter, Inter_Tight, Montez, Outfit } from 'next/font/google';
 import './globals.css';
+import { ThemeProvider } from './components/Layout/ThemeProvider';
 
 const interTight = Inter_Tight({
   subsets: ['latin'],
@@ -47,7 +48,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body className={`${interTight.variable} ${inter.variable} ${outfit.variable} ${montez.variable} ${cormorant.variable} font-sans antialiased tfc_scroll`}>{children}</body>
+      <body className={`${interTight.variable} ${inter.variable} ${outfit.variable} ${montez.variable} ${cormorant.variable} font-sans antialiased tfc_scroll`}>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

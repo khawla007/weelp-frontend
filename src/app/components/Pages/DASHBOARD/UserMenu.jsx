@@ -38,8 +38,8 @@ export default function UserMenu({ session }) {
         <DropdownMenu>
           <div suppressHydrationWarning>
             <DropdownMenuTrigger asChild>
-              <SidebarMenuButton size="lg" className={cn('data-[state=open]:text-black', 'gap-2 px-2 py-1.5 text-black hover:text-[#18181b]/70 transition-colors duration-200 ease-out')}>
-                <Avatar className="h-9 w-9 rounded-lg border-2 border-white shadow-sm">
+              <SidebarMenuButton size="lg" className={cn('data-[state=open]:text-foreground', 'gap-2 px-2 py-1.5 text-foreground hover:text-foreground/70 transition-colors duration-200 ease-out')}>
+                <Avatar className="h-9 w-9 rounded-lg border-2 border-card shadow-sm">
                   {avatarSrc && <AvatarImage src={avatarSrc} alt={name || 'user'} />}
                   <AvatarFallback className="text-white font-semibold rounded-lg" style={{ backgroundColor: '#568f7c' }}>
                     {userInitials}
@@ -47,7 +47,7 @@ export default function UserMenu({ session }) {
                 </Avatar>
 
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold text-gray-900 dark:text-gray-100">{name || 'User'}</span>
+                  <span className="truncate font-semibold text-foreground">{name || 'User'}</span>
                   <span className="text-muted-foreground truncate text-xs flex items-center gap-1">
                     {formatRole(role)}
                     <ChevronDown className="h-3 w-3 opacity-50" />
@@ -56,21 +56,21 @@ export default function UserMenu({ session }) {
               </SidebarMenuButton>
             </DropdownMenuTrigger>
           </div>
-          <DropdownMenuContent className="w-56 rounded-lg shadow-lg border-gray-200 dark:border-gray-700" side="bottom" align="end" sideOffset={8}>
+          <DropdownMenuContent className="w-56 rounded-lg shadow-lg border-border" side="bottom" align="end" sideOffset={8}>
             <DropdownMenuGroup>
-              <DropdownMenuItem asChild className="cursor-pointer text-black hover:text-[#18181b]/70 focus:text-[#18181b]/70">
+              <DropdownMenuItem asChild className="cursor-pointer text-foreground hover:text-foreground/70 focus:text-foreground/70">
                 <Link href="/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <Home className="h-4 w-4" />
                   <span>Back to Site</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer text-black hover:text-[#18181b]/70 focus:text-[#18181b]/70">
+              <DropdownMenuItem asChild className="cursor-pointer text-foreground hover:text-foreground/70 focus:text-foreground/70">
                 <Link href="/dashboard/admin/settings" className="flex items-center gap-2">
                   <Settings className="h-4 w-4" />
                   <span>Settings</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer text-black hover:text-[#18181b]/70 focus:text-[#18181b]/70">
+              <DropdownMenuItem asChild className="cursor-pointer text-foreground hover:text-foreground/70 focus:text-foreground/70">
                 <Link href="/dashboard/admin/users" className="flex items-center gap-2">
                   <Users className="h-4 w-4" />
                   <span>Users</span>
@@ -79,7 +79,7 @@ export default function UserMenu({ session }) {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="text-red-500 cursor-pointer hover:bg-red-50 dark:hover:bg-red-900/20 focus:text-red-600"
+              className="text-destructive cursor-pointer hover:bg-destructive/10 focus:text-destructive"
               onClick={() => {
                 logout({ callbackUrl: '/' });
               }}
