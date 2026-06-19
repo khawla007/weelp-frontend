@@ -16,6 +16,35 @@ import { useTogglePassword } from '@/hooks/useTogglePassword';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
 import { X } from 'lucide-react';
 
+const LOGIN_ERROR_TOASTS = {
+  rate_limited: {
+    title: 'Too many login attempts',
+    description: 'The login rate limit is active. Please wait a minute and try again.',
+  },
+  account_locked: {
+    title: 'Account temporarily locked',
+    description: 'Please try again later or reset your password.',
+  },
+  login_unavailable: {
+    title: 'Unable to log in right now',
+    description: 'Please try again in a moment.',
+  },
+  credentials: {
+    title: 'Email or Password Incorrect',
+  },
+};
+
+export function getLoginErrorToast(result) {
+  if (result?.error !== 'CredentialsSignin') {
+    return {
+      title: 'Unable to log in right now',
+      description: 'Please try again in a moment.',
+    };
+  }
+
+  return LOGIN_ERROR_TOASTS[result?.code] ?? LOGIN_ERROR_TOASTS.credentials;
+}
+
 // Zod schema for validation
 const schema = z.object({
   email: z.string().email('Invalid email address').nonempty('Email is required'),
@@ -50,12 +79,10 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
 
       // credentials error
       if (result?.error) {
-        if (result?.error === 'CredentialsSignin') {
-          toast({
-            variant: 'destructive',
-            title: 'Email or Password Incorrect',
-          });
-        }
+        toast({
+          variant: 'destructive',
+          ...getLoginErrorToast(result),
+        });
         return;
       }
 

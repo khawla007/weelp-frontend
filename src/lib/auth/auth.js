@@ -6,6 +6,22 @@ import { refreshTokens } from './refreshTokens';
 
 const ACCESS_REFRESH_LEEWAY_MS = 60 * 1000;
 
+class InvalidLoginCredentialsError extends CredentialsSignin {
+  code = 'credentials';
+}
+
+class LoginRateLimitedError extends CredentialsSignin {
+  code = 'rate_limited';
+}
+
+class AccountLockedError extends CredentialsSignin {
+  code = 'account_locked';
+}
+
+class LoginUnavailableError extends CredentialsSignin {
+  code = 'login_unavailable';
+}
+
 // Rewrite legacy absolute MinIO URLs (`http://localhost:9000/weelp-media/...`)
 // stuck inside still-valid JWT cookies to the in-app proxy path so the browser
 // can actually fetch them. New tokens already arrive in `/api/media/...` form,
@@ -88,7 +104,19 @@ export const {
           });
 
           if (!loginRes.ok) {
-            throw new CredentialsSignin('Invalid credentials');
+            if (loginRes.status === 429) {
+              throw new LoginRateLimitedError();
+            }
+
+            if (loginRes.status === 423) {
+              throw new AccountLockedError();
+            }
+
+            if (loginRes.status === 401 || loginRes.status === 422) {
+              throw new InvalidLoginCredentialsError();
+            }
+
+            throw new LoginUnavailableError();
           }
 
           const data = await loginRes.json();
@@ -111,7 +139,7 @@ export const {
         } catch (error) {
           if (error instanceof CredentialsSignin) throw error;
           console.error('Authorization error:', error);
-          return null;
+          throw new LoginUnavailableError();
         }
       },
     }),
