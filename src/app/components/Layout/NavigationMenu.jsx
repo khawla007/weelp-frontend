@@ -30,86 +30,98 @@ const getInitials = (name) => {
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 };
 
-const DesktopMenu = ({ stickyHeader, variant = 'solid' }) => {
+export const DesktopTopStrip = ({ topStripVisible, topStripOverHero, collapsible = true }) => {
+  // collapsible=false: strip keeps constant 46px height; visibility controlled by parent rendering it conditionally
+  // collapsible=true: strip animates max-height/opacity for the in-flow over-hero case (no doc-height oscillation since parent is fixed)
+  const collapseClass = collapsible
+    ? `overflow-hidden transition-[max-height,opacity,background-color,border-color] duration-200 ease-out motion-reduce:transition-none ${
+        topStripVisible ? 'max-h-[46px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+      }`
+    : 'h-[46px]';
+  const surfaceClass = topStripVisible ? (topStripOverHero ? 'border-b border-transparent bg-transparent' : 'border-b border-[#ededed] bg-white') : 'border-b-0 bg-transparent';
+  return (
+    <div aria-hidden={topStripVisible ? undefined : true} className={`hidden lg:block ${collapseClass} ${surfaceClass}`}>
+      <div className="mx-auto flex h-[46px] w-full items-center justify-between gap-4 px-4 md:px-8 xl:px-[60px] text-[#18181b]">
+        <div className="flex items-center gap-4">
+          <div className="inline-flex items-center gap-2 text-[14px]">
+            <Smartphone className="size-[18px]" />
+            <span>{HEADER_PRIMARY_META[0].label}</span>
+          </div>
+          <div className="inline-flex items-center gap-2 text-[14px]">
+            <Headphones className="size-[18px]" />
+            <span>{HEADER_PRIMARY_META[1].label}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <div className="inline-flex items-center gap-[13px] text-[14px]">
+            <Globe className="size-[18px]" />
+            <span>{HEADER_SECONDARY_META[0]}</span>
+          </div>
+          <div className="inline-flex items-center gap-[13px] text-[14px]">
+            <span>{HEADER_SECONDARY_META[1]}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const DesktopMainBar = ({ stickyHeader, mainBarTransparent }) => {
   const headerBarRef = useRef(null);
+
+  useEffect(() => {
+    const headerBar = headerBarRef.current;
+    if (!headerBar) return undefined;
+    if (!stickyHeader) return undefined;
+    const settleTimer = window.setTimeout(() => {
+      headerBar.setAttribute('data-weelp-sticky-settled', 'true');
+    }, 80);
+    return () => window.clearTimeout(settleTimer);
+  }, [stickyHeader]);
+
+  return (
+    <div className="hidden lg:block h-[66px]" data-testid="desktop-header-slot">
+      <div
+        ref={headerBarRef}
+        data-testid="desktop-header-bar"
+        data-weelp-sticky-header={stickyHeader ? 'true' : undefined}
+        data-weelp-sticky-settled={stickyHeader ? 'false' : undefined}
+        className={`weelp-sticky-header-transition h-[66px] transition-[background-color,border-color,box-shadow,backdrop-filter] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+          mainBarTransparent
+            ? 'border-b border-transparent bg-transparent shadow-none backdrop-blur-0'
+            : stickyHeader
+              ? 'border-b border-[#ededed] bg-white shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)]'
+              : 'border-b border-[#ededed] bg-white/95 shadow-none backdrop-blur-[24px]'
+        }`}
+      >
+        <div className="grid h-full w-full items-center gap-4 px-4 py-[8px] md:px-8 xl:px-[60px]" style={{ gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)' }}>
+          <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start focus:outline-none" aria-label="Weelp home">
+            <img src={getLogoUrl()} alt="Weelp" className="h-9 w-auto" />
+            <span className="text-[18px] font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
+              Weelp.
+            </span>
+          </Link>
+
+          <NavMenuDesktop />
+
+          <HeaderAccount overHero={mainBarTransparent} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const DesktopMenu = ({ stickyHeader, variant = 'solid' }) => {
   const isOverHero = variant === 'over-hero';
   const topStripVisible = !stickyHeader;
   const topStripOverHero = isOverHero && topStripVisible;
   const mainBarTransparent = isOverHero && !stickyHeader;
 
-  useEffect(() => {
-    const headerBar = headerBarRef.current;
-    if (!headerBar) return undefined;
-
-    if (!stickyHeader) return undefined;
-
-    const settleTimer = window.setTimeout(() => {
-      headerBar.setAttribute('data-weelp-sticky-settled', 'true');
-    }, 80);
-
-    return () => window.clearTimeout(settleTimer);
-  }, [stickyHeader]);
-
   return (
     <div className="hidden lg:block w-full">
-      <div
-        aria-hidden={topStripVisible ? undefined : true}
-        className={`overflow-hidden transition-[max-height,opacity,background-color,border-color] duration-200 ease-out motion-reduce:transition-none ${
-          topStripVisible ? (topStripOverHero ? 'border-b border-transparent bg-transparent' : 'border-b border-[#ededed] bg-white') : 'border-b-0 bg-transparent'
-        } ${topStripVisible ? 'max-h-[46px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}
-      >
-        <div className="mx-auto flex h-[46px] w-full items-center justify-between gap-4 px-4 md:px-8 xl:px-[60px] text-[#18181b]">
-          <div className="flex items-center gap-4">
-            <div className="inline-flex items-center gap-2 text-[14px]">
-              <Smartphone className="size-[18px]" />
-              <span>{HEADER_PRIMARY_META[0].label}</span>
-            </div>
-            <div className="inline-flex items-center gap-2 text-[14px]">
-              <Headphones className="size-[18px]" />
-              <span>{HEADER_PRIMARY_META[1].label}</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="inline-flex items-center gap-[13px] text-[14px]">
-              <Globe className="size-[18px]" />
-              <span>{HEADER_SECONDARY_META[0]}</span>
-            </div>
-            <div className="inline-flex items-center gap-[13px] text-[14px]">
-              <span>{HEADER_SECONDARY_META[1]}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="h-[66px]" data-testid="desktop-header-slot">
-        <div
-          ref={headerBarRef}
-          data-testid="desktop-header-bar"
-          data-weelp-sticky-header={stickyHeader ? 'true' : undefined}
-          data-weelp-sticky-settled={stickyHeader ? 'false' : undefined}
-          className={`weelp-sticky-header-transition h-[66px] transition-[background-color,border-color,box-shadow,backdrop-filter] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-            mainBarTransparent
-              ? 'border-b border-transparent bg-transparent shadow-none backdrop-blur-0'
-              : stickyHeader
-                ? 'border-b border-[#ededed] bg-white shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)]'
-                : 'border-b border-[#ededed] bg-white/95 shadow-none backdrop-blur-[24px]'
-          }`}
-        >
-          <div className="grid h-full w-full items-center gap-4 px-4 py-[8px] md:px-8 xl:px-[60px]" style={{ gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)' }}>
-            <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start focus:outline-none" aria-label="Weelp home">
-              <img src={getLogoUrl()} alt="Weelp" className="h-9 w-auto" />
-              <span className="text-[18px] font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
-                Weelp.
-              </span>
-            </Link>
-
-            <NavMenuDesktop />
-
-            <HeaderAccount overHero={mainBarTransparent} />
-          </div>
-        </div>
-      </div>
+      <DesktopTopStrip topStripVisible={topStripVisible} topStripOverHero={topStripOverHero} collapsible />
+      <DesktopMainBar stickyHeader={stickyHeader} mainBarTransparent={mainBarTransparent} />
     </div>
   );
 };
