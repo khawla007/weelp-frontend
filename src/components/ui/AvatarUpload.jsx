@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Upload, Loader2 } from 'lucide-react';
 
 const getInitials = (name) => {
@@ -15,6 +15,12 @@ export function AvatarUpload({ currentAvatar, onUploadSuccess, endpoint = '/api/
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
+
+  // Keep the preview circle in sync when the parent's avatar value changes
+  // (e.g. after SWR revalidates the profile or another flow updates it).
+  useEffect(() => {
+    setPreview(currentAvatar || null);
+  }, [currentAvatar]);
 
   const validateFile = (file) => {
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];

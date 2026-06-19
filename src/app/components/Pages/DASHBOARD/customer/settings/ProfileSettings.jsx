@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/hooks/use-toast';
 import { AvatarUpload } from '@/components/ui/AvatarUpload';
+import { mutate } from 'swr';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -37,24 +38,19 @@ export function ProfileSettings({ user }) {
   const { update } = useSession();
   const { toast } = useToast();
   const [avatarUrl, setAvatarUrl] = useState(user?.profile?.avatar || null);
-  const [isSavingAvatar, setIsSavingAvatar] = useState(false);
   const { name, email, meta, profile } = user;
 
+  // AvatarService already persisted profile.avatar on the backend, so we only
+  // need to refresh local copies: the page's SWR cache and the NextAuth session
+  // (which the header reads via useSession).
   const handleAvatarUpload = async (url) => {
-    setIsSavingAvatar(true);
     try {
-      const result = await editUserProfileAction({ avatar: url });
-      if (result.success) {
-        setAvatarUrl(url);
-        await update({ avatar: url });
-        toast({ title: 'Avatar updated successfully' });
-      } else {
-        toast({ variant: 'destructive', title: 'Failed to save avatar' });
-      }
+      setAvatarUrl(url);
+      await update({ avatar: url });
+      await mutate('/api/customer/profile');
+      toast({ title: 'Avatar updated successfully' });
     } catch (error) {
-      toast({ variant: 'destructive', title: 'Failed to save avatar' });
-    } finally {
-      setIsSavingAvatar(false);
+      toast({ variant: 'destructive', title: 'Failed to refresh avatar' });
     }
   };
 

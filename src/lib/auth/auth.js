@@ -6,6 +6,21 @@ import { refreshTokens } from './refreshTokens';
 
 const ACCESS_REFRESH_LEEWAY_MS = 60 * 1000;
 
+// Rewrite legacy absolute MinIO URLs (`http://localhost:9000/weelp-media/...`)
+// stuck inside still-valid JWT cookies to the in-app proxy path so the browser
+// can actually fetch them. New tokens already arrive in `/api/media/...` form,
+// so this is a no-op for them.
+const MINIO_BUCKET_SEGMENT = '/weelp-media/';
+
+function normalizeAvatarUrl(value) {
+  if (!value) return null;
+  if (value.startsWith('/')) return value;
+  const bucketAt = value.indexOf(MINIO_BUCKET_SEGMENT);
+  if (bucketAt === -1) return value;
+  const path = value.slice(bucketAt + MINIO_BUCKET_SEGMENT.length);
+  return path ? `/api/media/${path}` : null;
+}
+
 // In-process single-flight: concurrent jwt() invocations sharing the same
 // refresh token must POST /api/refresh-token once, not N times. Backend treats
 // duplicate refresh as theft (single-use rotation) and revokes all sessions.
@@ -151,7 +166,7 @@ export const {
       session.user.name = token.name;
       session.user.role = token.role;
       session.user.is_creator = token.is_creator;
-      session.user.avatar = token.avatar;
+      session.user.avatar = normalizeAvatarUrl(token.avatar);
       session.access_token = token.accessToken;
       session.error = token.error ?? null;
       // expires must reflect the refresh-token lifetime so SessionProvider does
