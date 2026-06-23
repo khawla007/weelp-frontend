@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-23T09:32:04.356Z",
+  "generatedAt": "2026-06-23T10:56:16.153Z",
   "totalFindings": 1113,
   "filesAffected": 202,
   "findings": [
@@ -5162,7 +5162,7 @@
     },
     {
       "file": "src/app/components/Pages/DASHBOARD/UserMenu.jsx",
-      "line": 59,
+      "line": 57,
       "column": 59,
       "rule": "shadow-utility",
       "value": "shadow-lg",
@@ -5828,7 +5828,7 @@
     },
     {
       "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/itineraries/EditItineraryForm.jsx",
-      "line": 869,
+      "line": 873,
       "column": 69,
       "rule": "shadow-utility",
       "value": "shadow-sm",
@@ -5837,7 +5837,7 @@
     },
     {
       "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/itineraries/EditItineraryForm.jsx",
-      "line": 1618,
+      "line": 1622,
       "column": 169,
       "rule": "shadow-utility",
       "value": "shadow",
@@ -5846,7 +5846,7 @@
     },
     {
       "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/itineraries/EditItineraryForm.jsx",
-      "line": 1623,
+      "line": 1627,
       "column": 344,
       "rule": "shadow-utility",
       "value": "shadow",
@@ -5855,7 +5855,7 @@
     },
     {
       "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/itineraries/EditItineraryForm.jsx",
-      "line": 2192,
+      "line": 2196,
       "column": 88,
       "rule": "shadow-utility",
       "value": "shadow",
@@ -5864,7 +5864,7 @@
     },
     {
       "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/itineraries/EditItineraryForm.jsx",
-      "line": 2202,
+      "line": 2206,
       "column": 95,
       "rule": "shadow-utility",
       "value": "shadow-sm",
@@ -5873,7 +5873,7 @@
     },
     {
       "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/itineraries/EditItineraryForm.jsx",
-      "line": 2215,
+      "line": 2219,
       "column": 95,
       "rule": "shadow-utility",
       "value": "shadow-sm",
@@ -5882,7 +5882,7 @@
     },
     {
       "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/itineraries/EditItineraryForm.jsx",
-      "line": 2251,
+      "line": 2255,
       "column": 55,
       "rule": "shadow-utility",
       "value": "shadow-sm",
@@ -6656,7 +6656,7 @@
     },
     {
       "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/transfers/vendors/shared/vendor_cards.jsx",
-      "line": 691,
+      "line": 688,
       "column": 100,
       "rule": "shadow-utility",
       "value": "shadow-md",

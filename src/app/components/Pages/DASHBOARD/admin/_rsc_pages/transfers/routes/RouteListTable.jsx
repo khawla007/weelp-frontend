@@ -61,7 +61,7 @@ export default function RouteListTable({ routes = [], selectedIds = [], onToggle
               })()}
               <TableCell>
                 <Button size="icon" variant="ghost" onClick={() => onTogglePopular?.(r.id)} aria-label="Toggle popular">
-                  <Star className={`h-4 w-4 ${r.is_popular ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`} />
+                  <Star className={`h-4 w-4 ${r.is_popular ? 'fill-warning text-warning' : 'text-muted-foreground'}`} />
                 </Button>
               </TableCell>
               <TableCell>

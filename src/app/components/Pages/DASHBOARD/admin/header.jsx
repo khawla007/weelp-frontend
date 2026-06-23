@@ -83,15 +83,15 @@ const AdminHeader = ({ session }) => {
   const getTypeIcon = (type) => {
     switch (type) {
       case 'order':
-        return <FileText size={16} className="text-blue-500" />;
+        return <FileText size={16} className="text-info" />;
       case 'user':
         return <User size={16} className="text-success" />;
       case 'activity':
-        return <Activity size={16} className="text-orange-500" />;
+        return <Activity size={16} className="text-warning" />;
       case 'package':
-        return <Package size={16} className="text-purple-500" />;
+        return <Package size={16} className="text-weelp-steel" />;
       case 'blog':
-        return <FileText size={16} className="text-pink-500" />;
+        return <FileText size={16} className="text-muted-foreground" />;
       default:
         return <Search size={16} className="text-muted-foreground" />;
     }
@@ -101,17 +101,17 @@ const AdminHeader = ({ session }) => {
   const getTypeBadgeColor = (type) => {
     switch (type) {
       case 'order':
-        return 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300';
+        return 'bg-info/15 text-info';
       case 'user':
-        return 'bg-success/15 text-success dark:bg-green-900 dark:text-green-300';
+        return 'bg-success/15 text-success';
       case 'activity':
-        return 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300';
+        return 'bg-warning/15 text-warning';
       case 'package':
-        return 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300';
+        return 'bg-muted text-foreground';
       case 'blog':
-        return 'bg-pink-100 text-pink-700 dark:bg-pink-900 dark:text-pink-300';
+        return 'bg-accent text-accent-foreground';
       default:
-        return 'bg-muted text-copy dark:bg-foreground dark:text-muted-foreground';
+        return 'bg-muted text-muted-foreground';
     }
   };
 

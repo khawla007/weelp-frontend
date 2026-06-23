@@ -211,7 +211,7 @@ export const CreateTransferFormByAdmin = ({}) => {
                         setCurrentStep(step?.id);
                       }}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-muted ${
-                        currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'
+                        currentStep == step?.id && ' bg-gradient-to-t from-weelp-sage-deep/20 to-muted border-b-weelp-sage-deep border-b-2'
                       }`}
                     >
                       <div

@@ -271,7 +271,7 @@ const SeoTab = () => {
             <div>
               <Label>Edit JSON-LD</Label>
               <Textarea
-                className={`font-mono text-sm h-96 resize-none ${validationState.showMessage ? (validationState.isValid ? 'border-green-500' : 'border-destructive') : ''}`}
+                className={`font-mono text-sm h-96 resize-none ${validationState.showMessage ? (validationState.isValid ? 'border-success' : 'border-destructive') : ''}`}
                 value={jsonInput}
                 placeholder={selectedSchemaData ? JSON.stringify(selectedSchemaData, null, 2) : 'Schema data will appear here...'}
                 onChange={(e) => setJsonInput(e.target.value)}

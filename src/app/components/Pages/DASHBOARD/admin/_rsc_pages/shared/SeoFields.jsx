@@ -353,7 +353,7 @@ const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
             <div>
               <Label>Edit JSON-LD</Label>
               <Textarea
-                className={`font-mono text-sm h-96 resize-none ${validationState.showMessage ? (validationState.isValid ? 'border-green-500' : 'border-destructive') : ''}`}
+                className={`font-mono text-sm h-96 resize-none ${validationState.showMessage ? (validationState.isValid ? 'border-success' : 'border-destructive') : ''}`}
                 value={jsonInput}
                 placeholder="Schema data will appear here..."
                 onChange={(e) => handleJsonInputChange(e.target.value)}

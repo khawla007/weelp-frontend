@@ -1605,7 +1605,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
               <div>
                 <Label>Edit JSON-LD</Label>
                 <Textarea
-                  className={`font-mono text-sm h-96 resize-none ${validationState.showMessage ? (validationState.isValid ? 'border-green-500' : 'border-destructive') : ''}`}
+                  className={`font-mono text-sm h-96 resize-none ${validationState.showMessage ? (validationState.isValid ? 'border-success' : 'border-destructive') : ''}`}
                   value={jsonInput}
                   placeholder={selectedSchemaData ? JSON.stringify(selectedSchemaData, null, 2) : 'Schema data will appear here...'}
                   onChange={(e) => setJsonInput(e.target.value)}
@@ -1719,7 +1719,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                         }
                         goWithDirection(step?.id, currentStep, setCurrentStep);
                       }}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-muted ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'}`}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-muted ${currentStep == step?.id && ' bg-gradient-to-t from-weelp-sage-deep/20 to-muted border-b-weelp-sage-deep border-b-2'}`}
                     >
                       <div
                         className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-foreground'} ${currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-muted-foreground'}`}

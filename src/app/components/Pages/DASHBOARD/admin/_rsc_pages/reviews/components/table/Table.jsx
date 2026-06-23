@@ -88,7 +88,7 @@ export function ReviewTable({ reviews = [], onDelete, selectedItems = [], onSele
         const ratings = row.original.rating; // get user from row data
         return (
           <div>
-            <div className="flex"> {ratings && [...Array(ratings)].map((_, index) => <Star key={index} size={16} className="fill-yellow-600 stroke-yellow-600" />)}</div>
+            <div className="flex"> {ratings && [...Array(ratings)].map((_, index) => <Star key={index} size={16} className="fill-warning stroke-warning" />)}</div>
           </div>
         );
       },

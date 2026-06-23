@@ -144,7 +144,7 @@ const ScheduleTabAdmin = () => {
                         {...register(`time_slots.${index}.start`, {
                           required: 'Field Required',
                         })}
-                        className={`${errors?.time_slots?.[index]?.start?.message && 'border-red-400'}`}
+                        className={`${errors?.time_slots?.[index]?.start?.message && 'border-destructive'}`}
                       />
 
                       <span>to</span>
@@ -154,7 +154,7 @@ const ScheduleTabAdmin = () => {
                         {...register(`time_slots.${index}.end`, {
                           required: 'Field Required',
                         })}
-                        className={`${errors?.time_slots?.[index]?.end?.message && 'border-red-400'}`}
+                        className={`${errors?.time_slots?.[index]?.end?.message && 'border-destructive'}`}
                       />
 
                       <span className={cn(buttonVariants({ variant: 'outline' }), 'text-xs border-none cursor-pointer')} onClick={() => handleRemoveSlotField(index)}>
