@@ -1,0 +1,279 @@
+'use client';
+
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { FormActionButtons } from '@/app/components/Button/FormActionButtons';
+import { useForm, FormProvider } from 'react-hook-form';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
+import { Card } from '@/components/ui/card';
+import { editTransferByAdmin } from '@/lib/actions/transfer'; // edit actions
+import { defaultSeoValues, parseSeoSchemaData } from '../../shared/SeoFields';
+import { getRecommendedSchemaType } from '@/lib/seo/schemaGenerator';
+
+// Create Dynamic Import For Performance Optimization
+const NavigationTransfer = dynamic(() => import('../transfer_shared').then((mod) => mod.NavigationTransfer), { ssr: false }); // for export
+const BasicInfoTabAdmin = dynamic(() => import('../tabs/BasicInfoTabAdmin'), {
+  ssr: false,
+});
+const PricingTabAdmin = dynamic(() => import('../tabs/PricingTabAdmin'), {
+  ssr: false,
+});
+const ScheduleTabAdmin = dynamic(() => import('../tabs/ScheduleTabAdmin'), {
+  ssr: false,
+}); // schedule tab
+const MediaTab = dynamic(() => import('../tabs/MediaTab'), { ssr: false });
+const SeoTab = dynamic(() => import('../tabs/SeoTab'), { ssr: false });
+const SharedAddOnMultiSelect = dynamic(() => import('../../shared_tabs/addon/SharedAddOnTransfer'), { ssr: false });
+
+export const EditTransferFormByAdmin = ({ transferData }) => {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState({});
+  const router = useRouter();
+  const { toast } = useToast(); // intialize toast
+
+  // destructure transfer data
+  const {
+    id: transferId,
+    name = '',
+    slug = '',
+    transfer_type = '',
+    vendor_routes = {},
+    description = '',
+    pricing_availability = {},
+    seo = {},
+    schedule = {},
+    media_gallery = [],
+    addons = [],
+    transfer_route_id: transferRouteIdValue = '',
+  } = transferData;
+  const { vehicle_type = '', inclusion = '' } = vendor_routes || {}; // routes destructure
+  const { transfer_price = '', currency = '', price_type = '', extra_luggage_charge = '', waiting_charge } = pricing_availability || {}; //pricing destructure
+  const { availability_type, available_days = [], time_slots = [], blackout_dates = [], minimum_lead_time, maximum_passengers } = schedule || {}; // destructure schedule data
+
+  // Transform addons to array of IDs (matching Activity pattern)
+  const initialAddons = Array.isArray(addons) ? addons.map((item) => item.addon_id) : [];
+
+  // intialize methods
+  const methods = useForm({
+    shouldUnregister: false,
+    defaultValues: {
+      name: name,
+      slug: slug,
+      transfer_type: transfer_type,
+      is_vendor: false,
+      transfer_route_id: transferRouteIdValue || '',
+      resolved_route_price: null,
+      vehicle_type: vehicle_type,
+      description: description,
+      inclusion: inclusion,
+      transfer_price: transfer_price === '' || transfer_price == null ? '' : Number(transfer_price),
+      currency: currency,
+      price_type: price_type,
+      extra_luggage_charge: extra_luggage_charge === '' || extra_luggage_charge == null ? 0 : Number(extra_luggage_charge),
+      waiting_charge: waiting_charge === '' || waiting_charge == null ? 0 : Number(waiting_charge),
+
+      // schedule field data
+      availability_type: availability_type,
+      available_days: available_days ? (typeof available_days === 'string' ? available_days.split(',') : available_days) : [],
+      time_slots: time_slots ? (typeof time_slots === 'string' ? JSON.parse(time_slots) : time_slots) : [],
+      blackout_dates: blackout_dates ? (typeof blackout_dates === 'string' ? JSON.parse(blackout_dates) : blackout_dates) : [],
+      minimum_lead_time: minimum_lead_time,
+      maximum_passengers: maximum_passengers,
+
+      // seo - handle null case from API
+      seo: {
+        ...defaultSeoValues,
+        ...(seo || {}),
+        schema_type: seo?.schema_type || getRecommendedSchemaType('transfer'),
+        schema_data: parseSeoSchemaData(seo?.schema_data),
+      },
+      media_gallery: media_gallery,
+      addons: initialAddons,
+    },
+  });
+
+  // Handle Global State
+  const { errors, isSubmitting, isDirty } = methods?.formState;
+
+  // Handle Next button for steps 1-4 (no validation)
+  const handleNext = () => {
+    const currentData = methods.getValues();
+    setFormData({ ...formData, ...currentData });
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  //  Main Steps
+  const steps = [
+    { id: 1, title: 'Basic Info' },
+    { id: 2, title: 'Pricing' },
+    { id: 3, title: 'Schedule' },
+    { id: 4, title: 'AddOn' },
+    { id: 5, title: 'Media' },
+    { id: 6, title: 'Seo' },
+  ];
+
+  /**
+   * Handle Rendering Components Based on Step id
+   * @returns function
+   */
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return <BasicInfoTabAdmin />;
+      case 2:
+        return <PricingTabAdmin />;
+      case 3:
+        return <ScheduleTabAdmin />;
+      case 4:
+        return <SharedAddOnMultiSelect />;
+      case 5:
+        return <MediaTab />;
+      case 6:
+        return <SeoTab />;
+      default:
+        return null;
+    }
+  };
+
+  // Submit Data
+  const onSubmit = async (data) => {
+    const mergedData = { ...formData, ...data };
+
+    if (currentStep < 6) {
+      setFormData(mergedData);
+      setCurrentStep((prev) => prev + 1);
+      return;
+    }
+
+    const { media_gallery = [], resolved_route_price: _rrp, ...rest } = mergedData; // strip UI-only resolved_route_price
+
+    // change media data
+    const finalData = {
+      ...rest,
+      media_gallery: media_gallery.map((val) => ({
+        id: val.id ?? undefined,
+        media_id: val.media_id,
+        is_featured: val.is_featured ?? false,
+      })),
+      seo: rest.seo || {},
+    };
+
+    // submit full data
+    try {
+      const res = await editTransferByAdmin(transferId, finalData);
+
+      if (res.success) {
+        toast({ title: res.message || 'Updated successfully!' });
+
+        // success reset
+        router.push('/dashboard/admin/transfers');
+      } else {
+        toast({
+          title: 'Error',
+          description: res.message || 'Something went wrong',
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Unexpected Error',
+        description: 'Please try again later.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  return (
+    <Card className="min-h-screen border-none shadow-none w-full bg-zinc-50 py-12 sm:px-6 lg:px-8">
+      <NavigationTransfer title={'Edit Transfer'} desciption={'Edit your transfer service'} />
+      <div className="w-full space-y-4">
+        <FormProvider {...methods}>
+          <div className="w-full">
+            <div className="w-full">
+              <ul className="w-full sm:w-fit  flex flex-col sm:flex-row justify-between items-center">
+                {steps &&
+                  steps.map((step) => (
+                    <li
+                      key={step.id}
+                      onClick={() => setCurrentStep(step?.id)}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${
+                        currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'
+                      }`}
+                    >
+                      <div
+                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${
+                          currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-[#71717a]'
+                        }`}
+                      >
+                        {step.title}
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+              <Separator className="" />
+            </div>
+          </div>
+          <form
+            onSubmit={
+              currentStep === 6
+                ? methods.handleSubmit(onSubmit)
+                : (e) => {
+                    e.preventDefault();
+                    handleNext();
+                  }
+            }
+          >
+            <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-2 px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
+              {renderStep()}
+              <div className="flex justify-between pt-4">
+                {currentStep > 1 && (
+                  <Button
+                    type="button"
+                    onClick={() => setCurrentStep(currentStep - 1)}
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-muted hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                  >
+                    Previous
+                  </Button>
+                )}
+
+                {/* Displaying Cancel Button On Starting */}
+                {currentStep < 2 && (
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      router.push('/dashboard/admin/transfers');
+                    }}
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-muted hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                  >
+                    Cancel
+                  </Button>
+                )}
+
+                {/* Prevent Button On Schedules */}
+                {/* Step 6: Use FormActionButtons, Steps 1-5: Use Next button */}
+                {currentStep === 6 ? (
+                  <FormActionButtons
+                    mode="update"
+                    isSubmitting={isSubmitting}
+                    isDisabled={!isDirty}
+                    cancelAlwaysEnabled={true}
+                    cancelHref="/dashboard/admin/transfers"
+                    containerType="div"
+                    className="flex gap-4 ml-auto"
+                  />
+                ) : (
+                  <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}>
+                    Next
+                  </Button>
+                )}
+              </div>
+            </fieldset>
+          </form>
+        </FormProvider>
+      </div>
+    </Card>
+  );
+};
