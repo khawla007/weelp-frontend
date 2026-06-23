@@ -191,26 +191,26 @@ const SeoTab = () => {
       }}
     >
       <AccordionItem value="item-1">
-        <AccordionTrigger className="hover:bg-zinc-50 px-4">
-          <h2 className="text-[#18181b] font-semibold text-xl">Basic Settings</h2>
+        <AccordionTrigger className="hover:bg-muted px-4">
+          <h2 className="text-foreground font-semibold text-xl">Basic Settings</h2>
         </AccordionTrigger>
         <AccordionContent className="px-2 space-y-4">
           <div className="space-y-2">
-            <Label className={`${errors?.seo?.meta_title?.message && 'text-red-400'}`}>Meta Title</Label>
+            <Label className={`${errors?.seo?.meta_title?.message && 'text-destructive'}`}>Meta Title</Label>
             <Input type="text" maxLength="60" placeholder="Enter meta title" className="focus-visible:ring-weelp-sage-deep" {...register('seo.meta_title')} />
-            <span className="block text-xs p-1 text-zinc-500">{`${String(metaTitle || '').length}/60`} Characters</span>
-            {errors?.seo?.meta_title && <p className="text-red-400 text-sm">{errors?.seo?.meta_title?.message}</p>}
+            <span className="block text-xs p-1 text-muted-foreground">{`${String(metaTitle || '').length}/60`} Characters</span>
+            {errors?.seo?.meta_title && <p className="text-destructive text-sm">{errors?.seo?.meta_title?.message}</p>}
           </div>
 
           <div className="space-y-2">
-            <Label className={`${errors?.seo?.meta_description?.message && 'text-red-400'}`}>Meta Description</Label>
+            <Label className={`${errors?.seo?.meta_description?.message && 'text-destructive'}`}>Meta Description</Label>
             <Input type="text" placeholder="Enter meta description" maxLength="160" className="focus-visible:ring-weelp-sage-deep" {...register('seo.meta_description')} />
-            <span className="block text-xs p-1 text-zinc-500">{`${String(metaDescription || '').length}/160`} Characters</span>
-            {errors?.seo?.meta_description && <p className="text-red-400 text-sm">{errors?.seo?.meta_description.message}</p>}
+            <span className="block text-xs p-1 text-muted-foreground">{`${String(metaDescription || '').length}/160`} Characters</span>
+            {errors?.seo?.meta_description && <p className="text-destructive text-sm">{errors?.seo?.meta_description.message}</p>}
           </div>
 
           <div className="space-y-2">
-            <Label className={`${errors?.seo?.keywords?.message && 'text-red-400'}`}>Keywords</Label>
+            <Label className={`${errors?.seo?.keywords?.message && 'text-destructive'}`}>Keywords</Label>
             <Input
               type="text"
               placeholder="Enter keywords separated by commas"
@@ -222,26 +222,26 @@ const SeoTab = () => {
                 },
               })}
             />
-            {errors?.seo?.keywords && <p className="text-red-400 text-sm">{errors?.seo?.keywords?.message}</p>}
+            {errors?.seo?.keywords && <p className="text-destructive text-sm">{errors?.seo?.keywords?.message}</p>}
           </div>
 
           <div className="space-y-2">
-            <Label className={`${errors?.seo?.og_image_url?.message && 'text-red-400'}`}>OG Image Url</Label>
+            <Label className={`${errors?.seo?.og_image_url?.message && 'text-destructive'}`}>OG Image Url</Label>
             <Input type="url" placeholder="Enter OG Image Url" className="focus-visible:ring-weelp-sage-deep" {...register('seo.og_image_url')} />
-            {errors?.seo?.og_image_url && <p className="text-red-400 text-sm">{errors?.seo?.og_image_url?.message}</p>}
+            {errors?.seo?.og_image_url && <p className="text-destructive text-sm">{errors?.seo?.og_image_url?.message}</p>}
           </div>
 
           <div className="space-y-2">
-            <Label className={`${errors?.seo?.canonical_url?.message && 'text-red-400'}`}>Canonical Url</Label>
+            <Label className={`${errors?.seo?.canonical_url?.message && 'text-destructive'}`}>Canonical Url</Label>
             <Input type="url" placeholder="Enter canonical URL" className="focus-visible:ring-weelp-sage-deep" {...register('seo.canonical_url')} />
-            {errors?.seo?.canonical_url && <p className="text-red-400 text-sm">{errors?.seo?.canonical_url?.message}</p>}
+            {errors?.seo?.canonical_url && <p className="text-destructive text-sm">{errors?.seo?.canonical_url?.message}</p>}
           </div>
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
-        <AccordionTrigger className="hover:bg-zinc-50 px-4">
-          <h2 className="text-[#18181b] font-semibold text-xl">Schema Markup</h2>
-          {errors?.schema_data?.message && <div className="bg-red-100 text-red-800">{errors?.schema_data?.message}</div>}
+        <AccordionTrigger className="hover:bg-muted px-4">
+          <h2 className="text-foreground font-semibold text-xl">Schema Markup</h2>
+          {errors?.schema_data?.message && <div className="bg-destructive/15 text-destructive">{errors?.schema_data?.message}</div>}
         </AccordionTrigger>
         <AccordionContent className="px-2 flex flex-col">
           <Card className="p-8 space-y-4">
@@ -271,7 +271,7 @@ const SeoTab = () => {
             <div>
               <Label>Edit JSON-LD</Label>
               <Textarea
-                className={`font-mono text-sm h-96 resize-none ${validationState.showMessage ? (validationState.isValid ? 'border-green-500' : 'border-red-500') : ''}`}
+                className={`font-mono text-sm h-96 resize-none ${validationState.showMessage ? (validationState.isValid ? 'border-green-500' : 'border-destructive') : ''}`}
                 value={jsonInput}
                 placeholder={selectedSchemaData ? JSON.stringify(selectedSchemaData, null, 2) : 'Schema data will appear here...'}
                 onChange={(e) => setJsonInput(e.target.value)}
@@ -285,7 +285,7 @@ const SeoTab = () => {
             </Button>
 
             {validationState.showMessage && (
-              <div className={`p-4 rounded-md text-sm ${validationState.isValid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{validationState.message}</div>
+              <div className={`p-4 rounded-md text-sm ${validationState.isValid ? 'bg-success/15 text-success' : 'bg-destructive/15 text-destructive'}`}>{validationState.message}</div>
             )}
           </Card>
         </AccordionContent>

@@ -94,7 +94,7 @@ export const CreateCategoryPageForm = () => {
 
       <div className="px-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 bg-white border p-6 shadow-sm rounded-lg">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 bg-background border p-6 shadow-sm rounded-lg">
             <fieldset className={`flex flex-col gap-4 ${isSubmitting && 'cursor-wait'}`} disabled={isSubmitting}>
               <FormLabel className="font-semibold text-lg">Category Details</FormLabel>
               <FormDescription>Enter the details for the new category.</FormDescription>

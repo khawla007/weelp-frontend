@@ -27,7 +27,7 @@ const EditStatePage = () => {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center space-y-4 max-w-md">
           <div className="flex justify-center">
-            <AlertCircle className="h-12 w-12 text-red-500" />
+            <AlertCircle className="h-12 w-12 text-destructive" />
           </div>
           <h2 className="text-xl font-semibold">State Not Found</h2>
           <p className="text-muted-foreground">{error ? error.message : 'The state you are looking for does not exist or could not be loaded.'}</p>

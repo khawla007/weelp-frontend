@@ -74,7 +74,7 @@ const DestinationsPageAdmin = () => {
           {/* Displaying Buttons for uplaoding downlaoding data */}
           <CardDescription className="flex gap-2">
             {IMPORT_EXPORT.map(({ icon: IconComponent, label }, index) => (
-              <Button key={index} variant="outline" className="text-[#18181b]">
+              <Button key={index} variant="outline" className="text-foreground">
                 <IconComponent />
                 <span className=" capitalize text-sm">{label}</span>
               </Button>

@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/sidebar';
 
 const COMING_SOON_LABEL = 'Soon';
-const COMING_SOON_BADGE_CLASS = 'rounded-md bg-[#558e7b] px-1.5 py-0.5 text-[8px] font-semibold leading-none text-white';
+const COMING_SOON_BADGE_CLASS = 'rounded-md bg-weelp-sage-deep px-1.5 py-0.5 text-[8px] font-semibold leading-none text-white';
 
 function ComingSoonBadge() {
   return <span className={COMING_SOON_BADGE_CLASS}>{COMING_SOON_LABEL}</span>;

@@ -52,7 +52,7 @@ export const CardVendor = ({ id, title = '', description = '', status = '', vehi
           )}
 
           {status === 'pending' && (
-            <Badge className="w-fit bg-yellow-400" variant="ghost">
+            <Badge className="w-fit bg-warning" variant="ghost">
               pending
             </Badge>
           )}
@@ -68,37 +68,34 @@ export const CardVendor = ({ id, title = '', description = '', status = '', vehi
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-auto" align="end" offset={10}>
-            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}`)}>
+            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}`)}>
               View Details
             </DropdownMenuItem>
-            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/routes`)}>
+            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/routes`)}>
               Routes
             </DropdownMenuItem>
-            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/pricing`)}>
+            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/pricing`)}>
               Pricing
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none"
-              onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/availability`)}
-            >
+            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/availability`)}>
               Availability
             </DropdownMenuItem>
-            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/vehicles`)}>
+            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/vehicles`)}>
               Vehicles
             </DropdownMenuItem>
-            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/drivers`)}>
+            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none" onClick={() => router.push(`/dashboard/admin/transfers/vendors/${id}/drivers`)}>
               Drivers
             </DropdownMenuItem>
 
             {/* Status Based Actions */}
             {status === 'active' && (
-              <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none text-red-600" onClick={() => handleVendorStatus(id, 'inactive')}>
+              <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none text-destructive" onClick={() => handleVendorStatus(id, 'inactive')}>
                 Deactivate
               </DropdownMenuItem>
             )}
 
             {(status === 'inactive' || status === 'pending') && (
-              <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none text-green-600" onClick={() => handleVendorStatus(id, 'active')}>
+              <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none text-success" onClick={() => handleVendorStatus(id, 'active')}>
                 Activate
               </DropdownMenuItem>
             )}
@@ -152,7 +149,7 @@ export const CardVendorRoute = ({ id, title = '', description = '', status = '',
         )}
 
         {status === 'Pending' && (
-          <Badge className="w-fit bg-yellow-400" variant="ghost">
+          <Badge className="w-fit bg-warning" variant="ghost">
             pending
           </Badge>
         )}
@@ -224,7 +221,7 @@ export const CardVendorPricing = ({
         )}
 
         {status === 'Pending' && (
-          <Badge className="w-fit bg-yellow-400" variant="ghost">
+          <Badge className="w-fit bg-warning" variant="ghost">
             pending
           </Badge>
         )}
@@ -291,7 +288,7 @@ export const CardVendorVehicle = ({ id, vendor_id, make = '', status = '', model
             )}
 
             {status === 'maintenance' && (
-              <Badge className="w-fit bg-yellow-400" variant="ghost">
+              <Badge className="w-fit bg-warning" variant="ghost">
                 Maintenance
               </Badge>
             )}
@@ -318,24 +315,24 @@ export const CardVendorVehicle = ({ id, vendor_id, make = '', status = '', model
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-auto" align="end" offset={10}>
               <DropdownMenuItem
-                className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none"
+                className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none"
                 onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/vehicles/${id}/view`)}
               >
                 View Details
               </DropdownMenuItem>
               <DropdownMenuItem
-                className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none"
+                className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none"
                 onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/vehicles/${id}/edit`)}
               >
                 Edit
               </DropdownMenuItem>
               <DropdownMenuItem
-                className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none"
+                className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none"
                 onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/pricing`)}
               >
                 Pricing
               </DropdownMenuItem>
-              <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none text-red-600">Deactivate</DropdownMenuItem>
+              <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none text-destructive">Deactivate</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -344,7 +341,7 @@ export const CardVendorVehicle = ({ id, vendor_id, make = '', status = '', model
       <CardContent className="flex flex-col pb-2 space-y-2">
         {/* year */}
         {year && (
-          <span className="inline-flex text-sm font-normal text-slate-800 items-center gap-2">
+          <span className="inline-flex text-sm font-normal text-foreground items-center gap-2">
             <Car size={16} />
             Year: {year}
           </span>
@@ -352,7 +349,7 @@ export const CardVendorVehicle = ({ id, vendor_id, make = '', status = '', model
 
         {/* capactiy */}
         {capacity && (
-          <span className="inline-flex text-sm font-normal text-slate-800 items-center gap-2">
+          <span className="inline-flex text-sm font-normal text-foreground items-center gap-2">
             <Users size={16} />
             Capacity: {`${capacity} Passengers`}
           </span>
@@ -360,7 +357,7 @@ export const CardVendorVehicle = ({ id, vendor_id, make = '', status = '', model
 
         {/* maintenance */}
         {next_maintenance && (
-          <span className="inline-flex text-sm font-normal text-slate-800 items-center gap-2">
+          <span className="inline-flex text-sm font-normal text-foreground items-center gap-2">
             <Settings size={16} />
             Next Maintenance: {next_maintenance}
           </span>
@@ -460,7 +457,7 @@ export const CardVendorDriver = ({
 
           {/* Status [available ,off_duty, on_duty] */}
           <CardDescription>
-            {status === 'available' && <Badge className="bg-yellow-400 text-[#18181b] hover:bg-yellow-400">Available</Badge>}
+            {status === 'available' && <Badge className="bg-warning text-foreground hover:bg-warning">Available</Badge>}
             {status === 'off_duty' && <Badge variant="outline">Off Duty</Badge>}
             {status === 'on_duty' && <Badge variant="success">On Duty</Badge>}
           </CardDescription>
@@ -475,24 +472,24 @@ export const CardVendorDriver = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-auto" align="end" offset={10}>
             <DropdownMenuItem
-              className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none"
+              className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none"
               onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/drivers/${id}/view`)}
             >
               View Details
             </DropdownMenuItem>
             <DropdownMenuItem
-              className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none"
+              className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none"
               onClick={() => router.push(`/dashboard/admin/transfers/vendors/${vendor_id}/drivers/${id}/edit`)}
             >
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-[#f4f4f5] transition focus-visible:outline-none text-red-600">Deactivate</DropdownMenuItem>
+            <DropdownMenuItem className="px-2 py-1 text-sm hover:bg-muted transition focus-visible:outline-none text-destructive">Deactivate</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </CardHeader>
 
       <CardContent className="flex flex-col space-y-2">
-        <div className="text-sm text-[#71717A] mb-4 flex flex-col">
+        <div className="text-sm text-muted-foreground mb-4 flex flex-col">
           {/* license_number */}
           {license_number && <span className="space-x-2">License: {license_number}</span>}
 

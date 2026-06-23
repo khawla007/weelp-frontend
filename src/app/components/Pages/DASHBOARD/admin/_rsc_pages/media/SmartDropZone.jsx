@@ -32,7 +32,7 @@ export default function SmartDropZone({ name, multiple = true }) {
 
   return (
     <Card>
-      <CardContent {...getRootProps()} className="border-2 border-dashed border-zinc-400 p-4 text-center cursor-pointer">
+      <CardContent {...getRootProps()} className="border-2 border-dashed border-border p-4 text-center cursor-pointer">
         <input {...cleanInputProps} {...(multiple && { multiple: true })} />
         {value.length > 0 ? (
           <ul className="list-none p-0 m-0">
@@ -45,7 +45,7 @@ export default function SmartDropZone({ name, multiple = true }) {
                     e.stopPropagation(); // Prevent opening file picker
                     removeFile(index);
                   }}
-                  className="ml-2 px-2 py-1 bg-red-500 text-white rounded"
+                  className="ml-2 px-2 py-1 bg-destructive text-white rounded"
                 >
                   <X size={14} />
                 </button>

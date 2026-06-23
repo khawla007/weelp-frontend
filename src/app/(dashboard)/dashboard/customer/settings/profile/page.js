@@ -11,7 +11,7 @@ const ProfilePage = () => {
     return (
       <div className="w-full flex flex-col items-center justify-center min-h-[400px]">
         <PageSkeleton />
-        <p className="text-sm text-zinc-500 mt-4">Loading profile data...</p>
+        <p className="text-sm text-muted-foreground mt-4">Loading profile data...</p>
       </div>
     );
   }
@@ -19,7 +19,7 @@ const ProfilePage = () => {
   return (
     <div className="w-full">
       <h2 className="font-bold text-lg">Profile</h2>
-      <p className="text-base text-[#71717A] my-2">This is how others will see you on the site.</p>
+      <p className="text-base text-muted-foreground my-2">This is how others will see you on the site.</p>
 
       {user ? <ProfileSettings user={user} /> : <UserNotFound />}
     </div>

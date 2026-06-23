@@ -9,7 +9,7 @@ export const TaxonomiesPageTitle = ({ title, description }) => {
   return (
     <Card className={'flex w-full flex-col justify-between bg-inherit border-none shadow-none '}>
       <CardHeader className={'w-full flex flex-col sm:flex-row sm:items-center justify-between py-2 sm:p-0 '}>{title && <CardTitle className={'capitalize'}>{title}</CardTitle>}</CardHeader>
-      {description && <CardContent className={'capitalize text-zinc-500 sm:px-0'}>{description}</CardContent>}
+      {description && <CardContent className={'capitalize text-muted-foreground sm:px-0'}>{description}</CardContent>}
     </Card>
   );
 };
@@ -20,7 +20,7 @@ export const TaxonomyFormNavigation = ({ url, title, description }) => {
     <Card className="border-none shadow-none bg-inherit">
       <CardHeader className={'flex flex-row space-x-2 space-y-2 items-center'}>
         {url && (
-          <Link href={url} className=" hover:bg-slate-50 p-2">
+          <Link href={url} className=" hover:bg-muted p-2">
             <ArrowLeft />
           </Link>
         )}
@@ -28,7 +28,7 @@ export const TaxonomyFormNavigation = ({ url, title, description }) => {
       </CardHeader>
       {description && (
         <CardContent className={''}>
-          <CardDescription className={'text-base text-[#71717A]'}>{description}</CardDescription>
+          <CardDescription className={'text-base text-muted-foreground'}>{description}</CardDescription>
         </CardContent>
       )}
     </Card>

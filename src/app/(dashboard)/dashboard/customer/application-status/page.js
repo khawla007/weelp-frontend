@@ -22,19 +22,19 @@ async function fetchApplication() {
 function Card({ icon: Icon, tone, title, children }) {
   const toneClass =
     {
-      neutral: 'border-[#e4e4e7]',
-      warning: 'border-amber-200 bg-amber-50/50',
-      destructive: 'border-red-200 bg-red-50/50',
-      success: 'border-green-200 bg-green-50/50',
-    }[tone] || 'border-[#e4e4e7]';
+      neutral: 'border-border',
+      warning: 'border-warning/40 bg-warning/10',
+      destructive: 'border-destructive/40 bg-destructive/10',
+      success: 'border-success/40 bg-success/10',
+    }[tone] || 'border-border';
 
   return (
-    <div className={`bg-white rounded-xl border ${toneClass} p-6 transition-shadow duration-200 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)]`}>
+    <div className={`bg-card rounded-xl border ${toneClass} p-6 transition-shadow duration-200 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:hover:shadow-none`}>
       <div className="flex items-center gap-3 mb-3">
-        <Icon className="size-6 text-[#52525b]" />
-        <h2 className="text-lg font-semibold text-[#18181b]">{title}</h2>
+        <Icon className="size-6 text-copy" />
+        <h2 className="text-lg font-semibold text-foreground">{title}</h2>
       </div>
-      <div className="text-[#71717a] space-y-1">{children}</div>
+      <div className="text-muted-foreground space-y-1">{children}</div>
     </div>
   );
 }
@@ -50,8 +50,8 @@ export default async function ApplicationStatusPage() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-2xl">
       <header className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">Application Status</h1>
-        <p className="text-[#71717a] mt-1">Track your creator application.</p>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-foreground">Application Status</h1>
+        <p className="text-muted-foreground mt-1">Track your creator application.</p>
       </header>
 
       {status === 'none' && (
@@ -66,7 +66,7 @@ export default async function ApplicationStatusPage() {
       {status === 'pending' && (
         <Card icon={Hourglass} tone="warning" title="Application under review">
           <p>Your application is being reviewed by our team. This usually takes 2–5 business days.</p>
-          {application?.created_at && <p className="mt-2 text-sm text-[#71717a]">Submitted {new Date(application.created_at).toLocaleDateString()}.</p>}
+          {application?.created_at && <p className="mt-2 text-sm text-muted-foreground">Submitted {new Date(application.created_at).toLocaleDateString()}.</p>}
         </Card>
       )}
 

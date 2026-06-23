@@ -220,37 +220,37 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
         <div className="space-y-4 py-6">
           <div className="pb-2 space-x-4 flex">
             <div className="w-full pb-2 space-y-2">
-              <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-zinc-700'}`}>
-                Name <span className="text-red-500">*</span>
+              <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-destructive' : 'text-copy'}`}>
+                Name <span className="text-destructive">*</span>
               </Label>
               <Input
                 placeholder="Activity name"
                 id="name"
                 {...register('name', { required: 'Name is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus:outline-weelp-sage-deep"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus:outline-weelp-sage-deep"
                 onBlur={handleBlur}
               />
-              {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+              {errors?.name && <p className="text-destructive text-sm mt-1">{errors.name.message}</p>}
             </div>
 
             <div className="pb-2 space-y-2 w-full">
-              <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-[#52525b]'}`}>
-                Slug <span className="text-red-500">*</span>
+              <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-destructive' : 'text-copy'}`}>
+                Slug <span className="text-destructive">*</span>
               </Label>
               <Input
                 placeholder="Enter Url slug"
                 id="slug"
                 {...register('slug', { required: 'Slug is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus-visible:ring-weelp-sage-deep"
                 onBlur={handleBlur}
               />
-              {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
+              {errors?.slug && <p className="text-destructive text-sm mt-1">{errors?.slug.message}</p>}
             </div>
           </div>
 
           <div className="pb-2 space-y-2">
-            <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-zinc-700'}`}>
-              Description <span className="text-red-500">*</span>
+            <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-destructive' : 'text-copy'}`}>
+              Description <span className="text-destructive">*</span>
             </Label>
             <Textarea
               placeholder="Detailed description"
@@ -258,14 +258,14 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
               {...register('description', {
                 required: 'Description is required',
               })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm h-28 focus:outline-weelp-sage-deep"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm h-28 focus:outline-weelp-sage-deep"
             />
-            {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+            {errors?.description && <p className="text-destructive text-sm mt-1">{errors.description.message}</p>}
           </div>
 
           <div className="pb-2 space-y-2">
-            <Label htmlFor="short_description" className={`block text-sm font-medium ${errors?.short_description ? 'text-red-400' : 'text-zinc-700'}`}>
-              Short Description <span className="text-red-500">*</span>
+            <Label htmlFor="short_description" className={`block text-sm font-medium ${errors?.short_description ? 'text-destructive' : 'text-copy'}`}>
+              Short Description <span className="text-destructive">*</span>
             </Label>
             <Textarea
               placeholder="Short description"
@@ -273,13 +273,13 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
               {...register('short_description', {
                 required: 'Field is required',
               })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 h-20 focus:outline-weelp-sage-deep"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-border h-20 focus:outline-weelp-sage-deep"
             />
-            {errors?.short_description && <p className="text-red-500 text-sm mt-1">{errors.short_description.message}</p>}
+            {errors?.short_description && <p className="text-destructive text-sm mt-1">{errors.short_description.message}</p>}
           </div>
 
           <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-zinc-700">Feature Activity</label>
+            <label className="text-sm font-medium text-copy">Feature Activity</label>
             <Controller
               name="featured_activity"
               defaultValue={false}
@@ -288,9 +288,9 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-weelp-sage-deep"
+                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-border data-[state=checked]:bg-weelp-sage-deep"
                 >
-                  <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
+                  <span className="absolute left-1 h-4 w-4 rounded-full bg-background transition-transform group-data-[state=checked]:translate-x-5" />
                 </Switch>
               )}
             />
@@ -336,19 +336,19 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
       <div className="space-y-4">
         {/* Locations */}
         <div>
-          <Label className="block py-2 text-sm font-medium text-zinc-700">Locations</Label>
+          <Label className="block py-2 text-sm font-medium text-copy">Locations</Label>
 
           {/* Single City Selection at the Top */}
-          <div className="py-4 px-8 space-y-2 bg-white">
-            <span className="block text-sm font-medium text-zinc-700">Select City</span>
+          <div className="py-4 px-8 space-y-2 bg-background">
+            <span className="block text-sm font-medium text-copy">Select City</span>
             <Combobox data={locations} value={selectedCityId} onChange={handleCityChange} placeholder="Select City..." />
           </div>
 
-          {methods.formState.errors?.locations && <span className="text-red-400">All Fields Required</span>}
+          {methods.formState.errors?.locations && <span className="text-destructive">All Fields Required</span>}
 
           {/* Primary Location */}
-          <p className="py-4 px-8 space-y-4 bg-white mt-2">
-            <span className="block pb-2 text-sm font-medium text-zinc-700">Primary Location</span>
+          <p className="py-4 px-8 space-y-4 bg-background mt-2">
+            <span className="block pb-2 text-sm font-medium text-copy">Primary Location</span>
 
             {/* Hidden city_id from selected city */}
             <input type="hidden" {...methods.register('locations.0.city_id')} value={selectedCityId || ''} />
@@ -404,8 +404,8 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
           {/* Additional Locations */}
           <div className="flex flex-col w-full">
             {locationFields.slice(1).map((item, index) => (
-              <div key={item.id} className="mt-4 py-4 px-8 space-y-4 bg-white">
-                <span className="block text-sm font-medium text-zinc-700">Additional Location {index + 1}</span>
+              <div key={item.id} className="mt-4 py-4 px-8 space-y-4 bg-background">
+                <span className="block text-sm font-medium text-copy">Additional Location {index + 1}</span>
 
                 {/* Hidden city_id from selected city */}
                 <input type="hidden" {...methods.register(`locations.${index + 1}.city_id`)} value={selectedCityId || ''} />
@@ -475,7 +475,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                 duration: null,
               })
             }
-            className="mt-4 w-full bg-white text-[#18181b] hover:bg-inherit border shadow-sm"
+            className="mt-4 w-full bg-background text-foreground hover:bg-inherit border shadow-sm"
           >
             Add Additional Location
           </Button>
@@ -496,7 +496,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
       <div className="space-y-4">
         {/* Categories */}
         <div>
-          <Label htmlFor={'categories'} className="block py-2 text-sm font-medium text-zinc-700">
+          <Label htmlFor={'categories'} className="block py-2 text-sm font-medium text-copy">
             Categories
           </Label>
           <Controller
@@ -513,12 +513,12 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
               />
             )}
           />
-          {errors?.categories && <span className="text-red-400">{errors?.categories?.message}</span>}
+          {errors?.categories && <span className="text-destructive">{errors?.categories?.message}</span>}
         </div>
 
         {/* Tags */}
         <div>
-          <Label htmlFor={'tags'} className="block py-2 text-sm font-medium text-zinc-700">
+          <Label htmlFor={'tags'} className="block py-2 text-sm font-medium text-copy">
             Tags
           </Label>
 
@@ -538,12 +538,12 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
             )}
           />
 
-          {errors?.tags && <span className="text-red-400">{errors?.tags?.message}</span>}
+          {errors?.tags && <span className="text-destructive">{errors?.tags?.message}</span>}
         </div>
 
         {/* Attributes */}
         <div>
-          <Label htmlFor={'attributes'} className="block py-2 text-sm font-medium text-zinc-700">
+          <Label htmlFor={'attributes'} className="block py-2 text-sm font-medium text-copy">
             Attributes
           </Label>
           <Controller
@@ -554,11 +554,11 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
             render={({ field: { onChange, value } }) => <ComboboxMultipleAttribute id={'attributes'} attributes={attributes} value={value} onChange={onChange} />}
           />
 
-          {errors?.attributes && <span className="text-red-400">{errors?.attributes?.message}</span>}
+          {errors?.attributes && <span className="text-destructive">{errors?.attributes?.message}</span>}
         </div>
 
         <div className="w-full py-2">
-          <Label htmlFor={'difficulty_level'} className="block text-sm font-medium text-zinc-700">
+          <Label htmlFor={'difficulty_level'} className="block text-sm font-medium text-copy">
             Difficulty Level
           </Label>
           <Controller
@@ -682,7 +682,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
 
         {/**Uploaded Media As Dialog */}
         <div className="flex items-center justify-between">
-          <p className="text-sm text-zinc-500">Click the star icon to mark an image as featured</p>
+          <p className="text-sm text-muted-foreground">Click the star icon to mark an image as featured</p>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <Button className="w-fit">
@@ -704,7 +704,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
             {activityImages.map((image, index) => {
               const isFeatured = image.media_id == featuredImageId;
               return (
-                <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-[#e4e4e7]">
+                <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-border">
                   <img className="size-72 rounded-md border" src={image?.url} alt="activity_image" />
                   {/* Featured Star - Top Right */}
                   <Star
@@ -717,14 +717,14 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                   {isFeatured && <div className="absolute top-4 left-4 bg-weelp-sage-deep text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
                   <Trash2
                     onClick={() => handleDeleteImage(image)}
-                    className="absolute bottom-4 right-4 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-red-500 bg-white rounded-full shadow p-1"
+                    className="absolute bottom-4 right-4 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-destructive bg-background rounded-full shadow p-1"
                   />
                 </div>
               );
             })}
           </div>
         ) : (
-          <div className="w-full">{errors.media_gallery && <p className="text-red-500 mt-1">{errors.media_gallery.message}</p>}</div>
+          <div className="w-full">{errors.media_gallery && <p className="text-destructive mt-1">{errors.media_gallery.message}</p>}</div>
         )}
       </div>
     );
@@ -791,8 +791,8 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
     return (
       <div className="space-y-6">
         {/* Base Pricing */}
-        <div className="flex flex-col justify-between gap-4 p-8 shadow-md bg-white rounded-md">
-          <h3 className="text-lg font-medium text-zinc-900">$ Base Pricing</h3>
+        <div className="flex flex-col justify-between gap-4 p-8 shadow-md bg-background rounded-md">
+          <h3 className="text-lg font-medium text-foreground">$ Base Pricing</h3>
           <div className="w-full flex gap-4">
             <div className="w-full space-y-2">
               <Label htmlFor="regular_price" className="w-full">
@@ -817,7 +817,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                 )}
               />
 
-              {errors?.pricing?.regular_price && <span className="text-red-500 text-sm">{errors.pricing.regular_price.message}</span>}
+              {errors?.pricing?.regular_price && <span className="text-destructive text-sm">{errors.pricing.regular_price.message}</span>}
             </div>
 
             <div className="w-full space-y-2">
@@ -863,7 +863,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                   setSeasonPricing(!isSeasonPricing);
                 }}
               />
-              <Label className="text-sm font-medium text-zinc-900">Enable Seasonal Pricing</Label>
+              <Label className="text-sm font-medium text-foreground">Enable Seasonal Pricing</Label>
             </div>
 
             {isSeasonPricing && (
@@ -878,7 +878,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                           <div className="relative inline-block">
                             <Label>Season Date Range</Label>
                             {(!dateRange?.from || !dateRange?.to) && (
-                              <span className="absolute left-full top-[60%] -translate-y-1/2 ml-2 whitespace-nowrap text-xs font-normal text-red-500">
+                              <span className="absolute left-full top-[60%] -translate-y-1/2 ml-2 whitespace-nowrap text-xs font-normal text-destructive">
                                 {!dateRange?.from ? 'This field is required' : 'Please select end date'}
                               </span>
                             )}
@@ -984,12 +984,12 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                             )}
                           />
                           {/* Show error message */}
-                          {errors?.seasonal_pricing?.[index]?.season_name && <p className="text-red-600 text-sm mt-1">{errors?.seasonal_pricing[index]?.season_name?.message}</p>}
+                          {errors?.seasonal_pricing?.[index]?.season_name && <p className="text-destructive text-sm mt-1">{errors?.seasonal_pricing[index]?.season_name?.message}</p>}
                         </div>
                       </div>
                       {/* Remove Button */}
                       <div className="w-fit">
-                        <Trash2 type="button" variant="destructive" className="mt-4 text-red-600  rounded-full cursor-pointer" onClick={() => removeSeason(index)} />
+                        <Trash2 type="button" variant="destructive" className="mt-4 text-destructive  rounded-full cursor-pointer" onClick={() => removeSeason(index)} />
                       </div>
                     </div>
                   );
@@ -1017,15 +1017,15 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
         </div>
 
         {/* Discount & Promotions */}
-        <div className="flex flex-col justify-between gap-4 p-8 shadow-md bg-white rounded-md">
-          <h3 className="text-lg flex items-center gap-4 font-semibold text-zinc-900">
+        <div className="flex flex-col justify-between gap-4 p-8 shadow-md bg-background rounded-md">
+          <h3 className="text-lg flex items-center gap-4 font-semibold text-foreground">
             <Tag size={18} className=" stroke-2 font-semibold" /> Discount & Promotions
           </h3>
 
           {/* Group Discounts */}
           <div className="w-full flex flex-col gap-4">
             <div className="w-full flex justify-between">
-              <h3 className="text-lg flex items-center gap-4 font-semibold text-zinc-900">
+              <h3 className="text-lg flex items-center gap-4 font-semibold text-foreground">
                 <Users size={18} className="stroke-2" />
                 Group Discount
               </h3>
@@ -1099,7 +1099,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
 
                     {/* Remove Button */}
                     <div className="w-fit">
-                      <Trash2 type="button" variant="destructive" className="text-red-600  rounded-full cursor-pointer" onClick={() => removeDiscountField(index)} />
+                      <Trash2 type="button" variant="destructive" className="text-destructive  rounded-full cursor-pointer" onClick={() => removeDiscountField(index)} />
                     </div>
                   </div>
                 );
@@ -1184,11 +1184,11 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
   };
 
   return (
-    <div className="w-full bg-zinc-50 py-6 sm:px-4 lg:px-6" style={{ overflowAnchor: 'none' }}>
+    <div className="w-full bg-muted py-6 sm:px-4 lg:px-6" style={{ overflowAnchor: 'none' }}>
       <NavigationActivity title={'Create new Activity'} desciption={'Create a new activity for your customers'} />
       <div className="w-full space-y-6">
         <FormProvider {...methods}>
-          <div className="w-full bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <div className="w-full bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <div className="mb-8 w-full">
               <ul className="flex justify-between gap-8 items-stretch w-full mb-4 flex-wrap md:flex-nowrap">
                 {steps &&
@@ -1203,12 +1203,12 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                         }
                         goWithDirection(step?.id, currentStep, setCurrentStep);
                       }}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && 'bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'}`}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-muted ${currentStep == step?.id && 'bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'}`}
                     >
-                      <Separator className={`pt-1 rounded-full ${currentStep >= step?.id ? 'bg-weelp-sage-deep group-hover:bg-[#eaeaea]' : 'bg-zinc-200 group-hover:bg-weelp-sage-deep'}`} />
+                      <Separator className={`pt-1 rounded-full ${currentStep >= step?.id ? 'bg-weelp-sage-deep group-hover:bg-muted' : 'bg-accent group-hover:bg-weelp-sage-deep'}`} />
 
-                      <div className={`text-sm font-medium pt-2 ${currentStep == step?.id ? 'text-weelp-sage-deep' : 'text-[#71717a]'}`}>{step.title}</div>
-                      <span className="text-sm text-zinc-500">{step?.description}</span>
+                      <div className={`text-sm font-medium pt-2 ${currentStep == step?.id ? 'text-weelp-sage-deep' : 'text-muted-foreground'}`}>{step.title}</div>
+                      <span className="text-sm text-muted-foreground">{step?.description}</span>
                     </li>
                   ))}
               </ul>
@@ -1231,7 +1231,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                   <Button
                     type="button"
                     onClick={() => goWithDirection(currentStep - 1, currentStep, setCurrentStep)}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Previous
                   </Button>
@@ -1244,7 +1244,7 @@ export const CreateActivityForm = ({ categories, attributes, tags, locations = [
                     onClick={() => {
                       router.back();
                     }}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Cancel
                   </Button>

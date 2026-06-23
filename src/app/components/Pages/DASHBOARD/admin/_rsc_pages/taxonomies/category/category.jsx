@@ -27,7 +27,7 @@ export function CategoryPageClient() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [isAllSelected, setIsAllSelected] = useState(false);
 
-  if (error) return <p className="text-red-400">Failed to load categories.</p>;
+  if (error) return <p className="text-destructive">Failed to load categories.</p>;
 
   const response = data?.data || {};
 

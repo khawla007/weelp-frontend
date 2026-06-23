@@ -304,23 +304,23 @@ export function AccountSettings({ user }) {
                     {watchPassword && (
                       <div className="mt-2 space-y-1 text-xs">
                         <p className="text-muted-foreground font-medium mb-1">Password must contain:</p>
-                        <div className={`flex items-center gap-1 ${watchPassword.length >= 8 ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground/70'}`}>
+                        <div className={`flex items-center gap-1 ${watchPassword.length >= 8 ? 'text-success dark:text-green-400' : 'text-muted-foreground/70'}`}>
                           {watchPassword.length >= 8 ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                           <span>At least 8 characters</span>
                         </div>
-                        <div className={`flex items-center gap-1 ${/[A-Z]/.test(watchPassword) ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground/70'}`}>
+                        <div className={`flex items-center gap-1 ${/[A-Z]/.test(watchPassword) ? 'text-success dark:text-green-400' : 'text-muted-foreground/70'}`}>
                           {/[A-Z]/.test(watchPassword) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                           <span>One uppercase letter (A-Z)</span>
                         </div>
-                        <div className={`flex items-center gap-1 ${/[a-z]/.test(watchPassword) ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground/70'}`}>
+                        <div className={`flex items-center gap-1 ${/[a-z]/.test(watchPassword) ? 'text-success dark:text-green-400' : 'text-muted-foreground/70'}`}>
                           {/[a-z]/.test(watchPassword) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                           <span>One lowercase letter (a-z)</span>
                         </div>
-                        <div className={`flex items-center gap-1 ${/[0-9]/.test(watchPassword) ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground/70'}`}>
+                        <div className={`flex items-center gap-1 ${/[0-9]/.test(watchPassword) ? 'text-success dark:text-green-400' : 'text-muted-foreground/70'}`}>
                           {/[0-9]/.test(watchPassword) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                           <span>One number (0-9)</span>
                         </div>
-                        <div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(watchPassword) ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground/70'}`}>
+                        <div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(watchPassword) ? 'text-success dark:text-green-400' : 'text-muted-foreground/70'}`}>
                           {/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(watchPassword) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                           <span>One special character</span>
                         </div>
@@ -341,7 +341,7 @@ export function AccountSettings({ user }) {
                         <Input type={newPwdVisible ? 'text' : 'password'} {...field} />
                         {watchPasswordConfirmation && (
                           <div className="absolute right-10 top-1/2 -translate-y-1/2">
-                            {watchPassword === watchPasswordConfirmation ? <Check className="text-green-500 size-5" strokeWidth={3} /> : <X className="text-red-500 size-5" strokeWidth={2} />}
+                            {watchPassword === watchPasswordConfirmation ? <Check className="text-success size-5" strokeWidth={3} /> : <X className="text-destructive size-5" strokeWidth={2} />}
                           </div>
                         )}
                         <button type="button" onClick={toggleNewPwd} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">

@@ -127,7 +127,7 @@ export const EditAttributePageForm = ({ attributeData }) => {
       <TaxonomyFormNavigation title={'Edit Attribute'} description={'Edit the details of the attribute.'} url={'/dashboard/admin/taxonomies/attributes/'} />
       <div className="px-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 bg-white border p-6 shadow-sm rounded-lg">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 bg-background border p-6 shadow-sm rounded-lg">
             <fieldset className={`flex flex-col gap-4 ${isSubmitting ? 'cursor-wait' : ''}`} disabled={isSubmitting}>
               <FormLabel className="font-semibold text-lg">Attribute Details</FormLabel>
               <FormDescription>Enter the details for the attribute.</FormDescription>

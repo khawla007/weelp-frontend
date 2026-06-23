@@ -45,42 +45,42 @@ const BasicInfoTabAdmin = () => {
 
   return (
     <div className="space-y-4 py-6">
-      <h2 className="text-base font-semibold text-[#18181b]">Transfer Details</h2>
-      <p className="text-sm text-zinc-600">Enter the basic detail of transfer service</p>
+      <h2 className="text-base font-semibold text-foreground">Transfer Details</h2>
+      <p className="text-sm text-copy">Enter the basic detail of transfer service</p>
 
       {/* Name */}
       <div className="pb-2 space-y-2 w-full">
-        <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-[#52525b]'}`}>
-          Name <span className="text-red-500">*</span>
+        <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-destructive' : 'text-copy'}`}>
+          Name <span className="text-destructive">*</span>
         </Label>
         <Input
           placeholder="Enter Transfer Name"
           id="name"
           {...register('name', { required: 'Name is required' })}
-          className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
+          className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus-visible:ring-weelp-sage-deep"
           onBlur={handleBlur}
         />
-        {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+        {errors?.name && <p className="text-destructive text-sm mt-1">{errors.name.message}</p>}
       </div>
 
       <div className="pb-2 space-y-2 w-full">
-        <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-[#52525b]'}`}>
-          Slug <span className="text-red-500">*</span>
+        <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-destructive' : 'text-copy'}`}>
+          Slug <span className="text-destructive">*</span>
         </Label>
         <Input
           placeholder="Enter Url slug"
           id="slug"
           {...register('slug', { required: 'Slug is required' })}
-          className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
+          className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus-visible:ring-weelp-sage-deep"
           onBlur={handleBlur}
         />
-        {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
+        {errors?.slug && <p className="text-destructive text-sm mt-1">{errors?.slug.message}</p>}
       </div>
 
       {/* Transfer Type */}
       <div className="space-y-2">
-        <Label htmlFor="transfer_type" className={`block text-sm font-medium ${errors?.transfer_type ? 'text-red-400' : 'text-[#52525b]'}`}>
-          Transfer Type <span className="text-red-500">*</span>
+        <Label htmlFor="transfer_type" className={`block text-sm font-medium ${errors?.transfer_type ? 'text-destructive' : 'text-copy'}`}>
+          Transfer Type <span className="text-destructive">*</span>
         </Label>
         <Controller
           name="transfer_type"
@@ -88,13 +88,13 @@ const BasicInfoTabAdmin = () => {
           rules={{ required: 'Field Required' }}
           render={({ field }) => <SelectInputTransfer2 value={field.value} onChange={field.onChange} options={TRANSFER_TYPES} placeholder="Select pickup location..." />}
         />
-        {errors?.transfer_type && <p className="text-red-500 text-sm mt-1">{errors?.transfer_type?.message}</p>}
+        {errors?.transfer_type && <p className="text-destructive text-sm mt-1">{errors?.transfer_type?.message}</p>}
       </div>
 
       {/* Vehicle Type */}
       <div className="space-y-2">
-        <Label htmlFor="vehicle_type" className={`block text-sm font-medium ${errors?.vehicle_type ? 'text-red-400' : 'text-[#52525b]'}`}>
-          Vehicle Type <span className="text-red-500">*</span>
+        <Label htmlFor="vehicle_type" className={`block text-sm font-medium ${errors?.vehicle_type ? 'text-destructive' : 'text-copy'}`}>
+          Vehicle Type <span className="text-destructive">*</span>
         </Label>
         <Controller
           name="vehicle_type"
@@ -102,13 +102,13 @@ const BasicInfoTabAdmin = () => {
           rules={{ required: 'Field Required' }}
           render={({ field }) => <SelectInputTransfer2 value={field.value} onChange={field.onChange} options={VEHICLE_TYPES} placeholder="Select pickup location..." />}
         />
-        {errors?.vehicle_type && <p className="text-red-500 text-sm mt-1">{errors?.vehicle_type?.message}</p>}
+        {errors?.vehicle_type && <p className="text-destructive text-sm mt-1">{errors?.vehicle_type?.message}</p>}
       </div>
 
       {/* Route */}
       <div className="pb-2 space-y-2 w-full">
-        <Label className={`block text-sm font-medium ${errors?.transfer_route_id ? 'text-red-400' : 'text-[#52525b]'}`}>
-          Route <span className="text-red-500">*</span>
+        <Label className={`block text-sm font-medium ${errors?.transfer_route_id ? 'text-destructive' : 'text-copy'}`}>
+          Route <span className="text-destructive">*</span>
         </Label>
         <Controller
           name="transfer_route_id"
@@ -137,13 +137,13 @@ const BasicInfoTabAdmin = () => {
             />
           )}
         />
-        {errors?.transfer_route_id && <p className="text-red-500 text-sm mt-1">{errors.transfer_route_id.message}</p>}
+        {errors?.transfer_route_id && <p className="text-destructive text-sm mt-1">{errors.transfer_route_id.message}</p>}
       </div>
 
       {/* Description */}
       <div className="space-y-2">
-        <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-[#52525b]'}`}>
-          Description <span className="text-red-500">*</span>
+        <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-destructive' : 'text-copy'}`}>
+          Description <span className="text-destructive">*</span>
         </Label>
         <Textarea
           placeholder="Detailed description"
@@ -151,15 +151,15 @@ const BasicInfoTabAdmin = () => {
           {...register('description', {
             required: 'Description is required',
           })}
-          className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
+          className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus-visible:ring-weelp-sage-deep"
         />
-        {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+        {errors?.description && <p className="text-destructive text-sm mt-1">{errors.description.message}</p>}
       </div>
 
       {/* Inclusions */}
       <div className="space-y-2">
-        <Label htmlFor="inclusion" className={`block text-sm font-medium ${errors?.inclusion ? 'text-red-400' : 'text-[#52525b]'}`}>
-          Inclusion <span className="text-red-500">*</span>
+        <Label htmlFor="inclusion" className={`block text-sm font-medium ${errors?.inclusion ? 'text-destructive' : 'text-copy'}`}>
+          Inclusion <span className="text-destructive">*</span>
         </Label>
         <Textarea
           placeholder="Detailed inclusion"
@@ -167,9 +167,9 @@ const BasicInfoTabAdmin = () => {
           {...register('inclusion', {
             required: 'inclusion is required',
           })}
-          className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
+          className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus-visible:ring-weelp-sage-deep"
         />
-        {errors?.inclusion && <p className="text-red-500 text-sm mt-1">{errors?.inclusion.message}</p>}
+        {errors?.inclusion && <p className="text-destructive text-sm mt-1">{errors?.inclusion.message}</p>}
       </div>
     </div>
   );

@@ -87,8 +87,8 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
         <div className="space-y-6">
           {headerButton && <div className="flex justify-end">{headerButton}</div>}
           <div className="weelp-fade-up text-center py-16">
-            <p className="text-lg font-semibold text-[#18181b]">No itineraries yet</p>
-            <p className="text-[#71717a] mt-2">Create your first itinerary and submit it for approval.</p>
+            <p className="text-lg font-semibold text-foreground">No itineraries yet</p>
+            <p className="text-muted-foreground mt-2">Create your first itinerary and submit it for approval.</p>
             <div className="mt-4 flex justify-center">
               <NavigationLink href="/dashboard/customer/my-itineraries/new">
                 <Button className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white">
@@ -103,8 +103,8 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
     }
     return (
       <div className="weelp-fade-up text-center py-16">
-        <p className="text-lg font-semibold text-[#18181b]">No itineraries yet</p>
-        <p className="text-[#71717a] mt-2">Browse and save itineraries from the explore page to see them here.</p>
+        <p className="text-lg font-semibold text-foreground">No itineraries yet</p>
+        <p className="text-muted-foreground mt-2">Browse and save itineraries from the explore page to see them here.</p>
         <NavigationLink href="/explore-creators">
           <Button className="mt-4 bg-weelp-sage-deep hover:bg-weelp-sage-deep/90">Explore Itineraries</Button>
         </NavigationLink>
@@ -124,7 +124,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
               size="sm"
               variant={activeTab === tab ? 'default' : 'outline'}
               onClick={() => setActiveTab(tab)}
-              className={activeTab === tab ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-[#e4e4e7] text-[#52525b]'}
+              className={activeTab === tab ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-border text-copy'}
             >
               {tab === 'all' ? 'All Itineraries' : 'Drafts'}
             </Button>
@@ -133,9 +133,9 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
       )}
 
       {filtered.length === 0 && isCreator && activeTab === 'drafts' ? (
-        <div className="weelp-fade-up text-center py-12 bg-white rounded-lg border border-[#e4e4e7]">
-          <p className="text-lg font-semibold text-[#18181b]">No drafts</p>
-          <p className="text-[#71717a] mt-2">Edits you&apos;ve submitted for review will appear here.</p>
+        <div className="weelp-fade-up text-center py-12 bg-background rounded-lg border border-border">
+          <p className="text-lg font-semibold text-foreground">No drafts</p>
+          <p className="text-muted-foreground mt-2">Edits you&apos;ve submitted for review will appear here.</p>
         </div>
       ) : null}
 
@@ -164,9 +164,9 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
           return (
             <div
               key={item.id || itinerary.id}
-              className="bg-white rounded-xl border border-[#e4e4e7] overflow-hidden group transition-[transform,box-shadow] duration-150 ease-out hover:-translate-y-0.5 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] focus-within:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:focus-within:translate-y-0"
+              className="bg-background rounded-xl border border-border overflow-hidden group transition-[transform,box-shadow] duration-150 ease-out hover:-translate-y-0.5 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] focus-within:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:focus-within:translate-y-0"
             >
-              <div className="h-[200px] bg-[#f4f4f5] relative overflow-hidden">
+              <div className="h-[200px] bg-muted relative overflow-hidden">
                 <img
                   src={featuredImage}
                   alt={name}
@@ -186,7 +186,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
                   <div className="absolute top-2 right-2">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="bg-white/90 hover:bg-white h-8 w-8 rounded-full" disabled={processingId === item.id}>
+                        <Button variant="ghost" size="icon" className="bg-background/90 hover:bg-background h-8 w-8 rounded-full" disabled={processingId === item.id}>
                           <MoreHorizontal className="size-4" />
                         </Button>
                       </DropdownMenuTrigger>
@@ -198,7 +198,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
                           </DropdownMenuItem>
                         )}
                         {canRequestRemoval && (
-                          <DropdownMenuItem onClick={() => openRemovalDialog(item.id)} className="cursor-pointer text-red-600 focus:text-red-600">
+                          <DropdownMenuItem onClick={() => openRemovalDialog(item.id)} className="cursor-pointer text-destructive focus:text-destructive">
                             <Trash2 className="size-3.5 mr-2" />
                             Request Removal
                           </DropdownMenuItem>
@@ -209,8 +209,8 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
                 )}
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-[#18181b] text-base line-clamp-1 mb-2">{name}</h3>
-                <div className="flex items-center gap-4 text-sm text-[#71717a] mb-4">
+                <h3 className="font-semibold text-foreground text-base line-clamp-1 mb-2">{name}</h3>
+                <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
                   {city && (
                     <span className="flex items-center gap-1">
                       <MapPin className="size-3.5" />
@@ -226,22 +226,22 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
                 </div>
                 {slug && citySlug ? (
                   <NavigationLink href={`/cities/${citySlug}/itineraries/${slug}`} className="block">
-                    <Button variant="outline" size="sm" className="w-full border-[#e4e4e7] text-[#52525b] hover:bg-[#f4f4f5]">
+                    <Button variant="outline" size="sm" className="w-full border-border text-copy hover:bg-muted">
                       View & Book
                     </Button>
                   </NavigationLink>
                 ) : (
-                  <Button variant="outline" size="sm" disabled className="w-full border-[#e4e4e7] text-[#52525b]">
+                  <Button variant="outline" size="sm" disabled className="w-full border-border text-copy">
                     View & Book
                   </Button>
                 )}
 
                 {isCreatorCopy && draftItineraryId && (
-                  <div className="mt-3 flex items-center gap-1 text-xs text-amber-600">
+                  <div className="mt-3 flex items-center gap-1 text-xs text-warning">
                     <FileEdit className="size-3" />
                     <span>Edit draft in progress</span>
                     <NavigationLink href={`/dashboard/customer/my-itineraries/${draftItineraryId}/edit`}>
-                      <Button variant="link" size="sm" className="text-xs p-0 h-auto text-amber-600 underline">
+                      <Button variant="link" size="sm" className="text-xs p-0 h-auto text-warning underline">
                         Continue editing
                       </Button>
                     </NavigationLink>
@@ -249,7 +249,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
                 )}
 
                 {isCreatorCopy && removalStatus === 'requested' && (
-                  <div className="mt-3 flex items-center gap-1 text-xs text-red-500">
+                  <div className="mt-3 flex items-center gap-1 text-xs text-destructive">
                     <Clock className="size-3" />
                     <span>Removal request pending</span>
                   </div>
@@ -286,7 +286,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
             >
               Cancel
             </Button>
-            <Button onClick={handleRequestRemoval} disabled={processingId === removalTargetId} className="bg-red-600 hover:bg-red-700 text-white">
+            <Button onClick={handleRequestRemoval} disabled={processingId === removalTargetId} className="bg-destructive hover:bg-destructive/90 text-white">
               Submit Request
             </Button>
           </DialogFooter>

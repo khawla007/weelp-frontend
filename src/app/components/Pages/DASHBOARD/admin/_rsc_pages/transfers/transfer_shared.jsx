@@ -146,7 +146,7 @@ export function ComboboxVendorAvailablity({ data = [], value, onChange, placehol
                   <span className="flex flex-col w-full text-sm text-center">
                     {' '}
                     Date:{item?.date}
-                    <span className="text-xs text-zinc-500">Start Time: {item?.start_time}</span>
+                    <span className="text-xs text-muted-foreground">Start Time: {item?.start_time}</span>
                   </span>
 
                   <Check className={cn('ml-auto', value === item.id ? 'opacity-100' : 'opacity-0')} />

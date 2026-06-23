@@ -40,7 +40,7 @@ const SelectTransferOption = () => {
                 <>
                   {/* Disabled Card */}
                   <div className="flex flex-col items-center justify-center opacity-50 cursor-not-allowed w-full h-full">
-                    <div className="bg-zinc-400 text-white p-3 rounded-full mb-2">{route.icon}</div>
+                    <div className="bg-muted-foreground text-white p-3 rounded-full mb-2">{route.icon}</div>
                     <p className="text-sm font-semibold">{route.label}</p>
                   </div>
                   {/* Coming Soon Badge */}

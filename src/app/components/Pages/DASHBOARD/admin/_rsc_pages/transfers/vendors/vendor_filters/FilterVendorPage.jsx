@@ -55,7 +55,7 @@ const FilterVendorPage = () => {
     setValue('page', newPage);
   };
 
-  if (error) return <div className="text-red-400">{error.message || 'An error occurred'}</div>;
+  if (error) return <div className="text-destructive">{error.message || 'An error occurred'}</div>;
   return (
     <Card className="bg-inherit border-none shadow-none flex flex-col gap-4">
       <Form {...form}>

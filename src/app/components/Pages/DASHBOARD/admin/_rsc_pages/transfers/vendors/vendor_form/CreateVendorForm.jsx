@@ -57,7 +57,7 @@ const CreateVendorForm = ({ onSuccess }) => {
             <Input {...register('name', { required: 'Name Field Required' })} id="name" name="name" placeholder="Vendor Name" />
 
             {/* Error  */}
-            {errors?.name && <p className="text-red-400 font-semibold text-sm">{errors?.name?.message}</p>}
+            {errors?.name && <p className="text-destructive font-semibold text-sm">{errors?.name?.message}</p>}
           </div>
 
           {/* Description */}
@@ -66,7 +66,7 @@ const CreateVendorForm = ({ onSuccess }) => {
             <Textarea {...register('description', { required: 'Field Required' })} id="description" name="description" placeholder="Vendor Description" />
 
             {/* Error  */}
-            {errors?.description && <p className="text-red-400 font-semibold text-sm">{errors?.description?.message}</p>}
+            {errors?.description && <p className="text-destructive font-semibold text-sm">{errors?.description?.message}</p>}
           </div>
 
           {/* Email & PhoneNumber */}
@@ -76,7 +76,7 @@ const CreateVendorForm = ({ onSuccess }) => {
               <Input type="email" {...register('email', { required: 'Email Required' })} id="email" name="email" placeholder="e.g.. vendor1@example.com" />
 
               {/* Error  */}
-              {errors?.description && <p className="text-red-400 font-semibold text-sm">{errors?.description?.message}</p>}
+              {errors?.description && <p className="text-destructive font-semibold text-sm">{errors?.description?.message}</p>}
             </div>
 
             <div className="grid gap-3 w-full">
@@ -84,7 +84,7 @@ const CreateVendorForm = ({ onSuccess }) => {
               <Input type="tel" {...register('phone', { required: 'Phone Number Required' })} id="phone" name="phone" placeholder="e.g.. +919999999999" />
 
               {/* Error  */}
-              {errors?.phone && <p className="text-red-400 font-semibold text-sm">{errors?.phone?.message}</p>}
+              {errors?.phone && <p className="text-destructive font-semibold text-sm">{errors?.phone?.message}</p>}
             </div>
           </div>
 
@@ -94,7 +94,7 @@ const CreateVendorForm = ({ onSuccess }) => {
             <Textarea {...register('address', { required: 'Address Field Required' })} id="address" name="address" placeholder="e.g.. 123 Main Street" />
 
             {/* Error  */}
-            {errors?.address && <p className="text-red-400 font-semibold text-sm">{errors?.address?.message}</p>}
+            {errors?.address && <p className="text-destructive font-semibold text-sm">{errors?.address?.message}</p>}
           </div>
 
           {/* Status */}

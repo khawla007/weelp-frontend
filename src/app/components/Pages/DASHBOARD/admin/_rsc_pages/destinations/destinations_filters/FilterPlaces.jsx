@@ -117,9 +117,9 @@ const FilterPlaces = () => {
           {isValidating && <ListingCardSkeleton count={8} gridClassName="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" className="w-full" />}
 
           {/* Error State */}
-          {!isValidating && error && <div className="text-red-500 text-center py-4">Failed to load data. Please try again.</div>}
+          {!isValidating && error && <div className="text-destructive text-center py-4">Failed to load data. Please try again.</div>}
           {/* No Items Found */}
-          {!isValidating && !error && places.length === 0 && <div className="text-zinc-500 text-center py-4">No places found.</div>}
+          {!isValidating && !error && places.length === 0 && <div className="text-muted-foreground text-center py-4">No places found.</div>}
 
           {/* For places */}
           {!isValidating && !error && places.length > 0 && (

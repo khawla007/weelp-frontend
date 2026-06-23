@@ -14,7 +14,7 @@ const EditAddOn = () => {
   const { data, error, isLoading } = useSWR(`/api/admin/addons/${id}`, fetcher); // get data through api
 
   // Handle Data Cases
-  if (error) return <p className="text-red-400">Something went wrong</p>;
+  if (error) return <p className="text-destructive">Something went wrong</p>;
   if (isLoading) return <FormSkeleton />;
 
   const { success = false, data: addOnData = {} } = data;

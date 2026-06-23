@@ -41,9 +41,7 @@ export default function UserMenu({ session }) {
               <SidebarMenuButton size="lg" className={cn('data-[state=open]:text-foreground', 'gap-2 px-2 py-1.5 text-foreground hover:text-foreground/70 transition-colors duration-200 ease-out')}>
                 <Avatar className="h-9 w-9 rounded-lg border-2 border-card shadow-sm">
                   {avatarSrc && <AvatarImage src={avatarSrc} alt={name || 'user'} />}
-                  <AvatarFallback className="text-white font-semibold rounded-lg" style={{ backgroundColor: '#568f7c' }}>
-                    {userInitials}
-                  </AvatarFallback>
+                  <AvatarFallback className="text-white font-semibold rounded-lg bg-weelp-sage-deep">{userInitials}</AvatarFallback>
                 </Avatar>
 
                 <div className="grid flex-1 text-left text-sm leading-tight">

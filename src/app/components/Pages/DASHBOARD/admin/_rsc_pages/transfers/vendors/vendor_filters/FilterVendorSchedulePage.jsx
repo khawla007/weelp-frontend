@@ -86,7 +86,7 @@ const FilterVendorSchedulePage = () => {
 
   return (
     <Card className="flex flex-col md:flex-row bg-inherit border-none shadow-none gap-2">
-      <CardHeader className="min-h-96 h-full md:max-w-xs w-full bg-white border shadow-sm rounded-lg space-y-6">
+      <CardHeader className="min-h-96 h-full md:max-w-xs w-full bg-background border shadow-sm rounded-lg space-y-6">
         <Form {...form}>
           <div>
             <FormLabel>Filters</FormLabel>
@@ -173,7 +173,7 @@ const FilterVendorSchedulePage = () => {
 
           {/* Date */}
           <Label className="flex items-center gap-2">
-            Date <CalendarIcon size={18} /> <span className="text-[#18181b]">{watchedDate}</span>
+            Date <CalendarIcon size={18} /> <span className="text-foreground">{watchedDate}</span>
           </Label>
 
           <Controller
@@ -195,7 +195,7 @@ const FilterVendorSchedulePage = () => {
       <CardContent className="flex-col w-full space-y-4">
         {isLoading && <ListingCardSkeleton count={6} gridClassName="grid-cols-1" className="w-full" />}
 
-        {error && <p className="text-red-400">{error.message || 'Something Went Wrong'}</p>}
+        {error && <p className="text-destructive">{error.message || 'Something Went Wrong'}</p>}
 
         {!isLoading && data?.data && schedules.length === 0 && <VendorNoResultFound />}
 

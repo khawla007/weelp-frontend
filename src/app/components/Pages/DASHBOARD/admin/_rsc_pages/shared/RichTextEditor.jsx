@@ -47,7 +47,7 @@ const ToolbarButton = ({ active = false, label, children, onClick, disabled = fa
     title={label}
     disabled={disabled}
     onClick={onClick}
-    className={`h-9 w-9 rounded-md ${active ? 'bg-zinc-200 text-[#18181b]' : 'text-[#3f3f46] hover:bg-zinc-100'}`}
+    className={`h-9 w-9 rounded-md ${active ? 'bg-accent text-foreground' : 'text-foreground hover:bg-muted'}`}
   >
     {children}
   </Button>
@@ -121,13 +121,13 @@ export const RichTextEditor = ({ content = '', onChange, editable = true, mediaP
   };
 
   if (!editor) {
-    return <div className={chrome ? 'min-h-[180px] w-full rounded-md border border-[#e4e4e7] p-4' : 'min-h-[120px] w-full'}>Loading editor...</div>;
+    return <div className={chrome ? 'min-h-[180px] w-full rounded-md border border-border p-4' : 'min-h-[120px] w-full'}>Loading editor...</div>;
   }
 
   return (
-    <div className={chrome ? 'overflow-hidden rounded-md border border-[#e4e4e7] bg-white' : 'w-full'}>
+    <div className={chrome ? 'overflow-hidden rounded-md border border-border bg-background' : 'w-full'}>
       {editable && (
-        <div className="flex flex-wrap gap-1 border-b border-[#e4e4e7] bg-zinc-50 p-2">
+        <div className="flex flex-wrap gap-1 border-b border-border bg-muted p-2">
           <ToolbarButton label="Bold" active={editor.isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()}>
             <Bold size={16} />
           </ToolbarButton>

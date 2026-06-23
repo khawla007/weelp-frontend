@@ -77,7 +77,7 @@ export const CustomerBookingsList = () => {
   }, []);
 
   return (
-    <Card className="shadow-none border-none bg-inherit  bg-white ">
+    <Card className="shadow-none border-none bg-inherit  bg-background ">
       <CardHeader className="px-4 md:px-8">
         <CardTitle className="text-xl text-Blueish font-medium">Your Bookings</CardTitle>
         <CardDescription className="text-lg text-weelp-steel">Manage your bookings, plans.</CardDescription>
@@ -85,10 +85,10 @@ export const CustomerBookingsList = () => {
 
       <div className="p-4 md:p-8 pt-0 md:pt-0 flex justify-between flex-wrap gap-4">
         {/* Status pills (lg and up) */}
-        <Card className="hidden lg:flex flex-wrap justify-start items-center gap-2 bg-none border-none bg-gray-200 p-1">
+        <Card className="hidden lg:flex flex-wrap justify-start items-center gap-2 bg-none border-none bg-muted p-1">
           {ORDER_STATUS.map(({ name, value }, index) => {
             return (
-              <Label key={index} className={`${status === value && 'bg-white'} flex items-center flex-wrap text-center text-xs sm:text-base cursor-pointer p-2 border rounded-md relative`}>
+              <Label key={index} className={`${status === value && 'bg-background'} flex items-center flex-wrap text-center text-xs sm:text-base cursor-pointer p-2 border rounded-md relative`}>
                 {name}
                 <Input type="radio" value={value} className="invisible absolute" checked={status === value} onChange={(e) => handleStatusChange(e.target.value)} />
               </Label>
@@ -100,7 +100,7 @@ export const CustomerBookingsList = () => {
         <div className="flex flex-wrap items-center gap-3 lg:ml-auto" suppressHydrationWarning>
           <div className="lg:hidden">
             <Select onValueChange={handleStatusChange} value={status || 'all'}>
-              <SelectTrigger className="w-[140px] dark:bg-black">
+              <SelectTrigger className="w-[140px] dark:bg-foreground">
                 <SelectValue placeholder="Status">{status ? ORDER_STATUS.find((s) => s.value === status)?.name : 'Status'}</SelectValue>
               </SelectTrigger>
               <SelectContent>
@@ -115,7 +115,7 @@ export const CustomerBookingsList = () => {
             </Select>
           </div>
           <Select onValueChange={handleSortByChange} value={sortBy || 'all'}>
-            <SelectTrigger className="w-[140px] dark:bg-black">
+            <SelectTrigger className="w-[140px] dark:bg-foreground">
               <SelectValue placeholder="Item Type">{sortBy ? ITEM_TYPE.find((t) => t.value === sortBy)?.name : 'Item Type'}</SelectValue>
             </SelectTrigger>
             <SelectContent>
@@ -132,8 +132,8 @@ export const CustomerBookingsList = () => {
       </div>
 
       {/* Filtered Orders */}
-      <div className="bg-[#f5f9fa] p-4 md:p-8 min-h-screen pb-20">
-        <div className="flex flex-col bg-[#F5F9FA] gap-4">
+      <div className="bg-weelp-sage-wash p-4 md:p-8 min-h-screen pb-20">
+        <div className="flex flex-col bg-weelp-sage-wash gap-4">
           <div className="flex flex-wrap gap-4">
             {filteredOrders.length > 0 ? filteredOrders.map((order) => <BookingCard key={order.id} bookingItem={order} />) : <p> No bookings found</p>}
 
@@ -141,7 +141,7 @@ export const CustomerBookingsList = () => {
             {isloadingOrders && <ListingCardSkeleton count={6} className="w-full" />}
 
             {/* If Error Exist */}
-            {isOrderError && <span className="text-red-400">Something Went Wrong</span>}
+            {isOrderError && <span className="text-destructive">Something Went Wrong</span>}
           </div>
 
           {/* Pagination */}

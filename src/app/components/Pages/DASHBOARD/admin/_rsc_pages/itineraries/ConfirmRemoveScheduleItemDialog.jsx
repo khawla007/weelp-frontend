@@ -11,14 +11,14 @@ export const ConfirmRemoveScheduleItemDialog = ({ open, onOpenChange, onConfirm,
 
   return (
     <AlertDialog open={open} onOpenChange={isRemoving ? undefined : onOpenChange}>
-      <AlertDialogContent className="bg-white">
+      <AlertDialogContent className="bg-background">
         <AlertDialogHeader>
           <AlertDialogTitle>Remove this {itemLabel}?</AlertDialogTitle>
           <AlertDialogDescription>Are you sure you want to remove this {itemLabel}? This action cannot be undone.</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isRemoving}>Cancel</AlertDialogCancel>
-          <AlertDialogAction disabled={isRemoving} onClick={handleConfirm} className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50">
+          <AlertDialogAction disabled={isRemoving} onClick={handleConfirm} className="bg-destructive hover:bg-destructive/90 text-white disabled:opacity-50">
             {isRemoving ? 'Removing...' : 'Remove'}
           </AlertDialogAction>
         </AlertDialogFooter>

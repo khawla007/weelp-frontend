@@ -62,7 +62,7 @@ const EventSeasonTab = () => {
               <div key={index} className="relative grid grid-cols-1 xl:grid-cols-2 gap-4 rounded-lg border bg-card text-card-foreground shadow-sm p-4 pt-8  ">
                 {/* Remove Season  */}
                 <span className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), ' absolute max-w-fit cursor-pointer right-8 top-4')} onClick={() => removeSeason(index)}>
-                  <Trash2 className="text-red-400" size={16} />
+                  <Trash2 className="text-destructive" size={16} />
                 </span>
 
                 {/* Name */}
@@ -156,7 +156,7 @@ const EventSeasonTab = () => {
 
             {/* If No Season Found */}
             {!seasonFields.length > 0 && (
-              <div className="grid place-items-center rounded-lg  p-4 pt-8 text-zinc-500">
+              <div className="grid place-items-center rounded-lg  p-4 pt-8 text-muted-foreground">
                 <div className="flex flex-col items-center space-y-1">
                   <Calendar size={20} /> <h3 className=" capitalize">No seasons added yet</h3>
                   <span className=" text-xs">Add a season to get started</span>
@@ -188,7 +188,7 @@ const EventSeasonTab = () => {
               <div key={index} className="relative grid grid-cols-1 xl:grid-cols-2 gap-4 rounded-lg border bg-card text-card-foreground shadow-sm p-4 pt-8  ">
                 {/* Remove Season  */}
                 <span className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), ' absolute max-w-fit cursor-pointer right-8 top-4')} onClick={() => removeEvent(index)}>
-                  <Trash2 className="text-red-400" size={16} />
+                  <Trash2 className="text-destructive" size={16} />
                 </span>
 
                 {/* Name */}
@@ -285,7 +285,7 @@ const EventSeasonTab = () => {
 
             {/* If No Season Found */}
             {!seasonFields.length > 0 && (
-              <div className="grid place-items-center rounded-lg  p-4 pt-8 text-zinc-500">
+              <div className="grid place-items-center rounded-lg  p-4 pt-8 text-muted-foreground">
                 <div className="flex flex-col items-center space-y-1">
                   <Calendar size={20} /> <h3 className=" capitalize">No seasons added yet</h3>
                   <span className=" text-xs">Add a season to get started</span>

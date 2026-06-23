@@ -80,19 +80,19 @@ export default function NotificationsAdmin() {
 
   return (
     <div className="mx-auto max-w-2xl py-6">
-      <h1 className="text-lg font-semibold text-[#18181b] mb-4">Send Notification</h1>
-      <form onSubmit={submit} className="space-y-4 rounded-xl border border-[#e4e4e7] bg-white p-5">
+      <h1 className="text-lg font-semibold text-foreground mb-4">Send Notification</h1>
+      <form onSubmit={submit} className="space-y-4 rounded-xl border border-border bg-background p-5">
         <div>
           <label htmlFor="notif-title" className="block text-sm font-medium mb-1">
             Title
           </label>
-          <input id="notif-title" value={title} onChange={(e) => setTitle(e.target.value)} required className="w-full rounded-md border border-[#e4e4e7] px-3 py-2 text-sm" />
+          <input id="notif-title" value={title} onChange={(e) => setTitle(e.target.value)} required className="w-full rounded-md border border-border px-3 py-2 text-sm" />
         </div>
         <div>
           <label htmlFor="notif-message" className="block text-sm font-medium mb-1">
             Message
           </label>
-          <textarea id="notif-message" value={message} onChange={(e) => setMessage(e.target.value)} required rows={5} className="w-full rounded-md border border-[#e4e4e7] px-3 py-2 text-sm" />
+          <textarea id="notif-message" value={message} onChange={(e) => setMessage(e.target.value)} required rows={5} className="w-full rounded-md border border-border px-3 py-2 text-sm" />
         </div>
         <div>
           <label htmlFor="notif-link" className="block text-sm font-medium mb-1">
@@ -103,7 +103,7 @@ export default function NotificationsAdmin() {
             value={actionUrl}
             onChange={(e) => setActionUrl(e.target.value)}
             placeholder="/path or https://…"
-            className="w-full rounded-md border border-[#e4e4e7] px-3 py-2 text-sm"
+            className="w-full rounded-md border border-border px-3 py-2 text-sm"
           />
         </div>
         <div>
@@ -115,7 +115,7 @@ export default function NotificationsAdmin() {
             value={couponCode}
             onChange={(e) => setCouponCode(e.target.value)}
             placeholder="e.g. SUMMER50"
-            className="w-full rounded-md border border-[#e4e4e7] px-3 py-2 text-sm"
+            className="w-full rounded-md border border-border px-3 py-2 text-sm"
           />
         </div>
 
@@ -133,7 +133,7 @@ export default function NotificationsAdmin() {
           <span className="block text-sm font-medium mb-1">Images</span>
           <Dialog open={mediaOpen} onOpenChange={setMediaOpen}>
             <DialogTrigger asChild>
-              <button type="button" className="rounded-md border border-[#e4e4e7] px-3 py-2 text-sm hover:bg-[#f4f4f5]">
+              <button type="button" className="rounded-md border border-border px-3 py-2 text-sm hover:bg-muted">
                 Select Media ({selectedMedia.length})
               </button>
             </DialogTrigger>
@@ -151,7 +151,7 @@ export default function NotificationsAdmin() {
             <input type="radio" name="target" checked={targetType === 'role'} onChange={() => setTargetType('role')} /> A role
           </label>
           {targetType === 'role' && (
-            <select aria-label="Role" value={targetRole} onChange={(e) => setTargetRole(e.target.value)} className="rounded-md border border-[#e4e4e7] px-3 py-2 text-sm">
+            <select aria-label="Role" value={targetRole} onChange={(e) => setTargetRole(e.target.value)} className="rounded-md border border-border px-3 py-2 text-sm">
               {ROLES.map((r) => (
                 <option key={r.value} value={r.value}>
                   {r.label}
@@ -169,11 +169,11 @@ export default function NotificationsAdmin() {
                 value={userQuery}
                 onChange={(e) => onUserSearch(e.target.value)}
                 placeholder="Search name or email…"
-                className="w-full rounded-md border border-[#e4e4e7] px-3 py-2 text-sm"
+                className="w-full rounded-md border border-border px-3 py-2 text-sm"
               />
               {targetUser && <p className="mt-1 text-xs text-weelp-sage-deep">Selected: {targetUser.email}</p>}
               {userResults.length > 0 && (
-                <ul className="mt-1 max-h-40 overflow-y-auto rounded-md border border-[#e4e4e7]">
+                <ul className="mt-1 max-h-40 overflow-y-auto rounded-md border border-border">
                   {userResults.map((u) => (
                     <li key={u.id}>
                       <button
@@ -183,7 +183,7 @@ export default function NotificationsAdmin() {
                           setUserResults([]);
                           setUserQuery(u.email);
                         }}
-                        className="block w-full px-3 py-2 text-left text-sm hover:bg-[#f4f4f5]"
+                        className="block w-full px-3 py-2 text-left text-sm hover:bg-muted"
                       >
                         {u.name} — {u.email}
                       </button>
@@ -196,10 +196,10 @@ export default function NotificationsAdmin() {
         </fieldset>
 
         <div role="status" aria-live="polite">
-          {error && <p className="text-sm text-red-500">{error}</p>}
+          {error && <p className="text-sm text-destructive">{error}</p>}
           {okMsg && <p className="text-sm text-weelp-sage-deep">{okMsg}</p>}
         </div>
-        <button type="submit" disabled={saving} className="rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] disabled:opacity-50">
+        <button type="submit" disabled={saving} className="rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-weelp-sage-hover disabled:opacity-50">
           {saving ? 'Sending…' : 'Send notification'}
         </button>
       </form>

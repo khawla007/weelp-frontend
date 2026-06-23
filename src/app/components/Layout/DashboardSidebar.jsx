@@ -29,7 +29,7 @@ function isActive(pathname, url) {
   return pathname.startsWith(url);
 }
 
-export default function DashboardSidebar({ nav, user, accent = 'text-black' }) {
+export default function DashboardSidebar({ nav, user, accent = 'text-foreground' }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -61,20 +61,18 @@ export default function DashboardSidebar({ nav, user, accent = 'text-black' }) {
   const initials = getInitials(user?.name);
 
   return (
-    <aside className={`bg-white border-r border-gray-200 flex flex-col transition-colors duration-300 ease-in-out motion-reduce:transition-none ${collapsed ? 'w-16' : 'w-64'} shrink-0`}>
+    <aside className={`bg-background border-r border-border flex flex-col transition-colors duration-300 ease-in-out motion-reduce:transition-none ${collapsed ? 'w-16' : 'w-64'} shrink-0`}>
       <div className="sticky top-[112px] h-[calc(100vh-112px)] flex flex-col">
         <div className="flex-1 py-4 px-2 space-y-2 overflow-y-auto">
           <div
-            className={`bg-white rounded-xl shadow-md border border-gray-200/60 transition-[background-color,border-color,box-shadow] duration-300 ease-in-out motion-reduce:transition-none ${collapsed ? 'p-2' : 'p-3'} mb-5`}
+            className={`bg-card rounded-xl shadow-md dark:shadow-none border border-border/60 transition-[background-color,border-color,box-shadow] duration-300 ease-in-out motion-reduce:transition-none ${collapsed ? 'p-2' : 'p-3'} mb-5`}
           >
             <div className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3'}`}>
-              <Avatar className="h-11 w-11 rounded-full border-2 border-white shadow-sm flex-shrink-0">
+              <Avatar className="h-11 w-11 rounded-full border-2 border-background shadow-sm dark:shadow-none flex-shrink-0">
                 {user?.avatar && <AvatarImage src={user.avatar} alt={user.name || 'user'} />}
-                <AvatarFallback className="text-white font-semibold rounded-full text-base" style={{ backgroundColor: '#568f7c' }}>
-                  {initials}
-                </AvatarFallback>
+                <AvatarFallback className="text-white font-semibold rounded-full text-base bg-weelp-sage-deep">{initials}</AvatarFallback>
               </Avatar>
-              {!collapsed && <span className="text-sm font-medium text-gray-900 truncate">{user?.name || 'User'}</span>}
+              {!collapsed && <span className="text-sm font-medium text-foreground truncate">{user?.name || 'User'}</span>}
             </div>
           </div>
 
@@ -85,7 +83,7 @@ export default function DashboardSidebar({ nav, user, accent = 'text-black' }) {
                 key={route.url}
                 href={route.url}
                 data-active={active ? 'true' : 'false'}
-                className={`flex items-center gap-2 px-3 py-2 text-md transition-colors duration-200 ease-out rounded-full ${active ? accent : 'text-black hover:text-[#18181b]/70'}`}
+                className={`flex items-center gap-2 px-3 py-2 text-md transition-colors duration-200 ease-out rounded-full ${active ? accent : 'text-foreground hover:text-foreground/70'}`}
               >
                 <route.icon strokeWidth={2} className="size-5" />
                 {!collapsed && <span>{route.title}</span>}
@@ -94,12 +92,12 @@ export default function DashboardSidebar({ nav, user, accent = 'text-black' }) {
           })}
         </div>
 
-        <div className="p-2 border-t border-gray-100">
+        <div className="p-2 border-t border-border">
           <button
             type="button"
             onClick={toggle}
             aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            className="p-2.5 w-full flex justify-center text-black hover:text-[#18181b]/70 rounded-md transition-colors duration-200 ease-out min-h-[40px]"
+            className="p-2.5 w-full flex justify-center text-foreground hover:text-foreground/70 rounded-md transition-colors duration-200 ease-out min-h-[40px]"
           >
             <PanelLeft size={20} className={collapsed ? 'rotate-180 transition-transform' : 'transition-transform'} />
           </button>

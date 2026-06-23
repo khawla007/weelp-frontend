@@ -103,7 +103,7 @@ const CreateVendorVehicleForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.vehicle_type && <p className="text-red-400 font-semibold text-sm">{errors?.vehicle_type?.message}</p>}
+              {errors?.vehicle_type && <p className="text-destructive font-semibold text-sm">{errors?.vehicle_type?.message}</p>}
             </div>
 
             <div className="w-full">
@@ -121,7 +121,7 @@ const CreateVendorVehicleForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.capacity && <p className="text-red-400 font-semibold text-sm">{errors?.capacity?.message}</p>}
+              {errors?.capacity && <p className="text-destructive font-semibold text-sm">{errors?.capacity?.message}</p>}
             </div>
           </div>
 
@@ -132,7 +132,7 @@ const CreateVendorVehicleForm = ({ onSuccess }) => {
               <Input type="text" {...register('make', { required: 'Field Required' })} id="make" name="make" placeholder="e.g Toyota" />
 
               {/* Error  */}
-              {errors?.make && <p className="text-red-400 font-semibold text-sm">{errors?.make?.message}</p>}
+              {errors?.make && <p className="text-destructive font-semibold text-sm">{errors?.make?.message}</p>}
             </div>
 
             {/* Model */}
@@ -141,7 +141,7 @@ const CreateVendorVehicleForm = ({ onSuccess }) => {
               <Input type="text" {...register('model', { required: 'Field Required' })} id="model" name="model" placeholder="e.g Camry" />
 
               {/* Error  */}
-              {errors?.model && <p className="text-red-400 font-semibold text-sm">{errors?.model?.message}</p>}
+              {errors?.model && <p className="text-destructive font-semibold text-sm">{errors?.model?.message}</p>}
             </div>
 
             {/* Year */}
@@ -150,7 +150,7 @@ const CreateVendorVehicleForm = ({ onSuccess }) => {
               <Input type="number" {...register('year', { required: 'Field Required' })} id="year" name="year" placeholder="e.g 2025" />
 
               {/* Error  */}
-              {errors?.year && <p className="text-red-400 font-semibold text-sm">{errors?.year?.message}</p>}
+              {errors?.year && <p className="text-destructive font-semibold text-sm">{errors?.year?.message}</p>}
             </div>
           </div>
 
@@ -159,7 +159,7 @@ const CreateVendorVehicleForm = ({ onSuccess }) => {
             <Input type="text" {...register('license_plate', { required: 'License Required' })} id="license_plate" name="license_plate" placeholder="Enter License Plate Number" />
 
             {/* Error  */}
-            {errors?.license_plate && <p className="text-red-400 font-semibold text-sm">{errors?.license_plate?.message}</p>}
+            {errors?.license_plate && <p className="text-destructive font-semibold text-sm">{errors?.license_plate?.message}</p>}
           </div>
 
           <div className="grid gap-3 w-full">
@@ -178,7 +178,7 @@ const CreateVendorVehicleForm = ({ onSuccess }) => {
                     onChange={(selected) => field.onChange(selected.map((opt) => opt.value).join(','))}
                     placeholder="Select features"
                   />
-                  {fieldState.error && <p className="text-sm text-red-500 mt-1">{fieldState.error.message}</p>}
+                  {fieldState.error && <p className="text-sm text-destructive mt-1">{fieldState.error.message}</p>}
                 </div>
               )}
             />
@@ -219,7 +219,7 @@ const CreateVendorVehicleForm = ({ onSuccess }) => {
                 render={({ field, fieldState }) => (
                   <div className="flex flex-col gap-1">
                     <input type="date" {...field} className="input border px-3 py-2 rounded w-full" />
-                    {fieldState.error && <p className="text-sm text-red-500">{fieldState.error.message}</p>}
+                    {fieldState.error && <p className="text-sm text-destructive">{fieldState.error.message}</p>}
                   </div>
                 )}
               />
@@ -235,7 +235,7 @@ const CreateVendorVehicleForm = ({ onSuccess }) => {
                 render={({ field, fieldState }) => (
                   <div className="flex flex-col gap-1">
                     <input type="date" {...field} className="input border px-3 py-2 rounded w-full" />
-                    {fieldState.error && <p className="text-sm text-red-500">{fieldState.error.message}</p>}
+                    {fieldState.error && <p className="text-sm text-destructive">{fieldState.error.message}</p>}
                   </div>
                 )}
               />

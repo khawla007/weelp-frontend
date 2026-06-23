@@ -166,8 +166,8 @@ export default function FilterPagesPage() {
 
         <div className="flex flex-col gap-4 h-full">
           {isValidating && <ListingCardSkeleton />}
-          {!isValidating && error && <div className="text-red-500 text-center">Failed to load pages. Please try again.</div>}
-          {!isValidating && !error && items.length === 0 && <div className="text-zinc-500 text-center">No pages found.</div>}
+          {!isValidating && error && <div className="text-destructive text-center">Failed to load pages. Please try again.</div>}
+          {!isValidating && !error && items.length === 0 && <div className="text-muted-foreground text-center">No pages found.</div>}
 
           {!isValidating && !error && items.length > 0 && (
             <div className="flex flex-col gap-4">
@@ -202,7 +202,7 @@ export default function FilterPagesPage() {
 
                       <div className="flex items-center gap-2">
                         <b>Status:</b>
-                        <Badge className={status === PAGE_STATUS.published ? 'bg-weelp-sage-deep' : 'bg-yellow-400'}>{status === PAGE_STATUS.published ? 'Published' : 'Draft'}</Badge>
+                        <Badge className={status === PAGE_STATUS.published ? 'bg-weelp-sage-deep' : 'bg-warning'}>{status === PAGE_STATUS.published ? 'Published' : 'Draft'}</Badge>
                       </div>
 
                       <p className="text-xs text-muted-foreground">Updated {formatDate(updated_at)}</p>

@@ -29,7 +29,7 @@ const FaqTab = ({ currentStep, setCurrentStep }) => {
           <CardContent className=" p-0">Add common questions and answers about this package</CardContent>
         </div>
         {/* Add FAQ Button */}
-        <Button type="button" className="bg-white hover:bg-white border text-inherit self-end" onClick={() => addFaqField({ question: '', answer: '' })}>
+        <Button type="button" className="bg-background hover:bg-background border text-inherit self-end" onClick={() => addFaqField({ question: '', answer: '' })}>
           Add Section
         </Button>
       </CardHeader>

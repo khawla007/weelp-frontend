@@ -169,7 +169,7 @@ export function ListingFilterSidebar({ control, filters, categories = [], diffic
                 render={({ field }) => <ReactRangeSliderInput {...field} min={50} max={2000} step={100} value={field.value} onInput={field.onChange} className="w-full" />}
               />
 
-              <div className="w-full flex justify-between text-sm text-gray-600 mt-2">
+              <div className="w-full flex justify-between text-sm text-copy mt-2">
                 <span>${filters?.price?.[0]}</span>
                 <span>${filters?.price?.[1]}</span>
               </div>

@@ -77,7 +77,7 @@ const CreateVendorDriverForm = ({ onSuccess }) => {
             <Input type="text" {...register('first_name', { required: 'First Name Requried' })} placeholder="Enter First Name" />
 
             {/* Error  */}
-            {errors?.first_name && <p className="text-red-400 font-semibold text-sm">{errors?.first_name?.message}</p>}
+            {errors?.first_name && <p className="text-destructive font-semibold text-sm">{errors?.first_name?.message}</p>}
           </div>
 
           {/* LastName */}
@@ -86,7 +86,7 @@ const CreateVendorDriverForm = ({ onSuccess }) => {
             <Input type="text" {...register('last_name', { required: 'Last Name Requried' })} placeholder="Enter Last Name" />
 
             {/* Error  */}
-            {errors?.last_name && <p className="text-red-400 font-semibold text-sm">{errors?.last_name?.message}</p>}
+            {errors?.last_name && <p className="text-destructive font-semibold text-sm">{errors?.last_name?.message}</p>}
           </div>
 
           {/* Email */}
@@ -95,7 +95,7 @@ const CreateVendorDriverForm = ({ onSuccess }) => {
             <Input type="email" {...register('email', { required: 'Email Requried' })} placeholder="Enter Email" required />
 
             {/* Error  */}
-            {errors?.email && <p className="text-red-400 font-semibold text-sm">{errors?.email?.message}</p>}
+            {errors?.email && <p className="text-destructive font-semibold text-sm">{errors?.email?.message}</p>}
           </div>
 
           {/* Phone */}
@@ -104,7 +104,7 @@ const CreateVendorDriverForm = ({ onSuccess }) => {
             <Input type="number" min="0" {...register('phone', { required: 'Phone Number Required' })} placeholder="Enter Phone Number" required />
 
             {/* Error  */}
-            {errors?.phone && <p className="text-red-400 font-semibold text-sm">{errors?.phone?.message}</p>}
+            {errors?.phone && <p className="text-destructive font-semibold text-sm">{errors?.phone?.message}</p>}
           </div>
 
           {/* License */}
@@ -119,7 +119,7 @@ const CreateVendorDriverForm = ({ onSuccess }) => {
             />
 
             {/* Error  */}
-            {errors?.license_number && <p className="text-red-400 font-semibold text-sm">{errors?.license_number?.message}</p>}
+            {errors?.license_number && <p className="text-destructive font-semibold text-sm">{errors?.license_number?.message}</p>}
           </div>
 
           {/* License Expiry */}
@@ -131,7 +131,7 @@ const CreateVendorDriverForm = ({ onSuccess }) => {
                 required: 'Licese Expiry Requried',
               })}
             />
-            {errors?.license_expiry && <p className="text-red-400 font-semibold text-sm">{errors.license_expiry.message}</p>}
+            {errors?.license_expiry && <p className="text-destructive font-semibold text-sm">{errors.license_expiry.message}</p>}
           </div>
 
           {/* Status  */}
@@ -154,7 +154,7 @@ const CreateVendorDriverForm = ({ onSuccess }) => {
                 </ShadcnSelect>
               )}
             />
-            {errors?.status && <p className="text-red-400 text-sm font-semibold">{errors.status.message}</p>}
+            {errors?.status && <p className="text-destructive text-sm font-semibold">{errors.status.message}</p>}
           </div>
 
           {/* Assigned Vehicle  */}
@@ -182,7 +182,7 @@ const CreateVendorDriverForm = ({ onSuccess }) => {
                 </ShadcnSelect>
               )}
             />
-            {errors?.status && <p className="text-red-400 text-sm font-semibold">{errors.status.message}</p>}
+            {errors?.status && <p className="text-destructive text-sm font-semibold">{errors.status.message}</p>}
           </div>
 
           {/* Languages */}

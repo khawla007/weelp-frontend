@@ -16,16 +16,16 @@ export const DestinationListCard = ({ label, icon, items, description, url }) =>
         <div className="flex flex-row justify-between w-full">
           <div>
             <CardTitle className="text-sm">{label}</CardTitle>
-            <Badge className="bg-accent text-[#18181b] hover:text-white">{items} items</Badge>
+            <Badge className="bg-accent text-foreground hover:text-white">{items} items</Badge>
           </div>
           <IconComponent size={18} />
         </div>
       </CardHeader>
       <CardContent>
-        <p className=" text-zinc-600 pb-4">{description}</p>
+        <p className=" text-copy pb-4">{description}</p>
         <div className="flex items-center justify-between gap-3 ">
           <Link href={url} aschild="true" className="w-full">
-            <Button className="w-full bg-accent text-[#18181b] text-sm hover:text-white">
+            <Button className="w-full bg-accent text-foreground text-sm hover:text-white">
               <MapPin></MapPin>View
             </Button>
           </Link>

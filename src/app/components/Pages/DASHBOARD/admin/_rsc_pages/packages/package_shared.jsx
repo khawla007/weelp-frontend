@@ -88,15 +88,15 @@ export const ActivitySearchModal = ({ day, onClose, activities = [], addActivity
 
           <div className="w-full flex gap-4 items-center">
             <Input type="text" placeholder="Search Activity..." className="w-full border p-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-1" onChange={handleSearch} />
-            <Button className="bg-white hover:bg-white border">
-              <SearchIcon className="text-[#52525b]" />
+            <Button className="bg-background hover:bg-background border">
+              <SearchIcon className="text-copy" />
             </Button>
           </div>
           <ul>
             {activities.length > 0
               ? activities.map((activity, index) => {
                   return (
-                    <li className="list-none hover:bg-zinc-100 cursor-pointer p-2" onClick={() => handleSelectActivity(activity)} key={activity?.id}>
+                    <li className="list-none hover:bg-muted cursor-pointer p-2" onClick={() => handleSelectActivity(activity)} key={activity?.id}>
                       {activity?.name}
                     </li>
                   );
@@ -174,7 +174,7 @@ export const ActivitySearchModal = ({ day, onClose, activities = [], addActivity
                 <Button onClick={handleAddActivity} className="p-2 rounded-md w-full">
                   Done
                 </Button>
-                {/* <Button onClick={closeModal} className="bg-red-500 text-white p-2 rounded-md">
+                {/* <Button onClick={closeModal} className="bg-destructive text-white p-2 rounded-md">
                   Close
                 </Button> */}
               </div>
@@ -245,8 +245,8 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
           {/* Your activity search form here */}
           <div className="w-full flex gap-4 items-center">
             <Input type="text" placeholder="Search transfers..." className="w-full border p-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-1" />
-            <Button className="bg-white hover:bg-white border">
-              <SearchIcon className="text-[#52525b]" />
+            <Button className="bg-background hover:bg-background border">
+              <SearchIcon className="text-copy" />
             </Button>
           </div>
 
@@ -254,7 +254,7 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
           {transfers.length > 0
             ? transfers.map((transfer, val) => {
                 return (
-                  <li className="list-none hover:bg-zinc-100 cursor-pointer p-2" onClick={() => handleSelectTransfer(transfer)} key={transfer?.id}>
+                  <li className="list-none hover:bg-muted cursor-pointer p-2" onClick={() => handleSelectTransfer(transfer)} key={transfer?.id}>
                     {transfer?.name}
                   </li>
                 );
@@ -345,7 +345,7 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
                 <Button onClick={handleAddTransfer} className="p-2 rounded-md w-full bg-weelp-sage-deep">
                   Done
                 </Button>
-                {/* <Button onClick={closeModal} className="bg-red-500 text-white p-2 rounded-md">
+                {/* <Button onClick={closeModal} className="bg-destructive text-white p-2 rounded-md">
                   Close
                 </Button> */}
               </div>
@@ -414,8 +414,8 @@ export const ItinerarySearchModal = ({ day, onClose, itineraries = [], addItiner
           {/* Your activity search form here */}
           <div className="w-full flex gap-4 items-center">
             <Input type="text" placeholder="Search itineraries..." className="w-full border p-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-1" />
-            <Button className="bg-white hover:bg-white border">
-              <SearchIcon className="text-[#52525b]" />
+            <Button className="bg-background hover:bg-background border">
+              <SearchIcon className="text-copy" />
             </Button>
           </div>
 
@@ -423,7 +423,7 @@ export const ItinerarySearchModal = ({ day, onClose, itineraries = [], addItiner
           {itineraries.length > 0
             ? itineraries.map((itinerary, val) => {
                 return (
-                  <li className="list-none hover:bg-zinc-100 cursor-pointer p-2" onClick={() => handleSelectItinerary(itinerary)} key={itinerary?.id}>
+                  <li className="list-none hover:bg-muted cursor-pointer p-2" onClick={() => handleSelectItinerary(itinerary)} key={itinerary?.id}>
                     {itinerary?.name}
                   </li>
                 );

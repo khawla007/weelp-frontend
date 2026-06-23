@@ -42,7 +42,7 @@ export const BlogMain = ({ content }) => {
                   />
                 </WidgetCard>
                 {error?.message && (
-                  <span className="text-red-400 absolute bottom-0 left-0 translate-y-full px-1 block" style={{ fontSize: '0.875rem' }}>
+                  <span className="text-destructive absolute bottom-0 left-0 translate-y-full px-1 block" style={{ fontSize: '0.875rem' }}>
                     {error?.message}
                   </span>
                 )}
@@ -67,7 +67,7 @@ export const BlogMain = ({ content }) => {
             <div className="space-y-2">
               <Label htmlFor="blog-slug">URL slug</Label>
               <Input id="blog-slug" placeholder="best-places-to-visit" {...field} onChange={(event) => field.onChange(slugify(event.target.value))} />
-              {error?.message && <span className="text-sm text-red-400">{error.message}</span>}
+              {error?.message && <span className="text-sm text-destructive">{error.message}</span>}
             </div>
           )}
         />
@@ -96,7 +96,7 @@ export const BlogMain = ({ content }) => {
               )}
             />
             {error?.message && (
-              <span className="text-red-400 absolute bottom-0 left-0 translate-y-full px-1 block" style={{ fontSize: '0.875rem' }}>
+              <span className="text-destructive absolute bottom-0 left-0 translate-y-full px-1 block" style={{ fontSize: '0.875rem' }}>
                 {error?.message}
               </span>
             )}

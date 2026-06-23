@@ -23,12 +23,12 @@ const ReviewsPage = () => {
   // Loading state
   if (isLoading) {
     return (
-      <Card className="shadow-none border-none bg-inherit bg-white">
+      <Card className="shadow-none border-none bg-inherit bg-background">
         <CardHeader className={'px-8'}>
-          <CardTitle className="text-xl text-[#18181b] font-semibold">Your Reviews</CardTitle>
-          <CardDescription className="text-lg text-[#71717a]">See your reviews, thoughts.</CardDescription>
+          <CardTitle className="text-xl text-foreground font-semibold">Your Reviews</CardTitle>
+          <CardDescription className="text-lg text-muted-foreground">See your reviews, thoughts.</CardDescription>
         </CardHeader>
-        <div className="bg-[#f8faf9] p-8 min-h-screen flex items-center justify-center">
+        <div className="bg-weelp-sage-wash p-8 min-h-screen flex items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-weelp-sage-deep"></div>
         </div>
       </Card>
@@ -38,13 +38,13 @@ const ReviewsPage = () => {
   // Error state
   if (error) {
     return (
-      <Card className="shadow-none border-none bg-inherit bg-white">
+      <Card className="shadow-none border-none bg-inherit bg-background">
         <CardHeader className={'px-8'}>
-          <CardTitle className="text-xl text-[#18181b] font-semibold">Your Reviews</CardTitle>
-          <CardDescription className="text-lg text-[#71717a]">See your reviews, thoughts.</CardDescription>
+          <CardTitle className="text-xl text-foreground font-semibold">Your Reviews</CardTitle>
+          <CardDescription className="text-lg text-muted-foreground">See your reviews, thoughts.</CardDescription>
         </CardHeader>
-        <div className="bg-[#f8faf9] p-8 min-h-screen flex items-center justify-center">
-          <p className="text-red-500">Failed to load reviews. Please try again.</p>
+        <div className="bg-weelp-sage-wash p-8 min-h-screen flex items-center justify-center">
+          <p className="text-destructive">Failed to load reviews. Please try again.</p>
         </div>
       </Card>
     );
@@ -52,13 +52,13 @@ const ReviewsPage = () => {
 
   // Success state - pass reviews to child component
   return (
-    <Card className="shadow-none border-none bg-inherit bg-white">
+    <Card className="shadow-none border-none bg-inherit bg-background">
       <CardHeader className={'px-8'}>
-        <CardTitle className="text-xl text-[#18181b] font-semibold">Your Reviews</CardTitle>
-        <CardDescription className="text-lg text-[#71717a]">Manage your Reviews, Create New.</CardDescription>
+        <CardTitle className="text-xl text-foreground font-semibold">Your Reviews</CardTitle>
+        <CardDescription className="text-lg text-muted-foreground">Manage your Reviews, Create New.</CardDescription>
       </CardHeader>
-      <div className="bg-[#f8faf9] p-8 min-h-screen pb-20">
-        <div className="flex flex-col bg-[#f8faf9] gap-4">
+      <div className="bg-weelp-sage-wash p-8 min-h-screen pb-20">
+        <div className="flex flex-col bg-weelp-sage-wash gap-4">
           <CustomerReviewList reviews={reviews} mutate={mutate} />
 
           {/* Pagination */}

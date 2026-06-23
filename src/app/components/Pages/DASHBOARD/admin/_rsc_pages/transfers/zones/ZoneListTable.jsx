@@ -39,7 +39,7 @@ export default function ZoneListTable({ zones = [], selectedIds = [], onToggleSe
               <TableCell className="text-muted-foreground">{z.slug}</TableCell>
               <TableCell className="text-muted-foreground max-w-xs truncate">{z.description || '—'}</TableCell>
               <TableCell>
-                <Badge className="gap-1 bg-red-600 text-white hover:bg-red-700">
+                <Badge className="gap-1 bg-destructive text-white hover:bg-destructive/90">
                   <MapPin className="h-3 w-3" />
                   {z.locations_count ?? 0}
                 </Badge>
@@ -66,7 +66,7 @@ export default function ZoneListTable({ zones = [], selectedIds = [], onToggleSe
                         <MapPin className="h-4 w-4 mr-2" /> Manage Locations
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-600 focus:text-red-600" onClick={() => onDelete?.(z.id)}>
+                    <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => onDelete?.(z.id)}>
                       <Trash2 className="h-4 w-4 mr-2" /> Delete
                     </DropdownMenuItem>
                   </DropdownMenuContent>

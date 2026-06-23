@@ -196,7 +196,7 @@ const FilteredReview = () => {
           <CustomPagination totalItems={total} itemsPerPage={per_page} currentPage={current_page} onPageChange={handlePageChange} />
         </>
       )}
-      {error && <span className="text-red-400">Something Went Wrong</span>}
+      {error && <span className="text-destructive">Something Went Wrong</span>}
     </div>
   );
 };

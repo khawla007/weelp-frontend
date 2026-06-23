@@ -73,7 +73,7 @@ const FilterVendorVehiclePage = () => {
       </Form>
       {isLoading && <ListingCardSkeleton count={6} gridClassName="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" className="w-full" />}
 
-      {error && <p className="text-red-400">{error.message || 'Something Went Wrong'}</p>}
+      {error && <p className="text-destructive">{error.message || 'Something Went Wrong'}</p>}
 
       {!isLoading && data?.data && vehicles.length === 0 && <VendorNoResultFound />}
 

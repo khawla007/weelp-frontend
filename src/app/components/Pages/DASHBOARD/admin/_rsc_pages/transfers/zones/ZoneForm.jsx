@@ -79,7 +79,7 @@ export default function ZoneForm({ initialData = null }) {
   return (
     <Card className="border-none">
       <div className="flex flex-row items-center gap-2">
-        <Link href="/dashboard/admin/transfers/zones" className="hover:bg-slate-50 rounded" aria-label="Back to zones">
+        <Link href="/dashboard/admin/transfers/zones" className="hover:bg-muted rounded" aria-label="Back to zones">
           <ArrowLeft size={20} />
         </Link>
         <CardTitle>{id ? 'Edit Zone' : 'Create Zone'}</CardTitle>

@@ -173,7 +173,7 @@ export default function FilteredRoutes() {
       </div>
 
       {isValidating && <TableSkeleton columns={7} rows={10} headers={['', 'Route', 'Distance / Duration', 'Zones', 'Popular', 'Status', 'Actions']} />}
-      {error && <span className="text-red-500">Failed to load routes</span>}
+      {error && <span className="text-destructive">Failed to load routes</span>}
 
       {!error && (
         <>
@@ -188,7 +188,7 @@ export default function FilteredRoutes() {
               onDelete={requestDelete}
             />
           ) : (
-            <div className="grid place-items-center text-zinc-400 py-12">No routes found. Create your first one.</div>
+            <div className="grid place-items-center text-muted-foreground py-12">No routes found. Create your first one.</div>
           )}
           <CustomPagination
             totalItems={total}
@@ -214,7 +214,7 @@ export default function FilteredRoutes() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={closeDeleteDialog}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete} className="bg-red-600 hover:bg-red-700">
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive hover:bg-destructive/90">
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

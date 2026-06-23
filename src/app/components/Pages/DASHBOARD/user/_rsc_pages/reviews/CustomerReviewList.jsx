@@ -52,14 +52,14 @@ export const CustomerReviewList = ({ reviews = [], mutate }) => {
   };
 
   return (
-    <div className="flex flex-wrap  bg-[#F5F9FA] gap-4">
+    <div className="flex flex-wrap  bg-weelp-sage-wash gap-4">
       {reviews.length > 0 ? (
         reviews.map((review, index) => {
           return <UserDashboardReviewCard key={review.id || index} review={review} onDelete={handleOnDelete} />;
         })
       ) : (
         <div className="w-full flex items-center justify-center py-12">
-          <p className="text-gray-500 text-lg">No reviews found. Start reviewing your bookings!</p>
+          <p className="text-muted-foreground text-lg">No reviews found. Start reviewing your bookings!</p>
         </div>
       )}
     </div>

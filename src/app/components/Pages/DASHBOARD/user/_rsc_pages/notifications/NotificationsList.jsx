@@ -69,10 +69,10 @@ export default function NotificationsList() {
 
   return (
     <div className="mx-auto max-w-2xl py-6">
-      <h1 className="text-lg font-semibold text-[#18181b] px-4 mb-3">Notifications</h1>
-      <div className="rounded-xl border border-[#e4e4e7] overflow-hidden bg-white">
+      <h1 className="text-lg font-semibold text-foreground px-4 mb-3">Notifications</h1>
+      <div className="rounded-xl border border-border overflow-hidden bg-background">
         {items.length === 0 && !loading ? (
-          <div className="p-8 text-center text-sm text-[#71717a]">No notifications yet</div>
+          <div className="p-8 text-center text-sm text-muted-foreground">No notifications yet</div>
         ) : (
           items.map((n) => <NotificationRow key={n.id} notif={n} onOpen={openNotif} onToggleRead={toggleNotifRead} />)
         )}

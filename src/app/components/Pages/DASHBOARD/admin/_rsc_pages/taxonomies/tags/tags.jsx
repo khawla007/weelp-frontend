@@ -29,7 +29,7 @@ export function TagsPageClient() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [isAllSelected, setIsAllSelected] = useState(false);
 
-  if (error) return <p className="text-red-400">Failed to load tags.</p>;
+  if (error) return <p className="text-destructive">Failed to load tags.</p>;
 
   const response = data?.data || {};
   const { data: tagsData } = response || {};

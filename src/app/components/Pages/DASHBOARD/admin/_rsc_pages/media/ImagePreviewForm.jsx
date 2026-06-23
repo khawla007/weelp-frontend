@@ -170,7 +170,7 @@ export const ImagePreviewForm = ({ isDialogOpen, setIsDialogOpen, selectedImage 
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button type="button" variant="outline" className="border-none">
-                    <Trash2 className="text-red-400" />
+                    <Trash2 className="text-destructive" />
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>

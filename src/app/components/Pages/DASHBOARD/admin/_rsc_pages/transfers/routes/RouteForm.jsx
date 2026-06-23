@@ -103,7 +103,7 @@ export default function RouteForm({ initialData = null }) {
   return (
     <Card className="border-none">
       <div className="flex flex-row items-center gap-2">
-        <Link href="/dashboard/admin/transfers/routes" className="hover:bg-slate-50 rounded" aria-label="Back to routes">
+        <Link href="/dashboard/admin/transfers/routes" className="hover:bg-muted rounded" aria-label="Back to routes">
           <ArrowLeft size={20} />
         </Link>
         <CardTitle>{id ? 'Edit Route' : 'Create Route'}</CardTitle>

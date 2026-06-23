@@ -93,7 +93,7 @@ export const CreateTagPageForm = () => {
 
       <div className="px-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 bg-white border p-6 shadow-sm rounded-lg">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 bg-background border p-6 shadow-sm rounded-lg">
             <fieldset className={`flex flex-col gap-4 ${isSubmitting && 'cursor-wait'}`} disabled={isSubmitting}>
               <FormLabel className="font-semibold text-lg">Basic Information</FormLabel>
               <FormDescription>Enter the details for the new tag.</FormDescription>

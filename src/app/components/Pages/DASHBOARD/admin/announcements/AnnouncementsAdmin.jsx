@@ -92,16 +92,16 @@ export default function AnnouncementsAdmin() {
 
   return (
     <div className="p-6 space-y-8">
-      <h1 className="text-xl font-semibold text-[#18181b]">Announcements</h1>
+      <h1 className="text-xl font-semibold text-foreground">Announcements</h1>
 
-      <form onSubmit={submit} className="space-y-4 rounded-xl border border-[#e4e4e7] p-5">
+      <form onSubmit={submit} className="space-y-4 rounded-xl border border-border p-5">
         <h2 className="text-sm font-semibold">{editingId ? 'Edit announcement' : 'New announcement'}</h2>
-        {error && <p className="text-sm text-[#ff725e]">{error}</p>}
+        {error && <p className="text-sm text-weelp-discount">{error}</p>}
 
         <div className="grid grid-cols-2 gap-4">
           <label className="text-sm">
             Type
-            <select value={form.type} onChange={(e) => set('type', e.target.value)} className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2">
+            <select value={form.type} onChange={(e) => set('type', e.target.value)} className="mt-1 w-full rounded-md border border-border px-3 py-2">
               {TYPES.map((t) => (
                 <option key={t} value={t}>
                   {t}
@@ -117,22 +117,22 @@ export default function AnnouncementsAdmin() {
 
         <label className="block text-sm">
           Title
-          <input value={form.title} onChange={(e) => set('title', e.target.value)} className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2" required />
+          <input value={form.title} onChange={(e) => set('title', e.target.value)} className="mt-1 w-full rounded-md border border-border px-3 py-2" required />
         </label>
 
         <label className="block text-sm">
           Message
-          <textarea value={form.message} onChange={(e) => set('message', e.target.value)} rows={3} className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2" required />
+          <textarea value={form.message} onChange={(e) => set('message', e.target.value)} rows={3} className="mt-1 w-full rounded-md border border-border px-3 py-2" required />
         </label>
 
         <label className="block text-sm">
           Link (optional)
-          <input value={form.link} onChange={(e) => set('link', e.target.value)} placeholder="https://..." className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2" />
+          <input value={form.link} onChange={(e) => set('link', e.target.value)} placeholder="https://..." className="mt-1 w-full rounded-md border border-border px-3 py-2" />
         </label>
 
         <label className="block text-sm">
           Display style
-          <select value={form.display_style} onChange={(e) => set('display_style', e.target.value)} className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2">
+          <select value={form.display_style} onChange={(e) => set('display_style', e.target.value)} className="mt-1 w-full rounded-md border border-border px-3 py-2">
             <option value="inline">Inline (bell only)</option>
             <option value="popup">Popup (auto-shows to all visitors)</option>
           </select>
@@ -144,23 +144,23 @@ export default function AnnouncementsAdmin() {
             value={form.image_url}
             onChange={(e) => set('image_url', e.target.value)}
             placeholder="https://… or /api/media/123"
-            className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2"
+            className="mt-1 w-full rounded-md border border-border px-3 py-2"
           />
         </label>
 
         <label className="block text-sm">
           Coupon code (optional)
-          <input value={form.coupon_code} onChange={(e) => set('coupon_code', e.target.value)} placeholder="e.g. SAVE10" className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2" />
+          <input value={form.coupon_code} onChange={(e) => set('coupon_code', e.target.value)} placeholder="e.g. SAVE10" className="mt-1 w-full rounded-md border border-border px-3 py-2" />
         </label>
 
         <div className="grid grid-cols-2 gap-4">
           <label className="text-sm">
             Publish at (optional)
-            <input type="datetime-local" value={form.publish_at} onChange={(e) => set('publish_at', e.target.value)} className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2" />
+            <input type="datetime-local" value={form.publish_at} onChange={(e) => set('publish_at', e.target.value)} className="mt-1 w-full rounded-md border border-border px-3 py-2" />
           </label>
           <label className="text-sm">
             Expires at (optional)
-            <input type="datetime-local" value={form.expires_at} onChange={(e) => set('expires_at', e.target.value)} className="mt-1 w-full rounded-md border border-[#e4e4e7] px-3 py-2" />
+            <input type="datetime-local" value={form.expires_at} onChange={(e) => set('expires_at', e.target.value)} className="mt-1 w-full rounded-md border border-border px-3 py-2" />
           </label>
         </div>
 
@@ -169,21 +169,21 @@ export default function AnnouncementsAdmin() {
             {saving ? 'Saving...' : editingId ? 'Update' : 'Create'}
           </button>
           {editingId && (
-            <button type="button" onClick={resetForm} className="rounded-md border border-[#e4e4e7] px-4 py-2 text-sm">
+            <button type="button" onClick={resetForm} className="rounded-md border border-border px-4 py-2 text-sm">
               Cancel
             </button>
           )}
         </div>
       </form>
 
-      <div className="rounded-xl border border-[#e4e4e7]">
+      <div className="rounded-xl border border-border">
         {isLoading ? (
-          <p className="p-5 text-sm text-[#71717a]">Loading...</p>
+          <p className="p-5 text-sm text-muted-foreground">Loading...</p>
         ) : items.length === 0 ? (
-          <p className="p-5 text-sm text-[#71717a]">No announcements yet.</p>
+          <p className="p-5 text-sm text-muted-foreground">No announcements yet.</p>
         ) : (
           <table className="w-full text-sm">
-            <thead className="border-b border-[#eaeaea] text-left text-[#71717a]">
+            <thead className="border-b border-border text-left text-muted-foreground">
               <tr>
                 <th className="px-4 py-2">Title</th>
                 <th className="px-4 py-2">Type</th>
@@ -193,7 +193,7 @@ export default function AnnouncementsAdmin() {
             </thead>
             <tbody>
               {items.map((a) => (
-                <tr key={a.id} className="border-b border-[#f4f4f5]">
+                <tr key={a.id} className="border-b border-border">
                   <td className="px-4 py-2">{a.title}</td>
                   <td className="px-4 py-2">{a.type}</td>
                   <td className="px-4 py-2">{a.is_active ? 'Yes' : 'No'}</td>
@@ -201,7 +201,7 @@ export default function AnnouncementsAdmin() {
                     <button type="button" onClick={() => startEdit(a)} className="text-weelp-sage-deep hover:underline">
                       Edit
                     </button>
-                    <button type="button" onClick={() => remove(a.id)} className="text-[#ff725e] hover:underline">
+                    <button type="button" onClick={() => remove(a.id)} className="text-weelp-discount hover:underline">
                       Delete
                     </button>
                   </td>

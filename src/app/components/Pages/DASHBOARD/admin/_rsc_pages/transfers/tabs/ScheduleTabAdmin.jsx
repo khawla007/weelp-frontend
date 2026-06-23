@@ -80,7 +80,7 @@ const ScheduleTabAdmin = () => {
               name="availability_type"
               render={({ field }) => <SelectInputTransfer2 options={availabilityType} onChange={field.onChange} value={field.value} placeholder="Select Availability Type" />}
             />
-            {errors?.availability_type && <p className="text-red-500 text-sm mt-1">{errors?.availability_type?.message}</p>}
+            {errors?.availability_type && <p className="text-destructive text-sm mt-1">{errors?.availability_type?.message}</p>}
           </div>
 
           {/* Display Dynamic Based Fields */}
@@ -117,7 +117,7 @@ const ScheduleTabAdmin = () => {
                     </div>
                   )}
                 />
-                {errors?.available_days && <p className="text-red-500 text-sm mt-1">{errors?.available_days?.message}</p>}
+                {errors?.available_days && <p className="text-destructive text-sm mt-1">{errors?.available_days?.message}</p>}
               </div>
 
               <Separator />
@@ -132,7 +132,7 @@ const ScheduleTabAdmin = () => {
                   </span>
                 </div>
 
-                {timeSlotsFields.length === 0 && <p className="text-red-500 text-sm mt-1">At least one time slot is required</p>}
+                {timeSlotsFields.length === 0 && <p className="text-destructive text-sm mt-1">At least one time slot is required</p>}
 
                 {/* slots */}
                 <div className="space-y-2">
@@ -162,7 +162,7 @@ const ScheduleTabAdmin = () => {
                       </span>
                     </p>
                   ))}
-                  {errors?.time_slots && <p className="text-red-500 text-sm mt-1">Fields Requireds</p>}
+                  {errors?.time_slots && <p className="text-destructive text-sm mt-1">Fields Requireds</p>}
                 </div>
               </div>
 
@@ -218,7 +218,7 @@ const ScheduleTabAdmin = () => {
                     </Popover>
                   )}
                 />
-                {errors?.blackout_dates && <p className="text-red-500 text-sm mt-1">{errors?.blackout_dates?.message}</p>}
+                {errors?.blackout_dates && <p className="text-destructive text-sm mt-1">{errors?.blackout_dates?.message}</p>}
               </div>
             </div>
           )}
@@ -236,7 +236,7 @@ const ScheduleTabAdmin = () => {
                 })}
                 required
               />
-              {errors?.minimum_lead_time && <p className="text-red-500 text-sm mt-1">{errors?.minimum_lead_time?.message}</p>}
+              {errors?.minimum_lead_time && <p className="text-destructive text-sm mt-1">{errors?.minimum_lead_time?.message}</p>}
             </div>
 
             <div className="w-full space-y-2">
@@ -251,7 +251,7 @@ const ScheduleTabAdmin = () => {
                 })}
                 required
               />
-              {errors?.maximum_passengers && <p className="text-red-500 text-sm mt-1">{errors?.maximum_passengers?.message}</p>}
+              {errors?.maximum_passengers && <p className="text-destructive text-sm mt-1">{errors?.maximum_passengers?.message}</p>}
             </div>
           </div>
 

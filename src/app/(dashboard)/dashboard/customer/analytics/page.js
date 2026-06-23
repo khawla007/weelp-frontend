@@ -16,13 +16,13 @@ export default async function AnalyticsPage() {
   return (
     <div className="p-6 sm:p-8">
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">Analytics</h1>
-        <p className="text-[#71717a] mt-1">Track your creator performance metrics.</p>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-foreground">Analytics</h1>
+        <p className="text-muted-foreground mt-1">Track your creator performance metrics.</p>
       </div>
 
-      <div className="text-center py-16 border border-dashed border-[#e4e4e7] rounded-lg">
-        <p className="text-lg font-semibold text-[#18181b]">Coming Soon</p>
-        <p className="text-[#71717a] mt-2">Detailed analytics dashboard is under development.</p>
+      <div className="text-center py-16 border border-dashed border-border rounded-lg">
+        <p className="text-lg font-semibold text-foreground">Coming Soon</p>
+        <p className="text-muted-foreground mt-2">Detailed analytics dashboard is under development.</p>
       </div>
     </div>
   );

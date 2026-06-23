@@ -76,7 +76,7 @@ export default function PricingMatrix() {
     return (
       <div className="space-y-6">
         <Header />
-        <div className="grid place-items-center text-zinc-400 py-16">Create zones first before setting prices.</div>
+        <div className="grid place-items-center text-muted-foreground py-16">Create zones first before setting prices.</div>
       </div>
     );
   }
@@ -142,7 +142,7 @@ function Header() {
   return (
     <div>
       <div className="flex flex-row items-center gap-2">
-        <Link href="/dashboard/admin/transfers/zones" className="hover:bg-slate-50 rounded" aria-label="Back to zones">
+        <Link href="/dashboard/admin/transfers/zones" className="hover:bg-muted rounded" aria-label="Back to zones">
           <ArrowLeft size={20} />
         </Link>
         <h1 className="text-2xl font-semibold">Zone Pricing Matrix</h1>

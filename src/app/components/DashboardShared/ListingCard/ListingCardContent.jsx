@@ -10,7 +10,7 @@
  * @param {string} className - Additional classes
  */
 export function ListingCardContent({ children, className = '' }) {
-  return <div className={`bg-white p-4 space-y-2 ${className}`}>{children}</div>;
+  return <div className={`bg-background p-4 space-y-2 ${className}`}>{children}</div>;
 }
 
 /**
@@ -38,7 +38,7 @@ export function ListingCardTitle({ children, actions = null, className = '' }) {
  */
 export function ListingCardMeta({ icon: Icon, children, className = '' }) {
   return (
-    <span className={`text-gray-500 text-sm flex items-center gap-2 ${className}`}>
+    <span className={`text-muted-foreground text-sm flex items-center gap-2 ${className}`}>
       {Icon && <Icon size={16} />}
       {children}
     </span>

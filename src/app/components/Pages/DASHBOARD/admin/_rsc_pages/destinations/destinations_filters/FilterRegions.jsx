@@ -77,7 +77,7 @@ const RegionCard = ({ id, name, type, description, image_url, countries_count = 
               <DropdownMenuItem className="cursor-pointer" onClick={handleRoute}>
                 <Pencil size={14} className="mr-2" /> Edit
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleDelete} className="cursor-pointer text-red-400">
+              <DropdownMenuItem onClick={handleDelete} className="cursor-pointer text-destructive">
                 <Trash2 size={14} className="mr-2" /> Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -85,10 +85,10 @@ const RegionCard = ({ id, name, type, description, image_url, countries_count = 
         </div>
       </CardContent>
       <CardFooter className="flex flex-col items-start gap-4">
-        <p className="text-sm text-zinc-600 line-clamp-2">{description || 'No description'}</p>
+        <p className="text-sm text-copy line-clamp-2">{description || 'No description'}</p>
         {/* Badges */}
         <div className="flex items-center gap-2">
-          <Badge className="bg-accent text-[#18181b] hover:bg-accent">{type}</Badge>
+          <Badge className="bg-accent text-foreground hover:bg-accent">{type}</Badge>
           <Badge variant="outline">
             {countries_count} {countries_count === 1 ? 'Country' : 'Countries'}
           </Badge>
@@ -135,10 +135,10 @@ export const FilterRegions = () => {
           {isValidating && <ListingCardSkeleton count={8} gridClassName="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" className="w-full" />}
 
           {/* Error State */}
-          {!isValidating && error && <div className="text-red-500 text-center py-4">Failed to load data. Please try again.</div>}
+          {!isValidating && error && <div className="text-destructive text-center py-4">Failed to load data. Please try again.</div>}
 
           {/* No Items Found */}
-          {!isValidating && !error && regions.length === 0 && <div className="text-zinc-500 text-center py-4">No regions found.</div>}
+          {!isValidating && !error && regions.length === 0 && <div className="text-muted-foreground text-center py-4">No regions found.</div>}
 
           {/* For regions */}
           {!isValidating && !error && regions.length > 0 && (

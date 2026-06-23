@@ -49,9 +49,9 @@ function toIso(d) {
 
 function SummaryCard({ label, value }) {
   return (
-    <div className="bg-white rounded-xl border border-[#e4e4e7] p-4 sm:p-5">
-      <p className="text-sm text-[#71717a]">{label}</p>
-      <p className="text-2xl sm:text-3xl font-semibold text-[#18181b] mt-2">{value}</p>
+    <div className="bg-background rounded-xl border border-border p-4 sm:p-5">
+      <p className="text-sm text-muted-foreground">{label}</p>
+      <p className="text-2xl sm:text-3xl font-semibold text-foreground mt-2">{value}</p>
     </div>
   );
 }
@@ -87,8 +87,8 @@ export default function PayoutsClient({ initial }) {
   return (
     <DashboardMotionFrame className="p-4 sm:p-6 lg:p-8 space-y-6">
       <header>
-        <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">Payouts</h1>
-        <p className="text-[#71717a] mt-1">Paid commission batches grouped by date.</p>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-foreground">Payouts</h1>
+        <p className="text-muted-foreground mt-1">Paid commission batches grouped by date.</p>
       </header>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -106,7 +106,7 @@ export default function PayoutsClient({ initial }) {
               setPreset(p.key);
               setPage(1);
             }}
-            className={preset === p.key ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-[#e4e4e7] text-[#52525b]'}
+            className={preset === p.key ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-border text-copy'}
           >
             {p.label}
           </Button>
@@ -115,7 +115,7 @@ export default function PayoutsClient({ initial }) {
 
       <div key={loading ? 'loading' : preset} className="animate-fade-in">
         {loading ? (
-          <div className="bg-white rounded-lg border border-[#e4e4e7] divide-y divide-[#e4e4e7]">
+          <div className="bg-background rounded-lg border border-border divide-y divide-[#e4e4e7]">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex items-center justify-between p-4">
                 <Skeleton className="h-4 w-32" />
@@ -125,16 +125,16 @@ export default function PayoutsClient({ initial }) {
             ))}
           </div>
         ) : rows.length === 0 ? (
-          <div className="weelp-fade-up text-center py-16 bg-white rounded-lg border border-[#e4e4e7]">
-            <p className="text-lg font-semibold text-[#18181b]">No payouts in this period</p>
-            <p className="text-[#71717a] mt-2">Paid commissions will appear here once your earnings are settled.</p>
+          <div className="weelp-fade-up text-center py-16 bg-background rounded-lg border border-border">
+            <p className="text-lg font-semibold text-foreground">No payouts in this period</p>
+            <p className="text-muted-foreground mt-2">Paid commissions will appear here once your earnings are settled.</p>
             <NavigationLink href="/dashboard/customer/earnings">
               <Button className="mt-4 bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white">View Earnings</Button>
             </NavigationLink>
           </div>
         ) : (
           <>
-            <div className="hidden md:block bg-white rounded-lg border border-[#e4e4e7]">
+            <div className="hidden md:block bg-background rounded-lg border border-border">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -157,12 +157,12 @@ export default function PayoutsClient({ initial }) {
 
             <div className="md:hidden space-y-3">
               {rows.map((r) => (
-                <div key={r.payout_date} className="bg-white rounded-lg border border-[#e4e4e7] p-4 space-y-2">
+                <div key={r.payout_date} className="bg-background rounded-lg border border-border p-4 space-y-2">
                   <div className="flex justify-between items-start">
-                    <div className="font-medium text-[#18181b]">{fmtDate(r.payout_date)}</div>
-                    <div className="font-semibold text-[#18181b]">{fmtCurrency(r.total_amount)}</div>
+                    <div className="font-medium text-foreground">{fmtDate(r.payout_date)}</div>
+                    <div className="font-semibold text-foreground">{fmtCurrency(r.total_amount)}</div>
                   </div>
-                  <div className="text-sm text-[#71717a]">
+                  <div className="text-sm text-muted-foreground">
                     {r.commission_count} commission{r.commission_count === 1 ? '' : 's'}
                   </div>
                 </div>
@@ -174,7 +174,7 @@ export default function PayoutsClient({ initial }) {
       {/* pagination moved out of the keyed wrapper so refetch never remounts it */}
       {pagination.last_page > 1 && (
         <div className="flex items-center justify-between text-sm">
-          <span className="text-[#71717a]">
+          <span className="text-muted-foreground">
             Page {pagination.current_page} of {pagination.last_page}
           </span>
           <div className="flex gap-2">

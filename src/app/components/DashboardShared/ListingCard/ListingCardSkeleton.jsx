@@ -26,7 +26,7 @@ export function ListingCardSkeleton({ count = 6, gridClassName = DEFAULT_GRID, c
   return (
     <div className={`grid ${gridClassName} gap-4 ${className}`} aria-hidden="true">
       {Array.from({ length: count }).map((_, index) => (
-        <div key={index} className="rounded-lg w-full border overflow-hidden bg-white">
+        <div key={index} className="rounded-lg w-full border overflow-hidden bg-background">
           {/* Image */}
           <Skeleton className="w-full h-[183px] rounded-none" />
 

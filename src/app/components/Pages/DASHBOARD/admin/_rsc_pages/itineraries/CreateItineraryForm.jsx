@@ -184,41 +184,41 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
 
       return (
         <div className="space-y-4 pb-6">
-          <h2 className="text-base font-semibold text-[#18181b]">Basic Information</h2>
+          <h2 className="text-base font-semibold text-foreground">Basic Information</h2>
 
           <div className="flex w-full gap-4">
             <div className="pb-2 space-y-2 w-full">
-              <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-[#52525b]'}`}>
-                Itinerary Name <span className="text-red-500">*</span>
+              <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-destructive' : 'text-copy'}`}>
+                Itinerary Name <span className="text-destructive">*</span>
               </Label>
               <Input
                 placeholder="Itinerary name"
                 id="name"
                 {...register('name', { required: 'Name is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus-visible:ring-weelp-sage-deep"
                 onBlur={handleBlur}
               />
-              {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+              {errors?.name && <p className="text-destructive text-sm mt-1">{errors.name.message}</p>}
             </div>
 
             <div className="pb-2 space-y-2 w-full">
-              <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-[#52525b]'}`}>
-                Slug <span className="text-red-500">*</span>
+              <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-destructive' : 'text-copy'}`}>
+                Slug <span className="text-destructive">*</span>
               </Label>
               <Input
                 placeholder="Enter Url slug"
                 id="slug"
                 {...register('slug', { required: 'Slug is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus-visible:ring-weelp-sage-deep"
                 onBlur={handleBlur}
               />
-              {errors?.slug && <p className="text-red-500 text-sm mt-1">{errors?.slug.message}</p>}
+              {errors?.slug && <p className="text-destructive text-sm mt-1">{errors?.slug.message}</p>}
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-[#52525b]'}`}>
-              Description <span className="text-red-500">*</span>
+            <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-destructive' : 'text-copy'}`}>
+              Description <span className="text-destructive">*</span>
             </Label>
             <Textarea
               placeholder="Detailed description"
@@ -226,15 +226,15 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
               {...register('description', {
                 required: 'Description is required',
               })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus-visible:ring-weelp-sage-deep"
             />
-            {errors?.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+            {errors?.description && <p className="text-destructive text-sm mt-1">{errors.description.message}</p>}
           </div>
 
           {/* destination */}
           <div className="space-y-2">
-            <Label htmlFor={'locations'} className={`block text-sm font-medium ${errors?.locations ? 'text-red-400' : 'text-[#52525b]'}`}>
-              Destinations <span className="text-red-500">*</span>
+            <Label htmlFor={'locations'} className={`block text-sm font-medium ${errors?.locations ? 'text-destructive' : 'text-copy'}`}>
+              Destinations <span className="text-destructive">*</span>
             </Label>
             <Controller
               control={methods.control}
@@ -252,11 +252,11 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                 />
               )}
             />
-            {errors?.locations && <span className="text-red-400">{errors?.locations?.message}</span>}
+            {errors?.locations && <span className="text-destructive">{errors?.locations?.message}</span>}
           </div>
 
           <div className="flex items-center space-x-2">
-            <Label className="text-sm font-medium text-zinc-700 flex items-center gap-2" htmlFor="featured_itinerary">
+            <Label className="text-sm font-medium text-copy flex items-center gap-2" htmlFor="featured_itinerary">
               <Controller
                 name="featured_itinerary"
                 defaultValue={false}
@@ -266,15 +266,15 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                     id="featured_itinerary"
                     checked={field.value}
                     onCheckedChange={field.onChange}
-                    className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-weelp-sage-deep"
+                    className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-border data-[state=checked]:bg-weelp-sage-deep"
                   >
-                    <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
+                    <span className="absolute left-1 h-4 w-4 rounded-full bg-background transition-transform group-data-[state=checked]:translate-x-5" />
                   </Switch>
                 )}
               />
               Featured
             </Label>
-            <Label className="text-sm font-medium text-zinc-700 flex items-center gap-2" htmlFor="private_itinerary">
+            <Label className="text-sm font-medium text-copy flex items-center gap-2" htmlFor="private_itinerary">
               <Controller
                 name="private_itinerary"
                 defaultValue={false}
@@ -284,9 +284,9 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                     id="private_itinerary"
                     checked={field.value}
                     onCheckedChange={field.onChange}
-                    className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-weelp-sage-deep"
+                    className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-border data-[state=checked]:bg-weelp-sage-deep"
                   >
-                    <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
+                    <span className="absolute left-1 h-4 w-4 rounded-full bg-background transition-transform group-data-[state=checked]:translate-x-5" />
                   </Switch>
                 )}
               />
@@ -422,10 +422,10 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
 
     return (
       <div className="pb-4 relative">
-        {errors?.schedules && <p className="text-sm text-red-500">{errors?.schedules?.message}</p>}
+        {errors?.schedules && <p className="text-sm text-destructive">{errors?.schedules?.message}</p>}
 
         <div className="w-full flex justify-between items-center">
-          <h3 className="text-base font-semibold text-[#18181b]">Daily Schedule</h3>
+          <h3 className="text-base font-semibold text-foreground">Daily Schedule</h3>
           <Button type="button" onClick={handleAddDay} className="bg-weelp-sage-deep hover:bg-weelp-sage-deep">
             + Add Day
           </Button>
@@ -444,7 +444,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                 readOnly
               />
               <Input type="text" {...register(`schedules.${index}.title`)} className="flex-1 focus-visible:ring-weelp-sage-deep focus-visible:ring-1" placeholder="e.g., Arrival in Port Blair" />
-              <Trash2 onClick={() => removeDay(index)} className="text-red-400 cursor-pointer" size={16} />
+              <Trash2 onClick={() => removeDay(index)} className="text-destructive cursor-pointer" size={16} />
             </div>
 
             <div className="flex flex-col space-y-4">
@@ -472,7 +472,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                                 })
                               }
                             />
-                            <Trash2 onClick={() => handleRemoveActivity(filteredActivity, item?.day)} className="text-red-400 cursor-pointer" size={16} />
+                            <Trash2 onClick={() => handleRemoveActivity(filteredActivity, item?.day)} className="text-destructive cursor-pointer" size={16} />
                           </div>
                         </div>
                       </div>
@@ -507,7 +507,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                                 })
                               }
                             />
-                            <Trash2 onClick={() => handleRemoveTransfer(filteredTransfer, item?.day)} className="text-red-400 cursor-pointer" size={16} />
+                            <Trash2 onClick={() => handleRemoveTransfer(filteredTransfer, item?.day)} className="text-destructive cursor-pointer" size={16} />
                           </div>
                         </div>
                       </div>
@@ -647,8 +647,8 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
     return (
       <div className="flex flex-col justify-between py-2  rounded-md space-y-8">
         {/* Base Pricing */}
-        <div className="flex flex-col space-y-4 border p-4 rounded-xl bg-white">
-          <h3 className="text-lg font-medium text-zinc-900">Base Pricing</h3>
+        <div className="flex flex-col space-y-4 border p-4 rounded-xl bg-background">
+          <h3 className="text-lg font-medium text-foreground">Base Pricing</h3>
           <div className="w-full  flex gap-4">
             <div className="w-full space-y-2">
               <Label htmlFor="currency" className="w-full">
@@ -765,7 +765,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
         </div>
 
         {/* Price variations */}
-        <div className="space-y-4  border p-4 rounded-xl bg-white">
+        <div className="space-y-4  border p-4 rounded-xl bg-background">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-medium">Price Variations</h3>
             <Button
@@ -789,7 +789,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
             <div key={item.id} className="border p-4 rounded-xl space-y-4 relative">
               <div className="flex flex-nowwrap gap-6 items-center">
                 <div className="flex flex-col gap-2 w-full">
-                  <Label htmlFor={`price_variations.${index}.name`} className={errors?.price_variations?.[index]?.name ? 'text-red-400' : ''}>
+                  <Label htmlFor={`price_variations.${index}.name`} className={errors?.price_variations?.[index]?.name ? 'text-destructive' : ''}>
                     Name
                   </Label>
                   <Input
@@ -801,11 +801,11 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                     className="w-full"
                   />
 
-                  {errors?.price_variations?.[index]?.name && <p className="text-sm text-red-400">{errors?.price_variations[index].name.message}</p>}
+                  {errors?.price_variations?.[index]?.name && <p className="text-sm text-destructive">{errors?.price_variations[index].name.message}</p>}
                 </div>
 
                 <div className="flex flex-col gap-2 w-full">
-                  <Label htmlFor={`price_variations.${index}.regular_price`} className={errors?.price_variations?.[index]?.regular_price ? 'text-red-400' : ''}>
+                  <Label htmlFor={`price_variations.${index}.regular_price`} className={errors?.price_variations?.[index]?.regular_price ? 'text-destructive' : ''}>
                     Regular Price
                   </Label>
                   <Input
@@ -821,11 +821,11 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                       },
                     })}
                   />
-                  {errors?.price_variations?.[index]?.regular_price && <p className="text-sm text-red-400">{errors?.price_variations[index].regular_price.message}</p>}
+                  {errors?.price_variations?.[index]?.regular_price && <p className="text-sm text-destructive">{errors?.price_variations[index].regular_price.message}</p>}
                 </div>
 
                 <div className="flex flex-col gap-2 w-full">
-                  <Label htmlFor={`price_variations.${index}.sale_price`} className={errors?.price_variations?.[index]?.sale_price ? 'text-red-400' : ''}>
+                  <Label htmlFor={`price_variations.${index}.sale_price`} className={errors?.price_variations?.[index]?.sale_price ? 'text-destructive' : ''}>
                     Sale Price
                   </Label>
                   <Input
@@ -838,7 +838,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                     type="number"
                     className="w-full"
                   />
-                  {errors?.price_variations?.[index]?.sale_price && <p className="text-sm text-red-400">{errors?.price_variations[index].sale_price.message}</p>}
+                  {errors?.price_variations?.[index]?.sale_price && <p className="text-sm text-destructive">{errors?.price_variations[index].sale_price.message}</p>}
                 </div>
 
                 <div className="flex flex-col gap-2 w-full">
@@ -853,11 +853,11 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                     defaultValue="1"
                     className="w-full"
                   />
-                  {errors?.price_variations?.[index]?.max_guests && <p className="text-sm text-red-400">{errors?.price_variations[index]?.desciption?.message}</p>}
+                  {errors?.price_variations?.[index]?.max_guests && <p className="text-sm text-destructive">{errors?.price_variations[index]?.desciption?.message}</p>}
                 </div>
 
                 <div className="flex flex-col gap-2 w-full">
-                  <Label htmlFor={`price_variations.${index}.description`} className={`${errors?.price_variations?.[index]?.description?.message ? 'text-red-400' : ''}`}>
+                  <Label htmlFor={`price_variations.${index}.description`} className={`${errors?.price_variations?.[index]?.description?.message ? 'text-destructive' : ''}`}>
                     Description
                   </Label>
                   <Input
@@ -868,10 +868,10 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                     })}
                     className="w-full"
                   />
-                  {errors?.price_variations?.[index]?.description && <p className="text-sm text-red-400">{errors?.price_variations[index]?.description.message}</p>}
+                  {errors?.price_variations?.[index]?.description && <p className="text-sm text-destructive">{errors?.price_variations[index]?.description.message}</p>}
                 </div>
-                <div className="hover:bg-white flex items-center justify-center">
-                  <Trash2 className="cursor-pointer text-red-400" onClick={() => removeVariationField(index)} />
+                <div className="hover:bg-background flex items-center justify-center">
+                  <Trash2 className="cursor-pointer text-destructive" onClick={() => removeVariationField(index)} />
                 </div>
               </div>
             </div>
@@ -879,7 +879,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
         </div>
 
         {/* BlackOut Fields */}
-        <div className="space-y-4 border p-4 rounded-xl bg-white">
+        <div className="space-y-4 border p-4 rounded-xl bg-background">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-medium">Blackout Dates</h3>
             <Button
@@ -900,7 +900,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
             <div key={item.id} className="space-y-4 border p-4 rounded-xl relative">
               <div className="flex flex-nowwrap gap-6 items-center">
                 <div className="flex flex-col gap-2 w-fit">
-                  <Label htmlFor={`blackout_dates.${index}.date`} className={errors?.blackout_dates?.[index]?.date ? 'text-red-400' : ''}>
+                  <Label htmlFor={`blackout_dates.${index}.date`} className={errors?.blackout_dates?.[index]?.date ? 'text-destructive' : ''}>
                     Date
                   </Label>
                   <Controller
@@ -936,7 +936,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                     )}
                   />
 
-                  {errors?.blackout_dates?.[index]?.date && <p className="text-sm text-red-500 mt-1">{errors?.blackout_dates[index]?.date?.message}</p>}
+                  {errors?.blackout_dates?.[index]?.date && <p className="text-sm text-destructive mt-1">{errors?.blackout_dates[index]?.date?.message}</p>}
                 </div>
 
                 <div className="flex flex-col gap-2 w-full">
@@ -944,8 +944,8 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   <Input id={`blackout_dates.${index}.reason`} min="1" {...register(`blackout_dates.${index}.reason`)} defaultValue="1" className="w-full" placeholder="Optional Reason For BlackOut" />
                 </div>
 
-                <div className="hover:bg-white flex items-center justify-center">
-                  <Trash2 className="cursor-pointer text-red-400" onClick={() => removeBlackOutField(index)} />
+                <div className="hover:bg-background flex items-center justify-center">
+                  <Trash2 className="cursor-pointer text-destructive" onClick={() => removeBlackOutField(index)} />
                 </div>
               </div>
             </div>
@@ -994,14 +994,14 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
     return (
       <div className="flex flex-col justify-between pb-2 rounded-md space-y-8">
         <div className="flex justify-between">
-          <h3 className="text-base font-bold text-zinc-900 ">Inclusion & Exclusions</h3>
+          <h3 className="text-base font-bold text-foreground ">Inclusion & Exclusions</h3>
           <Button className="bg-weelp-sage-deep text-white border hover:bg-weelp-sage-deep/90" onClick={handleAddInclustionField}>
             + Add Item
           </Button>
         </div>
 
         {inclusionFields.map((item, index) => (
-          <div key={index} className="flex items-center justify-between gap-4 border p-4 rounded-xl bg-white">
+          <div key={index} className="flex items-center justify-between gap-4 border p-4 rounded-xl bg-background">
             <div className="self-start">
               <Label htmlFor={`inclusions_exclusions.${index}.type`}>Type</Label>
               <Controller
@@ -1026,7 +1026,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
             </div>
 
             <div className="w-full self-start">
-              <Label htmlFor={`inclusions_exclusions.${index}.title`} className={`${errors?.inclusions_exclusions?.[index]?.title && 'text-red-400'}`}>
+              <Label htmlFor={`inclusions_exclusions.${index}.title`} className={`${errors?.inclusions_exclusions?.[index]?.title && 'text-destructive'}`}>
                 Title
               </Label>
               <Input
@@ -1037,7 +1037,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   required: 'Field Required',
                 })}
               />
-              {errors?.inclusions_exclusions?.[index]?.title && <p className="text-sm text-red-400 mt-1">{errors?.inclusions_exclusions?.[index]?.title?.message}</p>}
+              {errors?.inclusions_exclusions?.[index]?.title && <p className="text-sm text-destructive mt-1">{errors?.inclusions_exclusions?.[index]?.title?.message}</p>}
             </div>
 
             <div className="w-full self-start">
@@ -1083,7 +1083,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
       <div className="space-y-4">
         {/* Categories */}
         <div>
-          <Label htmlFor={'categories'} className="block py-2 text-sm font-medium text-zinc-700">
+          <Label htmlFor={'categories'} className="block py-2 text-sm font-medium text-copy">
             Categories
           </Label>
           <Controller
@@ -1100,12 +1100,12 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
               />
             )}
           />
-          {errors?.categories && <span className="text-red-400">{errors?.categories?.message}</span>}
+          {errors?.categories && <span className="text-destructive">{errors?.categories?.message}</span>}
         </div>
 
         {/* Tags */}
         <div>
-          <Label htmlFor={'tags'} className="block py-2 text-sm font-medium text-zinc-700">
+          <Label htmlFor={'tags'} className="block py-2 text-sm font-medium text-copy">
             Tags
           </Label>
 
@@ -1125,12 +1125,12 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
             )}
           />
 
-          {errors?.tags && <span className="text-red-400">{errors?.tags?.message}</span>}
+          {errors?.tags && <span className="text-destructive">{errors?.tags?.message}</span>}
         </div>
 
         {/* Attributes */}
         <div>
-          <Label htmlFor={'attributes'} className="block py-2 text-sm font-medium text-zinc-700">
+          <Label htmlFor={'attributes'} className="block py-2 text-sm font-medium text-copy">
             Attributes
           </Label>
           <Controller
@@ -1141,11 +1141,11 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
             render={({ field: { onChange, value } }) => <ComboboxMultipleAttribute id={'attributes'} attributes={attributes} value={value} onChange={onChange} />}
           />
 
-          {errors?.attributes && <span className="text-red-400">{errors?.attributes?.message}</span>}
+          {errors?.attributes && <span className="text-destructive">{errors?.attributes?.message}</span>}
         </div>
 
         <div className="w-full py-2">
-          <Label htmlFor={'difficulty'} className="block text-sm font-medium text-zinc-700">
+          <Label htmlFor={'difficulty'} className="block text-sm font-medium text-copy">
             Difficulty Level
           </Label>
           <Controller
@@ -1285,11 +1285,11 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
         {/**Selected Media From Store */}
         {activityImages.length > 0 ? (
           <div className="w-full flex flex-wrap gap-4 ">
-            <p className="w-full text-sm text-zinc-500">Click the star icon to mark an image as featured</p>
+            <p className="w-full text-sm text-muted-foreground">Click the star icon to mark an image as featured</p>
             {activityImages.map((image, index) => {
               const isFeatured = image?.media_id == featuredImageId;
               return (
-                <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-[#e4e4e7]">
+                <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-border">
                   <img className="size-72 rounded-md border" src={image?.url} alt="activity_image" />
                   <Star
                     size={24}
@@ -1301,14 +1301,14 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   {isFeatured && <div className="absolute top-4 left-4 bg-weelp-sage-deep text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
                   <Trash2
                     onClick={() => handleDeleteImage(image)}
-                    className="absolute bottom-4 right-4 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-red-500 bg-white rounded-full shadow p-1"
+                    className="absolute bottom-4 right-4 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-destructive bg-background rounded-full shadow p-1"
                   />
                 </div>
               );
             })}
           </div>
         ) : (
-          <div className="w-full">{errors.media_gallery && <p className="text-red-500 mt-1">{errors.media_gallery.message}</p>}</div>
+          <div className="w-full">{errors.media_gallery && <p className="text-destructive mt-1">{errors.media_gallery.message}</p>}</div>
         )}
       </div>
     );
@@ -1494,12 +1494,12 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
         }}
       >
         <AccordionItem value="item-1">
-          <AccordionTrigger className="hover:bg-zinc-50 pl-0 pr-4 pt-0 pb-8">
-            <h2 className="text-[#18181b] font-semibold text-base">Basic Settings</h2>
+          <AccordionTrigger className="hover:bg-muted pl-0 pr-4 pt-0 pb-8">
+            <h2 className="text-foreground font-semibold text-base">Basic Settings</h2>
           </AccordionTrigger>
           <AccordionContent className="pr-2 space-y-4">
             <div className="space-y-2">
-              <Label className={`${errors?.seo?.meta_title?.message && 'text-red-400'}`}>Meta Title</Label>
+              <Label className={`${errors?.seo?.meta_title?.message && 'text-destructive'}`}>Meta Title</Label>
               <Input
                 type="text"
                 maxLength="60"
@@ -1509,12 +1509,12 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   required: 'Meta Title Required',
                 })}
               />
-              <span className="block text-xs p-1 text-zinc-500">{`${String(metaTitle || '').length}/60`} Characters</span>
-              {errors?.seo?.meta_title && <p className="text-red-400 text-sm">{errors?.seo?.meta_title?.message}</p>}
+              <span className="block text-xs p-1 text-muted-foreground">{`${String(metaTitle || '').length}/60`} Characters</span>
+              {errors?.seo?.meta_title && <p className="text-destructive text-sm">{errors?.seo?.meta_title?.message}</p>}
             </div>
 
             <div className="space-y-2">
-              <Label className={`${errors?.seo?.meta_description?.message && 'text-red-400'}`}>Meta Description</Label>
+              <Label className={`${errors?.seo?.meta_description?.message && 'text-destructive'}`}>Meta Description</Label>
               <Input
                 type="text"
                 placeholder="Enter meta description"
@@ -1524,12 +1524,12 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   required: 'Meta Description Required',
                 })}
               />
-              <span className="block text-xs p-1 text-zinc-500">{`${String(metaDescription || '').length}/160`} Characters</span>
-              {errors?.seo?.meta_description && <p className="text-red-400 text-sm">{errors?.seo?.meta_description.message}</p>}
+              <span className="block text-xs p-1 text-muted-foreground">{`${String(metaDescription || '').length}/160`} Characters</span>
+              {errors?.seo?.meta_description && <p className="text-destructive text-sm">{errors?.seo?.meta_description.message}</p>}
             </div>
 
             <div className="space-y-2">
-              <Label className={`${errors?.seo?.keywords?.message && 'text-red-400'}`}>Keywords</Label>
+              <Label className={`${errors?.seo?.keywords?.message && 'text-destructive'}`}>Keywords</Label>
               <Input
                 type="text"
                 placeholder="Enter keywords separated by commas"
@@ -1542,11 +1542,11 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   },
                 })}
               />
-              {errors?.seo?.keywords && <p className="text-red-400 text-sm">{errors?.seo?.keywords?.message}</p>}
+              {errors?.seo?.keywords && <p className="text-destructive text-sm">{errors?.seo?.keywords?.message}</p>}
             </div>
 
             <div className="space-y-2">
-              <Label className={`${errors?.seo?.og_image_url?.message && 'text-red-400'}`}>OG Image Url</Label>
+              <Label className={`${errors?.seo?.og_image_url?.message && 'text-destructive'}`}>OG Image Url</Label>
               <Input
                 type="url"
                 placeholder=" e.g: https://example.com/sample-og.jpg"
@@ -1555,11 +1555,11 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   required: 'og_image_url Required',
                 })}
               />
-              {errors?.seo?.og_image_url && <p className="text-red-400 text-sm">{errors?.seo?.og_image_url?.message}</p>}
+              {errors?.seo?.og_image_url && <p className="text-destructive text-sm">{errors?.seo?.og_image_url?.message}</p>}
             </div>
 
             <div className="space-y-2">
-              <Label className={`${errors?.seo?.canonical_url?.message && 'text-red-400'}`}>Canonical Url</Label>
+              <Label className={`${errors?.seo?.canonical_url?.message && 'text-destructive'}`}>Canonical Url</Label>
               <Input
                 type="url"
                 placeholder="e.g: https://example.com/"
@@ -1568,14 +1568,14 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   required: 'canonical_url Required',
                 })}
               />
-              {errors?.seo?.canonical_url && <p className="text-red-400 text-sm">{errors?.seo?.canonical_url?.message}</p>}
+              {errors?.seo?.canonical_url && <p className="text-destructive text-sm">{errors?.seo?.canonical_url?.message}</p>}
             </div>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2">
-          <AccordionTrigger className="hover:bg-zinc-50 pl-0 pr-4 pt-8 pb-8">
-            <h2 className="text-[#18181b] font-semibold text-base">Schema Markup</h2>
-            {errors?.schema_data?.message && <div className="bg-red-100 text-red-800">{errors?.schema_data?.message}</div>}
+          <AccordionTrigger className="hover:bg-muted pl-0 pr-4 pt-8 pb-8">
+            <h2 className="text-foreground font-semibold text-base">Schema Markup</h2>
+            {errors?.schema_data?.message && <div className="bg-destructive/15 text-destructive">{errors?.schema_data?.message}</div>}
           </AccordionTrigger>
           <AccordionContent className="pr-2 flex flex-col">
             <Card className="p-8 space-y-4">
@@ -1605,7 +1605,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
               <div>
                 <Label>Edit JSON-LD</Label>
                 <Textarea
-                  className={`font-mono text-sm h-96 resize-none ${validationState.showMessage ? (validationState.isValid ? 'border-green-500' : 'border-red-500') : ''}`}
+                  className={`font-mono text-sm h-96 resize-none ${validationState.showMessage ? (validationState.isValid ? 'border-green-500' : 'border-destructive') : ''}`}
                   value={jsonInput}
                   placeholder={selectedSchemaData ? JSON.stringify(selectedSchemaData, null, 2) : 'Schema data will appear here...'}
                   onChange={(e) => setJsonInput(e.target.value)}
@@ -1619,7 +1619,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
               </Button>
 
               {validationState.showMessage && (
-                <div className={`p-4 rounded-md text-sm ${validationState.isValid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{validationState.message}</div>
+                <div className={`p-4 rounded-md text-sm ${validationState.isValid ? 'bg-success/15 text-success' : 'bg-destructive/15 text-destructive'}`}>{validationState.message}</div>
               )}
             </Card>
           </AccordionContent>
@@ -1701,7 +1701,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
   };
 
   return (
-    <div className="min-h-screen w-full bg-zinc-50 py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen w-full bg-muted py-12 sm:px-6 lg:px-8">
       <NavigationItinerary title={'Create New Itinerary'} desciption={'Build a new itinerary with schedule, pricing, and more'} />
       <div className="w-full space-y-4">
         <FormProvider {...methods}>
@@ -1719,10 +1719,10 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                         }
                         goWithDirection(step?.id, currentStep, setCurrentStep);
                       }}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'}`}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-muted ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'}`}
                     >
                       <div
-                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-[#71717a]'}`}
+                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-foreground'} ${currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-muted-foreground'}`}
                       >
                         {step.title}
                       </div>
@@ -1742,7 +1742,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   }
             }
           >
-            <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
+            <fieldset className={`${currentStep === 3 ? '' : 'bg-background p-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               <StepPanel stepRef={stepRef}>
                 <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>{ScheduleTab()}</div>
                 {currentStep !== 2 && renderStep()}
@@ -1752,7 +1752,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   <Button
                     type="button"
                     onClick={() => goWithDirection(currentStep - 1, currentStep, setCurrentStep)}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Previous
                   </Button>
@@ -1765,7 +1765,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                     onClick={() => {
                       router.back();
                     }}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Cancel
                   </Button>

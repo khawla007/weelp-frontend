@@ -27,7 +27,7 @@ export function AttributePageClient() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [isAllSelected, setIsAllSelected] = useState(false);
 
-  if (error) return <p className="text-red-400">Failed to load attributes.</p>;
+  if (error) return <p className="text-destructive">Failed to load attributes.</p>;
 
   const response = data?.data || {};
 

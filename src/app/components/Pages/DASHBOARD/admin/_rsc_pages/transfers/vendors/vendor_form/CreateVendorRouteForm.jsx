@@ -63,7 +63,7 @@ const CreateVendorRouteForm = ({ onSuccess }) => {
             <Input {...register('name', { required: 'Name Field Required' })} id="name" name="name" placeholder="Route Name" />
 
             {/* Error  */}
-            {errors?.name && <p className="text-red-400 font-semibold text-sm">{errors?.name?.message}</p>}
+            {errors?.name && <p className="text-destructive font-semibold text-sm">{errors?.name?.message}</p>}
           </div>
 
           {/* Description */}
@@ -72,7 +72,7 @@ const CreateVendorRouteForm = ({ onSuccess }) => {
             <Textarea {...register('description', { required: 'Field Required' })} id="description" name="description" placeholder="Enter Route Description" />
 
             {/* Error  */}
-            {errors?.description && <p className="text-red-400 font-semibold text-sm">{errors?.description?.message}</p>}
+            {errors?.description && <p className="text-destructive font-semibold text-sm">{errors?.description?.message}</p>}
           </div>
 
           {/* Starting Point adn Entoint */}
@@ -90,7 +90,7 @@ const CreateVendorRouteForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.start_point && <p className="text-red-400 font-semibold text-sm">{errors?.start_point?.message}</p>}
+              {errors?.start_point && <p className="text-destructive font-semibold text-sm">{errors?.start_point?.message}</p>}
             </div>
 
             <div className="grid gap-3 w-full">
@@ -98,7 +98,7 @@ const CreateVendorRouteForm = ({ onSuccess }) => {
               <Input type="text" {...register('end_point', { required: 'End Point Required' })} id="end_point" name="end_point" placeholder="Enter End Point" />
 
               {/* Error  */}
-              {errors?.end_point && <p className="text-red-400 font-semibold text-sm">{errors?.end_point?.message}</p>}
+              {errors?.end_point && <p className="text-destructive font-semibold text-sm">{errors?.end_point?.message}</p>}
             </div>
           </div>
 
@@ -118,7 +118,7 @@ const CreateVendorRouteForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.base_price && <p className="text-red-400 font-semibold text-sm">{errors?.base_price?.message}</p>}
+              {errors?.base_price && <p className="text-destructive font-semibold text-sm">{errors?.base_price?.message}</p>}
             </div>
 
             <div className="grid gap-3 w-full">
@@ -135,7 +135,7 @@ const CreateVendorRouteForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.price_per_km && <p className="text-red-400 font-semibold text-sm">{errors?.price_per_km?.message}</p>}
+              {errors?.price_per_km && <p className="text-destructive font-semibold text-sm">{errors?.price_per_km?.message}</p>}
             </div>
           </div>
 

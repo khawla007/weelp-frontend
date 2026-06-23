@@ -112,7 +112,7 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
                   )}
                 />
               )}
-              {isErrorUser && <span className="text-red-400">User Api Failed</span>}
+              {isErrorUser && <span className="text-destructive">User Api Failed</span>}
 
               {/* Dynamic Content Type */}
               <div className="grid grid-cols-2 gap-4">
@@ -149,7 +149,7 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
                     )}
                   />
                 )}
-                {isErrorItems && <span className="text-red-400">Content Type Not Selected or Items api failed..</span>}
+                {isErrorItems && <span className="text-destructive">Content Type Not Selected or Items api failed..</span>}
               </div>
 
               {/* Rating */}

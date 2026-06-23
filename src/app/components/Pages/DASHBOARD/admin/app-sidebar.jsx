@@ -15,7 +15,7 @@ export function AppSidebar({ session, ...props }) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="border border-r-0 h-16 px-1 mx-1 flex flex-row justify-start items-center">
         <div className={`flex w-full items-center gap-4 ${open ? 'px-6' : 'justify-center'}`}>
-          <Menu onClick={toggleSidebar} className="hover:bg-gray-100 cursor-pointer" />
+          <Menu onClick={toggleSidebar} className="hover:bg-muted cursor-pointer" />
           {state !== 'collapsed' ? <img src="/assets/images/SiteLogo.png" alt="Logo" className="h-10" /> : ''}
         </div>
       </SidebarHeader>

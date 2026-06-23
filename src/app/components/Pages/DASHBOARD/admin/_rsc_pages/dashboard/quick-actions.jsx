@@ -27,7 +27,7 @@ export function QuickActions({ loading = false }) {
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium flex items-center justify-between w-full gap-2">
                 {action.title}
-                <IconComponent size={18} className="text-zinc-400" />
+                <IconComponent size={18} className="text-muted-foreground" />
               </CardTitle>
             </CardHeader>
             <CardContent>

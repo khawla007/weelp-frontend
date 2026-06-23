@@ -214,9 +214,9 @@ const FilterBlog = () => {
               {isCategoriesLoading && <FieldSkeleton />}
 
               {!isCategoriesLoading && categoriesOptionError && (
-                <span className="text-sm text-red-500">{categoriesOptionError?.message || `Failed to load categories <br> ${JSON.stringify(categoriesOptionError)}`}</span>
+                <span className="text-sm text-destructive">{categoriesOptionError?.message || `Failed to load categories <br> ${JSON.stringify(categoriesOptionError)}`}</span>
               )}
-              {!isCategoriesLoading && !categoriesOptionError && categoriesList.length === 0 && <span className="text-sm text-zinc-500">No categories found</span>}
+              {!isCategoriesLoading && !categoriesOptionError && categoriesList.length === 0 && <span className="text-sm text-muted-foreground">No categories found</span>}
 
               {!isCategoriesLoading && categoriesList.length > 0 && (
                 <Controller
@@ -254,8 +254,8 @@ const FilterBlog = () => {
               {/* STATUS MESSAGE */}
               {isTagLoading && <FieldSkeleton />}
 
-              {!isTagLoading && tagOptionsError && <span className="text-sm text-red-500">{tagOptionsError?.message || `Failed to load categories <br> ${JSON.stringify(tagOptionsError)}`}</span>}
-              {!isTagLoading && !tagOptionsError && categoriesList.length === 0 && <span className="text-sm text-zinc-500">No categories found</span>}
+              {!isTagLoading && tagOptionsError && <span className="text-sm text-destructive">{tagOptionsError?.message || `Failed to load categories <br> ${JSON.stringify(tagOptionsError)}`}</span>}
+              {!isTagLoading && !tagOptionsError && categoriesList.length === 0 && <span className="text-sm text-muted-foreground">No categories found</span>}
 
               {!isTagLoading && categoriesList.length > 0 && (
                 <Controller
@@ -332,10 +332,10 @@ const FilterBlog = () => {
           {isValidating && <ListingCardSkeleton />}
 
           {/* Error State */}
-          {!isValidating && error && <div className="text-red-500 text-center">Failed to load data. Please try again.</div>}
+          {!isValidating && error && <div className="text-destructive text-center">Failed to load data. Please try again.</div>}
 
           {/* Empty State */}
-          {!isValidating && !error && items.length === 0 && <div className="text-zinc-500 text-center">No items found.</div>}
+          {!isValidating && !error && items.length === 0 && <div className="text-muted-foreground text-center">No items found.</div>}
 
           {/* For Items */}
           {!isValidating && !error && items.length > 0 && (
@@ -385,7 +385,7 @@ const FilterBlog = () => {
                       {categories.length > 0 && (
                         <ul className="list-item">
                           {categories.map(({ category_name }, idx) => (
-                            <li key={idx} className="text-zinc-500 text-sm flex items-center gap-2">
+                            <li key={idx} className="text-muted-foreground text-sm flex items-center gap-2">
                               {category_name}
                             </li>
                           ))}
@@ -396,7 +396,7 @@ const FilterBlog = () => {
                       {tags.length > 0 && (
                         <ListingCardTags>
                           {tags.map(({ tag_name }, idx) => (
-                            <Badge key={idx} className={`bg-weelp-sage-deep text-white hover:text-white hover:bg-weelp-sage-deep ${idx === 0 && 'bg-zinc-400'}`}>
+                            <Badge key={idx} className={`bg-weelp-sage-deep text-white hover:text-white hover:bg-weelp-sage-deep ${idx === 0 && 'bg-muted-foreground'}`}>
                               {tag_name}
                             </Badge>
                           ))}
@@ -406,7 +406,7 @@ const FilterBlog = () => {
                       {/* Status */}
                       <div className="flex items-center gap-2">
                         <b>Status:</b>
-                        {publish ? <Badge className={'bg-weelp-sage-deep'}>Published</Badge> : <Badge className={'bg-yellow-400'}>Draft</Badge>}
+                        {publish ? <Badge className={'bg-weelp-sage-deep'}>Published</Badge> : <Badge className={'bg-warning'}>Draft</Badge>}
                       </div>
 
                       {/* Excerpt */}

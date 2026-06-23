@@ -17,15 +17,15 @@ export const StatCard = ({ label, icon, value, change = 0 }) => {
   return (
     <Card className="rounded-lg border bg-card text-card-foreground shadow-sm transition-[background-color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none hover:bg-accent hover:shadow-lg">
       <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
-        <h3 className="text-[#18181b] text-sm font-medium">{label}</h3>
+        <h3 className="text-foreground text-sm font-medium">{label}</h3>
         {icon}
       </div>
       <div className="p-6 pt-0">
         <div className="text-2xl font-bold">{value}</div>
-        <p className={`${isPositive ? 'text-green-500' : 'text-red-500'} text-[12px] flex flex-wrap gap-1 items-center`}>
+        <p className={`${isPositive ? 'text-success' : 'text-destructive'} text-[12px] flex flex-wrap gap-1 items-center`}>
           {isPositive ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
           {change > 0 ? '+' : ''}
-          {change}% <span className="text-zinc-400 font-medium">from last month</span>
+          {change}% <span className="text-muted-foreground font-medium">from last month</span>
         </p>
       </div>
     </Card>

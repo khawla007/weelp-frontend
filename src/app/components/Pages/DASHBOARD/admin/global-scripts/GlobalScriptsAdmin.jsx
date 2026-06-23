@@ -76,13 +76,13 @@ export default function GlobalScriptsAdmin() {
   return (
     <div className="space-y-6 p-6">
       <div>
-        <h1 className="text-xl font-semibold text-[#18181b]">Global Scripts</h1>
-        <p className="mt-1 max-w-3xl text-sm text-[#71717a]">Add scripts or markup that should load across the public website. Item SEO scripts still remain editable from each item.</p>
+        <h1 className="text-xl font-semibold text-foreground">Global Scripts</h1>
+        <p className="mt-1 max-w-3xl text-sm text-muted-foreground">Add scripts or markup that should load across the public website. Item SEO scripts still remain editable from each item.</p>
       </div>
 
-      <form onSubmit={submit} className="space-y-5 rounded-lg border border-[#e4e4e7] bg-white p-5">
-        {error && <p className="rounded-md border border-[#fecaca] bg-[#fef2f2] px-3 py-2 text-sm text-[#b91c1c]">{error}</p>}
-        {status && <p className="rounded-md border border-[#bbf7d0] bg-[#f0fdf4] px-3 py-2 text-sm text-[#166534]">{status}</p>}
+      <form onSubmit={submit} className="space-y-5 rounded-lg border border-border bg-background p-5">
+        {error && <p className="rounded-md border border-destructive/40 bg-destructive/5 px-3 py-2 text-sm text-destructive">{error}</p>}
+        {status && <p className="rounded-md border border-success/40 bg-success/10 px-3 py-2 text-sm text-success">{status}</p>}
 
         <ScriptSlotField
           label="Header scripts"
@@ -113,7 +113,7 @@ export default function GlobalScriptsAdmin() {
             <Save size={16} />
             {saving ? 'Saving...' : 'Save global scripts'}
           </Button>
-          {isLoading && <span className="text-sm text-[#71717a]">Loading current settings...</span>}
+          {isLoading && <span className="text-sm text-muted-foreground">Loading current settings...</span>}
         </div>
       </form>
     </div>
@@ -123,8 +123,8 @@ export default function GlobalScriptsAdmin() {
 function ScriptSlotField({ label, hint, value, onChange, placeholder }) {
   return (
     <label className="block text-sm">
-      <span className="font-medium text-[#27272a]">{label}</span>
-      <span className="mt-1 block text-xs leading-5 text-[#71717a]">{hint}</span>
+      <span className="font-medium text-foreground">{label}</span>
+      <span className="mt-1 block text-xs leading-5 text-muted-foreground">{hint}</span>
       <Textarea value={value} onChange={(event) => onChange(event.target.value)} rows={7} placeholder={placeholder} className="mt-2 font-mono text-xs leading-5" />
     </label>
   );

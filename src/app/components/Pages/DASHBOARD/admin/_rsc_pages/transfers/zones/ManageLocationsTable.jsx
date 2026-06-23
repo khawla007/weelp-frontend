@@ -131,7 +131,7 @@ export default function ManageLocationsTable({ zone }) {
     <div className="space-y-6">
       <div>
         <div className="flex flex-row items-center gap-2">
-          <Link href="/dashboard/admin/transfers/zones" className="hover:bg-slate-50 rounded" aria-label="Back to zones">
+          <Link href="/dashboard/admin/transfers/zones" className="hover:bg-muted rounded" aria-label="Back to zones">
             <ArrowLeft size={20} />
           </Link>
           <h1 className="text-2xl font-semibold">Zone: {zone.name} — Location Assignment</h1>
@@ -190,7 +190,7 @@ export default function ManageLocationsTable({ zone }) {
       </div>
 
       {isValidating && <TableSkeleton columns={7} rows={10} headers={['', 'Location', 'City', 'Country', 'Type', 'Current Zone(s)', 'Action']} />}
-      {error && <span className="text-red-500">Failed to load locations</span>}
+      {error && <span className="text-destructive">Failed to load locations</span>}
 
       {!error && (
         <>

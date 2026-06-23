@@ -25,8 +25,8 @@ export default async function MyItinerariesPage() {
     <div className="p-6 sm:p-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">My Itineraries</h1>
-          <p className="text-[#71717a] mt-1">Your saved and customized travel itineraries.</p>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-foreground">My Itineraries</h1>
+          <p className="text-muted-foreground mt-1">Your saved and customized travel itineraries.</p>
         </div>
       </div>
 

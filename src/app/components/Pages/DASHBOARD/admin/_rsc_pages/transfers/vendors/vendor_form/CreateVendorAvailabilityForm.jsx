@@ -86,7 +86,7 @@ const CreateVendorAvailabilityForm = ({ onSuccess }) => {
             />
 
             {/* Error  */}
-            {errors?.vehicle_id && <p className="text-red-400 font-semibold text-sm">{errors?.vehicle_id?.message}</p>}
+            {errors?.vehicle_id && <p className="text-destructive font-semibold text-sm">{errors?.vehicle_id?.message}</p>}
           </div>
 
           {/* Date */}
@@ -101,11 +101,11 @@ const CreateVendorAvailabilityForm = ({ onSuccess }) => {
                   ? format(new Date(field.value), 'yyyy-MM-dd') // Format using date-fns
                   : '';
 
-                return <Input type="date" id="date" value={value} onChange={(e) => field.onChange(e.target.value)} className={errors?.date && 'border-red-500'} />;
+                return <Input type="date" id="date" value={value} onChange={(e) => field.onChange(e.target.value)} className={errors?.date && 'border-destructive'} />;
               }}
             />
 
-            {errors?.date && <p className="text-red-400 font-semibold text-sm">{errors?.date?.message}</p>}
+            {errors?.date && <p className="text-destructive font-semibold text-sm">{errors?.date?.message}</p>}
           </div>
 
           {/* Starting Point and Endtime */}
@@ -121,11 +121,11 @@ const CreateVendorAvailabilityForm = ({ onSuccess }) => {
                 id="start_time"
                 name="start_time"
                 placeholder="Enter starting time"
-                className={errors?.start_time && 'border-red-500'}
+                className={errors?.start_time && 'border-destructive'}
               />
 
               {/* Error */}
-              {errors?.start_time && <p className="text-red-400 font-semibold text-sm">{errors.start_time.message}</p>}
+              {errors?.start_time && <p className="text-destructive font-semibold text-sm">{errors.start_time.message}</p>}
             </div>
 
             <div className="grid gap-3 w-full">
@@ -137,10 +137,10 @@ const CreateVendorAvailabilityForm = ({ onSuccess }) => {
                 {...register('end_time', {
                   required: 'Ending time is required',
                 })}
-                className={`w-full ${errors?.end_time ? 'border-red-500' : ''}`}
+                className={`w-full ${errors?.end_time ? 'border-destructive' : ''}`}
               />
 
-              {errors?.end_time && <p className="text-red-400 font-semibold text-sm">{errors.end_time.message}</p>}
+              {errors?.end_time && <p className="text-destructive font-semibold text-sm">{errors.end_time.message}</p>}
             </div>
           </div>
 
@@ -161,7 +161,7 @@ const CreateVendorAvailabilityForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.max_bookings && <p className="text-red-400 font-semibold text-sm">{errors?.max_bookings?.message}</p>}
+              {errors?.max_bookings && <p className="text-destructive font-semibold text-sm">{errors?.max_bookings?.message}</p>}
             </div>
 
             <div className="grid gap-3 w-full">
@@ -179,7 +179,7 @@ const CreateVendorAvailabilityForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.price_multiplier && <p className="text-red-400 font-semibold text-sm">{errors?.price_multiplier?.message}</p>}
+              {errors?.price_multiplier && <p className="text-destructive font-semibold text-sm">{errors?.price_multiplier?.message}</p>}
             </div>
           </div>
 

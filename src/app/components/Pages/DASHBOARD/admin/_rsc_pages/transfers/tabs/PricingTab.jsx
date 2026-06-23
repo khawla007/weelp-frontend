@@ -63,7 +63,7 @@ const PricingTab = () => {
           />
 
           {/* Displaying  Errors */}
-          {errors?.pricing_tier_id && <p className="text-red-500 text-sm mt-1">{errors?.pricing_tier_id?.message}</p>}
+          {errors?.pricing_tier_id && <p className="text-destructive text-sm mt-1">{errors?.pricing_tier_id?.message}</p>}
         </div>
 
         {/* Availablity Data */}
@@ -77,7 +77,7 @@ const PricingTab = () => {
           />
 
           {/* Displaying  Errors */}
-          {errors?.availability_id && <p className="text-red-500 text-sm mt-1">{errors?.availability_id?.message}</p>}
+          {errors?.availability_id && <p className="text-destructive text-sm mt-1">{errors?.availability_id?.message}</p>}
         </div>
       </CardContent>
     </Card>

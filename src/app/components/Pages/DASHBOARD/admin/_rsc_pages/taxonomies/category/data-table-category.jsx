@@ -89,7 +89,7 @@ export function DataTableCategory({ categories = [], isloading = false, mutate, 
               onAllSelectedChange(false);
             }
           }}
-          className="h-5 w-5 rounded border-2 border-weelp-sage-deep bg-white data-[state=checked]:bg-weelp-sage-deep data-[state=checked]:text-white data-[state=checked]:border-weelp-sage-deep [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
+          className="h-5 w-5 rounded border-2 border-weelp-sage-deep bg-background data-[state=checked]:bg-weelp-sage-deep data-[state=checked]:text-white data-[state=checked]:border-weelp-sage-deep [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
         />
       ),
       cell: ({ row }) => <SelectableCardCheckbox checked={selectedItems.includes(row.original.id)} onCheckedChange={handleSelectionChange} itemId={row.original.id} />,
@@ -209,7 +209,7 @@ export function DataTableCategory({ categories = [], isloading = false, mutate, 
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleOnDelete} className="bg-red-600 hover:bg-red-700">
+            <AlertDialogAction onClick={handleOnDelete} className="bg-destructive hover:bg-destructive/90">
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

@@ -109,7 +109,7 @@ export const UploadImagesForm = ({ uploadImagePop, setUploadImagePopUp, mutateMe
         {/* Rejected Files */}
         {fileRejections.length > 0 &&
           fileRejections.map(({ file, errors }) => (
-            <div key={file.path} className="flex items-center gap-2 text-red-600 mt-2">
+            <div key={file.path} className="flex items-center gap-2 text-destructive mt-2">
               <div>
                 <p className="font-semibold flex items-center gap-2">
                   {file.path} - {Math.round(file.size / 1024)} KB File

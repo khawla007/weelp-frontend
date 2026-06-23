@@ -20,7 +20,7 @@ const SmartAddOnMultiSelectActivity = () => {
   const apiData = data?.data || [];
 
   if (isLoading) return <FieldSkeleton />;
-  if (error) return <div className="text-red-400">Error loading add-ons</div>;
+  if (error) return <div className="text-destructive">Error loading add-ons</div>;
 
   return (
     <div className="space-y-4">
@@ -34,7 +34,7 @@ const SmartAddOnMultiSelectActivity = () => {
         render={({ field: { value, onChange } }) => <ComboboxMultiple id="addons" type="Add On" items={apiData} value={value || []} onChange={onChange} />}
       />
 
-      {errors?.addons?.message && <span className="text-red-400 px-2">{errors?.addons?.message}</span>}
+      {errors?.addons?.message && <span className="text-destructive px-2">{errors?.addons?.message}</span>}
     </div>
   );
 };

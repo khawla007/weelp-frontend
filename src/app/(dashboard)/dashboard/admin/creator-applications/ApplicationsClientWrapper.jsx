@@ -159,7 +159,7 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
             variant={activeTab === tab ? 'default' : 'outline'}
             size="sm"
             onClick={() => setActiveTab(tab)}
-            className={activeTab === tab ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-[#e4e4e7] text-[#52525b]'}
+            className={activeTab === tab ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-border text-copy'}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
           </Button>
@@ -169,11 +169,11 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
       {/* Table */}
       {filtered.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-lg text-[#18181b]">No applications found</p>
-          <p className="text-[#71717a] mt-2">{activeTab === 'all' ? 'No creator applications have been submitted yet.' : `No ${activeTab} applications.`}</p>
+          <p className="text-lg text-foreground">No applications found</p>
+          <p className="text-muted-foreground mt-2">{activeTab === 'all' ? 'No creator applications have been submitted yet.' : `No ${activeTab} applications.`}</p>
         </div>
       ) : (
-        <div className="bg-white rounded-lg border border-[#e4e4e7]">
+        <div className="bg-background rounded-lg border border-border">
           <Table>
             <TableHeader>
               <TableRow>
@@ -198,13 +198,13 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">
                       <Button variant="ghost" size="icon" onClick={() => handleView(app)} title="View">
-                        <Eye className="size-4 text-[#52525b]" />
+                        <Eye className="size-4 text-copy" />
                       </Button>
                       <Button variant="ghost" size="icon" onClick={() => openEditDialog(app)} title="Edit">
-                        <Pencil className="size-4 text-[#52525b]" />
+                        <Pencil className="size-4 text-copy" />
                       </Button>
                       <Button variant="ghost" size="icon" onClick={() => openDeleteDialog(app)} title="Delete">
-                        <Trash2 className="size-4 text-red-500" />
+                        <Trash2 className="size-4 text-destructive" />
                       </Button>
                     </div>
                   </TableCell>
@@ -227,49 +227,49 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
             <div className="space-y-4 py-2">
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="min-w-0">
-                  <span className="text-[#71717a] block">Name</span>
-                  <span className="font-medium text-[#18181b] block truncate">{selectedApp.user?.name || selectedApp.name || '-'}</span>
+                  <span className="text-muted-foreground block">Name</span>
+                  <span className="font-medium text-foreground block truncate">{selectedApp.user?.name || selectedApp.name || '-'}</span>
                 </div>
                 <div className="min-w-0">
-                  <span className="text-[#71717a] block">Email</span>
-                  <span className="font-medium text-[#18181b] block truncate">{selectedApp.user?.email || selectedApp.email || '-'}</span>
+                  <span className="text-muted-foreground block">Email</span>
+                  <span className="font-medium text-foreground block truncate">{selectedApp.user?.email || selectedApp.email || '-'}</span>
                 </div>
                 <div className="min-w-0">
-                  <span className="text-[#71717a] block">Gender</span>
-                  <span className="font-medium text-[#18181b]">{selectedApp.gender || '-'}</span>
+                  <span className="text-muted-foreground block">Gender</span>
+                  <span className="font-medium text-foreground">{selectedApp.gender || '-'}</span>
                 </div>
                 <div className="min-w-0">
-                  <span className="text-[#71717a] block">Phone</span>
-                  <span className="font-medium text-[#18181b] block truncate">{selectedApp.phone || '-'}</span>
+                  <span className="text-muted-foreground block">Phone</span>
+                  <span className="font-medium text-foreground block truncate">{selectedApp.phone || '-'}</span>
                 </div>
                 <div className="col-span-2 min-w-0">
-                  <span className="text-[#71717a] block">Instagram</span>
-                  <span className="font-medium text-[#18181b] block break-all">{selectedApp.instagram || '-'}</span>
+                  <span className="text-muted-foreground block">Instagram</span>
+                  <span className="font-medium text-foreground block break-all">{selectedApp.instagram || '-'}</span>
                 </div>
                 {selectedApp.youtube && (
                   <div className="col-span-2 min-w-0">
-                    <span className="text-[#71717a] block">YouTube</span>
-                    <span className="font-medium text-[#18181b] block break-all">{selectedApp.youtube}</span>
+                    <span className="text-muted-foreground block">YouTube</span>
+                    <span className="font-medium text-foreground block break-all">{selectedApp.youtube}</span>
                   </div>
                 )}
                 {selectedApp.facebook && (
                   <div className="col-span-2 min-w-0">
-                    <span className="text-[#71717a] block">Facebook</span>
-                    <span className="font-medium text-[#18181b] block break-all">{selectedApp.facebook}</span>
+                    <span className="text-muted-foreground block">Facebook</span>
+                    <span className="font-medium text-foreground block break-all">{selectedApp.facebook}</span>
                   </div>
                 )}
                 <div className="min-w-0">
-                  <span className="text-[#71717a] block">Status</span>
+                  <span className="text-muted-foreground block">Status</span>
                   <Badge variant={statusBadgeVariant(selectedApp.status)}>{selectedApp.status}</Badge>
                 </div>
                 <div className="min-w-0">
-                  <span className="text-[#71717a] block">Submitted</span>
-                  <span className="font-medium text-[#18181b]">{formatDate(selectedApp.created_at)}</span>
+                  <span className="text-muted-foreground block">Submitted</span>
+                  <span className="font-medium text-foreground">{formatDate(selectedApp.created_at)}</span>
                 </div>
                 {selectedApp.admin_notes && (
                   <div className="col-span-2 min-w-0">
-                    <span className="text-[#71717a] block">Admin Notes</span>
-                    <span className="font-medium text-[#18181b] block break-all">{selectedApp.admin_notes}</span>
+                    <span className="text-muted-foreground block">Admin Notes</span>
+                    <span className="font-medium text-foreground block break-all">{selectedApp.admin_notes}</span>
                   </div>
                 )}
               </div>
@@ -277,12 +277,12 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
               {/* Reject textarea - only for pending */}
               {selectedApp.status === 'pending' && (
                 <div>
-                  <label className="text-sm text-[#71717a] block mb-1">Rejection notes (optional)</label>
+                  <label className="text-sm text-muted-foreground block mb-1">Rejection notes (optional)</label>
                   <textarea
                     value={rejectNotes}
                     onChange={(e) => setRejectNotes(e.target.value)}
                     placeholder="Reason for rejection..."
-                    className="w-full border border-[#e4e4e7] rounded-md p-2 text-sm resize-none h-20 focus:outline-none focus:ring-2 focus:ring-weelp-sage-deep/30"
+                    className="w-full border border-border rounded-md p-2 text-sm resize-none h-20 focus:outline-none focus:ring-2 focus:ring-weelp-sage-deep/30"
                   />
                 </div>
               )}
@@ -292,7 +292,7 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
           <DialogFooter>
             {selectedApp?.status === 'pending' && (
               <div className="flex gap-2 w-full justify-end">
-                <Button variant="outline" onClick={() => handleReject(selectedApp.id)} disabled={processing} className="border-red-300 text-red-600 hover:bg-red-50">
+                <Button variant="outline" onClick={() => handleReject(selectedApp.id)} disabled={processing} className="border-destructive/40 text-destructive hover:bg-destructive/10">
                   <XCircle className="size-4 mr-1" />
                   {processing ? 'Processing...' : 'Reject'}
                 </Button>
@@ -316,15 +316,15 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
 
           <div className="space-y-4 py-2">
             <div>
-              <Label className="text-[#52525b] text-sm font-medium">Name</Label>
+              <Label className="text-copy text-sm font-medium">Name</Label>
               <Input value={editForm.name || ''} onChange={(e) => handleEditChange('name', e.target.value)} className="mt-1.5" />
             </div>
             <div>
-              <Label className="text-[#52525b] text-sm font-medium">Email</Label>
+              <Label className="text-copy text-sm font-medium">Email</Label>
               <Input type="email" value={editForm.email || ''} onChange={(e) => handleEditChange('email', e.target.value)} className="mt-1.5" />
             </div>
             <div>
-              <Label className="text-[#52525b] text-sm font-medium">Gender</Label>
+              <Label className="text-copy text-sm font-medium">Gender</Label>
               <Select value={editForm.gender || ''} onValueChange={(val) => handleEditChange('gender', val)}>
                 <SelectTrigger className="mt-1.5">
                   <SelectValue placeholder="Select gender" />
@@ -337,25 +337,25 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
               </Select>
             </div>
             <div>
-              <Label className="text-[#52525b] text-sm font-medium">Instagram</Label>
+              <Label className="text-copy text-sm font-medium">Instagram</Label>
               <Input value={editForm.instagram || ''} onChange={(e) => handleEditChange('instagram', e.target.value)} className="mt-1.5" />
             </div>
             <div>
-              <Label className="text-[#52525b] text-sm font-medium">Phone</Label>
+              <Label className="text-copy text-sm font-medium">Phone</Label>
               <Input value={editForm.phone || ''} onChange={(e) => handleEditChange('phone', e.target.value)} className="mt-1.5" />
             </div>
             <div>
-              <Label className="text-[#52525b] text-sm font-medium">YouTube</Label>
+              <Label className="text-copy text-sm font-medium">YouTube</Label>
               <Input value={editForm.youtube || ''} onChange={(e) => handleEditChange('youtube', e.target.value)} className="mt-1.5" />
             </div>
             <div>
-              <Label className="text-[#52525b] text-sm font-medium">Facebook</Label>
+              <Label className="text-copy text-sm font-medium">Facebook</Label>
               <Input value={editForm.facebook || ''} onChange={(e) => handleEditChange('facebook', e.target.value)} className="mt-1.5" />
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setEditDialogOpen(false)} className="border-[#e4e4e7] text-[#52525b]">
+            <Button variant="outline" onClick={() => setEditDialogOpen(false)} className="border-border text-copy">
               Cancel
             </Button>
             <Button onClick={handleEditSave} disabled={processing} className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90">
@@ -371,12 +371,12 @@ export default function ApplicationsClientWrapper({ initialApplications, initial
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Application</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete the application from <span className="font-medium text-[#18181b]">{appToDelete?.name || appToDelete?.user?.name}</span>? This action cannot be undone.
+              Are you sure you want to delete the application from <span className="font-medium text-foreground">{appToDelete?.name || appToDelete?.user?.name}</span>? This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={processing}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} disabled={processing} className="bg-red-600 hover:bg-red-700">
+            <AlertDialogAction onClick={handleDelete} disabled={processing} className="bg-destructive hover:bg-destructive/90">
               {processing ? 'Deleting...' : 'Delete'}
             </AlertDialogAction>
           </AlertDialogFooter>

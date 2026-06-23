@@ -259,12 +259,12 @@ export const AddOnForm = ({ formData = {} }) => {
                           min="0"
                           {...field}
                           onChange={(e) => field.onChange(Number(e.target.value))}
-                          className={cn(isSalePriceInvalid && 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500')}
+                          className={cn(isSalePriceInvalid && 'border-destructive bg-destructive/10 focus:border-destructive focus:ring-destructive')}
                         />
                       </FormControl>
                       <FormDescription>Leave empty if no discount is applied.</FormDescription>
                       <FormMessage />
-                      <p className={cn('text-sm text-red-500 min-h-[20px]', !isSalePriceInvalid && 'invisible')}>Sale price must be less than regular price.</p>
+                      <p className={cn('text-sm text-destructive min-h-[20px]', !isSalePriceInvalid && 'invisible')}>Sale price must be less than regular price.</p>
                     </FormItem>
                   )}
                 />

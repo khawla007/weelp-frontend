@@ -44,7 +44,9 @@ export function AdminDashboardPage() {
         </div>
       </div>
 
-      {hasError && <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">Couldn&apos;t load some dashboard data. Showing placeholders where possible.</div>}
+      {hasError && (
+        <div className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">Couldn&apos;t load some dashboard data. Showing placeholders where possible.</div>
+      )}
 
       <MetricCards loading={isLoading} data={metricsError ? null : metricsData} />
 

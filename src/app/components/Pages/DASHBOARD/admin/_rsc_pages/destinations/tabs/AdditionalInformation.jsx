@@ -58,7 +58,7 @@ const AdditionalInformationTab = () => {
                   <FormControl>
                     <Input {...field} placeholder="Enter section title" className="text-xs focus-visible:ring-weelp-sage-deep" />
                   </FormControl>
-                  <FormMessage className="px-2 text-red-500 text-sm" />
+                  <FormMessage className="px-2 text-destructive text-sm" />
                 </FormItem>
               )}
             />
@@ -73,7 +73,7 @@ const AdditionalInformationTab = () => {
                   <FormControl>
                     <Textarea {...field} placeholder="Enter section content" className="text-xs focus-visible:ring-weelp-sage-deep" />
                   </FormControl>
-                  <FormMessage className="px-2 text-red-500 text-sm" />
+                  <FormMessage className="px-2 text-destructive text-sm" />
                 </FormItem>
               )}
             />

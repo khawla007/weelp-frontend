@@ -198,10 +198,10 @@ const FilterPackage = ({ categories = [], difficulties = [], durations = [] }) =
           {isValidating && <ListingCardSkeleton />}
 
           {/* Error State */}
-          {!isValidating && error && <div className="text-red-500 text-center">Failed to load data. Please try again.</div>}
+          {!isValidating && error && <div className="text-destructive text-center">Failed to load data. Please try again.</div>}
 
           {/* Empty State */}
-          {!isValidating && !error && items.length === 0 && <div className="text-zinc-500 text-center">No items found.</div>}
+          {!isValidating && !error && items.length === 0 && <div className="text-muted-foreground text-center">No items found.</div>}
 
           {/* For Items */}
           {!isValidating && !error && items.length > 0 && (
@@ -269,7 +269,7 @@ const FilterPackage = ({ categories = [], difficulties = [], durations = [] }) =
                       {tags.length > 0 && (
                         <ListingCardTags>
                           {tags.map(({ tag_name }, index) => (
-                            <Badge key={index} className={`bg-weelp-sage-deep text-white hover:text-white hover:bg-weelp-sage-deep ${index === 0 && 'bg-zinc-400'}`}>
+                            <Badge key={index} className={`bg-weelp-sage-deep text-white hover:text-white hover:bg-weelp-sage-deep ${index === 0 && 'bg-muted-foreground'}`}>
                               {tag_name}
                             </Badge>
                           ))}
@@ -278,7 +278,7 @@ const FilterPackage = ({ categories = [], difficulties = [], durations = [] }) =
 
                       {/* Stats */}
                       <ListingCardStats>
-                        <Badge className="bg-[#b5d8cb] hover:bg-[#b5d8cb] text-weelp-sage-deep">4.8</Badge>
+                        <Badge className="bg-weelp-sage-tint hover:bg-weelp-sage-tint text-weelp-sage-deep">4.8</Badge>
                         <ListingCardMeta icon={Users}>1200 Bookings</ListingCardMeta>
                       </ListingCardStats>
                     </ListingCardContent>

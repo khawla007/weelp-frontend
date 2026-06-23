@@ -12,7 +12,7 @@ const SingleReviewPage = () => {
   const { data, error, isLoading } = useSWR(`/api/admin/reviews/${id}`, fetcher); // get dynamic data
 
   if (isLoading) return <FormSkeleton />;
-  if (error) return <p className="text-red-400">Error loading review</p>;
+  if (error) return <p className="text-destructive">Error loading review</p>;
   if (!data?.success) return notFound();
 
   return <ReviewForm reviewData={data?.data || {}} id={id} />;

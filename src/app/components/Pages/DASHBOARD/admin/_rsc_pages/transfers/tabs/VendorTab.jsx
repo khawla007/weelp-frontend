@@ -86,7 +86,7 @@ const VendorTab = () => {
             )}
           />
           {/* Displaying  Errors */}
-          {errors?.vendor_id && <p className="text-red-500 text-sm mt-1">{errors?.vendor_id?.message}</p>}
+          {errors?.vendor_id && <p className="text-destructive text-sm mt-1">{errors?.vendor_id?.message}</p>}
         </div>
 
         {/* Routes Data */}
@@ -99,7 +99,7 @@ const VendorTab = () => {
             render={({ field }) => <ComboboxVendorRoute data={routes} value={field.value} onChange={field.onChange} placeholder="Select Route" />}
           />
           {/* Displaying  Errors */}
-          {errors?.route_id && <p className="text-red-500 text-sm mt-1">{errors?.route_id?.message}</p>}
+          {errors?.route_id && <p className="text-destructive text-sm mt-1">{errors?.route_id?.message}</p>}
         </div>
       </CardContent>
     </Card>

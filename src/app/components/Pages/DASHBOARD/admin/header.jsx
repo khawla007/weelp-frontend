@@ -85,7 +85,7 @@ const AdminHeader = ({ session }) => {
       case 'order':
         return <FileText size={16} className="text-blue-500" />;
       case 'user':
-        return <User size={16} className="text-green-500" />;
+        return <User size={16} className="text-success" />;
       case 'activity':
         return <Activity size={16} className="text-orange-500" />;
       case 'package':
@@ -93,7 +93,7 @@ const AdminHeader = ({ session }) => {
       case 'blog':
         return <FileText size={16} className="text-pink-500" />;
       default:
-        return <Search size={16} className="text-gray-500" />;
+        return <Search size={16} className="text-muted-foreground" />;
     }
   };
 
@@ -103,7 +103,7 @@ const AdminHeader = ({ session }) => {
       case 'order':
         return 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300';
       case 'user':
-        return 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300';
+        return 'bg-success/15 text-success dark:bg-green-900 dark:text-green-300';
       case 'activity':
         return 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300';
       case 'package':
@@ -111,12 +111,12 @@ const AdminHeader = ({ session }) => {
       case 'blog':
         return 'bg-pink-100 text-pink-700 dark:bg-pink-900 dark:text-pink-300';
       default:
-        return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300';
+        return 'bg-muted text-copy dark:bg-foreground dark:text-muted-foreground';
     }
   };
 
   return (
-    <header className="h-16 border-b bg-white px-4 sticky top-0 z-50">
+    <header className="h-16 border-b bg-background px-4 sticky top-0 z-50">
       <div className="flex h-full items-center sm:justify-between gap-4">
         {isMobile && <Menu className="cursor-pointer" onClick={toggleSidebar} />}
 
@@ -162,7 +162,7 @@ const AdminHeader = ({ session }) => {
 
           {/* Search Results Dropdown */}
           {(isSearchFocused || searchQuery.length >= 2) && searchQuery.length >= 2 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border rounded-lg shadow-lg max-h-96 overflow-y-auto z-50">
+            <div className="absolute top-full left-0 right-0 mt-2 bg-background dark:bg-foreground border rounded-lg shadow-lg max-h-96 overflow-y-auto z-50">
               {isSearching ? (
                 <div className="p-4 text-center text-sm text-muted-foreground">Searching...</div>
               ) : searchResults.length > 0 ? (

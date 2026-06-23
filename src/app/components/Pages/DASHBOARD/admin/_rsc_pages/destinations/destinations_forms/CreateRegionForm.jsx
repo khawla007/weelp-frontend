@@ -100,12 +100,12 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-zinc-50 py-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen w-full bg-muted py-4 sm:px-6 lg:px-8">
       <div className="mb-6 flex items-center gap-3">
         <ArrowLeft className="cursor-pointer" onClick={() => router.back()} />
         <div>
-          <h1 className="text-2xl font-bold text-zinc-900">{id ? 'Edit Region' : 'New Region'}</h1>
-          <p className="text-sm text-zinc-600 mt-1">{`${id ? 'Edit' : 'Create a new'} region with detailed information`}</p>
+          <h1 className="text-2xl font-bold text-foreground">{id ? 'Edit Region' : 'New Region'}</h1>
+          <p className="text-sm text-copy mt-1">{`${id ? 'Edit' : 'Create a new'} region with detailed information`}</p>
         </div>
       </div>
 
@@ -118,16 +118,16 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
             {/* Name */}
             <div className="space-y-2">
               <Label htmlFor="name">
-                Name <span className="text-red-500">*</span>
+                Name <span className="text-destructive">*</span>
               </Label>
               <Input id="name" placeholder="e.g., Europe, Asia, Americas" {...register('name', { required: 'Name is required' })} />
-              {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+              {errors.name && <p className="text-destructive text-sm">{errors.name.message}</p>}
             </div>
 
             {/* Type */}
             <div className="space-y-2">
               <Label htmlFor="type">
-                Type <span className="text-red-500">*</span>
+                Type <span className="text-destructive">*</span>
               </Label>
               <Select defaultValue={FORM_REGION_VALUES_DEFAULT.type} onValueChange={(value) => setValue('type', value)}>
                 <SelectTrigger id="type">

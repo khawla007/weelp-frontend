@@ -68,7 +68,7 @@ const BlogSidebar = () => {
             return (
               <>
                 <Textarea {...field} />
-                {error?.message && <span className="text-red-400">{error?.message}</span>}
+                {error?.message && <span className="text-destructive">{error?.message}</span>}
               </>
             );
           }}
@@ -109,7 +109,7 @@ const BlogSidebar = () => {
               return (
                 <>
                   <Select isMulti {...field} placeholder="Select Categories" options={categoriesOptions} />
-                  {error?.message && <span className="text-red-400">{error?.message}</span>}
+                  {error?.message && <span className="text-destructive">{error?.message}</span>}
                 </>
               );
             }}
@@ -130,7 +130,7 @@ const BlogSidebar = () => {
               return (
                 <>
                   <Select isMulti {...field} placeholder="Select tags" options={tagOptions} />
-                  {error?.message && <span className="text-red-400">{error?.message}</span>}
+                  {error?.message && <span className="text-destructive">{error?.message}</span>}
                 </>
               );
             }}

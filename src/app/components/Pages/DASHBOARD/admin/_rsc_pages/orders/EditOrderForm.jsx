@@ -174,14 +174,14 @@ const EditOrderForm = ({ order = {} }) => {
     return (
       <div className="space-y-4 py-2">
         <div>
-          <h3 className="text-base font-semibold text-[#18181b]">Basic Information</h3>
-          <span className="text-sm text-[#71717A]">Enter the customer details</span>
+          <h3 className="text-base font-semibold text-foreground">Basic Information</h3>
+          <span className="text-sm text-muted-foreground">Enter the customer details</span>
         </div>
 
         {/* Customer  & Order Type */}
         <div className="pb-2 space-x-4 flex flex-col md:flex-row">
           <div className="w-full pb-2 space-y-2">
-            <Label htmlFor="user_id" className={`block text-sm font-medium ${errors?.user_id ? 'text-red-400' : 'text-zinc-700'}`}>
+            <Label htmlFor="user_id" className={`block text-sm font-medium ${errors?.user_id ? 'text-destructive' : 'text-copy'}`}>
               Customer
             </Label>
             <Controller
@@ -190,11 +190,11 @@ const EditOrderForm = ({ order = {} }) => {
               rules={{ required: 'Field Required' }}
               render={({ field }) => <Combobox placeholder="Select Customer" value={field.value} onChange={field.onChange} data={allUsers} />}
             />
-            {errors?.user_id && <p className="text-red-500 text-sm mt-1">{errors?.user_id?.message}</p>}
+            {errors?.user_id && <p className="text-destructive text-sm mt-1">{errors?.user_id?.message}</p>}
           </div>
 
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="orderable_type" className={`block text-sm font-medium ${errors?.orderable_type ? 'text-red-400' : 'text-[#52525b]'}`}>
+            <Label htmlFor="orderable_type" className={`block text-sm font-medium ${errors?.orderable_type ? 'text-destructive' : 'text-copy'}`}>
               Order Type
             </Label>
             <Controller
@@ -216,7 +216,7 @@ const EditOrderForm = ({ order = {} }) => {
                 </Select>
               )}
             />
-            {errors?.orderable_type && <p className="text-red-500 text-sm mt-1">{errors?.orderable_type?.message}</p>}
+            {errors?.orderable_type && <p className="text-destructive text-sm mt-1">{errors?.orderable_type?.message}</p>}
           </div>
         </div>
 
@@ -225,7 +225,7 @@ const EditOrderForm = ({ order = {} }) => {
           {/* Condition Based Rendering */}
           {/* For Activity */}
           {watchOrderType === 'activity' && (
-            <Label htmlFor="orderable_id" className={`flex flex-col gap-2 text-sm space-y-4 font-medium  ${errors?.orderable_id ? 'text-red-400' : 'text-zinc-700'}`}>
+            <Label htmlFor="orderable_id" className={`flex flex-col gap-2 text-sm space-y-4 font-medium  ${errors?.orderable_id ? 'text-destructive' : 'text-copy'}`}>
               Activity
               <Controller
                 name="orderable_id"
@@ -238,7 +238,7 @@ const EditOrderForm = ({ order = {} }) => {
 
           {/* For Transfer */}
           {watchOrderType === 'itinerary' && (
-            <Label htmlFor="orderable_id" className={`flex flex-col gap-2 text-sm space-y-4 font-medium  ${errors?.orderable_id ? 'text-red-400' : 'text-zinc-700'}`}>
+            <Label htmlFor="orderable_id" className={`flex flex-col gap-2 text-sm space-y-4 font-medium  ${errors?.orderable_id ? 'text-destructive' : 'text-copy'}`}>
               Itinerary
               <Controller
                 name="orderable_id"
@@ -251,7 +251,7 @@ const EditOrderForm = ({ order = {} }) => {
 
           {/* For Package */}
           {watchOrderType === 'package' && (
-            <Label htmlFor="orderable_id" className={`flex flex-col gap-2 text-sm space-y-4 font-medium  ${errors?.orderable_id ? 'text-red-400' : 'text-zinc-700'}`}>
+            <Label htmlFor="orderable_id" className={`flex flex-col gap-2 text-sm space-y-4 font-medium  ${errors?.orderable_id ? 'text-destructive' : 'text-copy'}`}>
               Package
               <Controller
                 name="orderable_id"
@@ -262,13 +262,13 @@ const EditOrderForm = ({ order = {} }) => {
             </Label>
           )}
 
-          {errors?.orderable_id && <p className="text-red-500 text-sm mt-1">{errors.orderable_id.message}</p>}
+          {errors?.orderable_id && <p className="text-destructive text-sm mt-1">{errors.orderable_id.message}</p>}
         </div>
 
         {/* Date Selection */}
         <div className="pb-2 space-x-4 flex flex-col md:flex-row">
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="travel_date" className={`block text-sm font-medium ${errors?.travel_date ? 'text-red-400' : 'text-zinc-700'}`}>
+            <Label htmlFor="travel_date" className={`block text-sm font-medium ${errors?.travel_date ? 'text-destructive' : 'text-copy'}`}>
               Travel Date
             </Label>
             <Controller
@@ -300,11 +300,11 @@ const EditOrderForm = ({ order = {} }) => {
                 );
               }}
             />
-            {errors?.travel_date && <p className="text-red-500 text-sm mt-1">{errors.travel_date.message}</p>}
+            {errors?.travel_date && <p className="text-destructive text-sm mt-1">{errors.travel_date.message}</p>}
           </div>
 
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="preferred_time" className={`block text-sm font-medium ${errors?.preferred_time ? 'text-red-400' : 'text-zinc-700'}`}>
+            <Label htmlFor="preferred_time" className={`block text-sm font-medium ${errors?.preferred_time ? 'text-destructive' : 'text-copy'}`}>
               Preferred Time
             </Label>
             <Input
@@ -323,7 +323,7 @@ const EditOrderForm = ({ order = {} }) => {
               })}
             />
 
-            {errors?.preferred_time && <p className="text-red-500 text-sm mt-1">{errors?.preferred_time?.message}</p>}
+            {errors?.preferred_time && <p className="text-destructive text-sm mt-1">{errors?.preferred_time?.message}</p>}
           </div>
         </div>
 
@@ -331,7 +331,7 @@ const EditOrderForm = ({ order = {} }) => {
         <div className="flex items-center space-x-2 flex-col md:flex-row">
           {/* Adults */}
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="number_of_adults" className="text-sm font-medium text-zinc-700 flex flex-col gap-2">
+            <Label htmlFor="number_of_adults" className="text-sm font-medium text-copy flex flex-col gap-2">
               Number of Adults
               <div className="flex gap-2">
                 <Minus className="text-lg size-10 p-2 border rounded-md " onClick={() => handleDecrement('adult')} />
@@ -344,7 +344,7 @@ const EditOrderForm = ({ order = {} }) => {
 
           {/* Children */}
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="number_of_children" className="text-sm font-medium text-zinc-700 flex flex-col gap-2">
+            <Label htmlFor="number_of_children" className="text-sm font-medium text-copy flex flex-col gap-2">
               Number of Children
               <div className="flex gap-2">
                 <Minus className="text-lg size-10 p-2 border rounded-md " onClick={() => handleDecrement('children')} />
@@ -357,7 +357,7 @@ const EditOrderForm = ({ order = {} }) => {
 
         {/* Status  */}
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="status" className={`block text-sm font-medium ${errors?.status ? 'text-red-400' : 'text-[#52525b]'}`}>
+          <Label htmlFor="status" className={`block text-sm font-medium ${errors?.status ? 'text-destructive' : 'text-copy'}`}>
             Status
           </Label>
           <Controller
@@ -383,12 +383,12 @@ const EditOrderForm = ({ order = {} }) => {
               </Select>
             )}
           />
-          {errors?.status && <p className="text-red-500 text-sm mt-1">{errors?.status?.message}</p>}
+          {errors?.status && <p className="text-destructive text-sm mt-1">{errors?.status?.message}</p>}
         </div>
 
         {/* Specia requirements  */}
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="special_requirements" className={`block text-sm font-medium ${errors?.special_requirements ? 'text-red-400' : 'text-[#52525b]'}`}>
+          <Label htmlFor="special_requirements" className={`block text-sm font-medium ${errors?.special_requirements ? 'text-destructive' : 'text-copy'}`}>
             Special Requirements
           </Label>
           <Textarea
@@ -397,7 +397,7 @@ const EditOrderForm = ({ order = {} }) => {
               required: 'Field Required',
             })}
           />
-          {errors?.special_requirements && <p className="text-red-500 text-sm mt-1">{errors?.special_requirements?.message}</p>}
+          {errors?.special_requirements && <p className="text-destructive text-sm mt-1">{errors?.special_requirements?.message}</p>}
         </div>
       </div>
     );
@@ -444,13 +444,13 @@ const EditOrderForm = ({ order = {} }) => {
     return (
       <div className="space-y-4 py-4">
         <div>
-          <h3 className="text-base font-semibold text-[#18181b]">Payment Information</h3>
-          <span className="text-sm text-[#71717A]">Enter the customer payment details</span>
+          <h3 className="text-base font-semibold text-foreground">Payment Information</h3>
+          <span className="text-sm text-muted-foreground">Enter the customer payment details</span>
         </div>
 
         <div className="pb-2 space-x-4 flex flex-col md:flex-row">
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="payment.payment_status" className={`block text-sm font-medium ${errors?.payment?.payment_status ? 'text-red-400' : 'text-[#52525b]'}`}>
+            <Label htmlFor="payment.payment_status" className={`block text-sm font-medium ${errors?.payment?.payment_status ? 'text-destructive' : 'text-copy'}`}>
               Payment Status
             </Label>
             <Controller
@@ -472,11 +472,11 @@ const EditOrderForm = ({ order = {} }) => {
                 </Select>
               )}
             />
-            {errors?.payment?.payment_status && <p className="text-red-500 text-sm mt-1">{errors?.payment?.payment_status?.message}</p>}
+            {errors?.payment?.payment_status && <p className="text-destructive text-sm mt-1">{errors?.payment?.payment_status?.message}</p>}
           </div>
 
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="payment.payment_method" className={`block text-sm font-medium ${errors?.payment?.payment_method ? 'text-red-400' : 'text-[#52525b]'}`}>
+            <Label htmlFor="payment.payment_method" className={`block text-sm font-medium ${errors?.payment?.payment_method ? 'text-destructive' : 'text-copy'}`}>
               Payment Method
             </Label>
             <Controller
@@ -498,14 +498,14 @@ const EditOrderForm = ({ order = {} }) => {
                 </Select>
               )}
             />
-            {errors?.payment?.payment_method && <p className="text-red-500 text-sm mt-1">{errors?.payment?.payment_method?.message}</p>}
+            {errors?.payment?.payment_method && <p className="text-destructive text-sm mt-1">{errors?.payment?.payment_method?.message}</p>}
           </div>
         </div>
 
         {/* Payment Information Row */}
         <div className="pb-2 space-x-4 flex flex-col md:flex-row">
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="payment.total_amount" className={`block text-sm font-medium ${errors?.payment?.total_amount ? 'text-red-400' : 'text-[#52525b]'}`}>
+            <Label htmlFor="payment.total_amount" className={`block text-sm font-medium ${errors?.payment?.total_amount ? 'text-destructive' : 'text-copy'}`}>
               Total Amount
             </Label>
             <Input
@@ -517,12 +517,12 @@ const EditOrderForm = ({ order = {} }) => {
                 valueAsNumber: true,
               })}
             />
-            {errors?.payment?.total_amount && <p className="text-red-500 text-sm mt-1">{errors?.payment?.total_amount?.message}</p>}
+            {errors?.payment?.total_amount && <p className="text-destructive text-sm mt-1">{errors?.payment?.total_amount?.message}</p>}
           </div>
 
           {/* Switches Row */}
           <div className="flex items-center space-x-2 w-full">
-            <Label id="payment.is_custom_amount" className="text-sm font-medium text-zinc-700">
+            <Label id="payment.is_custom_amount" className="text-sm font-medium text-copy">
               Custom Amount
             </Label>
             <Controller
@@ -533,9 +533,9 @@ const EditOrderForm = ({ order = {} }) => {
                   id="payment.is_custom_amount"
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-zinc-300 data-[state=checked]:bg-weelp-sage-deep"
+                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-border data-[state=checked]:bg-weelp-sage-deep"
                 >
-                  <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform group-data-[state=checked]:translate-x-5" />
+                  <span className="absolute left-1 h-4 w-4 rounded-full bg-background transition-transform group-data-[state=checked]:translate-x-5" />
                 </Switch>
               )}
             />
@@ -545,7 +545,7 @@ const EditOrderForm = ({ order = {} }) => {
         {/* Custom Amount condition based */}
         {watchedCustomAmount && (
           <div className="flex items-center  space-x-2 w-full">
-            <Label htmlFor="payment.custom_amount" className={` text-sm font-medium w-full flex flex-col gap-2  ${errors?.payment?.custom_amount ? 'text-red-400' : 'text-[#52525b]'}`}>
+            <Label htmlFor="payment.custom_amount" className={` text-sm font-medium w-full flex flex-col gap-2  ${errors?.payment?.custom_amount ? 'text-destructive' : 'text-copy'}`}>
               Custom Amount
               <Input
                 type="number"
@@ -556,7 +556,7 @@ const EditOrderForm = ({ order = {} }) => {
                   valueAsNumber: true,
                 })}
               />
-              {errors?.payment?.custom_amount && <p className="text-red-500 text-sm mt-1">{errors?.payment?.custom_amount?.message}</p>}
+              {errors?.payment?.custom_amount && <p className="text-destructive text-sm mt-1">{errors?.payment?.custom_amount?.message}</p>}
             </Label>
           </div>
         )}
@@ -577,14 +577,14 @@ const EditOrderForm = ({ order = {} }) => {
     return (
       <div className="space-y-4 py-4">
         <div>
-          <h3 className="text-base font-semibold text-[#18181b]">Emergency Contact</h3>
-          <span className="text-sm text-[#71717A]">Add Emergency Contact Information</span>
+          <h3 className="text-base font-semibold text-foreground">Emergency Contact</h3>
+          <span className="text-sm text-muted-foreground">Add Emergency Contact Information</span>
         </div>
 
         {/* Payment Information Row */}
         <div className="pb-2 space-x-4 flex flex-col items-center">
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="emergency_contact.contact_name" className={`block text-sm font-medium ${errors?.emergency_contact?.contact_name ? 'text-red-400' : 'text-[#52525b]'}`}>
+            <Label htmlFor="emergency_contact.contact_name" className={`block text-sm font-medium ${errors?.emergency_contact?.contact_name ? 'text-destructive' : 'text-copy'}`}>
               Contact Name
             </Label>
             <Input
@@ -595,11 +595,11 @@ const EditOrderForm = ({ order = {} }) => {
                 required: 'Contact Name Required',
               })}
             />
-            {errors?.emergency_contact?.contact_name && <p className="text-red-500 text-sm mt-1">{errors?.emergency_contact?.contact_name?.message}</p>}
+            {errors?.emergency_contact?.contact_name && <p className="text-destructive text-sm mt-1">{errors?.emergency_contact?.contact_name?.message}</p>}
           </div>
 
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="emergency_contact.contact_phone" className={`block text-sm font-medium ${errors?.emergency_contact?.contact_phone ? 'text-red-400' : 'text-[#52525b]'}`}>
+            <Label htmlFor="emergency_contact.contact_phone" className={`block text-sm font-medium ${errors?.emergency_contact?.contact_phone ? 'text-destructive' : 'text-copy'}`}>
               Contact Phone
             </Label>
             <Input
@@ -611,11 +611,11 @@ const EditOrderForm = ({ order = {} }) => {
                 required: 'Phone Number Required',
               })}
             />
-            {errors?.emergency_contact?.contact_name && <p className="text-red-500 text-sm mt-1">{errors?.emergency_contact?.contact_name?.message}</p>}
+            {errors?.emergency_contact?.contact_name && <p className="text-destructive text-sm mt-1">{errors?.emergency_contact?.contact_name?.message}</p>}
           </div>
 
           <div className="pb-2 space-y-2 w-full">
-            <Label htmlFor="emergency_contact.relationship" className={`block text-sm font-medium ${errors?.emergency_contact?.relationship ? 'text-red-400' : 'text-[#52525b]'}`}>
+            <Label htmlFor="emergency_contact.relationship" className={`block text-sm font-medium ${errors?.emergency_contact?.relationship ? 'text-destructive' : 'text-copy'}`}>
               Relationship
             </Label>
             <Input
@@ -626,7 +626,7 @@ const EditOrderForm = ({ order = {} }) => {
                 required: 'Field Required',
               })}
             />
-            {errors?.emergency_contact?.relationship && <p className="text-red-500 text-sm mt-1">{errors?.emergency_contact?.relationship?.message}</p>}
+            {errors?.emergency_contact?.relationship && <p className="text-destructive text-sm mt-1">{errors?.emergency_contact?.relationship?.message}</p>}
           </div>
         </div>
       </div>
@@ -674,7 +674,7 @@ const EditOrderForm = ({ order = {} }) => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-zinc-50 py-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen w-full bg-muted py-4 sm:px-6 lg:px-8">
       <NavigationOrder title="Edit Order" desciption="Edit your order" />
 
       <div className="w-full mx-auto space-y-4 rounded-lg  ">
@@ -684,10 +684,10 @@ const EditOrderForm = ({ order = {} }) => {
               steps.map((step) => (
                 <li
                   key={step.id}
-                  className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'}`}
+                  className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-muted ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'}`}
                 >
                   <div
-                    className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-[#71717a]'}`}
+                    className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-foreground'} ${currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-muted-foreground'}`}
                   >
                     {step.title}
                   </div>
@@ -698,7 +698,7 @@ const EditOrderForm = ({ order = {} }) => {
         </div>
 
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-4 w-full  bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-4 w-full  bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <fieldset className={`space-y-6 ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               {renderStep()}
 
@@ -707,7 +707,7 @@ const EditOrderForm = ({ order = {} }) => {
                   <Button
                     type="button"
                     onClick={() => setCurrentStep(currentStep - 1)}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Previous
                   </Button>
@@ -720,7 +720,7 @@ const EditOrderForm = ({ order = {} }) => {
                     onClick={() => {
                       router.back();
                     }}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Cancel
                   </Button>
@@ -734,7 +734,7 @@ const EditOrderForm = ({ order = {} }) => {
                       onClick={() => {
                         router.back();
                       }}
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                     >
                       Cancel
                     </Button>

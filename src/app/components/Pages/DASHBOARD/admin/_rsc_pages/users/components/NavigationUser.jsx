@@ -6,7 +6,7 @@ import React from 'react';
 export const NavigationUser = ({ title, content }) => {
   // check if title and content are missing
   if (!title && !content) {
-    return <p className="text-red-400">Props Are Missing</p>;
+    return <p className="text-destructive">Props Are Missing</p>;
   }
   return (
     <div className="flex items-center justify-between">

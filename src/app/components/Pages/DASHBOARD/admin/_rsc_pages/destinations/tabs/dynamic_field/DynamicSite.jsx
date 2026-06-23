@@ -37,7 +37,7 @@ export const DynamicSelectField = ({ name, label, options = [], isLoading, isVal
 
   const fieldError = formState.errors[name];
 
-  if (error) return <div className="text-red-400">Something Went Wrong</div>;
+  if (error) return <div className="text-destructive">Something Went Wrong</div>;
   if (isValidating || isLoading) return <FieldSkeleton />;
 
   return (
@@ -66,7 +66,7 @@ export const DynamicSelectField = ({ name, label, options = [], isLoading, isVal
           </Select>
         )}
       />
-      {fieldError && <span className="text-red-400">{fieldError.message}</span>}
+      {fieldError && <span className="text-destructive">{fieldError.message}</span>}
     </div>
   );
 };

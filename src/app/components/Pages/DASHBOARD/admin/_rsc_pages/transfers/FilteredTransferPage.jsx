@@ -289,7 +289,7 @@ const FilterTransfer = () => {
                   <div className="space-y-3">
                     {/* Weekday Checkboxes */}
                     <div className="space-y-1">
-                      <Label className="text-xs text-zinc-500">Days</Label>
+                      <Label className="text-xs text-muted-foreground">Days</Label>
                       <Controller
                         name="available_days"
                         control={control}
@@ -314,10 +314,10 @@ const FilterTransfer = () => {
 
                     {/* Time Slot Inputs */}
                     <div className="space-y-1">
-                      <Label className="text-xs text-zinc-500">Time Slot</Label>
+                      <Label className="text-xs text-muted-foreground">Time Slot</Label>
                       <div className="flex items-center gap-2">
                         <Input type="time" {...register('time_slot_start')} className="text-sm" />
-                        <span className="text-xs text-zinc-400">to</span>
+                        <span className="text-xs text-muted-foreground">to</span>
                         <Input type="time" {...register('time_slot_end')} className="text-sm" />
                       </div>
                     </div>
@@ -381,10 +381,10 @@ const FilterTransfer = () => {
           {isValidating && <ListingCardSkeleton count={per_page || 3} />}
 
           {/* Error State */}
-          {!isValidating && error && <div className="text-red-500 text-center">Failed to load data. Please try again.</div>}
+          {!isValidating && error && <div className="text-destructive text-center">Failed to load data. Please try again.</div>}
 
           {/* Empty State */}
-          {!isValidating && !error && items.length === 0 && <div className="text-zinc-500 text-center">No items found.</div>}
+          {!isValidating && !error && items.length === 0 && <div className="text-muted-foreground text-center">No items found.</div>}
 
           {/* For Items */}
           {!isValidating && !error && items.length > 0 && (
@@ -408,7 +408,7 @@ const FilterTransfer = () => {
                       <ListingCardTitle actions={<ListingCardActions itemId={itemId} editHref={`/dashboard/admin/transfers/edit/${itemId}`} onDelete={() => handleDeleteClick(itemId)} />}>
                         {name}
                       </ListingCardTitle>
-                      <span className="text-zinc-500 text-sm">{is_vendor ? 'Vendor Route' : 'Admin Route'}</span>
+                      <span className="text-muted-foreground text-sm">{is_vendor ? 'Vendor Route' : 'Admin Route'}</span>
                       {attributes.length > 0 &&
                         attributes.map(
                           ({ attribute_name }, index) =>
@@ -421,14 +421,14 @@ const FilterTransfer = () => {
                       {tags.length > 0 && (
                         <ListingCardTags>
                           {tags.map(({ tag_name }, index) => (
-                            <Badge key={index} className={`bg-weelp-sage-deep text-white hover:text-white hover:bg-weelp-sage-deep ${index === 0 && 'bg-zinc-400'}`}>
+                            <Badge key={index} className={`bg-weelp-sage-deep text-white hover:text-white hover:bg-weelp-sage-deep ${index === 0 && 'bg-muted-foreground'}`}>
                               {tag_name}
                             </Badge>
                           ))}
                         </ListingCardTags>
                       )}
                       <ListingCardStats>
-                        <Badge className="bg-[#b5d8cb] hover:bg-[#b5d8cb] text-weelp-sage-deep">4.8</Badge>
+                        <Badge className="bg-weelp-sage-tint hover:bg-weelp-sage-tint text-weelp-sage-deep">4.8</Badge>
                         <ListingCardMeta icon={Users}>1200 Bookings</ListingCardMeta>
                       </ListingCardStats>
                     </ListingCardContent>
@@ -453,7 +453,7 @@ const FilterTransfer = () => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel onClick={cancelDelete}>Cancel</AlertDialogCancel>
-              <AlertDialogAction className="bg-[#ff725e]" onClick={confirmDelete}>
+              <AlertDialogAction className="bg-weelp-discount" onClick={confirmDelete}>
                 Continue
               </AlertDialogAction>
             </AlertDialogFooter>

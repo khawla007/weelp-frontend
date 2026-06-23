@@ -164,7 +164,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
             variant={activeTab === tab ? 'default' : 'outline'}
             size="sm"
             onClick={() => setActiveTab(tab)}
-            className={activeTab === tab ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-[#e4e4e7] text-[#52525b]'}
+            className={activeTab === tab ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-border text-copy'}
           >
             {formatStatus(tab)}
           </Button>
@@ -174,11 +174,11 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
       {/* Table */}
       {filtered.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-lg text-[#18181b]">No itineraries found</p>
-          <p className="text-[#71717a] mt-2">{activeTab === 'all' ? 'No creator itineraries have been submitted yet.' : `No ${activeTab} itineraries.`}</p>
+          <p className="text-lg text-foreground">No itineraries found</p>
+          <p className="text-muted-foreground mt-2">{activeTab === 'all' ? 'No creator itineraries have been submitted yet.' : `No ${activeTab} itineraries.`}</p>
         </div>
       ) : (
-        <div className="bg-white rounded-lg border border-[#e4e4e7]">
+        <div className="bg-background rounded-lg border border-border">
           <Table>
             <TableHeader>
               <TableRow>
@@ -200,9 +200,9 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                   <TableRow key={item.id}>
                     <TableCell>
                       {thumbnail ? (
-                        <img src={thumbnail} alt={item.name || 'Itinerary thumbnail'} className="size-12 rounded-md object-cover border border-[#e4e4e7]" />
+                        <img src={thumbnail} alt={item.name || 'Itinerary thumbnail'} className="size-12 rounded-md object-cover border border-border" />
                       ) : (
-                        <div className="size-12 rounded-md bg-[#f4f4f5] border border-[#e4e4e7]" aria-label="No image" />
+                        <div className="size-12 rounded-md bg-muted border border-border" aria-label="No image" />
                       )}
                     </TableCell>
                     <TableCell className="font-medium">{item.creator?.name || item.user?.name || '-'}</TableCell>
@@ -236,7 +236,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     <TableCell className="text-right">
                       <div className="flex gap-2 justify-end flex-wrap">
                         <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer">
-                          <Button variant="outline" size="sm" className="border-[#e4e4e7] text-[#52525b]" title="View itinerary">
+                          <Button variant="outline" size="sm" className="border-border text-copy" title="View itinerary">
                             <Eye className="size-4 mr-1" />
                             View
                           </Button>
@@ -244,7 +244,13 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
 
                         {item.status === 'pending' && (
                           <>
-                            <Button variant="outline" size="sm" onClick={() => handleReject(item.id)} disabled={processingId === item.id} className="border-red-300 text-red-600 hover:bg-red-50">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleReject(item.id)}
+                              disabled={processingId === item.id}
+                              className="border-destructive/40 text-destructive hover:bg-destructive/10"
+                            >
                               <XCircle className="size-4 mr-1" />
                               Reject
                             </Button>
@@ -258,12 +264,18 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                         {item.draft_itinerary_id && (
                           <>
                             <NavigationLink href={`/dashboard/admin/creator-itineraries/${item.id}/diff`}>
-                              <Button variant="outline" size="sm" className="border-blue-300 text-blue-600 hover:bg-blue-50">
+                              <Button variant="outline" size="sm" className="border-info/40 text-info hover:bg-info/10">
                                 <FileEdit className="size-4 mr-1" />
                                 Review Edit
                               </Button>
                             </NavigationLink>
-                            <Button variant="outline" size="sm" onClick={() => handleRejectEdit(item.id)} disabled={processingId === item.id} className="border-red-300 text-red-600 hover:bg-red-50">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleRejectEdit(item.id)}
+                              disabled={processingId === item.id}
+                              className="border-destructive/40 text-destructive hover:bg-destructive/10"
+                            >
                               <XCircle className="size-4 mr-1" />
                               Reject Edit
                             </Button>
@@ -281,12 +293,12 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                               size="sm"
                               onClick={() => handleRejectRemoval(item.id)}
                               disabled={processingId === item.id}
-                              className="border-red-300 text-red-600 hover:bg-red-50"
+                              className="border-destructive/40 text-destructive hover:bg-destructive/10"
                             >
                               <XCircle className="size-4 mr-1" />
                               Reject Removal
                             </Button>
-                            <Button size="sm" onClick={() => handleApproveRemoval(item.id)} disabled={processingId === item.id} className="bg-red-600 hover:bg-red-700 text-white">
+                            <Button size="sm" onClick={() => handleApproveRemoval(item.id)} disabled={processingId === item.id} className="bg-destructive hover:bg-destructive/90 text-white">
                               <Ban className="size-4 mr-1" />
                               Approve Removal
                             </Button>
@@ -296,26 +308,26 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                         {item.status !== 'deleted' && (
                           <>
                             <NavigationLink href={`/dashboard/admin/creator-itineraries/${item.id}`}>
-                              <Button variant="outline" size="sm" className="border-[#e4e4e7] text-[#52525b]">
+                              <Button variant="outline" size="sm" className="border-border text-copy">
                                 <Pencil className="size-4 mr-1" />
                                 Edit
                               </Button>
                             </NavigationLink>
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
-                                <Button variant="outline" size="sm" disabled={processingId === item.id} className="border-red-300 text-red-600 hover:bg-red-50">
+                                <Button variant="outline" size="sm" disabled={processingId === item.id} className="border-destructive/40 text-destructive hover:bg-destructive/10">
                                   <Trash2 className="size-4 mr-1" />
                                   Remove
                                 </Button>
                               </AlertDialogTrigger>
-                              <AlertDialogContent className="bg-white">
+                              <AlertDialogContent className="bg-background">
                                 <AlertDialogHeader>
                                   <AlertDialogTitle>Remove Itinerary</AlertDialogTitle>
                                   <AlertDialogDescription>This will permanently remove &quot;{item.name}&quot; and all related data. This action cannot be undone.</AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction onClick={() => handleDelete(item.id)} className="bg-red-600 hover:bg-red-700">
+                                  <AlertDialogAction onClick={() => handleDelete(item.id)} className="bg-destructive hover:bg-destructive/90">
                                     Remove
                                   </AlertDialogAction>
                                 </AlertDialogFooter>
@@ -327,11 +339,11 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                         {item.status === 'deleted' && (
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
-                              <Button variant="outline" size="icon" disabled={processingId === item.id} className="border-red-500 text-red-600 hover:bg-red-50 size-8">
+                              <Button variant="outline" size="icon" disabled={processingId === item.id} className="border-destructive text-destructive hover:bg-destructive/10 size-8">
                                 <Trash2 className="size-4" />
                               </Button>
                             </AlertDialogTrigger>
-                            <AlertDialogContent className="bg-white">
+                            <AlertDialogContent className="bg-background">
                               <AlertDialogHeader>
                                 <AlertDialogTitle>Delete Permanently?</AlertDialogTitle>
                                 <AlertDialogDescription>
@@ -339,8 +351,8 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel className="border-weelp-sage-deep text-[#18181b] hover:bg-weelp-sage-deep hover:text-white">Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => handleDelete(item.id)} className="border-red-500 text-[#18181b] bg-white hover:bg-red-500 hover:text-white">
+                                <AlertDialogCancel className="border-weelp-sage-deep text-foreground hover:bg-weelp-sage-deep hover:text-white">Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDelete(item.id)} className="border-destructive text-foreground bg-background hover:bg-destructive hover:text-white">
                                   Delete
                                 </AlertDialogAction>
                               </AlertDialogFooter>

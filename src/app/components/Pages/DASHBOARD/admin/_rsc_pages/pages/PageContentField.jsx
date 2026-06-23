@@ -32,7 +32,7 @@ export function PageContentField() {
                 />
               )}
             />
-            {error?.message && <span className="text-sm text-red-400">{error.message}</span>}
+            {error?.message && <span className="text-sm text-destructive">{error.message}</span>}
           </div>
         )}
       />

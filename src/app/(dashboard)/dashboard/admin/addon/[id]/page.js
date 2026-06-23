@@ -12,8 +12,8 @@ export default function SingleAddOnPage() {
   const { data, error, isLoading } = useSWR(`/api/admin/addons/${id}`, authFetcher);
 
   if (isLoading) return <FormSkeleton />;
-  if (error) return <p className="text-red-400">Error loading add-on</p>;
-  if (!data?.success) return <p className="text-red-400">Add-on not found</p>;
+  if (error) return <p className="text-destructive">Error loading add-on</p>;
+  if (!data?.success) return <p className="text-destructive">Add-on not found</p>;
 
   return (
     <Card className="border-none shadow-none bg-inherit p-6">

@@ -98,18 +98,18 @@ const MediaComponent = () => {
         <div className="w-full flex flex-wrap gap-4 ">
           {activityImages.map((image, index) => {
             return (
-              <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-[#e4e4e7]">
+              <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-border">
                 <img className="size-20 rounded-md border" src={image?.url} alt="activity_image" />
                 <X
                   onClick={() => handleDeleteImage(image)}
-                  className="absolute bottom-8 right-8 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-red-400 bg-white rounded-full shadow"
+                  className="absolute bottom-8 right-8 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-destructive bg-background rounded-full shadow"
                 />
               </div>
             );
           })}
         </div>
       ) : (
-        <div className="w-full">{errors.media_gallery && <p className="text-red-500 mt-1">{errors.media_gallery.message}</p>}</div>
+        <div className="w-full">{errors.media_gallery && <p className="text-destructive mt-1">{errors.media_gallery.message}</p>}</div>
       )}
     </div>
   );

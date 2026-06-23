@@ -22,7 +22,7 @@ export function PageMain() {
               <div className="space-y-2">
                 <Label htmlFor="cms-page-title">Title</Label>
                 <Input id="cms-page-title" placeholder="About Weelp" {...field} />
-                {error?.message && <span className="text-sm text-red-400">{error.message}</span>}
+                {error?.message && <span className="text-sm text-destructive">{error.message}</span>}
               </div>
             )}
           />
@@ -41,7 +41,7 @@ export function PageMain() {
               <div className="space-y-2">
                 <Label htmlFor="cms-page-slug">Slug</Label>
                 <Input id="cms-page-slug" placeholder="about-weelp" {...field} />
-                {error?.message && <span className="text-sm text-red-400">{error.message}</span>}
+                {error?.message && <span className="text-sm text-destructive">{error.message}</span>}
               </div>
             )}
           />
@@ -54,7 +54,7 @@ export function PageMain() {
               <div className="space-y-2">
                 <Label htmlFor="cms-page-excerpt">Excerpt</Label>
                 <Textarea id="cms-page-excerpt" rows={4} placeholder="Short page summary for listings and SEO fallbacks" {...field} />
-                {error?.message && <span className="text-sm text-red-400">{error.message}</span>}
+                {error?.message && <span className="text-sm text-destructive">{error.message}</span>}
               </div>
             )}
           />

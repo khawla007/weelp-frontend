@@ -190,7 +190,7 @@ const CreateCountryForm = ({ apiFormData = {} }) => {
 
   if (isClient) {
     return (
-      <div className="min-h-screen w-full bg-zinc-50 py-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen w-full bg-muted py-4 sm:px-6 lg:px-8">
         <NavigationDestinations title={id ? 'Edit country' : 'New Country'} description={`${id ? ' Edit' : ' Create a new'} country destination with detailed information`} />
 
         <div className="w-full space-y-4">
@@ -203,10 +203,10 @@ const CreateCountryForm = ({ apiFormData = {} }) => {
                     <li
                       key={step.id}
                       onClick={() => setCurrentStep(step?.id)}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-zinc-100 ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'}`}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-muted ${currentStep == step?.id && ' bg-gradient-to-t from-[#588f7a33] to-slate-50 border-b-weelp-sage-deep border-b-2'}`}
                     >
                       <div
-                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-zinc-800'} ${currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-[#71717a]'}`}
+                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-foreground'} ${currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-muted-foreground'}`}
                       >
                         {step.title}
                       </div>
@@ -227,14 +227,14 @@ const CreateCountryForm = ({ apiFormData = {} }) => {
                     }
               }
             >
-              <fieldset className={`${currentStep === 3 ? '' : 'bg-white p-4 md:px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
+              <fieldset className={`${currentStep === 3 ? '' : 'bg-background p-4 md:px-8 border shadow rounded-lg'} ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
                 {renderStep()}
                 <div className="flex justify-between pt-4">
                   {currentStep > 1 && (
                     <Button
                       type="button"
                       onClick={() => setCurrentStep(currentStep - 1)}
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                     >
                       Previous
                     </Button>
@@ -247,7 +247,7 @@ const CreateCountryForm = ({ apiFormData = {} }) => {
                       onClick={() => {
                         router.back();
                       }}
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-zinc-100 hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                     >
                       Cancel
                     </Button>

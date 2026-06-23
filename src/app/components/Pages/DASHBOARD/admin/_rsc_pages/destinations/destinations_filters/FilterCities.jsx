@@ -117,9 +117,9 @@ export const FilterCities = () => {
           {isValidating && <ListingCardSkeleton count={8} gridClassName="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" className="w-full" />}
 
           {/* Error State */}
-          {!isValidating && error && <div className="text-red-500 text-center py-4">Failed to load data. Please try again.</div>}
+          {!isValidating && error && <div className="text-destructive text-center py-4">Failed to load data. Please try again.</div>}
           {/* No Items Found */}
-          {!isValidating && !error && cities.length === 0 && <div className="text-zinc-500 text-center py-4">No cities found.</div>}
+          {!isValidating && !error && cities.length === 0 && <div className="text-muted-foreground text-center py-4">No cities found.</div>}
 
           {/* For cities */}
           {!isValidating && !error && cities.length > 0 && (

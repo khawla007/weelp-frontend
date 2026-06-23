@@ -122,7 +122,7 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
       enableHiding: false,
       cell: ({ row }) => {
         const item = row.original;
-        return <Trash2 size={16} onClick={() => handleDeleteOrder(item.id)} className="text-red-400 cursor-pointer hover:text-red-500" />;
+        return <Trash2 size={16} onClick={() => handleDeleteOrder(item.id)} className="text-destructive cursor-pointer hover:text-destructive" />;
       },
     },
   ];
@@ -195,7 +195,7 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell className="capitalize text-[#71717a]" key={cell.id}>
+                    <TableCell className="capitalize text-muted-foreground" key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -212,7 +212,7 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-xs  text-zinc-600">
+        <div className="text-xs  text-copy">
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
       </div>

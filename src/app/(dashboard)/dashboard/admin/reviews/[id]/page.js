@@ -12,8 +12,8 @@ export default function SingleReviewPage() {
   const { data, error, isLoading } = useSWR(`/api/admin/reviews/${id}`, authFetcher);
 
   if (isLoading) return <FormSkeleton />;
-  if (error) return <p className="text-red-400">Error loading review</p>;
-  if (!data?.success) return <p className="text-red-400">Review not found</p>;
+  if (error) return <p className="text-destructive">Error loading review</p>;
+  if (!data?.success) return <p className="text-destructive">Review not found</p>;
 
   return (
     <Card className="border-none shadow-none bg-inherit p-6">

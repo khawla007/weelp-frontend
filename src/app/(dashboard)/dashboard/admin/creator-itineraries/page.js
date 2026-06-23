@@ -23,8 +23,8 @@ export default async function CreatorItinerariesPage() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-[#18181b]">Creator Itineraries</h1>
-          <p className="text-[#71717a] mt-1">Review and manage creator-submitted itineraries.</p>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-foreground">Creator Itineraries</h1>
+          <p className="text-muted-foreground mt-1">Review and manage creator-submitted itineraries.</p>
         </div>
       </div>
 

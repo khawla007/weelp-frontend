@@ -97,7 +97,7 @@ const CreateVendorScheduleForm = ({ onSuccess }) => {
             />
 
             {/* Error  */}
-            {errors?.vehicle_id && <p className="text-red-400 font-semibold text-sm">{errors?.vehicle_id?.message}</p>}
+            {errors?.vehicle_id && <p className="text-destructive font-semibold text-sm">{errors?.vehicle_id?.message}</p>}
           </div>
 
           {/* Driver Type */}
@@ -126,7 +126,7 @@ const CreateVendorScheduleForm = ({ onSuccess }) => {
             />
 
             {/* Error  */}
-            {errors?.vehicle_id && <p className="text-red-400 font-semibold text-sm">{errors?.vehicle_id?.message}</p>}
+            {errors?.vehicle_id && <p className="text-destructive font-semibold text-sm">{errors?.vehicle_id?.message}</p>}
           </div>
 
           {/* Date */}
@@ -141,21 +141,28 @@ const CreateVendorScheduleForm = ({ onSuccess }) => {
                   ? format(new Date(field.value), 'yyyy-MM-dd') // Format using date-fns
                   : '';
 
-                return <Input type="date" id="date" value={value} onChange={(e) => field.onChange(e.target.value)} className={errors?.date && 'border-red-500'} />;
+                return <Input type="date" id="date" value={value} onChange={(e) => field.onChange(e.target.value)} className={errors?.date && 'border-destructive'} />;
               }}
             />
 
-            {errors?.date && <p className="text-red-400 font-semibold text-sm">{errors?.date?.message}</p>}
+            {errors?.date && <p className="text-destructive font-semibold text-sm">{errors?.date?.message}</p>}
           </div>
 
           {/* Timing */}
           <div className="flex gap-4 flex-col sm:flex-row">
             <div className="grid gap-3 w-full">
               <Label htmlFor="time">Time</Label>
-              <Input type="time" {...register('time', { required: 'Timing is required' })} id="time" name="time" placeholder="Select Schedule Timing" className={errors?.time && 'border-red-500'} />
+              <Input
+                type="time"
+                {...register('time', { required: 'Timing is required' })}
+                id="time"
+                name="time"
+                placeholder="Select Schedule Timing"
+                className={errors?.time && 'border-destructive'}
+              />
 
               {/* Error */}
-              {errors?.time && <p className="text-red-400 font-semibold text-sm">{errors?.time?.message}</p>}
+              {errors?.time && <p className="text-destructive font-semibold text-sm">{errors?.time?.message}</p>}
             </div>
 
             {/* Shift Type */}
@@ -184,7 +191,7 @@ const CreateVendorScheduleForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.vehicle_id && <p className="text-red-400 font-semibold text-sm">{errors?.vehicle_id?.message}</p>}
+              {errors?.vehicle_id && <p className="text-destructive font-semibold text-sm">{errors?.vehicle_id?.message}</p>}
             </div>
           </div>
 

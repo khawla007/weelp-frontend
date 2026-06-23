@@ -40,8 +40,8 @@ export const NotificationSetting = () => {
   return (
     <Card className="shadow-none border-none bg-transparent space-y-8 w-full dark:bg-inherit">
       <div className="space-y-2 w-full">
-        <CardTitle className="text-black font-medium text-lg">Notification</CardTitle>
-        <CardDescription className="text-[#71717A] text-sm">Configure how you receive notifications.</CardDescription>
+        <CardTitle className="text-foreground font-medium text-lg">Notification</CardTitle>
+        <CardDescription className="text-muted-foreground text-sm">Configure how you receive notifications.</CardDescription>
       </div>
       <BreakSection className={'my-4 w-full'} />
 
@@ -87,7 +87,7 @@ export const NotificationSetting = () => {
               <FormItem className="flex flex-col sm:flex-row items-center  justify-evenly space-y-2 border p-4 rounded-md">
                 <Card className={'w-full bg-inherit shadow-none border-none dark:bg-inherit'}>
                   <Label className="text-sm font-medium  ">Communication emails</Label>
-                  <CardDescription className="text-xs text-gray-500">Get updates about your account activity.</CardDescription>
+                  <CardDescription className="text-xs text-muted-foreground">Get updates about your account activity.</CardDescription>
                 </Card>
                 <FormControl>
                   <Switch className={'self-start data-[state=checked]:bg-weelp-sage-deep'} checked={field.value} onCheckedChange={field.onChange} />
@@ -104,7 +104,7 @@ export const NotificationSetting = () => {
               <FormItem className="flex flex-col sm:flex-row items-center  justify-evenly space-y-2 border p-4 rounded-md">
                 <Card className={'w-full bg-inherit shadow-none border-none dark:bg-inherit'}>
                   <Label className="text-sm font-medium">Marketing emails</Label>
-                  <CardDescription className="text-xs text-gray-500">Receive emails abouts new products, features, and more.</CardDescription>
+                  <CardDescription className="text-xs text-muted-foreground">Receive emails abouts new products, features, and more.</CardDescription>
                 </Card>
                 <FormControl>
                   <Switch className={'self-start data-[state=checked]:bg-weelp-sage-deep'} checked={field.value} onCheckedChange={field.onChange} />
@@ -121,7 +121,7 @@ export const NotificationSetting = () => {
               <FormItem className="flex flex-col sm:flex-row items-center  justify-evenly space-y-2 border p-4 rounded-md">
                 <Card className={'w-full bg-inherit shadow-none border-none dark:bg-inherit'}>
                   <Label className="text-sm font-medium">Social emails</Label>
-                  <CardDescription className="text-xs text-gray-500">Receive emails for friend requests, follows and more.</CardDescription>
+                  <CardDescription className="text-xs text-muted-foreground">Receive emails for friend requests, follows and more.</CardDescription>
                 </Card>
                 <FormControl>
                   <Switch className={'self-start data-[state=checked]:bg-weelp-sage-deep'} checked={field.value} onCheckedChange={field.onChange} />
@@ -138,7 +138,7 @@ export const NotificationSetting = () => {
               <FormItem className="flex flex-col sm:flex-row items-center  justify-evenly space-y-2 border p-4 rounded-md">
                 <Card className={'w-full bg-inherit shadow-none border-none dark:bg-inherit'}>
                   <Label className="text-sm font-medium">Security emails</Label>
-                  <CardDescription className="text-xs text-gray-500">Receive emails about your account activity and security.</CardDescription>
+                  <CardDescription className="text-xs text-muted-foreground">Receive emails about your account activity and security.</CardDescription>
                 </Card>
                 <FormControl>
                   <Switch className={'self-start data-[state=checked]:bg-weelp-sage-deep'} checked={field.value} onCheckedChange={field.onChange} />

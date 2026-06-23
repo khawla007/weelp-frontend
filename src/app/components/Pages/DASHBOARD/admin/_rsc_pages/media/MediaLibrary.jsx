@@ -256,7 +256,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
           {isValidating ? (
             <MediaGridSkeleton count={isMediaPage ? 15 : 10} />
           ) : error ? (
-            <div className="flex items-center justify-center text-red-500">Failed to load media.</div>
+            <div className="flex items-center justify-center text-destructive">Failed to load media.</div>
           ) : displayImages.length === 0 ? (
             <div className={`flex items-center justify-center ${isMediaPage ? 'h-screen' : 'h-fit'}`}>Sorry, no images.</div>
           ) : (
@@ -308,7 +308,7 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                     )}
 
                     {/* Dark overlay on hover */}
-                    <div className="absolute inset-0 bg-[#18181b]/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none" />
+                    <div className="absolute inset-0 bg-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none" />
 
                     {/* Edit pencil icon - shown on hover */}
                     {!isSingleSelect && (
@@ -319,14 +319,14 @@ export function Medialibrary({ closeDialog, alreadySelectedImages = [], onSelect
                           e.stopPropagation(); // Prevent Card click
                           handleSelectMedia(image);
                         }}
-                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white rounded-full p-2 shadow-lg hover:bg-zinc-100 pointer-events-auto"
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-background rounded-full p-2 shadow-lg hover:bg-muted pointer-events-auto"
                       >
-                        <Edit size={20} className="text-zinc-700" />
+                        <Edit size={20} className="text-copy" />
                       </button>
                     )}
 
                     {isSingleSelect && (
-                      <div className="absolute inset-x-2 bottom-2 rounded-md bg-white/95 px-2 py-1 text-center text-xs font-medium text-zinc-800 opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
+                      <div className="absolute inset-x-2 bottom-2 rounded-md bg-background/95 px-2 py-1 text-center text-xs font-medium text-foreground opacity-0 shadow-sm dark:shadow-none transition-opacity group-hover:opacity-100">
                         Insert image
                       </div>
                     )}

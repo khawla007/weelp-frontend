@@ -65,7 +65,7 @@ const CreateVendorPricingForm = ({ onSuccess }) => {
             <Input {...register('name', { required: 'Name Field Required' })} id="name" name="name" placeholder="Route Name" />
 
             {/* Error  */}
-            {errors?.name && <p className="text-red-400 font-semibold text-sm">{errors?.name?.message}</p>}
+            {errors?.name && <p className="text-destructive font-semibold text-sm">{errors?.name?.message}</p>}
           </div>
 
           {/* Description */}
@@ -74,7 +74,7 @@ const CreateVendorPricingForm = ({ onSuccess }) => {
             <Textarea {...register('description', { required: 'Field Required' })} id="description" name="description" placeholder="Enter Route Description" />
 
             {/* Error  */}
-            {errors?.description && <p className="text-red-400 font-semibold text-sm">{errors?.description?.message}</p>}
+            {errors?.description && <p className="text-destructive font-semibold text-sm">{errors?.description?.message}</p>}
           </div>
 
           {/* Minimum Distance adn Waiting Charge */}
@@ -93,7 +93,7 @@ const CreateVendorPricingForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.min_distance && <p className="text-red-400 font-semibold text-sm">{errors?.min_distance?.message}</p>}
+              {errors?.min_distance && <p className="text-destructive font-semibold text-sm">{errors?.min_distance?.message}</p>}
             </div>
 
             <div className="grid gap-3 w-full">
@@ -109,7 +109,7 @@ const CreateVendorPricingForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.waiting_charge && <p className="text-red-400 font-semibold text-sm">{errors?.waiting_charge?.message}</p>}
+              {errors?.waiting_charge && <p className="text-destructive font-semibold text-sm">{errors?.waiting_charge?.message}</p>}
             </div>
           </div>
 
@@ -129,7 +129,7 @@ const CreateVendorPricingForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.base_price && <p className="text-red-400 font-semibold text-sm">{errors?.base_price?.message}</p>}
+              {errors?.base_price && <p className="text-destructive font-semibold text-sm">{errors?.base_price?.message}</p>}
             </div>
 
             <div className="grid gap-3 w-full">
@@ -146,7 +146,7 @@ const CreateVendorPricingForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.price_per_km && <p className="text-red-400 font-semibold text-sm">{errors?.price_per_km?.message}</p>}
+              {errors?.price_per_km && <p className="text-destructive font-semibold text-sm">{errors?.price_per_km?.message}</p>}
             </div>
           </div>
 
@@ -166,7 +166,7 @@ const CreateVendorPricingForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.night_charge_multiplier && <p className="text-red-400 font-semibold text-sm">{errors?.night_charge_multiplier?.message}</p>}
+              {errors?.night_charge_multiplier && <p className="text-destructive font-semibold text-sm">{errors?.night_charge_multiplier?.message}</p>}
             </div>
 
             <div className="grid gap-3 w-full">
@@ -183,7 +183,7 @@ const CreateVendorPricingForm = ({ onSuccess }) => {
               />
 
               {/* Error  */}
-              {errors?.peak_hour_multiplier && <p className="text-red-400 font-semibold text-sm">{errors?.peak_hour_multiplier?.message}</p>}
+              {errors?.peak_hour_multiplier && <p className="text-destructive font-semibold text-sm">{errors?.peak_hour_multiplier?.message}</p>}
             </div>
           </div>
 

@@ -87,7 +87,7 @@ export function CardActions({
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem onSelect={handleDeleteClick} className="text-red-400 cursor-pointer">
+          <DropdownMenuItem onSelect={handleDeleteClick} className="text-destructive cursor-pointer">
             <Trash2 size={14} /> {deleteLabel}
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -101,7 +101,7 @@ export function CardActions({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => handleDialogChange(false)}>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-[#ff725e]" onClick={handleDeleteConfirm}>
+            <AlertDialogAction className="bg-weelp-discount" onClick={handleDeleteConfirm}>
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>

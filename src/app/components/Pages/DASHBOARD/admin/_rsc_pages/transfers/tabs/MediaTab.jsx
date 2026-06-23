@@ -106,7 +106,7 @@ const MediaTab = () => {
         />
       </div>
 
-      <p className="text-sm text-zinc-500">Click the star icon to mark an image as featured</p>
+      <p className="text-sm text-muted-foreground">Click the star icon to mark an image as featured</p>
 
       {/**Uploaded Media As Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -129,7 +129,7 @@ const MediaTab = () => {
           {activityImages.map((image, index) => {
             const isFeatured = featuredImageId === image.media_id;
             return (
-              <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-[#e4e4e7]">
+              <div key={index} className="group/item relative rounded-md border cursor-pointer p-2 border-border">
                 <img className="size-72 rounded-md border" src={image?.url} alt="activity_image" />
 
                 {/* Featured Badge */}
@@ -146,14 +146,14 @@ const MediaTab = () => {
 
                 <Trash2
                   onClick={() => handleDeleteImage(image)}
-                  className="absolute bottom-8 right-8 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-red-400 bg-white rounded-full shadow"
+                  className="absolute bottom-8 right-8 size-6 scale-90 opacity-0 pointer-events-none group-hover/item:pointer-events-auto group-hover/item:scale-100 group-hover/item:opacity-100 transition-[opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none text-destructive bg-background rounded-full shadow"
                 />
               </div>
             );
           })}
         </div>
       ) : (
-        <div className="w-full">{errors.media && <p className="text-red-500 mt-1">{errors.media.message}</p>}</div>
+        <div className="w-full">{errors.media && <p className="text-destructive mt-1">{errors.media.message}</p>}</div>
       )}
     </div>
   );
