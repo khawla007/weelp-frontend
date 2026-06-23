@@ -102,9 +102,7 @@ export function AvatarUpload({ currentAvatar, onUploadSuccess, endpoint = '/api/
           {preview ? (
             <img src={preview} alt="Avatar preview" className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-white font-semibold text-2xl" style={{ backgroundColor: '#588f7a' }}>
-              {getInitials(userName)}
-            </div>
+            <div className="w-full h-full flex items-center justify-center bg-weelp-sage-deep text-white font-semibold text-2xl">{getInitials(userName)}</div>
           )}
           {isUploading && (
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center">

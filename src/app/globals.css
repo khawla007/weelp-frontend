@@ -76,6 +76,8 @@ body {
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
     --surface-elevated: 0 0% 100%;
     --surface-tint: 150 28% 96%;
     --chart-1: 12 76% 61%;
@@ -126,7 +128,12 @@ body {
     --weelp-sage-deep-rgb: 88 143 122;
     --weelp-sage-hover-rgb: 77 128 105;
     --weelp-sage-tint-rgb: 181 216 203;
+    --weelp-sage-deep: 152 23% 45%;
+    --weelp-sage-hover: 152 25% 40%;
+    --weelp-sage-tint: 156 34% 78%;
     --weelp-sage-wash: 150 28% 96%;
+    --weelp-steel: 201 21% 33%;
+    --weelp-discount: 7 100% 68%;
     --weelp-steel-rgb: 67 90 103;
     --weelp-discount-rgb: 255 114 94;
     --weelp-gray-rgb: 207 219 229;
@@ -180,6 +187,8 @@ body {
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
+    --success: 142 65% 55%;
+    --warning: 38 80% 60%;
     --surface-elevated: 0 0% 10%;
     --surface-tint: 150 12% 12%;
     --chart-1: 220 70% 50%;
@@ -222,7 +231,12 @@ body {
     --weelp-sage-deep-rgb: 88 143 122;
     --weelp-sage-hover-rgb: 108 164 143;
     --weelp-sage-tint-rgb: 58 90 79;
+    --weelp-sage-deep: 152 23% 45%;
+    --weelp-sage-hover: 155 26% 53%;
+    --weelp-sage-tint: 155 21% 29%;
     --weelp-sage-wash: 150 12% 12%;
+    --weelp-steel: 201 25% 69%;
+    --weelp-discount: 10 100% 73%;
     --weelp-steel-rgb: 159 182 195;
     --weelp-discount-rgb: 255 138 115;
     --weelp-gray-rgb: 54 68 78;
@@ -917,33 +931,24 @@ body {
 /* Temporary dark-mode bridge for un-migrated legacy utility classes.
    Specific components should still move to semantic tokens. */
 @layer utilities {
-  .dark :where(.bg-white, .bg-mainBackground, [class*='bg-[#f8faf9]']) {
-    /* dark-audit-ignore */
+  .dark .bg-white,
+  .dark .bg-mainBackground {
     background-color: hsl(var(--background));
   }
 
-  .dark :where([class*='bg-[#f2f7f5]']) {
-    /* dark-audit-ignore */
-    background-color: hsl(var(--weelp-sage-wash));
+  .dark .text-black,
+  .dark [class*='text-[#18181b]'] {
+    color: hsl(var(--foreground));
   }
 
-  .dark :where([class*='bg-[#f4f4f5]']) {
-    /* dark-audit-ignore */
-    background-color: hsl(var(--muted));
-  }
-
-  .dark :where(.border-gray-100, .border-gray-200, .border-zinc-100, .border-zinc-200, [class*='border-[#e4e4e7]'], [class*='border-[#ededed]']) {
-    /* dark-audit-ignore */
-    border-color: hsl(var(--border));
-  }
-
-  .dark :where([class*='ring-offset-white']) {
-    --tw-ring-offset-color: hsl(var(--background));
-  }
-
-  .dark :where(.shadow-sm, .shadow, .shadow-md, .shadow-lg, .shadow-xl, .shadow-2xl, [class*='shadow-[']) {
-    /* dark-audit-ignore */
+  .dark .shadow-sm,
+  .dark .shadow,
+  .dark .shadow-md,
+  .dark .shadow-lg,
+  .dark .shadow-xl,
+  .dark .shadow-2xl {
     box-shadow: none;
+    /* paired border applied at card primitive level — see Phase 2 */
   }
 }
 

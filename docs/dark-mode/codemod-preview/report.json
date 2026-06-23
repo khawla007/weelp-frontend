@@ -1,0 +1,15 @@
+{
+  "mode": "dry-run",
+  "changedFiles": 1,
+  "replacements": [
+    {
+      "file": "src/app/(frontend)/booking/page.js",
+      "line": 17,
+      "column": 15,
+      "from": "text-[#18181b]",
+      "to": "text-foreground"
+    }
+  ],
+  "skipped": [],
+  "files": ["src/app/(frontend)/booking/page.js"]
+}

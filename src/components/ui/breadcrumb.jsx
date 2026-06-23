@@ -8,7 +8,7 @@ const Breadcrumb = React.forwardRef(({ ...props }, ref) => <nav ref={ref} aria-l
 Breadcrumb.displayName = 'Breadcrumb';
 
 const BreadcrumbList = React.forwardRef(({ className, ...props }, ref) => (
-  <ol ref={ref} className={cn('flex flex-wrap items-center gap-1.5 break-words text-sm text-neutral-500 sm:gap-2.5 dark:text-neutral-400', className)} {...props} />
+  <ol ref={ref} className={cn('flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5', className)} {...props} />
 ));
 BreadcrumbList.displayName = 'BreadcrumbList';
 
@@ -18,12 +18,12 @@ BreadcrumbItem.displayName = 'BreadcrumbItem';
 const BreadcrumbLink = React.forwardRef(({ asChild, className, ...props }, ref) => {
   const Comp = asChild ? Slot : 'a';
 
-  return <Comp ref={ref} className={cn('transition-colors hover:text-neutral-950 dark:hover:text-neutral-50', className)} {...props} />;
+  return <Comp ref={ref} className={cn('transition-colors hover:text-foreground', className)} {...props} />;
 });
 BreadcrumbLink.displayName = 'BreadcrumbLink';
 
 const BreadcrumbPage = React.forwardRef(({ className, ...props }, ref) => (
-  <span ref={ref} role="link" aria-disabled="true" aria-current="page" className={cn('font-normal text-neutral-950 dark:text-neutral-50', className)} {...props} />
+  <span ref={ref} role="link" aria-disabled="true" aria-current="page" className={cn('font-normal text-foreground', className)} {...props} />
 ));
 BreadcrumbPage.displayName = 'BreadcrumbPage';
 

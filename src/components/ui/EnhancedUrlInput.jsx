@@ -8,7 +8,7 @@ const SOCIAL_ICONS = {
   instagram: { icon: Instagram, color: 'text-pink-600' },
   linkedin: { icon: Linkedin, color: 'text-blue-700' },
   twitter: { icon: Globe, color: 'text-blue-400' },
-  default: { icon: Globe, color: 'text-gray-600' },
+  default: { icon: Globe, color: 'text-muted-foreground' },
 };
 
 const detectPlatform = (url) => {
@@ -57,7 +57,7 @@ export function EnhancedUrlInput({ value = [], onChange, className = '' }) {
                 value={field.label}
                 onChange={(e) => updateField(index, 'label', e.target.value)}
                 placeholder="Label (e.g., Portfolio)"
-                className="px-3 py-2 border rounded-md text-sm"
+                className="px-3 py-2 border border-input bg-background rounded-md text-sm"
               />
               <div className="sm:col-span-2 relative">
                 <input
@@ -65,7 +65,7 @@ export function EnhancedUrlInput({ value = [], onChange, className = '' }) {
                   value={field.url}
                   onChange={(e) => updateField(index, 'url', e.target.value)}
                   placeholder="https://example.com"
-                  className="w-full pl-10 pr-3 py-2 border rounded-md text-sm"
+                  className="w-full pl-10 pr-3 py-2 border border-input bg-background rounded-md text-sm"
                 />
                 {field.url && <Icon className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 ${iconColor}`} />}
               </div>

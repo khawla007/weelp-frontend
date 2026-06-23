@@ -1,27 +1,109 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const ROOT = process.cwd();
-const SOURCE_DIRS = ['src/app', 'src/components'];
+const SOURCE_DIRS = ['src'];
 const OUTPUT_FILE = 'docs/dark-mode/audit.json';
-const EXTENSIONS = new Set(['.js', '.jsx', '.ts', '.tsx', '.css', '.mdx']);
+const EXTENSIONS = new Set(['.js', '.jsx', '.ts', '.tsx', '.css', '.mdx', '.svg']);
+
+const HEX = '#(?:[0-9a-fA-F]{3,8})';
+const SHADE = '(?:gray|zinc|neutral|slate)';
+const TONE = '(?:50|100|200|300|400|500|600|700|800|900|950)';
+
+const TOKEN_HINTS = new Map([
+  ['bg-white', 'bg-background'],
+  ['bg-[#fff]', 'bg-background'],
+  ['bg-[#ffffff]', 'bg-background'],
+  ['bg-black', 'bg-foreground'],
+  ['bg-[#000]', 'bg-foreground'],
+  ['bg-[#000000]', 'bg-foreground'],
+  ['bg-[#18181b]', 'bg-foreground'],
+  ['bg-[#f8f9f9]', 'bg-background'],
+  ['bg-mainBackground', 'bg-background'],
+  ['bg-[#f4f4f5]', 'bg-muted'],
+  ['bg-gray-50', 'bg-muted'],
+  ['bg-zinc-100', 'bg-muted'],
+  ['bg-[#f2f7f5]', 'bg-weelp-sage-wash'],
+  ['bg-weelp-sage-wash', 'bg-weelp-sage-wash'],
+  ['bg-[#fff4d8]', 'bg-warning/15'],
+  ['bg-[#fff9f9]', 'bg-destructive/5'],
+  ['bg-dangerLite', 'bg-destructive/5'],
+  ['text-black', 'text-foreground'],
+  ['text-[#000]', 'text-foreground'],
+  ['text-[#000000]', 'text-foreground'],
+  ['text-[#18181b]', 'text-foreground'],
+  ['text-[#52525b]', 'text-copy'],
+  ['text-gray-600', 'text-copy'],
+  ['text-gray-700', 'text-copy'],
+  ['text-[#71717a]', 'text-muted-foreground'],
+  ['text-gray-500', 'text-muted-foreground'],
+  ['text-[#435a67]', 'text-weelp-steel'],
+  ['border-[#e4e4e7]', 'border-border'],
+  ['border-gray-200', 'border-border'],
+  ['border-[#f0c76d]', 'border-warning/40'],
+  ['divide-gray-200', 'divide-border'],
+]);
 
 const RULES = [
-  { name: 'literal-bg', pattern: /\bbg-\[#(?:[0-9a-fA-F]{3,8})\]/g, suggestion: 'Replace with bg-background, bg-card, bg-muted, or a weelp token.' },
-  { name: 'literal-text', pattern: /\btext-\[#(?:[0-9a-fA-F]{3,8})\]/g, suggestion: 'Replace with text-foreground, text-copy, text-muted-foreground, or a weelp token.' },
-  { name: 'literal-border', pattern: /\bborder-\[#(?:[0-9a-fA-F]{3,8})\]/g, suggestion: 'Replace with border-border or a state/brand token.' },
-  { name: 'white-black-bg', pattern: /\bbg-(?:white|black)\b/g, suggestion: 'Replace with bg-background, bg-card, bg-popover, or bg-foreground based on role.' },
-  { name: 'gray-scale-bg', pattern: /\bbg-(?:gray|zinc|neutral|slate)-\d{2,3}\b/g, suggestion: 'Replace with bg-muted, bg-accent, bg-card, or bg-background.' },
-  { name: 'gray-scale-text', pattern: /\btext-(?:gray|zinc|neutral|slate)-\d{2,3}\b/g, suggestion: 'Replace with text-muted-foreground, text-copy, or text-foreground.' },
-  { name: 'gray-scale-border', pattern: /\bborder-(?:gray|zinc|neutral|slate)-\d{2,3}\b/g, suggestion: 'Replace with border-border.' },
-  { name: 'shadow', pattern: /\bshadow(?:-\[[^\]]+\]|-[a-z0-9]+)?\b/g, suggestion: 'Keep only if appropriate; add dark:shadow-none or use Card primitive.' },
+  { rule: 'background-white-black', pattern: /\bbg-(?:white|black)\b/g, suggest: suggestClass },
+  { rule: 'background-hex', pattern: new RegExp(`\\bbg-\\[${HEX}\\](?:/[0-9]{1,3})?`, 'g'), suggest: suggestClass },
+  { rule: 'background-neutral-utility', pattern: new RegExp(`\\bbg-${SHADE}-${TONE}(?:/[0-9]{1,3})?\\b`, 'g'), suggest: suggestClass },
+  { rule: 'background-legacy-token', pattern: /\bbg-(?:mainBackground|dangerLite|weelp-sage-wash)\b/g, suggest: suggestClass },
+  { rule: 'text-hex', pattern: new RegExp(`\\btext-\\[${HEX}\\](?:/[0-9]{1,3})?`, 'g'), suggest: suggestClass },
+  { rule: 'text-neutral-utility', pattern: new RegExp(`\\btext-${SHADE}-${TONE}(?:/[0-9]{1,3})?\\b`, 'g'), suggest: suggestClass },
+  { rule: 'text-black', pattern: /\btext-black\b/g, suggest: suggestClass },
+  { rule: 'border-hex', pattern: new RegExp(`\\bborder-\\[${HEX}\\](?:/[0-9]{1,3})?`, 'g'), suggest: suggestClass },
+  { rule: 'border-neutral-utility', pattern: new RegExp(`\\bborder-${SHADE}-${TONE}(?:/[0-9]{1,3})?\\b`, 'g'), suggest: suggestClass },
+  { rule: 'divide-neutral-utility', pattern: new RegExp(`\\bdivide-${SHADE}-${TONE}(?:/[0-9]{1,3})?\\b`, 'g'), suggest: suggestClass },
+  { rule: 'shadow-utility', pattern: /\bshadow(?:-\[[^\]\s]+\]|-[a-z0-9]+)?\b/g, suggest: () => 'keep; dark cascade removes shadow during migration' },
   {
-    name: 'inline-literal-color',
-    pattern: /style=\{\{[^}]*?(?:color|background|backgroundColor)\s*:\s*['"`]#[0-9a-fA-F]{3,8}['"`][^}]*?\}\}/g,
-    suggestion: 'Move the literal color to a CSS variable or semantic utility class.',
+    rule: 'inline-literal-color',
+    pattern: new RegExp(`\\bcolor\\s*:\\s*(['"\`])${HEX}\\1`, 'g'),
+    suggest: (value) => suggestInline(value, 'color'),
   },
-  { name: 'svg-literal-color', pattern: /\b(?:fill|stroke)=["']#[0-9a-fA-F]{3,8}["']/g, suggestion: 'Use currentColor plus text-* utilities unless the asset is intentionally fixed-brand.' },
+  {
+    rule: 'inline-literal-background',
+    pattern: new RegExp(`\\bbackground(?:Color)?\\s*:\\s*(['"\`])${HEX}\\1`, 'g'),
+    suggest: (value) => suggestInline(value, 'background'),
+  },
+  {
+    rule: 'svg-literal-fill',
+    pattern: new RegExp(`\\bfill=["']${HEX}["']`, 'g'),
+    suggest: () => 'currentColor or a semantic text-* utility',
+  },
+  {
+    rule: 'svg-literal-stroke',
+    pattern: new RegExp(`\\bstroke=["']${HEX}["']`, 'g'),
+    suggest: () => 'currentColor or a semantic text-* utility',
+  },
 ];
+
+function normalizeClass(value) {
+  return value.toLowerCase();
+}
+
+function suggestClass(value) {
+  const normalized = normalizeClass(value.replace(/\/[0-9]{1,3}$/, ''));
+  if (TOKEN_HINTS.has(normalized)) return TOKEN_HINTS.get(normalized);
+
+  if (/^bg-(gray|zinc|neutral|slate)-(50|100)$/.test(normalized)) return 'bg-muted';
+  if (/^bg-(gray|zinc|neutral|slate)-/.test(normalized)) return 'bg-muted or bg-accent';
+  if (/^text-(gray|zinc|neutral|slate)-(500|600|700)$/.test(normalized)) return 'text-muted-foreground or text-copy';
+  if (/^text-(gray|zinc|neutral|slate)-/.test(normalized)) return 'text-muted-foreground';
+  if (/^border-(gray|zinc|neutral|slate)-/.test(normalized)) return 'border-border';
+  if (/^divide-(gray|zinc|neutral|slate)-/.test(normalized)) return 'divide-border';
+
+  return 'manual review';
+}
+
+function suggestInline(value, property) {
+  const hex = value.match(/#[0-9a-fA-F]{3,8}/)?.[0]?.toLowerCase();
+  if (!hex) return 'manual review';
+
+  const classPrefix = property === 'color' ? 'text' : 'bg';
+  return suggestClass(`${classPrefix}-[${hex}]`);
+}
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -33,10 +115,7 @@ async function walk(dir) {
     const absolute = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       files.push(...(await walk(absolute)));
-      continue;
-    }
-
-    if (EXTENSIONS.has(path.extname(entry.name))) {
+    } else if (EXTENSIONS.has(path.extname(entry.name))) {
       files.push(absolute);
     }
   }
@@ -45,8 +124,7 @@ async function walk(dir) {
 }
 
 function lineAndColumn(source, index) {
-  const before = source.slice(0, index);
-  const lines = before.split('\n');
+  const lines = source.slice(0, index).split('\n');
 
   return {
     line: lines.length,
@@ -69,47 +147,73 @@ function isIgnoredIndex(index, ranges) {
   return ranges.some(([start, end]) => index >= start && index < end);
 }
 
-const files = [];
-for (const sourceDir of SOURCE_DIRS) {
-  files.push(...(await walk(path.join(ROOT, sourceDir))));
-}
-
-const findings = [];
-for (const file of files) {
-  const source = await readFile(file, 'utf8');
-  const matches = [];
+export function auditSource(source, file = '') {
+  const findings = [];
   const ranges = ignoredRanges(source);
+  const lines = source.split('\n');
 
-  for (const rule of RULES) {
-    for (const match of source.matchAll(rule.pattern)) {
-      if (isIgnoredIndex(match.index ?? 0, ranges)) continue;
+  for (const { rule, pattern, suggest } of RULES) {
+    pattern.lastIndex = 0;
 
-      const position = lineAndColumn(source, match.index ?? 0);
-      const lineText = source.split('\n')[position.line - 1] ?? '';
+    for (const match of source.matchAll(pattern)) {
+      const index = match.index ?? 0;
+      if (isIgnoredIndex(index, ranges)) continue;
+
+      const position = lineAndColumn(source, index);
+      const lineText = lines[position.line - 1] ?? '';
       if (lineText.includes('dark-audit-ignore')) continue;
 
-      matches.push({
-        rule: rule.name,
-        value: match[0],
+      findings.push({
+        file,
         line: position.line,
         column: position.column,
-        suggestion: rule.suggestion,
+        rule,
+        value: match[0],
+        matchedValue: match[0],
+        suggestedToken: suggest(match[0]),
       });
     }
   }
 
-  if (matches.length > 0) {
-    findings.push({
-      file: path.relative(ROOT, file),
-      findings: matches.sort((a, b) => a.line - b.line || a.column - b.column),
-    });
-  }
+  return findings.sort((a, b) => a.line - b.line || a.column - b.column || a.rule.localeCompare(b.rule));
 }
 
-const outputPath = path.join(ROOT, OUTPUT_FILE);
-await mkdir(path.dirname(outputPath), { recursive: true });
-await writeFile(outputPath, `${JSON.stringify({ generatedAt: new Date().toISOString(), findings }, null, 2)}\n`);
+export async function runAudit({ root = ROOT, sourceDirs = SOURCE_DIRS, outputFile = OUTPUT_FILE } = {}) {
+  const files = [];
+  for (const sourceDir of sourceDirs) {
+    files.push(...(await walk(path.join(root, sourceDir))));
+  }
 
-const total = findings.reduce((sum, item) => sum + item.findings.length, 0);
-console.log(`Dark-mode audit wrote ${OUTPUT_FILE}`);
-console.log(`${total} findings across ${findings.length} files`);
+  const findings = [];
+  for (const file of files) {
+    const relativeFile = path.relative(root, file);
+    const source = await readFile(file, 'utf8');
+    findings.push(...auditSource(source, relativeFile));
+  }
+
+  const filesAffected = new Set(findings.map((finding) => finding.file)).size;
+  const output = {
+    generatedAt: new Date().toISOString(),
+    totalFindings: findings.length,
+    filesAffected,
+    findings,
+  };
+  const outputPath = path.join(root, outputFile);
+  await mkdir(path.dirname(outputPath), { recursive: true });
+  await writeFile(outputPath, `${JSON.stringify(output, null, 2)}\n`);
+
+  return output;
+}
+
+async function main() {
+  const output = await runAudit();
+  console.log(`Dark-mode audit wrote ${OUTPUT_FILE}`);
+  console.log(`${output.totalFindings} findings across ${output.filesAffected} files`);
+}
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}

@@ -75,7 +75,7 @@ export function ComboboxMultipleAttribute({ attributes, value = [], onChange }) 
           {value.map((selected) => (
             <div
               key={`${selected.attribute_id}-${selected.attribute_value}`}
-              className="flex items-center text-sm text-weelp-steel font-bold bg-[#f4f4f5] gap-2 px-2 py-1 rounded-lg hover:scale-110 duration-100 ease-linear"
+              className="flex items-center text-sm text-weelp-steel font-bold bg-muted gap-2 px-2 py-1 rounded-lg hover:scale-110 duration-100 ease-linear"
             >
               <span>
                 {getAttributeName(selected.attribute_id)}: {selected.attribute_value}
@@ -115,7 +115,7 @@ export function ComboboxMultiple({ items, type, value = [], onChange }) {
         <PopoverTrigger asChild>
           <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
             {value.length ? (
-              <span className="flex items-center text-sm text-black gap-2">
+              <span className="flex items-center text-sm text-foreground gap-2">
                 <Tags size={14} />
                 {`${value.length} ${type} Selected`}
               </span>
@@ -152,7 +152,7 @@ export function ComboboxMultiple({ items, type, value = [], onChange }) {
           {items
             .filter((item) => value.includes(item.id))
             .map((item) => (
-              <div key={item.id} className="flex items-center text-sm text-weelp-steel font-bold bg-[#f4f4f5] gap-2  px-2 py-1 rounded-lg hover:scale-110 duration-100 ease-linear">
+              <div key={item.id} className="flex items-center text-sm text-weelp-steel font-bold bg-muted gap-2  px-2 py-1 rounded-lg hover:scale-110 duration-100 ease-linear">
                 <span>{item.name}</span>
                 <button onClick={() => handleRemove(item.id)} className="ml-2">
                   <X size={14} />
