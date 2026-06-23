@@ -128,25 +128,25 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             return (
               <div>
                 {itineraryTotal > 0 ? (
-                  <h3 className="text-[#18181b] font-bold text-2xl lg:text-[28px]">
+                  <h3 className="text-foreground font-bold text-2xl lg:text-[28px]">
                     <span key={`${currency}-${itineraryTotal}`} className="inline-block animate-price-fade">
                       {currency} {itineraryTotal.toFixed(2)}
                     </span>{' '}
-                    <span className="text-base font-medium text-[#71717a]">
+                    <span className="text-base font-medium text-muted-foreground">
                       total for {guests} guest{guests === 1 ? '' : 's'}
                     </span>
                   </h3>
                 ) : (
-                  <h3 className="text-[#18181b] font-bold text-2xl lg:text-[28px]">
+                  <h3 className="text-foreground font-bold text-2xl lg:text-[28px]">
                     From{' '}
                     <span key={`${currency}-${displayPrice}`} className="inline-block animate-price-fade">
                       {currency} {displayPrice}
                     </span>{' '}
-                    <span className="text-base font-medium text-[#71717a]">/ person</span>
+                    <span className="text-base font-medium text-muted-foreground">/ person</span>
                   </h3>
                 )}
                 {itineraryTotal > 0 && (
-                  <p className="text-sm text-[#71717a] mt-1">
+                  <p className="text-sm text-muted-foreground mt-1">
                     <span key={`${currency}-${displayPrice}-pp`} className="inline-block animate-price-fade">
                       {currency} {displayPrice}
                     </span>{' '}
@@ -157,7 +157,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             );
           })()
         ) : (
-          <h3 className="text-[#18181b] font-bold text-2xl lg:text-[28px]">
+          <h3 className="text-foreground font-bold text-2xl lg:text-[28px]">
             From{' '}
             <span key={`fallback-${productData?.pricing?.regular_price ?? 0}`} className="inline-block animate-price-fade">
               {formatCurrency(Number(productData?.pricing?.regular_price ?? 0), productData?.pricing?.currency ?? 'USD')}
@@ -174,7 +174,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             const regularPrice = pricing.season?.regularPrice ?? pricing.pricePerHead;
             const regularSubtotal = regularPrice * pricing.headcount;
             return (
-              <div className="mt-4 bg-white rounded-xl border border-[#e4e4e7] p-4 text-sm text-[#71717a]">
+              <div className="mt-4 bg-background rounded-xl border border-border p-4 text-sm text-muted-foreground">
                 <div className="space-y-2">
                   <RowPulse value={regularSubtotal} className="flex justify-between">
                     <span>
@@ -186,7 +186,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                         {pricing.headcount}
                       </span>
                     </span>
-                    <span className="text-[#18181b]">
+                    <span className="text-foreground">
                       <span key={`sub-${regularSubtotal}`} className="inline-block animate-price-fade">
                         {formatCurrency(regularSubtotal, pricing.currency)}
                       </span>
@@ -269,7 +269,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                       </span>
                     </RowPulse>
                   )}
-                  <RowPulse value={pricing.final} className="border-t border-[#e4e4e7] pt-2 flex justify-between text-[#18181b]">
+                  <RowPulse value={pricing.final} className="border-t border-border pt-2 flex justify-between text-foreground">
                     <span>Total</span>
                     <span>
                       <span key={`final-${pricing.final}`} className="inline-block animate-price-fade">
@@ -314,8 +314,8 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
         {/* Select Addon */}
         {addons.length > 0 && (
           <>
-            <p className="text-[#71717a] text-base font-medium mb-3 mt-6">Select Addon</p>
-            <div className="bg-white rounded-xl border border-[#e4e4e7] p-5 flex flex-col gap-3">
+            <p className="text-muted-foreground text-base font-medium mb-3 mt-6">Select Addon</p>
+            <div className="bg-background rounded-xl border border-border p-5 flex flex-col gap-3">
               {addons.map((addon) => {
                 const isChecked = selectedAddons.some((a) => a.addon_id === addon.addon_id);
                 return (
@@ -325,7 +325,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                     aria-checked={isChecked}
                     tabIndex={0}
                     className={`flex items-center gap-3 cursor-pointer group rounded-md px-2 -mx-2 transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-                      isChecked ? 'bg-[#f2f7f5]' : 'bg-transparent'
+                      isChecked ? 'bg-surface-tint' : 'bg-transparent'
                     }`}
                     onClick={() => toggleAddon(addon)}
                     onKeyDown={(e) => {
@@ -337,7 +337,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                   >
                     <span
                       className={`w-5 h-5 rounded-[4px] flex items-center justify-center flex-shrink-0 transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-                        isChecked ? 'bg-weelp-sage-deep' : 'border-2 border-zinc-300 bg-white'
+                        isChecked ? 'bg-weelp-sage-deep' : 'border-2 border-border bg-card'
                       }`}
                     >
                       <Check
@@ -346,19 +346,21 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                       />
                     </span>
                     <div className="flex-1 min-w-0">
-                      <span className="text-base font-medium text-[#18181b]">{addon.addon_name}</span>
-                      {addon.addon_description && <p className="text-sm text-[#71717a] truncate">{addon.addon_description}</p>}
+                      <span className="text-base font-medium text-foreground">{addon.addon_name}</span>
+                      {addon.addon_description && <p className="text-sm text-muted-foreground truncate">{addon.addon_description}</p>}
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
                       {addon.addon_sale_price != null ? (
                         <>
-                          <span className="text-sm text-zinc-400 line-through">${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                          <span className="text-base font-semibold text-[#18181b]">
+                          <span className="text-sm text-muted-foreground line-through">
+                            ${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          </span>
+                          <span className="text-base font-semibold text-foreground">
                             ${Number(addon.addon_sale_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </span>
                         </>
                       ) : (
-                        <span className="text-base font-semibold text-[#18181b]">${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        <span className="text-base font-semibold text-foreground">${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                       )}
                     </div>
                   </div>
@@ -369,14 +371,14 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
         )}
 
         {/* Select Card */}
-        <div className="bg-white rounded-xl border border-[#e4e4e7] p-5 mt-4 flex items-center justify-between">
+        <div className="bg-background rounded-xl border border-border p-5 mt-4 flex items-center justify-between">
           {isInCart ? (
             <>
-              <p className="text-lg font-medium text-[#18181b]">Item Moved to Cart</p>
+              <p className="text-lg font-medium text-foreground">Item Moved to Cart</p>
               <button
                 type="button"
                 onClick={() => setMiniCartOpen(true)}
-                className="px-8 py-3 text-base font-medium bg-weelp-sage-deep hover:bg-[#4d8069] text-white rounded-md cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="px-8 py-3 text-base font-medium bg-weelp-sage-deep hover:bg-weelp-sage-hover text-white rounded-md cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 Show Cart
               </button>
@@ -385,7 +387,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             <>
               <div className="flex flex-col">
                 {productType === 'activity' && pricing && pricing.headcount >= 1 ? (
-                  <p className="text-lg font-bold text-[#18181b]">
+                  <p className="text-lg font-bold text-foreground">
                     Total:{' '}
                     <span key={`card-${pricing.final}`} className="inline-block animate-price-fade">
                       {formatCurrency(pricing.final, pricing.currency)}
@@ -399,7 +401,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                         ${addonsTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </span>
                     </p>
-                    <p className="text-lg font-bold text-[#18181b]">
+                    <p className="text-lg font-bold text-foreground">
                       Total:{' '}
                       <span key={`card-tot-${basePrice + addonsTotal}`} className="inline-block animate-price-fade">
                         ${(basePrice + addonsTotal).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -407,7 +409,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                     </p>
                   </>
                 ) : (
-                  <p className="text-lg font-bold text-[#18181b]">
+                  <p className="text-lg font-bold text-foreground">
                     <span key={`card-base-${basePrice}`} className="inline-block animate-price-fade">
                       ${basePrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
@@ -417,7 +419,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
               <button
                 type="submit"
                 form={`booking-form-${productId}`}
-                className="px-8 py-3 text-base font-medium bg-weelp-sage-deep hover:bg-[#4d8069] text-white rounded-md disabled:bg-zinc-400 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="px-8 py-3 text-base font-medium bg-weelp-sage-deep hover:bg-weelp-sage-hover text-white rounded-md disabled:bg-muted-foreground disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 Select
               </button>
@@ -426,16 +428,16 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
         </div>
 
         {/* Questions Card */}
-        <div className="mt-4 border border-[#e4e4e7] rounded-xl p-7 bg-white">
+        <div className="mt-4 border border-border rounded-xl p-7 bg-background">
           <div className="flex items-start justify-between gap-4">
             <div className="flex flex-col gap-2">
-              <h4 className="text-[#18181b] font-semibold text-lg">Questions?</h4>
-              <p className="text-base text-[#71717a]">Visit the Weelp Help Centre for any further questions.</p>
-              <span className="text-sm text-[#52525b] mt-2">Product ID : {productId ?? 451245}</span>
+              <h4 className="text-foreground font-semibold text-lg">Questions?</h4>
+              <p className="text-base text-muted-foreground">Visit the Weelp Help Centre for any further questions.</p>
+              <span className="text-sm text-copy mt-2">Product ID : {productId ?? 451245}</span>
             </div>
             <button
               type="button"
-              className="px-6 py-3 border border-[#e4e4e7] rounded-lg text-sm font-medium text-[#18181b] whitespace-nowrap hover:bg-[#f4f4f5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              className="px-6 py-3 border border-border rounded-lg text-sm font-medium text-foreground whitespace-nowrap hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             >
               Help Center
             </button>

@@ -34,7 +34,7 @@ const MegaMenu = () => {
 
   if (error) {
     return (
-      <div className="flex h-[417px] w-[769px] items-center justify-center rounded-[12px] border border-[#eee] bg-white shadow-xl">
+      <div className="flex h-[417px] w-[769px] items-center justify-center rounded-[12px] border border-border bg-popover shadow-xl">
         <span className="text-sm text-red-500">Couldn&rsquo;t load destinations. Try again.</span>
       </div>
     );
@@ -42,8 +42,8 @@ const MegaMenu = () => {
 
   if (isLoading || !regions.length) {
     return (
-      <div className="flex h-[417px] w-[769px] overflow-hidden rounded-[12px] border border-[#eee] bg-white shadow-xl" aria-hidden="true">
-        <aside className="flex w-[244px] flex-col gap-3 border-r border-[#cccccc80] p-4">
+      <div className="flex h-[417px] w-[769px] overflow-hidden rounded-[12px] border border-border bg-popover shadow-xl" aria-hidden="true">
+        <aside className="flex w-[244px] flex-col gap-3 border-r border-border/50 p-4">
           {Array.from({ length: 7 }).map((_, index) => (
             <Skeleton key={index} className="h-6 w-full rounded-md" />
           ))}
@@ -61,8 +61,8 @@ const MegaMenu = () => {
   }
 
   return (
-    <div className="flex h-[417px] w-[769px] overflow-hidden rounded-[12px] border border-[#eee] bg-white shadow-xl">
-      <aside className="flex w-[244px] flex-col border-r border-[#cccccc80]">
+    <div className="flex h-[417px] w-[769px] overflow-hidden rounded-[12px] border border-border bg-popover shadow-xl">
+      <aside className="flex w-[244px] flex-col border-r border-border/50">
         <MenuList items={items} activeId={activeId} onSelect={handleSelectRegion} />
       </aside>
 

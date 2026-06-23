@@ -10,7 +10,7 @@ const BannerSectionSearchForm = ({ title, description }) => {
 
   if (title && description) {
     return (
-      <section className="weelp-hero-rise relative overflow-hidden min-h-[320px] sm:min-h-[420px] h-full flex justify-center items-center bg-[#f8faf9] p-6 mb-10 md:mb-16 lg:mb-24">
+      <section className="weelp-hero-rise relative overflow-hidden min-h-[320px] sm:min-h-[420px] h-full flex justify-center items-center bg-surface-tint p-6 mb-10 md:mb-16 lg:mb-24">
         <div data-banner-globe-background className="hidden 2xl:block absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
           <AnimatedGlobe
             activationMediaQuery="(min-width: 1536px)"
@@ -21,7 +21,7 @@ const BannerSectionSearchForm = ({ title, description }) => {
           />
         </div>
         <div className="w-full max-w-xl sm:max-w-3xl flex flex-col items-center gap-2 relative z-[60]">
-          <h1 className="text-xl sm:text-5xl font-semibold text-[#18181b] text-center">
+          <h1 className="text-xl sm:text-5xl font-semibold text-foreground text-center">
             <span className="weelp-rise-mask weelp-rise-mask--block">
               <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
                 {title}

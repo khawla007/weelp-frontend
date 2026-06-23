@@ -24,7 +24,7 @@ export default function TransferResultsDropdown({ open, loading, transfers = [],
       type="button"
       onClick={onClose}
       aria-label="Close results"
-      className="absolute -top-3 -right-3 z-10 w-8 h-8 rounded-full bg-white border border-[#e4e4e7] shadow-[4px_4px_12px_rgba(0,0,0,0.1)] flex items-center justify-center text-[#18181b] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+      className="absolute -top-3 -right-3 z-10 w-8 h-8 rounded-full bg-background border border-border shadow-[4px_4px_12px_rgba(0,0,0,0.1)] flex items-center justify-center text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
     >
       <X size={16} />
     </button>
@@ -34,18 +34,18 @@ export default function TransferResultsDropdown({ open, loading, transfers = [],
     return (
       <div className="relative">
         {CloseButton}
-        <div className="bg-white rounded-xl shadow-xl p-4 max-h-[520px] overflow-y-auto flex flex-col gap-4">
+        <div className="bg-background rounded-xl shadow-xl p-4 max-h-[520px] overflow-y-auto flex flex-col gap-4">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="border border-[#e4e4e7] rounded-lg p-4 animate-pulse">
+            <div key={i} className="border border-border rounded-lg p-4 animate-pulse">
               <div className="flex gap-4">
                 <div className="flex-[3] space-y-3">
-                  <div className="h-3 w-24 bg-[#f4f4f5] rounded" />
-                  <div className="h-4 w-40 bg-[#f4f4f5] rounded" />
-                  <div className="h-3 w-32 bg-[#f4f4f5] rounded" />
+                  <div className="h-3 w-24 bg-muted rounded" />
+                  <div className="h-4 w-40 bg-muted rounded" />
+                  <div className="h-3 w-32 bg-muted rounded" />
                 </div>
-                <div className="flex-[3] h-32 bg-[#f4f4f5] rounded" />
+                <div className="flex-[3] h-32 bg-muted rounded" />
               </div>
-              <div className="h-8 mt-4 bg-[#f4f4f5] rounded" />
+              <div className="h-8 mt-4 bg-muted rounded" />
             </div>
           ))}
         </div>
@@ -57,7 +57,7 @@ export default function TransferResultsDropdown({ open, loading, transfers = [],
     return (
       <div className="relative">
         {CloseButton}
-        <div className="bg-white rounded-xl shadow-xl p-8 text-center text-[#71717a]">No transfers found for this route. Try different locations.</div>
+        <div className="bg-background rounded-xl shadow-xl p-8 text-center text-muted-foreground">No transfers found for this route. Try different locations.</div>
       </div>
     );
   }
@@ -65,7 +65,7 @@ export default function TransferResultsDropdown({ open, loading, transfers = [],
   return (
     <div className="relative">
       {CloseButton}
-      <div className="bg-white rounded-xl shadow-xl max-h-[520px] overflow-y-auto flex flex-col gap-4 p-4">
+      <div className="bg-background rounded-xl shadow-xl max-h-[520px] overflow-y-auto flex flex-col gap-4 p-4">
         {transfers.map((transfer, idx) => (
           /* 60ms stagger, capped at 6 cards (~360ms) so later results aren't slow */
           <Reveal key={transfer.id ?? transfer.transfer_id ?? `transfer-${idx}`} delay={Math.min(idx, 6) * 60} duration={400}>

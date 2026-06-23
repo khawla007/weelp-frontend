@@ -134,8 +134,8 @@ export default function TransferSearchModalPublic({ open, onOpenChange, cityIds 
               ) : (
                 <ul className="space-y-1">
                   {filtered.map((transfer) => (
-                    <li key={transfer.id} className="flex items-center gap-3 p-2 rounded-md hover:bg-zinc-100 cursor-pointer transition-colors" onClick={() => handleSelectTransfer(transfer)}>
-                      <div className="relative h-14 w-14 rounded-md overflow-hidden bg-zinc-200 flex-shrink-0">
+                    <li key={transfer.id} className="flex items-center gap-3 p-2 rounded-md hover:bg-muted cursor-pointer transition-colors" onClick={() => handleSelectTransfer(transfer)}>
+                      <div className="relative h-14 w-14 rounded-md overflow-hidden bg-muted flex-shrink-0">
                         {transfer.featured_image ? (
                           <img src={transfer.featured_image} alt={transfer.name} className="h-full w-full object-cover" />
                         ) : (
@@ -175,8 +175,8 @@ export default function TransferSearchModalPublic({ open, onOpenChange, cityIds 
         {stage === 'configure' && selectedTransfer && (
           <div className="space-y-4">
             {/* Selected transfer summary */}
-            <div className="flex items-center gap-3 p-2 bg-zinc-50 rounded-md">
-              <div className="relative h-10 w-10 rounded-md overflow-hidden bg-zinc-200 flex-shrink-0">
+            <div className="flex items-center gap-3 p-2 bg-muted rounded-md">
+              <div className="relative h-10 w-10 rounded-md overflow-hidden bg-muted flex-shrink-0">
                 {selectedTransfer.featured_image ? (
                   <img src={selectedTransfer.featured_image} alt={selectedTransfer.name} className="h-full w-full object-cover" />
                 ) : (

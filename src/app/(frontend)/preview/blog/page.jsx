@@ -21,18 +21,18 @@ export default function BlogPreviewPage() {
 
   if (!preview) {
     return (
-      <main className="min-h-screen bg-white px-6 py-20">
-        <div className="mx-auto max-w-3xl text-zinc-700">Loading preview...</div>
+      <main className="min-h-screen bg-background px-6 py-20">
+        <div className="mx-auto max-w-3xl text-copy">Loading preview...</div>
       </main>
     );
   }
 
   if (!preview?.content && !preview?.name) {
     return (
-      <main className="min-h-screen bg-white px-6 py-20">
+      <main className="min-h-screen bg-background px-6 py-20">
         <div className="mx-auto max-w-3xl space-y-4">
-          <h1 className="text-2xl font-semibold text-zinc-900">Preview unavailable</h1>
-          <p className="text-zinc-600">Return to the Blog editor and click Preview again.</p>
+          <h1 className="text-2xl font-semibold text-foreground">Preview unavailable</h1>
+          <p className="text-copy">Return to the Blog editor and click Preview again.</p>
           <Button asChild>
             <Link href="/dashboard/admin/blogs">Back to blogs</Link>
           </Button>
@@ -67,15 +67,15 @@ export default function BlogPreviewPage() {
         </div>
       </div>
 
-      <main className="min-h-screen bg-white pt-12">
-        <section className="flex min-h-[360px] flex-col gap-8 bg-gradient-to-r from-zinc-50 to-[#d0eccb] p-6 md:flex-row md:px-24">
+      <main className="min-h-screen bg-background pt-12">
+        <section className="flex min-h-[360px] flex-col gap-8 bg-gradient-to-r from-muted to-weelp-sage-wash p-6 md:flex-row md:px-24">
           <div className="flex flex-1 flex-col justify-center gap-5">
-            <h1 className="text-3xl font-semibold leading-tight text-zinc-950 md:text-5xl">{preview.name || 'Untitled blog'}</h1>
+            <h1 className="text-3xl font-semibold leading-tight text-foreground md:text-5xl">{preview.name || 'Untitled blog'}</h1>
             {preview.excerpt && <p className="max-w-3xl text-base font-medium text-weelp-steel md:text-lg">{preview.excerpt}</p>}
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-3">
                 {tags.map((tag) => (
-                  <span key={tag.id || tag.name} className="rounded-full bg-[#f2f7f5] px-4 py-2 text-sm text-weelp-copy">
+                  <span key={tag.id || tag.name} className="rounded-full bg-surface-tint px-4 py-2 text-sm text-weelp-copy">
                     {tag.name}
                   </span>
                 ))}
@@ -86,13 +86,13 @@ export default function BlogPreviewPage() {
         </section>
 
         <section className="flex flex-col lg:flex-row">
-          <article className="flex-[2] bg-[#f4f4f5]">
+          <article className="flex-[2] bg-muted">
             <div className="mx-auto max-w-4xl p-6">
               <RichTextEditor content={preview.content || ''} editable={false} chrome={false} />
             </div>
           </article>
           <aside className="flex flex-1 flex-col gap-6 p-6 px-8">
-            <h2 className="text-lg font-semibold capitalize text-[#18181b] sm:text-[28px]">Categories</h2>
+            <h2 className="text-lg font-semibold capitalize text-foreground sm:text-[28px]">Categories</h2>
             {categories.length > 0 ? (
               <ul className="flex max-w-52 flex-wrap gap-2 sm:gap-4">
                 {categories.map((category) => (
@@ -102,7 +102,7 @@ export default function BlogPreviewPage() {
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-zinc-500">No categories selected.</p>
+              <p className="text-sm text-muted-foreground">No categories selected.</p>
             )}
           </aside>
         </section>

@@ -54,11 +54,11 @@ export default async function CityItemsListing({ citySlug, itemType, searchParam
 
       {isError ? (
         <div className="flex flex-col items-center gap-4 py-20 text-center">
-          <p className="text-lg text-[#71717a]">Something went wrong. Please try again later.</p>
+          <p className="text-lg text-muted-foreground">Something went wrong. Please try again later.</p>
         </div>
       ) : items.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-20 text-center">
-          <p className="text-lg text-[#71717a]">
+          <p className="text-lg text-muted-foreground">
             No {label.toLowerCase()} found in {cityName}.
           </p>
           {currentPage > 1 && (
@@ -103,23 +103,23 @@ function Pagination({ currentPage, lastPage, basePath }) {
       {currentPage > 1 ? (
         <Link
           href={pageHref(currentPage - 1)}
-          className="flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] shadow-sm transition hover:bg-zinc-50"
+          className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition hover:bg-muted"
           aria-label="Previous page"
         >
           <ChevronLeft className="size-4" />
         </Link>
       ) : (
-        <span className="flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-zinc-100 text-zinc-400 shadow-sm">
+        <span className="flex size-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground shadow-sm">
           <ChevronLeft className="size-4" />
         </span>
       )}
 
       {start > 1 && (
         <>
-          <Link href={pageHref(1)} className="flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-sm text-[#18181b] shadow-sm transition hover:bg-zinc-50">
+          <Link href={pageHref(1)} className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted">
             1
           </Link>
-          {start > 2 && <span className="px-1 text-[#71717a]">...</span>}
+          {start > 2 && <span className="px-1 text-muted-foreground">...</span>}
         </>
       )}
 
@@ -129,7 +129,7 @@ function Pagination({ currentPage, lastPage, basePath }) {
           href={pageHref(page)}
           aria-current={page === currentPage ? 'page' : undefined}
           className={`flex size-9 items-center justify-center rounded-full border text-sm shadow-sm transition ${
-            page === currentPage ? 'border-[#18181b] bg-[#18181b] text-white' : 'border-[#e4e4e7] bg-white text-[#18181b] hover:bg-zinc-50'
+            page === currentPage ? 'border-foreground bg-foreground text-white' : 'border-border bg-card text-foreground hover:bg-muted'
           }`}
         >
           {page}
@@ -138,10 +138,10 @@ function Pagination({ currentPage, lastPage, basePath }) {
 
       {end < lastPage && (
         <>
-          {end < lastPage - 1 && <span className="px-1 text-[#71717a]">...</span>}
+          {end < lastPage - 1 && <span className="px-1 text-muted-foreground">...</span>}
           <Link
             href={pageHref(lastPage)}
-            className="flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-sm text-[#18181b] shadow-sm transition hover:bg-zinc-50"
+            className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted"
           >
             {lastPage}
           </Link>
@@ -151,13 +151,13 @@ function Pagination({ currentPage, lastPage, basePath }) {
       {currentPage < lastPage ? (
         <Link
           href={pageHref(currentPage + 1)}
-          className="flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] shadow-sm transition hover:bg-zinc-50"
+          className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition hover:bg-muted"
           aria-label="Next page"
         >
           <ChevronRight className="size-4" />
         </Link>
       ) : (
-        <span className="flex size-9 items-center justify-center rounded-full border border-[#e4e4e7] bg-zinc-100 text-zinc-400 shadow-sm">
+        <span className="flex size-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground shadow-sm">
           <ChevronRight className="size-4" />
         </span>
       )}

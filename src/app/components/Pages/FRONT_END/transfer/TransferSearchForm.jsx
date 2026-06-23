@@ -164,9 +164,9 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
 
   return (
     <div className="mx-auto md:w-[735px] w-full relative flex flex-col gap-4">
-      <div className="relative grid grid-cols-2 overflow-hidden rounded-xl border border-[#e4e4e7] bg-white sm:flex sm:items-stretch">
+      <div className="relative grid grid-cols-2 overflow-hidden rounded-xl border border-border bg-background sm:flex sm:items-stretch">
         {/* Pickup */}
-        <div className="min-w-0 border-r border-b border-[#e4e4e7] sm:flex-1 sm:border-b-0">
+        <div className="min-w-0 border-r border-b border-border sm:flex-1 sm:border-b-0">
           <Controller name="pickup" control={control} render={({ field }) => <LocationComboboxPublic value={field.value} onChange={field.onChange} placeholder="Pickup Location" icon={MapPin} />} />
         </div>
 
@@ -175,23 +175,23 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
           type="button"
           onClick={handleSwap}
           aria-label="Swap pickup and destination"
-          className="absolute left-1/2 top-[29px] z-20 flex h-[27px] w-[27px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#e4e4e7] bg-white shadow-[4px_4px_12px_rgba(0,0,0,0.1)] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:left-1/4 sm:top-1/2"
+          className="absolute left-1/2 top-[29px] z-20 flex h-[27px] w-[27px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background shadow-[4px_4px_12px_rgba(0,0,0,0.1)] hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:left-1/4 sm:top-1/2"
         >
-          <ArrowLeftRight className="h-3 w-3 text-[#18181b]" />
+          <ArrowLeftRight className="h-3 w-3 text-foreground" />
         </button>
 
         {/* Destination */}
-        <div className="min-w-0 border-b border-[#e4e4e7] sm:flex-1 sm:border-r sm:border-b-0">
+        <div className="min-w-0 border-b border-border sm:flex-1 sm:border-r sm:border-b-0">
           <Controller name="destination" control={control} render={({ field }) => <LocationComboboxPublic value={field.value} onChange={field.onChange} placeholder="Destination" icon={MapPin} />} />
         </div>
 
         {/* Date */}
-        <div className="min-w-0 border-r border-[#e4e4e7] sm:flex-1">
+        <div className="min-w-0 border-r border-border sm:flex-1">
           <Popover open={dateOpen} onOpenChange={setDateOpen}>
             <PopoverTrigger asChild>
               <button type="button" className="flex w-full items-center gap-2 py-[18px] px-4 text-left bg-transparent outline-none">
-                <CalendarIcon className="h-5 w-5 shrink-0 text-[#71717a]" />
-                <span className={`truncate text-xs sm:text-sm font-medium ${date ? 'text-[#18181b]' : 'text-[#71717a]'}`}>{formatDate(date)}</span>
+                <CalendarIcon className="h-5 w-5 shrink-0 text-muted-foreground" />
+                <span className={`truncate text-xs sm:text-sm font-medium ${date ? 'text-foreground' : 'text-muted-foreground'}`}>{formatDate(date)}</span>
               </button>
             </PopoverTrigger>
             <PopoverContent
@@ -205,8 +205,8 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                 }
               }}
             >
-              <div className="flex items-center gap-2 px-2 pt-1 pb-2 border-b border-[#e4e4e7] mb-1">
-                <span className="text-xs font-medium text-[#18181b] shrink-0">Pickup time</span>
+              <div className="flex items-center gap-2 px-2 pt-1 pb-2 border-b border-border mb-1">
+                <span className="text-xs font-medium text-foreground shrink-0">Pickup time</span>
                 <Controller
                   name="time"
                   control={control}
@@ -233,7 +233,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                             ))}
                           </SelectContent>
                         </Select>
-                        <span className="text-[#18181b] font-semibold">:</span>
+                        <span className="text-foreground font-semibold">:</span>
                         <Select value={parts.minute} onValueChange={(v) => setPart('minute', v)}>
                           <SelectTrigger className={`${triggerCls} w-16`}>
                             <SelectValue />
@@ -266,7 +266,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                   type="button"
                   onClick={() => setDateOpen(false)}
                   disabled={!date}
-                  className="rounded-md bg-weelp-sage-deep px-3 py-1 text-xs font-medium text-white hover:bg-[#4d8069] disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  className="rounded-md bg-weelp-sage-deep px-3 py-1 text-xs font-medium text-white hover:bg-weelp-sage-hover disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 >
                   Done
                 </button>
@@ -285,8 +285,8 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
           <Popover open={paxOpen} onOpenChange={setPaxOpen}>
             <PopoverTrigger asChild>
               <button type="button" className="flex w-full items-center gap-2 py-[18px] px-4 text-left bg-transparent outline-none">
-                <Users className="h-5 w-5 shrink-0 text-[#71717a]" />
-                <span className={`truncate text-xs sm:text-sm font-medium ${paxTouched ? 'text-[#18181b]' : 'text-[#71717a]'}`}>
+                <Users className="h-5 w-5 shrink-0 text-muted-foreground" />
+                <span className={`truncate text-xs sm:text-sm font-medium ${paxTouched ? 'text-foreground' : 'text-muted-foreground'}`}>
                   {paxTouched ? `${totalPassengers} ${totalPassengers === 1 ? 'Person' : 'People'}` : 'How Many?'}
                 </span>
               </button>
@@ -300,24 +300,24 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                 ].map((row) => (
                   <div key={row.key} className="flex justify-between items-center">
                     <div>
-                      <h3 className="font-semibold text-[#18181b] text-sm">{row.label}</h3>
-                      <span className="text-xs text-[#71717a]">{row.sub}</span>
+                      <h3 className="font-semibold text-foreground text-sm">{row.label}</h3>
+                      <span className="text-xs text-muted-foreground">{row.sub}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <button
                         type="button"
                         onClick={() => decrement(row.key)}
                         disabled={row.value <= row.min}
-                        className="w-8 h-8 rounded-full border border-[#e4e4e7] flex items-center justify-center text-[#18181b] hover:bg-[#f4f4f5] disabled:opacity-40"
+                        className="w-8 h-8 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-40"
                         aria-label={`Decrease ${row.label}`}
                       >
                         <Minus size={14} />
                       </button>
-                      <span className="font-semibold text-[#18181b] w-5 text-center">{row.value}</span>
+                      <span className="font-semibold text-foreground w-5 text-center">{row.value}</span>
                       <button
                         type="button"
                         onClick={() => increment(row.key)}
-                        className="w-8 h-8 rounded-full border border-weelp-sage-deep flex items-center justify-center text-weelp-sage-deep hover:bg-[#f4f4f5]"
+                        className="w-8 h-8 rounded-full border border-weelp-sage-deep flex items-center justify-center text-weelp-sage-deep hover:bg-muted"
                         aria-label={`Increase ${row.label}`}
                       >
                         <Plus size={14} />

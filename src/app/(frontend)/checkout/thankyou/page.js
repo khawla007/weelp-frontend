@@ -57,7 +57,7 @@ const SucceceedPageContent = () => {
   // console.log(priceAmount)
 
   return (
-    <div className="min-h-[85vh] bg-[#f8faf9] py-10 flex justify-center items-center">
+    <div className="min-h-[85vh] bg-background py-10 flex justify-center items-center">
       <div className="container-page grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Booking Summary */}
         <Card className="lg:col-span-2 space-y-4">
@@ -176,12 +176,15 @@ const SucceceedPageContent = () => {
 
             {/* Navigation */}
             <div className="flex justify-between w-full mt-6">
-              <Link href="/" className="bg-white text-black border border-weelp-sage-deep p-2 rounded-2xl text-sm font-medium px-4 transition-colors hover:bg-weelp-sage-deep hover:text-white">
+              <Link
+                href="/"
+                className="bg-background text-foreground border border-weelp-sage-deep p-2 rounded-2xl text-sm font-medium px-4 transition-colors hover:bg-weelp-sage-deep hover:text-white"
+              >
                 Back to Home
               </Link>
               <Link
                 href={dashboardUrl}
-                className="bg-weelp-sage-deep text-white border border-weelp-sage-deep p-2 px-4 rounded-2xl text-sm font-medium transition-colors hover:bg-white hover:text-black"
+                className="bg-weelp-sage-deep text-white border border-weelp-sage-deep p-2 px-4 rounded-2xl text-sm font-medium transition-colors hover:bg-background hover:text-foreground"
               >
                 Go To Bookings
               </Link>
@@ -196,21 +199,21 @@ const SucceceedPageContent = () => {
             <h2 className="font-semibold text-lg">{item?.name}</h2>
           </CardHeader>
           <CardContent className="space-y-3 text-sm p-4">
-            <div className="text-black flex w-full justify-between">
+            <div className="text-foreground flex w-full justify-between">
               <strong>Status:</strong> {payment?.payment_status}
             </div>
-            <div className="text-black flex w-full justify-between">
+            <div className="text-foreground flex w-full justify-between">
               <strong>Method:</strong> {payment?.payment_method}
             </div>
 
             {baseAmount != null && (
-              <div className="text-black flex w-full justify-between">
+              <div className="text-foreground flex w-full justify-between">
                 <strong>Item Price:</strong> {formatCurrency(parseFloat(baseAmount), currency)}
               </div>
             )}
 
             {addons.length > 0 && (
-              <div className="text-black flex flex-col gap-1">
+              <div className="text-foreground flex flex-col gap-1">
                 <strong>Add-ons:</strong>
                 {addons.map((a, i) => (
                   <div key={i} className="flex justify-between ml-2 text-xs">
@@ -225,7 +228,7 @@ const SucceceedPageContent = () => {
               </div>
             )}
 
-            <div className="text-black flex w-full justify-between font-bold border p-4 rounded-md">
+            <div className="text-foreground flex w-full justify-between font-bold border p-4 rounded-md">
               <strong>Total:</strong> {priceAmount}
             </div>
           </CardContent>

@@ -173,11 +173,11 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
                 })
               ) : (
                 <div data-testid="empty-state" className="weelp-fade-up col-span-full flex min-h-[300px] flex-col items-center justify-center gap-4 text-center">
-                  <p className="text-lg text-[#71717a]">No items match your filters.</p>
+                  <p className="text-lg text-muted-foreground">No items match your filters.</p>
                   <button
                     type="button"
                     onClick={clearFilters}
-                    className="inline-flex min-h-[44px] items-center rounded-[11.5px] border border-weelp-sage-deep bg-white px-5 py-2.5 text-[16px] font-medium text-weelp-copy transition-colors duration-200 motion-reduce:transition-none hover:bg-weelp-sage-deep hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                    className="inline-flex min-h-[44px] items-center rounded-[11.5px] border border-weelp-sage-deep bg-background px-5 py-2.5 text-[16px] font-medium text-weelp-copy transition-colors duration-200 motion-reduce:transition-none hover:bg-weelp-sage-deep hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                   >
                     Clear filters
                   </button>

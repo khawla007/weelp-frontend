@@ -14,7 +14,7 @@ const GLOBE_SCALE = 1.1;
 const MARKER_ELEVATION = 0.05;
 const SURFACE_RADIUS = 0.8 + MARKER_ELEVATION;
 const ROUTE_STEPS = 18;
-const DEFAULT_STAGE_CLASS = 'pointer-events-none absolute inset-0 block overflow-hidden bg-white select-none';
+const DEFAULT_STAGE_CLASS = 'pointer-events-none absolute inset-0 block overflow-hidden bg-card select-none';
 const DEFAULT_SHELL_CLASS = 'pointer-events-none absolute bottom-[-86px] right-[-18px] z-[3] size-[507px] translate-x-[10%] translate-y-[20%] md:size-[611px] lg:size-[702px]';
 const GLOBE_MARKERS = [
   { location: [25.2048, 55.2708], size: 0.035 },
@@ -246,27 +246,27 @@ const AnimatedGlobe = ({ activationMediaQuery, activateOnVisible = false, stageC
         <svg data-personalised-flight aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none" className="personalised-flight">
           <path ref={flightPathRef} data-personalised-flight-path d="M 24 63 L 76 47" className="personalised-flight-path" />
           <g ref={staticFlightPlaneRef} data-personalised-flight-static-plane className="personalised-flight-plane-static">
-            <svg viewBox="0 0 48 48" className="personalised-flight-plane personalised-flight-boeing" x="-3" y="-3" width="6" height="6">
+            <svg viewBox="0 0 48 48" className="personalised-flight-plane personalised-flight-boeing text-background" x="-3" y="-3" width="6" height="6">
               <path
                 d="M24 4c2.2 0 4 1.8 4 4v11.2l15 8.2v4.5l-15-3.4v8.2l5.4 4v3.1L24 41.5l-9.4 2.3v-3.1l5.4-4v-8.2L5 31.9v-4.5l15-8.2V8c0-2.2 1.8-4 4-4Z"
-                fill="#ffffff"
-                stroke="#111111"
+                fill="currentColor"
+                stroke="hsl(var(--foreground))"
                 strokeWidth="1.1"
                 strokeLinejoin="round"
               />
-              <path d="M24 8v29.5" stroke="#111111" strokeWidth="0.9" strokeLinecap="round" />
+              <path d="M24 8v29.5" stroke="hsl(var(--foreground))" strokeWidth="0.9" strokeLinecap="round" />
             </svg>
           </g>
           <g ref={flightPlaneRef} data-personalised-flight-motion className="personalised-flight-plane-motion">
-            <svg data-personalised-flight-plane viewBox="0 0 48 48" className="personalised-flight-plane personalised-flight-boeing" x="-3" y="-3" width="6" height="6">
+            <svg data-personalised-flight-plane viewBox="0 0 48 48" className="personalised-flight-plane personalised-flight-boeing text-background" x="-3" y="-3" width="6" height="6">
               <path
                 d="M24 4c2.2 0 4 1.8 4 4v11.2l15 8.2v4.5l-15-3.4v8.2l5.4 4v3.1L24 41.5l-9.4 2.3v-3.1l5.4-4v-8.2L5 31.9v-4.5l15-8.2V8c0-2.2 1.8-4 4-4Z"
-                fill="#ffffff"
-                stroke="#111111"
+                fill="currentColor"
+                stroke="hsl(var(--foreground))"
                 strokeWidth="1.1"
                 strokeLinejoin="round"
               />
-              <path d="M24 8v29.5" stroke="#111111" strokeWidth="0.9" strokeLinecap="round" />
+              <path d="M24 8v29.5" stroke="hsl(var(--foreground))" strokeWidth="0.9" strokeLinecap="round" />
             </svg>
           </g>
         </svg>

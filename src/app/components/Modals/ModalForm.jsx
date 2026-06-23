@@ -94,7 +94,7 @@ const ModalForm = ({ showForm, setShowForm, handleShowForm }) => {
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay
           data-search-modal-layer=""
-          className="fixed inset-0 z-[100000] bg-black/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:duration-300 data-[state=closed]:duration-200 motion-reduce:animate-none"
+          className="fixed inset-0 z-[100000] bg-foreground/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:duration-300 data-[state=closed]:duration-200 motion-reduce:animate-none"
         />
         <DialogPrimitive.Content
           ref={contentRef}
@@ -118,7 +118,7 @@ const ModalForm = ({ showForm, setShowForm, handleShowForm }) => {
                   ref={closeButtonRef}
                   type="button"
                   aria-label="Close search"
-                  className="absolute -right-2.5 -top-2.5 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-red-100 bg-white text-red-600 shadow-md shadow-black/10 transition-[background-color,color,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-red-50 hover:text-red-700 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+                  className="absolute -right-2.5 -top-2.5 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-destructive/20 bg-background text-destructive shadow-md shadow-foreground/10 transition-[background-color,color,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-destructive/10 hover:text-destructive hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none"
                   onClick={handleShowForm}
                 >
                   <X size={14} strokeWidth={2.5} />

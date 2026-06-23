@@ -32,7 +32,7 @@ const BannerSection = () => {
       <div className="relative mx-auto flex h-full w-full items-center">
         <div className="flex flex-[1] flex-col items-start gap-4 p-5 sm:p-8 md:p-12 lg:p-20">
           <div className="flex flex-col justify-start gap-4">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold capitalize text-[#18181b]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold capitalize text-foreground">
               {name ? (
                 <span className="weelp-rise-mask weelp-rise-mask--block">
                   <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
@@ -56,7 +56,7 @@ const BannerSection = () => {
         <Icons.Vector2 className="absolute bottom-0 left-2 z-0 w-32 sm:w-40 lg:w-48" />
         <div className="relative hidden h-full w-full flex-[1] items-end justify-start bg-cover bg-no-repeat lg:flex" style={{ backgroundImage: `url(${bannerImage})` }}>
           <div className="absolute left-[20%] top-[70%]">
-            <p className="w-3/5 text-lg text-[#e4e4e7]">This far flung region is made of icy blue waters and snow covered landscapes of incredible beauty.</p>
+            <p className="w-3/5 text-lg text-background/90">This far flung region is made of icy blue waters and snow covered landscapes of incredible beauty.</p>
           </div>
         </div>
       </div>

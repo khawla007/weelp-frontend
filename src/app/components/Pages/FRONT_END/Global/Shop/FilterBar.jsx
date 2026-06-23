@@ -61,16 +61,16 @@ const FilterBar = ({ filters, setFilters }) => {
 
   return (
     <div className="flex-1 lg:flex justify-center w-full shop_filter">
-      <form className="p-4 px-8 sm:my-12 bg-white sm:max-w-xs w-full h-fit  shadow-md rounded-lg " onChange={handleOnChange}>
+      <form className="p-4 px-8 sm:my-12 bg-background sm:max-w-xs w-full h-fit  shadow-md rounded-lg " onChange={handleOnChange}>
         {/* Category Section */}
         <div>
-          <h3 className="text-lg font-medium text-#18181b mt-6 mb-4">Category</h3>
+          <h3 className="text-lg font-medium text-foreground mt-6 mb-4">Category</h3>
           <div className="space-y-4">
             {['ThemePark', 'Water Park', 'Cable Car', 'PlayGround'].map((category) => (
               <div key={category} className="flex items-center">
                 <input
                   type="checkbox"
-                  className="form-checkbox size-5 accent-weelp-sage-deep border  border-[#71717a] cursor-pointer"
+                  className="form-checkbox size-5 accent-weelp-sage-deep border  border-muted-foreground cursor-pointer"
                   value={category}
                   checked={filters.categories.includes(category)}
                   onChange={handleCategoryChange}
@@ -83,14 +83,14 @@ const FilterBar = ({ filters, setFilters }) => {
 
         {/* Price Range Section */}
         <div>
-          <h3 className="text-lg font-medium text-#18181b mt-6 mb-4">Price Range</h3>
+          <h3 className="text-lg font-medium text-foreground mt-6 mb-4">Price Range</h3>
           <div className="flex items-center space-x-2">
             <span className="text-md font-medium text-weelp-steel">$0</span>
             <input
               type="range"
               min="0"
               max="5000"
-              className="w-full h-2 bg-zinc-200 rounded-lg appearance-none cursor-pointer range-thumb focus:outline-none accent-weelp-sage-deep"
+              className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer range-thumb focus:outline-none accent-weelp-sage-deep"
               value={filters.priceRange}
               onChange={handlePriceRangeChange}
             />
@@ -100,14 +100,14 @@ const FilterBar = ({ filters, setFilters }) => {
 
         {/* Rating Section */}
         <div>
-          <h3 className="text-lg font-medium text-#18181b mt-6 mb-4">Ratings</h3>
+          <h3 className="text-lg font-medium text-foreground mt-6 mb-4">Ratings</h3>
           <div className="space-y-2">
             {['3', '4', '5'].reverse().map((rating) => (
               <div key={rating} className="flex items-center gap-2">
                 <input
                   type="radio"
                   name="rating"
-                  className="form-radio size-5 accent-weelp-sage-deep border-[#71717a] cursor-pointer"
+                  className="form-radio size-5 accent-weelp-sage-deep border-muted-foreground cursor-pointer"
                   value={rating}
                   checked={filters.rating === rating}
                   onChange={handleRatingChange}
@@ -126,7 +126,7 @@ const FilterBar = ({ filters, setFilters }) => {
 
         {/* Location Section */}
         <div>
-          <h3 className="text-lg font-medium text-#18181b mt-6 mb-4">Location</h3>
+          <h3 className="text-lg font-medium text-foreground mt-6 mb-4">Location</h3>
           <div className="space-y-2">
             {['Asia', 'Europe', 'Middle East', 'America'].map((location) => (
               <div key={location} className="flex items-center">

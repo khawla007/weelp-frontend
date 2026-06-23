@@ -103,14 +103,14 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
   const isEmpty = messages.length === 0;
 
   return (
-    <div className="flex h-full min-h-0 flex-col bg-white">
-      <header className="flex items-center gap-3 border-b border-[#eaeaea] px-4 py-3">
+    <div className="flex h-full min-h-0 flex-col bg-background">
+      <header className="flex items-center gap-3 border-b border-border px-4 py-3">
         <span aria-hidden="true" className="relative flex h-9 w-9 items-center justify-center rounded-full bg-weelp-sage-deep text-white">
           <Sparkles className="h-4 w-4" />
           <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500" />
         </span>
         <div className="flex flex-col leading-tight">
-          <span className="text-[14px] font-semibold text-[#18181b]">Buddy — AI Travel Guide</span>
+          <span className="text-[14px] font-semibold text-foreground">Buddy — AI Travel Guide</span>
           <span className="text-[12px] font-medium text-emerald-600">Online</span>
         </div>
       </header>
@@ -118,14 +118,14 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
       <div ref={listRef} role="log" aria-live="polite" aria-busy={isThinking} aria-label="Conversation with Buddy" className="flex-1 min-h-0 overflow-y-auto scroll-smooth px-4 py-4">
         {isEmpty ? (
           <div className="flex h-full flex-col items-start justify-end gap-3">
-            <p className="text-[13px] font-medium text-[#52525b]">Try a quick prompt:</p>
+            <p className="text-[13px] font-medium text-copy">Try a quick prompt:</p>
             <div className="flex flex-wrap gap-2">
               {presets.map((preset) => (
                 <button
                   key={preset}
                   type="button"
                   onClick={() => handlePreset(preset)}
-                  className="rounded-full border border-[#eaeaea] bg-white px-3 py-1.5 text-[12px] font-medium text-[#18181b] transition-colors hover:border-weelp-sage-deep hover:bg-weelp-sage-deep/5 hover:text-[#4d8069] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
+                  className="rounded-full border border-border bg-background px-3 py-1.5 text-[12px] font-medium text-foreground transition-colors hover:border-weelp-sage-deep hover:bg-weelp-sage-deep/5 hover:text-weelp-sage-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
                 >
                   {preset}
                 </button>
@@ -143,7 +143,7 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
                     className={
                       isUser
                         ? 'max-w-[80%] whitespace-pre-line rounded-2xl rounded-br-sm bg-weelp-sage-deep px-3 py-2 text-[13px] font-medium text-white'
-                        : 'max-w-[80%] whitespace-pre-line rounded-2xl rounded-bl-sm bg-zinc-100 px-3 py-2 text-[13px] font-medium text-[#18181b]'
+                        : 'max-w-[80%] whitespace-pre-line rounded-2xl rounded-bl-sm bg-muted px-3 py-2 text-[13px] font-medium text-foreground'
                     }
                   >
                     {isUser ? (
@@ -162,10 +162,10 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
             })}
             {isThinking && (
               <li className="flex justify-start" aria-label="Buddy is thinking">
-                <span className="inline-flex items-center gap-1 rounded-2xl rounded-bl-sm bg-zinc-100 px-3 py-2.5 text-[#52525b]">
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#52525b] [animation-delay:-0.2s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#52525b] [animation-delay:-0.1s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#52525b]" />
+                <span className="inline-flex items-center gap-1 rounded-2xl rounded-bl-sm bg-muted px-3 py-2.5 text-copy">
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-copy [animation-delay:-0.2s]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-copy [animation-delay:-0.1s]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-copy" />
                 </span>
               </li>
             )}
@@ -173,7 +173,7 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
         )}
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2 border-t border-[#eaeaea] px-3 py-3 sm:flex-row sm:items-end">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2 border-t border-border px-3 py-3 sm:flex-row sm:items-end">
         <label htmlFor="buddy-chat-input" className="sr-only">
           Message Buddy
         </label>
@@ -184,13 +184,13 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
           onChange={(event) => setDraft(event.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask Buddy: weekend in Paris…"
-          className="max-h-24 min-h-[40px] w-full flex-1 resize-none rounded-lg border border-[#eaeaea] bg-white px-3 py-2 text-[13px] font-medium text-[#18181b] placeholder:text-[#a1a1aa] focus:border-weelp-sage-deep focus:outline-none focus:ring-2 focus:ring-weelp-sage-deep/30"
+          className="max-h-24 min-h-[40px] w-full flex-1 resize-none rounded-lg border border-border bg-background px-3 py-2 text-[13px] font-medium text-foreground placeholder:text-muted-foreground focus:border-weelp-sage-deep focus:outline-none focus:ring-2 focus:ring-weelp-sage-deep/30"
         />
         <button
           type="submit"
           aria-label="Send message"
           disabled={!draft.trim() || isThinking}
-          className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-lg bg-weelp-sage-deep text-white transition-colors hover:bg-[#4d8069] disabled:cursor-not-allowed disabled:bg-weelp-sage-deep/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:w-10"
+          className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-lg bg-weelp-sage-deep text-white transition-colors hover:bg-weelp-sage-hover disabled:cursor-not-allowed disabled:bg-weelp-sage-deep/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:w-10"
         >
           <Send className="h-4 w-4" />
         </button>

@@ -16,11 +16,11 @@ import useMiniCartStore from '@/lib/store/useMiniCartStore';
 
 export const CheckoutUserDetailCard = ({ userImagesrc, userName, userEmail }) => {
   return (
-    <div className="flex gap-4 p-4 items-center hover:bg-[#f2f7f5] cursor-pointer">
+    <div className="flex gap-4 p-4 items-center hover:bg-surface-tint cursor-pointer">
       <Image src={userImagesrc || '/assets/testimonial.png'} alt="userlogo" width={48} height={48} className="rounded-full" />
       <div className="flex flex-col">
-        <h3 className="text-[#52525b] font-bold text-sm capitalize">{userName ? userName : 'Maya'}</h3>
-        <span className="text-[#52525b] text-base leading-6">{userEmail || 'Email: test@test.com'}</span>
+        <h3 className="text-copy font-bold text-sm capitalize">{userName ? userName : 'Maya'}</h3>
+        <span className="text-copy text-base leading-6">{userEmail || 'Email: test@test.com'}</span>
       </div>
     </div>
   );
@@ -326,42 +326,42 @@ const TransferCheckoutItemCard = ({ item }) => {
   const pickupFormatted = formatPickupDateTime(from);
 
   return (
-    <div className="bg-white max-w-md flex flex-col rounded-xl p-6 gap-3">
+    <div className="bg-background max-w-md flex flex-col rounded-xl p-6 gap-3">
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1">
-          <span className="text-xs text-[#52525b] font-medium uppercase tracking-wide">Private Transfer</span>
+          <span className="text-xs text-copy font-medium uppercase tracking-wide">Private Transfer</span>
           <h3 className="text-Blueish font-semibold text-lg">{name || routeTitle}</h3>
         </div>
         {image && <img src={image} alt={name || 'Transfer'} className="rounded-md object-cover h-16 w-20 shrink-0" />}
       </div>
 
-      <div className="flex items-center gap-2 text-[#52525b] text-sm">
+      <div className="flex items-center gap-2 text-copy text-sm">
         <MapPin size={18} className="shrink-0" />
         <span className="font-medium truncate">{routeTitle}</span>
       </div>
 
       {vehicleType && (
-        <div className="flex items-center gap-2 text-[#52525b] text-sm">
+        <div className="flex items-center gap-2 text-copy text-sm">
           <Truck size={18} className="shrink-0" />
           <span className="font-medium capitalize">{vehicleType}</span>
         </div>
       )}
 
       {pickupFormatted && (
-        <div className="flex items-center gap-2 text-[#52525b] text-sm">
+        <div className="flex items-center gap-2 text-copy text-sm">
           <Calendar size={18} className="shrink-0" />
           <span className="font-medium">{pickupFormatted}</span>
         </div>
       )}
 
       {durationHours !== null && (
-        <div className="flex items-center gap-2 text-[#52525b] text-sm">
+        <div className="flex items-center gap-2 text-copy text-sm">
           <Clock size={18} className="shrink-0" />
           <span className="font-medium">Duration - {durationHours} Hours</span>
         </div>
       )}
 
-      <div className="flex items-center gap-2 text-[#52525b] text-sm">
+      <div className="flex items-center gap-2 text-copy text-sm">
         <User size={18} className="shrink-0" />
         <span className="font-medium capitalize">
           {adults} adults{children ? `, ${children} children` : ''}
@@ -369,15 +369,15 @@ const TransferCheckoutItemCard = ({ item }) => {
         </span>
       </div>
 
-      <div className="flex flex-col gap-2 pt-3 border-t border-[#e4e4e7]">
+      <div className="flex flex-col gap-2 pt-3 border-t border-border">
         <BreakdownRow label={priceType === 'per_person' ? `Price (${formatCurrency(unitPrice, currency)} × ${headcount} pax)` : 'Price'} amount={basePrice} currency={currency} />
         {bagCount > 0 && <BreakdownRow label={`Extra luggage (${bagCount} × ${formatCurrency(luggageRate, currency)})`} amount={luggageAmount} currency={currency} />}
         {waitingMinutes > 0 && <BreakdownRow label={`Waiting time (${waitingMinutes} min × ${formatCurrency(waitingRate, currency)})`} amount={waitingAmount} currency={currency} />}
-        <p className="text-[#71717a] text-xs italic">To add extra luggage and waiting minute edit on the search results before adding to cart.</p>
+        <p className="text-muted-foreground text-xs italic">To add extra luggage and waiting minute edit on the search results before adding to cart.</p>
       </div>
 
-      <div className="flex items-center justify-between pt-2 border-t border-[#e4e4e7]">
-        <span className="text-[#18181b] text-lg font-bold">Total</span>
+      <div className="flex items-center justify-between pt-2 border-t border-border">
+        <span className="text-foreground text-lg font-bold">Total</span>
         <span className="text-Blueish font-bold text-lg">{formatCurrency(price, currency)}</span>
       </div>
     </div>
@@ -386,8 +386,8 @@ const TransferCheckoutItemCard = ({ item }) => {
 
 const BreakdownRow = ({ label, amount, currency }) => (
   <div className="flex items-center justify-between text-sm">
-    <span className="text-[#52525b]">{label}</span>
-    <span className="text-[#18181b] font-medium">{formatCurrency(amount, currency)}</span>
+    <span className="text-copy">{label}</span>
+    <span className="text-foreground font-medium">{formatCurrency(amount, currency)}</span>
   </div>
 );
 
@@ -399,24 +399,24 @@ export const CheckoutItemCard = ({ item, itemName, totalPassenger, date, addons 
   const { adults = '', children = '' } = totalPassenger;
   const { from } = date;
   return (
-    <div className="bg-white max-w-md flex flex-col rounded-xl p-6 gap-2">
+    <div className="bg-background max-w-md flex flex-col rounded-xl p-6 gap-2">
       <h3 className="text-Blueish font-semibold text-lg">{itemName || 'Melaka Wonderland Water Theme Park'}</h3>
 
-      <div className="flex items-center gap-2 text-[#52525b] text-sm">
+      <div className="flex items-center gap-2 text-copy text-sm">
         <User size={20} />
         <span className="font-medium capitalize">{`${adults} adults , ${children && children + ' children '}`}</span>
       </div>
 
-      <div className="flex items-center gap-2 text-[#52525b] text-sm">
+      <div className="flex items-center gap-2 text-copy text-sm">
         <Calendar size={20} />
         {from && <span className="font-medium">{actualDate(from)}</span>}
       </div>
 
       {addons.length > 0 && (
         <div className="flex flex-col mt-1">
-          <span className="text-[#52525b] text-xs font-semibold">Add-ons:</span>
+          <span className="text-copy text-xs font-semibold">Add-ons:</span>
           {addons.map((addon, i) => (
-            <span key={i} className="text-[#52525b] text-xs font-medium ml-2">
+            <span key={i} className="text-copy text-xs font-medium ml-2">
               + {addon.addon_name}
             </span>
           ))}
@@ -432,31 +432,31 @@ export const CheckoutReview = () => {
       <div className="flex gap-2">
         <h3 className="text-Blueish text-xl font-semibold flex gap-[2px]">Excellent</h3>
         <div className="flex gap-[1px]">
-          <Star className="bg-[#00B67A] text-white fill-white p-[4px] text-lg size-5" />
-          <Star className="bg-[#00B67A] text-white fill-white p-[4px] text-lg size-5" />
-          <Star className="bg-[#00B67A] text-white fill-white p-[4px] text-lg size-5" />
-          <Star className="bg-[#00B67A] text-white fill-white p-[4px] text-lg size-5" />
-          <Star className="bg-[#00B67A] text-white fill-white p-[4px] text-lg size-5" />
+          <Star className="bg-success text-white fill-white p-[4px] text-lg size-5" />
+          <Star className="bg-success text-white fill-white p-[4px] text-lg size-5" />
+          <Star className="bg-success text-white fill-white p-[4px] text-lg size-5" />
+          <Star className="bg-success text-white fill-white p-[4px] text-lg size-5" />
+          <Star className="bg-success text-white fill-white p-[4px] text-lg size-5" />
         </div>
         <span className="flex gap-1 font-semibold">
-          <Star className="text-xl size-5 text-[#00B67A] fill-[#00B67A]" />
+          <Star className="text-xl size-5 text-success fill-success" />
           Trustpilot
         </span>
       </div>
-      <p className=" text-sm text-black">Based on 222,945 traveler reviews</p>
+      <p className=" text-sm text-foreground">Based on 222,945 traveler reviews</p>
       <div className="mt-4">
         <h3 className="text-Blueish text-xl font-semibold flex gap-[2px]">Questions?</h3>
-        <p className="text-sm text-black">
+        <p className="text-sm text-foreground">
           Visit the Weelp Help Centre for any further <br /> questions.
         </p>
       </div>
       <div className="mt-4 flex flex-col gap-2">
-        <p className="flex items-center gap-2 text-xs text-black">
-          <Phone size={16} className="fill-[#52525b]" />
+        <p className="flex items-center gap-2 text-xs text-foreground">
+          <Phone size={16} className="text-copy fill-current" />
           <span>+1 (702) 648-5873</span>
         </p>
-        <p className="flex items-center gap-2 text-xs text-black">
-          <MessageCircleMore size={16} className="text-[#52525b]" />
+        <p className="flex items-center gap-2 text-xs text-foreground">
+          <MessageCircleMore size={16} className="text-copy" />
           <span>Chat now</span>
         </p>
       </div>
@@ -476,7 +476,7 @@ export const CheckoutUserDetailCardSkeleton = () => (
 
 export const CheckoutItemsSkeleton = () => (
   <div className="flex flex-col gap-4" aria-busy="true" aria-label="Loading order summary">
-    <div className="bg-white max-w-md flex flex-col rounded-xl p-6 gap-2" aria-hidden="true">
+    <div className="bg-background max-w-md flex flex-col rounded-xl p-6 gap-2" aria-hidden="true">
       <div className="weelp-shimmer h-6 w-3/4 rounded" />
       <div className="weelp-shimmer h-4 w-1/2 rounded mt-2" />
       <div className="weelp-shimmer h-4 w-2/3 rounded" />

@@ -83,7 +83,7 @@ export const SpecialFilter = () => {
   const currentItems = filteredItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
-    <section className="bg-[#f8faf9] hidden lg:block">
+    <section className="bg-surface-tint hidden lg:block">
       <div className="flex container mx-auto">
         <div className="flex-[1] flex justify-center py-12">
           <Sidebar dispatch={dispatch} data={fakeData} />
@@ -101,7 +101,7 @@ export const SpecialFilter = () => {
                 ))}
               </Reveal>
             ) : (
-              <p className="text-center text-zinc-500">No items match the selected filters.</p>
+              <p className="text-center text-muted-foreground">No items match the selected filters.</p>
             )}
 
             {/* Pagination */}
@@ -111,7 +111,7 @@ export const SpecialFilter = () => {
                 <button
                   key={index}
                   onClick={() => handlePageChange(index + 1)}
-                  className={`p-2 px-4 shadow-md rounded border border-zinc-300 ${currentPage === index + 1 ? ' bg-white text-black ' : ' '}`}
+                  className={`p-2 px-4 shadow-md rounded border border-border ${currentPage === index + 1 ? ' bg-card text-foreground ' : ' '}`}
                 >
                   {index + 1}
                 </button>
@@ -119,7 +119,7 @@ export const SpecialFilter = () => {
 
               {/* Next Button */}
               {currentPage < totalPages && (
-                <button onClick={() => handlePageChange(currentPage + 1)} className="p-2 px-4 shadow-md rounded border bg-white text-black-300">
+                <button onClick={() => handlePageChange(currentPage + 1)} className="p-2 px-4 shadow-md rounded border bg-background text-foreground-300">
                   <ChevronRight size={18} />
                 </button>
               )}

@@ -140,10 +140,10 @@ const SingleProductTabSection = ({
   const bottomImage = sidebarBottomImage || SIDEBAR_IMAGES[productType];
 
   return (
-    <section className="w-full bg-white">
+    <section className="w-full bg-background">
       {/* Sticky Tab Bar */}
       <div
-        className={`${fixedTab ? 'fixed' : 'relative'} z-[11] w-full bg-white border-b border-[#e4e4e7] transition-[opacity,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+        className={`${fixedTab ? 'fixed' : 'relative'} z-[11] w-full bg-card border-b border-border transition-[opacity,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
           fixedTab ? `shadow-[0_4px_12px_rgba(0,0,0,0.06)] ${pinSettled ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1'}` : 'opacity-100 translate-y-0'
         }`}
         style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}
@@ -156,7 +156,7 @@ const SingleProductTabSection = ({
               onClick={() => toggleTab(tab.id)}
               aria-current={activeTab === tab.id ? 'true' : undefined}
               className={`relative px-6 lg:px-8 py-4 text-sm cursor-pointer transition-colors rounded-sm ${FOCUS_RING} ${
-                activeTab === tab.id ? 'font-semibold text-[#18181b]' : 'font-normal text-[#71717a] hover:text-[#18181b]'
+                activeTab === tab.id ? 'font-semibold text-foreground' : 'font-normal text-muted-foreground hover:text-foreground'
               }`}
               style={index < tabs.length - 1 ? { marginRight: '44px' } : undefined}
             >
@@ -222,7 +222,7 @@ const SingleProductTabSection = ({
           </div>
 
           {/* Right Column — Booking Sidebar */}
-          <Reveal variant="lift" delay={120} className="w-full xl:w-[42%] relative bg-[#f8faf9]">
+          <Reveal variant="lift" delay={120} className="w-full xl:w-[42%] relative bg-surface-tint">
             {/* Bottom decorative image */}
             <div className="absolute bottom-0 left-0 w-full pointer-events-none overflow-hidden" style={{ maxHeight: '150px' }} aria-hidden="true">
               <Image src={bottomImage} alt="" width={640} height={150} sizes="(max-width: 1280px) 100vw, 640px" className="w-full h-auto object-cover opacity-70" />

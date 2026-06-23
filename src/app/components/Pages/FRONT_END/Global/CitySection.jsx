@@ -9,7 +9,7 @@ const CitySection = ({ data }) => {
         {data.slice(0, 6).map(({ name, icon: Icon }, index) => (
           <Card
             key={index}
-            className="w-full sm:max-w-xs h-24 md:h-28 lg:h-32 flex flex-col justify-center items-center p-4 bg-white rounded-[var(--weelp-card-radius)] border border-[var(--weelp-card-border)] shadow-[0_0_0] hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] transition-shadow duration-300"
+            className="w-full sm:max-w-xs h-24 md:h-28 lg:h-32 flex flex-col justify-center items-center p-4 bg-background rounded-[var(--weelp-card-radius)] border border-[var(--weelp-card-border)] shadow-[0_0_0] hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] transition-shadow duration-300"
           >
             {<Icon />}
             <CardTitle className="capitalize text-center text-sm md:text-base lg:text-lg font-bold text-[var(--weelp-home-ink)] mt-4">{name}</CardTitle>

@@ -67,9 +67,9 @@ const TransfersPage = () => {
 
   return (
     <>
-      <section className="weelp-hero-rise relative z-50 min-h-[320px] sm:min-h-[420px] flex justify-center items-center bg-[#f8faf9] p-6 mb-10 md:mb-16 lg:mb-24">
+      <section className="weelp-hero-rise relative z-50 min-h-[320px] sm:min-h-[420px] flex justify-center items-center bg-surface-tint p-6 mb-10 md:mb-16 lg:mb-24">
         <div className="w-full max-w-xl sm:max-w-3xl flex flex-col items-center gap-2 relative z-[60]">
-          <h1 className="text-xl sm:text-5xl font-semibold text-[#18181b] text-center">
+          <h1 className="text-xl sm:text-5xl font-semibold text-foreground text-center">
             <span className="weelp-rise-mask weelp-rise-mask--block">
               <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
                 Book Your Taxi
@@ -115,7 +115,7 @@ const TransfersPage = () => {
 
       <Reveal as="section" initialHidden className="relative">
         <div className="container-page productSlider space-y-8 pb-10 md:pb-16 lg:pb-24">
-          <Reveal as="h2" variant="lift" className="text-3xl font-semibold text-[#18181b]">
+          <Reveal as="h2" variant="lift" className="text-3xl font-semibold text-foreground">
             Featured Review
           </Reveal>
           <Reveal variant="lift" delay={120}>

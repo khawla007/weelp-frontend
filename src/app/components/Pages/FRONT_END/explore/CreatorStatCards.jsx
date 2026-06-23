@@ -24,7 +24,7 @@ export default function CreatorStatCards({ className = 'max-w-[95%] mx-auto px-6
     return (
       <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 pb-6 ${className}`}>
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-24 bg-[#f2f7f5] rounded-lg animate-pulse" />
+          <div key={i} className="h-24 bg-surface-tint rounded-lg animate-pulse" />
         ))}
       </div>
     );
@@ -59,14 +59,14 @@ export default function CreatorStatCards({ className = 'max-w-[95%] mx-auto px-6
   return (
     <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 pb-6 ${className}`}>
       {statItems.map((item) => (
-        <Card key={item.label} className="border border-[#435a6742]">
+        <Card key={item.label} className="border border-border">
           <CardContent className="flex items-center gap-4 p-4">
             <div className={`${item.bg} p-3 rounded-lg`}>
               <item.icon className={`size-5 ${item.color}`} />
             </div>
             <div>
-              <p className="text-sm text-[#71717a]">{item.label}</p>
-              <p className="text-xl font-semibold text-[#18181b]">{item.value}</p>
+              <p className="text-sm text-muted-foreground">{item.label}</p>
+              <p className="text-xl font-semibold text-foreground">{item.value}</p>
             </div>
           </CardContent>
         </Card>

@@ -56,11 +56,11 @@ const CmsPublicPage = async ({ params }) => {
     <>
       <main className="mx-auto w-full max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         <header className="mb-8 space-y-3">
-          <h1 className="text-3xl font-semibold tracking-normal text-zinc-950 sm:text-4xl">{title}</h1>
-          {data.excerpt && <p className="text-base leading-7 text-zinc-600">{data.excerpt}</p>}
+          <h1 className="text-3xl font-semibold tracking-normal text-foreground sm:text-4xl">{title}</h1>
+          {data.excerpt && <p className="text-base leading-7 text-copy">{data.excerpt}</p>}
         </header>
 
-        <article className="prose prose-zinc max-w-none">
+        <article className="prose prose-zinc max-w-none dark:prose-invert">
           <RichTextRenderer content={data.content || ''} />
         </article>
       </main>

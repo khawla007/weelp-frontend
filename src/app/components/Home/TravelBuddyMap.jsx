@@ -36,7 +36,7 @@ const OSM_STYLE = {
 
 const ROUTE_SOURCE_ID = 'travel-buddy-route';
 const ROUTE_LAYER_ID = 'travel-buddy-route-line';
-const ROUTE_STROKE = '#588f7a';
+const ROUTE_STROKE = 'hsl(var(--weelp-sage-deep))';
 
 const PREVIEW_PINS = [
   { label: 'Paris', lat: 48.8566, lng: 2.3522 },
@@ -254,7 +254,7 @@ const TravelBuddyMap = ({ markers = [], route = null, fitBounds = false, showPre
 
   if (mapFailed) {
     return (
-      <div ref={containerRef} role="status" className="w-full h-full flex items-center justify-center bg-neutral-100 text-neutral-600 text-sm p-6 text-center">
+      <div ref={containerRef} role="status" className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground text-sm p-6 text-center">
         <span>Interactive map unavailable. Enable hardware acceleration in your browser (chrome://settings/system) to view it.</span>
       </div>
     );

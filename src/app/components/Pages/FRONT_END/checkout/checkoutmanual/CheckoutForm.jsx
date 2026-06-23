@@ -222,7 +222,7 @@ const CheckoutForm = ({ clientSecret = '', paymentIntentId = '' }) => {
         {submitError && (
           <div
             role="alert"
-            className="rounded-md border border-[#ff725e] bg-[#ffffff] p-4 flex items-start gap-2 text-sm text-[#18181b] transition-[opacity,border-color] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none animate-fade-in"
+            className="rounded-md border border-weelp-discount bg-background p-4 flex items-start gap-2 text-sm text-foreground transition-[opacity,border-color] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none animate-fade-in"
           >
             <AlertTriangle size={16} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
             <span>{submitError}</span>

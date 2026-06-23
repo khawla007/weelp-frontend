@@ -18,10 +18,10 @@ const ROW_MOTION_CLASS =
 const COUNT_MOTION_CLASS = 'transition-[opacity,transform] duration-150 ease-out motion-reduce:transition-none motion-reduce:transform-none';
 const COUNT_NUMBER_MOTION_CLASS = 'inline-block animate-in fade-in-0 zoom-in-95 transition-[opacity,transform] duration-150 ease-out motion-reduce:transition-none motion-reduce:transform-none';
 const CONTROL_BUTTON_CLASS =
-  'w-8 h-8 rounded-full border flex items-center justify-center hover:bg-zinc-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
+  'w-8 h-8 rounded-full border flex items-center justify-center hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
 const FIELD_TRIGGER_CLASS =
-  'flex w-full items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] text-left shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
-const PANEL_BASE_CLASS = 'border border-[#e4e4e7] bg-white shadow-lg rounded-lg';
+  'flex w-full items-center gap-3 rounded-xl border border-border bg-card px-6 py-[18px] text-left shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
+const PANEL_BASE_CLASS = 'border border-border bg-card shadow-lg rounded-lg';
 
 export default function FilterBar({ appearance = 'card' }) {
   const { data: allLocations, loading: locationsLoading } = useCitiesRegions();
@@ -183,12 +183,12 @@ export default function FilterBar({ appearance = 'card' }) {
                   onClick={handleInputClick}
                   className={
                     isPill
-                      ? 'relative flex items-center gap-3 bg-transparent px-7 h-24 cursor-pointer sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-[#e4e4e7] sm:first:before:hidden'
-                      : 'flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none'
+                      ? 'relative flex items-center gap-3 bg-transparent px-7 h-24 cursor-pointer sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border sm:first:before:hidden'
+                      : 'flex items-center gap-3 rounded-xl border border-border bg-card px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none'
                   }
                   style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
                 >
-                  <MapPin size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
+                  <MapPin size={20} className="flex-shrink-0" style={{ color: 'hsl(var(--weelp-steel))' }} />
                   {isPill ? (
                     <div className="flex flex-1 flex-col leading-tight">
                       <span className="text-base font-semibold text-weelp-sage-deep">Where to?</span>
@@ -204,8 +204,8 @@ export default function FilterBar({ appearance = 'card' }) {
                         value={inputValue}
                         onChange={handleInputChange}
                         onClick={handleInputClick}
-                        className="w-full bg-transparent border-0 focus:outline-none text-sm font-normal placeholder:text-[#71717a]"
-                        style={{ color: '#71717a', fontFamily: 'inherit' }}
+                        className="w-full bg-transparent border-0 focus:outline-none text-sm font-normal placeholder:text-muted-foreground"
+                        style={{ color: 'rgb(var(--label-rgb))', fontFamily: 'inherit' }}
                         autoComplete="off"
                       />
                     </div>
@@ -222,8 +222,8 @@ export default function FilterBar({ appearance = 'card' }) {
                       value={inputValue}
                       onChange={handleInputChange}
                       onClick={handleInputClick}
-                      className="w-full bg-transparent border-0 focus:outline-none text-sm font-medium placeholder:text-[#71717a]"
-                      style={{ color: '#71717a', fontFamily: 'inherit' }}
+                      className="w-full bg-transparent border-0 focus:outline-none text-sm font-medium placeholder:text-muted-foreground"
+                      style={{ color: 'rgb(var(--label-rgb))', fontFamily: 'inherit' }}
                       autoComplete="off"
                     />
                   )}
@@ -239,7 +239,7 @@ export default function FilterBar({ appearance = 'card' }) {
               sideOffset={4}
               collisionPadding={16}
               onOpenAutoFocus={(event) => event.preventDefault()}
-              className={`${PANEL_BASE_CLASS} w-[var(--radix-popover-trigger-width)] min-w-[260px] max-h-[min(18rem,var(--radix-popover-content-available-height,18rem))] overflow-y-auto p-0 text-zinc-950`}
+              className={`${PANEL_BASE_CLASS} w-[var(--radix-popover-trigger-width)] min-w-[260px] max-h-[min(18rem,var(--radix-popover-content-available-height,18rem))] overflow-y-auto p-0 text-foreground`}
             >
               {filteredLocations.length > 0 ? (
                 filteredLocations.map((loc, index) => (
@@ -258,18 +258,18 @@ export default function FilterBar({ appearance = 'card' }) {
                       setShowLocation(false);
                       fetchPreviewResults(locValue, watchedFrom, howMany);
                     }}
-                    className={`flex w-full items-center justify-between px-4 py-2 hover:bg-zinc-100 cursor-pointer text-left text-sm ${ROW_MOTION_CLASS}`}
+                    className={`flex w-full items-center justify-between px-4 py-2 hover:bg-muted cursor-pointer text-left text-sm ${ROW_MOTION_CLASS}`}
                     style={{ transitionDelay: `${index * 35}ms` }}
                   >
                     <div className="flex items-center gap-2">
-                      <MapPin size={14} className="text-zinc-400 flex-shrink-0" />
+                      <MapPin size={14} className="text-muted-foreground flex-shrink-0" />
                       <span>{loc.name}</span>
                     </div>
-                    <span className="text-[12px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded">{loc.type}</span>
+                    <span className="text-[12px] uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5 rounded">{loc.type}</span>
                   </button>
                 ))
               ) : locationsLoading ? null : (
-                <div className="px-4 py-3 text-sm text-zinc-400 text-center">No cities match that yet.</div>
+                <div className="px-4 py-3 text-sm text-muted-foreground text-center">No cities match that yet.</div>
               )}
             </PopoverContent>
           </Popover>
@@ -292,21 +292,21 @@ export default function FilterBar({ appearance = 'card' }) {
                   aria-label="Choose dates"
                   className={
                     isPill
-                      ? 'relative flex w-full items-center gap-3 bg-transparent px-7 h-24 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-[#e4e4e7]'
+                      ? 'relative flex w-full items-center gap-3 bg-transparent px-7 h-24 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border'
                       : `${FIELD_TRIGGER_CLASS} sm:rounded-none`
                   }
                   style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
                 >
-                  <Calendar size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
+                  <Calendar size={20} className="flex-shrink-0" style={{ color: 'hsl(var(--weelp-steel))' }} />
                   {isPill ? (
                     <span className="flex flex-1 flex-col leading-tight">
                       <span className="text-base font-semibold text-weelp-sage-deep">When?</span>
-                      <span className="block min-w-[140px] truncate whitespace-nowrap text-sm font-normal" style={{ color: '#71717a' }}>
+                      <span className="block min-w-[140px] truncate whitespace-nowrap text-sm font-normal" style={{ color: 'rgb(var(--label-rgb))' }}>
                         {watchedFrom?.from && watchedFrom?.to ? formatRange(new Date(watchedFrom.from), new Date(watchedFrom.to)) : 'Add dates'}
                       </span>
                     </span>
                   ) : (
-                    <span className="block min-w-[180px] truncate whitespace-nowrap text-sm font-medium" style={{ color: '#71717a' }}>
+                    <span className="block min-w-[180px] truncate whitespace-nowrap text-sm font-medium" style={{ color: 'rgb(var(--label-rgb))' }}>
                       {watchedFrom?.from && watchedFrom?.to ? formatRange(new Date(watchedFrom.from), new Date(watchedFrom.to)) : 'When?'}
                     </span>
                   )}
@@ -321,7 +321,7 @@ export default function FilterBar({ appearance = 'card' }) {
               align="center"
               sideOffset={4}
               collisionPadding={16}
-              className={`${PANEL_BASE_CLASS} w-auto max-w-[min(640px,calc(100vw-2rem))] p-2 text-zinc-950`}
+              className={`${PANEL_BASE_CLASS} w-auto max-w-[min(640px,calc(100vw-2rem))] p-2 text-foreground`}
             >
               <Controller
                 name="dateRange"
@@ -364,16 +364,16 @@ export default function FilterBar({ appearance = 'card' }) {
                   aria-label="Choose guests"
                   className={
                     isPill
-                      ? 'relative flex w-full items-center gap-3 bg-transparent px-7 h-24 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-[#e4e4e7]'
+                      ? 'relative flex w-full items-center gap-3 bg-transparent px-7 h-24 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border'
                       : `${FIELD_TRIGGER_CLASS} sm:rounded-l-none`
                   }
                   style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
                 >
-                  <Users size={20} className="flex-shrink-0" style={{ color: '#435a67' }} />
+                  <Users size={20} className="flex-shrink-0" style={{ color: 'hsl(var(--weelp-steel))' }} />
                   {isPill ? (
                     <span className="flex flex-1 flex-col leading-tight">
                       <span className="text-base font-semibold text-weelp-sage-deep">Who?</span>
-                      <span data-testid="filter-guest-total" className={`text-sm font-normal ${COUNT_MOTION_CLASS}`} style={{ color: '#71717a' }}>
+                      <span data-testid="filter-guest-total" className={`text-sm font-normal ${COUNT_MOTION_CLASS}`} style={{ color: 'rgb(var(--label-rgb))' }}>
                         <span key={total || 1} className={COUNT_NUMBER_MOTION_CLASS}>
                           {total || 1}
                         </span>
@@ -381,14 +381,14 @@ export default function FilterBar({ appearance = 'card' }) {
                       </span>
                     </span>
                   ) : (
-                    <span data-testid="filter-guest-total" className={`text-sm font-medium ${COUNT_MOTION_CLASS}`} style={{ color: '#71717a' }}>
+                    <span data-testid="filter-guest-total" className={`text-sm font-medium ${COUNT_MOTION_CLASS}`} style={{ color: 'rgb(var(--label-rgb))' }}>
                       <span key={total || 1} className={COUNT_NUMBER_MOTION_CLASS}>
                         {total || 1}
                       </span>
                       {` ${total === 1 ? 'Guest' : 'Guests'}`}
                     </span>
                   )}
-                  {isPill && <ChevronDown size={18} className="ml-auto flex-shrink-0" style={{ color: '#71717a' }} />}
+                  {isPill && <ChevronDown size={18} className="ml-auto flex-shrink-0" style={{ color: 'rgb(var(--label-rgb))' }} />}
                 </button>
               </PopoverTrigger>
             </div>
@@ -400,14 +400,14 @@ export default function FilterBar({ appearance = 'card' }) {
               align="end"
               sideOffset={4}
               collisionPadding={16}
-              className={`${PANEL_BASE_CLASS} w-64 p-4 text-zinc-950`}
+              className={`${PANEL_BASE_CLASS} w-64 p-4 text-foreground`}
             >
-              <p className="text-[12px] text-[#52525b] mb-3 pb-2 border-b border-[#e4e4e7] leading-snug">Adults 13+, children 2 to 12, infants under 2.</p>
+              <p className="text-[12px] text-copy mb-3 pb-2 border-b border-border leading-snug">Adults 13+, children 2 to 12, infants under 2.</p>
               {['adults', 'children', 'infants'].map((type) => (
                 <div key={type} className="flex justify-between items-center mb-3">
                   <div>
                     <span className="font-medium capitalize text-sm">{type}</span>
-                    <span className="text-xs text-zinc-500 block">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
+                    <span className="text-xs text-muted-foreground block">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <button type="button" aria-label={`Decrease ${type}`} onClick={() => handleDecrement(type)} className={CONTROL_BUTTON_CLASS}>
@@ -441,16 +441,16 @@ export default function FilterBar({ appearance = 'card' }) {
       {showPreview && (
         <div
           ref={previewRef}
-          className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-zinc-100 overflow-hidden z-50"
+          className="absolute top-full left-0 right-0 mt-2 bg-background rounded-xl shadow-lg border border-border overflow-hidden z-50"
           style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
         >
           <button
             type="button"
             onClick={() => setShowPreview(false)}
-            className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full hover:bg-zinc-100 transition-colors z-10"
+            className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full hover:bg-muted transition-colors z-10"
             aria-label="Close preview"
           >
-            <X size={14} className="text-zinc-400" />
+            <X size={14} className="text-muted-foreground" />
           </button>
           {previewLoading ? (
             <div role="status" aria-label="Loading preview results" className="space-y-2 px-4 py-4">
@@ -458,11 +458,11 @@ export default function FilterBar({ appearance = 'card' }) {
                 <div
                   key={index}
                   data-testid="filter-preview-skeleton-row"
-                  className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-lg bg-zinc-50 px-3 py-2.5 animate-pulse motion-reduce:animate-none"
+                  className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-lg bg-muted px-3 py-2.5 animate-pulse motion-reduce:animate-none"
                 >
-                  <span className="h-3 rounded bg-zinc-200" />
-                  <span className="h-5 w-20 rounded-md bg-zinc-200" />
-                  <span className="ml-auto h-3 w-14 rounded bg-zinc-200" />
+                  <span className="h-3 rounded bg-muted" />
+                  <span className="h-5 w-20 rounded-md bg-muted" />
+                  <span className="ml-auto h-3 w-14 rounded bg-muted" />
                 </div>
               ))}
             </div>
@@ -472,23 +472,23 @@ export default function FilterBar({ appearance = 'card' }) {
                 <Link
                   key={item.id}
                   href={item.href}
-                  className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-zinc-50 transition-colors border-b border-zinc-50 last:border-b-0 pr-10"
+                  className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-muted transition-colors border-b border-border last:border-b-0 pr-10"
                 >
-                  <span className="text-sm font-semibold text-[#18181b] truncate text-left">{item.title}</span>
+                  <span className="text-sm font-semibold text-foreground truncate text-left">{item.title}</span>
                   <span className="rounded-md bg-weelp-sage-deep/15 px-2 py-0.5 text-[12px] font-semibold uppercase tracking-wider text-weelp-copy">{item.category}</span>
-                  <span className="text-sm font-medium text-[#71717a] text-right">{item.price || ''}</span>
+                  <span className="text-sm font-medium text-muted-foreground text-right">{item.price || ''}</span>
                 </Link>
               ))}
               <Link
                 href={buildSearchUrl(watchedWhereTo, watchedFrom, watchedhowMany)}
-                className="flex items-center justify-center gap-1.5 px-4 py-3 text-sm font-semibold text-weelp-copy hover:text-weelp-sage-deep hover:bg-weelp-sage-deep/5 transition-colors border-t border-zinc-100"
+                className="flex items-center justify-center gap-1.5 px-4 py-3 text-sm font-semibold text-weelp-copy hover:text-weelp-sage-deep hover:bg-weelp-sage-deep/5 transition-colors border-t border-border"
               >
                 See all matches
                 <ChevronRight size={14} />
               </Link>
             </div>
           ) : (
-            <div className="py-6 text-center text-sm text-zinc-400">Nothing matches that combination yet.</div>
+            <div className="py-6 text-center text-sm text-muted-foreground">Nothing matches that combination yet.</div>
           )}
         </div>
       )}

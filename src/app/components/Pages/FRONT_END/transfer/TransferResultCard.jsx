@@ -70,21 +70,21 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
   };
 
   return (
-    <Card className="group p-0 overflow-hidden border border-[#e4e4e7] transition-shadow duration-200 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)]">
+    <Card className="group p-0 overflow-hidden border border-border transition-shadow duration-200 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)]">
       <div className="flex flex-row items-stretch">
         <div className="flex-[3] flex flex-col gap-2 py-4 px-8">
-          <span className="text-xs text-[#71717a] font-medium">Private Transfer</span>
-          <p className="flex items-center gap-2 text-[#18181b] font-semibold">
+          <span className="text-xs text-muted-foreground font-medium">Private Transfer</span>
+          <p className="flex items-center gap-2 text-foreground font-semibold">
             <MapPin className="h-4 w-4 shrink-0" />
             <span className="truncate">{routeTitle}</span>
           </p>
           {vehicleType && (
-            <p className="flex items-center gap-2 text-[#71717a] text-sm">
+            <p className="flex items-center gap-2 text-muted-foreground text-sm">
               <Truck className="h-4 w-4 shrink-0" />
               <span className="truncate capitalize">{vehicleType}</span>
             </p>
           )}
-          <p className="flex items-center gap-2 text-[#71717a] text-sm">
+          <p className="flex items-center gap-2 text-muted-foreground text-sm">
             <Calendar className="h-4 w-4 shrink-0" />
             <span>{formatPickup()}</span>
           </p>
@@ -98,19 +98,19 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
         />
       </div>
 
-      <div className="bg-[#f4f4f5] py-4 px-8 flex flex-wrap gap-2 sm:gap-4">
-        <span className="flex items-center gap-2 text-sm text-[#18181b]">
+      <div className="bg-muted py-4 px-8 flex flex-wrap gap-2 sm:gap-4">
+        <span className="flex items-center gap-2 text-sm text-foreground">
           <CircleCheckBig className="h-4 w-4 text-weelp-sage-deep" />
           <span>Live Guide</span>
         </span>
-        <span className="flex items-center gap-2 text-sm text-[#18181b]">
+        <span className="flex items-center gap-2 text-sm text-foreground">
           <Clock className="h-4 w-4 text-weelp-sage-deep" />
           <span>Duration - {durationHours} Hours</span>
         </span>
       </div>
 
       {expanded && (
-        <div className="py-4 px-8 border-t border-b border-[#eaeaea] flex flex-col gap-4 bg-[#f8faf9]">
+        <div className="py-4 px-8 border-t border-b border-border flex flex-col gap-4 bg-surface-tint">
           <ExtraRow
             label="Extra luggage"
             sublabel={luggageRate > 0 ? `${formatCurrency(luggageRate, currency)} per bag` : 'Not available'}
@@ -141,21 +141,21 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
         <div className="flex flex-col">
           {hasExtras ? (
             <>
-              <span className="text-[#71717a] text-xs">Base {formatCurrency(basePrice, currency)}</span>
-              <span className="text-[#18181b] font-semibold text-lg">{formatCurrency(lineTotal, currency)}</span>
+              <span className="text-muted-foreground text-xs">Base {formatCurrency(basePrice, currency)}</span>
+              <span className="text-foreground font-semibold text-lg">{formatCurrency(lineTotal, currency)}</span>
             </>
           ) : (
-            <span className="text-[#18181b] font-semibold text-lg">{formatCurrency(basePrice, currency)}</span>
+            <span className="text-foreground font-semibold text-lg">{formatCurrency(basePrice, currency)}</span>
           )}
           {isPerPerson && (
-            <span className="text-[#71717a] text-xs">
+            <span className="text-muted-foreground text-xs">
               {formatCurrency(unitPrice, currency)} × {headcount} pax
             </span>
           )}
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
-            className="text-[#71717a] text-xs flex items-center gap-1 hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded transition-colors mt-1"
+            className="text-muted-foreground text-xs flex items-center gap-1 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded transition-colors mt-1"
             aria-expanded={expanded}
           >
             <span>Detailed Breakdown</span>
@@ -165,7 +165,7 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
         <Button
           type="button"
           onClick={handleSelectClick}
-          className="bg-weelp-sage-deep hover:bg-[#4d8069] text-white px-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          className="bg-weelp-sage-deep hover:bg-weelp-sage-hover text-white px-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
         >
           Select
         </Button>
@@ -181,22 +181,22 @@ function ExtraRow({ label, sublabel, value, onChange, disabled, min, step, amoun
   return (
     <div className="flex items-center justify-between gap-4">
       <div className="flex flex-col">
-        <span className="text-[#18181b] text-sm font-medium">{label}</span>
-        <span className="text-[#71717a] text-xs">{sublabel}</span>
+        <span className="text-foreground text-sm font-medium">{label}</span>
+        <span className="text-muted-foreground text-xs">{sublabel}</span>
       </div>
       <div className="flex items-center gap-3">
-        <span className="text-[#18181b] text-sm font-medium min-w-[5rem] text-right">+ {formatCurrency(amount, currency)}</span>
+        <span className="text-foreground text-sm font-medium min-w-[5rem] text-right">+ {formatCurrency(amount, currency)}</span>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={decrement}
             disabled={disabled || value <= min}
-            className="h-7 w-7 rounded-full border border-[#e4e4e7] flex items-center justify-center text-[#18181b] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#f4f4f5]"
+            className="h-7 w-7 rounded-full border border-border flex items-center justify-center text-foreground disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted"
             aria-label={`Decrease ${label}`}
           >
             <Minus className="h-3 w-3" />
           </button>
-          <span className="text-[#18181b] text-sm font-medium min-w-[2.5rem] text-center">
+          <span className="text-foreground text-sm font-medium min-w-[2.5rem] text-center">
             {value}
             {unit ? ` ${unit}` : ''}
           </span>
@@ -204,7 +204,7 @@ function ExtraRow({ label, sublabel, value, onChange, disabled, min, step, amoun
             type="button"
             onClick={increment}
             disabled={disabled}
-            className="h-7 w-7 rounded-full border border-[#e4e4e7] flex items-center justify-center text-[#18181b] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#f4f4f5]"
+            className="h-7 w-7 rounded-full border border-border flex items-center justify-center text-foreground disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted"
             aria-label={`Increase ${label}`}
           >
             <Plus className="h-3 w-3" />

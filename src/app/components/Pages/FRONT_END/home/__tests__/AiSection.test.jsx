@@ -51,7 +51,7 @@ describe('AiSection', () => {
 
     expect(card).toHaveClass('min-h-[260px]', 'sm:min-h-[300px]', 'md:min-h-[360px]', 'lg:min-h-[440px]');
     expect(card).not.toHaveClass('aspect-[32/10]');
-    expect(stage).toHaveClass('absolute', 'inset-0', 'overflow-hidden', 'bg-white');
+    expect(stage).toHaveClass('absolute', 'inset-0', 'overflow-hidden', 'bg-card');
     expect(stage).toHaveAttribute('data-animated-globe');
     expect(container.querySelector('[data-personalised-sparkles]')).toBeInTheDocument();
     expect(container.querySelector('[data-personalised-left-sparkles]')).toBeInTheDocument();
@@ -100,7 +100,7 @@ describe('AiSection', () => {
     const ui = await AiSection();
     const { getByText } = render(ui);
 
-    expect(getByText('Personalised for you')).toHaveClass('text-black');
-    expect(getByText('Tailored recommendations.')).toHaveClass('text-black/70');
+    expect(getByText('Personalised for you')).toHaveClass('text-foreground');
+    expect(getByText('Tailored recommendations.')).toHaveClass('text-foreground/70');
   });
 });

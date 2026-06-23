@@ -13,7 +13,7 @@ const ContentSection = ({ content = '', categories = [] }) => {
 
         {/* Content */}
         {content.length > 50 && (
-          <div className="bg-[#f4f4f5]">
+          <div className="bg-muted">
             <div className="max-w-4xl mx-auto p-6  flex flex-col gap-4">
               <RichTextRenderer content={content} />
             </div>
@@ -22,7 +22,7 @@ const ContentSection = ({ content = '', categories = [] }) => {
       </Reveal>
 
       <Reveal variant="lift" initialHidden delay={120} className="flex flex-col gap-4 lg:gap-12 flex-1 p-6 px-8">
-        <h3 className="text-lg sm:text-[28px] lg:mt-4 font-semibold text-[#18181b] capitalize">Categories</h3>
+        <h3 className="text-lg sm:text-[28px] lg:mt-4 font-semibold text-foreground capitalize">Categories</h3>
         <RelatedLinks categories={categories || []} />
         <FollowUs />
       </Reveal>

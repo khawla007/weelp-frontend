@@ -5,12 +5,12 @@ export const metadata = {
 
 const SectionTitle = ({ children }) => <h2 className="text-2xl font-semibold">{children}</h2>;
 
-const Paragraph = ({ children }) => <p className="text-lg text-[#71717a] leading-relaxed font-medium">{children}</p>;
+const Paragraph = ({ children }) => <p className="text-lg text-muted-foreground leading-relaxed font-medium">{children}</p>;
 
 const BulletList = ({ items }) => (
   <ul className="list-disc list-inside space-y-2">
     {items.map((item, index) => (
-      <li key={index} className="text-lg text-[#71717a] leading-relaxed font-medium">
+      <li key={index} className="text-lg text-muted-foreground leading-relaxed font-medium">
         {item}
       </li>
     ))}
@@ -21,7 +21,7 @@ const TermsPage = () => {
   return (
     <div className="container-page py-10 md:py-16 lg:py-24">
       <div className="mx-auto max-w-4xl">
-        <p className="text-sm text-[#71717a]">Last updated: April 4, 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: April 4, 2026</p>
         <h1 className="text-4xl md:text-5xl font-bold mt-4 mb-12">Terms of Service</h1>
 
         <div className="space-y-10">
@@ -99,7 +99,7 @@ const TermsPage = () => {
             <SectionTitle>Cancellations and Refunds</SectionTitle>
             <Paragraph>
               Cancellation and refund eligibility is governed by our{' '}
-              <a href="/cancellation" className="text-[#18181b] underline hover:no-underline">
+              <a href="/cancellation" className="text-foreground underline hover:no-underline">
                 Cancellation Policy
               </a>
               . By completing a booking on the Platform, you agree to the terms set out in that policy.

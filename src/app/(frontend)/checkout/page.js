@@ -32,7 +32,7 @@ const CheckoutPage = () => {
     return (
       <div className="h-[80vh] flex flex-col items-center justify-center py-16 gap-4">
         <LoaderCircle className="h-8 w-8 animate-spin text-weelp-sage-deep" />
-        <p className="text-[#52525b]">Please log in to continue to checkout.</p>
+        <p className="text-copy">Please log in to continue to checkout.</p>
       </div>
     );
   }

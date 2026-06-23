@@ -108,11 +108,11 @@ export const ShopAllProduct = () => {
   return (
     <>
       <Reveal as="section" variant="lift" className={`bg-weelp-sage-deep shop_banner ${Styles.shop_banner}`}>
-        <div className="flex items-center justify-center sm:justify-between  bg-[#f8faf9] h-full min-h-20 sm:min-h-36">
+        <div className="flex items-center justify-center sm:justify-between  bg-surface-tint h-full min-h-20 sm:min-h-36">
           <Icon className={'hidden sm:block -translate-x-20 '} />
           <div className="flex flex-col gap-2">
-            <h1 className="font-semibold sm:text-3xl text-center text-[#18181b] ">Shop</h1>
-            <p aria-live="polite" className="text-center font-medium text-[#18181b] text-sm sm:text-lg min-h-[1.25rem] sm:min-h-[1.75rem]">
+            <h1 className="font-semibold sm:text-3xl text-center text-foreground ">Shop</h1>
+            <p aria-live="polite" className="text-center font-medium text-foreground text-sm sm:text-lg min-h-[1.25rem] sm:min-h-[1.75rem]">
               {products && products.length > 0 ? `${products.length} Result Founds` : ' '}
             </p>
           </div>
@@ -145,9 +145,9 @@ export const ShopAllProduct = () => {
 
           <div className="w-full flex gap-4 flex-col sm:flex-row">
             {/* Sidebar Filters */}
-            <div className="w-full h-fit sm:max-w-xs p-4 bg-white shadow-md rounded-lg">
+            <div className="w-full h-fit sm:max-w-xs p-4 bg-background shadow-md rounded-lg">
               {/* Category Filters */}
-              <h2 className="text-lg font-medium text-[#18181b] my-4">Category</h2>
+              <h2 className="text-lg font-medium text-foreground my-4">Category</h2>
               <div className="w-full max-w-full flex flex-col space-y-2 min-h-[14rem]">
                 <label className="flex items-center space-x-2 cursor-pointer text-weelp-steel">
                   <input type="checkbox" checked={!selectedCategories.length} onChange={() => setSelectedCategories([])} className="size-5 cursor-pointer checked:accent-weelp-sage-deep" />
@@ -172,15 +172,15 @@ export const ShopAllProduct = () => {
               </div>
 
               {/* Price Range Filter */}
-              <h2 className="text-lg font-medium text-[#18181b] mt-6 mb-4">Price Range</h2>
+              <h2 className="text-lg font-medium text-foreground mt-6 mb-4">Price Range</h2>
               <ReactRangeSliderInput min={100} max={5000} step={10} value={priceRange} onInput={setPriceRange} ariaLabel={['Minimum price', 'Maximum price']} className="w-full" />
-              <div className="w-full flex justify-between text-sm text-zinc-600 mt-2">
+              <div className="w-full flex justify-between text-sm text-copy mt-2">
                 <span>${priceRange[0]}</span>
                 <span>${priceRange[1]}</span>
               </div>
 
               {/* Rating Filter */}
-              <h2 className="text-lg font-medium text-[#18181b] my-4">Ratings</h2>
+              <h2 className="text-lg font-medium text-foreground my-4">Ratings</h2>
               <div className="flex flex-col gap-4">
                 {[3, 4, 5].map((rating) => (
                   <label key={rating} className="flex cursor-pointer items-center space-x-1">
@@ -195,7 +195,7 @@ export const ShopAllProduct = () => {
               </div>
 
               {/* Location Filter */}
-              <h2 className="text-lg font-medium text-[#18181b] my-4">Location</h2>
+              <h2 className="text-lg font-medium text-foreground my-4">Location</h2>
               <div className="w-full max-w-full flex flex-col space-y-2 min-h-[14rem]">
                 {useMemo(
                   () =>
@@ -235,7 +235,7 @@ export const ShopAllProduct = () => {
                       />
                     ))
                   ) : (
-                    <span className="text-zinc-500 text-lg">No product found</span>
+                    <span className="text-muted-foreground text-lg">No product found</span>
                   )}
                 </Reveal>
               )}
@@ -248,7 +248,7 @@ export const ShopAllProduct = () => {
                       <button
                         key={page}
                         onClick={() => setCurrentPage(page)}
-                        className={`px-3 py-1 border rounded ${pagination.current_page === page ? 'bg-weelp-sage-deep text-white' : 'hover:bg-zinc-200'}`}
+                        className={`px-3 py-1 border rounded ${pagination.current_page === page ? 'bg-weelp-sage-deep text-white' : 'hover:bg-muted'}`}
                       >
                         {page}
                       </button>

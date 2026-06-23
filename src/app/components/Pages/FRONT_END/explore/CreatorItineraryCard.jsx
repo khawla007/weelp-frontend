@@ -90,19 +90,19 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
 
       {/* Engagement row */}
       <div className="px-2 pt-2 flex items-center gap-4">
-        <button onClick={handleLike} className="text-[#71717a] flex items-center gap-1.5 text-sm">
-          <Heart className={`size-4 ${liked ? 'text-[#ff725e] fill-[#ff725e]' : 'text-[#ff725e]'}`} />
+        <button onClick={handleLike} className="text-muted-foreground flex items-center gap-1.5 text-sm">
+          <Heart className={`size-4 ${liked ? 'text-weelp-discount fill-weelp-discount' : 'text-weelp-discount'}`} />
           {formatCount(likesCount)}
         </button>
-        <span className="text-[#71717a] flex items-center gap-1.5 text-sm">
-          <Eye className="size-4 text-[#71717a]" />
+        <span className="text-muted-foreground flex items-center gap-1.5 text-sm">
+          <Eye className="size-4 text-muted-foreground" />
           {formatCount(viewsCount)}
         </span>
       </div>
 
       {/* Title + creator avatar row */}
       <div className="px-2 pt-1 flex items-center justify-between">
-        <TitleTag className="text-[#18181b] text-lg font-medium line-clamp-1 flex-1 mr-2">{title}</TitleTag>
+        <TitleTag className="text-foreground text-lg font-medium line-clamp-1 flex-1 mr-2">{title}</TitleTag>
         {creatorAvatar && !avatarBroken ? (
           <MediaImage
             src={creatorAvatar}
@@ -114,7 +114,7 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
             onError={() => setAvatarBroken(true)}
           />
         ) : (
-          <span className="size-9 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0" style={{ backgroundColor: '#588f7a' }}>
+          <span className="size-9 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0" style={{ backgroundColor: 'hsl(var(--weelp-sage-deep))' }}>
             {creatorInitials}
           </span>
         )}

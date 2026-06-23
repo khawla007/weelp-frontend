@@ -27,7 +27,7 @@ const AboutValues = () => {
 
   return (
     <section className="container-page pb-10 md:pb-16 lg:pb-24">
-      <Reveal as="h2" variant="lift" className="mb-12 text-center text-[28px] text-[#18181b] md:text-[28px]">
+      <Reveal as="h2" variant="lift" className="mb-12 text-center text-[28px] text-foreground md:text-[28px]">
         Our Values
       </Reveal>
       <Reveal initialHidden stagger={60} variant="lift" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -36,13 +36,13 @@ const AboutValues = () => {
           return (
             <div
               key={index}
-              className="bg-white rounded-[24px] p-6 border border-[#e4e4e7] text-center transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)]"
+              className="bg-background rounded-[24px] p-6 border border-border text-center transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)]"
             >
               <div className="flex justify-center mb-4 text-weelp-sage-deep">
                 <Icon size={32} />
               </div>
-              <h3 className="mb-2 text-lg text-[#18181b]">{value.title}</h3>
-              <p className="text-sm font-normal leading-[1.6] text-[#71717a]">{value.description}</p>
+              <h3 className="mb-2 text-lg text-foreground">{value.title}</h3>
+              <p className="text-sm font-normal leading-[1.6] text-muted-foreground">{value.description}</p>
             </div>
           );
         })}

@@ -129,21 +129,21 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
   const filteredReviews = getFilteredReviews();
 
   return (
-    <div className="flex flex-col border-t border-[#eaeaea]">
+    <div className="flex flex-col border-t border-border">
       {/* Reviews Header - Reviews heading with rating below */}
       <div className="pt-6 pb-2">
         <SectionHeader title="Reviews" />
         <div className="flex items-center gap-2 mt-2">
-          <span className="text-[38px] font-bold leading-none text-[#18181b]">{reviewSummary?.average_rating || '5.0'}</span>
+          <span className="text-[38px] font-bold leading-none text-foreground">{reviewSummary?.average_rating || '5.0'}</span>
           <div className="flex gap-[2px]" role="img" aria-label={`${reviewSummary?.average_rating || 5} out of 5 stars`}>
             {Array(5)
               .fill(0)
               .map((_, i) => (
-                <Star key={i} className={i < Math.round(reviewSummary?.average_rating || 5) ? 'fill-[#fed141] stroke-none' : 'fill-zinc-300 stroke-none'} size={24} aria-hidden="true" />
+                <Star key={i} className={i < Math.round(reviewSummary?.average_rating || 5) ? 'fill-warning stroke-none' : 'fill-muted stroke-none'} size={24} aria-hidden="true" />
               ))}
           </div>
         </div>
-        <p className="text-sm text-[#71717a] mt-1">{reviewSummary?.total_reviews || 0} reviews</p>
+        <p className="text-sm text-muted-foreground mt-1">{reviewSummary?.total_reviews || 0} reviews</p>
       </div>
 
       {/* Photo Gallery - Using Swiper like city page */}
@@ -176,7 +176,7 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
           >
             {allReviewsWithPhotos.map((review, index) => (
               <SwiperSlide key={index}>
-                <div className="h-[248px] rounded-xl overflow-hidden bg-zinc-200 cursor-pointer hover:opacity-90 transition-opacity">
+                <div className="h-[248px] rounded-xl overflow-hidden bg-muted cursor-pointer hover:opacity-90 transition-opacity">
                   <img src={review.image} alt={`Review photo ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
               </SwiperSlide>
@@ -187,17 +187,17 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
             <div className="absolute bottom-[10px] right-[10px] flex gap-3 z-10">
               <button
                 type="button"
-                className="photo-prev w-11 h-11 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="photo-prev w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 aria-label="Previous review photo"
               >
-                <ChevronLeft size={16} className="text-[#52525b]" />
+                <ChevronLeft size={16} className="text-copy" />
               </button>
               <button
                 type="button"
-                className="photo-next w-11 h-11 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="photo-next w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 aria-label="Next review photo"
               >
-                <ChevronRight size={16} className="text-[#52525b]" />
+                <ChevronRight size={16} className="text-copy" />
               </button>
             </div>
           )}
@@ -209,22 +209,22 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
         <div className="mt-10">
           {/* Heading with navigation arrows on right side */}
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-lg sm:text-[28px] text-[#18181b]">Featured review</h3>
+            <h3 className="text-lg sm:text-[28px] text-foreground">Featured review</h3>
             {featuredReviewsData.length > 2 && (
               <div className="flex items-center gap-1">
                 <button
                   type="button"
-                  className="featured-prev w-11 h-11 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  className="featured-prev w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                   aria-label="Previous featured review"
                 >
-                  <ChevronLeft size={16} className="text-[#52525b]" />
+                  <ChevronLeft size={16} className="text-copy" />
                 </button>
                 <button
                   type="button"
-                  className="featured-next w-11 h-11 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  className="featured-next w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                   aria-label="Next featured review"
                 >
-                  <ChevronRight size={16} className="text-[#52525b]" />
+                  <ChevronRight size={16} className="text-copy" />
                 </button>
               </div>
             )}
@@ -262,16 +262,16 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
           >
             {featuredReviewsData.map((review, index) => (
               <SwiperSlide key={index} style={{ height: 'auto', display: 'flex' }}>
-                <div className="bg-white p-8 rounded-xl border border-[#e4e4e7] hover:border-transparent hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] transition-[border-color,box-shadow] duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-[17px] w-full">
-                  <h5 className="text-[#18181b] font-medium text-base">{review.userName}</h5>
+                <div className="bg-background p-8 rounded-xl border border-border hover:border-transparent hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] transition-[border-color,box-shadow] duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-[17px] w-full">
+                  <h5 className="text-foreground font-medium text-base">{review.userName}</h5>
                   <div className="flex gap-[7px]">
                     {Array(review.rating)
                       .fill(0)
                       .map((_, i) => (
-                        <Star key={i} className="fill-[#fed141] stroke-none" size={16} />
+                        <Star key={i} className="fill-warning stroke-none" size={16} />
                       ))}
                   </div>
-                  <p className="text-base text-[#18181b] overflow-x-hidden">{review.comment}</p>
+                  <p className="text-base text-foreground overflow-x-hidden">{review.comment}</p>
                 </div>
               </SwiperSlide>
             ))}
@@ -344,7 +344,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
 
   return (
     <div ref={sectionRef} className="flex flex-col gap-4 mt-8">
-      <h3 className="text-lg sm:text-[28px] text-[#18181b] capitalize">All Reviews</h3>
+      <h3 className="text-lg sm:text-[28px] text-foreground capitalize">All Reviews</h3>
 
       {/* Filter + Sort Row - Match pen design */}
       <div className="flex items-center justify-between px-0">
@@ -352,14 +352,14 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
           <button
             type="button"
             onClick={() => handleFilterChange('all')}
-            className={`px-[21px] py-[7px] rounded-[8px] text-sm font-medium ${activeFilter === 'all' ? 'bg-[#cfdbe3] text-weelp-steel' : 'bg-transparent text-weelp-steel'}`}
+            className={`px-[21px] py-[7px] rounded-[8px] text-sm font-medium ${activeFilter === 'all' ? 'bg-muted text-weelp-steel' : 'bg-transparent text-weelp-steel'}`}
           >
             All
           </button>
           <button
             type="button"
             onClick={() => handleFilterChange('photos')}
-            className={`px-[21px] py-[7px] rounded-[8px] text-sm font-medium ${activeFilter === 'photos' ? 'bg-[#cfdbe3] text-weelp-steel' : 'bg-transparent text-weelp-steel'}`}
+            className={`px-[21px] py-[7px] rounded-[8px] text-sm font-medium ${activeFilter === 'photos' ? 'bg-muted text-weelp-steel' : 'bg-transparent text-weelp-steel'}`}
           >
             With Photos Only
           </button>
@@ -373,18 +373,18 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
             onClick={() => setShowSortDropdown((prev) => !prev)}
             aria-expanded={showSortDropdown}
             aria-haspopup="true"
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-weelp-steel border border-[#e4e4e7] bg-white min-w-[141px]"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-weelp-steel border border-border bg-background min-w-[141px]"
           >
             <span className="sr-only">Sort reviews by </span>
             {sortOrder === 'newest' ? 'Newest' : 'Oldest'}
             <ChevronDown size={16} className="text-weelp-steel" />
           </button>
           {showSortDropdown && (
-            <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg border border-[#e4e4e7] py-1 min-w-[141px] z-20">
-              <button type="button" onClick={() => handleSortChange('newest')} className={`w-full text-left px-4 py-2 text-sm ${sortOrder === 'newest' ? 'bg-zinc-100 font-medium' : 'text-zinc-700'}`}>
+            <div className="absolute right-0 mt-2 bg-background rounded-lg shadow-lg border border-border py-1 min-w-[141px] z-20">
+              <button type="button" onClick={() => handleSortChange('newest')} className={`w-full text-left px-4 py-2 text-sm ${sortOrder === 'newest' ? 'bg-muted font-medium' : 'text-copy'}`}>
                 Newest
               </button>
-              <button type="button" onClick={() => handleSortChange('oldest')} className={`w-full text-left px-4 py-2 text-sm ${sortOrder === 'oldest' ? 'bg-zinc-100 font-medium' : 'text-zinc-700'}`}>
+              <button type="button" onClick={() => handleSortChange('oldest')} className={`w-full text-left px-4 py-2 text-sm ${sortOrder === 'oldest' ? 'bg-muted font-medium' : 'text-copy'}`}>
                 Oldest
               </button>
             </div>
@@ -397,22 +397,22 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
         {/* Reviews Container - Fixed height for 3 cards */}
         <div className="flex flex-col gap-4 min-h-[600px]">
           {getCurrentReviews().map((review, index) => (
-            <div key={index} className="p-6 bg-white rounded-xl border border-[#e4e4e7]">
+            <div key={index} className="p-6 bg-background rounded-xl border border-border">
               {/* First Row: Avatar + Name/Date */}
               <div className="flex items-center gap-3">
                 {/* Left: Avatar */}
-                <div className="w-[44px] h-[44px] rounded-full overflow-hidden bg-[#f4f4f5] border border-[#e4e4e7] flex-shrink-0">
+                <div className="w-[44px] h-[44px] rounded-full overflow-hidden bg-muted border border-border flex-shrink-0">
                   {review.avatar ? (
                     <img src={review.avatar} alt={review.userName} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-sm font-bold text-[#52525b]">{review.userName.charAt(0)}</div>
+                    <div className="w-full h-full flex items-center justify-center text-sm font-bold text-copy">{review.userName.charAt(0)}</div>
                   )}
                 </div>
 
                 {/* Right: 2 divs - Name above, Date below */}
                 <div className="flex flex-col justify-center">
-                  <p className="text-base font-semibold text-[#18181b]">{review.userName}</p>
-                  <p className="text-sm font-semibold text-[#18181b]">{review.date}</p>
+                  <p className="text-base font-semibold text-foreground">{review.userName}</p>
+                  <p className="text-sm font-semibold text-foreground">{review.date}</p>
                 </div>
               </div>
 
@@ -421,7 +421,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
                 {Array(review.rating)
                   .fill(0)
                   .map((_, i) => (
-                    <Star key={i} className="fill-[#fed141] stroke-none" size={16} />
+                    <Star key={i} className="fill-warning stroke-none" size={16} />
                   ))}
               </div>
 
@@ -449,7 +449,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
                     >
                       {review.images.map((img, imgIndex) => (
                         <SwiperSlide key={`${index}-${imgIndex}`}>
-                          <div className="h-[280px] rounded-xl overflow-hidden bg-zinc-200 cursor-pointer hover:opacity-90 transition-opacity">
+                          <div className="h-[280px] rounded-xl overflow-hidden bg-muted cursor-pointer hover:opacity-90 transition-opacity">
                             <img src={img} alt={`Review ${imgIndex + 1}`} className="w-full h-full object-cover" />
                           </div>
                         </SwiperSlide>
@@ -459,34 +459,34 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
                       <div className="absolute bottom-[10px] right-[10px] flex gap-3 z-10">
                         <button
                           type="button"
-                          className={`review-img-prev-${index} w-11 h-11 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
+                          className={`review-img-prev-${index} w-11 h-11 rounded-full flex items-center justify-center bg-card shadow-md border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
                           aria-label={`Previous image for ${review.userName}'s review`}
                         >
-                          <ChevronLeft size={16} className="text-[#52525b]" />
+                          <ChevronLeft size={16} className="text-copy" />
                         </button>
                         <button
                           type="button"
-                          className={`review-img-next-${index} w-11 h-11 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
+                          className={`review-img-next-${index} w-11 h-11 rounded-full flex items-center justify-center bg-card shadow-md border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
                           aria-label={`Next image for ${review.userName}'s review`}
                         >
-                          <ChevronRight size={16} className="text-[#52525b]" />
+                          <ChevronRight size={16} className="text-copy" />
                         </button>
                       </div>
                     )}
                   </div>
                 ) : (
-                  <div className="w-full h-[280px] rounded-xl overflow-hidden bg-zinc-200 mt-4">
+                  <div className="w-full h-[280px] rounded-xl overflow-hidden bg-muted mt-4">
                     <img src={review.images[0]} alt="Review" className="w-full h-full object-cover" />
                   </div>
                 ))}
 
               {/* Review Content - increased spacing */}
-              <p className="text-base text-[#18181b] leading-[1.5] my-6">{review.comment}</p>
+              <p className="text-base text-foreground leading-[1.5] my-6">{review.comment}</p>
 
               {/* Separator Line + Helpful Section - increased spacing */}
-              <div className="border-t border-[#e4e4e7] pt-4 mt-6">
+              <div className="border-t border-border pt-4 mt-6">
                 <div className="flex items-center gap-2 py-2">
-                  <button type="button" className="flex items-center gap-2 text-sm text-[#71717a] hover:text-[#52525b] transition-colors">
+                  <button type="button" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-copy transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
                     </svg>
@@ -504,18 +504,18 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
             <button
               type="button"
               onClick={handlePrevious}
-              className="w-11 h-11 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              className="w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md border border-border hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               aria-label="Previous review page"
             >
-              <ChevronLeft size={16} className="text-[#52525b]" />
+              <ChevronLeft size={16} className="text-copy" />
             </button>
             <button
               type="button"
               onClick={handleNext}
-              className="w-11 h-11 rounded-full flex items-center justify-center bg-white shadow-md border border-[#e4e4e7] hover:bg-[#f4f4f5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              className="w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md border border-border hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               aria-label="Next review page"
             >
-              <ChevronRight size={16} className="text-[#52525b]" />
+              <ChevronRight size={16} className="text-copy" />
             </button>
           </div>
         )}

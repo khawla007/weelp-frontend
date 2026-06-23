@@ -7,14 +7,14 @@ import CarouselShell from '@/app/components/ui/CarouselShell';
 import ItemCard from '@/app/components/ui/item-card';
 import useBuddyChat from '@/hooks/useBuddyChat';
 
-const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_6px_rgba(0,0,0,0.05)] ring-1 ring-[#eaeaea]';
+const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-card shadow-sm ring-1 ring-border';
 
 const BUDDY_SLIDER_BREAKPOINTS = {
   0: { slidesPerView: 2, spaceBetween: 12 },
 };
 
 const NAV_BUTTON_CLASS =
-  'flex size-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
+  'flex size-11 items-center justify-center rounded-full border border-border bg-card text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
 
 const TravelBuddyWidget = ({ items = [] }) => {
   const { messages, isThinking, sendMessage, presets, lastPayload } = useBuddyChat();
@@ -30,11 +30,11 @@ const TravelBuddyWidget = ({ items = [] }) => {
 
         {hasItems && (
           <>
-            <div className="h-px w-full bg-[#eaeaea]" />
+            <div className="h-px w-full bg-border" />
 
             <div className="flex flex-col gap-3 p-3 md:p-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-[14px] font-semibold text-[#18181b]">Featured activities</h3>
+                <h3 className="text-[14px] font-semibold text-foreground">Featured activities</h3>
                 <div className="flex items-center gap-2">
                   <button type="button" className={`buddy-activities-prev ${NAV_BUTTON_CLASS}`} aria-label="Previous featured activities">
                     <ChevronLeft className="size-4" />

@@ -19,7 +19,7 @@ const MiniCartNew = () => {
 
   return (
     <Sheet open={isMiniCartOpen} onOpenChange={setMiniCartOpen}>
-      <SheetContent className="!max-w-[485px] w-full h-full p-6 bg-[#F3F5F6] shadow-xl">
+      <SheetContent className="!max-w-[485px] w-full h-full p-6 bg-muted shadow-xl">
         <SheetHeader>
           <SheetTitle className="sr-only">MiniCart</SheetTitle>
           <SheetDescription className="sr-only"></SheetDescription>
@@ -31,11 +31,11 @@ const MiniCartNew = () => {
             <div className="px-4 flex flex-col gap-2 h-full min-h-full tfc_scroll overflow-y-scroll group">
               <X
                 onClick={() => setMiniCartOpen(!isMiniCartOpen)}
-                className="self-end cursor-pointer size-10 p-2 absolute top-2 z-10 left-1/2 bg-[#5a5a5a] text-white ease-in-out duration-200  -translate-y-12   group-hover:translate-y-0   rounded-full"
+                className="self-end cursor-pointer size-10 p-2 absolute top-2 z-10 left-1/2 bg-muted-foreground text-background ease-in-out duration-200  -translate-y-12   group-hover:translate-y-0   rounded-full"
               />
               <div className="flex justify-between mt-4">
                 <h3 className="text-Blueish font-bold text-2xl">Your Cart</h3>
-                <div className="flex gap-2 text-base items-center text-[#5A5A5A]">
+                <div className="flex gap-2 text-base items-center text-copy">
                   <Heart size={20} />
                   Save
                 </div>
@@ -76,7 +76,7 @@ const MiniCartNew = () => {
                   <BreakSection marginTop={'my-4'} />
 
                   {breakdownOpen && (
-                    <div className="bg-white border border-[#eee] rounded-lg p-4 mb-3 text-sm text-[#5a5a5a] space-y-4 max-h-72 overflow-y-auto">
+                    <div className="bg-card border border-border rounded-lg p-4 mb-3 text-sm text-copy space-y-4 max-h-72 overflow-y-auto">
                       {cartItems.map((item) => {
                         const cur = item?.currency || cartCurrency;
                         const isItin = item?.type === 'itinerary';
@@ -108,14 +108,14 @@ const MiniCartNew = () => {
                                 <span>+{formatCurrency(addonsSum, cur)}</span>
                               </div>
                             )}
-                            <div className="flex justify-between border-t pt-1 mt-1 text-[#0c2536] font-medium">
+                            <div className="flex justify-between border-t border-border pt-1 mt-1 text-foreground font-medium">
                               <span>Subtotal</span>
                               <span>{formatCurrency(subtotal, cur)}</span>
                             </div>
                           </div>
                         );
                       })}
-                      <div className="flex justify-between border-t pt-2 text-[#0c2536] font-bold">
+                      <div className="flex justify-between border-t border-border pt-2 text-foreground font-bold">
                         <span>Grand total</span>
                         <span>{formatCurrency(totalPrice ?? 0, cartCurrency)}</span>
                       </div>
@@ -128,7 +128,7 @@ const MiniCartNew = () => {
                       <button
                         type="button"
                         onClick={() => setBreakdownOpen((open) => !open)}
-                        className="flex items-center gap-1 capitalize text-[#5a5a5a] text-sm hover:text-Blueish cursor-pointer underline w-fit"
+                        className="flex items-center gap-1 capitalize text-copy text-sm hover:text-weelp-steel cursor-pointer underline w-fit"
                         aria-expanded={breakdownOpen}
                       >
                         Detailed Breakdown
@@ -139,7 +139,7 @@ const MiniCartNew = () => {
                       onClick={() => {
                         (router.push('/checkout'), setMiniCartOpen(false));
                       }}
-                      className="w-full capitalize rounded-md bg-weelp-sage-deep text-[#ffffff] text-base font-medium"
+                      className="w-full capitalize rounded-md bg-weelp-sage-deep text-white text-base font-medium"
                     >
                       Make Payment
                     </button>
@@ -150,7 +150,7 @@ const MiniCartNew = () => {
           ) : (
             <div className="px-8 py-8 flex flex-col gap-2 h-full min-h-full tfc_scroll overflow-y-scroll group ">
               <SheetClose asChild>
-                <X className="self-end cursor-pointer size-10 p-2 absolute top-2 z-10 left-1/2 bg-[#5a5a5a] text-white ease-in-out duration-200  -translate-y-12   group-hover:translate-y-0   rounded-full" />
+                <X className="self-end cursor-pointer size-10 p-2 absolute top-2 z-10 left-1/2 bg-muted-foreground text-background ease-in-out duration-200  -translate-y-12   group-hover:translate-y-0   rounded-full" />
               </SheetClose>
 
               <div className="h-full flex items-center justify-center">

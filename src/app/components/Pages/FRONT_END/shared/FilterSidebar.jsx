@@ -34,11 +34,11 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
   );
 
   return (
-    <div className="w-full lg:max-w-xs bg-white h-fit rounded-[11.5px] p-4 sm:p-5 lg:p-6 lg:px-7" style={{ boxShadow: '0 2.22px 5.63px rgba(0,0,0,0.05)' }}>
+    <div className="w-full lg:max-w-xs bg-background h-fit rounded-[11.5px] p-4 sm:p-5 lg:p-6 lg:px-7" style={{ boxShadow: '0 2.22px 5.63px rgba(0,0,0,0.05)' }}>
       <div className="flex flex-col gap-6 md:gap-8 lg:gap-10">
         {/* Item Type */}
         <div>
-          <h3 className="text-base md:text-[16px] lg:text-[18px] text-[#18181b] mb-4" style={{ ...FONT, fontWeight: 500 }}>
+          <h3 className="text-base md:text-[16px] lg:text-[18px] text-foreground mb-4" style={{ ...FONT, fontWeight: 500 }}>
             Item Type
           </h3>
           <div className={`flex flex-col gap-3 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
@@ -58,7 +58,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                 />
                 <span
                   className="text-[18px] transition-colors duration-200 motion-reduce:transition-none"
-                  style={{ ...FONT, fontWeight: 500, color: selectedItemType === type.value ? '#588f7a' : '#435a67' }}
+                  style={{ ...FONT, fontWeight: 500, color: selectedItemType === type.value ? 'hsl(var(--weelp-sage-deep))' : '#435a67' }}
                 >
                   {type.label}
                 </span>
@@ -69,7 +69,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
 
         {/* Categories */}
         <div>
-          <h3 className="text-base md:text-[16px] lg:text-[18px] text-[#18181b] mb-4" style={{ ...FONT, fontWeight: 500 }}>
+          <h3 className="text-base md:text-[16px] lg:text-[18px] text-foreground mb-4" style={{ ...FONT, fontWeight: 500 }}>
             Categories
           </h3>
           <div className="flex flex-col space-y-3 max-h-56 md:max-h-64 lg:max-h-72 overflow-auto">
@@ -80,12 +80,12 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                 onChange={() => handleCheckbox('all')}
                 disabled={disabled}
                 className={`size-[19px] rounded-[2px] border-2 accent-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${
-                  selectedCategories.length === 0 ? 'border-weelp-sage-deep' : 'border-[#e4e4e7]'
+                  selectedCategories.length === 0 ? 'border-weelp-sage-deep' : 'border-border'
                 }`}
               />
               <span
                 className="text-[18px] transition-colors duration-200 motion-reduce:transition-none"
-                style={{ ...FONT, fontWeight: 500, color: selectedCategories.length === 0 ? '#588f7a' : '#435a67' }}
+                style={{ ...FONT, fontWeight: 500, color: selectedCategories.length === 0 ? 'hsl(var(--weelp-sage-deep))' : '#435a67' }}
               >
                 All
               </span>
@@ -99,9 +99,12 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                     checked={active}
                     onChange={() => handleCheckbox(cat?.name)}
                     disabled={disabled}
-                    className={`size-[19px] rounded-[2px] border-2 accent-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${active ? 'border-weelp-sage-deep' : 'border-[#e4e4e7]'}`}
+                    className={`size-[19px] rounded-[2px] border-2 accent-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${active ? 'border-weelp-sage-deep' : 'border-border'}`}
                   />
-                  <span className="text-[18px] transition-colors duration-200 motion-reduce:transition-none" style={{ ...FONT, fontWeight: 500, color: active ? '#588f7a' : '#435a67' }}>
+                  <span
+                    className="text-[18px] transition-colors duration-200 motion-reduce:transition-none"
+                    style={{ ...FONT, fontWeight: 500, color: active ? 'hsl(var(--weelp-sage-deep))' : '#435a67' }}
+                  >
                     {cat?.name}
                   </span>
                 </label>
@@ -112,7 +115,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
 
         {/* Price Range */}
         <div>
-          <h3 className="text-base md:text-[16px] lg:text-[18px] text-[#18181b] mb-4" style={{ ...FONT, fontWeight: 500 }}>
+          <h3 className="text-base md:text-[16px] lg:text-[18px] text-foreground mb-4" style={{ ...FONT, fontWeight: 500 }}>
             Price
           </h3>
           <div className={disabled ? 'opacity-50 pointer-events-none' : ''}>
@@ -130,7 +133,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
 
         {/* Ratings */}
         <div>
-          <h3 className="text-base md:text-[16px] lg:text-[18px] text-[#18181b] mb-4" style={{ ...FONT, fontWeight: 500 }}>
+          <h3 className="text-base md:text-[16px] lg:text-[18px] text-foreground mb-4" style={{ ...FONT, fontWeight: 500 }}>
             Ratings
           </h3>
           <div className={`flex flex-col gap-3 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
@@ -146,7 +149,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                 />
                 <div className="flex">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} size={19} className={i < r ? 'fill-[#fed141] stroke-none' : 'stroke-[#fed141] fill-none'} strokeWidth={2} />
+                    <Star key={i} size={19} className={i < r ? 'fill-warning stroke-none' : 'stroke-warning fill-none'} strokeWidth={2} />
                   ))}
                 </div>
               </label>

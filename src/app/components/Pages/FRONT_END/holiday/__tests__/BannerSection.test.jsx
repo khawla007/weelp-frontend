@@ -24,7 +24,7 @@ describe('BannerSection', () => {
     const shell = container.querySelector('[data-personalised-cobe-shell]');
     const formSlot = getByTestId('booking-form').parentElement;
 
-    expect(hero).toHaveClass('relative', 'min-h-[320px]', 'sm:min-h-[420px]', 'h-full', 'flex', 'justify-center', 'items-center', 'bg-[#f8faf9]', 'p-6');
+    expect(hero).toHaveClass('relative', 'min-h-[320px]', 'sm:min-h-[420px]', 'h-full', 'flex', 'justify-center', 'items-center', 'bg-surface-tint', 'p-6');
     expect(hero).not.toHaveClass('sm:min-h-[520px]');
     expect(formSlot).toHaveClass('mt-2', 'w-full', '[&_.bannerForm]:pt-0', '[&_.bannerForm]:sm:pt-0');
     expect(background).toHaveClass('hidden', '2xl:block', 'absolute', 'inset-0', 'overflow-hidden', 'pointer-events-none');

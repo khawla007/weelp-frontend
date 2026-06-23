@@ -4,7 +4,7 @@ import Reveal from '@/app/components/ui/Reveal';
 const SectionItenerary = ({ sliderTitle }) => {
   return (
     <section className="container mx-auto flex flex-col gap-3 p-4 sm:my-8 ">
-      <Reveal as="h2" initialHidden variant="lift" className="text-xl sm:text-[28px] mb-4 font-medium text-[#18181b] capitalize">
+      <Reveal as="h2" initialHidden variant="lift" className="text-xl sm:text-[28px] mb-4 font-medium text-foreground capitalize">
         {sliderTitle || 'Top activities'}
       </Reveal>
       <Reveal initialHidden variant="lift" delay={120}>

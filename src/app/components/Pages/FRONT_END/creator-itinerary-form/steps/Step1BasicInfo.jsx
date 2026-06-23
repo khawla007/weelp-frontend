@@ -28,32 +28,32 @@ export default function Step1BasicInfo({ locations = [] }) {
 
   return (
     <div className="space-y-4 py-6">
-      <h2 className="text-base font-semibold text-[#18181b]">Basic Information</h2>
+      <h2 className="text-base font-semibold text-foreground">Basic Information</h2>
 
       <div className="flex w-full gap-4">
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-[#18181b]'}`}>
+          <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-red-400' : 'text-foreground'}`}>
             Itinerary Name <span className="text-red-500">*</span>
           </Label>
           <Input
             placeholder="Itinerary name"
             id="name"
             {...register('name', { required: 'Name is required' })}
-            className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
+            className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus-visible:ring-weelp-sage-deep"
             onBlur={handleBlur}
           />
           {errors?.name && <p className="text-red-500 text-sm mt-1 animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors.name.message}</p>}
         </div>
 
         <div className="pb-2 space-y-2 w-full">
-          <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-[#18181b]'}`}>
+          <Label htmlFor="slug" className={`block text-sm font-medium ${errors?.slug ? 'text-red-400' : 'text-foreground'}`}>
             Slug <span className="text-red-500">*</span>
           </Label>
           <Input
             placeholder="Enter Url slug"
             id="slug"
             {...register('slug', { required: 'Slug is required' })}
-            className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
+            className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus-visible:ring-weelp-sage-deep"
             onBlur={handleBlur}
           />
           {errors?.slug && <p className="text-red-500 text-sm mt-1 animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors?.slug.message}</p>}
@@ -61,7 +61,7 @@ export default function Step1BasicInfo({ locations = [] }) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-[#18181b]'}`}>
+        <Label htmlFor="description" className={`block text-sm font-medium ${errors?.description ? 'text-red-400' : 'text-foreground'}`}>
           Description <span className="text-red-500">*</span>
         </Label>
         <Textarea
@@ -70,14 +70,14 @@ export default function Step1BasicInfo({ locations = [] }) {
           {...register('description', {
             required: 'Description is required',
           })}
-          className="mt-1 p-2 text-sm block w-full rounded-md border border-zinc-300 shadow-sm focus-visible:ring-weelp-sage-deep"
+          className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus-visible:ring-weelp-sage-deep"
         />
         {errors?.description && <p className="text-red-500 text-sm mt-1 animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors.description.message}</p>}
       </div>
 
       {/* destination */}
       <div className="space-y-2">
-        <Label htmlFor={'locations'} className={`block text-sm font-medium ${errors?.locations ? 'text-red-400' : 'text-[#18181b]'}`}>
+        <Label htmlFor={'locations'} className={`block text-sm font-medium ${errors?.locations ? 'text-red-400' : 'text-foreground'}`}>
           Destinations <span className="text-red-500">*</span>
         </Label>
         <Controller

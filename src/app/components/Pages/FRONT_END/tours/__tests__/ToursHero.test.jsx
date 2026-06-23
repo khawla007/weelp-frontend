@@ -18,7 +18,7 @@ describe('ToursHero', () => {
     expect(getByTestId('tours-filter-bar')).toBeInTheDocument();
 
     const section = container.querySelector('section');
-    expect(section).toHaveClass('overflow-hidden', 'bg-[#f8faf9]');
+    expect(section).toHaveClass('overflow-hidden', 'bg-surface-tint');
 
     const decorSvgs = container.querySelectorAll('svg[role="presentation"]');
     expect(decorSvgs.length).toBeGreaterThanOrEqual(1);

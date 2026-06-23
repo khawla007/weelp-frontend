@@ -154,7 +154,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
           {activeTab === 'home' ? (
             <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center justify-between gap-2 bg-transparent border border-[#435a6742] rounded-[8px] px-4 py-2 text-[16px] font-medium text-weelp-steel outline-none min-w-[160px]">
+                <button className="flex items-center justify-between gap-2 bg-transparent border border-border rounded-[8px] px-4 py-2 text-[16px] font-medium text-weelp-steel outline-none min-w-[160px]">
                   {activeSortLabel}
                   <ChevronDown size={16} className="shrink-0" />
                 </button>
@@ -184,7 +184,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
                 onClick={() => onTabChange(tab.value)}
                 className="text-[18px] font-medium flex items-center gap-1.5"
                 style={{
-                  color: '#435a67',
+                  color: 'hsl(var(--weelp-steel))',
                   padding: activeTab === tab.value ? '7px 21px' : '7px 0',
                   backgroundColor: activeTab === tab.value ? '#f2f7f5' : 'transparent',
                   borderRadius: activeTab === tab.value ? '8.5px' : '0',
@@ -199,7 +199,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
           {/* Divider + Dynamic Action Button */}
           {actionBtn && (
             <>
-              <div className="w-px h-6 bg-[#435a6730]" />
+              <div className="w-px h-6 bg-weelp-steel/20" />
               <button
                 onClick={onActionClick}
                 disabled={applicationStatus === 'pending'}
@@ -216,7 +216,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
         <div className="mt-4">
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center justify-between gap-2 bg-transparent border border-[#435a6742] rounded-[7.86px] px-4 py-2 text-[16px] font-medium text-weelp-steel outline-none min-w-[160px]">
+              <button className="flex items-center justify-between gap-2 bg-transparent border border-border rounded-[7.86px] px-4 py-2 text-[16px] font-medium text-weelp-steel outline-none min-w-[160px]">
                 {activeSourceLabel}
                 <ChevronDown size={16} className="shrink-0" />
               </button>
@@ -231,7 +231,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
                 >
                   <span className="flex items-center gap-2">
                     {option.label}
-                    {option.value === 'mine' && !isAuthenticated && <span className="text-xs text-zinc-400">(Login required)</span>}
+                    {option.value === 'mine' && !isAuthenticated && <span className="text-xs text-muted-foreground">(Login required)</span>}
                   </span>
                   {activeSource === option.value && <Check size={14} className="text-weelp-sage-deep" />}
                 </DropdownMenuItem>

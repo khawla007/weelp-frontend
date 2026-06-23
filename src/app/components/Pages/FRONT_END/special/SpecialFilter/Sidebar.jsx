@@ -8,8 +8,8 @@ const Sidebar = ({ dispatch, data }) => {
   };
 
   return (
-    <div className="bg-white p-8 max-w-xs h-fit w-full rounded-lg flex flex-col gap-2">
-      <h3 className="text-[#18181b] text-lg">Categories</h3>
+    <div className="bg-background p-8 max-w-xs h-fit w-full rounded-lg flex flex-col gap-2">
+      <h3 className="text-foreground text-lg">Categories</h3>
       <ul>
         {categories.map((val, index) => (
           <li key={index}>
@@ -20,7 +20,7 @@ const Sidebar = ({ dispatch, data }) => {
                 className="checked:accent-weelp-sage-deep size-5"
                 onChange={handleCategoryChange} // Call the updated handler
               />
-              <span className="text-[#435A67] font-medium text-lg">{val}</span>
+              <span className="text-weelp-steel font-medium text-lg">{val}</span>
             </label>
           </li>
         ))}

@@ -46,7 +46,7 @@ const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
     <div className="flex flex-col gap-8 mt-4">
       {/* Heading + sort on one row */}
       <Reveal variant="lift" className="flex flex-wrap items-center justify-between gap-4">
-        <h2 className="text-lg sm:text-[28px] font-medium text-[#18181b] capitalize">{title}</h2>
+        <h2 className="text-lg sm:text-[28px] font-medium text-foreground capitalize">{title}</h2>
         {/* Sort Bar */}
         <form className="flex flex-wrap gap-4 justify-end">
           <div className="relative">
@@ -84,13 +84,13 @@ const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
       {isLoading ? (
         <ul aria-hidden className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {Array.from({ length: 5 }).map((_, i) => (
-            <li key={i} className="h-[270px] sm:h-[280px] lg:h-[297px] rounded-lg bg-zinc-100 animate-pulse" />
+            <li key={i} className="h-[270px] sm:h-[280px] lg:h-[297px] rounded-lg bg-muted animate-pulse" />
           ))}
         </ul>
       ) : error ? (
         <div className="text-center py-8 text-red-500">Error loading blogs</div>
       ) : blogs.length === 0 ? (
-        <div className="text-center py-8 text-zinc-500">No blogs found</div>
+        <div className="text-center py-8 text-muted-foreground">No blogs found</div>
       ) : (
         <Reveal as="ul" key={`grid-${current_page}`} initialHidden stagger={60} variant="lift" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {blogs.map((blog) => {

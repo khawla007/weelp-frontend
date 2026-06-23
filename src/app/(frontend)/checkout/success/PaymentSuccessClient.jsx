@@ -50,7 +50,7 @@ export default function PaymentSuccessClient({ sessionId }) {
   const tableRowClass = '';
 
   return (
-    <div className="flex min-h-[85vh] items-center justify-center bg-[#f8faf9] py-10">
+    <div className="flex min-h-[85vh] items-center justify-center bg-background py-10">
       <div className="container-page grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card className="space-y-4 lg:col-span-2">
           <CardHeader className="space-y-2 rounded-md">
@@ -109,10 +109,10 @@ export default function PaymentSuccessClient({ sessionId }) {
             </Table>
 
             <div className="flex w-full justify-between">
-              <Link href="/" className="rounded-2xl border bg-white p-2 px-4 text-sm font-medium text-black">
+              <Link href="/" className="rounded-2xl border bg-background p-2 px-4 text-sm font-medium text-foreground">
                 Back to Home
               </Link>
-              <Link href={dashboardUrl} className="rounded-2xl border bg-[#18181b] p-2 px-4 text-sm font-medium text-white">
+              <Link href={dashboardUrl} className="rounded-2xl border bg-foreground p-2 px-4 text-sm font-medium text-background">
                 Go To Bookings
               </Link>
             </div>
@@ -120,21 +120,21 @@ export default function PaymentSuccessClient({ sessionId }) {
         </Card>
 
         <Card className="h-fit rounded-md border">
-          <CardHeader className="rounded-md bg-[#18181b] text-white">
+          <CardHeader className="rounded-md bg-foreground text-background">
             <CardTitle>Payment Info</CardTitle>
             <h2 className="text-lg font-semibold">{item_detail?.item_name}</h2>
           </CardHeader>
           <CardContent className="space-y-3 p-4 text-sm">
-            <div className="flex w-full justify-between text-black">
+            <div className="flex w-full justify-between text-foreground">
               <strong>Status:</strong> {order?.payment?.payment_status}
             </div>
-            <div className="flex w-full justify-between text-black">
+            <div className="flex w-full justify-between text-foreground">
               <strong>Method:</strong> {order?.payment?.payment_method}
             </div>
-            <div className="flex w-full justify-between text-black">
+            <div className="flex w-full justify-between text-foreground">
               <strong>Amount:</strong> {priceAmount}
             </div>
-            <div className="flex w-full justify-between border p-4 font-bold text-black">
+            <div className="flex w-full justify-between border p-4 font-bold text-foreground">
               <strong>Total:</strong> {priceAmount}
             </div>
           </CardContent>

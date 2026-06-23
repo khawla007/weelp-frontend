@@ -25,7 +25,7 @@ export default async function CitiesPage({ searchParams }) {
       <BreadCrumb />
 
       <section className="weelp-hero-rise flex flex-col items-center gap-3 pt-6 text-center">
-        <h1 className="text-3xl font-semibold text-[#18181b] sm:text-5xl">
+        <h1 className="text-3xl font-semibold text-foreground sm:text-5xl">
           <span className="weelp-rise-mask weelp-rise-mask--block">
             <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
               Cities
@@ -43,11 +43,11 @@ export default async function CitiesPage({ searchParams }) {
 
       {isError ? (
         <div className="flex flex-col items-center gap-4 py-20 text-center">
-          <p className="text-lg text-[#6f7680]">Something went wrong. Please try again later.</p>
+          <p className="text-lg text-muted-foreground">Something went wrong. Please try again later.</p>
         </div>
       ) : cities.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-20 text-center">
-          <p className="text-lg text-[#6f7680]">No cities found.</p>
+          <p className="text-lg text-muted-foreground">No cities found.</p>
           {currentPage > 1 && (
             <Link href="/cities" className="text-brand-500 hover:underline">
               Back to first page
@@ -88,23 +88,23 @@ function Pagination({ currentPage, lastPage }) {
       {currentPage > 1 ? (
         <Link
           href={`/cities?page=${currentPage - 1}`}
-          className="flex size-9 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918] shadow-sm transition hover:bg-gray-50"
+          className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition hover:bg-muted"
           aria-label="Previous page"
         >
           <ChevronLeft className="size-4" />
         </Link>
       ) : (
-        <span className="flex size-9 items-center justify-center rounded-full border border-[#E5E4E1] bg-gray-100 text-gray-400 shadow-sm">
+        <span className="flex size-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground shadow-sm">
           <ChevronLeft className="size-4" />
         </span>
       )}
 
       {start > 1 && (
         <>
-          <Link href="/cities?page=1" className="flex size-9 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-sm text-[#1A1918] shadow-sm transition hover:bg-gray-50">
+          <Link href="/cities?page=1" className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted">
             1
           </Link>
-          {start > 2 && <span className="px-1 text-[#6f7680]">...</span>}
+          {start > 2 && <span className="px-1 text-muted-foreground">...</span>}
         </>
       )}
 
@@ -114,7 +114,7 @@ function Pagination({ currentPage, lastPage }) {
           href={`/cities?page=${page}`}
           aria-current={page === currentPage ? 'page' : undefined}
           className={`flex size-9 items-center justify-center rounded-full border text-sm shadow-sm transition ${
-            page === currentPage ? 'border-[#1A1918] bg-[#1A1918] text-white' : 'border-[#E5E4E1] bg-white text-[#1A1918] hover:bg-gray-50'
+            page === currentPage ? 'border-foreground bg-foreground text-background' : 'border-border bg-background text-foreground hover:bg-muted'
           }`}
         >
           {page}
@@ -123,10 +123,10 @@ function Pagination({ currentPage, lastPage }) {
 
       {end < lastPage && (
         <>
-          {end < lastPage - 1 && <span className="px-1 text-[#6f7680]">...</span>}
+          {end < lastPage - 1 && <span className="px-1 text-muted-foreground">...</span>}
           <Link
             href={`/cities?page=${lastPage}`}
-            className="flex size-9 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-sm text-[#1A1918] shadow-sm transition hover:bg-gray-50"
+            className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted"
           >
             {lastPage}
           </Link>
@@ -136,13 +136,13 @@ function Pagination({ currentPage, lastPage }) {
       {currentPage < lastPage ? (
         <Link
           href={`/cities?page=${currentPage + 1}`}
-          className="flex size-9 items-center justify-center rounded-full border border-[#E5E4E1] bg-white text-[#1A1918] shadow-sm transition hover:bg-gray-50"
+          className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition hover:bg-muted"
           aria-label="Next page"
         >
           <ChevronRight className="size-4" />
         </Link>
       ) : (
-        <span className="flex size-9 items-center justify-center rounded-full border border-[#E5E4E1] bg-gray-100 text-gray-400 shadow-sm">
+        <span className="flex size-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground shadow-sm">
           <ChevronRight className="size-4" />
         </span>
       )}

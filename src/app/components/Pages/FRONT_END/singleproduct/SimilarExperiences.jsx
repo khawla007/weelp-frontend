@@ -10,7 +10,7 @@ const SimilarExperiences = ({ activities = [] }) => {
   }
 
   return (
-    <div className="flex flex-col border-t border-[#eaeaea] pt-6">
+    <div className="flex flex-col border-t border-border pt-6">
       <SectionHeader title="Similar Experiences" className="mb-4" />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

@@ -129,7 +129,7 @@ export default function CheckoutMainManual() {
             </div>
           </div>
         </div>
-        <div className="w-full p-6 pt-10 pb-24 xl:w-2/5 xl:ps-20 bg-[#f4f4f5]">
+        <div className="w-full p-6 pt-10 pb-24 xl:w-2/5 xl:ps-20 bg-muted">
           <CheckoutItemsSkeleton />
         </div>
       </section>
@@ -142,17 +142,17 @@ export default function CheckoutMainManual() {
       <section className="flex items-center justify-center min-h-[60vh] px-6">
         <div
           role="alert"
-          className="max-w-md w-full rounded-xl border border-[#ff725e] bg-[#ffffff] p-6 flex flex-col gap-3 transition-[opacity,border-color] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none animate-fade-in"
+          className="max-w-md w-full rounded-xl border border-weelp-discount bg-background p-6 flex flex-col gap-3 transition-[opacity,border-color] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none animate-fade-in"
         >
-          <div className="flex items-center gap-2 text-[#ff725e]">
+          <div className="flex items-center gap-2 text-weelp-discount">
             <AlertTriangle size={20} aria-hidden="true" />
             <h2 className="font-semibold text-base">Checkout couldn&apos;t load</h2>
           </div>
-          <p className="text-sm text-[#18181b]">{error}</p>
+          <p className="text-sm text-foreground">{error}</p>
           <button
             type="button"
             onClick={() => location.reload()}
-            className="self-start px-4 py-2 bg-weelp-sage-deep hover:bg-[#4d8069] text-white text-sm font-medium rounded-md transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
+            className="self-start px-4 py-2 bg-weelp-sage-deep hover:bg-weelp-sage-hover text-white text-sm font-medium rounded-md transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
           >
             Try Again
           </button>
@@ -163,7 +163,7 @@ export default function CheckoutMainManual() {
 
   //  is the key point: Only render <Elements> once clientSecret is available
   if (!clientSecret) {
-    return <div className="text-center text-zinc-600">Something went wrong. Please refresh.</div>;
+    return <div className="text-center text-copy">Something went wrong. Please refresh.</div>;
   }
 
   return (
@@ -182,7 +182,7 @@ export default function CheckoutMainManual() {
         </div>
       </div>
 
-      <div className="w-full p-6 pt-10 pb-24 xl:w-2/5 xl:ps-20 bg-[#f4f4f5]">
+      <div className="w-full p-6 pt-10 pb-24 xl:w-2/5 xl:ps-20 bg-muted">
         <CheckoutItems />
       </div>
     </section>

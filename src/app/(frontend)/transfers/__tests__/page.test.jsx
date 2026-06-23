@@ -77,7 +77,7 @@ describe('TransfersPage', () => {
     const stage = container.querySelector('[data-animated-globe]');
     const shell = container.querySelector('[data-personalised-cobe-shell]');
 
-    expect(hero).toHaveClass('relative', 'z-50', 'min-h-[320px]', 'sm:min-h-[420px]', 'flex', 'justify-center', 'items-center', 'bg-[#f8faf9]', 'p-6');
+    expect(hero).toHaveClass('relative', 'z-50', 'min-h-[320px]', 'sm:min-h-[420px]', 'flex', 'justify-center', 'items-center', 'bg-surface-tint', 'p-6');
     expect(hero).not.toHaveClass('sm:min-h-[520px]');
     expect(hero).not.toHaveClass('pt-10', 'sm:pt-16');
     expect(background).toHaveClass('hidden', '2xl:block', 'absolute', 'inset-0', 'overflow-hidden', 'pointer-events-none');

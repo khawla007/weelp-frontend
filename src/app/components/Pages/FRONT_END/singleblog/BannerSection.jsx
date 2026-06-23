@@ -35,7 +35,7 @@ const BannerSectionBlog = ({ title = '', excerpt = '', tags = [], media_gallery 
           {tags.length > 0 && (
             <div className="weelp-hero-ui-rise mt-20 flex gap-4" style={{ '--weelp-motion-delay': '360ms' }}>
               {tags.map(({ name }) => {
-                return <TabButton key={name} text={name} className={'bg-[#f2f7f5] text-sm text-weelp-copy rounded-full'} />;
+                return <TabButton key={name} text={name} className={'bg-surface-tint text-sm text-weelp-copy rounded-full'} />;
               })}
             </div>
           )}

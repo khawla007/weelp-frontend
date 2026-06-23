@@ -37,7 +37,7 @@ describe('BannerSectionSearchForm', () => {
     const stage = container.querySelector('[data-animated-globe]');
     const shell = container.querySelector('[data-personalised-cobe-shell]');
 
-    expect(hero).toHaveClass('relative', 'min-h-[320px]', 'sm:min-h-[420px]', 'h-full', 'flex', 'justify-center', 'items-center', 'bg-[#f8faf9]', 'p-6');
+    expect(hero).toHaveClass('relative', 'min-h-[320px]', 'sm:min-h-[420px]', 'h-full', 'flex', 'justify-center', 'items-center', 'bg-surface-tint', 'p-6');
     expect(background).toHaveClass('hidden', '2xl:block', 'absolute', 'inset-0', 'overflow-hidden', 'pointer-events-none');
     expect(background).toHaveAttribute('aria-hidden', 'true');
     expect(stage).toBeInTheDocument();

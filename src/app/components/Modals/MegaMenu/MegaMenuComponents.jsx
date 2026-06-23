@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 
-const GREEN = '#588f7a';
+const GREEN = 'hsl(var(--weelp-sage-deep))';
 const GREEN_TINT = '#588f7a1a';
 const TEXT_DARK = '#1e1e1e';
 const TEXT_MUTED = '#5a5a5a';
@@ -48,7 +48,7 @@ export const MenuList = ({ items = [], activeId, onSelect }) => (
 );
 
 export const CountryCards = ({ countries = [], selectedCountryId, onSelect }) => (
-  <div className="flex gap-3 border-b border-[#cccccc80] px-[17px] pt-[17px] pb-[15px]">
+  <div className="flex gap-3 border-b border-border/50 px-[17px] pt-[17px] pb-[15px]">
     {countries.slice(0, 3).map((country, idx) => {
       const isSelected = country.id === selectedCountryId;
       return (
@@ -59,14 +59,14 @@ export const CountryCards = ({ countries = [], selectedCountryId, onSelect }) =>
           aria-pressed={isSelected}
           className="group relative block h-[96px] w-[154px] shrink-0 overflow-hidden rounded-[6px] transition-opacity duration-150 motion-reduce:transition-none hover:opacity-95 focus:outline-none"
         >
-          {country.featured_image ? <img src={country.featured_image} alt={country.name} className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-[#c9c9c9]" />}
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%)' }} />
+          {country.featured_image ? <img src={country.featured_image} alt={country.name} className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-muted" />}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-foreground/50" />
           {isSelected && <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[6px]" style={{ boxShadow: `inset 0 0 0 2px #ffffff, inset 0 0 0 4px ${GREEN}` }} />}
           <div className="absolute inset-x-[13px] bottom-[13px] flex flex-col items-start gap-[1px] text-left">
             <span
               className="leading-tight"
               style={{
-                color: '#ffffff',
+                color: 'hsl(var(--background))',
                 fontFamily: FONT_FAMILY,
                 fontSize: '16px',
                 fontWeight: 600,
@@ -77,7 +77,7 @@ export const CountryCards = ({ countries = [], selectedCountryId, onSelect }) =>
             <span
               className="leading-tight"
               style={{
-                color: '#dfdfeb',
+                color: 'hsl(var(--muted-foreground))',
                 fontFamily: FONT_FAMILY,
                 fontSize: '10px',
                 fontWeight: 500,
@@ -89,11 +89,7 @@ export const CountryCards = ({ countries = [], selectedCountryId, onSelect }) =>
         </button>
       );
     })}
-    {countries.length === 0 && (
-      <div className="w-full py-6 text-center text-sm" style={{ color: TEXT_MUTED }}>
-        No countries available.
-      </div>
-    )}
+    {countries.length === 0 && <div className="w-full py-6 text-center text-sm text-muted-foreground">No countries available.</div>}
   </div>
 );
 

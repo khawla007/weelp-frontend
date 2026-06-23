@@ -117,7 +117,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
 
   return (
     <section ref={sectionRef} className={sectionClassName}>
-      <Reveal as="h2" variant="lift" className="text-xl md:text-2xl lg:text-[28px] font-semibold text-pretty text-[#18181b] capitalize">
+      <Reveal as="h2" variant="lift" className="text-xl md:text-2xl lg:text-[28px] font-semibold text-pretty text-foreground capitalize">
         {title} Tours
       </Reveal>
 
@@ -132,7 +132,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
             }}
             className="min-h-[44px] sm:min-h-0 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
             style={{
-              backgroundColor: '#f4f4f5',
+              backgroundColor: 'hsl(var(--muted))',
               borderColor: 'rgba(67, 90, 103, 0.26)',
               fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
               fontWeight: selectedTags.length === 0 ? 600 : 500,
@@ -153,7 +153,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
                   onClick={() => handleTagToggle(tag.name)}
                   className="min-h-[44px] sm:min-h-0 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
                   style={{
-                    backgroundColor: '#f4f4f5',
+                    backgroundColor: 'hsl(var(--muted))',
                     borderColor: 'rgba(67, 90, 103, 0.26)',
                     fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
                     fontWeight: isActive ? 600 : 500,
@@ -176,7 +176,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
               onClick={() => setShowSortDropdown((prev) => !prev)}
               className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
               style={{
-                backgroundColor: '#f4f4f5',
+                backgroundColor: 'hsl(var(--muted))',
                 borderColor: 'rgba(67, 90, 103, 0.26)',
                 fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
                 fontWeight: 500,
@@ -188,13 +188,13 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
               <ChevronDown className="size-4" />
             </button>
             {showSortDropdown && (
-              <div className="absolute right-0 top-full z-10 mt-1 min-w-[200px] rounded-lg border border-zinc-200 bg-white py-1 shadow-lg">
+              <div className="absolute right-0 top-full z-10 mt-1 min-w-[200px] rounded-lg border border-border bg-background py-1 shadow-lg">
                 {SORT_OPTIONS.map((option) => (
                   <button
                     key={option.value}
                     type="button"
                     onClick={() => handleSortChange(option.value)}
-                    className={`block w-full px-4 py-2 text-left text-sm transition hover:bg-zinc-50 ${sortBy === option.value ? 'font-semibold text-[#18181b]' : 'text-weelp-steel'}`}
+                    className={`block w-full px-4 py-2 text-left text-sm transition hover:bg-muted ${sortBy === option.value ? 'font-semibold text-foreground' : 'text-weelp-steel'}`}
                     style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
                   >
                     {option.label}
@@ -209,7 +209,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
             type="button"
             className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
             style={{
-              backgroundColor: '#f4f4f5',
+              backgroundColor: 'hsl(var(--muted))',
               borderColor: 'rgba(67, 90, 103, 0.26)',
               fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
               fontWeight: 500,
@@ -248,7 +248,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
         </Reveal>
       ) : (
         <div className="flex min-h-[220px] items-center justify-center">
-          <span className="text-sm md:text-base text-[#71717a]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500 }}>
+          <span className="text-sm md:text-base text-muted-foreground" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500 }}>
             No itineraries found for the selected tags
           </span>
         </div>

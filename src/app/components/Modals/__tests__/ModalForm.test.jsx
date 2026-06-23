@@ -58,7 +58,7 @@ describe('ModalForm', () => {
     const dialog = screen.getByRole('dialog', { name: /search trips/i });
     expect(dialog).toHaveAccessibleDescription(/choose a destination/i);
     expect(screen.getByLabelText(/booking search form/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /close search/i })).toHaveClass('-right-2.5', '-top-2.5', 'bg-white', 'text-red-600');
+    expect(screen.getByRole('button', { name: /close search/i })).toHaveClass('-right-2.5', '-top-2.5', 'bg-background', 'text-destructive');
     expect(screen.getByRole('button', { name: /search trips/i })).toBeInTheDocument();
     expect(screen.getByTestId('search-modal-panel')).toHaveAttribute('data-state', 'open');
     expect(screen.getByTestId('search-modal-panel').className).toEqual(expect.stringContaining('data-[state=open]:[--tw-enter-scale:0.98]'));

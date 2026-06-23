@@ -3,7 +3,7 @@
 }
 
 .shop_banner form > div:first-child {
-  @apply bg-[#679e89];
+  @apply bg-weelp-sage-deep;
 }
 
 .shop_banner form > div:first-child label {

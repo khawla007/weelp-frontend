@@ -15,8 +15,8 @@ const CityHeroBanner = ({ city }) => {
     >
       <div className="container-page relative z-10 flex h-full flex-col items-center justify-center gap-4 lg:flex-row">
         <div className="relative flex-1 w-full lg:w-1/3">
-          <BreadCrumb className="mb-4 text-[#71717a]" />
-          <h2 className="text-xl md:text-2xl font-medium mb-4 capitalize text-[#18181b]">
+          <BreadCrumb className="mb-4 text-muted-foreground" />
+          <h2 className="text-xl md:text-2xl font-medium mb-4 capitalize text-foreground">
             <span className="weelp-rise-mask weelp-rise-mask--block">
               <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '120ms' }}>
                 Things to do In
@@ -31,7 +31,7 @@ const CityHeroBanner = ({ city }) => {
             </span>
           </h1>
           {description ? (
-            <p className="text-base md:text-lg max-w-full md:max-w-[391px] leading-relaxed text-wrap text-[#71717a]" style={{ fontWeight: 500, lineHeight: 1.55 }}>
+            <p className="text-base md:text-lg max-w-full md:max-w-[391px] leading-relaxed text-wrap text-muted-foreground" style={{ fontWeight: 500, lineHeight: 1.55 }}>
               <span className="weelp-rise-mask weelp-rise-mask--block">
                 <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
                   {description}

@@ -63,19 +63,19 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
         e.stopPropagation();
         setShowSubmenu(false);
       }}
-      className="absolute right-0 top-3/4 border rounded-xl bg-white z-10 whitespace-nowrap animate-fade-in"
+      className="absolute right-0 top-3/4 border border-border rounded-xl bg-popover z-10 whitespace-nowrap animate-fade-in"
     >
       <ul>
         {!session ? (
           <>
-            <li className="p-4 px-8 border-b text-[#5A5A5A]">
-              <Link href="/user/login" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-[#5A5A5A] transition-colors hover:text-weelp-sage-deep">
+            <li className="p-4 px-8 border-b border-border text-copy">
+              <Link href="/user/login" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep">
                 <User className="size-5" /> SignUp / Login
               </Link>
             </li>
-            <li className="p-4 px-8 border-b text-[#5A5A5A]">
+            <li className="p-4 px-8 border-b border-border text-copy">
               <button
-                className="text-base leading-5 flex gap-x-2 text-[#5A5A5A] transition-colors hover:text-weelp-sage-deep"
+                className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep"
                 onClick={() => {
                   closeDropdown();
                   openAuthModal({ redirectTo: '/dashboard' });
@@ -85,9 +85,9 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
                 Dashboard
               </button>
             </li>
-            <li className="p-4 px-8 border-b text-[#5A5A5A]">
+            <li className="p-4 px-8 border-b border-border text-copy">
               <button
-                className="text-base leading-5 flex gap-x-2 text-[#5A5A5A] transition-colors hover:text-weelp-sage-deep"
+                className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep"
                 onClick={() => {
                   closeDropdown();
                   openAuthModal({ redirectTo: '/dashboard' });
@@ -102,38 +102,38 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
           <>
             {/* User Info Header */}
             <li className="p-4 px-6 flex items-center gap-x-3">
-              <div className="h-10 w-10 rounded-full flex items-center justify-center text-white font-semibold overflow-hidden" style={{ backgroundColor: '#568f7c' }}>
+              <div className="h-10 w-10 rounded-full flex items-center justify-center bg-weelp-sage-deep text-white font-semibold overflow-hidden">
                 {avatarSrc ? <img src={avatarSrc} alt={name || 'user'} className="h-full w-full object-cover" /> : <span>{userInitials}</span>}
               </div>
               <div className="flex flex-col">
-                <span className="font-semibold text-gray-900">{name || 'User'}</span>
-                {role && <span className="text-xs text-gray-500">{formatRole(role, is_creator)}</span>}
+                <span className="font-semibold text-foreground">{name || 'User'}</span>
+                {role && <span className="text-xs text-muted-foreground">{formatRole(role, is_creator)}</span>}
               </div>
             </li>
-            <li className="border-b" aria-hidden="true"></li>
+            <li className="border-b border-border" aria-hidden="true"></li>
             {session?.user?.role === 'super_admin' ? (
               <>
-                <li className="p-4 px-8 border-b text-[#5A5A5A]">
-                  <Link href="/dashboard/admin" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-[#5A5A5A] transition-colors hover:text-weelp-sage-deep">
+                <li className="p-4 px-8 border-b border-border text-copy">
+                  <Link href="/dashboard/admin" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep">
                     <House className="size-5" />
                     Dashboard
                   </Link>
                 </li>
-                <li className="p-4 px-8 border-b text-[#5A5A5A]">
-                  <Link href="/dashboard/admin/settings" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-[#5A5A5A] transition-colors hover:text-weelp-sage-deep">
+                <li className="p-4 px-8 border-b border-border text-copy">
+                  <Link href="/dashboard/admin/settings" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep">
                     <Settings className="size-5" />
                     Settings
                   </Link>
                 </li>
-                <li className="p-4 px-8 border-b text-[#5A5A5A]">
-                  <Link href="/dashboard/admin/settings" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-[#5A5A5A] transition-colors hover:text-weelp-sage-deep">
+                <li className="p-4 px-8 border-b border-border text-copy">
+                  <Link href="/dashboard/admin/settings" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep">
                     <Tags className="size-5" />
                     Taxonomies
                   </Link>
                 </li>
-                <li className="p-4 px-8 border-b text-[#5A5A5A]">
+                <li className="p-4 px-8 border-b border-border text-copy">
                   <button
-                    className="text-base leading-5 flex gap-x-2 text-[#5A5A5A] transition-colors hover:text-weelp-sage-deep"
+                    className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep"
                     onClick={() => {
                       closeDropdown();
                       logout({ callbackUrl: '/' });
@@ -146,25 +146,25 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
               </>
             ) : (
               <>
-                <li className="p-4 px-8 border-b text-[#5A5A5A]">
+                <li className="p-4 px-8 border-b border-border text-copy">
                   <Link
                     href={is_creator ? '/dashboard/customer/overview' : '/dashboard/customer'}
                     onClick={closeDropdown}
-                    className="text-base leading-5 flex gap-x-2 text-[#5A5A5A] transition-colors hover:text-weelp-sage-deep"
+                    className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep"
                   >
                     <House className="size-5" />
                     Dashboard
                   </Link>
                 </li>
-                <li className="p-4 px-8 border-b text-[#5A5A5A]">
-                  <Link href="/dashboard/customer" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-[#5A5A5A] transition-colors hover:text-weelp-sage-deep">
+                <li className="p-4 px-8 border-b border-border text-copy">
+                  <Link href="/dashboard/customer" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep">
                     <Heart className="size-5" />
                     Wishlist
                   </Link>
                 </li>
-                <li className="p-4 px-8 border-b text-[#5A5A5A]">
+                <li className="p-4 px-8 border-b border-border text-copy">
                   <button
-                    className="text-base leading-5 flex gap-x-2 text-[#5A5A5A] transition-colors hover:text-weelp-sage-deep"
+                    className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep"
                     onClick={() => {
                       closeDropdown();
                       logout({ callbackUrl: '/' });

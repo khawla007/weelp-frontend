@@ -82,13 +82,13 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-[#18181b] text-xl">Apply to Become a Creator</DialogTitle>
+          <DialogTitle className="text-foreground text-xl">Apply to Become a Creator</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Name */}
           <div>
-            <Label htmlFor="name" className="text-[#435A67] text-sm font-medium">
+            <Label htmlFor="name" className="text-weelp-steel text-sm font-medium">
               Name <span className="text-red-500">*</span>
             </Label>
             <Input id="name" placeholder="Your full name" className="mt-1.5" {...register('name', { required: 'Name is required' })} />
@@ -97,7 +97,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
 
           {/* Email */}
           <div>
-            <Label htmlFor="email" className="text-[#435A67] text-sm font-medium">
+            <Label htmlFor="email" className="text-weelp-steel text-sm font-medium">
               Email <span className="text-red-500">*</span>
             </Label>
             <Input
@@ -115,7 +115,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
 
           {/* Gender */}
           <div>
-            <Label className="text-[#435A67] text-sm font-medium">
+            <Label className="text-weelp-steel text-sm font-medium">
               Gender <span className="text-red-500">*</span>
             </Label>
             <Controller
@@ -140,7 +140,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
 
           {/* Instagram */}
           <div>
-            <Label htmlFor="instagram" className="text-[#435A67] text-sm font-medium">
+            <Label htmlFor="instagram" className="text-weelp-steel text-sm font-medium">
               Instagram <span className="text-red-500">*</span>
             </Label>
             <Input id="instagram" placeholder="@yourhandle" className="mt-1.5" {...register('instagram', { required: 'Instagram handle is required' })} />
@@ -149,7 +149,7 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
 
           {/* Phone */}
           <div>
-            <Label htmlFor="phone" className="text-[#435A67] text-sm font-medium">
+            <Label htmlFor="phone" className="text-weelp-steel text-sm font-medium">
               Phone <span className="text-red-500">*</span>
             </Label>
             <Input id="phone" type="tel" placeholder="+1 234 567 890" className="mt-1.5" {...register('phone', { required: 'Phone number is required' })} />
@@ -158,16 +158,16 @@ export default function CreatorApplicationForm({ open, onOpenChange }) {
 
           {/* YouTube (optional) */}
           <div>
-            <Label htmlFor="youtube" className="text-[#435A67] text-sm font-medium">
-              YouTube <span className="text-[#71717a] text-xs font-normal">(optional)</span>
+            <Label htmlFor="youtube" className="text-weelp-steel text-sm font-medium">
+              YouTube <span className="text-muted-foreground text-xs font-normal">(optional)</span>
             </Label>
             <Input id="youtube" placeholder="https://youtube.com/@yourchannel" className="mt-1.5" {...register('youtube')} />
           </div>
 
           {/* Facebook (optional) */}
           <div>
-            <Label htmlFor="facebook" className="text-[#435A67] text-sm font-medium">
-              Facebook <span className="text-[#71717a] text-xs font-normal">(optional)</span>
+            <Label htmlFor="facebook" className="text-weelp-steel text-sm font-medium">
+              Facebook <span className="text-muted-foreground text-xs font-normal">(optional)</span>
             </Label>
             <Input id="facebook" placeholder="https://facebook.com/yourprofile" className="mt-1.5" {...register('facebook')} />
           </div>

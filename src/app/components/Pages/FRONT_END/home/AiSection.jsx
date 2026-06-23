@@ -6,7 +6,7 @@ import { getAllFeaturedActivities } from '@/lib/services/activites';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import Reveal from '@/app/components/ui/Reveal';
 
-const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_6px_rgba(0,0,0,0.05)] ring-1 ring-[#eaeaea]';
+const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-card shadow-[0_2px_6px_rgba(0,0,0,0.05)] ring-1 ring-[#eaeaea]';
 
 const AiSection = async () => {
   const featuredRes = await getAllFeaturedActivities();
@@ -15,7 +15,7 @@ const AiSection = async () => {
 
   return (
     <Reveal as="section" initialHidden className="container-page flex flex-col items-center gap-12 pb-10 md:pb-16 lg:pb-24">
-      <Reveal variant="lift" as="h2" className="text-center text-[28px] font-medium text-[#18181b]">
+      <Reveal variant="lift" as="h2" className="text-center text-[28px] font-medium text-foreground">
         Your AI Travel Buddy
       </Reveal>
 
@@ -49,8 +49,8 @@ const AiSection = async () => {
           <PersonalisedGlobe />
           {/* Text — bottom-left inside the card, slides down + fades on hover */}
           <div data-overlay className="pointer-events-none absolute bottom-0 left-0 z-10 p-4 opacity-100 md:p-6">
-            <h3 className="text-[18px] font-semibold text-black">Personalised for you</h3>
-            <p className="text-[16px] font-medium text-black/70">Tailored recommendations.</p>
+            <h3 className="text-[18px] font-semibold text-foreground">Personalised for you</h3>
+            <p className="text-[16px] font-medium text-foreground/70">Tailored recommendations.</p>
           </div>
         </article>
       </div>

@@ -26,15 +26,15 @@ const TopBarFilter = ({ dispatch }) => {
     <div className="flex justify-between py-8 flex-wrap gap-4">
       <div className="flex gap-4">
         <Select onValueChange={handleAvailabilityChange}>
-          <SelectTrigger className="w-[150px] flex justify-around text-base focus:ring-0 focus:outline-0 focus:ring-offset-0 text-weelp-steel bg-mainBackground">
+          <SelectTrigger className="w-[150px] flex justify-around text-base focus:ring-0 focus:outline-0 focus:ring-offset-0 text-weelp-steel bg-background">
             <SelectValue placeholder="Availability" />
           </SelectTrigger>
           <SelectContent className={'mt-2'}>
             <SelectGroup>
-              <SelectItem className={'cursor-pointer ease-in-out duration-200 capitalize focus:bg-[#f2f7f5] text-weelp-steel'} value="Out of Stock">
+              <SelectItem className={'cursor-pointer ease-in-out duration-200 capitalize focus:bg-surface-tint text-weelp-steel'} value="Out of Stock">
                 Out of Stock
               </SelectItem>
-              <SelectItem className={'cursor-pointer ease-in-out duration-200 capitalize focus:bg-[#f2f7f5] text-weelp-steel'} value="In Stock">
+              <SelectItem className={'cursor-pointer ease-in-out duration-200 capitalize focus:bg-surface-tint text-weelp-steel'} value="In Stock">
                 In Stock
               </SelectItem>
             </SelectGroup>
@@ -42,15 +42,15 @@ const TopBarFilter = ({ dispatch }) => {
         </Select>
 
         <Select onValueChange={handlePriceSort}>
-          <SelectTrigger className="w-[150px] flex justify-around text-base focus:ring-0 focus:outline-0 focus:ring-offset-0 text-weelp-steel bg-mainBackground">
+          <SelectTrigger className="w-[150px] flex justify-around text-base focus:ring-0 focus:outline-0 focus:ring-offset-0 text-weelp-steel bg-background">
             <SelectValue placeholder="Price Range" />
           </SelectTrigger>
           <SelectContent className={'mt-2'}>
             <SelectGroup>
-              <SelectItem className={'cursor-pointer ease-in-out duration-200 capitalize focus:bg-[#f2f7f5] text-weelp-steel'} value={2000}>
+              <SelectItem className={'cursor-pointer ease-in-out duration-200 capitalize focus:bg-surface-tint text-weelp-steel'} value={2000}>
                 High to Low
               </SelectItem>
-              <SelectItem className={'cursor-pointer ease-in-out duration-200 capitalize focus:bg-[#f2f7f5] text-weelp-steel'} value={5000}>
+              <SelectItem className={'cursor-pointer ease-in-out duration-200 capitalize focus:bg-surface-tint text-weelp-steel'} value={5000}>
                 Low to High
               </SelectItem>
             </SelectGroup>
@@ -75,15 +75,15 @@ const TopBarFilter = ({ dispatch }) => {
             }}
           >
             {/* <input type='hidden' value={sortData} /> */}
-            <ul className="absolute z-10 mt-4 left-20 border flex flex-col bg-white rounded-md text-sm">
-              <li className="cursor-pointer ease-in-out duration-200 p-4 capitalize hover:bg-[#f2f7f5] text-nowrap  text-weelp-steel" onClick={handleRatingChange} value={5}>
+            <ul className="absolute z-10 mt-4 left-20 border flex flex-col bg-background rounded-md text-sm">
+              <li className="cursor-pointer ease-in-out duration-200 p-4 capitalize hover:bg-surface-tint text-nowrap  text-weelp-steel" onClick={handleRatingChange} value={5}>
                 Sort By Popularity
               </li>
-              <li className="cursor-pointer ease-in-out duration-200 p-4 capitalize hover:bg-[#f2f7f5] text-nowrap  text-weelp-steel" onClick={handleRatingChange} value={5}>
+              <li className="cursor-pointer ease-in-out duration-200 p-4 capitalize hover:bg-surface-tint text-nowrap  text-weelp-steel" onClick={handleRatingChange} value={5}>
                 {' '}
                 Sort By Popularity: Low to High
               </li>
-              <li className="cursor-pointer ease-in-out duration-200 p-4 capitalize hover:bg-[#f2f7f5] text-nowrap  text-weelp-steel" onClick={handleRatingChange} value={4}>
+              <li className="cursor-pointer ease-in-out duration-200 p-4 capitalize hover:bg-surface-tint text-nowrap  text-weelp-steel" onClick={handleRatingChange} value={4}>
                 Sort By Popularity :High to Low
               </li>
             </ul>

@@ -5,12 +5,12 @@ export const metadata = {
 
 const SectionTitle = ({ children }) => <h2 className="text-2xl font-semibold">{children}</h2>;
 
-const Paragraph = ({ children }) => <p className="text-lg text-[#71717a] leading-relaxed font-medium">{children}</p>;
+const Paragraph = ({ children }) => <p className="text-lg text-muted-foreground leading-relaxed font-medium">{children}</p>;
 
 const BulletList = ({ items }) => (
   <ul className="list-disc list-inside space-y-2">
     {items.map((item, index) => (
-      <li key={index} className="text-lg text-[#71717a] leading-relaxed font-medium">
+      <li key={index} className="text-lg text-muted-foreground leading-relaxed font-medium">
         {item}
       </li>
     ))}
@@ -21,7 +21,7 @@ const PrivacyPage = () => {
   return (
     <div className="container-page py-10 md:py-16 lg:py-24">
       <div className="mx-auto max-w-4xl">
-        <p className="text-sm text-[#71717a]">Last updated: April 4, 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: April 4, 2026</p>
         <h1 className="text-4xl md:text-5xl font-bold mt-4 mb-12">Privacy Policy</h1>
 
         <div className="space-y-10">
@@ -122,7 +122,7 @@ const PrivacyPage = () => {
             />
             <Paragraph>
               To exercise any of these rights, please contact us at{' '}
-              <a href="mailto:privacy@weelp.com" className="text-[#18181b] underline hover:opacity-80">
+              <a href="mailto:privacy@weelp.com" className="text-foreground underline hover:opacity-80">
                 privacy@weelp.com
               </a>
               . We will respond to all requests within 30 days.
@@ -151,7 +151,7 @@ const PrivacyPage = () => {
             <Paragraph>
               Weelp is not intended for use by individuals under the age of 16. We do not knowingly collect personal information from children. If we become aware that a child under 16 has provided us
               with personal data, we will take immediate steps to delete that information from our systems. If you believe a child has submitted personal information to us, please contact us at{' '}
-              <a href="mailto:privacy@weelp.com" className="text-[#18181b] underline hover:opacity-80">
+              <a href="mailto:privacy@weelp.com" className="text-foreground underline hover:opacity-80">
                 privacy@weelp.com
               </a>
               .
@@ -173,7 +173,7 @@ const PrivacyPage = () => {
             <SectionTitle>Contact Us</SectionTitle>
             <Paragraph>
               If you have any questions, concerns, or requests regarding this Privacy Policy or the way we handle your personal data, please reach out to us at{' '}
-              <a href="mailto:privacy@weelp.com" className="text-[#18181b] underline hover:opacity-80">
+              <a href="mailto:privacy@weelp.com" className="text-foreground underline hover:opacity-80">
                 privacy@weelp.com
               </a>
               . We are here to help.

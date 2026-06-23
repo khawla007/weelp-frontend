@@ -35,11 +35,11 @@ const WeelpRecommendations = async () => {
   const itineraries = getRandomItems(items, 32);
 
   return (
-    <Reveal as="section" initialHidden className="w-full bg-[#f8faf9] pb-10 md:pb-16 lg:pb-24">
+    <Reveal as="section" initialHidden className="w-full bg-surface-tint pb-10 md:pb-16 lg:pb-24">
       <div className="w-full px-4 lg:px-[60px]">
         <Reveal variant="lift">
-          <h3 className="text-[20px] text-[#18181b] mb-4">Weelp Recommendations</h3>
-          <div className="mb-4 border-t border-[#e4e4e7]" />
+          <h3 className="text-[20px] text-foreground mb-4">Weelp Recommendations</h3>
+          <div className="mb-4 border-t border-border" />
         </Reveal>
         <Reveal stagger={45} variant="lift" className="grid grid-cols-2 gap-x-6 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
           {itineraries.map((itinerary) => {
@@ -50,7 +50,7 @@ const WeelpRecommendations = async () => {
               <Link
                 key={`${slug}-${city_slug}`}
                 href={href}
-                className="text-[16px] text-[#71717a] bg-gradient-to-r from-[#18181b] to-[#18181b] bg-[length:0%_1px] bg-no-repeat bg-[position:0_100%] transition-[color,background-size] duration-300 ease-[var(--weelp-ease-out)] hover:text-[#18181b] hover:bg-[length:100%_1px] motion-reduce:transition-none"
+                className="text-[16px] text-muted-foreground bg-gradient-to-r from-foreground to-foreground bg-[length:0%_1px] bg-no-repeat bg-[position:0_100%] transition-[color,background-size] duration-300 ease-[var(--weelp-ease-out)] hover:text-foreground hover:bg-[length:100%_1px] motion-reduce:transition-none"
                 style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px', lineHeight: 2.06 }}
               >
                 {name}

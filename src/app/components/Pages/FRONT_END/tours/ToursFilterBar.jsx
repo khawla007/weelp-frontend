@@ -234,25 +234,25 @@ export default function ToursFilterBar() {
         <div className="flex-1 relative" ref={fromRef}>
           <div
             onClick={handleFromInputClick}
-            className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none"
+            className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
-            <MapPin size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
+            <MapPin size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
             <input
               type="text"
               placeholder="From?"
               value={fromInputValue}
               onChange={handleFromInputChange}
               onClick={handleFromInputClick}
-              className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-[#71717a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
-              style={{ color: '#52525b', fontFamily: 'inherit' }}
+              className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
+              style={{ color: 'rgb(var(--copy-rgb))', fontFamily: 'inherit' }}
               autoComplete="off"
             />
           </div>
 
           {/* From Dropdown */}
           {showFromDropdown && (
-            <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border max-h-52 overflow-y-auto overflow-x-hidden z-[110] min-w-full w-max">
+            <div className="absolute top-full left-0 mt-1 bg-background rounded-lg shadow-lg border max-h-52 overflow-y-auto overflow-x-hidden z-[110] min-w-full w-max">
               {filteredFromCities.length > 0 ? (
                 filteredFromCities.map((city) => (
                   <div
@@ -262,17 +262,17 @@ export default function ToursFilterBar() {
                       setFromInputValue(city.name);
                       setShowFromDropdown(false);
                     }}
-                    className="flex items-center justify-between gap-4 px-4 py-2 hover:bg-zinc-100 cursor-pointer text-sm"
+                    className="flex items-center justify-between gap-4 px-4 py-2 hover:bg-muted cursor-pointer text-sm"
                   >
                     <div className="flex items-center gap-2">
-                      <MapPin size={14} className="text-zinc-400 flex-shrink-0" />
+                      <MapPin size={14} className="text-muted-foreground flex-shrink-0" />
                       <span className="whitespace-nowrap">{city.name}</span>
                     </div>
-                    <span className="text-[12px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
+                    <span className="text-[12px] uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
                   </div>
                 ))
               ) : citiesLoading ? null : (
-                <div className="px-4 py-3 text-sm text-zinc-400 text-center">No locations found</div>
+                <div className="px-4 py-3 text-sm text-muted-foreground text-center">No locations found</div>
               )}
             </div>
           )}
@@ -282,25 +282,25 @@ export default function ToursFilterBar() {
         <div className="flex-1 relative" ref={toRef}>
           <div
             onClick={handleToInputClick}
-            className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
+            className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
-            <MapPin size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
+            <MapPin size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
             <input
               type="text"
               placeholder="Where To?"
               value={toInputValue}
               onChange={handleToInputChange}
               onClick={handleToInputClick}
-              className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-[#71717a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
-              style={{ color: '#52525b', fontFamily: 'inherit' }}
+              className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
+              style={{ color: 'rgb(var(--copy-rgb))', fontFamily: 'inherit' }}
               autoComplete="off"
             />
           </div>
 
           {/* Where To Dropdown */}
           {showToDropdown && (
-            <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border max-h-52 overflow-y-auto overflow-x-hidden z-[110] min-w-full w-max">
+            <div className="absolute top-full left-0 mt-1 bg-background rounded-lg shadow-lg border max-h-52 overflow-y-auto overflow-x-hidden z-[110] min-w-full w-max">
               {filteredToCities.length > 0 ? (
                 filteredToCities.map((city) => (
                   <div
@@ -310,17 +310,17 @@ export default function ToursFilterBar() {
                       setToInputValue(city.name);
                       setShowToDropdown(false);
                     }}
-                    className="flex items-center justify-between gap-4 px-4 py-2 hover:bg-zinc-100 cursor-pointer text-sm"
+                    className="flex items-center justify-between gap-4 px-4 py-2 hover:bg-muted cursor-pointer text-sm"
                   >
                     <div className="flex items-center gap-2">
-                      <MapPin size={14} className="text-zinc-400 flex-shrink-0" />
+                      <MapPin size={14} className="text-muted-foreground flex-shrink-0" />
                       <span className="whitespace-nowrap">{city.name}</span>
                     </div>
-                    <span className="text-[12px] uppercase tracking-wider text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
+                    <span className="text-[12px] uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5 rounded whitespace-nowrap">{city.type || 'city'}</span>
                   </div>
                 ))
               ) : citiesLoading ? null : (
-                <div className="px-4 py-3 text-sm text-zinc-400 text-center">No locations found</div>
+                <div className="px-4 py-3 text-sm text-muted-foreground text-center">No locations found</div>
               )}
             </div>
           )}
@@ -336,11 +336,11 @@ export default function ToursFilterBar() {
               setShowToDropdown(false);
               setShowGuests(false);
             }}
-            className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
+            className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
-            <Calendar size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
-            <span className="text-sm font-medium" style={{ color: '#52525b' }}>
+            <Calendar size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
+            <span className="text-sm font-medium" style={{ color: 'rgb(var(--copy-rgb))' }}>
               {dateRange?.from && dateRange?.to
                 ? `${dateRange.from.toLocaleDateString('en-US', {
                     month: 'short',
@@ -355,7 +355,7 @@ export default function ToursFilterBar() {
 
           {/* Calendar Dropdown */}
           {showCalendar && (
-            <div onMouseLeave={() => setShowCalendar(false)} className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-2 z-[110]">
+            <div onMouseLeave={() => setShowCalendar(false)} className="absolute top-full right-0 mt-1 bg-background rounded-lg shadow-lg border p-2 z-[110]">
               <WeelpCalendar
                 mode="range"
                 months={2}
@@ -383,30 +383,30 @@ export default function ToursFilterBar() {
               setShowToDropdown(false);
               setShowCalendar(false);
             }}
-            className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-l-none"
+            className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-l-none"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
-            <Users size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
-            <span className="text-sm font-medium" style={{ color: '#52525b' }}>
+            <Users size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
+            <span className="text-sm font-medium" style={{ color: 'rgb(var(--copy-rgb))' }}>
               {totalGuests > 0 ? `${totalGuests} ${totalGuests === 1 ? 'Guest' : 'Guests'}` : 'How Many?'}
             </span>
           </div>
 
           {/* Guests Dropdown */}
           {showGuests && (
-            <div onMouseLeave={() => setShowGuests(false)} className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-4 z-[110] w-64">
+            <div onMouseLeave={() => setShowGuests(false)} className="absolute top-full right-0 mt-1 bg-background rounded-lg shadow-lg border p-4 z-[110] w-64">
               {['adults', 'children', 'infants'].map((type) => (
                 <div key={type} className="flex justify-between items-center mb-3 last:mb-0">
                   <div>
                     <span className="font-medium capitalize text-sm">{type}</span>
-                    <span className="text-xs text-zinc-500 block">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
+                    <span className="text-xs text-muted-foreground block">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <button type="button" onClick={() => handleGuestDecrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-zinc-100">
+                    <button type="button" onClick={() => handleGuestDecrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-muted">
                       -
                     </button>
                     <span className="w-6 text-center">{guests[type]}</span>
-                    <button type="button" onClick={() => handleGuestIncrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-zinc-100">
+                    <button type="button" onClick={() => handleGuestIncrement(type)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-muted">
                       +
                     </button>
                   </div>
@@ -421,20 +421,20 @@ export default function ToursFilterBar() {
       {showResults && (
         <div
           ref={resultsRef}
-          className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-zinc-100 overflow-hidden z-[100]"
+          className="absolute top-full left-0 right-0 mt-2 bg-background rounded-xl shadow-lg border border-border overflow-hidden z-[100]"
           style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
         >
           <button
             type="button"
             onClick={handleResetFilters}
-            className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full hover:bg-zinc-100 transition-colors z-10"
+            className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full hover:bg-muted transition-colors z-10"
             aria-label="Close results"
           >
             <X size={18} className="text-red-500" />
           </button>
 
           {resultsLoading ? (
-            <div className="flex items-center justify-center gap-2 py-6 text-sm text-zinc-400">
+            <div className="flex items-center justify-center gap-2 py-6 text-sm text-muted-foreground">
               <Loader2 size={16} className="animate-spin" />
               <span>Searching...</span>
             </div>
@@ -444,16 +444,16 @@ export default function ToursFilterBar() {
                 <NavigationLink
                   key={`${item.id}-${item.type}`}
                   href={buildResultUrl(item)}
-                  className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-zinc-50 transition-colors border-b border-zinc-50 last:border-b-0 pr-10"
+                  className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 py-2.5 hover:bg-muted transition-colors border-b border-border last:border-b-0 pr-10"
                 >
-                  <span className="text-sm font-semibold text-[#18181b] truncate text-left">{item.name || item.title}</span>
+                  <span className="text-sm font-semibold text-foreground truncate text-left">{item.name || item.title}</span>
                   <span className="rounded-md bg-weelp-sage-deep/15 px-2 py-0.5 text-[12px] font-semibold uppercase tracking-wider text-weelp-copy">{item.type || 'item'}</span>
-                  <span className="text-sm font-medium text-[#71717a] text-right">{item.price ? `$${item.price}` : ''}</span>
+                  <span className="text-sm font-medium text-muted-foreground text-right">{item.price ? `$${item.price}` : ''}</span>
                 </NavigationLink>
               ))}
             </>
           ) : (
-            <div className="py-6 text-center text-sm text-zinc-400">No results found</div>
+            <div className="py-6 text-center text-sm text-muted-foreground">No results found</div>
           )}
         </div>
       )}
