@@ -26,7 +26,7 @@ const HeroSection = () => {
         {/* eslint-disable-next-line weelp/no-inline-heading-font */}
         <h1
           // eslint-disable-next-line weelp/no-noncanonical-fontsize
-          className="text-[56px] leading-[0.9] tracking-tight text-weelp-ink sm:text-[72px] lg:text-[96px]"
+          className="text-[56px] leading-[0.9] tracking-tight text-[var(--weelp-home-hero-ink)] sm:text-[72px] lg:text-[96px]"
           style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
         >
           <span className="weelp-rise-mask weelp-rise-mask--block">
@@ -54,7 +54,7 @@ const HeroSection = () => {
           </span>
         </span>
 
-        <p className="-mt-2 w-fit max-w-[28ch] px-6 py-3 text-base leading-[1.4] text-weelp-ink/80 [background:radial-gradient(ellipse_at_center,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0.25)_45%,rgba(255,255,255,0)_75%)] sm:text-lg">
+        <p className="-mt-2 w-fit max-w-[28ch] px-6 py-3 text-base leading-[1.4] text-[var(--weelp-home-hero-copy)] [background:radial-gradient(ellipse_at_center,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0.25)_45%,rgba(255,255,255,0)_75%)] sm:text-lg">
           <span className="weelp-rise-mask weelp-rise-mask--block">
             <span className="weelp-rise-item block" style={{ '--weelp-rise-delay': '320ms' }}>
               Beach stays, marina views, and easy city plans in one place.
@@ -75,7 +75,7 @@ const HeroSection = () => {
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-weelp-sage-deep/70 text-white">
                 <Icon className="size-[18px]" strokeWidth={1.8} />
               </span>
-              <span className="flex flex-col leading-tight">
+              <span className="flex flex-col leading-tight text-white">
                 <span className="text-sm font-semibold text-white">{label}</span>
                 <span className="text-xs text-white/85">{sub}</span>
               </span>

@@ -22,7 +22,7 @@ html body[data-scroll-locked] {
 }
 
 #nprogress .bar {
-  background: #588f7a;
+  background: rgb(var(--weelp-sage-deep-rgb));
   position: fixed;
   z-index: 100000;
   top: 0;
@@ -38,8 +38,8 @@ html body[data-scroll-locked] {
   width: 100px;
   height: 100%;
   box-shadow:
-    0 0 10px #588f7a,
-    0 0 5px #588f7a;
+    0 0 10px rgb(var(--weelp-sage-deep-rgb)),
+    0 0 5px rgb(var(--weelp-sage-deep-rgb));
   opacity: 1;
   transform: rotate(3deg) translate(0px, -4px);
 }
@@ -76,6 +76,8 @@ body {
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
+    --surface-elevated: 0 0% 100%;
+    --surface-tint: 150 28% 96%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -100,6 +102,9 @@ body {
     --weelp-home-accent: #f59e0b;
     --weelp-home-brand: #123347;
     --weelp-home-muted: #6a7d88;
+    --weelp-home-hero-ink: #18181b;
+    --weelp-home-hero-copy: rgba(24, 24, 27, 0.8);
+    --weelp-home-hero-muted: rgba(24, 24, 27, 0.72);
     --weelp-home-search-shell: rgba(255, 255, 255, 0.95);
     --weelp-home-search-border: #d6dde2;
     --weelp-card-radius: 24px;
@@ -118,6 +123,18 @@ body {
     --weelp-city-tab-bg: #cfdbe533;
     --weelp-city-tab-active-bg: #cfdbe533;
     --weelp-city-tab-active-border: #cfdbe580;
+    --weelp-sage-deep-rgb: 88 143 122;
+    --weelp-sage-hover-rgb: 77 128 105;
+    --weelp-sage-tint-rgb: 181 216 203;
+    --weelp-sage-wash: 150 28% 96%;
+    --weelp-steel-rgb: 67 90 103;
+    --weelp-discount-rgb: 255 114 94;
+    --weelp-gray-rgb: 207 219 229;
+    --weelp-bluewhale-rgb: 99 105 110;
+    --weelp-blueish-rgb: 12 37 54;
+    --weelp-lynch-rgb: 102 112 133;
+    --weelp-solitude-rgb: 224 221 222;
+    --weelp-blackish-rgb: 80 102 114;
     --weelp-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --weelp-ease-panel: cubic-bezier(0.32, 0.72, 0, 1);
     --weelp-ease-ui: cubic-bezier(0.2, 0.7, 0.3, 1);
@@ -133,6 +150,9 @@ body {
     --ink: #18181b;
     --copy: #52525b;
     --label: #71717a;
+    --ink-rgb: 24 24 27;
+    --copy-rgb: 82 82 91;
+    --label-rgb: 113 113 122;
     /* Per DESIGN.md §Accessibility: plain link rest-state escalates to Copy
        (7.4:1 AAA) so anchor text below 18px / 14px-bold passes 4.5:1; sage
        moves to hover where the contrast-large threshold is acceptable. */
@@ -143,9 +163,9 @@ body {
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
+    --card: 0 0% 7%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
+    --popover: 0 0% 7%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
     --primary-foreground: 0 0% 9%;
@@ -160,6 +180,8 @@ body {
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
+    --surface-elevated: 0 0% 10%;
+    --surface-tint: 150 12% 12%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -178,6 +200,9 @@ body {
     --ink: #fafafa;
     --copy: #d4d4d8;
     --label: #a1a1aa;
+    --ink-rgb: 250 250 250;
+    --copy-rgb: 212 212 216;
+    --label-rgb: 161 161 170;
     --link-default: #d4d4d8;
     --link-hover: #7fb59c;
 
@@ -194,6 +219,18 @@ body {
     --weelp-home-muted: #8b9ba6;
     --weelp-home-search-shell: rgba(15, 15, 16, 0.95);
     --weelp-home-search-border: #2a3338;
+    --weelp-sage-deep-rgb: 88 143 122;
+    --weelp-sage-hover-rgb: 108 164 143;
+    --weelp-sage-tint-rgb: 58 90 79;
+    --weelp-sage-wash: 150 12% 12%;
+    --weelp-steel-rgb: 159 182 195;
+    --weelp-discount-rgb: 255 138 115;
+    --weelp-gray-rgb: 54 68 78;
+    --weelp-bluewhale-rgb: 159 182 195;
+    --weelp-blueish-rgb: 207 219 229;
+    --weelp-lynch-rgb: 161 161 170;
+    --weelp-solitude-rgb: 39 39 42;
+    --weelp-blackish-rgb: 207 219 229;
 
     /* Weelp card — dark parity */
     --weelp-card-border: #27272a;
@@ -493,7 +530,7 @@ body {
     position: relative;
     overflow: hidden;
     isolation: isolate;
-    background-color: var(--weelp-shimmer-base, #f4f4f5);
+    background-color: var(--weelp-shimmer-base, hsl(var(--muted)));
   }
 
   .weelp-shimmer::before {
@@ -522,10 +559,10 @@ body {
 
   @keyframes weelpRowPulse {
     0% {
-      background-color: #f2f7f5;
+      background-color: hsl(var(--weelp-sage-wash));
     }
     60% {
-      background-color: #f2f7f5;
+      background-color: hsl(var(--weelp-sage-wash));
     }
     100% {
       background-color: transparent;
@@ -801,7 +838,7 @@ body {
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-box-shadow: 0 0 0 30px hsl(var(--background)) inset !important;
     -webkit-text-fill-color: inherit !important;
     transition: background-color 5000s ease-in-out 0s;
   }
@@ -811,7 +848,7 @@ body {
   .dark input:-webkit-autofill:hover,
   .dark input:-webkit-autofill:focus,
   .dark input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px rgb(0 0 0) inset !important;
+    -webkit-box-shadow: 0 0 0 30px hsl(var(--background)) inset !important;
     -webkit-text-fill-color: inherit !important;
   }
 
@@ -859,11 +896,11 @@ body {
 }
 
 .tfc_scroll::-webkit-scrollbar-thumb {
-  @apply rounded-full bg-gray-400;
+  @apply rounded-full bg-muted-foreground/45;
 }
 
 .tfc_scroll::-webkit-scrollbar-track {
-  @apply rounded-full bg-white;
+  @apply rounded-full bg-background;
 }
 
 /** Hide scrollbar but keep scroll functionality */
@@ -877,33 +914,37 @@ body {
 
 /* Personalised globe + sparkles + flight + vignette extracted to src/app/styles/globe.css */
 
-/* Dark Mode Testing */
+/* Temporary dark-mode bridge for un-migrated legacy utility classes.
+   Specific components should still move to semantic tokens. */
+@layer utilities {
+  .dark :where(.bg-white, .bg-mainBackground, [class*='bg-[#f8faf9]']) {
+    /* dark-audit-ignore */
+    background-color: hsl(var(--background));
+  }
 
-/* div,
-section,
-header,
-footer,
-main,
-* {
-  @apply dark:bg-black;
-} */
+  .dark :where([class*='bg-[#f2f7f5]']) {
+    /* dark-audit-ignore */
+    background-color: hsl(var(--weelp-sage-wash));
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-a,
-div,
-li,
-button {
-  @apply dark:text-white dark:bg-black hover:dark:bg-black hover:dark:text-weelp-sage-deep;
-}
+  .dark :where([class*='bg-[#f4f4f5]']) {
+    /* dark-audit-ignore */
+    background-color: hsl(var(--muted));
+  }
 
-p,
-span {
-  @apply dark:text-slate-50;
+  .dark :where(.border-gray-100, .border-gray-200, .border-zinc-100, .border-zinc-200, [class*='border-[#e4e4e7]'], [class*='border-[#ededed]']) {
+    /* dark-audit-ignore */
+    border-color: hsl(var(--border));
+  }
+
+  .dark :where([class*='ring-offset-white']) {
+    --tw-ring-offset-color: hsl(var(--background));
+  }
+
+  .dark :where(.shadow-sm, .shadow, .shadow-md, .shadow-lg, .shadow-xl, .shadow-2xl, [class*='shadow-[']) {
+    /* dark-audit-ignore */
+    box-shadow: none;
+  }
 }
 
 /* Additional custmization */

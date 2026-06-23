@@ -16,7 +16,7 @@ export function ThemeToggle({ className = '', compact = false }) {
       <DropdownMenuTrigger
         aria-label="Toggle theme"
         className={cn(
-          'flex items-center justify-center rounded-full text-foreground transition-colors hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2 motion-reduce:transition-none',
+          'flex items-center justify-center rounded-full text-foreground transition-colors hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 motion-reduce:transition-none',
           compact ? 'h-9 w-9' : 'h-11 w-11',
           className,
         )}

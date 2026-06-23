@@ -23,7 +23,7 @@ export function FrontendShell({ header, footer, children }) {
         <NavigationEventsHandler />
       </Suspense>
       {header}
-      <main className="bg-mainBackground min-h-[90vh] relative">{children}</main>
+      <main className="relative min-h-[90vh] bg-background">{children}</main>
       {footer}
       <NavigationProgressBar />
     </div>

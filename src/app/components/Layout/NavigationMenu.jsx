@@ -99,12 +99,12 @@ export const DesktopMainBar = ({ stickyHeader, mainBarTransparent }) => {
         <div className="grid h-full w-full items-center gap-4 px-4 py-[8px] md:px-8 xl:px-[60px]" style={{ gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)' }}>
           <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start focus:outline-none" aria-label="Weelp home">
             <img src={getLogoUrl()} alt="Weelp" className="h-9 w-auto" />
-            <span className="text-[18px] font-semibold text-[#18181b]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
+            <span className={`text-[18px] font-semibold ${mainBarTransparent ? 'text-[#18181b]' : 'text-foreground'}`} style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
               Weelp.
             </span>
           </Link>
 
-          <NavMenuDesktop />
+          <NavMenuDesktop overHero={mainBarTransparent} />
 
           <HeaderAccount overHero={mainBarTransparent} />
         </div>
@@ -129,7 +129,7 @@ const DesktopMenu = ({ stickyHeader, variant = 'solid' }) => {
 
 const DESTINATION_ACTIVE_PREFIXES = ['/cities', '/destinations', '/countries', '/regions'];
 
-const NavMenuDesktop = () => {
+const NavMenuDesktop = ({ overHero = false }) => {
   const [megaOpen, setMegaOpen] = useState(false);
   const [megaMounted, setMegaMounted] = useState(false);
   const [megaMotionState, setMegaMotionState] = useState('closed');
@@ -149,9 +149,15 @@ const NavMenuDesktop = () => {
   const isMegaActive = pathname ? DESTINATION_ACTIVE_PREFIXES.some((p) => pathname.startsWith(p)) : false;
 
   const linkClass = (active) =>
-    `group/nav relative flex items-center gap-2 whitespace-nowrap rounded-sm text-[15px] font-medium transition-[color] duration-200 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#18181b]/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white xl:text-[16px] hover:text-[#18181b]/70 ${
-      active ? 'text-[#18181b]/70' : 'text-black'
-    }`;
+    `group/nav relative flex items-center gap-2 whitespace-nowrap rounded-sm text-[15px] font-medium transition-[color] duration-200 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 xl:text-[16px] ${
+      overHero ? 'hover:text-[#18181b]/70 focus-visible:ring-[#18181b]/30 focus-visible:ring-offset-white' : 'hover:text-muted-foreground focus-visible:ring-ring focus-visible:ring-offset-background'
+    } ${active ? (overHero ? 'text-[#18181b]/70' : 'text-muted-foreground') : overHero ? 'text-black' : 'text-foreground'}`;
+
+  const navIconClass = (active) =>
+    `size-[15px] transition-[color,transform] duration-200 ease-out motion-reduce:transition-none group-hover/nav:-translate-y-0.5 ${
+      overHero ? 'group-hover/nav:text-[#18181b]/70' : 'group-hover/nav:text-muted-foreground'
+    } ${active ? (overHero ? 'text-[#18181b]/70' : 'text-muted-foreground') : overHero ? 'text-black' : 'text-foreground'}`;
+  const navItemTone = overHero ? 'text-black' : 'text-foreground';
 
   const indicator = (active) => (
     <span
@@ -262,7 +268,7 @@ const NavMenuDesktop = () => {
           if (nav.hasMegaMenu) {
             const active = megaOpen || isMegaActive;
             return (
-              <li key={nav.title} onMouseEnter={scheduleOpen} onMouseLeave={scheduleClose}>
+              <li key={nav.title} className={navItemTone} onMouseEnter={scheduleOpen} onMouseLeave={scheduleClose}>
                 <button
                   ref={megaTriggerRef}
                   type="button"
@@ -274,14 +280,7 @@ const NavMenuDesktop = () => {
                   aria-expanded={megaOpen}
                   aria-haspopup="dialog"
                 >
-                  {index === 0 && (
-                    <MapPin
-                      className={`size-[15px] transition-[color,transform] duration-200 ease-out motion-reduce:transition-none group-hover/nav:-translate-y-0.5 group-hover/nav:text-[#18181b]/70 ${
-                        active ? 'text-[#18181b]/70' : 'text-black'
-                      }`}
-                      strokeWidth={1.24}
-                    />
-                  )}
+                  {index === 0 && <MapPin className={navIconClass(active)} strokeWidth={1.24} />}
                   {nav.title}
                   {indicator(active)}
                 </button>
@@ -290,16 +289,9 @@ const NavMenuDesktop = () => {
           }
           const active = isHrefActive(nav.href);
           return (
-            <li key={nav.title}>
+            <li key={nav.title} className={navItemTone}>
               <Link className={linkClass(active)} href={nav.href} aria-current={active ? 'page' : undefined}>
-                {index === 0 && (
-                  <MapPin
-                    className={`size-[15px] transition-[color,transform] duration-200 ease-out motion-reduce:transition-none group-hover/nav:-translate-y-0.5 group-hover/nav:text-[#18181b]/70 ${
-                      active ? 'text-[#18181b]/70' : 'text-black'
-                    }`}
-                    strokeWidth={1.24}
-                  />
-                )}
+                {index === 0 && <MapPin className={navIconClass(active)} strokeWidth={1.24} />}
                 {nav.title}
                 {indicator(active)}
               </Link>
@@ -344,7 +336,8 @@ export const HeaderAccount = ({ overHero = false }) => {
   const submenuOpenTimer = useRef(null);
   const submenuCloseTimer = useRef(null);
 
-  const iconChip = overHero ? 'bg-white/85 backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)]' : '';
+  const iconChip = overHero ? 'bg-white/85 text-[#18181b] backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:bg-black/85 dark:text-white' : '';
+  const iconButtonTone = overHero ? 'text-[#18181b]' : 'text-foreground';
 
   const clearSubmenuTimers = useCallback(() => {
     if (submenuOpenTimer.current) clearTimeout(submenuOpenTimer.current);
@@ -387,7 +380,7 @@ export const HeaderAccount = ({ overHero = false }) => {
             type="button"
             aria-label="Search trips"
             onClick={() => setShowForm(true)}
-            className={`relative flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${iconChip}`}
+            className={`relative flex h-11 w-11 items-center justify-center rounded-full ${iconButtonTone} transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${iconChip}`}
           >
             <Search className="size-5" strokeWidth={1.5} />
           </button>
@@ -396,7 +389,7 @@ export const HeaderAccount = ({ overHero = false }) => {
           <button
             type="button"
             aria-label={cartItemCount > 0 ? `Open cart, ${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'}` : 'Open cart'}
-            className={`relative flex h-11 w-11 items-center justify-center rounded-full text-[#18181b] transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${iconChip}`}
+            className={`relative flex h-11 w-11 items-center justify-center rounded-full ${iconButtonTone} transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${iconChip}`}
             onClick={handleShowCart}
           >
             <span className="relative inline-flex">
@@ -410,10 +403,10 @@ export const HeaderAccount = ({ overHero = false }) => {
           </button>
         </li>
         <li className={overHero ? `flex h-11 w-11 items-center justify-center rounded-full ${iconChip}` : undefined}>
-          <NotificationBell />
+          <NotificationBell overHero={overHero} />
         </li>
         <li>
-          <ThemeToggle />
+          <ThemeToggle className={overHero ? iconChip : ''} />
         </li>
         <li onMouseEnter={openSubmenu} onMouseLeave={scheduleCloseSubmenu}>
           <button
@@ -421,7 +414,7 @@ export const HeaderAccount = ({ overHero = false }) => {
             aria-label="Open account menu"
             aria-expanded={!!showSubmenu}
             onFocus={openSubmenu}
-            className={`flex h-11 w-[65px] items-center justify-center gap-2 rounded-[30px] border border-[#e4e4e7] overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${iconChip}`}
+            className={`flex h-11 w-[65px] items-center justify-center gap-2 rounded-[30px] border border-[#e4e4e7] ${iconButtonTone} overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${iconChip}`}
           >
             {isLoggedIn && avatarSrc ? (
               <img src={avatarSrc} alt={name || 'user'} className="h-8 w-8 rounded-full object-cover shrink-0" />
@@ -441,7 +434,7 @@ export const HeaderAccount = ({ overHero = false }) => {
                 </g>
               </svg>
             )}
-            <ChevronDown className="size-[16px] text-[#18181b]/70 shrink-0" strokeWidth={1.5} />
+            <ChevronDown className="size-[16px] shrink-0 opacity-70" strokeWidth={1.5} />
           </button>
         </li>
       </ul>
