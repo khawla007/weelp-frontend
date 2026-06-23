@@ -88,20 +88,23 @@ function Pagination({ currentPage, lastPage }) {
       {currentPage > 1 ? (
         <Link
           href={`/cities?page=${currentPage - 1}`}
-          className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition hover:bg-muted"
+          className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm dark:shadow-none transition hover:bg-muted"
           aria-label="Previous page"
         >
           <ChevronLeft className="size-4" />
         </Link>
       ) : (
-        <span className="flex size-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground shadow-sm">
+        <span className="flex size-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground shadow-sm dark:shadow-none">
           <ChevronLeft className="size-4" />
         </span>
       )}
 
       {start > 1 && (
         <>
-          <Link href="/cities?page=1" className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted">
+          <Link
+            href="/cities?page=1"
+            className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm dark:shadow-none transition hover:bg-muted"
+          >
             1
           </Link>
           {start > 2 && <span className="px-1 text-muted-foreground">...</span>}
@@ -113,7 +116,7 @@ function Pagination({ currentPage, lastPage }) {
           key={page}
           href={`/cities?page=${page}`}
           aria-current={page === currentPage ? 'page' : undefined}
-          className={`flex size-9 items-center justify-center rounded-full border text-sm shadow-sm transition ${
+          className={`flex size-9 items-center justify-center rounded-full border text-sm shadow-sm dark:shadow-none transition ${
             page === currentPage ? 'border-foreground bg-foreground text-background' : 'border-border bg-background text-foreground hover:bg-muted'
           }`}
         >
@@ -126,7 +129,7 @@ function Pagination({ currentPage, lastPage }) {
           {end < lastPage - 1 && <span className="px-1 text-muted-foreground">...</span>}
           <Link
             href={`/cities?page=${lastPage}`}
-            className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted"
+            className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm dark:shadow-none transition hover:bg-muted"
           >
             {lastPage}
           </Link>
@@ -136,13 +139,13 @@ function Pagination({ currentPage, lastPage }) {
       {currentPage < lastPage ? (
         <Link
           href={`/cities?page=${currentPage + 1}`}
-          className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition hover:bg-muted"
+          className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm dark:shadow-none transition hover:bg-muted"
           aria-label="Next page"
         >
           <ChevronRight className="size-4" />
         </Link>
       ) : (
-        <span className="flex size-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground shadow-sm">
+        <span className="flex size-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground shadow-sm dark:shadow-none">
           <ChevronRight className="size-4" />
         </span>
       )}

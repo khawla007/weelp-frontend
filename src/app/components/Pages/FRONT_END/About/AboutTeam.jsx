@@ -27,7 +27,7 @@ const AboutTeam = () => {
         {team.map((member, index) => (
           <div
             key={index}
-            className="bg-background rounded-[24px] p-4 border border-border text-center transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)]"
+            className="bg-background rounded-[24px] p-4 border border-border text-center transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:hover:shadow-none"
           >
             <div className="relative w-full aspect-square mb-4 rounded-[16px] bg-muted overflow-hidden">
               {!imageErrors[index] ? (

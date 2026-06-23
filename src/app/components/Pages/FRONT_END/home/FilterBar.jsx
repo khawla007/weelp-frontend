@@ -20,8 +20,8 @@ const COUNT_NUMBER_MOTION_CLASS = 'inline-block animate-in fade-in-0 zoom-in-95 
 const CONTROL_BUTTON_CLASS =
   'w-8 h-8 rounded-full border flex items-center justify-center hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
 const FIELD_TRIGGER_CLASS =
-  'flex w-full items-center gap-3 rounded-xl border border-border bg-card px-6 py-[18px] text-left shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
-const PANEL_BASE_CLASS = 'border border-border bg-card shadow-lg rounded-lg';
+  'flex w-full items-center gap-3 rounded-xl border border-border bg-card px-6 py-[18px] text-left shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
+const PANEL_BASE_CLASS = 'border border-border bg-card shadow-lg dark:shadow-none rounded-lg';
 
 export default function FilterBar({ appearance = 'card' }) {
   const { data: allLocations, loading: locationsLoading } = useCitiesRegions();
@@ -184,7 +184,7 @@ export default function FilterBar({ appearance = 'card' }) {
                   className={
                     isPill
                       ? 'relative flex items-center gap-3 bg-transparent px-7 h-24 cursor-pointer sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border sm:first:before:hidden'
-                      : 'flex items-center gap-3 rounded-xl border border-border bg-card px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none'
+                      : 'flex items-center gap-3 rounded-xl border border-border bg-card px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer sm:rounded-r-none'
                   }
                   style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
                 >
@@ -441,7 +441,7 @@ export default function FilterBar({ appearance = 'card' }) {
       {showPreview && (
         <div
           ref={previewRef}
-          className="absolute top-full left-0 right-0 mt-2 bg-background rounded-xl shadow-lg border border-border overflow-hidden z-50"
+          className="absolute top-full left-0 right-0 mt-2 bg-background rounded-xl shadow-lg dark:shadow-none border border-border overflow-hidden z-50"
           style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
         >
           <button

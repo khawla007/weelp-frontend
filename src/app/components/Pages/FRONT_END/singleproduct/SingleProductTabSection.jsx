@@ -144,7 +144,7 @@ const SingleProductTabSection = ({
       {/* Sticky Tab Bar */}
       <div
         className={`${fixedTab ? 'fixed' : 'relative'} z-[11] w-full bg-card border-b border-border transition-[opacity,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-          fixedTab ? `shadow-[0_4px_12px_rgba(0,0,0,0.06)] ${pinSettled ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1'}` : 'opacity-100 translate-y-0'
+          fixedTab ? `shadow-[0_4px_12px_rgba(0,0,0,0.06)] dark:shadow-none ${pinSettled ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1'}` : 'opacity-100 translate-y-0'
         }`}
         style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}
       >

@@ -188,7 +188,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
               <ChevronDown className="size-4" />
             </button>
             {showSortDropdown && (
-              <div className="absolute right-0 top-full z-10 mt-1 min-w-[200px] rounded-lg border border-border bg-background py-1 shadow-lg">
+              <div className="absolute right-0 top-full z-10 mt-1 min-w-[200px] rounded-lg border border-border bg-background py-1 shadow-lg dark:shadow-none">
                 {SORT_OPTIONS.map((option) => (
                   <button
                     key={option.value}

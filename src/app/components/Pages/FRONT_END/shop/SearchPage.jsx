@@ -139,7 +139,7 @@ export const SearchPage = () => {
       </div>
       <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-8 p-4 sm:px-12 sm:py-4 mx-auto">
         {/* Sidebar Filters */}
-        <div className="w-full sm:max-w-xs p-4 bg-background shadow-md rounded-lg">
+        <div className="w-full sm:max-w-xs p-4 bg-background shadow-md dark:shadow-none rounded-lg">
           <h2 className="text-lg font-medium text-foreground my-4">Category</h2>
           <div className="flex flex-col space-y-2 h-48 overflow-scroll overflow-x-hidden">
             {categories.map((category) => (

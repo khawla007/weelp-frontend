@@ -187,14 +187,14 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
             <div className="absolute bottom-[10px] right-[10px] flex gap-3 z-10">
               <button
                 type="button"
-                className="photo-prev w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="photo-prev w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 aria-label="Previous review photo"
               >
                 <ChevronLeft size={16} className="text-copy" />
               </button>
               <button
                 type="button"
-                className="photo-next w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="photo-next w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 aria-label="Next review photo"
               >
                 <ChevronRight size={16} className="text-copy" />
@@ -214,14 +214,14 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
               <div className="flex items-center gap-1">
                 <button
                   type="button"
-                  className="featured-prev w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  className="featured-prev w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                   aria-label="Previous featured review"
                 >
                   <ChevronLeft size={16} className="text-copy" />
                 </button>
                 <button
                   type="button"
-                  className="featured-next w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  className="featured-next w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                   aria-label="Next featured review"
                 >
                   <ChevronRight size={16} className="text-copy" />
@@ -262,7 +262,7 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
           >
             {featuredReviewsData.map((review, index) => (
               <SwiperSlide key={index} style={{ height: 'auto', display: 'flex' }}>
-                <div className="bg-background p-8 rounded-xl border border-border hover:border-transparent hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] transition-[border-color,box-shadow] duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-[17px] w-full">
+                <div className="bg-background p-8 rounded-xl border border-border hover:border-transparent hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:hover:shadow-none transition-[border-color,box-shadow] duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-[17px] w-full">
                   <h5 className="text-foreground font-medium text-base">{review.userName}</h5>
                   <div className="flex gap-[7px]">
                     {Array(review.rating)
@@ -380,7 +380,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
             <ChevronDown size={16} className="text-weelp-steel" />
           </button>
           {showSortDropdown && (
-            <div className="absolute right-0 mt-2 bg-background rounded-lg shadow-lg border border-border py-1 min-w-[141px] z-20">
+            <div className="absolute right-0 mt-2 bg-background rounded-lg shadow-lg dark:shadow-none border border-border py-1 min-w-[141px] z-20">
               <button type="button" onClick={() => handleSortChange('newest')} className={`w-full text-left px-4 py-2 text-sm ${sortOrder === 'newest' ? 'bg-muted font-medium' : 'text-copy'}`}>
                 Newest
               </button>
@@ -459,14 +459,14 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
                       <div className="absolute bottom-[10px] right-[10px] flex gap-3 z-10">
                         <button
                           type="button"
-                          className={`review-img-prev-${index} w-11 h-11 rounded-full flex items-center justify-center bg-card shadow-md border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
+                          className={`review-img-prev-${index} w-11 h-11 rounded-full flex items-center justify-center bg-card shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
                           aria-label={`Previous image for ${review.userName}'s review`}
                         >
                           <ChevronLeft size={16} className="text-copy" />
                         </button>
                         <button
                           type="button"
-                          className={`review-img-next-${index} w-11 h-11 rounded-full flex items-center justify-center bg-card shadow-md border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
+                          className={`review-img-next-${index} w-11 h-11 rounded-full flex items-center justify-center bg-card shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
                           aria-label={`Next image for ${review.userName}'s review`}
                         >
                           <ChevronRight size={16} className="text-copy" />
@@ -504,7 +504,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
             <button
               type="button"
               onClick={handlePrevious}
-              className="w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md border border-border hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              className="w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md dark:shadow-none border border-border hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               aria-label="Previous review page"
             >
               <ChevronLeft size={16} className="text-copy" />
@@ -512,7 +512,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
             <button
               type="button"
               onClick={handleNext}
-              className="w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md border border-border hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              className="w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md dark:shadow-none border border-border hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               aria-label="Next review page"
             >
               <ChevronRight size={16} className="text-copy" />

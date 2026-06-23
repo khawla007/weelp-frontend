@@ -183,7 +183,7 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
               handleNext();
             }}
           >
-            <fieldset className={`bg-card p-2 px-8 border shadow rounded-lg ${submitting && ' cursor-wait'}`} disabled={submitting}>
+            <fieldset className={`bg-card p-2 px-8 border shadow dark:shadow-none rounded-lg ${submitting && ' cursor-wait'}`} disabled={submitting}>
               {/* Animate only the step content wrapper, not individual inputs. React owns these
                   enter classes (so a future className edit can't silently kill the animation);
                   the effect above only replays them on each step change. No React `key` here —
@@ -202,7 +202,7 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
                   <Button
                     type="button"
                     onClick={() => goToStep(currentStep - 1)}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm dark:shadow-none text-sm font-medium rounded-md text-copy bg-muted hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Previous
                   </Button>
@@ -212,14 +212,14 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
                   <Button
                     type="button"
                     onClick={() => router.back()}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm dark:shadow-none text-sm font-medium rounded-md text-copy bg-muted hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                   >
                     Cancel
                   </Button>
                 )}
 
                 {currentStep === 2 ? null : (
-                  <Button type="submit" disabled={submitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}>
+                  <Button type="submit" disabled={submitting} className={`ml-auto py-2 px-4 shadow-sm dark:shadow-none text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}>
                     Next
                   </Button>
                 )}

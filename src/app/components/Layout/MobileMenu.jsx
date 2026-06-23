@@ -33,31 +33,31 @@ const MobileMenu = ({ stickyHeader, variant = 'solid' }) => {
   const mainBarTransparent = isOverHero && !stickyHeader;
 
   return (
-    <div className={`lg:hidden w-full ${stickyHeader ? 'fixed top-0 left-0 right-0 z-40 shadow-md' : ''}`}>
+    <div className={`lg:hidden w-full ${stickyHeader ? 'fixed top-0 left-0 right-0 z-40 shadow-md dark:shadow-none' : ''}`}>
       <div
         aria-hidden={topStripVisible ? undefined : true}
-        className={`border-b border-[#e4e4e7] bg-[#f2f7f5] overflow-hidden transition-[opacity,max-height,padding] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+        className={`border-b border-border bg-surface-tint overflow-hidden transition-[opacity,max-height,padding] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
           topStripVisible ? 'opacity-100 max-h-24' : 'opacity-0 max-h-0 pointer-events-none'
         }`}
       >
-        <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#18181b] sm:px-4 sm:py-3 sm:text-[11px] sm:tracking-[0.16em]">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-[#f0c76d] bg-[#fff4d8] px-2.5 py-1 sm:gap-2 sm:px-3 sm:py-1.5">
+        <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground sm:px-4 sm:py-3 sm:text-[11px] sm:tracking-[0.16em]">
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-warning/40 bg-warning/15 px-2.5 py-1 sm:gap-2 sm:px-3 sm:py-1.5">
             <Smartphone className="size-3.5" />
             <span>Get Exclusive offer on the App</span>
           </div>
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#e4e4e7] bg-white/80 px-2.5 py-1 sm:px-3 sm:py-1.5">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/80 px-2.5 py-1 sm:px-3 sm:py-1.5">
               <Globe className="size-3.5" />
               <span>{HEADER_SECONDARY_META[0]}</span>
             </div>
-            <div className="rounded-full border border-[#e4e4e7] bg-white/80 px-2.5 py-1 sm:px-3 sm:py-1.5">{HEADER_SECONDARY_META[1]}</div>
+            <div className="rounded-full border border-border bg-background/80 px-2.5 py-1 sm:px-3 sm:py-1.5">{HEADER_SECONDARY_META[1]}</div>
           </div>
         </div>
       </div>
 
       <div
         className={`${
-          mainBarTransparent ? 'border-b border-transparent bg-transparent' : 'border-b border-[#e4e4e7] bg-[#f8faf9]'
+          mainBarTransparent ? 'border-b border-transparent bg-transparent' : 'border-b border-border bg-card'
         } px-4 py-3 transition-[background-color,border-color,box-shadow,opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none`}
       >
         <MobileMenuSlider />
@@ -79,8 +79,8 @@ const MobileMenuSlider = () => {
   if (!mounted) {
     return (
       <div className="flex justify-between items-center">
-        <div className="h-11 w-11 rounded-full border border-[#e4e4e7] bg-white" />
-        <Link href="/" className="flex items-center gap-2 text-[#18181b]">
+        <div className="h-11 w-11 rounded-full border border-border bg-background" />
+        <Link href="/" className="flex items-center gap-2 text-foreground">
           <img src={getLogoUrl()} alt="Weelp" className="h-8 w-auto" />
           <span className="text-[18px] font-semibold" style={{ fontFamily: brandFont }}>
             Weelp.
@@ -98,13 +98,13 @@ const MobileMenuSlider = () => {
           <Button
             variant="ghost"
             aria-label="Open main navigation"
-            className="h-11 w-11 rounded-full border border-[#e4e4e7] bg-white p-0 text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="h-11 w-11 rounded-full border border-border bg-background p-0 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <MenuIcon className="size-5" />
           </Button>
         </SheetTrigger>
 
-        <Link href="/" className="flex items-center gap-2 text-[#18181b]">
+        <Link href="/" className="flex items-center gap-2 text-foreground">
           <img src={getLogoUrl()} alt="Weelp" className="h-8 w-auto" />
           <span className="text-[18px] font-semibold" style={{ fontFamily: brandFont }}>
             Weelp.
@@ -114,7 +114,7 @@ const MobileMenuSlider = () => {
         <HeaderAccountMobile />
       </div>
 
-      <SheetContent side="left" className="flex w-full max-w-[360px] flex-col gap-0 overflow-hidden border-r border-[#e4e4e7] bg-[#f8faf9] p-0">
+      <SheetContent side="left" className="flex w-full max-w-[360px] flex-col gap-0 overflow-hidden border-r border-border bg-card p-0">
         <SheetHeader>
           <SheetTitle className="sr-only">Main navigation</SheetTitle>
           <SheetDescription className="sr-only">Browse the modern Weelp navigation.</SheetDescription>
@@ -149,28 +149,28 @@ const NavigationMenuMobile = () => {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex h-14 shrink-0 items-center gap-3 border-b border-[#e4e4e7] bg-white px-4">
+      <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card px-4">
         {level > 0 ? (
           <button
             type="button"
             onClick={back}
             aria-label="Back to previous menu"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] active:bg-[#f4f4f5] active:scale-95 transition-transform duration-150 ease-[var(--weelp-ease-out)] motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background text-foreground active:bg-muted active:scale-95 transition-transform duration-150 ease-[var(--weelp-ease-out)] motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <ArrowLeft className="size-4" />
           </button>
         ) : (
-          <Link href="/" className="flex items-center gap-2 text-[#18181b]">
+          <Link href="/" className="flex items-center gap-2 text-foreground">
             <img src={getLogoUrl()} alt="Weelp" className="h-7 w-auto" />
             <span className="text-[16px] font-semibold" style={{ fontFamily: brandFont }}>
               Weelp.
             </span>
           </Link>
         )}
-        <span className="flex-1 truncate text-sm font-semibold text-[#18181b]">{title}</span>
+        <span className="flex-1 truncate text-sm font-semibold text-foreground">{title}</span>
         <SheetClose
           aria-label="Close main navigation"
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] active:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-background text-foreground active:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           <X className="size-4" />
         </SheetClose>
@@ -196,7 +196,7 @@ const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error, isCurrent }
           <Link
             key={title}
             href={href}
-            className="rounded-[18px] border border-[#e4e4e7] bg-white px-4 py-3.5 text-[15px] font-semibold text-black hover:text-[#18181b]/70 shadow-[0_18px_32px_-28px_rgba(18,51,71,0.7)]"
+            className="rounded-[18px] border border-border bg-background px-4 py-3.5 text-[15px] font-semibold text-foreground hover:text-muted-foreground shadow-[0_18px_32px_-28px_rgba(18,51,71,0.7)] dark:shadow-none"
           >
             {title}
           </Link>
@@ -205,13 +205,13 @@ const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error, isCurrent }
     </div>
 
     <div className="mt-5 flex gap-2.5">
-      <Link href="/user/login" className="flex flex-1 items-center justify-center gap-2 rounded-full border border-[#e4e4e7] bg-white px-4 py-3 text-sm font-semibold text-[#18181b]">
+      <Link href="/user/login" className="flex flex-1 items-center justify-center gap-2 rounded-full border border-border bg-background px-4 py-3 text-sm font-semibold text-foreground">
         <UserRound className="size-4" />
         Account
       </Link>
       <Link
         href="/explore-creators"
-        className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+        className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         aria-label="Search trips"
       >
         <Search className="size-4" />
@@ -219,9 +219,9 @@ const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error, isCurrent }
     </div>
 
     <div className="mt-7">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#71717a]">Explore destinations</p>
-      <div className="mt-3 overflow-hidden rounded-[18px] border border-[#e4e4e7] bg-white">
-        {isLoading && <div className="px-4 py-6 text-sm text-[#71717a]">Loading…</div>}
+      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Explore destinations</p>
+      <div className="mt-3 overflow-hidden rounded-[18px] border border-border bg-background">
+        {isLoading && <div className="px-4 py-6 text-sm text-muted-foreground">Loading...</div>}
         {error && <div className="px-4 py-6 text-sm text-red-500">Couldn&rsquo;t load destinations.</div>}
         {!isLoading &&
           !error &&
@@ -230,10 +230,10 @@ const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error, isCurrent }
               key={region.id}
               type="button"
               onClick={() => onOpenRegion(region)}
-              className={`group/row flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-[15px] font-medium text-[#18181b] active:bg-[#f4f4f5] ${i > 0 ? 'border-t border-[#e4e4e7]' : ''}`}
+              className={`group/row flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-[15px] font-medium text-foreground active:bg-muted ${i > 0 ? 'border-t border-border' : ''}`}
             >
               <span className="truncate">{region.name}</span>
-              <ChevronRight className="size-4 shrink-0 text-[#71717a] transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none group-hover/row:translate-x-0.5 group-active/row:translate-x-0.5" />
+              <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none group-hover/row:translate-x-0.5 group-active/row:translate-x-0.5" />
             </button>
           ))}
       </div>
@@ -244,21 +244,21 @@ const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error, isCurrent }
 const PanelCountries = ({ region, onOpenCountry, isCurrent }) => (
   <div className={`h-full w-1/3 overflow-y-auto px-4 py-5 transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${isCurrent ? 'opacity-100' : 'opacity-0'}`}>
     {region ? (
-      <div className="overflow-hidden rounded-[18px] border border-[#e4e4e7] bg-white">
+      <div className="overflow-hidden rounded-[18px] border border-border bg-background">
         {region.countries?.length > 0 ? (
           region.countries.map((country, i) => (
             <button
               key={country.id}
               type="button"
               onClick={() => onOpenCountry(country)}
-              className={`group/row flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-[15px] font-medium text-[#18181b] active:bg-[#f4f4f5] ${i > 0 ? 'border-t border-[#e4e4e7]' : ''}`}
+              className={`group/row flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-[15px] font-medium text-foreground active:bg-muted ${i > 0 ? 'border-t border-border' : ''}`}
             >
               <span className="truncate">{country.name}</span>
-              <ChevronRight className="size-4 shrink-0 text-[#71717a] transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none group-hover/row:translate-x-0.5 group-active/row:translate-x-0.5" />
+              <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none group-hover/row:translate-x-0.5 group-active/row:translate-x-0.5" />
             </button>
           ))
         ) : (
-          <div className="px-4 py-6 text-sm text-[#71717a]">No destinations yet.</div>
+          <div className="px-4 py-6 text-sm text-muted-foreground">No destinations yet.</div>
         )}
       </div>
     ) : null}
@@ -268,20 +268,20 @@ const PanelCountries = ({ region, onOpenCountry, isCurrent }) => (
 const PanelCities = ({ country, isCurrent }) => (
   <div className={`h-full w-1/3 overflow-y-auto px-4 py-5 transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${isCurrent ? 'opacity-100' : 'opacity-0'}`}>
     {country ? (
-      <div className="overflow-hidden rounded-[18px] border border-[#e4e4e7] bg-white">
+      <div className="overflow-hidden rounded-[18px] border border-border bg-background">
         {country.cities?.length > 0 ? (
           country.cities.map((city, i) => (
             <Link
               key={city.id ?? city.slug ?? i}
               href={`/cities/${city.slug}`}
-              className={`group/row flex items-center justify-between gap-3 px-4 py-3.5 text-[15px] font-medium text-[#18181b] active:bg-[#f4f4f5] ${i > 0 ? 'border-t border-[#e4e4e7]' : ''}`}
+              className={`group/row flex items-center justify-between gap-3 px-4 py-3.5 text-[15px] font-medium text-foreground active:bg-muted ${i > 0 ? 'border-t border-border' : ''}`}
             >
               <span className="truncate">{city.name}</span>
-              <ChevronRight className="size-4 shrink-0 text-[#71717a] transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none group-hover/row:translate-x-0.5 group-active/row:translate-x-0.5" />
+              <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none group-hover/row:translate-x-0.5 group-active/row:translate-x-0.5" />
             </Link>
           ))
         ) : (
-          <div className="px-4 py-6 text-sm text-[#71717a]">No cities yet.</div>
+          <div className="px-4 py-6 text-sm text-muted-foreground">No cities yet.</div>
         )}
       </div>
     ) : null}
@@ -314,7 +314,7 @@ const HeaderAccountMobile = () => {
         <button
           type="button"
           aria-label={cartItemCount > 0 ? `Open cart, ${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'}` : 'Open cart'}
-          className="relative flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          className="relative flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           onClick={handleShowCart}
         >
           <ShoppingCart className="size-[18px]" />
@@ -328,7 +328,7 @@ const HeaderAccountMobile = () => {
           <Link
             href={accountLink}
             aria-label="Open account"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <img src={avatarSrc} alt={name || 'user'} className="h-full w-full object-cover" />
           </Link>
@@ -336,8 +336,7 @@ const HeaderAccountMobile = () => {
           <Link
             href={accountLink}
             aria-label="Open account"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] text-white font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-            style={{ backgroundColor: '#588f7a' }}
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-weelp-sage-deep text-white font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {userInitials}
           </Link>
@@ -345,7 +344,7 @@ const HeaderAccountMobile = () => {
           <Link
             href="/user/login"
             aria-label="Sign in"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <UserRound className="size-[18px]" />
           </Link>

@@ -54,7 +54,7 @@ const HeroSection = () => {
           </span>
         </span>
 
-        <p className="-mt-2 w-fit max-w-[28ch] px-6 py-3 text-base leading-[1.4] text-[var(--weelp-home-hero-copy)] [background:radial-gradient(ellipse_at_center,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0.25)_45%,rgba(255,255,255,0)_75%)] sm:text-lg">
+        <p className="-mt-2 w-fit max-w-[28ch] px-6 py-3 text-base leading-[1.4] text-[var(--weelp-home-hero-copy)] [background:radial-gradient(ellipse_at_center,hsl(var(--background)/0.6)_0%,hsl(var(--background)/0.25)_45%,hsl(var(--background)/0)_75%)] sm:text-lg">
           <span className="weelp-rise-mask weelp-rise-mask--block">
             <span className="weelp-rise-item block" style={{ '--weelp-rise-delay': '320ms' }}>
               Beach stays, marina views, and easy city plans in one place.
@@ -67,7 +67,7 @@ const HeroSection = () => {
         </div>
 
         <ul
-          className="weelp-hero-ui-rise relative z-10 flex w-full max-w-[920px] flex-wrap items-center gap-x-12 gap-y-4 rounded-2xl bg-[#588f7a]/30 px-6 py-4"
+          className="weelp-hero-ui-rise relative z-10 flex w-full max-w-[920px] flex-wrap items-center gap-x-12 gap-y-4 rounded-2xl bg-weelp-sage-deep/30 px-6 py-4"
           style={{ '--weelp-motion-delay': '480ms' }}
         >
           {TRUST_ITEMS.map(({ Icon, label, sub }) => (

@@ -19,7 +19,7 @@ const components = {
 
   li: ({ children }) => <li className="text-gray-700">{children}</li>,
 
-  img: (props) => <Image {...props} alt={props.alt || 'Image'} className="rounded-lg shadow-lg object-cover w-full h-auto mb-6" sizes="(max-width: 768px) 100vw, 50vw" />,
+  img: (props) => <Image {...props} alt={props.alt || 'Image'} className="rounded-lg shadow-lg dark:shadow-none object-cover w-full h-auto mb-6" sizes="(max-width: 768px) 100vw, 50vw" />,
 
   a: ({ children, href }) => (
     <a href={href} className="text-blue-500 hover:text-blue-700 transition-colors duration-300">

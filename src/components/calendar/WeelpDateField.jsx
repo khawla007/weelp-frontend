@@ -10,9 +10,9 @@ import { formatRange, formatSingle } from './format';
 const TRIGGER_FOCUS = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
 
 const TRIGGER_VARIANTS = {
-  hero: `flex w-full items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] text-left shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer ${TRIGGER_FOCUS}`,
-  form: `flex w-full items-center gap-3 rounded-lg border border-neutral-200 bg-white px-4 py-3 text-left text-sm hover:border-neutral-300 ${TRIGGER_FOCUS}`,
-  compact: `inline-flex items-center gap-2 rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm hover:border-neutral-300 ${TRIGGER_FOCUS}`,
+  hero: `flex w-full items-center gap-3 rounded-xl border border-border bg-card px-6 py-[18px] text-left shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer ${TRIGGER_FOCUS}`,
+  form: `flex w-full items-center gap-3 rounded-lg border border-border bg-card px-4 py-3 text-left text-sm hover:border-weelp-sage-deep/40 ${TRIGGER_FOCUS}`,
+  compact: `inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm hover:border-weelp-sage-deep/40 ${TRIGGER_FOCUS}`,
 };
 
 function WeelpDateField({
@@ -59,10 +59,10 @@ function WeelpDateField({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button type="button" className={cn(TRIGGER_VARIANTS[variant], triggerClassName)} aria-haspopup="dialog" aria-expanded={open}>
-          {Icon ? <Icon size={20} className="flex-shrink-0 text-neutral-500" /> : null}
+          {Icon ? <Icon size={20} className="flex-shrink-0 text-muted-foreground" /> : null}
           <span className="flex min-w-0 flex-1 flex-col">
-            {label ? <span className="text-[11px] font-semibold tracking-wider text-neutral-500 uppercase">{label}</span> : null}
-            <span className={cn('truncate text-sm font-medium', display ? 'text-neutral-900' : 'text-neutral-400')}>{display || placeholder}</span>
+            {label ? <span className="text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">{label}</span> : null}
+            <span className={cn('truncate text-sm font-medium', display ? 'text-foreground' : 'text-muted-foreground')}>{display || placeholder}</span>
           </span>
         </button>
       </PopoverTrigger>

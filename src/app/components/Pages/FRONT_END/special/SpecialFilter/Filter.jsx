@@ -111,7 +111,7 @@ export const SpecialFilter = () => {
                 <button
                   key={index}
                   onClick={() => handlePageChange(index + 1)}
-                  className={`p-2 px-4 shadow-md rounded border border-border ${currentPage === index + 1 ? ' bg-card text-foreground ' : ' '}`}
+                  className={`p-2 px-4 shadow-md dark:shadow-none rounded border border-border ${currentPage === index + 1 ? ' bg-card text-foreground ' : ' '}`}
                 >
                   {index + 1}
                 </button>
@@ -119,7 +119,7 @@ export const SpecialFilter = () => {
 
               {/* Next Button */}
               {currentPage < totalPages && (
-                <button onClick={() => handlePageChange(currentPage + 1)} className="p-2 px-4 shadow-md rounded border bg-background text-foreground-300">
+                <button onClick={() => handlePageChange(currentPage + 1)} className="p-2 px-4 shadow-md dark:shadow-none rounded border bg-background text-foreground-300">
                   <ChevronRight size={18} />
                 </button>
               )}

@@ -31,7 +31,7 @@ const WanderersBanner = () => {
       <Reveal variant="lift" className="container-page relative z-10 flex h-full flex-col items-center gap-4 pt-[5px] text-center md:pt-[21px]">
         <ul className="flex items-center gap-1.5" aria-hidden="true">
           {AVATARS.map((i) => (
-            <li key={i} className="size-7 overflow-hidden rounded-full border border-background shadow-sm ring-1 ring-border md:size-8">
+            <li key={i} className="size-7 overflow-hidden rounded-full border border-background shadow-sm dark:shadow-none ring-1 ring-border md:size-8">
               <Image src="/assets/testimonial.png" alt="" width={32} height={32} className="size-full object-cover" />
             </li>
           ))}

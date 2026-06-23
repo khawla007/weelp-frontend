@@ -175,7 +175,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
           type="button"
           onClick={handleSwap}
           aria-label="Swap pickup and destination"
-          className="absolute left-1/2 top-[29px] z-20 flex h-[27px] w-[27px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background shadow-[4px_4px_12px_rgba(0,0,0,0.1)] hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:left-1/4 sm:top-1/2"
+          className="absolute left-1/2 top-[29px] z-20 flex h-[27px] w-[27px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background shadow-[4px_4px_12px_rgba(0,0,0,0.1)] dark:shadow-none hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:left-1/4 sm:top-1/2"
         >
           <ArrowLeftRight className="h-3 w-3 text-foreground" />
         </button>

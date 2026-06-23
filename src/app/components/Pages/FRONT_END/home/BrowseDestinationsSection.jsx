@@ -33,14 +33,14 @@ export default function BrowseDestinationsSection({ cities = [], title = 'Top De
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className={`${navigationPrefix}-prev flex size-11 items-center justify-center rounded-full border border-border bg-card text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-[180ms] ease-[var(--weelp-ease-ui)] motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}
+            className={`${navigationPrefix}-prev flex size-11 items-center justify-center rounded-full border border-border bg-card text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-[180ms] ease-[var(--weelp-ease-ui)] motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] dark:hover:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}
             aria-label="Previous destination"
           >
             <ChevronLeft className="size-4" />
           </button>
           <button
             type="button"
-            className={`${navigationPrefix}-next flex size-11 items-center justify-center rounded-full border border-border bg-card text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-[180ms] ease-[var(--weelp-ease-ui)] motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}
+            className={`${navigationPrefix}-next flex size-11 items-center justify-center rounded-full border border-border bg-card text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-[180ms] ease-[var(--weelp-ease-ui)] motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] dark:hover:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}
             aria-label="Next destination"
           >
             <ChevronRight className="size-4" />

@@ -39,10 +39,10 @@ export const DesktopTopStrip = ({ topStripVisible, topStripOverHero, collapsible
         topStripVisible ? 'max-h-[46px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
       }`
     : 'h-[46px]';
-  const surfaceClass = topStripVisible ? (topStripOverHero ? 'border-b border-transparent bg-transparent' : 'border-b border-[#ededed] bg-white') : 'border-b-0 bg-transparent';
+  const surfaceClass = topStripVisible ? (topStripOverHero ? 'border-b border-transparent bg-transparent' : 'border-b border-border bg-card') : 'border-b-0 bg-transparent';
   return (
     <div aria-hidden={topStripVisible ? undefined : true} className={`hidden lg:block ${collapseClass} ${surfaceClass}`}>
-      <div className="mx-auto flex h-[46px] w-full items-center justify-between gap-4 px-4 md:px-8 xl:px-[60px] text-[#18181b]">
+      <div className="mx-auto flex h-[46px] w-full items-center justify-between gap-4 px-4 md:px-8 xl:px-[60px] text-foreground">
         <div className="flex items-center gap-4">
           <div className="inline-flex items-center gap-2 text-[14px]">
             <Smartphone className="size-[18px]" />
@@ -92,8 +92,8 @@ export const DesktopMainBar = ({ stickyHeader, mainBarTransparent }) => {
           mainBarTransparent
             ? 'border-b border-transparent bg-transparent shadow-none backdrop-blur-0'
             : stickyHeader
-              ? 'border-b border-[#ededed] bg-white shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)]'
-              : 'border-b border-[#ededed] bg-white/95 shadow-none backdrop-blur-[24px]'
+              ? 'border-b border-border bg-card shadow-[0_18px_45px_-32px_rgba(18,51,71,0.7)] dark:shadow-none'
+              : 'border-b border-border bg-card/95 shadow-none backdrop-blur-[24px]'
         }`}
       >
         <div className="grid h-full w-full items-center gap-4 px-4 py-[8px] md:px-8 xl:px-[60px]" style={{ gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)' }}>
@@ -336,7 +336,7 @@ export const HeaderAccount = ({ overHero = false }) => {
   const submenuOpenTimer = useRef(null);
   const submenuCloseTimer = useRef(null);
 
-  const iconChip = overHero ? 'bg-white/85 text-[#18181b] backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:bg-black/85 dark:text-white' : '';
+  const iconChip = overHero ? 'bg-white/85 text-[#18181b] backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:bg-black/85 dark:text-white dark:shadow-none' : '';
   const iconButtonTone = overHero ? 'text-[#18181b]' : 'text-foreground';
 
   const clearSubmenuTimers = useCallback(() => {
@@ -414,20 +414,20 @@ export const HeaderAccount = ({ overHero = false }) => {
             aria-label="Open account menu"
             aria-expanded={!!showSubmenu}
             onFocus={openSubmenu}
-            className={`flex h-11 w-[65px] items-center justify-center gap-2 rounded-[30px] border border-[#e4e4e7] ${iconButtonTone} overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${iconChip}`}
+            className={`flex h-11 w-[65px] items-center justify-center gap-2 rounded-[30px] border border-border ${iconButtonTone} overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${iconChip}`}
           >
             {isLoggedIn && avatarSrc ? (
               <img src={avatarSrc} alt={name || 'user'} className="h-8 w-8 rounded-full object-cover shrink-0" />
             ) : isLoggedIn ? (
               <span className="h-8 w-8 rounded-full flex items-center justify-center bg-weelp-sage-deep text-white font-semibold text-sm shrink-0">{userInitials}</span>
             ) : (
-              <svg width="32" height="32" viewBox="0 0 36 36" fill="none" className="shrink-0">
+              <svg width="32" height="32" viewBox="0 0 36 36" fill="none" className="shrink-0 text-muted-foreground">
                 <defs>
                   <clipPath id="header-avatar-clip">
                     <circle cx="18" cy="18" r="18" />
                   </clipPath>
                 </defs>
-                <circle cx="18" cy="18" r="18" fill="#B3B3B3" />
+                <circle cx="18" cy="18" r="18" fill="currentColor" />
                 <g clipPath="url(#header-avatar-clip)">
                   <circle cx="18" cy="14" r="6.5" fill="white" />
                   <ellipse cx="18" cy="34" rx="12" ry="10" fill="white" />

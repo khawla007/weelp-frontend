@@ -36,7 +36,7 @@ const AboutValues = () => {
           return (
             <div
               key={index}
-              className="bg-background rounded-[24px] p-6 border border-border text-center transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)]"
+              className="bg-background rounded-[24px] p-6 border border-border text-center transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:hover:shadow-none"
             >
               <div className="flex justify-center mb-4 text-weelp-sage-deep">
                 <Icon size={32} />

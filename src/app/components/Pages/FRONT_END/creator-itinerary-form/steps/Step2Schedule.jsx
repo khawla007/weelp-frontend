@@ -286,7 +286,7 @@ export default function Step2Schedule({ alltransfers = [], onSubmit, submitLabel
         type="button"
         onClick={handleValidationSchedule}
         disabled={submitting}
-        className={`absolute right-0 -bottom-14 ml-auto inline-flex items-center py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}
+        className={`absolute right-0 -bottom-14 ml-auto inline-flex items-center py-2 px-4 shadow-sm dark:shadow-none text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}
       >
         {submitting ? <Loader2 className="size-4 animate-spin mr-2" /> : null}
         {submitting ? 'Submitting...' : submitLabel}

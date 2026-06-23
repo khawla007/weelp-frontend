@@ -234,7 +234,7 @@ export default function ToursFilterBar() {
         <div className="flex-1 relative" ref={fromRef}>
           <div
             onClick={handleFromInputClick}
-            className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none"
+            className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer sm:rounded-r-none"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
             <MapPin size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
@@ -252,7 +252,7 @@ export default function ToursFilterBar() {
 
           {/* From Dropdown */}
           {showFromDropdown && (
-            <div className="absolute top-full left-0 mt-1 bg-background rounded-lg shadow-lg border max-h-52 overflow-y-auto overflow-x-hidden z-[110] min-w-full w-max">
+            <div className="absolute top-full left-0 mt-1 bg-background rounded-lg shadow-lg dark:shadow-none border max-h-52 overflow-y-auto overflow-x-hidden z-[110] min-w-full w-max">
               {filteredFromCities.length > 0 ? (
                 filteredFromCities.map((city) => (
                   <div
@@ -282,7 +282,7 @@ export default function ToursFilterBar() {
         <div className="flex-1 relative" ref={toRef}>
           <div
             onClick={handleToInputClick}
-            className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
+            className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer sm:rounded-none"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
             <MapPin size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
@@ -300,7 +300,7 @@ export default function ToursFilterBar() {
 
           {/* Where To Dropdown */}
           {showToDropdown && (
-            <div className="absolute top-full left-0 mt-1 bg-background rounded-lg shadow-lg border max-h-52 overflow-y-auto overflow-x-hidden z-[110] min-w-full w-max">
+            <div className="absolute top-full left-0 mt-1 bg-background rounded-lg shadow-lg dark:shadow-none border max-h-52 overflow-y-auto overflow-x-hidden z-[110] min-w-full w-max">
               {filteredToCities.length > 0 ? (
                 filteredToCities.map((city) => (
                   <div
@@ -336,7 +336,7 @@ export default function ToursFilterBar() {
               setShowToDropdown(false);
               setShowGuests(false);
             }}
-            className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
+            className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer sm:rounded-none"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
             <Calendar size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
@@ -355,7 +355,7 @@ export default function ToursFilterBar() {
 
           {/* Calendar Dropdown */}
           {showCalendar && (
-            <div onMouseLeave={() => setShowCalendar(false)} className="absolute top-full right-0 mt-1 bg-background rounded-lg shadow-lg border p-2 z-[110]">
+            <div onMouseLeave={() => setShowCalendar(false)} className="absolute top-full right-0 mt-1 bg-background rounded-lg shadow-lg dark:shadow-none border p-2 z-[110]">
               <WeelpCalendar
                 mode="range"
                 months={2}
@@ -383,7 +383,7 @@ export default function ToursFilterBar() {
               setShowToDropdown(false);
               setShowCalendar(false);
             }}
-            className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-l-none"
+            className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer sm:rounded-l-none"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
             <Users size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
@@ -394,7 +394,7 @@ export default function ToursFilterBar() {
 
           {/* Guests Dropdown */}
           {showGuests && (
-            <div onMouseLeave={() => setShowGuests(false)} className="absolute top-full right-0 mt-1 bg-background rounded-lg shadow-lg border p-4 z-[110] w-64">
+            <div onMouseLeave={() => setShowGuests(false)} className="absolute top-full right-0 mt-1 bg-background rounded-lg shadow-lg dark:shadow-none border p-4 z-[110] w-64">
               {['adults', 'children', 'infants'].map((type) => (
                 <div key={type} className="flex justify-between items-center mb-3 last:mb-0">
                   <div>
@@ -421,7 +421,7 @@ export default function ToursFilterBar() {
       {showResults && (
         <div
           ref={resultsRef}
-          className="absolute top-full left-0 right-0 mt-2 bg-background rounded-xl shadow-lg border border-border overflow-hidden z-[100]"
+          className="absolute top-full left-0 right-0 mt-2 bg-background rounded-xl shadow-lg dark:shadow-none border border-border overflow-hidden z-[100]"
           style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
         >
           <button

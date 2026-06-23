@@ -61,7 +61,7 @@ const FilterBar = ({ filters, setFilters }) => {
 
   return (
     <div className="flex-1 lg:flex justify-center w-full shop_filter">
-      <form className="p-4 px-8 sm:my-12 bg-background sm:max-w-xs w-full h-fit  shadow-md rounded-lg " onChange={handleOnChange}>
+      <form className="p-4 px-8 sm:my-12 bg-background sm:max-w-xs w-full h-fit shadow-md dark:shadow-none rounded-lg" onChange={handleOnChange}>
         {/* Category Section */}
         <div>
           <h3 className="text-lg font-medium text-foreground mt-6 mb-4">Category</h3>

@@ -96,7 +96,7 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
               </div>
             </div>
           ) : applicationStatus === 'pending' ? (
-            <div className="flex items-center justify-between bg-gradient-to-r from-amber-100/60 to-amber-50/40 rounded-xl p-6">
+            <div className="flex items-center justify-between bg-gradient-to-r from-warning/15 to-warning/5 rounded-xl p-6">
               <div>
                 <h3 className="text-lg font-semibold text-foreground">Application Pending</h3>
                 <p className="text-sm text-muted-foreground mt-1">Your creator application is under review. We&apos;ll notify you once it&apos;s approved.</p>

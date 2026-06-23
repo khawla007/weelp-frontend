@@ -145,7 +145,7 @@ export const ShopAllProduct = () => {
 
           <div className="w-full flex gap-4 flex-col sm:flex-row">
             {/* Sidebar Filters */}
-            <div className="w-full h-fit sm:max-w-xs p-4 bg-background shadow-md rounded-lg">
+            <div className="w-full h-fit sm:max-w-xs p-4 bg-background shadow-md dark:shadow-none rounded-lg">
               {/* Category Filters */}
               <h2 className="text-lg font-medium text-foreground my-4">Category</h2>
               <div className="w-full max-w-full flex flex-col space-y-2 min-h-[14rem]">

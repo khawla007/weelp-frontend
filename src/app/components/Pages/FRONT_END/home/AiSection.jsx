@@ -6,7 +6,7 @@ import { getAllFeaturedActivities } from '@/lib/services/activites';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import Reveal from '@/app/components/ui/Reveal';
 
-const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-card shadow-[0_2px_6px_rgba(0,0,0,0.05)] ring-1 ring-[#eaeaea]';
+const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-card shadow-[0_2px_6px_rgba(0,0,0,0.05)] ring-1 ring-border dark:shadow-none';
 
 const AiSection = async () => {
   const featuredRes = await getAllFeaturedActivities();
