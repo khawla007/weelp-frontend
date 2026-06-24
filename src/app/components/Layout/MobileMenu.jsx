@@ -14,6 +14,7 @@ import { getLogoUrl } from '@/lib/config/brand';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const brandFont = 'var(--font-interTight), Inter Tight, sans-serif';
+const HOME_HEADER_TEXT_CLASS = 'text-black dark:text-black';
 
 const MiniCartNew = dynamic(() => import('../Modals/MiniCartNew', { ssr: false })); // lazy load minicart
 
@@ -60,13 +61,13 @@ const MobileMenu = ({ stickyHeader, variant = 'solid' }) => {
           mainBarTransparent ? 'border-b border-transparent bg-transparent' : 'border-b border-border bg-card'
         } px-4 py-3 transition-[background-color,border-color,box-shadow,opacity,transform] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none`}
       >
-        <MobileMenuSlider />
+        <MobileMenuSlider brandTextClass={mainBarTransparent ? HOME_HEADER_TEXT_CLASS : 'text-foreground'} />
       </div>
     </div>
   );
 };
 
-const MobileMenuSlider = () => {
+const MobileMenuSlider = ({ brandTextClass = 'text-foreground' }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -80,7 +81,7 @@ const MobileMenuSlider = () => {
     return (
       <div className="flex justify-between items-center">
         <div className="h-11 w-11 rounded-full border border-border bg-background" />
-        <Link href="/" className="flex items-center gap-2 text-foreground">
+        <Link href="/" className={`flex items-center gap-2 ${brandTextClass}`}>
           <img src={getLogoUrl()} alt="Weelp" className="h-8 w-auto" />
           <span className="text-[18px] font-semibold" style={{ fontFamily: brandFont }}>
             Weelp.
@@ -104,7 +105,7 @@ const MobileMenuSlider = () => {
           </Button>
         </SheetTrigger>
 
-        <Link href="/" className="flex items-center gap-2 text-foreground">
+        <Link href="/" className={`flex items-center gap-2 ${brandTextClass}`}>
           <img src={getLogoUrl()} alt="Weelp" className="h-8 w-auto" />
           <span className="text-[18px] font-semibold" style={{ fontFamily: brandFont }}>
             Weelp.

@@ -20,6 +20,7 @@ const MEGA_MENU_ENTER_START_MS = 20;
 const MEGA_MENU_EXIT_MS = 180;
 const MEGA_MENU_PANEL_ID = 'desktop-mega-menu-panel';
 const prefersReducedMotion = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+const HOME_HEADER_TEXT_CLASS = 'text-black dark:text-black';
 
 // Helper function to generate initials from name
 const getInitials = (name) => {
@@ -40,9 +41,10 @@ export const DesktopTopStrip = ({ topStripVisible, topStripOverHero, collapsible
       }`
     : 'h-[46px]';
   const surfaceClass = topStripVisible ? (topStripOverHero ? 'border-b border-transparent bg-transparent' : 'border-b border-border bg-card') : 'border-b-0 bg-transparent';
+  const textClass = topStripOverHero ? HOME_HEADER_TEXT_CLASS : 'text-foreground';
   return (
     <div aria-hidden={topStripVisible ? undefined : true} className={`hidden lg:block ${collapseClass} ${surfaceClass}`}>
-      <div className="mx-auto flex h-[46px] w-full items-center justify-between gap-4 px-4 md:px-8 xl:px-[60px] text-foreground">
+      <div className={`mx-auto flex h-[46px] w-full items-center justify-between gap-4 px-4 md:px-8 xl:px-[60px] ${textClass}`}>
         <div className="flex items-center gap-4">
           <div className="inline-flex items-center gap-2 text-[14px]">
             <Smartphone className="size-[18px]" />
@@ -99,7 +101,7 @@ export const DesktopMainBar = ({ stickyHeader, mainBarTransparent }) => {
         <div className="grid h-full w-full items-center gap-4 px-4 py-[8px] md:px-8 xl:px-[60px]" style={{ gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)' }}>
           <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start focus:outline-none" aria-label="Weelp home">
             <img src={getLogoUrl()} alt="Weelp" className="h-9 w-auto" />
-            <span className={`text-[18px] font-semibold ${mainBarTransparent ? 'text-foreground' : 'text-foreground'}`} style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
+            <span className={`text-[18px] font-semibold ${mainBarTransparent ? HOME_HEADER_TEXT_CLASS : 'text-foreground'}`} style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
               Weelp.
             </span>
           </Link>
@@ -150,14 +152,16 @@ const NavMenuDesktop = ({ overHero = false }) => {
 
   const linkClass = (active) =>
     `group/nav relative flex items-center gap-2 whitespace-nowrap rounded-sm text-[15px] font-medium transition-[color] duration-200 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 xl:text-[16px] ${
-      overHero ? 'hover:text-foreground/70 focus-visible:ring-ring/30 focus-visible:ring-offset-white' : 'hover:text-muted-foreground focus-visible:ring-ring focus-visible:ring-offset-background'
-    } ${active ? (overHero ? 'text-foreground/70' : 'text-muted-foreground') : overHero ? 'text-foreground' : 'text-foreground'}`;
+      overHero
+        ? 'hover:text-black/70 focus-visible:ring-ring/30 focus-visible:ring-offset-white dark:hover:text-black/70'
+        : 'hover:text-muted-foreground focus-visible:ring-ring focus-visible:ring-offset-background'
+    } ${active ? (overHero ? 'text-black/70 dark:text-black/70' : 'text-muted-foreground') : overHero ? HOME_HEADER_TEXT_CLASS : 'text-foreground'}`;
 
   const navIconClass = (active) =>
     `size-[15px] transition-[color,transform] duration-200 ease-out motion-reduce:transition-none group-hover/nav:-translate-y-0.5 ${
-      overHero ? 'group-hover/nav:text-foreground/70' : 'group-hover/nav:text-muted-foreground'
-    } ${active ? (overHero ? 'text-foreground/70' : 'text-muted-foreground') : overHero ? 'text-foreground' : 'text-foreground'}`;
-  const navItemTone = overHero ? 'text-foreground' : 'text-foreground';
+      overHero ? 'group-hover/nav:text-black/70 dark:group-hover/nav:text-black/70' : 'group-hover/nav:text-muted-foreground'
+    } ${active ? (overHero ? 'text-black/70 dark:text-black/70' : 'text-muted-foreground') : overHero ? HOME_HEADER_TEXT_CLASS : 'text-foreground'}`;
+  const navItemTone = overHero ? HOME_HEADER_TEXT_CLASS : 'text-foreground';
 
   const indicator = (active) => (
     <span
