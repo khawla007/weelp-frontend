@@ -28,7 +28,7 @@ export const TransfertCard = () => {
         />
       </CardHeader>
       <CardFooter className={'p-0 flex flex-col'}>
-        <div className="bg-[#f2f7f5] py-4 px-8 w-full flex  gap-2 sm:gap-4">
+        <div className="bg-weelp-sage-wash py-4 px-8 w-full flex  gap-2 sm:gap-4">
           <span className="capitalize flex gap-2  text-green-800">
             {' '}
             <CircleCheckBig /> live guide
@@ -40,8 +40,8 @@ export const TransfertCard = () => {
         </div>
         <div className="w-full flex py-4 px-8 items-center justify-between">
           <div className="flex flex-col w-full">
-            <span className=" text-[#273F4E] font-semibold text-lg">$6,790.18</span>
-            <span className="text-[#5A5A5A]">Detailed BreakDown</span>
+            <span className=" text-foreground font-semibold text-lg">$6,790.18</span>
+            <span className="text-copy">Detailed BreakDown</span>
           </div>
           <Button className={'bg-weelp-sage-deep hover:bg-weelp-sage-deep text-white max-w-full w-fit p-6 px-12'}>Select</Button>
         </div>

@@ -43,10 +43,12 @@ Use this table when replacing hardcoded or literal Tailwind colors.
 
 - `bg-white` and `bg-black`
 - gray, zinc, neutral, and slate color utilities
-- arbitrary hex `bg-[#...]`, `text-[#...]`, and `border-[#...]` utilities
+- arbitrary hex color utilities, including `bg-[#...]`, `text-[#...]`, `border-[#...]`, `fill-[#...]`, `stroke-[#...]`, `ring-[#...]`, and gradient stops
 - inline literal `color`, `background`, or `backgroundColor` hex values
 
 Existing audit debt is recorded in `docs/dark-mode/dark-lint-baseline.json` so Phase 5 can prevent new debt without hiding the remaining migration work. To exempt an intentional line, place `dark-mode-exempt: <reason>` directly above it.
+
+`npm run dark:audit` is the final blocking sweep for unresolved color/token debt. It does not catalog shadows; dark mode normalizes standard shadow utilities globally and component primitives add `dark:shadow-none` where they own elevation.
 
 ## Third-Party Surfaces
 
@@ -57,12 +59,12 @@ Existing audit debt is recorded in `docs/dark-mode/dark-lint-baseline.json` so P
 
 ## Decision Log
 
-| Decision         | Choice                                                                |
-| ---------------- | --------------------------------------------------------------------- |
-| Theme manager    | `next-themes`                                                         |
-| Persistence key  | `weelp-theme`                                                         |
-| Default theme    | `system`                                                              |
-| Token model      | CSS variables in `globals.css`, consumed by Tailwind                  |
-| Component rule   | Token utilities only; no new hardcoded neutral or hex color utilities |
-| Exemptions       | `dark-mode-exempt` comment directly above the intentional line        |
-| Temporary bridge | Still present because `npm run dark:audit` has non-exempt findings    |
+| Decision        | Choice                                                                      |
+| --------------- | --------------------------------------------------------------------------- |
+| Theme manager   | `next-themes`                                                               |
+| Persistence key | `weelp-theme`                                                               |
+| Default theme   | `system`                                                                    |
+| Token model     | CSS variables in `globals.css`, consumed by Tailwind                        |
+| Component rule  | Token utilities only; no new hardcoded neutral or hex color utilities       |
+| Exemptions      | `dark-mode-exempt` comment directly above the intentional line              |
+| Shadow policy   | Standard shadows are normalized off in dark mode; color bridges are removed |

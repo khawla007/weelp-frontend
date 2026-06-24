@@ -13,14 +13,14 @@ export function AuthModal({ customUrl, onCloseDialog }) {
   const switchToLogin = () => setView('login');
 
   return (
-    <div className="relative bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8">
+    <div className="relative bg-background border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8">
       {/* Close Button */}
-      <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
+      <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-background rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
         <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
       </button>
 
       {/* Logo */}
-      <div className="bg-white rounded-t-xl border-b py-4 px-8 pr-12">
+      <div className="bg-background rounded-t-xl border-b py-4 px-8 pr-12">
         <Image width={122} height={42} alt="form_logo" src="/assets/images/SiteLogo.png" />
       </div>
 
@@ -36,7 +36,7 @@ export function AuthModal({ customUrl, onCloseDialog }) {
                   Sign Up
                 </button>
               </h3>
-              <sub className="text-[#5a5a5a]">Login into your account using your email.</sub>
+              <sub className="text-copy">Login into your account using your email.</sub>
             </>
           ) : (
             <>
@@ -46,7 +46,7 @@ export function AuthModal({ customUrl, onCloseDialog }) {
                   Back to Login
                 </button>
               </h3>
-              <sub className="text-[#5a5a5a]">Create your account using your email.</sub>
+              <sub className="text-copy">Create your account using your email.</sub>
             </>
           )}
         </div>

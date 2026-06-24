@@ -146,7 +146,7 @@ export default function NotificationBell({ overHero = false }) {
         aria-label={showBadge ? `Notifications ${displayCount}` : 'Notifications'}
         aria-haspopup="menu"
         aria-expanded={open}
-        className={`relative flex items-center justify-center ${overHero ? 'text-[#18181b] dark:text-white focus-visible:ring-offset-white' : 'text-foreground focus-visible:ring-offset-background'} rounded-sm transition hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2`}
+        className={`relative flex items-center justify-center ${overHero ? 'text-foreground dark:text-white focus-visible:ring-offset-white' : 'text-foreground focus-visible:ring-offset-background'} rounded-sm transition hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2`}
         onClick={() => setOpen(!open)}
       >
         <Bell className="size-5" strokeWidth={1.5} />

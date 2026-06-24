@@ -115,11 +115,11 @@ export const FormResetPassword = () => {
   };
   if (initialize) {
     return (
-      <div className={`space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8 ${isSubmitting && 'cursor-wait'}`}>
-        <div className="bg-white rounded-t-xl border-b py-4 px-8">
+      <div className={`space-y-4 bg-background border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8 ${isSubmitting && 'cursor-wait'}`}>
+        <div className="bg-background rounded-t-xl border-b py-4 px-8">
           <Image src="/assets/images/SiteLogo.png" alt="Site Logo" width={122} height={42} />
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 bg-white px-8 py-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 bg-background px-8 py-4">
           <div>
             <h3 className="font-semibold text-xl">
               Reset Password or back to{' '}
@@ -127,25 +127,25 @@ export const FormResetPassword = () => {
                 Login
               </Link>
             </h3>
-            <sub className="text-[#52525b]">Enter your new password below.</sub>
+            <sub className="text-copy">Enter your new password below.</sub>
           </div>
 
           {/* Password Input */}
           <div className="border relative mb-4">
-            <label htmlFor="password" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative">
-              <Key className="text-[#52525b] size-4" />
+            <label htmlFor="password" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md relative">
+              <Key className="text-copy size-4" />
               <input
                 placeholder="New password"
                 type={visible ? 'text' : 'password'}
                 id="password"
                 {...register('password')}
                 autoComplete="off"
-                className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1"
+                className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-background placeholder:bg-background text-base flex-1"
               />
               {visible ? (
-                <EyeOff onClick={toggle} className="text-[#52525b] size-5 absolute right-4 cursor-pointer" />
+                <EyeOff onClick={toggle} className="text-copy size-5 absolute right-4 cursor-pointer" />
               ) : (
-                <Eye onClick={toggle} className="text-[#52525b] size-5 absolute right-4 cursor-pointer" />
+                <Eye onClick={toggle} className="text-copy size-5 absolute right-4 cursor-pointer" />
               )}
             </label>
             {errors.password && <p className="text-sm text-red-600 pt-2">{errors.password.message}</p>}
@@ -154,24 +154,24 @@ export const FormResetPassword = () => {
             {password && (
               <>
                 <div className="mt-2 space-y-1 text-xs">
-                  <p className="text-zinc-500 font-medium mb-1">Password must contain:</p>
-                  <div className={`flex items-center gap-1 ${password.length >= 8 ? 'text-green-600' : 'text-zinc-400'}`}>
+                  <p className="text-muted-foreground font-medium mb-1">Password must contain:</p>
+                  <div className={`flex items-center gap-1 ${password.length >= 8 ? 'text-green-600' : 'text-muted-foreground'}`}>
                     {password.length >= 8 ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                     <span>At least 8 characters</span>
                   </div>
-                  <div className={`flex items-center gap-1 ${/[A-Z]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
+                  <div className={`flex items-center gap-1 ${/[A-Z]/.test(password) ? 'text-green-600' : 'text-muted-foreground'}`}>
                     {/[A-Z]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                     <span>One uppercase letter (A-Z)</span>
                   </div>
-                  <div className={`flex items-center gap-1 ${/[a-z]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
+                  <div className={`flex items-center gap-1 ${/[a-z]/.test(password) ? 'text-green-600' : 'text-muted-foreground'}`}>
                     {/[a-z]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                     <span>One lowercase letter (a-z)</span>
                   </div>
-                  <div className={`flex items-center gap-1 ${/[0-9]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
+                  <div className={`flex items-center gap-1 ${/[0-9]/.test(password) ? 'text-green-600' : 'text-muted-foreground'}`}>
                     {/[0-9]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                     <span>One number (0-9)</span>
                   </div>
-                  <div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
+                  <div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? 'text-green-600' : 'text-muted-foreground'}`}>
                     {/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                     <span>One special character</span>
                   </div>
@@ -184,15 +184,15 @@ export const FormResetPassword = () => {
 
           {/* Confirm Password Input */}
           <div>
-            <label htmlFor="password_confirmation" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative">
-              <Key className="text-[#52525b] size-4" />
+            <label htmlFor="password_confirmation" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md relative">
+              <Key className="text-copy size-4" />
               <input
                 placeholder="Confirm new password"
                 type="password"
                 id="password_confirmation"
                 {...register('password_confirmation')}
                 autoComplete="off"
-                className="mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base flex-1"
+                className="mt-1 py-2 px-3 focus:outline-none bg-background placeholder:bg-background text-base flex-1"
               />
               {/* Live password match indicator */}
               {passwordConfirmation && (
@@ -209,7 +209,9 @@ export const FormResetPassword = () => {
             type="submit"
             disabled={isSubmitting || !password || !isPasswordValid(password) || password !== passwordConfirmation}
             className={`w-full p-4 rounded-md ${
-              isSubmitting || !password || !isPasswordValid(password) || password !== passwordConfirmation ? 'bg-zinc-400 cursor-not-allowed' : 'bg-weelp-sage-deep hover:bg-[#b5d8cb] text-white'
+              isSubmitting || !password || !isPasswordValid(password) || password !== passwordConfirmation
+                ? 'bg-muted-foreground cursor-not-allowed'
+                : 'bg-weelp-sage-deep hover:bg-weelp-sage-tint text-white'
             }`}
           >
             {isSubmitting ? 'Processing...' : 'Continue'}

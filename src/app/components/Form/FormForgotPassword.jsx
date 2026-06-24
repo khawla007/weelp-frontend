@@ -64,11 +64,11 @@ export function FormForgotPassword() {
   };
 
   return (
-    <div className={`space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8 ${isSubmitting && 'cursor-wait'}`}>
-      <div className="bg-white rounded-t-xl border-b py-4 px-8">
+    <div className={`space-y-4 bg-background border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8 ${isSubmitting && 'cursor-wait'}`}>
+      <div className="bg-background rounded-t-xl border-b py-4 px-8">
         <Image src="/assets/images/SiteLogo.png" alt="Site Logo" width={122} height={42} />
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 bg-white px-8 py-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 bg-background px-8 py-4">
         <div>
           <h3 className="font-semibold text-xl">
             Forgot password or back to{' '}
@@ -76,20 +76,31 @@ export function FormForgotPassword() {
               Login
             </Link>
           </h3>
-          <sub className="text-[#52525b]">Enter your email to receive a password reset link.</sub>
+          <sub className="text-copy">Enter your email to receive a password reset link.</sub>
         </div>
 
         {/* Email Input */}
         <div>
-          <label htmlFor="email" className="flex items-center bg-white shadow-md border p-2 rounded-md w-full">
-            <AtSign className="text-[#52525b] size-4" />
-            <input placeholder="Email ID" type="email" id="email" {...register('email')} autoComplete="off" className="py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base w-full" />
+          <label htmlFor="email" className="flex items-center bg-background shadow-md border p-2 rounded-md w-full">
+            <AtSign className="text-copy size-4" />
+            <input
+              placeholder="Email ID"
+              type="email"
+              id="email"
+              {...register('email')}
+              autoComplete="off"
+              className="py-2 px-3 focus:outline-none bg-background placeholder:bg-background text-base w-full"
+            />
           </label>
           {errors.email && <p className="text-sm text-red-600 pt-2">{errors.email.message}</p>}
         </div>
 
         {/* Submit Button */}
-        <Button type="submit" disabled={isSubmitting} className={`w-full p-4 rounded-md ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed' : 'bg-weelp-sage-deep hover:bg-[#b5d8cb] text-white'}`}>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className={`w-full p-4 rounded-md ${isSubmitting ? 'bg-muted-foreground cursor-not-allowed' : 'bg-weelp-sage-deep hover:bg-weelp-sage-tint text-white'}`}
+        >
           {isSubmitting ? 'Processing...' : 'Continue'}
         </Button>
       </form>

@@ -202,7 +202,7 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
                   <Button
                     type="button"
                     onClick={() => goToStep(currentStep - 1)}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm dark:shadow-none text-sm font-medium rounded-md text-copy bg-muted hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm dark:shadow-none text-sm font-medium rounded-md text-copy bg-muted hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
                   >
                     Previous
                   </Button>
@@ -212,7 +212,7 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
                   <Button
                     type="button"
                     onClick={() => router.back()}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm dark:shadow-none text-sm font-medium rounded-md text-copy bg-muted hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm dark:shadow-none text-sm font-medium rounded-md text-copy bg-muted hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
                   >
                     Cancel
                   </Button>

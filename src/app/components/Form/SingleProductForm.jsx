@@ -250,14 +250,14 @@ export default function SingleProductForm({ productId, productData, selectedAddo
           <span className="hidden" id={productId} />
           {/* For Date & Travelers */}
           <div className="w-full flex flex-col gap-4">
-            <h5 className="self-start text-[#5A5A5A]">Select Date & Travelers</h5>
+            <h5 className="self-start text-copy">Select Date & Travelers</h5>
             <div className="flex gap-3 w-full">
               {/* Travelers Card */}
               <div
-                className={`flex-1 bg-white rounded-xl border shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[24px] cursor-pointer ${errors.howMany ? 'border-red-500' : 'border-[#ccc]/50'}`}
+                className={`flex-1 bg-background rounded-xl border shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[24px] cursor-pointer ${errors.howMany ? 'border-red-500' : 'border-border/50'}`}
                 onClick={toggleHowMany}
               >
-                <div className="flex items-center gap-3 text-[#5A5A5A]">
+                <div className="flex items-center gap-3 text-copy">
                   <Users size={20} />
                   <span className="text-base">{howMany?.adults + howMany?.children} Travelers</span>
                 </div>
@@ -265,10 +265,10 @@ export default function SingleProductForm({ productId, productData, selectedAddo
 
               {/* Date Card */}
               <div
-                className={`flex-1 bg-white rounded-xl border shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[24px] cursor-pointer ${errors.dateRange ? 'border-red-500' : 'border-[#ccc]/50'}`}
+                className={`flex-1 bg-background rounded-xl border shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[24px] cursor-pointer ${errors.dateRange ? 'border-red-500' : 'border-border/50'}`}
                 onClick={toggleCalendar}
               >
-                <div className="flex items-center gap-3 text-[#5A5A5A]">
+                <div className="flex items-center gap-3 text-copy">
                   <Calendar size={20} />
                   <span className="text-base">
                     {selectedDates?.from && selectedDates?.to
@@ -289,7 +289,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                   aria-label="Date selector"
                   {...(calendarPresence.state === 'closed' ? CLOSED_PANEL_A11Y_PROPS : {})}
                   onMouseLeave={closeCalendarPanel}
-                  className={`flex justify-center mx-auto bg-white w-fit rounded-lg shadow-lg border p-2 ${getPanelMotionClass(calendarPresence.state)}`}
+                  className={`flex justify-center mx-auto bg-background w-fit rounded-lg shadow-lg border p-2 ${getPanelMotionClass(calendarPresence.state)}`}
                 >
                   <Controller
                     name="dateRange"
@@ -344,7 +344,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                     onMouseLeave={(e) => {
                       setShowHowMany(!showHowMany);
                     }}
-                    className="bg-white w-fit p-4 px-6 rounded-lg flex flex-col gap-4 border"
+                    className="bg-background w-fit p-4 px-6 rounded-lg flex flex-col gap-4 border"
                   >
                     {['adults', 'children', 'infants'].map((type, index) => (
                       <div key={index} className="flex justify-between items-center w-full gap-6">
@@ -356,7 +356,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                           <button
                             type="button"
                             onClick={() => handleDecrement(type)}
-                            className="w-8 h-8 rounded-full border text-lg flex items-center justify-center text-gray-700 bg-graycolor hover:bg-[#e9f5ed] hover:opacity-80"
+                            className="w-8 h-8 rounded-full border text-lg flex items-center justify-center text-copy bg-graycolor hover:bg-weelp-sage-wash hover:opacity-80"
                           >
                             <Minus size={14} />
                           </button>
@@ -364,7 +364,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                           <button
                             type="button"
                             onClick={() => handleIncrement(type)}
-                            className="w-8 h-8 rounded-full border border-[#b5d8cb] text-lg flex items-center justify-center text-weelp-sage-deep hover:bg-[#e9f5ed] hover:opacity-80 "
+                            className="w-8 h-8 rounded-full border border-weelp-sage-tint text-lg flex items-center justify-center text-weelp-sage-deep hover:bg-weelp-sage-wash hover:opacity-80 "
                           >
                             <Plus size={14} />
                           </button>

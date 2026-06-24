@@ -35,8 +35,8 @@ describe('BookingForm', () => {
     const searchButton = await screen.findByRole('button', { name: /search trips/i });
     expect(searchButton).toHaveTextContent('Search');
     expect(searchButton.closest('[data-testid="booking-filter-bar"]')).toBeInTheDocument();
-    expect(searchButton).toHaveClass('bg-white', 'text-Bluewhale');
-    expect(searchButton).not.toHaveClass('bg-[#18181b]');
+    expect(searchButton).toHaveClass('bg-background', 'text-Bluewhale');
+    expect(searchButton).not.toHaveClass('bg-foreground');
 
     fireEvent.click(screen.getByText(/^1\s+Guest$/));
 

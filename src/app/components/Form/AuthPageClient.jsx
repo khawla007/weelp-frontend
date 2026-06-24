@@ -23,20 +23,20 @@ export function AuthPageClient({ defaultTab = 'login', returnUrl = null }) {
   };
 
   return (
-    <div className="w-screen min-h-screen bg-[#f8faf9] flex flex-col lg:flex-row -mx-6">
+    <div className="w-screen min-h-screen bg-weelp-sage-wash flex flex-col lg:flex-row -mx-6">
       {/* Left Side - Hero Image (50% on desktop, 35% on mobile) */}
-      <div className="lg:w-1/2 h-[35vh] lg:h-auto relative bg-gradient-to-br from-weelp-sage-deep/20 to-[#b5d8cb]/20">
+      <div className="lg:w-1/2 h-[35vh] lg:h-auto relative bg-gradient-to-br from-weelp-sage-deep/20 to-weelp-sage-tint/20">
         <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: 'url("/assets/images/auth-hero.jpg")' }} />
         <div className="relative z-10 flex flex-col items-center justify-center h-full p-8 text-center">
           <img src="/assets/images/SiteLogo.png" alt="Weelp" width={150} height={52} className="mb-4" />
-          <h1 className="text-3xl lg:text-4xl font-semibold text-zinc-900 mb-2">Welcome to Weelp</h1>
-          <p className="text-zinc-700">Your journey to amazing destinations starts here</p>
+          <h1 className="text-3xl lg:text-4xl font-semibold text-foreground mb-2">Welcome to Weelp</h1>
+          <p className="text-copy">Your journey to amazing destinations starts here</p>
         </div>
       </div>
 
       {/* Right Side - Auth Form (50% on desktop, 65% on mobile) */}
       <div className="lg:w-1/2 flex items-center justify-center py-4 lg:py-8">
-        <div className="w-full max-w-[35rem] bg-white rounded-2xl shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.9)] border border-zinc-100 p-10">
+        <div className="w-full max-w-[35rem] bg-background rounded-2xl shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.9)] border border-border p-10">
           {/* Logo */}
           <div className="flex justify-center mb-6">
             <img src="/assets/images/SiteLogo.png" alt="Weelp" width={122} height={42} />
@@ -46,13 +46,13 @@ export function AuthPageClient({ defaultTab = 'login', returnUrl = null }) {
           <div className="flex mb-6 gap-3">
             <button
               onClick={() => handleTabSwitch('login')}
-              className={`flex-1 py-3 rounded-lg text-center font-medium border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isLogin ? 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep' : 'bg-white text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white'}`}
+              className={`flex-1 py-3 rounded-lg text-center font-medium border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isLogin ? 'bg-weelp-sage-deep text-white hover:bg-background hover:text-weelp-sage-deep' : 'bg-background text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white'}`}
             >
               Log In
             </button>
             <button
               onClick={() => handleTabSwitch('signup')}
-              className={`flex-1 py-3 rounded-lg text-center font-medium border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${!isLogin ? 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep' : 'bg-white text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white'}`}
+              className={`flex-1 py-3 rounded-lg text-center font-medium border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${!isLogin ? 'bg-weelp-sage-deep text-white hover:bg-background hover:text-weelp-sage-deep' : 'bg-background text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white'}`}
             >
               Sign Up
             </button>

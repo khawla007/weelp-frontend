@@ -23,7 +23,6 @@ test('auditSource reports planned dark-mode patterns with positions and token hi
       ['background-white-black', 'bg-white'],
       ['text-hex', 'text-[#18181b]'],
       ['border-neutral-utility', 'border-gray-200'],
-      ['shadow-utility', 'shadow-lg'],
       ['svg-literal-fill', 'fill="#fff"'],
       ['svg-literal-stroke', 'stroke="#123347"'],
       ['inline-literal-color', "color: '#52525b'"],
@@ -51,7 +50,8 @@ test('transformSource swaps canonical static classes and reports dynamic templat
 
   assert.match(result.output, /className="bg-background text-copy border-border shadow-md"/);
   assert.equal(result.changed, true);
-  assert.equal(result.replacements.length, 3);
+  assert.match(result.output, /className=\{`bg-background \$\{tone\}`\}/);
+  assert.equal(result.replacements.length, 4);
   assert.equal(result.skipped.length, 1);
   assert.equal(transformSource(result.output, 'src/Demo.jsx').changed, false);
 });

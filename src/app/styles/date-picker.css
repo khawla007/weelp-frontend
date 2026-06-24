@@ -250,7 +250,7 @@
    - default `.rdp-disabled` opacity (already overridden via --rdp-disabled-opacity
      on `.rdp-root` above; reasserted here for safety against future changes). */
 .weelp-calendar .rdp-disabled .rdp-day_button {
-  @apply text-neutral-500 hover:bg-transparent cursor-not-allowed;
+  @apply text-muted-foreground hover:bg-transparent cursor-not-allowed;
   opacity: 1;
 }
 
@@ -262,7 +262,7 @@
 /* Prev/next chevron buttons — square outlined per screenshot. */
 .weelp-calendar .rdp-button_previous,
 .weelp-calendar .rdp-button_next {
-  @apply h-8 w-8 inline-flex items-center justify-center rounded-md border border-neutral-200 bg-white text-[var(--weelp-cal-fg)] hover:bg-neutral-50 transition-colors motion-reduce:transition-none;
+  @apply h-8 w-8 inline-flex items-center justify-center rounded-md border border-border bg-background text-[var(--weelp-cal-fg)] hover:bg-muted transition-colors motion-reduce:transition-none;
 }
 .weelp-calendar .rdp-button_previous:focus-visible,
 .weelp-calendar .rdp-button_next:focus-visible {
@@ -274,7 +274,7 @@
 
 /* Footer slot (Clear button, separator). */
 .weelp-calendar .rdp-footer {
-  @apply mt-3 pt-3 border-t border-neutral-200;
+  @apply mt-3 pt-3 border-t border-border;
 }
 .weelp-calendar .weelp-cal-clear {
   @apply text-sm text-[var(--weelp-cal-muted)] hover:text-[var(--weelp-cal-fg)] transition-colors motion-reduce:transition-none px-1 py-1 rounded-md;

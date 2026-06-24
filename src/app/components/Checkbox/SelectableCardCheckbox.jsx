@@ -16,7 +16,7 @@ export const SelectableCardCheckbox = ({ checked, onCheckedChange, itemId, disab
     <Checkbox
       checked={checked}
       disabled={disabled}
-      className="h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
+      className="h-5 w-5 rounded border-2 border-weelp-sage-deep bg-background data-[state=checked]:bg-weelp-sage-deep data-[state=checked]:text-white data-[state=checked]:border-weelp-sage-deep [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none"
       onCheckedChange={(checked) => onCheckedChange(checked, itemId)}
     />
   );

@@ -686,7 +686,7 @@ const CreateOrderForm = () => {
                   <Button
                     type="button"
                     onClick={() => setCurrentStep(currentStep - 1)}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
                   >
                     Previous
                   </Button>
@@ -699,7 +699,7 @@ const CreateOrderForm = () => {
                     onClick={() => {
                       router.back();
                     }}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
                   >
                     Cancel
                   </Button>
@@ -713,7 +713,7 @@ const CreateOrderForm = () => {
                       onClick={() => {
                         router.back();
                       }}
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
                     >
                       Cancel
                     </Button>

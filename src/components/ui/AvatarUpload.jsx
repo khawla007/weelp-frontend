@@ -105,7 +105,7 @@ export function AvatarUpload({ currentAvatar, onUploadSuccess, endpoint = '/api/
             <div className="w-full h-full flex items-center justify-center bg-weelp-sage-deep text-white font-semibold text-2xl">{getInitials(userName)}</div>
           )}
           {isUploading && (
-            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-foreground/50 flex items-center justify-center">
               <Loader2 className="w-6 h-6 text-white animate-spin" />
             </div>
           )}

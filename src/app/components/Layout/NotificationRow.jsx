@@ -53,13 +53,13 @@ export default function NotificationRow({ notif, onOpen, onToggleRead }) {
           handleRowClick();
         }
       }}
-      className={`flex items-start gap-3 w-full text-left px-4 py-3 border-b border-[#eaeaea] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40 transition-colors cursor-pointer ${isUnread ? 'bg-weelp-sage-deep/5' : ''}`}
+      className={`flex items-start gap-3 w-full text-left px-4 py-3 border-b border-border hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40 transition-colors cursor-pointer ${isUnread ? 'bg-weelp-sage-deep/5' : ''}`}
     >
       <div className={`mt-1 w-2 h-2 rounded-full flex-shrink-0 ${isUnread ? 'bg-weelp-sage-deep' : 'bg-transparent'}`} />
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-[#18181b] truncate">{notif.title}</p>
-        <p className="text-xs text-[#71717a] line-clamp-2 mt-0.5">{notif.message}</p>
-        <p className="text-xs text-[#71717a] mt-1">{timeAgo(notif.created_at)}</p>
+        <p className="text-sm font-medium text-foreground truncate">{notif.title}</p>
+        <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">{notif.message}</p>
+        <p className="text-xs text-muted-foreground mt-1">{timeAgo(notif.created_at)}</p>
         {isPopup && (
           <button type="button" onClick={handleVisit} className="mt-2 inline-flex items-center text-xs font-medium text-weelp-copy hover:text-weelp-sage-deep hover:underline">
             View detail
@@ -86,7 +86,7 @@ export default function NotificationRow({ notif, onOpen, onToggleRead }) {
         type="button"
         aria-label={toggleLabel}
         onClick={handleToggle}
-        className="flex-shrink-0 text-[#71717a] hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 rounded-sm p-1"
+        className="flex-shrink-0 text-muted-foreground hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 rounded-sm p-1"
       >
         <ToggleIcon className="size-4" strokeWidth={1.5} />
       </button>

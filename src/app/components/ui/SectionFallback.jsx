@@ -27,16 +27,16 @@ export default function SectionFallback({ eyebrow, message, pivotHref, pivotLabe
 
   return (
     <section className={`container-page flex flex-col gap-6 pb-10 md:pb-16 lg:pb-24 ${className}`}>
-      {eyebrow && <span className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#52525b]">{eyebrow}</span>}
+      {eyebrow && <span className="text-[13px] font-semibold uppercase tracking-[0.08em] text-copy">{eyebrow}</span>}
 
-      <div className="flex flex-col gap-5 border-t border-[#eaeaea] pt-8">
-        <p className="max-w-[60ch] text-[18px] font-medium leading-[1.4] text-[#18181b] sm:text-[20px]">{message}</p>
+      <div className="flex flex-col gap-5 border-t border-border pt-8">
+        <p className="max-w-[60ch] text-[18px] font-medium leading-[1.4] text-foreground sm:text-[20px]">{message}</p>
 
         <div className="flex flex-wrap items-center gap-3">
           {pivotHref && pivotLabel && (
             <Link
               href={pivotHref}
-              className="inline-flex items-center gap-2 rounded-sm text-[15px] font-semibold text-weelp-sage-deep transition-colors hover:text-[#4d8069] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
+              className="inline-flex items-center gap-2 rounded-sm text-[15px] font-semibold text-weelp-sage-deep transition-colors hover:text-weelp-sage-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
             >
               {pivotLabel}
               <ArrowRight className="size-4" aria-hidden="true" />
@@ -47,7 +47,7 @@ export default function SectionFallback({ eyebrow, message, pivotHref, pivotLabe
             <button
               type="button"
               onClick={handleRetry}
-              className="inline-flex items-center gap-1.5 rounded-[8px] border border-[#e4e4e7] bg-white px-3.5 py-2 text-[14px] font-semibold text-[#18181b] transition-colors hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
+              className="inline-flex items-center gap-1.5 rounded-[8px] border border-border bg-background px-3.5 py-2 text-[14px] font-semibold text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
             >
               <RotateCcw className="size-4" aria-hidden="true" />
               Try again

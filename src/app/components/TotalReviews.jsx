@@ -4,9 +4,9 @@ import { Star } from 'lucide-react';
 const TotalReviews = ({ title, rating, totalReviews }) => {
   return (
     <div className="flex flex-col gap-2">
-      <h3 className={`text-lg sm:text-[28px] font-medium text-[#18181b] capitalize`}>Reviews</h3>
+      <h3 className={`text-lg sm:text-[28px] font-medium text-foreground capitalize`}>Reviews</h3>
       <div className="flex items-center gap-4">
-        <h2 className="text-3xl text-[#18181b] font-extrabold">{rating || '5.0'}</h2>
+        <h2 className="text-3xl text-foreground font-extrabold">{rating || '5.0'}</h2>
 
         <div className="flex">
           <Star className="fill-yellow-400 stroke-none" />

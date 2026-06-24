@@ -23,7 +23,7 @@ export default function ActivityFeed({ limit = 5 }) {
     return (
       <div className="space-y-3">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-16 bg-[#f4f4f5] rounded-lg animate-pulse" />
+          <div key={i} className="h-16 bg-muted rounded-lg animate-pulse" />
         ))}
       </div>
     );
@@ -32,33 +32,33 @@ export default function ActivityFeed({ limit = 5 }) {
   if (!stats) {
     return (
       <div className="text-center py-8">
-        <p className="text-[#71717a]">No recent activity</p>
-        <p className="text-sm text-[#71717a] mt-1">Start creating itineraries to see your activity here.</p>
+        <p className="text-muted-foreground">No recent activity</p>
+        <p className="text-sm text-muted-foreground mt-1">Start creating itineraries to see your activity here.</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-3">
-      <h3 className="text-lg font-semibold text-[#18181b]">Recent Activity</h3>
-      <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-[#e4e4e7]">
-        <div className="p-2 bg-[#f4f4f5] rounded-full">
-          <Route className="size-4 text-[#52525b]" />
+      <h3 className="text-lg font-semibold text-foreground">Recent Activity</h3>
+      <div className="flex items-start gap-3 p-3 bg-background rounded-lg border border-border">
+        <div className="p-2 bg-muted rounded-full">
+          <Route className="size-4 text-copy" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm text-[#18181b]">Itineraries submitted: {stats.itineraries_count || 0}</p>
-          <p className="text-xs text-[#71717a] mt-1">
+          <p className="text-sm text-foreground">Itineraries submitted: {stats.itineraries_count || 0}</p>
+          <p className="text-xs text-muted-foreground mt-1">
             Approved: {stats.approved_count || 0} • Pending: {stats.pending_count || 0}
           </p>
         </div>
       </div>
-      <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-[#e4e4e7]">
-        <div className="p-2 bg-[#f4f4f5] rounded-full">
-          <Clock className="size-4 text-[#52525b]" />
+      <div className="flex items-start gap-3 p-3 bg-background rounded-lg border border-border">
+        <div className="p-2 bg-muted rounded-full">
+          <Clock className="size-4 text-copy" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm text-[#18181b]">Total views: {stats.total_views || 0}</p>
-          <p className="text-xs text-[#71717a] mt-1">Total likes: {stats.total_likes || 0}</p>
+          <p className="text-sm text-foreground">Total views: {stats.total_views || 0}</p>
+          <p className="text-xs text-muted-foreground mt-1">Total likes: {stats.total_likes || 0}</p>
         </div>
       </div>
     </div>

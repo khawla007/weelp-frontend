@@ -48,7 +48,7 @@ export const CustomPagination = ({ totalItems = 0, itemsPerPage = 0, currentPage
   return (
     <div className="flex items-center justify-between gap-4 w-full">
       {/* Total items - Left aligned */}
-      <span className="text-sm text-gray-600 whitespace-nowrap">Total: {totalItems} items</span>
+      <span className="text-sm text-copy whitespace-nowrap">Total: {totalItems} items</span>
 
       {/* Pagination controls - Right aligned */}
       <div className="flex items-center gap-2">
@@ -68,7 +68,7 @@ export const CustomPagination = ({ totalItems = 0, itemsPerPage = 0, currentPage
         </form>
 
         {/* of total pages */}
-        <span className="text-sm text-gray-600">of {totalPages}</span>
+        <span className="text-sm text-copy">of {totalPages}</span>
 
         {/* Next page button */}
         <Button variant="outline" size="sm" onClick={() => onPageChange(currentPage + 1)} disabled={!canGoNext} className="h-9 px-3">

@@ -40,16 +40,16 @@ export default function NotificationDetailModal({ notif, onClose }) {
               </div>
             )}
             <DialogHeader>
-              <DialogTitle className="text-[#18181b]">{notif.title}</DialogTitle>
+              <DialogTitle className="text-foreground">{notif.title}</DialogTitle>
             </DialogHeader>
-            <DialogDescription className="text-sm text-[#3f3f46] whitespace-pre-wrap">{notif.message}</DialogDescription>
-            <p className="text-xs text-[#71717a] mt-2">{timeAgo(notif.created_at)}</p>
+            <DialogDescription className="text-sm text-foreground whitespace-pre-wrap">{notif.message}</DialogDescription>
+            <p className="text-xs text-muted-foreground mt-2">{timeAgo(notif.created_at)}</p>
             {couponCode ? (
               <DialogFooter>
                 <button
                   type="button"
                   onClick={copyCode}
-                  className="inline-flex items-center gap-2 rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
+                  className="inline-flex items-center gap-2 rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-weelp-sage-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
                 >
                   {copied ? 'Copied!' : `Copy code: ${couponCode}`}
                 </button>
@@ -63,7 +63,7 @@ export default function NotificationDetailModal({ notif, onClose }) {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={onClose}
-                      className="inline-flex items-center rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
+                      className="inline-flex items-center rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-weelp-sage-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
                     >
                       View details
                     </a>
@@ -71,7 +71,7 @@ export default function NotificationDetailModal({ notif, onClose }) {
                     <NavigationLink
                       href={cta.href}
                       onClick={onClose}
-                      className="inline-flex items-center rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
+                      className="inline-flex items-center rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-weelp-sage-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
                     >
                       View details
                     </NavigationLink>

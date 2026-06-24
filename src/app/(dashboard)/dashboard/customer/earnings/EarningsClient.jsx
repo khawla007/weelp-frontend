@@ -157,7 +157,7 @@ export default function EarningsClient({ initial }) {
 
       <div key={loading ? 'loading' : `${status}-${preset}`} className="animate-fade-in">
         {loading ? (
-          <div className="bg-background rounded-lg border border-border divide-y divide-[#e4e4e7]">
+          <div className="bg-background rounded-lg border border-border divide-y divide-border">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="flex items-center gap-4 p-4">
                 <Skeleton className="h-4 w-24" />

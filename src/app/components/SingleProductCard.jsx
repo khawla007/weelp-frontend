@@ -21,12 +21,12 @@ export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productR
 
   return (
     <div
-      className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
+      className={`${'product_' + productId} bg-background rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-border sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
     >
       {is_featured && (
         <>
-          <div className="absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>
-          <Star size={24} fill="#568f7c" strokeWidth={2} className="absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
+          <div className="absolute top-4 left-4 z-10 bg-weelp-sage-deep text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>
+          <Star size={24} fill="currentColor" strokeWidth={2} className="absolute top-4 right-4 z-10 text-weelp-sage-deep drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
         </>
       )}
       <NavigationLink href={itemHref} className="block">
@@ -35,12 +35,12 @@ export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productR
           <div className="flex gap-1 text-weelp-copy text-sm pt-2">
             <Star className="fill-current" size={18} />
             {productRating || 4.5}
-            <span className="text-[#5A5A5A]" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
+            <span className="text-copy" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
           </div>
-          <TitleTag className="text-[#142A38] text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
-          <hr className=" border-t border-dashed border-gray-300 mb-3" />
+          <TitleTag className="text-foreground text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
+          <hr className=" border-t border-dashed border-border mb-3" />
           <div className="flex justify-between flex-wrap gap-2">
-            <div className="flex flex-col  text-gray-500 font-semibold space-y-4">
+            <div className="flex flex-col  text-muted-foreground font-semibold space-y-4">
               {/* For activity */}
               {item_type === 'activity' && (
                 <>
@@ -79,7 +79,7 @@ export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productR
               )}
             </div>
 
-            <button className="border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-1 px-4 uppercase rounded-md text-xs">40% off</button>
+            <button className="border border-weelp-discount text-weelp-discount bg-destructive/5 font-semibold py-1 px-4 uppercase rounded-md text-xs">40% off</button>
           </div>
         </div>
       </NavigationLink>
@@ -93,12 +93,12 @@ const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, pro
 
   return (
     <div
-      className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
+      className={`${'product_' + productId} bg-background rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-border sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
     >
       {featured_activity && (
         <>
-          <div className="absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>
-          <Star size={24} fill="#568f7c" strokeWidth={2} className="absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
+          <div className="absolute top-4 left-4 z-10 bg-weelp-sage-deep text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>
+          <Star size={24} fill="currentColor" strokeWidth={2} className="absolute top-4 right-4 z-10 text-weelp-sage-deep drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
         </>
       )}
       <NavigationLink href={city ? `/cities/${city}/activities/${productSlug}` : `/activity/${productSlug}`} className="block">
@@ -107,12 +107,12 @@ const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, pro
           <div className="flex gap-1 text-weelp-copy text-sm">
             <Star className="fill-current" size={18} />
             {productRating || 4.5}
-            <span className="text-[#5A5A5A]" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
+            <span className="text-copy" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
           </div>
-          <TitleTag className="text-black text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
-          <hr className=" border-t border-dashed border-gray-300 mb-1" />
+          <TitleTag className="text-foreground text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
+          <hr className=" border-t border-dashed border-border mb-1" />
           <div className="flex justify-between flex-wrap gap-2">
-            <div className="flex flex-col  text-gray-500 font-semibold">
+            <div className="flex flex-col  text-muted-foreground font-semibold">
               {productPrice && (
                 <>
                   <span className="font-normal">From</span>
@@ -120,7 +120,7 @@ const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, pro
                 </>
               )}
             </div>
-            <button className=" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
+            <button className=" border border-weelp-discount text-weelp-discount bg-destructive/5 font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
           </div>
         </div>
       </NavigationLink>
@@ -136,12 +136,12 @@ export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, p
   const { region, city } = params;
   return (
     <div
-      className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
+      className={`${'product_' + productId} bg-background rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-border sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
     >
       {is_featured && (
         <>
-          <div className="absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>
-          <Star size={24} fill="#568f7c" strokeWidth={2} className="absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
+          <div className="absolute top-4 left-4 z-10 bg-weelp-sage-deep text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>
+          <Star size={24} fill="currentColor" strokeWidth={2} className="absolute top-4 right-4 z-10 text-weelp-sage-deep drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
         </>
       )}
       <NavigationLink href={city ? `/cities/${city}/itineraries/${productSlug}` : `/itinerary/${productSlug}`} className="block">
@@ -150,16 +150,16 @@ export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, p
           <div className="flex gap-1 text-weelp-copy text-sm">
             <Star className="fill-current" size={18} />
             {productRating || 4.5}
-            <span className="text-[#5A5A5A]" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
+            <span className="text-copy" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
           </div>
-          <TitleTag className="text-black text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
-          <hr className=" border-t border-dashed border-gray-300 mb-1" />
+          <TitleTag className="text-foreground text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
+          <hr className=" border-t border-dashed border-border mb-1" />
           <div className="flex justify-between flex-wrap gap-2">
-            <div className="flex flex-col  text-gray-500 font-semibold">
+            <div className="flex flex-col  text-muted-foreground font-semibold">
               <span className="font-normal">From</span>
               {productPrice || '$1200'}
             </div>
-            <button className=" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
+            <button className=" border border-weelp-discount text-weelp-discount bg-destructive/5 font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
           </div>
         </div>
       </NavigationLink>
@@ -174,12 +174,12 @@ export const SingleProductCardPackage = ({ productId, imgsrc, productRating, pro
 
   return (
     <div
-      className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
+      className={`${'product_' + productId} bg-background rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-border sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
     >
       {is_featured && (
         <>
-          <div className="absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>
-          <Star size={24} fill="#568f7c" strokeWidth={2} className="absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
+          <div className="absolute top-4 left-4 z-10 bg-weelp-sage-deep text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>
+          <Star size={24} fill="currentColor" strokeWidth={2} className="absolute top-4 right-4 z-10 text-weelp-sage-deep drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
         </>
       )}
       <NavigationLink href={city ? `/cities/${city}/packages/${productSlug}` : `/package/${productSlug}`} className="block">
@@ -188,16 +188,16 @@ export const SingleProductCardPackage = ({ productId, imgsrc, productRating, pro
           <div className="flex gap-1 text-weelp-copy text-sm">
             <Star className="fill-current" size={18} />
             {productRating || 4.5}
-            <span className="text-[#5A5A5A]" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
+            <span className="text-copy" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
           </div>
-          <TitleTag className="text-black text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
-          <hr className=" border-t border-dashed border-gray-300 mb-1" />
+          <TitleTag className="text-foreground text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
+          <hr className=" border-t border-dashed border-border mb-1" />
           <div className="flex justify-between flex-wrap gap-2">
-            <div className="flex flex-col  text-gray-500 font-semibold">
+            <div className="flex flex-col  text-muted-foreground font-semibold">
               <span className="font-normal">From</span>
               {productPrice || '$1200'}
             </div>
-            <button className=" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
+            <button className=" border border-weelp-discount text-weelp-discount bg-destructive/5 font-semibold py-2 px-4 uppercase rounded-md">40% off</button>
           </div>
         </div>
       </NavigationLink>

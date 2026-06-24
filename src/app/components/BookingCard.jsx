@@ -17,20 +17,20 @@ const BookingCard = ({ bookingItem = {} }) => {
   const rating = review?.rating ?? 0;
 
   return (
-    <Card className="bg-white rounded-lg p-4 flex flex-col gap-4  shadow-md max-w-lg w-full dark:bg-black">
+    <Card className="bg-background rounded-lg p-4 flex flex-col gap-4  shadow-md max-w-lg w-full dark:bg-foreground">
       <CardHeader className="grid grid-cols-2 py-2 flex-wrap">
-        <CardTitle className={'text-[#143042] text-xl font-semibold'}>{name}</CardTitle>
-        <span className="text-[#143042] text-base font-normal text-end ">{travel_date}</span>
+        <CardTitle className={'text-foreground text-xl font-semibold'}>{name}</CardTitle>
+        <span className="text-foreground text-base font-normal text-end ">{travel_date}</span>
         <span className="text-weelp-steel text-base font-normal">{city}</span>
 
-        <span className="text-gray-400  text-base text-end font-medium">Booking Id :{id}</span>
+        <span className="text-muted-foreground  text-base text-end font-medium">Booking Id :{id}</span>
       </CardHeader>
       <CardContent className="border py-2 space-y-2 border-y-graycolor border-x-0">
         <div className="flex justify-between">
           {/* Reviews */}
           {rating !== 0 && (
             <>
-              <CardTitle className="text-black text-base font-semibold">Your Review</CardTitle>
+              <CardTitle className="text-foreground text-base font-semibold">Your Review</CardTitle>
               <ul className="flex">
                 {Array.from({ length: rating }, (star, index) => (
                   <li key={index}>
@@ -45,7 +45,7 @@ const BookingCard = ({ bookingItem = {} }) => {
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               {rating === 0 ? (
-                <Button className="ml-auto border border-[#568f7c] bg-[#568f7c] text-white hover:bg-white hover:text-black" onClick={() => setOpen(true)}>
+                <Button className="ml-auto border border-weelp-sage-deep bg-weelp-sage-deep text-white hover:bg-background hover:text-foreground" onClick={() => setOpen(true)}>
                   Add Review
                 </Button>
               ) : (
@@ -68,7 +68,7 @@ const BookingCard = ({ bookingItem = {} }) => {
         </div>
       </CardContent>
 
-      <Card className="flex justify-between items-center shadow-none border-none px-4 dark:bg-black">
+      <Card className="flex justify-between items-center shadow-none border-none px-4 dark:bg-foreground">
         <Image
           src="/assets/Review.png"
           alt="Review"

@@ -334,27 +334,27 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
   };
 
   return (
-    <div className="relative space-y-4 bg-white rounded-xl w-full">
+    <div className="relative space-y-4 bg-background rounded-xl w-full">
       {showCloseButton && (
-        <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
+        <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-background rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
           <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
         </button>
       )}
 
       {step === 'info' ? (
         <form onSubmit={handleSubmit(onSubmitInfo)}>
-          <fieldset className={`space-y-4 bg-white py-4 ${isSubmitting && 'cursor-wait'}`} disabled={isSubmitting}>
+          <fieldset className={`space-y-4 bg-background py-4 ${isSubmitting && 'cursor-wait'}`} disabled={isSubmitting}>
             {/* Name Input */}
             <div>
-              <label htmlFor="name" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
-                <User className="text-[#52525b] size-4" />
+              <label htmlFor="name" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md">
+                <User className="text-copy size-4" />
                 <input
                   placeholder="Full Name"
                   type="text"
                   id="name"
                   {...register('name')}
                   autoComplete="name"
-                  className="mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base flex-1"
+                  className="mt-1 py-2 px-3 focus:outline-none bg-background placeholder:bg-background text-base flex-1"
                 />
               </label>
               {errors.name && <p className="text-sm text-red-600 pt-2">{errors.name.message}</p>}
@@ -362,21 +362,21 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
             {/* Username Input */}
             <div>
-              <label htmlFor="username" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative">
-                <User className="text-[#52525b] size-4" />
+              <label htmlFor="username" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md relative">
+                <User className="text-copy size-4" />
                 <input
                   placeholder="Username"
                   type="text"
                   id="username"
                   {...register('username')}
                   autoComplete="username"
-                  className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1"
+                  className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-background placeholder:bg-background text-base flex-1"
                 />
                 {/* Username availability indicator */}
                 {username && username.length >= 3 && (
                   <div className="absolute right-10">
                     {isCheckingUsername ? (
-                      <LoaderCircle className="text-zinc-400 size-5 animate-spin" />
+                      <LoaderCircle className="text-muted-foreground size-5 animate-spin" />
                     ) : usernameError ? (
                       <X className="text-red-500 size-5" strokeWidth={3} />
                     ) : (
@@ -391,15 +391,15 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
-                <AtSign className="text-[#52525b] size-4" />
+              <label htmlFor="email" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md">
+                <AtSign className="text-copy size-4" />
                 <input
                   placeholder="Email ID"
                   type="email"
                   id="email"
                   {...register('email')}
                   autoComplete="email"
-                  className="mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base flex-1"
+                  className="mt-1 py-2 px-3 focus:outline-none bg-background placeholder:bg-background text-base flex-1"
                 />
               </label>
               {errors.email && <p className="text-sm text-red-600 pt-2">{errors.email.message}</p>}
@@ -407,15 +407,15 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
             {/* Password Input */}
             <div className="border relative mb-4">
-              <label htmlFor="password" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative">
-                <KeyRound className="text-[#52525b] size-4" />
+              <label htmlFor="password" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md relative">
+                <KeyRound className="text-copy size-4" />
                 <input
                   type={visible ? 'text' : 'password'}
                   id="password"
                   placeholder="Password"
                   {...register('password')}
                   autoComplete="new-password"
-                  className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1"
+                  className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-background placeholder:bg-background text-base flex-1"
                 />
                 {!visible ? <Eye size={20} className="absolute right-4 cursor-pointer" onClick={toggle} /> : <EyeClosed size={20} className="absolute right-4 cursor-pointer" onClick={toggle} />}
               </label>
@@ -425,24 +425,24 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
               {password && (
                 <>
                   <div className="mt-2 space-y-1 text-xs">
-                    <p className="text-zinc-500 font-medium mb-1">Password must contain:</p>
-                    <div className={`flex items-center gap-1 ${password.length >= 8 ? 'text-green-600' : 'text-zinc-400'}`}>
+                    <p className="text-muted-foreground font-medium mb-1">Password must contain:</p>
+                    <div className={`flex items-center gap-1 ${password.length >= 8 ? 'text-green-600' : 'text-muted-foreground'}`}>
                       {password.length >= 8 ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                       <span>At least 8 characters</span>
                     </div>
-                    <div className={`flex items-center gap-1 ${/[A-Z]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
+                    <div className={`flex items-center gap-1 ${/[A-Z]/.test(password) ? 'text-green-600' : 'text-muted-foreground'}`}>
                       {/[A-Z]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                       <span>One uppercase letter (A-Z)</span>
                     </div>
-                    <div className={`flex items-center gap-1 ${/[a-z]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
+                    <div className={`flex items-center gap-1 ${/[a-z]/.test(password) ? 'text-green-600' : 'text-muted-foreground'}`}>
                       {/[a-z]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                       <span>One lowercase letter (a-z)</span>
                     </div>
-                    <div className={`flex items-center gap-1 ${/[0-9]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
+                    <div className={`flex items-center gap-1 ${/[0-9]/.test(password) ? 'text-green-600' : 'text-muted-foreground'}`}>
                       {/[0-9]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                       <span>One number (0-9)</span>
                     </div>
-                    <div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>
+                    <div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? 'text-green-600' : 'text-muted-foreground'}`}>
                       {/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                       <span>One special character</span>
                     </div>
@@ -455,15 +455,15 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
             {/* Confirm Password Input */}
             <div>
-              <label htmlFor="password_confirmation" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative">
-                <KeyRound className="text-[#52525b] size-4" />
+              <label htmlFor="password_confirmation" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md relative">
+                <KeyRound className="text-copy size-4" />
                 <input
                   type={visible ? 'text' : 'password'}
                   id="password_confirmation"
                   placeholder="Confirm Password"
                   {...register('password_confirmation')}
                   autoComplete="new-password"
-                  className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1"
+                  className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-background placeholder:bg-background text-base flex-1"
                 />
                 {/* Live password match indicator */}
                 {passwordConfirmation && (
@@ -481,7 +481,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed border-zinc-400' : 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep'}`}
+                className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-muted-foreground cursor-not-allowed border-border' : 'bg-weelp-sage-deep text-white hover:bg-background hover:text-weelp-sage-deep'}`}
               >
                 {isSubmitting ? (
                   <>
@@ -496,10 +496,10 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
           </fieldset>
         </form>
       ) : (
-        <fieldset className={`space-y-4 bg-white py-4`} disabled={isOtpSubmitting}>
+        <fieldset className={`space-y-4 bg-background py-4`} disabled={isOtpSubmitting}>
           <div className="text-center">
             <h3 className="font-semibold text-xl">Verify Your Email</h3>
-            <sub className="text-[#52525b]">
+            <sub className="text-copy">
               We sent a 6-digit code to <strong>{formData?.email}</strong>
             </sub>
           </div>
@@ -518,12 +518,12 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
           {/* Resend Button */}
           <div className="text-center">
-            <p className="text-sm text-[#52525b] mb-2">Didn&apos;t receive the code?</p>
+            <p className="text-sm text-copy mb-2">Didn&apos;t receive the code?</p>
             <button
               type="button"
               onClick={handleResendOtp}
               disabled={timeUntilResend > 0 || isResending}
-              className="text-sm font-semibold text-weelp-sage-deep hover:underline disabled:text-zinc-400 disabled:no-underline"
+              className="text-sm font-semibold text-weelp-sage-deep hover:underline disabled:text-muted-foreground disabled:no-underline"
             >
               {isResending ? 'Sending...' : timeUntilResend > 0 ? `Resend in ${timeUntilResend}s` : 'Resend OTP'}
             </button>
@@ -531,7 +531,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
           {/* Back Button */}
           <div className="text-center pt-2">
-            <button type="button" onClick={handleBackToInfo} className="text-sm text-[#52525b] hover:text-weelp-sage-deep">
+            <button type="button" onClick={handleBackToInfo} className="text-sm text-copy hover:text-weelp-sage-deep">
               ← Back to registration
             </button>
           </div>

@@ -1752,7 +1752,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                   <Button
                     type="button"
                     onClick={() => goWithDirection(currentStep - 1, currentStep, setCurrentStep)}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
                   >
                     Previous
                   </Button>
@@ -1765,7 +1765,7 @@ export const CreateItineraryForm = ({ categories, attributes, tags, locations = 
                     onClick={() => {
                       router.back();
                     }}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
                   >
                     Cancel
                   </Button>

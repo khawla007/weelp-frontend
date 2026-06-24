@@ -103,7 +103,7 @@ export const SearchFormCreator = () => {
 
   return (
     <div className="flex flex-col max-w-[30rem] w-full mx-auto relative">
-      <form onKeyUp={debounce(handleSubmit(onSubmit), 600)} className="w-full bg-white flex items-center justify-evenly rounded shadow">
+      <form onKeyUp={debounce(handleSubmit(onSubmit), 600)} className="w-full bg-background flex items-center justify-evenly rounded shadow">
         <input
           id="search"
           autoComplete="off"
@@ -125,14 +125,14 @@ export const SearchFormCreator = () => {
         {showDropdown && (
           <div>
             {results.length > 0 ? (
-              <ul className="bg-white w-full rounded-md flex flex-col gap-1 max-h-64 h-fit shadow-md overflow-y-auto tfc_scroll">
+              <ul className="bg-background w-full rounded-md flex flex-col gap-1 max-h-64 h-fit shadow-md overflow-y-auto tfc_scroll">
                 {results.map((itinerary) => (
                   <li key={itinerary.id}>
-                    <Link href={getItemHref(itinerary)} onClick={() => setShowDropdown(false)} className="hover:bg-gray-50 flex items-center gap-3 py-2.5 px-4 hover:cursor-pointer">
+                    <Link href={getItemHref(itinerary)} onClick={() => setShowDropdown(false)} className="hover:bg-muted flex items-center gap-3 py-2.5 px-4 hover:cursor-pointer">
                       <img src={getFeaturedImage(itinerary)} className="size-10 rounded-md object-cover shrink-0" alt="itinerary thumbnail" width={40} height={40} />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate">{itinerary?.name || 'Untitled itinerary'}</p>
-                        <p className="text-xs text-gray-500 truncate">by {itinerary?.creator?.name || 'Unknown creator'}</p>
+                        <p className="text-sm font-medium text-foreground truncate">{itinerary?.name || 'Untitled itinerary'}</p>
+                        <p className="text-xs text-muted-foreground truncate">by {itinerary?.creator?.name || 'Unknown creator'}</p>
                       </div>
                       {itinerary?.creator?.avatar_media?.url || itinerary?.creator?.profile?.avatar ? (
                         <img
@@ -151,7 +151,7 @@ export const SearchFormCreator = () => {
               </ul>
             ) : (
               message && (
-                <div className="hover:bg-weelp-steel flex justify-between rounded-md items-center py-2 px-6 hover:text-white hover:cursor-not-allowed bg-white shadow-md">
+                <div className="hover:bg-weelp-steel flex justify-between rounded-md items-center py-2 px-6 hover:text-white hover:cursor-not-allowed bg-background shadow-md">
                   Sorry No Result Found
                   <Frown size={24} className="animate-pulse" />
                 </div>
@@ -201,7 +201,7 @@ export const SearchFormBlogs = () => {
     <div className="flex flex-col max-w-[30rem] w-full mx-auto">
       <form
         onKeyUp={debounce(handleSubmit(onSubmit), 1000)}
-        className={`w-full bg-white border  flex items-center justify-evenly rounded-xl shadow ${errors?.search?.message ? 'border-red-400 border' : null}`}
+        className={`w-full bg-background border  flex items-center justify-evenly rounded-xl shadow ${errors?.search?.message ? 'border-red-400 border' : null}`}
       >
         <input
           id="search"
@@ -228,7 +228,7 @@ export const SearchFormBlogs = () => {
 
           {/* Success with data */}
           {!error && !isValidating && searchedBlogs.length > 0 && (
-            <ul className="absolute z-10 top-4 bg-white w-full rounded-md flex flex-col gap-2 max-h-52 shadow-md overflow-y-auto tfc_scroll">
+            <ul className="absolute z-10 top-4 bg-background w-full rounded-md flex flex-col gap-2 max-h-52 shadow-md overflow-y-auto tfc_scroll">
               {searchedBlogs.map((val, index) => (
                 <li key={index}>
                   <Link href={`/blogs/${val?.slug}`} className="hover:bg-weelp-steel flex justify-between items-center py-2 px-6 hover:text-white hover:cursor-pointer">
@@ -242,7 +242,7 @@ export const SearchFormBlogs = () => {
 
           {/* No result */}
           {query.size > 0 && !error && !isValidating && searchedBlogs.length === 0 && (
-            <div className="hover:bg-weelp-steel flex justify-between rounded-md items-center py-2 px-6 hover:text-white bg-white mt-2">
+            <div className="hover:bg-weelp-steel flex justify-between rounded-md items-center py-2 px-6 hover:text-white bg-background mt-2">
               Sorry No Result Found
               <Frown size={24} className="animate-pulse" />
             </div>

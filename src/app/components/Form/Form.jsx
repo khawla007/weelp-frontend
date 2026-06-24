@@ -178,10 +178,10 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
           <div className="flex-1 relative min-w-0">
             <div
               onClick={toggleLocation}
-              className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none"
+              className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none"
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
-              <MapPin size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
+              <MapPin size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
               <input
                 type="text"
                 id="search-destination"
@@ -190,8 +190,8 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
                 value={inputValue}
                 onChange={handleInputChange}
                 onClick={handleInputClick}
-                className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-[#71717a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
-                style={{ color: '#52525b', fontFamily: 'inherit' }}
+                className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
+                style={{ color: 'rgb(var(--copy-rgb))', fontFamily: 'inherit' }}
                 autoComplete="off"
               />
             </div>
@@ -205,7 +205,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
                 render={() => (
                   <ul
                     onMouseLeave={() => setShowLocation(false)}
-                    className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-zinc-100 max-h-52 overflow-y-auto z-[110] min-w-full w-max"
+                    className="absolute top-full left-0 mt-1 bg-background rounded-lg shadow-lg border border-border max-h-52 overflow-y-auto z-[110] min-w-full w-max"
                   >
                     {filteredLocations.length > 0 ? (
                       filteredLocations.map((loc, idx) => (
@@ -216,13 +216,13 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
                             setInputValue(loc.name);
                             setShowLocation(false);
                           }}
-                          className={`px-4 py-2 cursor-pointer hover:bg-zinc-100 text-sm whitespace-nowrap ${watchedWhereTo === loc.name ? 'bg-green-100' : ''}`}
+                          className={`px-4 py-2 cursor-pointer hover:bg-muted text-sm whitespace-nowrap ${watchedWhereTo === loc.name ? 'bg-green-100' : ''}`}
                         >
                           {loc.name}
                         </li>
                       ))
                     ) : locationsLoading ? null : (
-                      <li className="px-4 py-2 text-zinc-400 text-sm cursor-default">No locations found</li>
+                      <li className="px-4 py-2 text-muted-foreground text-sm cursor-default">No locations found</li>
                     )}
                   </ul>
                 )}
@@ -234,11 +234,11 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
           <div className="flex-1 relative min-w-0">
             <div
               onClick={toggleCalendar}
-              className="flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
+              className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none"
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
-              <Calendar size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
-              <span className="text-sm font-medium whitespace-nowrap" style={{ color: '#52525b' }}>
+              <Calendar size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
+              <span className="text-sm font-medium whitespace-nowrap" style={{ color: 'rgb(var(--copy-rgb))' }}>
                 {watchedFrom?.from && watchedFrom?.to
                   ? `${new Date(watchedFrom.from).toLocaleDateString('en-US', { month: 'short', day: '2-digit' })} - ${new Date(watchedFrom.to).toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}`
                   : 'When?'}
@@ -247,7 +247,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
             {errors.dateRange && <p className="text-red-500 text-xs mt-1 px-1">{errors.dateRange.message}</p>}
 
             {showCalendar && (
-              <div onMouseLeave={() => setShowCalendar(false)} className="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-2xl shadow-lg border border-zinc-100 p-2 z-[110]">
+              <div onMouseLeave={() => setShowCalendar(false)} className="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-background rounded-2xl shadow-lg border border-border p-2 z-[110]">
                 <Controller
                   name="dateRange"
                   control={control}
@@ -261,29 +261,29 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
           <div className="flex-1 relative min-w-0">
             <div
               onClick={toggleHowMany}
-              className={`flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer ${isSearchPage ? 'sm:rounded-none' : 'sm:rounded-l-none'}`}
+              className={`flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer ${isSearchPage ? 'sm:rounded-none' : 'sm:rounded-l-none'}`}
               style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
             >
-              <Users size={20} className="flex-shrink-0" style={{ color: '#52525b' }} />
-              <span className="text-sm font-medium whitespace-nowrap" style={{ color: '#52525b' }}>
+              <Users size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
+              <span className="text-sm font-medium whitespace-nowrap" style={{ color: 'rgb(var(--copy-rgb))' }}>
                 {total != null && total > 0 ? `${total} ${total === 1 ? 'Guest' : 'Guests'}` : 'How Many?'}
               </span>
             </div>
             {errors.howMany && <p className="text-red-500 text-xs mt-1 px-1">{errors.howMany?.adults?.message || ''}</p>}
 
             {showHowMany && (
-              <div onMouseLeave={() => setShowHowMany(false)} className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border border-zinc-100 p-4 z-[110] w-64">
+              <div onMouseLeave={() => setShowHowMany(false)} className="absolute top-full right-0 mt-1 bg-background rounded-lg shadow-lg border border-border p-4 z-[110] w-64">
                 {['adults', 'children', 'infants'].map((type) => (
                   <div key={type} className="flex justify-between items-center mb-3 last:mb-0 gap-6">
                     <div>
                       <h3 className="font-semibold capitalize text-sm">{type}</h3>
-                      <span className="text-xs text-zinc-500">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
+                      <span className="text-xs text-muted-foreground">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <button
                         type="button"
                         onClick={() => handleDecrement(type)}
-                        className="w-8 h-8 rounded-full border flex items-center justify-center text-gray-700 bg-graycolor hover:bg-[#e9f5ed]"
+                        className="w-8 h-8 rounded-full border flex items-center justify-center text-copy bg-graycolor hover:bg-weelp-sage-wash"
                       >
                         <Minus size={14} />
                       </button>
@@ -291,7 +291,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
                       <button
                         type="button"
                         onClick={() => handleIncrement(type)}
-                        className="w-8 h-8 rounded-full border border-[#b5d8cb] flex items-center justify-center text-weelp-sage-deep hover:bg-[#e9f5ed]"
+                        className="w-8 h-8 rounded-full border border-weelp-sage-tint flex items-center justify-center text-weelp-sage-deep hover:bg-weelp-sage-wash"
                       >
                         <Plus size={14} />
                       </button>
@@ -312,7 +312,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
             <button
               type="submit"
               aria-label="Search trips"
-              className="flex shrink-0 min-w-[112px] items-center justify-center rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-[background-color,color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#f8faf9] hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:rounded-l-none motion-reduce:transition-none"
+              className="flex shrink-0 min-w-[112px] items-center justify-center rounded-xl border border-border bg-background px-6 py-[18px] text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-[background-color,color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-weelp-sage-wash hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:rounded-l-none motion-reduce:transition-none"
             >
               Search
             </button>
@@ -324,7 +324,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
             type="submit"
             aria-label="Search trips"
             disabled={isSearching}
-            className="flex h-11 min-w-[160px] items-center justify-center rounded-full bg-weelp-sage-deep px-8 text-sm font-semibold text-white shadow-lg shadow-black/10 transition-[background-color,box-shadow,transform] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#477665] hover:shadow-black/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/45 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:cursor-wait disabled:opacity-90 motion-reduce:transition-none"
+            className="flex h-11 min-w-[160px] items-center justify-center rounded-full bg-weelp-sage-deep px-8 text-sm font-semibold text-white shadow-lg shadow-black/10 transition-[background-color,box-shadow,transform] duration-200 ease-[var(--weelp-ease-out)] hover:bg-weelp-sage-hover hover:shadow-black/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/45 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:cursor-wait disabled:opacity-90 motion-reduce:transition-none"
           >
             {isSearching ? <LoaderCircle data-testid="search-submit-loader" className="h-5 w-5 animate-spin motion-reduce:animate-none" aria-hidden="true" /> : 'Search'}
           </button>

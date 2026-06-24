@@ -10,12 +10,12 @@ Use semantic tokens from the start. A component should keep the same role names 
 4. Keep brand actions on `bg-weelp-sage-deep` with `hover:bg-weelp-sage-hover`.
 5. Do not add new `bg-white`, `bg-black`, gray/zinc/neutral/slate color utilities, arbitrary hex color utilities, or inline literal hex colors.
 6. If a third-party brand color or external embed requires a literal, add `dark-mode-exempt: <reason>` directly above the line and record the reason in QA notes.
-7. For card shadows, prefer the existing card primitive. If a custom shadow is necessary, include a dark-mode behavior such as `dark:shadow-none`.
+7. For card shadows, prefer the existing card primitive. Standard shadows are normalized off in dark mode; if a custom shadow must persist, document why with `dark-mode-exempt`.
 8. For rich text, maps, Stripe, charts, and toasts, wire theme from tokens or `useTheme().resolvedTheme`; do not leave injected surfaces locked to light colors.
 
 ## Review Checklist
 
-- `npm run dark:audit` has no new unreviewed findings.
+- `npm run dark:audit` reports zero unresolved color/token findings.
 - `npm run lint` passes the dark guard.
 - Light and dark modes have readable foreground/background contrast.
 - Theme persistence works with `localStorage['weelp-theme']`.

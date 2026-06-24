@@ -51,7 +51,7 @@ export const FormVerifyEmail = () => {
   }
 
   return (
-    <div className="space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8">
+    <div className="space-y-4 bg-background border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8">
       {response?.success && <EmailVerifiedCard emailaddress={response?.email} />}
       {!response?.success && <InvalidExpiredToken />}
     </div>
@@ -60,13 +60,13 @@ export const FormVerifyEmail = () => {
 
 function EmailVerifiedCard({ emailaddress = '' }) {
   return (
-    <div className="max-w-sm mx-auto bg-white rounded-2xl p-8 text-center">
+    <div className="max-w-sm mx-auto bg-background rounded-2xl p-8 text-center">
       <div className="flex items-center justify-center size-20 mx-auto rounded-full bg-weelp-sage-deep mb-6">
         <CheckCircle className="w-10 h-10 text-white" />
       </div>
-      <h2 className="text-2xl font-semibold text-gray-900 mb-2">Email Verified!</h2>
-      <p className="text-gray-500 mb-6">Your Email has been successfully verified. </p>
-      <p className="text-gray-500 mb-6 font-bold">{emailaddress}</p>
+      <h2 className="text-2xl font-semibold text-foreground mb-2">Email Verified!</h2>
+      <p className="text-muted-foreground mb-6">Your Email has been successfully verified. </p>
+      <p className="text-muted-foreground mb-6 font-bold">{emailaddress}</p>
       <Button asChild>
         <Link href="/user/login" className="bg-weelp-sage-deep">
           Click Here To Login
@@ -78,11 +78,11 @@ function EmailVerifiedCard({ emailaddress = '' }) {
 
 function InvalidExpiredToken() {
   return (
-    <div className="max-w-sm mx-auto bg-white rounded-2xl p-8 text-center">
+    <div className="max-w-sm mx-auto bg-background rounded-2xl p-8 text-center">
       <div className="flex items-center justify-center size-20 mx-auto rounded-full bg-weelp-sage-deep mb-6">
         <UserX className="w-10 h-10 text-white" />
       </div>
-      <h2 className="text-2xl font-semibold text-gray-900 mb-2">Invalid or Expired Token!</h2>
+      <h2 className="text-2xl font-semibold text-foreground mb-2">Invalid or Expired Token!</h2>
       <Button asChild>
         <Link href="/user/email/revalidate" className="bg-weelp-sage-deep">
           Click Here To Verify Your Email

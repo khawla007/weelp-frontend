@@ -4,15 +4,15 @@ import { ArrowRight, BadgeCheck, Star } from 'lucide-react';
 
 const Testimonial = ({ username, title, date, itemName, rating }) => {
   return (
-    <div className="bg-white rounded-lg p-4 flex flex-col gap-4 flex-wrap h-full justify-evenly border border-[#e4e4e7]">
+    <div className="bg-background rounded-lg p-4 flex flex-col gap-4 flex-wrap h-full justify-evenly border border-border">
       {/* username */}
       <div className="flex gap-4 items-center flex-wrap">
         <img src="/assets/testimonial.png" alt="testimonial" className="rounded-full w-16" />
         <div>
-          <h3 className="text-black text-xl font-semibold flex items-center gap-2">
+          <h3 className="text-foreground text-xl font-semibold flex items-center gap-2">
             {username || 'Anonymous'} <BadgeCheck className="text-white fill-sky-500 text-xl" />
           </h3>
-          {itemName && <span className="font-normal text-gray-500">{itemName}</span>}
+          {itemName && <span className="font-normal text-muted-foreground">{itemName}</span>}
         </div>
         {rating && (
           <div className="flex gap-0.5 ml-auto">
@@ -24,11 +24,11 @@ const Testimonial = ({ username, title, date, itemName, rating }) => {
       </div>
       {/* title / review text */}
       <div>
-        <h3 className="text-black text-xl mb-3 line-clamp-3">{title || 'Great experience!'}</h3>
+        <h3 className="text-foreground text-xl mb-3 line-clamp-3">{title || 'Great experience!'}</h3>
       </div>
       {/* date */}
       <div className="flex justify-between flex-wrap">
-        <span className="text-gray-400 font-normal text-base uppercase">{date || ''}</span>
+        <span className="text-muted-foreground font-normal text-base uppercase">{date || ''}</span>
       </div>
     </div>
   );

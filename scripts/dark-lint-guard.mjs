@@ -14,7 +14,7 @@ const COLOR_PREFIX = '(?:bg|text|border|divide|ring|from|via|to|fill|stroke|outl
 const RULES = [
   { rule: 'background-white-black', pattern: /\bbg-(?:white|black)\b/g },
   { rule: 'neutral-color-utility', pattern: new RegExp(`\\b${COLOR_PREFIX}-${SHADE}-${TONE}(?:/[0-9]{1,3})?\\b`, 'g') },
-  { rule: 'arbitrary-hex-color-utility', pattern: new RegExp(`\\b(?:bg|text|border)-\\[${HEX}\\](?:/[0-9]{1,3})?`, 'g') },
+  { rule: 'arbitrary-hex-color-utility', pattern: new RegExp(`\\b${COLOR_PREFIX}-\\[${HEX}\\](?:/[0-9]{1,3})?`, 'g') },
   { rule: 'inline-literal-color', pattern: new RegExp(`\\b(?:color|background|backgroundColor)\\s*:\\s*(['"\`])${HEX}\\1`, 'g') },
 ];
 

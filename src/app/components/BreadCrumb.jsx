@@ -27,10 +27,10 @@ const BreadCrumb = ({ className }) => {
     <div className={`${className}`}>
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem className={'text-base text-[#71717a] font-medium'}>
+          <BreadcrumbItem className={'text-base text-muted-foreground font-medium'}>
             <BreadcrumbLink
               href="/"
-              className="transition-colors hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+              className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
             >
               Home
             </BreadcrumbLink>
@@ -40,13 +40,13 @@ const BreadCrumb = ({ className }) => {
             return (
               <React.Fragment key={index}>
                 <BreadcrumbSeparator />
-                <BreadcrumbItem className={`capitalize text-base font-medium ${isLast ? 'text-[#18181b] font-semibold' : 'text-[#71717a]'}`}>
+                <BreadcrumbItem className={`capitalize text-base font-medium ${isLast ? 'text-foreground font-semibold' : 'text-muted-foreground'}`}>
                   {isLast ? (
                     item.label
                   ) : (
                     <BreadcrumbLink
                       href={item.href}
-                      className="transition-colors hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+                      className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
                     >
                       {item.label}
                     </BreadcrumbLink>

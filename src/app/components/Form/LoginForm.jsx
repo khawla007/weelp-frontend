@@ -135,25 +135,25 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
   };
   if (isClient) {
     return (
-      <div className={`relative bg-white rounded-xl w-full ${isSubmitting && 'cursor-wait'}`}>
+      <div className={`relative bg-background rounded-xl w-full ${isSubmitting && 'cursor-wait'}`}>
         {/* Custom Close Button */}
         {showCloseButton && (
-          <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
+          <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-background rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
             <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
           </button>
         )}
-        <form onSubmit={handleSubmit(onSubmit)} className={`space-y-4 bg-white py-4`}>
+        <form onSubmit={handleSubmit(onSubmit)} className={`space-y-4 bg-background py-4`}>
           {/* Email Input */}
           <div>
-            <label htmlFor="email" className=" flex items-center bg-white shadow-md border p-1 px-2 rounded-md">
-              <AtSign className="text-[#52525b] size-4" />
+            <label htmlFor="email" className=" flex items-center bg-background shadow-md border p-1 px-2 rounded-md">
+              <AtSign className="text-copy size-4" />
               <input
                 placeholder={'Email ID'}
                 type="email"
                 id="email"
                 {...register('email')}
                 autoComplete="off"
-                className="mt-1  py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base w-full"
+                className="mt-1  py-2 px-3 focus:outline-none bg-background placeholder:bg-background text-base w-full"
               />
             </label>
             {errors.email && <p className="text-sm text-red-600 pt-2">{errors.email.message}</p>}
@@ -161,21 +161,21 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
 
           {/* Password Input */}
           <div>
-            <label htmlFor="password" className="flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative">
-              <KeyRound className="text-[#52525b] size-4" />
+            <label htmlFor="password" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md relative">
+              <KeyRound className="text-copy size-4" />
               <input
                 type={visible ? 'text' : 'password'}
                 id="password"
                 placeholder="Password"
                 {...register('password')}
                 autoComplete="off"
-                className="mt-1  py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base w-full"
+                className="mt-1  py-2 px-3 focus:outline-none bg-background placeholder:bg-background text-base w-full"
               />
 
               {visible ? (
-                <EyeOff onClick={toggle} className="text-[#52525b] size-5 absolute right-6 cursor-pointer" />
+                <EyeOff onClick={toggle} className="text-copy size-5 absolute right-6 cursor-pointer" />
               ) : (
-                <Eye onClick={toggle} className="text-[#52525b] size-5 absolute right-6 cursor-pointer" />
+                <Eye onClick={toggle} className="text-copy size-5 absolute right-6 cursor-pointer" />
               )}
             </label>
             {errors.password && <p className="text-sm text-red-600 p-2">{errors.password.message}</p>}
@@ -186,7 +186,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
           <Button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed border-zinc-400' : 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep'}`}
+            className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-muted-foreground cursor-not-allowed border-border' : 'bg-weelp-sage-deep text-white hover:bg-background hover:text-weelp-sage-deep'}`}
           >
             {isSubmitting ? 'Logging in...' : 'Continue'}
           </Button>
@@ -194,16 +194,16 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
         <div className="hidden">
           <div className="flex justify-center gap-4 items-center">
             <hr className="w-full" />
-            <span className="text-sm text-nowrap text-[#71717a]">Or continue with</span>
+            <span className="text-sm text-nowrap text-muted-foreground">Or continue with</span>
             <hr className="w-full" />
           </div>
 
           <div className="flex items-center justify-around px-8 pb-8 gap-4 pt-4 font-semibold flex-wrap">
-            <button onClick={() => signIn('google')} className="flex w-fit items-center rounded-md p-2 gap-4 shadow border px-8 text-[#18181b]">
+            <button onClick={() => signIn('google')} className="flex w-fit items-center rounded-md p-2 gap-4 shadow border px-8 text-foreground">
               <Image src="/assets/images/google.png" className="size-4" alt="google_logo" width={100} height={100} />
               Google
             </button>
-            <button className="flex w-fit items-center rounded-md p-2 gap-4 shadow border px-8 text-[#18181b]">
+            <button className="flex w-fit items-center rounded-md p-2 gap-4 shadow border px-8 text-foreground">
               <Image src="/assets/images/facebook.png" className="size-4" alt="facebook_logo" width={100} height={100} />
               Facebook
             </button>

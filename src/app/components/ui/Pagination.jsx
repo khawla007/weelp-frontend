@@ -37,7 +37,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, alig
         type="button"
         onClick={() => onPageChange(Math.max(1, currentPage - 1))}
         disabled={currentPage === 1}
-        className="flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#52525b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition-[color,background-color,border-color,box-shadow,opacity] duration-200 motion-reduce:transition-none disabled:opacity-45"
+        className="flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-background text-copy shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition-[color,background-color,border-color,box-shadow,opacity] duration-200 motion-reduce:transition-none disabled:opacity-45"
         style={{ borderColor: '#e4e4e7' }}
         aria-label="Previous page"
       >
@@ -56,7 +56,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, alig
             onClick={() => onPageChange(page)}
             aria-current={currentPage === page ? 'page' : undefined}
             className={`flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border transition-[color,background-color,border-color,box-shadow,opacity] duration-200 motion-reduce:transition-none ${
-              currentPage === page ? 'bg-white opacity-100 shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)]' : 'bg-white opacity-45'
+              currentPage === page ? 'bg-background opacity-100 shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)]' : 'bg-background opacity-45'
             }`}
             style={{
               ...BTN_STYLE,
@@ -73,7 +73,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, alig
         type="button"
         onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
         disabled={currentPage === totalPages}
-        className="flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#52525b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition-[color,background-color,border-color,box-shadow,opacity] duration-200 motion-reduce:transition-none disabled:opacity-45"
+        className="flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-background text-copy shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition-[color,background-color,border-color,box-shadow,opacity] duration-200 motion-reduce:transition-none disabled:opacity-45"
         style={{ borderColor: '#e4e4e7' }}
         aria-label="Next page"
       >

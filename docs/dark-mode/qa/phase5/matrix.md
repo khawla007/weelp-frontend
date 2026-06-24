@@ -1,13 +1,26 @@
 # Phase 5 QA Matrix
 
-Phase 5 could not be completed as a final sign-off because the required pre-edit audit is not clean:
+Phase 5 final sweep status after the June 24 cleanup:
 
-- `npm run dark:audit` currently reports 1091 findings across 201 files.
-- 578 findings are `shadow-utility` catalog entries.
-- 513 findings are hardcoded color or neutral utility findings.
-- The temporary Phase 1 dark bridge remains in `src/app/globals.css`.
+- `npm run dark:audit` reports 0 findings across 0 files.
+- `docs/dark-mode/dark-lint-baseline.json` has 0 baseline findings.
+- The temporary Phase 1 color bridge was removed from `src/app/globals.css`.
+- Dark-mode shadow normalization remains as an explicit final policy: standard shadows are disabled in dark mode while tokenized borders/surfaces carry elevation.
 
-The route matrix below is the required capture set once the remaining findings are fixed or explicitly exempted. Artifacts should be stored in this folder by route slug and viewport/theme.
+The route matrix below remains the full release capture set. This pass records targeted notes for the routes affected by the final cleanup.
+
+## June 24 Targeted Checks
+
+Visible headed browser session: `agent-browser --session weelp-visible --headed --args "--no-sandbox" open http://localhost:3000/`
+
+| Route                          | Viewport       | Theme | Result                                                                                                                                     |
+| ------------------------------ | -------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/`                            | Desktop        | Dark  | Body/card surfaces used dark tokens; no horizontal overflow.                                                                               |
+| `/`                            | Mobile 375x812 | Dark  | Mobile menu present; no horizontal overflow.                                                                                               |
+| `/`                            | Mobile 375x812 | Light | Light tokens restored; no horizontal overflow.                                                                                             |
+| `/cities`                      | Desktop        | Dark  | Listing/card content rendered; no horizontal overflow.                                                                                     |
+| `/user/login`                  | Desktop        | Dark  | Auth form rendered with inputs/buttons; no horizontal overflow.                                                                            |
+| `/dashboard/customer/earnings` | Desktop        | Dark  | Redirected to `/user/login?callbackUrl=%2Fdashboard%2Fcustomer%2Fearnings` without credentials; authenticated table visual check deferred. |
 
 ## Public Routes
 
@@ -73,4 +86,4 @@ System check notes should include the browser preference simulation used, the `l
 
 ## Current Blockers
 
-The final screenshot matrix, safety-net removal, and final sign-off should wait until the source audit is zero or every remaining finding has a direct exemption. Removing the bridge now would violate Phase 5.5.
+No audit or guardrail blockers remain. Authenticated dashboard screenshot capture still requires valid credentials/session state.

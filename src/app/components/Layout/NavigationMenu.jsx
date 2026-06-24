@@ -99,7 +99,7 @@ export const DesktopMainBar = ({ stickyHeader, mainBarTransparent }) => {
         <div className="grid h-full w-full items-center gap-4 px-4 py-[8px] md:px-8 xl:px-[60px]" style={{ gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)' }}>
           <Link href="/" className="shrink-0 flex items-center gap-3 justify-self-start focus:outline-none" aria-label="Weelp home">
             <img src={getLogoUrl()} alt="Weelp" className="h-9 w-auto" />
-            <span className={`text-[18px] font-semibold ${mainBarTransparent ? 'text-[#18181b]' : 'text-foreground'}`} style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
+            <span className={`text-[18px] font-semibold ${mainBarTransparent ? 'text-foreground' : 'text-foreground'}`} style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
               Weelp.
             </span>
           </Link>
@@ -150,14 +150,14 @@ const NavMenuDesktop = ({ overHero = false }) => {
 
   const linkClass = (active) =>
     `group/nav relative flex items-center gap-2 whitespace-nowrap rounded-sm text-[15px] font-medium transition-[color] duration-200 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 xl:text-[16px] ${
-      overHero ? 'hover:text-[#18181b]/70 focus-visible:ring-[#18181b]/30 focus-visible:ring-offset-white' : 'hover:text-muted-foreground focus-visible:ring-ring focus-visible:ring-offset-background'
-    } ${active ? (overHero ? 'text-[#18181b]/70' : 'text-muted-foreground') : overHero ? 'text-black' : 'text-foreground'}`;
+      overHero ? 'hover:text-foreground/70 focus-visible:ring-ring/30 focus-visible:ring-offset-white' : 'hover:text-muted-foreground focus-visible:ring-ring focus-visible:ring-offset-background'
+    } ${active ? (overHero ? 'text-foreground/70' : 'text-muted-foreground') : overHero ? 'text-foreground' : 'text-foreground'}`;
 
   const navIconClass = (active) =>
     `size-[15px] transition-[color,transform] duration-200 ease-out motion-reduce:transition-none group-hover/nav:-translate-y-0.5 ${
-      overHero ? 'group-hover/nav:text-[#18181b]/70' : 'group-hover/nav:text-muted-foreground'
-    } ${active ? (overHero ? 'text-[#18181b]/70' : 'text-muted-foreground') : overHero ? 'text-black' : 'text-foreground'}`;
-  const navItemTone = overHero ? 'text-black' : 'text-foreground';
+      overHero ? 'group-hover/nav:text-foreground/70' : 'group-hover/nav:text-muted-foreground'
+    } ${active ? (overHero ? 'text-foreground/70' : 'text-muted-foreground') : overHero ? 'text-foreground' : 'text-foreground'}`;
+  const navItemTone = overHero ? 'text-foreground' : 'text-foreground';
 
   const indicator = (active) => (
     <span
@@ -336,8 +336,8 @@ export const HeaderAccount = ({ overHero = false }) => {
   const submenuOpenTimer = useRef(null);
   const submenuCloseTimer = useRef(null);
 
-  const iconChip = overHero ? 'bg-white/85 text-[#18181b] backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:bg-black/85 dark:text-white dark:shadow-none' : '';
-  const iconButtonTone = overHero ? 'text-[#18181b]' : 'text-foreground';
+  const iconChip = overHero ? 'bg-background/85 text-foreground backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:shadow-none' : '';
+  const iconButtonTone = overHero ? 'text-foreground' : 'text-foreground';
 
   const clearSubmenuTimers = useCallback(() => {
     if (submenuOpenTimer.current) clearTimeout(submenuOpenTimer.current);

@@ -81,7 +81,7 @@
 
 .swiper-button-prev,
 .swiper-button-next {
-  @apply bg-white rounded-[10px] size-10 border border-gray-100 flex items-center justify-center transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-300 motion-reduce:transition-none !important;
+  @apply bg-background rounded-[10px] size-10 border border-border flex items-center justify-center transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-300 motion-reduce:transition-none !important;
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1) !important;
   margin-top: 0 !important;
 }
@@ -186,7 +186,7 @@
 /* Custom Config Gallery Slider For City and SingleProduct Page */
 .gallery_slider .swiper-button-prev,
 .gallery_slider .swiper-button-next {
-  @apply bg-white border rounded-lg size-10;
+  @apply bg-background border rounded-lg size-10;
   margin: 0 !important;
 }
 

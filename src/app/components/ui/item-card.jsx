@@ -27,11 +27,11 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
     <Link
       href={href}
       style={style}
-      className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-white transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${className}`}
+      className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-background transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${className}`}
     >
       {/* Image — inset inside card with own rounded corners to match reference */}
       <div className="px-3 pt-3">
-        <div className="relative h-[175px] w-full overflow-hidden rounded-lg bg-[#f2f7f5] sm:h-[185px] lg:h-[200px]">
+        <div className="relative h-[175px] w-full overflow-hidden rounded-lg bg-weelp-sage-wash sm:h-[185px] lg:h-[200px]">
           <Image
             src={image}
             alt={title}
@@ -53,7 +53,7 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
               {displayRating}
             </span>
             {displayReviewCount && (
-              <span className="text-[13px] lg:text-[14px] leading-[1.38] text-[#71717a]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 400 }}>
+              <span className="text-[13px] lg:text-[14px] leading-[1.38] text-muted-foreground" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 400 }}>
                 ({displayReviewCount})
               </span>
             )}
@@ -64,22 +64,22 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
         {!isFull && category && <span className="w-fit rounded-md bg-weelp-sage-deep/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-weelp-copy">{category}</span>}
 
         {/* Title */}
-        <h3 className="text-[15px] sm:text-base lg:text-[18px] leading-[1.59] text-[#18181b] line-clamp-2" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
+        <h3 className="text-[15px] sm:text-base lg:text-[18px] leading-[1.59] text-foreground line-clamp-2" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
           {title}
         </h3>
 
-        {isFull && excerpt && <p className="text-sm leading-relaxed text-[#71717a] line-clamp-2">{excerpt}</p>}
+        {isFull && excerpt && <p className="text-sm leading-relaxed text-muted-foreground line-clamp-2">{excerpt}</p>}
 
         {/* Divider + Price row — full variant. Equal gap above bar and below bar via parent gap-1.5. */}
         {isFull && price && (
           <>
-            <div className="border-t border-[#e4e4e7]" />
+            <div className="border-t border-border" />
             <div className="flex items-center justify-between">
               <div className="flex flex-col">
-                <span className="text-sm lg:text-[15.6px] leading-[1.37] text-[#71717a]" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontWeight: 400 }}>
+                <span className="text-sm lg:text-[15.6px] leading-[1.37] text-muted-foreground" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontWeight: 400 }}>
                   From
                 </span>
-                <span className="text-sm lg:text-[15.6px] leading-[1.37] text-[#18181b]" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontWeight: 700 }}>
+                <span className="text-sm lg:text-[15.6px] leading-[1.37] text-foreground" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontWeight: 700 }}>
                   {price}
                 </span>
               </div>

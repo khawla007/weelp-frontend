@@ -42,36 +42,36 @@ export default function NotificationWidget({ session }) {
   const unreadCount = (notifications || []).filter((n) => !n.read_at).length;
 
   return (
-    <div className="bg-white rounded-xl border border-zinc-200 p-5">
+    <div className="bg-background rounded-xl border border-border p-5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Bell size={18} className="text-[#18181b]" />
-          <h3 className="text-base font-semibold text-[#18181b]">Notifications</h3>
+          <Bell size={18} className="text-foreground" />
+          <h3 className="text-base font-semibold text-foreground">Notifications</h3>
           {unreadCount > 0 && <span className="text-xs bg-red-500 text-white rounded-full px-2 py-0.5">{unreadCount}</span>}
         </div>
         {unreadCount > 0 && (
-          <button onClick={handleMarkAllRead} className="text-xs text-[#52525b] hover:text-weelp-sage-deep hover:underline flex items-center gap-1">
+          <button onClick={handleMarkAllRead} className="text-xs text-copy hover:text-weelp-sage-deep hover:underline flex items-center gap-1">
             <CheckCheck size={14} /> Mark all read
           </button>
         )}
       </div>
 
       {loading ? (
-        <p className="text-sm text-zinc-400 text-center py-4">Loading...</p>
+        <p className="text-sm text-muted-foreground text-center py-4">Loading...</p>
       ) : (notifications || []).length === 0 ? (
-        <p className="text-sm text-zinc-400 text-center py-4">No notifications yet</p>
+        <p className="text-sm text-muted-foreground text-center py-4">No notifications yet</p>
       ) : (
         <div className="space-y-3">
           {(notifications || []).map((notif) => {
             const IconComponent = TYPE_ICONS[notif.type] || Bell;
-            const iconColor = TYPE_COLORS[notif.type] || 'text-zinc-400';
+            const iconColor = TYPE_COLORS[notif.type] || 'text-muted-foreground';
             return (
-              <div key={notif.id} className={`flex items-start gap-3 p-3 rounded-lg ${!notif.read_at ? 'bg-weelp-sage-deep/5' : 'bg-zinc-50'}`}>
+              <div key={notif.id} className={`flex items-start gap-3 p-3 rounded-lg ${!notif.read_at ? 'bg-weelp-sage-deep/5' : 'bg-muted'}`}>
                 <IconComponent size={18} className={`mt-0.5 flex-shrink-0 ${iconColor}`} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#18181b]">{notif.title}</p>
-                  <p className="text-xs text-zinc-500 line-clamp-2 mt-0.5">{notif.message}</p>
-                  <p className="text-xs text-zinc-400 mt-1">{timeAgo(notif.created_at)}</p>
+                  <p className="text-sm font-medium text-foreground">{notif.title}</p>
+                  <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">{notif.message}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{timeAgo(notif.created_at)}</p>
                 </div>
               </div>
             );
@@ -80,7 +80,7 @@ export default function NotificationWidget({ session }) {
       )}
 
       <div className="mt-4 text-center">
-        <NavigationLink href="/dashboard/customer/settings/notifications" className="text-xs text-[#52525b] hover:text-weelp-sage-deep hover:underline">
+        <NavigationLink href="/dashboard/customer/settings/notifications" className="text-xs text-copy hover:text-weelp-sage-deep hover:underline">
           View All Notifications
         </NavigationLink>
       </div>

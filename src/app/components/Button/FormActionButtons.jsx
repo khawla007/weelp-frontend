@@ -67,11 +67,17 @@ export function FormActionButtons({
   const Container = containerType === 'none' ? 'div' : containerType;
 
   const cancelButton = cancelHref ? (
-    <Button type="button" variant="outline" className="border text-black hover:bg-inherit min-w-[100px]" disabled={cancelAlwaysEnabled ? false : isSubmitting || isDisabled} asChild>
+    <Button type="button" variant="outline" className="border text-foreground hover:bg-inherit min-w-[100px]" disabled={cancelAlwaysEnabled ? false : isSubmitting || isDisabled} asChild>
       <Link href={cancelHref}>{cancelText}</Link>
     </Button>
   ) : (
-    <Button type="button" variant="outline" className="border text-black hover:bg-inherit min-w-[100px]" onClick={handleCancel} disabled={cancelAlwaysEnabled ? false : isSubmitting || isDisabled}>
+    <Button
+      type="button"
+      variant="outline"
+      className="border text-foreground hover:bg-inherit min-w-[100px]"
+      onClick={handleCancel}
+      disabled={cancelAlwaysEnabled ? false : isSubmitting || isDisabled}
+    >
       {cancelText}
     </Button>
   );

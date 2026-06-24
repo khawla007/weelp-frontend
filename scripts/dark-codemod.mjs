@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = process.cwd();
 const DEFAULT_PREVIEW_DIR = 'docs/dark-mode/codemod-preview';
-const EXTENSIONS = new Set(['.js', '.jsx', '.ts', '.tsx', '.mdx']);
+const EXTENSIONS = new Set(['.js', '.jsx', '.ts', '.tsx', '.css', '.mdx']);
 
 export const SWAP_TABLE = new Map([
   ['bg-white', 'bg-background'],
@@ -48,7 +48,18 @@ export const SWAP_TABLE = new Map([
   ['bg-neutral-50', 'bg-muted'],
   ['bg-neutral-100', 'bg-muted'],
   ['bg-gray-100', 'bg-muted'],
+  ['bg-gray-200', 'bg-muted'],
+  ['bg-gray-300', 'bg-muted'],
+  ['bg-gray-400', 'bg-muted-foreground'],
+  ['bg-gray-700', 'bg-muted'],
   ['bg-gray-800', 'bg-foreground'],
+  ['bg-neutral-50', 'bg-muted'],
+  ['bg-neutral-200', 'bg-muted'],
+  ['bg-zinc-50', 'bg-muted'],
+  ['bg-zinc-400', 'bg-muted-foreground'],
+  ['text-gray-400', 'text-muted-foreground'],
+  ['text-gray-800', 'text-foreground'],
+  ['text-neutral-500', 'text-muted-foreground'],
   ['text-zinc-400', 'text-muted-foreground'],
   ['text-zinc-500', 'text-muted-foreground'],
   ['text-zinc-600', 'text-copy'],
@@ -67,16 +78,39 @@ export const SWAP_TABLE = new Map([
   ['border-zinc-200', 'border-border'],
   ['border-zinc-300', 'border-border'],
   ['border-zinc-400', 'border-border'],
+  ['border-gray-300', 'border-border'],
+  ['border-gray-400', 'border-border'],
+  ['border-gray-500', 'border-border'],
+  ['border-gray-50', 'border-border'],
+  ['border-gray-700', 'border-border'],
   ['border-neutral-200', 'border-border'],
   ['border-neutral-300', 'border-border'],
+  ['border-zinc-100', 'border-border'],
+  ['ring-zinc-500', 'ring-ring'],
+  ['stroke-gray-400', 'stroke-muted-foreground'],
   ['border-gray-100', 'border-border'],
 
   ['text-[#71717A]', 'text-muted-foreground'],
   ['text-[#27272a]', 'text-foreground'],
   ['text-[#3f3f46]', 'text-foreground'],
+  ['text-[#1a1918]', 'text-foreground'],
+  ['text-[#142a38]', 'text-foreground'],
+  ['text-[#143042]', 'text-foreground'],
+  ['text-[#273f4e]', 'text-foreground'],
+  ['text-[#506672]', 'text-weelp-steel'],
+  ['text-[#5a5a5a]', 'text-copy'],
+  ['text-[#6f7680]', 'text-muted-foreground'],
+  ['text-[#747474]', 'text-muted-foreground'],
+  ['text-[#ff8686]', 'text-destructive'],
+  ['fill-[#ff8686]', 'fill-destructive'],
+  ['fill-[#fed141ff]', 'fill-warning'],
+  ['ring-[#18181b]', 'ring-ring'],
+  ['to-[#b5d8cb]', 'to-weelp-sage-tint'],
   ['bg-[#eaeaea]', 'bg-muted'],
+  ['bg-[#e9f5ed]', 'bg-weelp-sage-wash'],
   ['border-[#eaeaea]', 'border-border'],
   ['border-[#f4f4f5]', 'border-border'],
+  ['bg-[#f4f4f5]', 'bg-muted'],
   ['bg-[#f8faf9]', 'bg-weelp-sage-wash'],
   ['bg-[#F5F9FA]', 'bg-weelp-sage-wash'],
   ['bg-[#f5f9fa]', 'bg-weelp-sage-wash'],
@@ -84,13 +118,20 @@ export const SWAP_TABLE = new Map([
   ['bg-[#588f7a]', 'bg-weelp-sage-deep'],
   ['bg-[#568f7c]', 'bg-weelp-sage-deep'],
   ['bg-[#4d8069]', 'bg-weelp-sage-hover'],
+  ['bg-[#477665]', 'bg-weelp-sage-hover'],
   ['bg-[#4a7a6a]', 'bg-weelp-sage-hover'],
   ['bg-[#4a7a68]', 'bg-weelp-sage-hover'],
   ['bg-[#558e7b]', 'bg-weelp-sage-deep'],
   ['text-[#568f7c]', 'text-weelp-sage-deep'],
+  ['text-[#4d8069]', 'text-weelp-sage-hover'],
   ['text-[#588f7a]', 'text-weelp-sage-deep'],
+  ['border-[#568f7c]', 'border-weelp-sage-deep'],
+  ['border-[#b5d8cb]', 'border-weelp-sage-tint'],
+  ['border-[#ccc]', 'border-border'],
+  ['border-[#eee]', 'border-border'],
   ['border-[#4d8069]', 'border-weelp-sage-hover'],
   ['bg-[#ff725e]', 'bg-weelp-discount'],
+  ['border-[#ff725e]', 'border-weelp-discount'],
   ['text-[#ff725e]', 'text-weelp-discount'],
   ['bg-[#fef2f2]', 'bg-destructive/5'],
   ['text-[#b91c1c]', 'text-destructive'],
@@ -115,13 +156,25 @@ function splitClasses(value) {
   return value.split(/(\s+)/);
 }
 
+function classReplacement(part) {
+  const direct = SWAP_TABLE.get(part.toLowerCase());
+  if (direct) return direct;
+
+  const opacityMatch = part.match(/^(.*?)(\/[0-9]{1,3})$/);
+  if (!opacityMatch) return null;
+
+  const [, base, opacity] = opacityMatch;
+  const baseReplacement = SWAP_TABLE.get(base.toLowerCase());
+  return baseReplacement ? `${baseReplacement}${opacity}` : null;
+}
+
 function replaceClassList(value) {
   const replacements = [];
   const output = splitClasses(value)
     .map((part) => {
       if (/^\s+$/.test(part)) return part;
 
-      const replacement = SWAP_TABLE.get(part.toLowerCase());
+      const replacement = classReplacement(part);
       if (!replacement || replacement === part) return part;
 
       replacements.push({ from: part, to: replacement });
@@ -130,6 +183,30 @@ function replaceClassList(value) {
     .join('');
 
   return { output, replacements };
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function replaceExactClassTokens(source, file, replacements) {
+  let output = source;
+  const entries = [...SWAP_TABLE.entries()].sort((a, b) => b[0].length - a[0].length);
+
+  for (const [from, to] of entries) {
+    if (from === to) continue;
+
+    const pattern = new RegExp(`(?<![A-Za-z0-9_#\\[\\]-])${escapeRegExp(from)}(\\/[0-9]{1,3})?(?![A-Za-z0-9_#\\[\\]-])`, 'gi');
+    output = output.replace(pattern, (match, opacity = '', offset) => {
+      const replacement = `${to}${opacity}`;
+      if (replacement === match) return match;
+
+      replacements.push({ file, ...lineAndColumn(source, offset), from: match, to: replacement });
+      return replacement;
+    });
+  }
+
+  return output;
 }
 
 function collectManualReview(source, file) {
@@ -184,6 +261,17 @@ export function transformSource(source, file = '') {
 
     return `className={\`${result.output}\`}`;
   });
+
+  output = output.replace(/`([^`]*)`/g, (full, classList, offset) => {
+    const result = replaceClassList(classList);
+    for (const replacement of result.replacements) {
+      replacements.push({ file, ...lineAndColumn(source, offset), ...replacement });
+    }
+
+    return `\`${result.output}\``;
+  });
+
+  output = replaceExactClassTokens(output, file, replacements);
 
   const skipped = collectManualReview(source, file);
 

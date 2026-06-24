@@ -115,7 +115,7 @@ export default function PayoutsClient({ initial }) {
 
       <div key={loading ? 'loading' : preset} className="animate-fade-in">
         {loading ? (
-          <div className="bg-background rounded-lg border border-border divide-y divide-[#e4e4e7]">
+          <div className="bg-background rounded-lg border border-border divide-y divide-border">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex items-center justify-between p-4">
                 <Skeleton className="h-4 w-32" />

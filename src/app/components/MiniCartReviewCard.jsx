@@ -7,10 +7,10 @@ import { getRandomSimilarItineraries } from '@/lib/services/itineraries';
 const MiniCartReviewCard = ({ imageSrc, productTitle, href }) => {
   if (!productTitle) return null;
   const card = (
-    <div className="flex gap-4 items-center bg-white p-3 max-w-xs w-full rounded-xl border border-[#eee] hover:shadow-sm transition-shadow">
+    <div className="flex gap-4 items-center bg-background p-3 max-w-xs w-full rounded-xl border border-border hover:shadow-sm transition-shadow">
       <img src={imageSrc || 'https://picsum.photos/120/120'} alt={productTitle} className="w-20 h-20 object-cover rounded-md flex-shrink-0" />
       <div className="min-w-0">
-        <h5 className="text-black font-semibold text-sm capitalize line-clamp-2">{productTitle}</h5>
+        <h5 className="text-foreground font-semibold text-sm capitalize line-clamp-2">{productTitle}</h5>
       </div>
     </div>
   );
@@ -38,7 +38,7 @@ export const MinicartReviewcontent = () => {
 
   return (
     <div className="py-4">
-      <h3 className="text-2xl font-bold capitalize text-black">Are You Interested In ?</h3>
+      <h3 className="text-2xl font-bold capitalize text-foreground">Are You Interested In ?</h3>
       <ul className="flex flex-nowrap gap-4 overflow-x-scroll cursor-pointer tfc_scroll py-4 w-full">
         {similar.slice(0, 4).map((it) => {
           const city = it?.city_slug ?? it?.locations?.[0]?.city?.slug ?? citySlug;

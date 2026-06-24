@@ -930,19 +930,9 @@ body {
 
 /* Personalised globe + sparkles + flight + vignette extracted to src/app/styles/globe.css */
 
-/* Temporary dark-mode bridge for un-migrated legacy utility classes.
-   Specific components should still move to semantic tokens. */
+/* Dark shadow normalization: shadows are a light-mode elevation cue; dark mode
+   relies on tokenized borders and surfaces instead. */
 @layer utilities {
-  .dark .bg-white,
-  .dark .bg-mainBackground {
-    background-color: hsl(var(--background));
-  }
-
-  .dark .text-black,
-  .dark [class*='text-[#18181b]'] {
-    color: hsl(var(--foreground));
-  }
-
   .dark .shadow-sm,
   .dark .shadow,
   .dark .shadow-md,
