@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import maplibregl from 'maplibre-gl';
+import { useTheme } from 'next-themes';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import '@/app/styles/buddy-map.css';
 
@@ -84,6 +85,7 @@ const buildPreviewMarkerElement = () => {
 };
 
 const TravelBuddyMap = ({ markers = [], route = null, fitBounds = false, showPreview = false }) => {
+  const { resolvedTheme } = useTheme();
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef([]);
@@ -260,7 +262,7 @@ const TravelBuddyMap = ({ markers = [], route = null, fitBounds = false, showPre
     );
   }
 
-  return <div ref={containerRef} className="buddy-map w-full h-full" />;
+  return <div ref={containerRef} className={`buddy-map ${resolvedTheme === 'dark' ? 'buddy-map--dark' : 'buddy-map--light'} w-full h-full`} />;
 };
 
 export default TravelBuddyMap;

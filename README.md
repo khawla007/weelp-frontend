@@ -61,6 +61,12 @@ A modern booking application built with **Next.js 15**, leveraging powerful libr
 
 - CSS transformation and vendor prefixing
 
+### **Dark Mode Color Guard**
+
+- New frontend color work must use semantic tokens from `src/app/globals.css` and `tailwind.config.js`.
+- Do not add new `bg-white`, `bg-black`, gray/zinc/neutral/slate color utilities, arbitrary hex color utilities, or inline literal hex colors.
+- Intentional exceptions require a `dark-mode-exempt: <reason>` comment directly above the line and should be recorded in the dark-mode QA notes.
+
 ## 📁 Project Directory Structure
 
 ---

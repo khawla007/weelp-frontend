@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
+import { useTheme } from 'next-themes';
 import { getStripe } from '@/lib/stripe/stripe';
 import CheckoutForm from './CheckoutForm';
 import { useSession } from 'next-auth/react';
@@ -16,6 +17,7 @@ const stripePromise = getStripe(); // import stripe promise
 
 export default function CheckoutMainManual() {
   const { data: session } = useSession(); // session retrieve
+  const { resolvedTheme } = useTheme();
   const { cartItems = [] } = useMiniCartStore(); // store items
   const { user, isLoading: isUserLoading } = useUserProfile(); // client side fetch user
   const item = cartItems.at(0) || {}; // item destructure
@@ -105,6 +107,20 @@ export default function CheckoutMainManual() {
     return () => setNavigating(false);
   }, [isPreparing, setNavigating]);
 
+  const stripeOptions = useMemo(
+    () => ({
+      clientSecret,
+      appearance: {
+        theme: resolvedTheme === 'dark' ? 'night' : 'stripe',
+        variables: {
+          colorPrimary: '#588f7a',
+          borderRadius: '8px',
+        },
+      },
+    }),
+    [clientSecret, resolvedTheme],
+  );
+
   if (isPreparing) {
     return (
       <section className="flex flex-col-reverse xl:flex-row" aria-busy="true">
@@ -176,7 +192,7 @@ export default function CheckoutMainManual() {
           <CheckoutUserDetailCard userEmail={session?.user?.email} userName={session?.user?.name} />
 
           {/* Checkout Fields */}
-          <Elements stripe={stripePromise} options={{ clientSecret: clientSecret }}>
+          <Elements key={`${clientSecret}-${resolvedTheme}`} stripe={stripePromise} options={stripeOptions}>
             <CheckoutForm clientSecret={clientSecret} paymentIntentId={paymentIntent} />
           </Elements>
         </div>

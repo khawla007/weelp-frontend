@@ -162,6 +162,7 @@ export function auditSource(source, file = '') {
       const position = lineAndColumn(source, index);
       const lineText = lines[position.line - 1] ?? '';
       if (lineText.includes('dark-audit-ignore')) continue;
+      if ((lines[position.line - 2] ?? '').includes('dark-mode-exempt')) continue;
 
       findings.push({
         file,

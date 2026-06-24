@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-23T11:26:04.551Z",
+  "generatedAt": "2026-06-24T04:45:48.256Z",
   "totalFindings": 1091,
   "filesAffected": 201,
   "findings": [
@@ -293,43 +293,7 @@
     },
     {
       "file": "src/app/(frontend)/cities/page.js",
-      "line": 104,
-      "column": 162,
-      "rule": "shadow-utility",
-      "value": "shadow-sm",
-      "matchedValue": "shadow-sm",
-      "suggestedToken": "keep; dark cascade removes shadow during migration"
-    },
-    {
-      "file": "src/app/(frontend)/cities/page.js",
-      "line": 104,
-      "column": 177,
-      "rule": "shadow-utility",
-      "value": "shadow-none",
-      "matchedValue": "shadow-none",
-      "suggestedToken": "keep; dark cascade removes shadow during migration"
-    },
-    {
-      "file": "src/app/(frontend)/cities/page.js",
-      "line": 116,
-      "column": 91,
-      "rule": "shadow-utility",
-      "value": "shadow-sm",
-      "matchedValue": "shadow-sm",
-      "suggestedToken": "keep; dark cascade removes shadow during migration"
-    },
-    {
-      "file": "src/app/(frontend)/cities/page.js",
-      "line": 116,
-      "column": 106,
-      "rule": "shadow-utility",
-      "value": "shadow-none",
-      "matchedValue": "shadow-none",
-      "suggestedToken": "keep; dark cascade removes shadow during migration"
-    },
-    {
-      "file": "src/app/(frontend)/cities/page.js",
-      "line": 129,
+      "line": 106,
       "column": 136,
       "rule": "shadow-utility",
       "value": "shadow-sm",
@@ -338,7 +302,7 @@
     },
     {
       "file": "src/app/(frontend)/cities/page.js",
-      "line": 129,
+      "line": 106,
       "column": 151,
       "rule": "shadow-utility",
       "value": "shadow-none",
@@ -347,8 +311,8 @@
     },
     {
       "file": "src/app/(frontend)/cities/page.js",
-      "line": 139,
-      "column": 128,
+      "line": 119,
+      "column": 91,
       "rule": "shadow-utility",
       "value": "shadow-sm",
       "matchedValue": "shadow-sm",
@@ -356,8 +320,8 @@
     },
     {
       "file": "src/app/(frontend)/cities/page.js",
-      "line": 139,
-      "column": 143,
+      "line": 119,
+      "column": 106,
       "rule": "shadow-utility",
       "value": "shadow-none",
       "matchedValue": "shadow-none",
@@ -365,7 +329,43 @@
     },
     {
       "file": "src/app/(frontend)/cities/page.js",
-      "line": 145,
+      "line": 132,
+      "column": 136,
+      "rule": "shadow-utility",
+      "value": "shadow-sm",
+      "matchedValue": "shadow-sm",
+      "suggestedToken": "keep; dark cascade removes shadow during migration"
+    },
+    {
+      "file": "src/app/(frontend)/cities/page.js",
+      "line": 132,
+      "column": 151,
+      "rule": "shadow-utility",
+      "value": "shadow-none",
+      "matchedValue": "shadow-none",
+      "suggestedToken": "keep; dark cascade removes shadow during migration"
+    },
+    {
+      "file": "src/app/(frontend)/cities/page.js",
+      "line": 142,
+      "column": 126,
+      "rule": "shadow-utility",
+      "value": "shadow-sm",
+      "matchedValue": "shadow-sm",
+      "suggestedToken": "keep; dark cascade removes shadow during migration"
+    },
+    {
+      "file": "src/app/(frontend)/cities/page.js",
+      "line": 142,
+      "column": 141,
+      "rule": "shadow-utility",
+      "value": "shadow-none",
+      "matchedValue": "shadow-none",
+      "suggestedToken": "keep; dark cascade removes shadow during migration"
+    },
+    {
+      "file": "src/app/(frontend)/cities/page.js",
+      "line": 148,
       "column": 131,
       "rule": "shadow-utility",
       "value": "shadow-sm",
@@ -374,7 +374,7 @@
     },
     {
       "file": "src/app/(frontend)/cities/page.js",
-      "line": 145,
+      "line": 148,
       "column": 146,
       "rule": "shadow-utility",
       "value": "shadow-none",
@@ -3497,7 +3497,7 @@
     },
     {
       "file": "src/app/components/Home/TravelBuddyMap.jsx",
-      "line": 82,
+      "line": 83,
       "column": 128,
       "rule": "shadow-utility",
       "value": "shadow",
@@ -4046,20 +4046,20 @@
     },
     {
       "file": "src/app/components/Layout/__tests__/NavigationMenu.test.jsx",
-      "line": 233,
-      "column": 46,
-      "rule": "background-white-black",
-      "value": "bg-white",
-      "matchedValue": "bg-white",
-      "suggestedToken": "bg-background"
-    },
-    {
-      "file": "src/app/components/Layout/__tests__/NavigationMenu.test.jsx",
       "line": 234,
       "column": 46,
       "rule": "shadow-utility",
       "value": "shadow",
       "matchedValue": "shadow",
+      "suggestedToken": "keep; dark cascade removes shadow during migration"
+    },
+    {
+      "file": "src/app/components/Layout/__tests__/NavigationMenu.test.jsx",
+      "line": 235,
+      "column": 51,
+      "rule": "shadow-utility",
+      "value": "shadow-none",
+      "matchedValue": "shadow-none",
       "suggestedToken": "keep; dark cascade removes shadow during migration"
     },
     {
@@ -6333,7 +6333,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/Global/Shop/FilterBar.jsx",
       "line": 64,
-      "column": 79,
+      "column": 81,
       "rule": "shadow-utility",
       "value": "shadow-md",
       "matchedValue": "shadow-md",
@@ -6342,7 +6342,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/Global/Shop/FilterBar.jsx",
       "line": 64,
-      "column": 94,
+      "column": 96,
       "rule": "shadow-utility",
       "value": "shadow-none",
       "matchedValue": "shadow-none",
@@ -6386,43 +6386,7 @@
     },
     {
       "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
-      "line": 119,
-      "column": 159,
-      "rule": "shadow-utility",
-      "value": "shadow-sm",
-      "matchedValue": "shadow-sm",
-      "suggestedToken": "keep; dark cascade removes shadow during migration"
-    },
-    {
-      "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
-      "line": 119,
-      "column": 174,
-      "rule": "shadow-utility",
-      "value": "shadow-none",
-      "matchedValue": "shadow-none",
-      "suggestedToken": "keep; dark cascade removes shadow during migration"
-    },
-    {
-      "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
-      "line": 131,
-      "column": 91,
-      "rule": "shadow-utility",
-      "value": "shadow-sm",
-      "matchedValue": "shadow-sm",
-      "suggestedToken": "keep; dark cascade removes shadow during migration"
-    },
-    {
-      "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
-      "line": 131,
-      "column": 106,
-      "rule": "shadow-utility",
-      "value": "shadow-none",
-      "matchedValue": "shadow-none",
-      "suggestedToken": "keep; dark cascade removes shadow during migration"
-    },
-    {
-      "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
-      "line": 144,
+      "line": 121,
       "column": 136,
       "rule": "shadow-utility",
       "value": "shadow-sm",
@@ -6431,7 +6395,7 @@
     },
     {
       "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
-      "line": 144,
+      "line": 121,
       "column": 151,
       "rule": "shadow-utility",
       "value": "shadow-none",
@@ -6440,7 +6404,43 @@
     },
     {
       "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
-      "line": 154,
+      "line": 134,
+      "column": 91,
+      "rule": "shadow-utility",
+      "value": "shadow-sm",
+      "matchedValue": "shadow-sm",
+      "suggestedToken": "keep; dark cascade removes shadow during migration"
+    },
+    {
+      "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
+      "line": 134,
+      "column": 106,
+      "rule": "shadow-utility",
+      "value": "shadow-none",
+      "matchedValue": "shadow-none",
+      "suggestedToken": "keep; dark cascade removes shadow during migration"
+    },
+    {
+      "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
+      "line": 147,
+      "column": 136,
+      "rule": "shadow-utility",
+      "value": "shadow-sm",
+      "matchedValue": "shadow-sm",
+      "suggestedToken": "keep; dark cascade removes shadow during migration"
+    },
+    {
+      "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
+      "line": 147,
+      "column": 151,
+      "rule": "shadow-utility",
+      "value": "shadow-none",
+      "matchedValue": "shadow-none",
+      "suggestedToken": "keep; dark cascade removes shadow during migration"
+    },
+    {
+      "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
+      "line": 157,
       "column": 126,
       "rule": "shadow-utility",
       "value": "shadow-sm",
@@ -6449,7 +6449,7 @@
     },
     {
       "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
-      "line": 154,
+      "line": 157,
       "column": 141,
       "rule": "shadow-utility",
       "value": "shadow-none",
@@ -6458,7 +6458,7 @@
     },
     {
       "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
-      "line": 160,
+      "line": 163,
       "column": 131,
       "rule": "shadow-utility",
       "value": "shadow-sm",
@@ -6467,7 +6467,7 @@
     },
     {
       "file": "src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx",
-      "line": 160,
+      "line": 163,
       "column": 146,
       "rule": "shadow-utility",
       "value": "shadow-none",
@@ -6477,7 +6477,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/creator-itinerary-form/CreatorItineraryFormShell.jsx",
       "line": 186,
-      "column": 57,
+      "column": 59,
       "rule": "shadow-utility",
       "value": "shadow",
       "matchedValue": "shadow",
@@ -6486,7 +6486,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/creator-itinerary-form/CreatorItineraryFormShell.jsx",
       "line": 186,
-      "column": 69,
+      "column": 71,
       "rule": "shadow-utility",
       "value": "shadow-none",
       "matchedValue": "shadow-none",
@@ -6495,7 +6495,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/creator-itinerary-form/CreatorItineraryFormShell.jsx",
       "line": 205,
-      "column": 99,
+      "column": 95,
       "rule": "shadow-utility",
       "value": "shadow-sm",
       "matchedValue": "shadow-sm",
@@ -6504,7 +6504,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/creator-itinerary-form/CreatorItineraryFormShell.jsx",
       "line": 205,
-      "column": 114,
+      "column": 110,
       "rule": "shadow-utility",
       "value": "shadow-none",
       "matchedValue": "shadow-none",
@@ -6513,7 +6513,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/creator-itinerary-form/CreatorItineraryFormShell.jsx",
       "line": 215,
-      "column": 97,
+      "column": 95,
       "rule": "shadow-utility",
       "value": "shadow-sm",
       "matchedValue": "shadow-sm",
@@ -6522,7 +6522,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/creator-itinerary-form/CreatorItineraryFormShell.jsx",
       "line": 215,
-      "column": 112,
+      "column": 110,
       "rule": "shadow-utility",
       "value": "shadow-none",
       "matchedValue": "shadow-none",
@@ -6603,7 +6603,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/creator-itinerary-form/steps/Step2Schedule.jsx",
       "line": 289,
-      "column": 96,
+      "column": 92,
       "rule": "shadow-utility",
       "value": "shadow-sm",
       "matchedValue": "shadow-sm",
@@ -6612,7 +6612,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/creator-itinerary-form/steps/Step2Schedule.jsx",
       "line": 289,
-      "column": 111,
+      "column": 107,
       "rule": "shadow-utility",
       "value": "shadow-none",
       "matchedValue": "shadow-none",
@@ -7107,7 +7107,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/special/SpecialFilter/Filter.jsx",
       "line": 114,
-      "column": 42,
+      "column": 40,
       "rule": "shadow-utility",
       "value": "shadow-md",
       "matchedValue": "shadow-md",
@@ -7116,7 +7116,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/special/SpecialFilter/Filter.jsx",
       "line": 114,
-      "column": 57,
+      "column": 55,
       "rule": "shadow-utility",
       "value": "shadow-none",
       "matchedValue": "shadow-none",
@@ -7125,7 +7125,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/special/SpecialFilter/Filter.jsx",
       "line": 122,
-      "column": 89,
+      "column": 95,
       "rule": "shadow-utility",
       "value": "shadow-md",
       "matchedValue": "shadow-md",
@@ -7134,7 +7134,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/special/SpecialFilter/Filter.jsx",
       "line": 122,
-      "column": 104,
+      "column": 110,
       "rule": "shadow-utility",
       "value": "shadow-none",
       "matchedValue": "shadow-none",
@@ -7305,7 +7305,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/transfer/LocationComboboxPublic.jsx",
       "line": 70,
-      "column": 123,
+      "column": 121,
       "rule": "shadow-utility",
       "value": "shadow",
       "matchedValue": "shadow",
@@ -7314,7 +7314,7 @@
     {
       "file": "src/app/components/Pages/FRONT_END/transfer/LocationComboboxPublic.jsx",
       "line": 70,
-      "column": 168,
+      "column": 166,
       "rule": "shadow-utility",
       "value": "shadow-none",
       "matchedValue": "shadow-none",
@@ -9203,7 +9203,7 @@
     },
     {
       "file": "src/app/styles/buddy-map.css",
-      "line": 14,
+      "line": 28,
       "column": 7,
       "rule": "shadow-utility",
       "value": "shadow",

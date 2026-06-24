@@ -45,7 +45,7 @@
 .tiptap h1,
 .tiptap h2,
 .tiptap h3 {
-  color: #18181b;
+  color: hsl(var(--foreground));
   font-weight: 600;
   line-height: 1.2;
   margin: 1.25rem 0 0.75rem;
@@ -68,26 +68,26 @@
 
 .rich-text-editor-content blockquote,
 .tiptap blockquote {
-  border-left: 3px solid #588f7a;
-  color: #52525b;
+  border-left: 3px solid hsl(var(--weelp-sage-deep));
+  color: hsl(var(--muted-foreground));
   margin: 1.25rem 0;
   padding-left: 1rem;
 }
 
 .rich-text-editor-content code,
 .tiptap code {
-  background-color: #f4f4f5;
+  background-color: hsl(var(--muted));
   border-radius: 0.375rem;
-  color: #18181b;
+  color: hsl(var(--foreground));
   font-size: 0.875em;
   padding: 0.2em 0.35em;
 }
 
 .rich-text-editor-content pre,
 .tiptap pre {
-  background: #18181b;
+  background: hsl(var(--foreground));
   border-radius: 0.5rem;
-  color: #fafafa;
+  color: hsl(var(--background));
   overflow-x: auto;
   padding: 1rem;
 }
@@ -102,7 +102,7 @@
 .rich-text-editor-link,
 .rich-text-editor-content a,
 .tiptap a {
-  color: #376855;
+  color: hsl(var(--weelp-sage-hover));
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }

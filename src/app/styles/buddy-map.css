@@ -7,18 +7,32 @@
   height: 44px;
 }
 
+.buddy-map--dark .maplibregl-canvas {
+  filter: brightness(0.72) contrast(1.15) saturate(0.78) hue-rotate(180deg) invert(0.9);
+}
+
+.buddy-map--dark .maplibregl-ctrl-group {
+  background: hsl(var(--popover));
+  border-color: hsl(var(--border));
+}
+
+.buddy-map--dark .maplibregl-ctrl button {
+  color: hsl(var(--foreground));
+  filter: invert(1);
+}
+
 .buddy-popup .maplibregl-popup-content {
-  background: #ffffff;
-  border: 1px solid #588f7a;
+  background: hsl(var(--popover));
+  border: 1px solid hsl(var(--weelp-sage-deep));
   border-radius: 0.375rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   padding: 0.375rem 0.625rem;
   font-weight: 500;
   font-size: 0.875rem;
-  color: #18181b;
+  color: hsl(var(--foreground));
 }
 
 .buddy-popup .maplibregl-popup-tip {
-  border-top-color: #588f7a !important;
-  border-bottom-color: #588f7a !important;
+  border-top-color: hsl(var(--weelp-sage-deep)) !important;
+  border-bottom-color: hsl(var(--weelp-sage-deep)) !important;
 }

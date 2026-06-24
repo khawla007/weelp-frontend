@@ -1,0 +1,4006 @@
+{
+  "totalFindings": 500,
+  "filesAffected": 71,
+  "findings": [
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 7,
+      "column": 72,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"h-screen w-screen flex items-center justify-center bg-white bg-opacity-50\">"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 115,
+      "column": 85,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-200",
+      "lineText": "<div role=\"status\" className={`${className ?? ''} sm:max-w-xs w-full p-4 border border-gray-200 rounded shadow animate-pulse dark:border-gray-700`}>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 115,
+      "column": 135,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-700",
+      "lineText": "<div role=\"status\" className={`${className ?? ''} sm:max-w-xs w-full p-4 border border-gray-200 rounded shadow animate-pulse dark:border-gray-700`}>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 116,
+      "column": 66,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"flex items-center justify-center h-48 mb-4 bg-gray-300 rounded dark:bg-gray-700\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 116,
+      "column": 91,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-700",
+      "lineText": "<div className=\"flex items-center justify-center h-48 mb-4 bg-gray-300 rounded dark:bg-gray-700\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 117,
+      "column": 29,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-200",
+      "lineText": "<div className=\"h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 117,
+      "column": 59,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-700",
+      "lineText": "<div className=\"h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 118,
+      "column": 27,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-200",
+      "lineText": "<div className=\"h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 118,
+      "column": 57,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-700",
+      "lineText": "<div className=\"h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 119,
+      "column": 27,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-200",
+      "lineText": "<div className=\"h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 119,
+      "column": 57,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-700",
+      "lineText": "<div className=\"h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 120,
+      "column": 27,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-200",
+      "lineText": "<div className=\"h-2 bg-gray-200 rounded-full dark:bg-gray-700\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 120,
+      "column": 57,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-700",
+      "lineText": "<div className=\"h-2 bg-gray-200 rounded-full dark:bg-gray-700\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 122,
+      "column": 28,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-200",
+      "lineText": "<button className=\"bg-gray-200 rounded-sm dark:bg-gray-700 w-48 py-4  h-4\"></button>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 122,
+      "column": 56,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-700",
+      "lineText": "<button className=\"bg-gray-200 rounded-sm dark:bg-gray-700 w-48 py-4  h-4\"></button>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 124,
+      "column": 33,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-200",
+      "lineText": "<div className=\"h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 124,
+      "column": 63,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-700",
+      "lineText": "<div className=\"h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 125,
+      "column": 36,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-200",
+      "lineText": "<div className=\"w-48 h-2 bg-gray-200 rounded-full dark:bg-gray-700\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 125,
+      "column": 66,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-700",
+      "lineText": "<div className=\"w-48 h-2 bg-gray-200 rounded-full dark:bg-gray-700\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 136,
+      "column": 24,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className={`bg-gray-300 object-cover w-full ${imgHeight ?? 'h-[360px]'} ${imgWidth ?? 'sm:w-[220px] lg:w-60'} rounded-lg`}></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 139,
+      "column": 65,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-200",
+      "lineText": "<div className=\"absolute bottom-0 w-full p-6 rounded-b-lg bg-gray-200\">"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 141,
+      "column": 29,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"h-6 bg-gray-300 rounded w-3/4 mb-2\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 143,
+      "column": 29,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"h-4 bg-gray-300 rounded w-1/2\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 151,
+      "column": 99,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-500",
+      "lineText": "<div className={`${className ?? 'flex'}  flex-col gap-4 max-w-sm w-full  rounded-lg p-4 py-6  border-gray-500 shadow-md h-full animate-pulse`}>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 153,
+      "column": 49,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className={`rounded-full w-16 h-16 bg-gray-300 border-gray-500 animate-pulse`} />"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 153,
+      "column": 61,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-500",
+      "lineText": "<div className={`rounded-full w-16 h-16 bg-gray-300 border-gray-500 animate-pulse`} />"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 157,
+      "column": 36,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<span className={`w-24 bg-gray-300 h-4 animate-pulse`} /> {/* Placeholder for name */}"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 161,
+      "column": 41,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-500",
+      "lineText": "<span className={`font-normal text-gray-500 w-32 h-4 bg-gray-300 animate-pulse`} />"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 161,
+      "column": 64,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<span className={`font-normal text-gray-500 w-32 h-4 bg-gray-300 animate-pulse`} />"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 164,
+      "column": 36,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-300",
+      "lineText": "<button className={`border border-gray-300 p-2 px-6 rounded-3xl shadow-md w-fit text-gray-500 font-normal animate-pulse`}>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 164,
+      "column": 89,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-500",
+      "lineText": "<button className={`border border-gray-300 p-2 px-6 rounded-3xl shadow-md w-fit text-gray-500 font-normal animate-pulse`}>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 165,
+      "column": 34,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<span className={`w-20 bg-gray-300 h-4 animate-pulse`} />"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 170,
+      "column": 56,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<h3 className={`text-black text-xl mb-3 w-full bg-gray-300 h-6 animate-pulse`} />"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 174,
+      "column": 27,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-400",
+      "lineText": "<span className={`text-gray-400 font-normal text-base uppercase w-32 bg-gray-300 h-4 animate-pulse`} />"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 174,
+      "column": 78,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<span className={`text-gray-400 font-normal text-base uppercase w-32 bg-gray-300 h-4 animate-pulse`} />"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 183,
+      "column": 34,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"w-full p-4 bg-white shadow-lg rounded-lg animate-pulse transform transition duration-1000\">"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 185,
+      "column": 36,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"h-5 w-24 bg-gray-300 rounded-md\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 187,
+      "column": 37,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"w-5 h-5 bg-gray-300 rounded-full\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 188,
+      "column": 37,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"w-5 h-5 bg-gray-300 rounded-full\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 189,
+      "column": 37,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"w-5 h-5 bg-gray-300 rounded-full\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 192,
+      "column": 25,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"bg-gray-300 h-4 w-full rounded-md mb-2\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 193,
+      "column": 25,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"bg-gray-300 h-4 w-3/4 rounded-md mb-2\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 194,
+      "column": 25,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"bg-gray-300 h-4 w-2/4 rounded-md mb-2\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 201,
+      "column": 78,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "return <div className={`${className} skeleton-image max-w-xs animate-pulse bg-gray-300 w-full h-72 rounded-md mb-4`} />;"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 207,
+      "column": 53,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"w-full lg:w-[326px] h-[183px] bg-gray-300 animate-pulse rounded-lg\" />"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 210,
+      "column": 35,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"w-5 h-5 bg-gray-300 rounded-full\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 211,
+      "column": 35,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"w-5 h-5 bg-gray-300 rounded-full\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 212,
+      "column": 35,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"w-5 h-5 bg-gray-300 rounded-full\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 216,
+      "column": 37,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"w-1/2 h-5 bg-gray-300 rounded-full\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/Cards.jsx",
+      "line": 217,
+      "column": 37,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-300",
+      "lineText": "<div className=\"w-1/2 h-5 bg-gray-300 rounded-full\"></div>"
+    },
+    {
+      "file": "src/app/components/Animation/ProductAnimation.jsx",
+      "line": 52,
+      "column": 32,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-100",
+      "lineText": "<div className=\"w-full p-4 bg-gray-100 rounded-md shadow-md flex justify-evenly md:justify-normal gap-4\">"
+    },
+    {
+      "file": "src/app/components/Animation/ProductAnimation.jsx",
+      "line": 62,
+      "column": 32,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-100",
+      "lineText": "<div className=\"w-full p-4 bg-gray-100 rounded-md shadow-md grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4\">"
+    },
+    {
+      "file": "src/app/components/BookingCard.jsx",
+      "line": 20,
+      "column": 22,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<Card className=\"bg-white rounded-lg p-4 flex flex-col gap-4  shadow-md max-w-lg w-full dark:bg-black\">"
+    },
+    {
+      "file": "src/app/components/BookingCard.jsx",
+      "line": 20,
+      "column": 98,
+      "rule": "background-white-black",
+      "value": "bg-black",
+      "lineText": "<Card className=\"bg-white rounded-lg p-4 flex flex-col gap-4  shadow-md max-w-lg w-full dark:bg-black\">"
+    },
+    {
+      "file": "src/app/components/BookingCard.jsx",
+      "line": 22,
+      "column": 32,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#143042]",
+      "lineText": "<CardTitle className={'text-[#143042] text-xl font-semibold'}>{name}</CardTitle>"
+    },
+    {
+      "file": "src/app/components/BookingCard.jsx",
+      "line": 23,
+      "column": 26,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#143042]",
+      "lineText": "<span className=\"text-[#143042] text-base font-normal text-end \">{travel_date}</span>"
+    },
+    {
+      "file": "src/app/components/BookingCard.jsx",
+      "line": 26,
+      "column": 26,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-400",
+      "lineText": "<span className=\"text-gray-400  text-base text-end font-medium\">Booking Id :{id}</span>"
+    },
+    {
+      "file": "src/app/components/BookingCard.jsx",
+      "line": 48,
+      "column": 51,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#568f7c]",
+      "lineText": "<Button className=\"ml-auto border border-[#568f7c] bg-[#568f7c] text-white hover:bg-white hover:text-black\" onClick={() => setOpen(true)}>"
+    },
+    {
+      "file": "src/app/components/BookingCard.jsx",
+      "line": 48,
+      "column": 68,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#568f7c]",
+      "lineText": "<Button className=\"ml-auto border border-[#568f7c] bg-[#568f7c] text-white hover:bg-white hover:text-black\" onClick={() => setOpen(true)}>"
+    },
+    {
+      "file": "src/app/components/BookingCard.jsx",
+      "line": 48,
+      "column": 98,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<Button className=\"ml-auto border border-[#568f7c] bg-[#568f7c] text-white hover:bg-white hover:text-black\" onClick={() => setOpen(true)}>"
+    },
+    {
+      "file": "src/app/components/BookingCard.jsx",
+      "line": 71,
+      "column": 92,
+      "rule": "background-white-black",
+      "value": "bg-black",
+      "lineText": "<Card className=\"flex justify-between items-center shadow-none border-none px-4 dark:bg-black\">"
+    },
+    {
+      "file": "src/app/components/BreadCrumb.jsx",
+      "line": 30,
+      "column": 49,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<BreadcrumbItem className={'text-base text-[#71717a] font-medium'}>"
+    },
+    {
+      "file": "src/app/components/BreadCrumb.jsx",
+      "line": 33,
+      "column": 50,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "className=\"transition-colors hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm\""
+    },
+    {
+      "file": "src/app/components/BreadCrumb.jsx",
+      "line": 43,
+      "column": 90,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<BreadcrumbItem className={`capitalize text-base font-medium ${isLast ? 'text-[#18181b] font-semibold' : 'text-[#71717a]'}`}>"
+    },
+    {
+      "file": "src/app/components/BreadCrumb.jsx",
+      "line": 43,
+      "column": 123,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<BreadcrumbItem className={`capitalize text-base font-medium ${isLast ? 'text-[#18181b] font-semibold' : 'text-[#71717a]'}`}>"
+    },
+    {
+      "file": "src/app/components/BreadCrumb.jsx",
+      "line": 49,
+      "column": 58,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "className=\"transition-colors hover:text-[#18181b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm\""
+    },
+    {
+      "file": "src/app/components/Checkbox/SelectableCardCheckbox.jsx",
+      "line": 19,
+      "column": 43,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#568f7c]",
+      "lineText": "className=\"h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none\""
+    },
+    {
+      "file": "src/app/components/Checkbox/SelectableCardCheckbox.jsx",
+      "line": 19,
+      "column": 60,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none\""
+    },
+    {
+      "file": "src/app/components/Checkbox/SelectableCardCheckbox.jsx",
+      "line": 19,
+      "column": 90,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#568f7c]",
+      "lineText": "className=\"h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none\""
+    },
+    {
+      "file": "src/app/components/Checkbox/SelectableCardCheckbox.jsx",
+      "line": 19,
+      "column": 156,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#568f7c]",
+      "lineText": "className=\"h-5 w-5 rounded border-2 border-[#568f7c] bg-white data-[state=checked]:bg-[#568f7c] data-[state=checked]:text-white data-[state=checked]:border-[#568f7c] [&_svg]:text-white [&_svg]:scale-100 transition-none transform-none\""
+    },
+    {
+      "file": "src/app/components/CityCard.jsx",
+      "line": 25,
+      "column": 77,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`group relative block h-[360px] overflow-hidden rounded-lg bg-white border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] hover:border-transparent ${className}`}"
+    },
+    {
+      "file": "src/app/components/CityCard.jsx",
+      "line": 25,
+      "column": 93,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "className={`group relative block h-[360px] overflow-hidden rounded-lg bg-white border border-[#e4e4e7] transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] hover:border-transparent ${className}`}"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 26,
+      "column": 40,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#f4f4f5]",
+      "lineText": "<div key={i} className=\"h-16 bg-[#f4f4f5] rounded-lg animate-pulse\" />"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 35,
+      "column": 23,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<p className=\"text-[#71717a]\">No recent activity</p>"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 36,
+      "column": 31,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<p className=\"text-sm text-[#71717a] mt-1\">Start creating itineraries to see your activity here.</p>"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 43,
+      "column": 44,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<h3 className=\"text-lg font-semibold text-[#18181b]\">Recent Activity</h3>"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 44,
+      "column": 50,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"flex items-start gap-3 p-3 bg-white rounded-lg border border-[#e4e4e7]\">"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 44,
+      "column": 77,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "<div className=\"flex items-start gap-3 p-3 bg-white rounded-lg border border-[#e4e4e7]\">"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 45,
+      "column": 29,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#f4f4f5]",
+      "lineText": "<div className=\"p-2 bg-[#f4f4f5] rounded-full\">"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 46,
+      "column": 36,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<Route className=\"size-4 text-[#52525b]\" />"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 49,
+      "column": 33,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<p className=\"text-sm text-[#18181b]\">Itineraries submitted: {stats.itineraries_count || 0}</p>"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 50,
+      "column": 33,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<p className=\"text-xs text-[#71717a] mt-1\">"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 55,
+      "column": 50,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"flex items-start gap-3 p-3 bg-white rounded-lg border border-[#e4e4e7]\">"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 55,
+      "column": 77,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "<div className=\"flex items-start gap-3 p-3 bg-white rounded-lg border border-[#e4e4e7]\">"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 56,
+      "column": 29,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#f4f4f5]",
+      "lineText": "<div className=\"p-2 bg-[#f4f4f5] rounded-full\">"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 57,
+      "column": 36,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<Clock className=\"size-4 text-[#52525b]\" />"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 60,
+      "column": 33,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<p className=\"text-sm text-[#18181b]\">Total views: {stats.total_views || 0}</p>"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/ActivityFeed.jsx",
+      "line": 61,
+      "column": 33,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<p className=\"text-xs text-[#71717a] mt-1\">Total likes: {stats.total_likes || 0}</p>"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/QuickActions.jsx",
+      "line": 16,
+      "column": 110,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "<Button onClick={() => router.push('/dashboard/customer/my-itineraries')} variant=\"outline\" className=\"border-[#e4e4e7] text-[#52525b] hover:bg-[#f4f4f5]\">"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/QuickActions.jsx",
+      "line": 16,
+      "column": 127,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<Button onClick={() => router.push('/dashboard/customer/my-itineraries')} variant=\"outline\" className=\"border-[#e4e4e7] text-[#52525b] hover:bg-[#f4f4f5]\">"
+    },
+    {
+      "file": "src/app/components/Dashboard/Creator/QuickActions.jsx",
+      "line": 16,
+      "column": 148,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#f4f4f5]",
+      "lineText": "<Button onClick={() => router.push('/dashboard/customer/my-itineraries')} variant=\"outline\" className=\"border-[#e4e4e7] text-[#52525b] hover:bg-[#f4f4f5]\">"
+    },
+    {
+      "file": "src/app/components/Dashboard/NotificationWidget.jsx",
+      "line": 45,
+      "column": 21,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"bg-white rounded-xl border border-zinc-200 p-5\">"
+    },
+    {
+      "file": "src/app/components/Dashboard/NotificationWidget.jsx",
+      "line": 45,
+      "column": 48,
+      "rule": "neutral-color-utility",
+      "value": "border-zinc-200",
+      "lineText": "<div className=\"bg-white rounded-xl border border-zinc-200 p-5\">"
+    },
+    {
+      "file": "src/app/components/Dashboard/NotificationWidget.jsx",
+      "line": 48,
+      "column": 38,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<Bell size={18} className=\"text-[#18181b]\" />"
+    },
+    {
+      "file": "src/app/components/Dashboard/NotificationWidget.jsx",
+      "line": 49,
+      "column": 50,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<h3 className=\"text-base font-semibold text-[#18181b]\">Notifications</h3>"
+    },
+    {
+      "file": "src/app/components/Dashboard/NotificationWidget.jsx",
+      "line": 53,
+      "column": 66,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<button onClick={handleMarkAllRead} className=\"text-xs text-[#52525b] hover:text-weelp-sage-deep hover:underline flex items-center gap-1\">"
+    },
+    {
+      "file": "src/app/components/Dashboard/NotificationWidget.jsx",
+      "line": 60,
+      "column": 31,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<p className=\"text-sm text-zinc-400 text-center py-4\">Loading...</p>"
+    },
+    {
+      "file": "src/app/components/Dashboard/NotificationWidget.jsx",
+      "line": 62,
+      "column": 31,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<p className=\"text-sm text-zinc-400 text-center py-4\">No notifications yet</p>"
+    },
+    {
+      "file": "src/app/components/Dashboard/NotificationWidget.jsx",
+      "line": 67,
+      "column": 59,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "const iconColor = TYPE_COLORS[notif.type] || 'text-zinc-400';"
+    },
+    {
+      "file": "src/app/components/Dashboard/NotificationWidget.jsx",
+      "line": 69,
+      "column": 130,
+      "rule": "neutral-color-utility",
+      "value": "bg-zinc-50",
+      "lineText": "<div key={notif.id} className={`flex items-start gap-3 p-3 rounded-lg ${!notif.read_at ? 'bg-weelp-sage-deep/5' : 'bg-zinc-50'}`}>"
+    },
+    {
+      "file": "src/app/components/Dashboard/NotificationWidget.jsx",
+      "line": 72,
+      "column": 53,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<p className=\"text-sm font-medium text-[#18181b]\">{notif.title}</p>"
+    },
+    {
+      "file": "src/app/components/Dashboard/NotificationWidget.jsx",
+      "line": 73,
+      "column": 41,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-500",
+      "lineText": "<p className=\"text-xs text-zinc-500 line-clamp-2 mt-0.5\">{notif.message}</p>"
+    },
+    {
+      "file": "src/app/components/Dashboard/NotificationWidget.jsx",
+      "line": 74,
+      "column": 41,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<p className=\"text-xs text-zinc-400 mt-1\">{timeAgo(notif.created_at)}</p>"
+    },
+    {
+      "file": "src/app/components/Dashboard/NotificationWidget.jsx",
+      "line": 83,
+      "column": 94,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<NavigationLink href=\"/dashboard/customer/settings/notifications\" className=\"text-xs text-[#52525b] hover:text-weelp-sage-deep hover:underline\">"
+    },
+    {
+      "file": "src/app/components/Faq.jsx",
+      "line": 19,
+      "column": 91,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div key={index} className=\"mb-3 md:mb-4 border border-[var(--weelp-home-border)] bg-white rounded-2xl shadow-sm\">"
+    },
+    {
+      "file": "src/app/components/Form/AuthModal.jsx",
+      "line": 16,
+      "column": 30,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"relative bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8\">"
+    },
+    {
+      "file": "src/app/components/Form/AuthModal.jsx",
+      "line": 18,
+      "column": 75,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<button onClick={onCloseDialog} className=\"absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10\" aria-label=\"Close\">"
+    },
+    {
+      "file": "src/app/components/Form/AuthModal.jsx",
+      "line": 23,
+      "column": 23,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"bg-white rounded-t-xl border-b py-4 px-8 pr-12\">"
+    },
+    {
+      "file": "src/app/components/Form/AuthModal.jsx",
+      "line": 39,
+      "column": 31,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5a5a5a]",
+      "lineText": "<sub className=\"text-[#5a5a5a]\">Login into your account using your email.</sub>"
+    },
+    {
+      "file": "src/app/components/Form/AuthModal.jsx",
+      "line": 49,
+      "column": 31,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5a5a5a]",
+      "lineText": "<sub className=\"text-[#5a5a5a]\">Create your account using your email.</sub>"
+    },
+    {
+      "file": "src/app/components/Form/AuthPageClient.jsx",
+      "line": 26,
+      "column": 43,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#f8faf9]",
+      "lineText": "<div className=\"w-screen min-h-screen bg-[#f8faf9] flex flex-col lg:flex-row -mx-6\">"
+    },
+    {
+      "file": "src/app/components/Form/AuthPageClient.jsx",
+      "line": 32,
+      "column": 61,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-900",
+      "lineText": "<h1 className=\"text-3xl lg:text-4xl font-semibold text-zinc-900 mb-2\">Welcome to Weelp</h1>"
+    },
+    {
+      "file": "src/app/components/Form/AuthPageClient.jsx",
+      "line": 33,
+      "column": 25,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-700",
+      "lineText": "<p className=\"text-zinc-700\">Your journey to amazing destinations starts here</p>"
+    },
+    {
+      "file": "src/app/components/Form/AuthPageClient.jsx",
+      "line": 39,
+      "column": 46,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"w-full max-w-[35rem] bg-white rounded-2xl shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.9)] border border-zinc-100 p-10\">"
+    },
+    {
+      "file": "src/app/components/Form/AuthPageClient.jsx",
+      "line": 39,
+      "column": 150,
+      "rule": "neutral-color-utility",
+      "value": "border-zinc-100",
+      "lineText": "<div className=\"w-full max-w-[35rem] bg-white rounded-2xl shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.9)] border border-zinc-100 p-10\">"
+    },
+    {
+      "file": "src/app/components/Form/AuthPageClient.jsx",
+      "line": 49,
+      "column": 214,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`flex-1 py-3 rounded-lg text-center font-medium border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isLogin ? 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep' : 'bg-white text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white'}`}"
+    },
+    {
+      "file": "src/app/components/Form/AuthPageClient.jsx",
+      "line": 49,
+      "column": 254,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`flex-1 py-3 rounded-lg text-center font-medium border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isLogin ? 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep' : 'bg-white text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white'}`}"
+    },
+    {
+      "file": "src/app/components/Form/AuthPageClient.jsx",
+      "line": 55,
+      "column": 215,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`flex-1 py-3 rounded-lg text-center font-medium border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${!isLogin ? 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep' : 'bg-white text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white'}`}"
+    },
+    {
+      "file": "src/app/components/Form/AuthPageClient.jsx",
+      "line": 55,
+      "column": 255,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`flex-1 py-3 rounded-lg text-center font-medium border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${!isLogin ? 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep' : 'bg-white text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white'}`}"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 181,
+      "column": 68,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "className=\"flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 181,
+      "column": 85,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-r-none\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 184,
+      "column": 68,
+      "rule": "inline-literal-color",
+      "value": "color: '#52525b'",
+      "lineText": "<MapPin size={20} className=\"flex-shrink-0\" style={{ color: '#52525b' }} />"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 193,
+      "column": 91,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "className=\"w-full bg-transparent border-0 text-sm font-medium placeholder:text-[#71717a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 194,
+      "column": 26,
+      "rule": "inline-literal-color",
+      "value": "color: '#52525b'",
+      "lineText": "style={{ color: '#52525b', fontFamily: 'inherit' }}"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 208,
+      "column": 62,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-zinc-100 max-h-52 overflow-y-auto z-[110] min-w-full w-max\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 208,
+      "column": 99,
+      "rule": "neutral-color-utility",
+      "value": "border-zinc-100",
+      "lineText": "className=\"absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-zinc-100 max-h-52 overflow-y-auto z-[110] min-w-full w-max\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 219,
+      "column": 70,
+      "rule": "neutral-color-utility",
+      "value": "bg-zinc-100",
+      "lineText": "className={`px-4 py-2 cursor-pointer hover:bg-zinc-100 text-sm whitespace-nowrap ${watchedWhereTo === loc.name ? 'bg-green-100' : ''}`}"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 225,
+      "column": 48,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<li className=\"px-4 py-2 text-zinc-400 text-sm cursor-default\">No locations found</li>"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 237,
+      "column": 68,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "className=\"flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 237,
+      "column": 85,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer sm:rounded-none\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 240,
+      "column": 70,
+      "rule": "inline-literal-color",
+      "value": "color: '#52525b'",
+      "lineText": "<Calendar size={20} className=\"flex-shrink-0\" style={{ color: '#52525b' }} />"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 241,
+      "column": 80,
+      "rule": "inline-literal-color",
+      "value": "color: '#52525b'",
+      "lineText": "<span className=\"text-sm font-medium whitespace-nowrap\" style={{ color: '#52525b' }}>"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 250,
+      "column": 124,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div onMouseLeave={() => setShowCalendar(false)} className=\"absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-2xl shadow-lg border border-zinc-100 p-2 z-[110]\">"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 250,
+      "column": 162,
+      "rule": "neutral-color-utility",
+      "value": "border-zinc-100",
+      "lineText": "<div onMouseLeave={() => setShowCalendar(false)} className=\"absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-2xl shadow-lg border border-zinc-100 p-2 z-[110]\">"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 264,
+      "column": 69,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "className={`flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer ${isSearchPage ? 'sm:rounded-none' : 'sm:rounded-l-none'}`}"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 264,
+      "column": 86,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`flex items-center gap-3 rounded-xl border border-[#e4e4e7] bg-white px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] cursor-pointer ${isSearchPage ? 'sm:rounded-none' : 'sm:rounded-l-none'}`}"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 267,
+      "column": 67,
+      "rule": "inline-literal-color",
+      "value": "color: '#52525b'",
+      "lineText": "<Users size={20} className=\"flex-shrink-0\" style={{ color: '#52525b' }} />"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 268,
+      "column": 80,
+      "rule": "inline-literal-color",
+      "value": "color: '#52525b'",
+      "lineText": "<span className=\"text-sm font-medium whitespace-nowrap\" style={{ color: '#52525b' }}>"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 275,
+      "column": 105,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div onMouseLeave={() => setShowHowMany(false)} className=\"absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border border-zinc-100 p-4 z-[110] w-64\">"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 275,
+      "column": 142,
+      "rule": "neutral-color-utility",
+      "value": "border-zinc-100",
+      "lineText": "<div onMouseLeave={() => setShowHowMany(false)} className=\"absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border border-zinc-100 p-4 z-[110] w-64\">"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 280,
+      "column": 48,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-500",
+      "lineText": "<span className=\"text-xs text-zinc-500\">{type === 'adults' ? '13+ years' : type === 'children' ? '2-12 years' : 'Under 2'}</span>"
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 286,
+      "column": 97,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-700",
+      "lineText": "className=\"w-8 h-8 rounded-full border flex items-center justify-center text-gray-700 bg-graycolor hover:bg-[#e9f5ed]\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 286,
+      "column": 130,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#e9f5ed]",
+      "lineText": "className=\"w-8 h-8 rounded-full border flex items-center justify-center text-gray-700 bg-graycolor hover:bg-[#e9f5ed]\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 294,
+      "column": 64,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#b5d8cb]",
+      "lineText": "className=\"w-8 h-8 rounded-full border border-[#b5d8cb] flex items-center justify-center text-weelp-sage-deep hover:bg-[#e9f5ed]\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 294,
+      "column": 141,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#e9f5ed]",
+      "lineText": "className=\"w-8 h-8 rounded-full border border-[#b5d8cb] flex items-center justify-center text-weelp-sage-deep hover:bg-[#e9f5ed]\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 315,
+      "column": 100,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "className=\"flex shrink-0 min-w-[112px] items-center justify-center rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-[background-color,color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#f8faf9] hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:rounded-l-none motion-reduce:transition-none\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 315,
+      "column": 117,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"flex shrink-0 min-w-[112px] items-center justify-center rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-[background-color,color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#f8faf9] hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:rounded-l-none motion-reduce:transition-none\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 315,
+      "column": 309,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#f8faf9]",
+      "lineText": "className=\"flex shrink-0 min-w-[112px] items-center justify-center rounded-xl border border-[#e4e4e7] bg-white px-6 py-[18px] text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-[background-color,color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#f8faf9] hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:rounded-l-none motion-reduce:transition-none\""
+    },
+    {
+      "file": "src/app/components/Form/Form.jsx",
+      "line": 327,
+      "column": 271,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#477665]",
+      "lineText": "className=\"flex h-11 min-w-[160px] items-center justify-center rounded-full bg-weelp-sage-deep px-8 text-sm font-semibold text-white shadow-lg shadow-black/10 transition-[background-color,box-shadow,transform] duration-200 ease-[var(--weelp-ease-out)] hover:bg-[#477665] hover:shadow-black/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/45 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:cursor-wait disabled:opacity-90 motion-reduce:transition-none\""
+    },
+    {
+      "file": "src/app/components/Form/FormForgotPassword.jsx",
+      "line": 67,
+      "column": 32,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className={`space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8 ${isSubmitting && 'cursor-wait'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/FormForgotPassword.jsx",
+      "line": 68,
+      "column": 23,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"bg-white rounded-t-xl border-b py-4 px-8\">"
+    },
+    {
+      "file": "src/app/components/Form/FormForgotPassword.jsx",
+      "line": 71,
+      "column": 68,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<form onSubmit={handleSubmit(onSubmit)} className=\"space-y-4 bg-white px-8 py-4\">"
+    },
+    {
+      "file": "src/app/components/Form/FormForgotPassword.jsx",
+      "line": 79,
+      "column": 27,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<sub className=\"text-[#52525b]\">Enter your email to receive a password reset link.</sub>"
+    },
+    {
+      "file": "src/app/components/Form/FormForgotPassword.jsx",
+      "line": 84,
+      "column": 63,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<label htmlFor=\"email\" className=\"flex items-center bg-white shadow-md border p-2 rounded-md w-full\">"
+    },
+    {
+      "file": "src/app/components/Form/FormForgotPassword.jsx",
+      "line": 85,
+      "column": 32,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<AtSign className=\"text-[#52525b] size-4\" />"
+    },
+    {
+      "file": "src/app/components/Form/FormForgotPassword.jsx",
+      "line": 86,
+      "column": 149,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<input placeholder=\"Email ID\" type=\"email\" id=\"email\" {...register('email')} autoComplete=\"off\" className=\"py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base w-full\" />"
+    },
+    {
+      "file": "src/app/components/Form/FormForgotPassword.jsx",
+      "line": 86,
+      "column": 170,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<input placeholder=\"Email ID\" type=\"email\" id=\"email\" {...register('email')} autoComplete=\"off\" className=\"py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base w-full\" />"
+    },
+    {
+      "file": "src/app/components/Form/FormForgotPassword.jsx",
+      "line": 92,
+      "column": 107,
+      "rule": "neutral-color-utility",
+      "value": "bg-zinc-400",
+      "lineText": "<Button type=\"submit\" disabled={isSubmitting} className={`w-full p-4 rounded-md ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed' : 'bg-weelp-sage-deep hover:bg-[#b5d8cb] text-white'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/FormForgotPassword.jsx",
+      "line": 92,
+      "column": 167,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#b5d8cb]",
+      "lineText": "<Button type=\"submit\" disabled={isSubmitting} className={`w-full p-4 rounded-md ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed' : 'bg-weelp-sage-deep hover:bg-[#b5d8cb] text-white'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 118,
+      "column": 34,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className={`space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8 ${isSubmitting && 'cursor-wait'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 119,
+      "column": 25,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"bg-white rounded-t-xl border-b py-4 px-8\">"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 122,
+      "column": 70,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<form onSubmit={handleSubmit(onSubmit)} className=\"space-y-4 bg-white px-8 py-4\">"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 130,
+      "column": 29,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<sub className=\"text-[#52525b]\">Enter your new password below.</sub>"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 135,
+      "column": 68,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<label htmlFor=\"password\" className=\"flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative\">"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 136,
+      "column": 31,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<Key className=\"text-[#52525b] size-4\" />"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 143,
+      "column": 68,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 143,
+      "column": 89,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 146,
+      "column": 53,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<EyeOff onClick={toggle} className=\"text-[#52525b] size-5 absolute right-4 cursor-pointer\" />"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 148,
+      "column": 50,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<Eye onClick={toggle} className=\"text-[#52525b] size-5 absolute right-4 cursor-pointer\" />"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 157,
+      "column": 33,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-500",
+      "lineText": "<p className=\"text-zinc-500 font-medium mb-1\">Password must contain:</p>"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 158,
+      "column": 105,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<div className={`flex items-center gap-1 ${password.length >= 8 ? 'text-green-600' : 'text-zinc-400'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 162,
+      "column": 107,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<div className={`flex items-center gap-1 ${/[A-Z]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 166,
+      "column": 107,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<div className={`flex items-center gap-1 ${/[a-z]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 170,
+      "column": 107,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<div className={`flex items-center gap-1 ${/[0-9]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 174,
+      "column": 134,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\\]|/\\\\~`_-]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 187,
+      "column": 81,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<label htmlFor=\"password_confirmation\" className=\"flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative\">"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 188,
+      "column": 31,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<Key className=\"text-[#52525b] size-4\" />"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 195,
+      "column": 62,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 195,
+      "column": 83,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 212,
+      "column": 111,
+      "rule": "neutral-color-utility",
+      "value": "bg-zinc-400",
+      "lineText": "isSubmitting || !password || !isPasswordValid(password) || password !== passwordConfirmation ? 'bg-zinc-400 cursor-not-allowed' : 'bg-weelp-sage-deep hover:bg-[#b5d8cb] text-white'"
+    },
+    {
+      "file": "src/app/components/Form/FormResetPassword.jsx",
+      "line": 212,
+      "column": 171,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#b5d8cb]",
+      "lineText": "isSubmitting || !password || !isPasswordValid(password) || password !== passwordConfirmation ? 'bg-zinc-400 cursor-not-allowed' : 'bg-weelp-sage-deep hover:bg-[#b5d8cb] text-white'"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 138,
+      "column": 33,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className={`relative bg-white rounded-xl w-full ${isSubmitting && 'cursor-wait'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 141,
+      "column": 79,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<button onClick={onCloseDialog} className=\"absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10\" aria-label=\"Close\">"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 145,
+      "column": 71,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<form onSubmit={handleSubmit(onSubmit)} className={`space-y-4 bg-white py-4`}>"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 148,
+      "column": 66,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<label htmlFor=\"email\" className=\" flex items-center bg-white shadow-md border p-1 px-2 rounded-md\">"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 149,
+      "column": 34,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<AtSign className=\"text-[#52525b] size-4\" />"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 156,
+      "column": 63,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1  py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base w-full\""
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 156,
+      "column": 84,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1  py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base w-full\""
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 164,
+      "column": 68,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<label htmlFor=\"password\" className=\"flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative\">"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 165,
+      "column": 36,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<KeyRound className=\"text-[#52525b] size-4\" />"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 172,
+      "column": 63,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1  py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base w-full\""
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 172,
+      "column": 84,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1  py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base w-full\""
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 176,
+      "column": 53,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<EyeOff onClick={toggle} className=\"text-[#52525b] size-5 absolute right-6 cursor-pointer\" />"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 178,
+      "column": 50,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<Eye onClick={toggle} className=\"text-[#52525b] size-5 absolute right-6 cursor-pointer\" />"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 189,
+      "column": 174,
+      "rule": "neutral-color-utility",
+      "value": "bg-zinc-400",
+      "lineText": "className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed border-zinc-400' : 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep'}`}"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 189,
+      "column": 205,
+      "rule": "neutral-color-utility",
+      "value": "border-zinc-400",
+      "lineText": "className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed border-zinc-400' : 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep'}`}"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 189,
+      "column": 261,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed border-zinc-400' : 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep'}`}"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 197,
+      "column": 50,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<span className=\"text-sm text-nowrap text-[#71717a]\">Or continue with</span>"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 202,
+      "column": 129,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<button onClick={() => signIn('google')} className=\"flex w-fit items-center rounded-md p-2 gap-4 shadow border px-8 text-[#18181b]\">"
+    },
+    {
+      "file": "src/app/components/Form/LoginForm.jsx",
+      "line": 206,
+      "column": 96,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<button className=\"flex w-fit items-center rounded-md p-2 gap-4 shadow border px-8 text-[#18181b]\">"
+    },
+    {
+      "file": "src/app/components/Form/OtpInput.jsx",
+      "line": 123,
+      "column": 62,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-300",
+      "lineText": "error ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-weelp-sage-deep',"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 337,
+      "column": 40,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"relative space-y-4 bg-white rounded-xl w-full\">"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 339,
+      "column": 77,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<button onClick={onCloseDialog} className=\"absolute -top-3 -right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10\" aria-label=\"Close\">"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 346,
+      "column": 43,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<fieldset className={`space-y-4 bg-white py-4 ${isSubmitting && 'cursor-wait'}`} disabled={isSubmitting}>"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 349,
+      "column": 66,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<label htmlFor=\"name\" className=\"flex items-center bg-white shadow-md border p-1 px-2 rounded-md\">"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 350,
+      "column": 34,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<User className=\"text-[#52525b] size-4\" />"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 357,
+      "column": 64,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 357,
+      "column": 85,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 365,
+      "column": 70,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<label htmlFor=\"username\" className=\"flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative\">"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 366,
+      "column": 34,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<User className=\"text-[#52525b] size-4\" />"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 373,
+      "column": 70,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 373,
+      "column": 91,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 379,
+      "column": 48,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<LoaderCircle className=\"text-zinc-400 size-5 animate-spin\" />"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 394,
+      "column": 67,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<label htmlFor=\"email\" className=\"flex items-center bg-white shadow-md border p-1 px-2 rounded-md\">"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 395,
+      "column": 36,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<AtSign className=\"text-[#52525b] size-4\" />"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 402,
+      "column": 64,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 402,
+      "column": 85,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 410,
+      "column": 70,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<label htmlFor=\"password\" className=\"flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative\">"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 411,
+      "column": 38,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<KeyRound className=\"text-[#52525b] size-4\" />"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 418,
+      "column": 70,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 418,
+      "column": 91,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 428,
+      "column": 35,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-500",
+      "lineText": "<p className=\"text-zinc-500 font-medium mb-1\">Password must contain:</p>"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 429,
+      "column": 107,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<div className={`flex items-center gap-1 ${password.length >= 8 ? 'text-green-600' : 'text-zinc-400'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 433,
+      "column": 109,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<div className={`flex items-center gap-1 ${/[A-Z]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 437,
+      "column": 109,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<div className={`flex items-center gap-1 ${/[a-z]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 441,
+      "column": 109,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<div className={`flex items-center gap-1 ${/[0-9]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 445,
+      "column": 136,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\\]|/\\\\~`_-]/.test(password) ? 'text-green-600' : 'text-zinc-400'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 458,
+      "column": 83,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<label htmlFor=\"password_confirmation\" className=\"flex items-center bg-white shadow-md border p-1 px-2 rounded-md relative\">"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 459,
+      "column": 38,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<KeyRound className=\"text-[#52525b] size-4\" />"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 466,
+      "column": 70,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 466,
+      "column": 91,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 pr-10 focus:outline-none bg-white placeholder:bg-white text-base flex-1\""
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 484,
+      "column": 178,
+      "rule": "neutral-color-utility",
+      "value": "bg-zinc-400",
+      "lineText": "className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed border-zinc-400' : 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep'}`}"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 484,
+      "column": 209,
+      "rule": "neutral-color-utility",
+      "value": "border-zinc-400",
+      "lineText": "className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed border-zinc-400' : 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep'}`}"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 484,
+      "column": 265,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-zinc-400 cursor-not-allowed border-zinc-400' : 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep'}`}"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 499,
+      "column": 41,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<fieldset className={`space-y-4 bg-white py-4`} disabled={isOtpSubmitting}>"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 502,
+      "column": 29,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<sub className=\"text-[#52525b]\">"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 521,
+      "column": 35,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<p className=\"text-sm text-[#52525b] mb-2\">Didn&apos;t receive the code?</p>"
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 526,
+      "column": 94,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "className=\"text-sm font-semibold text-weelp-sage-deep hover:underline disabled:text-zinc-400 disabled:no-underline\""
+    },
+    {
+      "file": "src/app/components/Form/RegisterForm.jsx",
+      "line": 534,
+      "column": 81,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "<button type=\"button\" onClick={handleBackToInfo} className=\"text-sm text-[#52525b] hover:text-weelp-sage-deep\">"
+    },
+    {
+      "file": "src/app/components/Form/RevalidateEmailForm.jsx",
+      "line": 65,
+      "column": 34,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className={`space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8 ${isSubmitting && 'cursor-wait'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/RevalidateEmailForm.jsx",
+      "line": 66,
+      "column": 25,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"bg-white rounded-t-xl border-b py-4 px-8\">"
+    },
+    {
+      "file": "src/app/components/Form/RevalidateEmailForm.jsx",
+      "line": 69,
+      "column": 70,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<form onSubmit={handleSubmit(onSubmit)} className=\"space-y-4 bg-white px-8 py-4\">"
+    },
+    {
+      "file": "src/app/components/Form/RevalidateEmailForm.jsx",
+      "line": 76,
+      "column": 65,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<Label htmlFor=\"email\" className=\"flex items-center bg-white shadow-md border p-1 px-2 rounded-md\">"
+    },
+    {
+      "file": "src/app/components/Form/RevalidateEmailForm.jsx",
+      "line": 77,
+      "column": 34,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5A5A5A]",
+      "lineText": "<AtSign className=\"text-[#5A5A5A] size-4\" />"
+    },
+    {
+      "file": "src/app/components/Form/RevalidateEmailForm.jsx",
+      "line": 84,
+      "column": 62,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base\""
+    },
+    {
+      "file": "src/app/components/Form/RevalidateEmailForm.jsx",
+      "line": 84,
+      "column": 83,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"mt-1 py-2 px-3 focus:outline-none bg-white placeholder:bg-white text-base\""
+    },
+    {
+      "file": "src/app/components/Form/RevalidateEmailForm.jsx",
+      "line": 94,
+      "column": 109,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-400",
+      "lineText": "<Button type=\"submit\" disabled={isSubmitting} className={`w-full p-4 rounded-md ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-weelp-sage-deep hover:bg-[#b5d8cb] text-white'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/RevalidateEmailForm.jsx",
+      "line": 94,
+      "column": 169,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#b5d8cb]",
+      "lineText": "<Button type=\"submit\" disabled={isSubmitting} className={`w-full p-4 rounded-md ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-weelp-sage-deep hover:bg-[#b5d8cb] text-white'}`}>"
+    },
+    {
+      "file": "src/app/components/Form/SearchForm.jsx",
+      "line": 106,
+      "column": 79,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<form onKeyUp={debounce(handleSubmit(onSubmit), 600)} className=\"w-full bg-white flex items-center justify-evenly rounded shadow\">"
+    },
+    {
+      "file": "src/app/components/Form/SearchForm.jsx",
+      "line": 128,
+      "column": 30,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<ul className=\"bg-white w-full rounded-md flex flex-col gap-1 max-h-64 h-fit shadow-md overflow-y-auto tfc_scroll\">"
+    },
+    {
+      "file": "src/app/components/Form/SearchForm.jsx",
+      "line": 131,
+      "column": 113,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-50",
+      "lineText": "<Link href={getItemHref(itinerary)} onClick={() => setShowDropdown(false)} className=\"hover:bg-gray-50 flex items-center gap-3 py-2.5 px-4 hover:cursor-pointer\">"
+    },
+    {
+      "file": "src/app/components/Form/SearchForm.jsx",
+      "line": 134,
+      "column": 59,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-900",
+      "lineText": "<p className=\"text-sm font-medium text-gray-900 truncate\">{itinerary?.name || 'Untitled itinerary'}</p>"
+    },
+    {
+      "file": "src/app/components/Form/SearchForm.jsx",
+      "line": 135,
+      "column": 47,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-500",
+      "lineText": "<p className=\"text-xs text-gray-500 truncate\">by {itinerary?.creator?.name || 'Unknown creator'}</p>"
+    },
+    {
+      "file": "src/app/components/Form/SearchForm.jsx",
+      "line": 154,
+      "column": 151,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"hover:bg-weelp-steel flex justify-between rounded-md items-center py-2 px-6 hover:text-white hover:cursor-not-allowed bg-white shadow-md\">"
+    },
+    {
+      "file": "src/app/components/Form/SearchForm.jsx",
+      "line": 204,
+      "column": 28,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`w-full bg-white border  flex items-center justify-evenly rounded-xl shadow ${errors?.search?.message ? 'border-red-400 border' : null}`}"
+    },
+    {
+      "file": "src/app/components/Form/SearchForm.jsx",
+      "line": 231,
+      "column": 48,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<ul className=\"absolute z-10 top-4 bg-white w-full rounded-md flex flex-col gap-2 max-h-52 shadow-md overflow-y-auto tfc_scroll\">"
+    },
+    {
+      "file": "src/app/components/Form/SearchForm.jsx",
+      "line": 245,
+      "column": 122,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"hover:bg-weelp-steel flex justify-between rounded-md items-center py-2 px-6 hover:text-white bg-white mt-2\">"
+    },
+    {
+      "file": "src/app/components/Form/SingleProductForm.jsx",
+      "line": 253,
+      "column": 39,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5A5A5A]",
+      "lineText": "<h5 className=\"self-start text-[#5A5A5A]\">Select Date & Travelers</h5>"
+    },
+    {
+      "file": "src/app/components/Form/SingleProductForm.jsx",
+      "line": 257,
+      "column": 36,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`flex-1 bg-white rounded-xl border shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[24px] cursor-pointer ${errors.howMany ? 'border-red-500' : 'border-[#ccc]/50'}`}"
+    },
+    {
+      "file": "src/app/components/Form/SingleProductForm.jsx",
+      "line": 257,
+      "column": 173,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#ccc]/50",
+      "lineText": "className={`flex-1 bg-white rounded-xl border shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[24px] cursor-pointer ${errors.howMany ? 'border-red-500' : 'border-[#ccc]/50'}`}"
+    },
+    {
+      "file": "src/app/components/Form/SingleProductForm.jsx",
+      "line": 260,
+      "column": 57,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5A5A5A]",
+      "lineText": "<div className=\"flex items-center gap-3 text-[#5A5A5A]\">"
+    },
+    {
+      "file": "src/app/components/Form/SingleProductForm.jsx",
+      "line": 268,
+      "column": 36,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`flex-1 bg-white rounded-xl border shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[24px] cursor-pointer ${errors.dateRange ? 'border-red-500' : 'border-[#ccc]/50'}`}"
+    },
+    {
+      "file": "src/app/components/Form/SingleProductForm.jsx",
+      "line": 268,
+      "column": 175,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#ccc]/50",
+      "lineText": "className={`flex-1 bg-white rounded-xl border shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[24px] cursor-pointer ${errors.dateRange ? 'border-red-500' : 'border-[#ccc]/50'}`}"
+    },
+    {
+      "file": "src/app/components/Form/SingleProductForm.jsx",
+      "line": 271,
+      "column": 57,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5A5A5A]",
+      "lineText": "<div className=\"flex items-center gap-3 text-[#5A5A5A]\">"
+    },
+    {
+      "file": "src/app/components/Form/SingleProductForm.jsx",
+      "line": 292,
+      "column": 59,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`flex justify-center mx-auto bg-white w-fit rounded-lg shadow-lg border p-2 ${getPanelMotionClass(calendarPresence.state)}`}"
+    },
+    {
+      "file": "src/app/components/Form/SingleProductForm.jsx",
+      "line": 347,
+      "column": 32,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"bg-white w-fit p-4 px-6 rounded-lg flex flex-col gap-4 border\""
+    },
+    {
+      "file": "src/app/components/Form/SingleProductForm.jsx",
+      "line": 359,
+      "column": 109,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-700",
+      "lineText": "className=\"w-8 h-8 rounded-full border text-lg flex items-center justify-center text-gray-700 bg-graycolor hover:bg-[#e9f5ed] hover:opacity-80\""
+    },
+    {
+      "file": "src/app/components/Form/SingleProductForm.jsx",
+      "line": 359,
+      "column": 142,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#e9f5ed]",
+      "lineText": "className=\"w-8 h-8 rounded-full border text-lg flex items-center justify-center text-gray-700 bg-graycolor hover:bg-[#e9f5ed] hover:opacity-80\""
+    },
+    {
+      "file": "src/app/components/Form/SingleProductForm.jsx",
+      "line": 367,
+      "column": 68,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#b5d8cb]",
+      "lineText": "className=\"w-8 h-8 rounded-full border border-[#b5d8cb] text-lg flex items-center justify-center text-weelp-sage-deep hover:bg-[#e9f5ed] hover:opacity-80 \""
+    },
+    {
+      "file": "src/app/components/Form/SingleProductForm.jsx",
+      "line": 367,
+      "column": 153,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#e9f5ed]",
+      "lineText": "className=\"w-8 h-8 rounded-full border border-[#b5d8cb] text-lg flex items-center justify-center text-weelp-sage-deep hover:bg-[#e9f5ed] hover:opacity-80 \""
+    },
+    {
+      "file": "src/app/components/Form/VerifyEmailForm.jsx",
+      "line": 54,
+      "column": 31,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"space-y-4 bg-white border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8\">"
+    },
+    {
+      "file": "src/app/components/Form/VerifyEmailForm.jsx",
+      "line": 63,
+      "column": 38,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"max-w-sm mx-auto bg-white rounded-2xl p-8 text-center\">"
+    },
+    {
+      "file": "src/app/components/Form/VerifyEmailForm.jsx",
+      "line": 67,
+      "column": 45,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-900",
+      "lineText": "<h2 className=\"text-2xl font-semibold text-gray-900 mb-2\">Email Verified!</h2>"
+    },
+    {
+      "file": "src/app/components/Form/VerifyEmailForm.jsx",
+      "line": 68,
+      "column": 21,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-500",
+      "lineText": "<p className=\"text-gray-500 mb-6\">Your Email has been successfully verified. </p>"
+    },
+    {
+      "file": "src/app/components/Form/VerifyEmailForm.jsx",
+      "line": 69,
+      "column": 21,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-500",
+      "lineText": "<p className=\"text-gray-500 mb-6 font-bold\">{emailaddress}</p>"
+    },
+    {
+      "file": "src/app/components/Form/VerifyEmailForm.jsx",
+      "line": 81,
+      "column": 38,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"max-w-sm mx-auto bg-white rounded-2xl p-8 text-center\">"
+    },
+    {
+      "file": "src/app/components/Form/VerifyEmailForm.jsx",
+      "line": 85,
+      "column": 45,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-900",
+      "lineText": "<h2 className=\"text-2xl font-semibold text-gray-900 mb-2\">Invalid or Expired Token!</h2>"
+    },
+    {
+      "file": "src/app/components/Form/__tests__/BookingForm.test.jsx",
+      "line": 38,
+      "column": 39,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "expect(searchButton).toHaveClass('bg-white', 'text-Bluewhale');"
+    },
+    {
+      "file": "src/app/components/Form/__tests__/BookingForm.test.jsx",
+      "line": 39,
+      "column": 43,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#18181b]",
+      "lineText": "expect(searchButton).not.toHaveClass('bg-[#18181b]');"
+    },
+    {
+      "file": "src/app/components/IterinaryCard.jsx",
+      "line": 7,
+      "column": 48,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className={`${'product_' + productId} bg-white rounded-lg gap-3 shadow-md sm:max-w-fit max-w-full min-h-fit h-fit w-full sm:mx-0`}>"
+    },
+    {
+      "file": "src/app/components/IterinaryCard.jsx",
+      "line": 15,
+      "column": 27,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#506672]",
+      "lineText": "<p className=\"text-[#506672] text-lg font-medium\">{category ? category : 'Itinerary'}</p>"
+    },
+    {
+      "file": "src/app/components/Layout/AnnouncementRow.jsx",
+      "line": 65,
+      "column": 78,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#eaeaea]",
+      "lineText": "className={`flex items-start gap-3 w-full text-left px-4 py-3 border-b border-[#eaeaea] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40 transition-colors cursor-pointer ${!isRead ? 'bg-weelp-sage-deep/5' : ''}`}"
+    },
+    {
+      "file": "src/app/components/Layout/AnnouncementRow.jsx",
+      "line": 65,
+      "column": 101,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#f4f4f5]",
+      "lineText": "className={`flex items-start gap-3 w-full text-left px-4 py-3 border-b border-[#eaeaea] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40 transition-colors cursor-pointer ${!isRead ? 'bg-weelp-sage-deep/5' : ''}`}"
+    },
+    {
+      "file": "src/app/components/Layout/AnnouncementRow.jsx",
+      "line": 69,
+      "column": 43,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<p className=\"text-sm font-medium text-[#18181b] truncate\">{announcement.title}</p>"
+    },
+    {
+      "file": "src/app/components/Layout/AnnouncementRow.jsx",
+      "line": 70,
+      "column": 31,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<p className=\"text-xs text-[#71717a] line-clamp-2 mt-0.5\">{announcement.message}</p>"
+    },
+    {
+      "file": "src/app/components/Layout/AnnouncementRow.jsx",
+      "line": 71,
+      "column": 31,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<p className=\"text-xs text-[#71717a] mt-1\">{timeAgo(announcement.created_at)}</p>"
+    },
+    {
+      "file": "src/app/components/Layout/AnnouncementRow.jsx",
+      "line": 101,
+      "column": 34,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "className=\"flex-shrink-0 text-[#71717a] hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 rounded-sm p-1\""
+    },
+    {
+      "file": "src/app/components/Layout/NavigationMenu.jsx",
+      "line": 102,
+      "column": 81,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<span className={`text-[18px] font-semibold ${mainBarTransparent ? 'text-[#18181b]' : 'text-foreground'}`} style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>"
+    },
+    {
+      "file": "src/app/components/Layout/NavigationMenu.jsx",
+      "line": 153,
+      "column": 25,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]/70",
+      "lineText": "overHero ? 'hover:text-[#18181b]/70 focus-visible:ring-[#18181b]/30 focus-visible:ring-offset-white' : 'hover:text-muted-foreground focus-visible:ring-ring focus-visible:ring-offset-background'"
+    },
+    {
+      "file": "src/app/components/Layout/NavigationMenu.jsx",
+      "line": 154,
+      "column": 31,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]/70",
+      "lineText": "} ${active ? (overHero ? 'text-[#18181b]/70' : 'text-muted-foreground') : overHero ? 'text-black' : 'text-foreground'}`;"
+    },
+    {
+      "file": "src/app/components/Layout/NavigationMenu.jsx",
+      "line": 158,
+      "column": 35,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]/70",
+      "lineText": "overHero ? 'group-hover/nav:text-[#18181b]/70' : 'group-hover/nav:text-muted-foreground'"
+    },
+    {
+      "file": "src/app/components/Layout/NavigationMenu.jsx",
+      "line": 159,
+      "column": 31,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]/70",
+      "lineText": "} ${active ? (overHero ? 'text-[#18181b]/70' : 'text-muted-foreground') : overHero ? 'text-black' : 'text-foreground'}`;"
+    },
+    {
+      "file": "src/app/components/Layout/NavigationMenu.jsx",
+      "line": 339,
+      "column": 32,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "const iconChip = overHero ? 'bg-white/85 text-[#18181b] backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:bg-black/85 dark:text-white dark:shadow-none' : '';"
+    },
+    {
+      "file": "src/app/components/Layout/NavigationMenu.jsx",
+      "line": 339,
+      "column": 44,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "const iconChip = overHero ? 'bg-white/85 text-[#18181b] backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:bg-black/85 dark:text-white dark:shadow-none' : '';"
+    },
+    {
+      "file": "src/app/components/Layout/NavigationMenu.jsx",
+      "line": 339,
+      "column": 118,
+      "rule": "background-white-black",
+      "value": "bg-black",
+      "lineText": "const iconChip = overHero ? 'bg-white/85 text-[#18181b] backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:bg-black/85 dark:text-white dark:shadow-none' : '';"
+    },
+    {
+      "file": "src/app/components/Layout/NavigationMenu.jsx",
+      "line": 340,
+      "column": 38,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "const iconButtonTone = overHero ? 'text-[#18181b]' : 'text-foreground';"
+    },
+    {
+      "file": "src/app/components/Layout/NotificationBell.jsx",
+      "line": 149,
+      "column": 77,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "className={`relative flex items-center justify-center ${overHero ? 'text-[#18181b] dark:text-white focus-visible:ring-offset-white' : 'text-foreground focus-visible:ring-offset-background'} rounded-sm transition hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2`}"
+    },
+    {
+      "file": "src/app/components/Layout/NotificationDetailModal.jsx",
+      "line": 43,
+      "column": 39,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<DialogTitle className=\"text-[#18181b]\">{notif.title}</DialogTitle>"
+    },
+    {
+      "file": "src/app/components/Layout/NotificationDetailModal.jsx",
+      "line": 45,
+      "column": 51,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#3f3f46]",
+      "lineText": "<DialogDescription className=\"text-sm text-[#3f3f46] whitespace-pre-wrap\">{notif.message}</DialogDescription>"
+    },
+    {
+      "file": "src/app/components/Layout/NotificationDetailModal.jsx",
+      "line": 46,
+      "column": 35,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<p className=\"text-xs text-[#71717a] mt-2\">{timeAgo(notif.created_at)}</p>"
+    },
+    {
+      "file": "src/app/components/Layout/NotificationDetailModal.jsx",
+      "line": 52,
+      "column": 138,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#4a7a68]",
+      "lineText": "className=\"inline-flex items-center gap-2 rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40\""
+    },
+    {
+      "file": "src/app/components/Layout/NotificationDetailModal.jsx",
+      "line": 66,
+      "column": 136,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#4a7a68]",
+      "lineText": "className=\"inline-flex items-center rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40\""
+    },
+    {
+      "file": "src/app/components/Layout/NotificationDetailModal.jsx",
+      "line": 74,
+      "column": 136,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#4a7a68]",
+      "lineText": "className=\"inline-flex items-center rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-[#4a7a68] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40\""
+    },
+    {
+      "file": "src/app/components/Layout/NotificationRow.jsx",
+      "line": 56,
+      "column": 78,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#eaeaea]",
+      "lineText": "className={`flex items-start gap-3 w-full text-left px-4 py-3 border-b border-[#eaeaea] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40 transition-colors cursor-pointer ${isUnread ? 'bg-weelp-sage-deep/5' : ''}`}"
+    },
+    {
+      "file": "src/app/components/Layout/NotificationRow.jsx",
+      "line": 56,
+      "column": 101,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#f4f4f5]",
+      "lineText": "className={`flex items-start gap-3 w-full text-left px-4 py-3 border-b border-[#eaeaea] hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40 transition-colors cursor-pointer ${isUnread ? 'bg-weelp-sage-deep/5' : ''}`}"
+    },
+    {
+      "file": "src/app/components/Layout/NotificationRow.jsx",
+      "line": 60,
+      "column": 43,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<p className=\"text-sm font-medium text-[#18181b] truncate\">{notif.title}</p>"
+    },
+    {
+      "file": "src/app/components/Layout/NotificationRow.jsx",
+      "line": 61,
+      "column": 31,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<p className=\"text-xs text-[#71717a] line-clamp-2 mt-0.5\">{notif.message}</p>"
+    },
+    {
+      "file": "src/app/components/Layout/NotificationRow.jsx",
+      "line": 62,
+      "column": 31,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<p className=\"text-xs text-[#71717a] mt-1\">{timeAgo(notif.created_at)}</p>"
+    },
+    {
+      "file": "src/app/components/Layout/NotificationRow.jsx",
+      "line": 89,
+      "column": 34,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "className=\"flex-shrink-0 text-[#71717a] hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 rounded-sm p-1\""
+    },
+    {
+      "file": "src/app/components/Layout/footer.jsx",
+      "line": 15,
+      "column": 30,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"w-full bg-white pt-[84px]\">"
+    },
+    {
+      "file": "src/app/components/Layout/footer.jsx",
+      "line": 23,
+      "column": 171,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "className=\"absolute bottom-0 left-0 select-none pointer-events-none text-[56px] sm:text-[96px] md:text-[140px] lg:text-[180px] xl:text-[217px] leading-none text-[#18181b]\""
+    },
+    {
+      "file": "src/app/components/Layout/footer.jsx",
+      "line": 32,
+      "column": 76,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<h3 className=\"text-[15px] md:text-[16px] lg:text-[18px] text-[#18181b]\" style={{ fontFamily: fontIT, fontWeight: 700, letterSpacing: '-0.38px' }}>"
+    },
+    {
+      "file": "src/app/components/Layout/footer.jsx",
+      "line": 41,
+      "column": 216,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]/70",
+      "lineText": "className=\"group/nav relative inline-flex text-[14px] md:text-[15px] lg:text-[18px] text-black cursor-pointer transition-[color] duration-200 ease-out motion-reduce:transition-none hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm\""
+    },
+    {
+      "file": "src/app/components/Layout/footer.jsx",
+      "line": 52,
+      "column": 154,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]/70",
+      "lineText": "className=\"text-[14px] md:text-[15px] lg:text-[18px] text-black cursor-pointer transition-colors duration-200 ease-out hover:text-[#18181b]/70\""
+    },
+    {
+      "file": "src/app/components/Layout/footer.jsx",
+      "line": 60,
+      "column": 63,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#588f7a1a]",
+      "lineText": "className=\"rounded-[9px] border-2 border-[#588f7a1a] px-2 py-0.5 text-[11px] md:px-2.5 md:py-1 md:text-[13px] lg:text-[15px] text-weelp-copy\""
+    },
+    {
+      "file": "src/app/components/Layout/footer.jsx",
+      "line": 74,
+      "column": 74,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<h3 className=\"text-[15px] md:text-[16px] lg:text-[18px] text-[#18181b]\" style={{ fontFamily: fontIT, fontWeight: 700, letterSpacing: '-0.38px' }}>"
+    },
+    {
+      "file": "src/app/components/Layout/footer.jsx",
+      "line": 86,
+      "column": 45,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]/70",
+      "lineText": "className=\"text-black hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm transition-colors duration-200 ease-out\""
+    },
+    {
+      "file": "src/app/components/Layout/footer.jsx",
+      "line": 97,
+      "column": 45,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]/70",
+      "lineText": "className=\"text-black hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm transition-colors duration-200 ease-out\""
+    },
+    {
+      "file": "src/app/components/Layout/footer.jsx",
+      "line": 106,
+      "column": 45,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]/70",
+      "lineText": "className=\"text-black hover:text-[#18181b]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm transition-colors duration-200 ease-out\""
+    },
+    {
+      "file": "src/app/components/Layout/footer.jsx",
+      "line": 118,
+      "column": 48,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#eaeaea]",
+      "lineText": "<div className=\"mb-[20px] border-t border-[#eaeaea]\" />"
+    },
+    {
+      "file": "src/app/components/Layout/footer.jsx",
+      "line": 128,
+      "column": 176,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]/70",
+      "lineText": "className=\"text-[13px] md:text-[15px] lg:text-[18px] text-black cursor-pointer transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-[#18181b]/70 hover:underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm\""
+    },
+    {
+      "file": "src/app/components/MiniCartProductCard.jsx",
+      "line": 22,
+      "column": 108,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"flex flex-col gap-2 px-6 py-4 items-center border rounded-lg shadow-sm justify-between bg-white\">"
+    },
+    {
+      "file": "src/app/components/MiniCartProductCard.jsx",
+      "line": 27,
+      "column": 43,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5a5a5a]",
+      "lineText": "<SquarePen size={18} className=\"text-[#5a5a5a]\" />"
+    },
+    {
+      "file": "src/app/components/MiniCartProductCard.jsx",
+      "line": 33,
+      "column": 50,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5a5a5a]",
+      "lineText": "<span className=\"flex gap-2 capitalize text-[#5a5a5a] text-sm mt-2 font-medium\">"
+    },
+    {
+      "file": "src/app/components/MiniCartProductCard.jsx",
+      "line": 34,
+      "column": 40,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5a5a5a]",
+      "lineText": "<User size={20} className=\"text-[#5a5a5a] capitalize\" />"
+    },
+    {
+      "file": "src/app/components/MiniCartProductCard.jsx",
+      "line": 38,
+      "column": 50,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5a5a5a]",
+      "lineText": "<span className=\"flex gap-2 capitalize text-[#5a5a5a] text-sm mt-2 font-medium\">"
+    },
+    {
+      "file": "src/app/components/MiniCartProductCard.jsx",
+      "line": 39,
+      "column": 44,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5a5a5a]",
+      "lineText": "<Calendar size={20} className=\"text-[#5a5a5a]\" />"
+    },
+    {
+      "file": "src/app/components/MiniCartProductCard.jsx",
+      "line": 45,
+      "column": 64,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5a5a5a]",
+      "lineText": "<span key={i} className=\"flex gap-2 capitalize text-[#5a5a5a] text-sm font-medium\">"
+    },
+    {
+      "file": "src/app/components/MiniCartProductCard.jsx",
+      "line": 46,
+      "column": 50,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5a5a5a]",
+      "lineText": "<Sparkles size={20} className=\"text-[#5a5a5a]\" />+ {addon.addon_name}"
+    },
+    {
+      "file": "src/app/components/MiniCartProductCard.jsx",
+      "line": 81,
+      "column": 38,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5a5a5a]",
+      "lineText": "<Trash2 size={18} className=\"text-[#5a5a5a]\" />"
+    },
+    {
+      "file": "src/app/components/MiniCartReviewCard.jsx",
+      "line": 10,
+      "column": 45,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"flex gap-4 items-center bg-white p-3 max-w-xs w-full rounded-xl border border-[#eee] hover:shadow-sm transition-shadow\">"
+    },
+    {
+      "file": "src/app/components/MiniCartReviewCard.jsx",
+      "line": 10,
+      "column": 92,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#eee]",
+      "lineText": "<div className=\"flex gap-4 items-center bg-white p-3 max-w-xs w-full rounded-xl border border-[#eee] hover:shadow-sm transition-shadow\">"
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/activities/CreateActivityForm.jsx",
+      "line": 1234,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/activities/CreateActivityForm.jsx",
+      "line": 1247,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/activities/EditActivityForm.jsx",
+      "line": 1631,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/activities/EditActivityForm.jsx",
+      "line": 1644,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/destinations/destinations_forms/CreateCityForm.jsx",
+      "line": 236,
+      "column": 231,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/destinations/destinations_forms/CreateCityForm.jsx",
+      "line": 249,
+      "column": 231,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/destinations/destinations_forms/CreateCountryForm.jsx",
+      "line": 237,
+      "column": 231,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/destinations/destinations_forms/CreateCountryForm.jsx",
+      "line": 250,
+      "column": 231,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/destinations/destinations_forms/CreatePlaceForm.jsx",
+      "line": 245,
+      "column": 231,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/destinations/destinations_forms/CreatePlaceForm.jsx",
+      "line": 258,
+      "column": 231,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/destinations/destinations_forms/CreateStateForm.jsx",
+      "line": 237,
+      "column": 231,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/destinations/destinations_forms/CreateStateForm.jsx",
+      "line": 250,
+      "column": 231,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/itineraries/CreateItineraryForm.jsx",
+      "line": 1755,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/itineraries/CreateItineraryForm.jsx",
+      "line": 1768,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/itineraries/EditItineraryForm.jsx",
+      "line": 2206,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/itineraries/EditItineraryForm.jsx",
+      "line": 2219,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/CreateOrderForm.jsx",
+      "line": 689,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/CreateOrderForm.jsx",
+      "line": 702,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/CreateOrderForm.jsx",
+      "line": 716,
+      "column": 231,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/EditOrderForm.jsx",
+      "line": 710,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/EditOrderForm.jsx",
+      "line": 723,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/EditOrderForm.jsx",
+      "line": 737,
+      "column": 231,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/packages/CreatePackageForm.jsx",
+      "line": 2237,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/packages/EditPackageForm.jsx",
+      "line": 2675,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/transfers/forms/CreateTransferForm.jsx",
+      "line": 191,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/transfers/forms/CreateTransferForm.jsx",
+      "line": 204,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/transfers/forms/CreateTransferFormByAdmin.jsx",
+      "line": 247,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/transfers/forms/CreateTransferFormByAdmin.jsx",
+      "line": 260,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/transfers/forms/EditTransferFormByAdmin.jsx",
+      "line": 236,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/DASHBOARD/admin/_rsc_pages/transfers/forms/EditTransferFormByAdmin.jsx",
+      "line": 249,
+      "column": 229,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/FRONT_END/creator-itinerary-form/CreatorItineraryFormShell.jsx",
+      "line": 205,
+      "column": 245,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm dark:shadow-none text-sm font-medium rounded-md text-copy bg-muted hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pages/FRONT_END/creator-itinerary-form/CreatorItineraryFormShell.jsx",
+      "line": 215,
+      "column": 245,
+      "rule": "neutral-color-utility",
+      "value": "ring-zinc-500",
+      "lineText": "className=\"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm dark:shadow-none text-sm font-medium rounded-md text-copy bg-muted hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500\""
+    },
+    {
+      "file": "src/app/components/Pagination.jsx",
+      "line": 51,
+      "column": 32,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-600",
+      "lineText": "<span className=\"text-sm text-gray-600 whitespace-nowrap\">Total: {totalItems} items</span>"
+    },
+    {
+      "file": "src/app/components/Pagination.jsx",
+      "line": 71,
+      "column": 34,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-600",
+      "lineText": "<span className=\"text-sm text-gray-600\">of {totalPages}</span>"
+    },
+    {
+      "file": "src/app/components/ReviewCard.jsx",
+      "line": 10,
+      "column": 41,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"w-full sm:w-[360px] bg-white border rounded-2xl p-5 sm:p-6 md:p-8 min-h-[200px] shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-2 overflow-hidden\">"
+    },
+    {
+      "file": "src/app/components/ReviewCard.jsx",
+      "line": 29,
+      "column": 19,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`bg-white p-6 sm:py-7 sm:px-6 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border flex flex-col gap-2 justify-evenly w-full ${galleryImages && galleryImages.length > 0 ? 'h-full' : 'h-[300px]'}`}"
+    },
+    {
+      "file": "src/app/components/ReviewCard.jsx",
+      "line": 32,
+      "column": 140,
+      "rule": "neutral-color-utility",
+      "value": "stroke-gray-400",
+      "lineText": "{userImageSrc ? <img className=\"size-12 rounded-full\" alt=\"userImage\" src={`${userImageSrc}`} /> : <UserRound size={42} className=\"stroke-gray-400 border-gray-400 border-2 rounded-full\" />}"
+    },
+    {
+      "file": "src/app/components/ReviewCard.jsx",
+      "line": 32,
+      "column": 156,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-400",
+      "lineText": "{userImageSrc ? <img className=\"size-12 rounded-full\" alt=\"userImage\" src={`${userImageSrc}`} /> : <UserRound size={42} className=\"stroke-gray-400 border-gray-400 border-2 rounded-full\" />}"
+    },
+    {
+      "file": "src/app/components/ReviewCard.jsx",
+      "line": 35,
+      "column": 58,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-400",
+      "lineText": "{userName} {date && <span className=\"text-xs text-gray-400\">{date}</span>}"
+    },
+    {
+      "file": "src/app/components/ReviewCard.jsx",
+      "line": 64,
+      "column": 21,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"bg-white p-8 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-1 w-full h-[200px]\">"
+    },
+    {
+      "file": "src/app/components/ReviewCard.jsx",
+      "line": 101,
+      "column": 47,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#143042]",
+      "lineText": "{item_name && <CardTitle className=\"text-[#143042] text-xl font-medium\">{item_name}</CardTitle>}"
+    },
+    {
+      "file": "src/app/components/ReviewCard.jsx",
+      "line": 109,
+      "column": 57,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-400",
+      "lineText": "{!has_live_item && <span className=\"text-xs text-gray-400\">(Archived)</span>}"
+    },
+    {
+      "file": "src/app/components/ReviewCard.jsx",
+      "line": 111,
+      "column": 41,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#747474]",
+      "lineText": "{order_id && <span className=\"text-[#747474] text-base font-medium opacity-40 text-right\">Booking ID : {order_id}</span>}"
+    },
+    {
+      "file": "src/app/components/ReviewCard.jsx",
+      "line": 129,
+      "column": 32,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#747474]",
+      "lineText": "<Trash2 className=\"text-[#747474] cursor-pointer\" />"
+    },
+    {
+      "file": "src/app/components/ReviewCard.jsx",
+      "line": 133,
+      "column": 33,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#747474]",
+      "lineText": "<FilePen className=\"text-[#747474] cursor-pointer\" />"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 24,
+      "column": 45,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 24,
+      "column": 253,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-50",
+      "lineText": "className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 28,
+      "column": 54,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#568f7c]",
+      "lineText": "<div className=\"absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium\">Featured</div>"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 29,
+      "column": 97,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#568f7c]",
+      "lineText": "<Star size={24} fill=\"#568f7c\" strokeWidth={2} className=\"absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]\" />"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 38,
+      "column": 30,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5A5A5A]",
+      "lineText": "<span className=\"text-[#5A5A5A]\" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 40,
+      "column": 32,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#142A38]",
+      "lineText": "<TitleTag className=\"text-[#142A38] text-lg font-semibold\">{productTitle || 'Evening Dessert - Premium'}</TitleTag>"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 41,
+      "column": 50,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-300",
+      "lineText": "<hr className=\" border-t border-dashed border-gray-300 mb-3\" />"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 43,
+      "column": 44,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-500",
+      "lineText": "<div className=\"flex flex-col  text-gray-500 font-semibold space-y-4\">"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 82,
+      "column": 39,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#ff725e]",
+      "lineText": "<button className=\"border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-1 px-4 uppercase rounded-md text-xs\">40% off</button>"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 82,
+      "column": 56,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#ff725e]",
+      "lineText": "<button className=\"border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-1 px-4 uppercase rounded-md text-xs\">40% off</button>"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 96,
+      "column": 45,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 96,
+      "column": 253,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-50",
+      "lineText": "className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 100,
+      "column": 54,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#568f7c]",
+      "lineText": "<div className=\"absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium\">Featured</div>"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 101,
+      "column": 97,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#568f7c]",
+      "lineText": "<Star size={24} fill=\"#568f7c\" strokeWidth={2} className=\"absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]\" />"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 110,
+      "column": 30,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5A5A5A]",
+      "lineText": "<span className=\"text-[#5A5A5A]\" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 113,
+      "column": 50,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-300",
+      "lineText": "<hr className=\" border-t border-dashed border-gray-300 mb-1\" />"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 115,
+      "column": 44,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-500",
+      "lineText": "<div className=\"flex flex-col  text-gray-500 font-semibold\">"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 123,
+      "column": 40,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#ff725e]",
+      "lineText": "<button className=\" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md\">40% off</button>"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 123,
+      "column": 57,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#ff725e]",
+      "lineText": "<button className=\" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md\">40% off</button>"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 139,
+      "column": 45,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 139,
+      "column": 253,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-50",
+      "lineText": "className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 143,
+      "column": 54,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#568f7c]",
+      "lineText": "<div className=\"absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium\">Featured</div>"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 144,
+      "column": 97,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#568f7c]",
+      "lineText": "<Star size={24} fill=\"#568f7c\" strokeWidth={2} className=\"absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]\" />"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 153,
+      "column": 30,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5A5A5A]",
+      "lineText": "<span className=\"text-[#5A5A5A]\" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 156,
+      "column": 50,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-300",
+      "lineText": "<hr className=\" border-t border-dashed border-gray-300 mb-1\" />"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 158,
+      "column": 44,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-500",
+      "lineText": "<div className=\"flex flex-col  text-gray-500 font-semibold\">"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 162,
+      "column": 40,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#ff725e]",
+      "lineText": "<button className=\" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md\">40% off</button>"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 162,
+      "column": 57,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#ff725e]",
+      "lineText": "<button className=\" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md\">40% off</button>"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 177,
+      "column": 45,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 177,
+      "column": 253,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-50",
+      "lineText": "className={`${'product_' + productId} bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 181,
+      "column": 54,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#568f7c]",
+      "lineText": "<div className=\"absolute top-4 left-4 z-10 bg-[#568f7c] text-white text-xs px-2 py-1 rounded-md font-medium\">Featured</div>"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 182,
+      "column": 97,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#568f7c]",
+      "lineText": "<Star size={24} fill=\"#568f7c\" strokeWidth={2} className=\"absolute top-4 right-4 z-10 text-[#568f7c] drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]\" />"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 191,
+      "column": 30,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5A5A5A]",
+      "lineText": "<span className=\"text-[#5A5A5A]\" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 194,
+      "column": 50,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-300",
+      "lineText": "<hr className=\" border-t border-dashed border-gray-300 mb-1\" />"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 196,
+      "column": 44,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-500",
+      "lineText": "<div className=\"flex flex-col  text-gray-500 font-semibold\">"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 200,
+      "column": 40,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#ff725e]",
+      "lineText": "<button className=\" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md\">40% off</button>"
+    },
+    {
+      "file": "src/app/components/SingleProductCard.jsx",
+      "line": 200,
+      "column": 57,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#ff725e]",
+      "lineText": "<button className=\" border border-[#ff725e] text-[#ff725e] bg-dangerLite font-semibold py-2 px-4 uppercase rounded-md\">40% off</button>"
+    },
+    {
+      "file": "src/app/components/Testimonial.jsx",
+      "line": 7,
+      "column": 21,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"bg-white rounded-lg p-4 flex flex-col gap-4 flex-wrap h-full justify-evenly border border-[#e4e4e7]\">"
+    },
+    {
+      "file": "src/app/components/Testimonial.jsx",
+      "line": 7,
+      "column": 104,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "<div className=\"bg-white rounded-lg p-4 flex flex-col gap-4 flex-wrap h-full justify-evenly border border-[#e4e4e7]\">"
+    },
+    {
+      "file": "src/app/components/Testimonial.jsx",
+      "line": 15,
+      "column": 53,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-500",
+      "lineText": "{itemName && <span className=\"font-normal text-gray-500\">{itemName}</span>}"
+    },
+    {
+      "file": "src/app/components/Testimonial.jsx",
+      "line": 31,
+      "column": 26,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-400",
+      "lineText": "<span className=\"text-gray-400 font-normal text-base uppercase\">{date || ''}</span>"
+    },
+    {
+      "file": "src/app/components/TotalReviews.jsx",
+      "line": 7,
+      "column": 58,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<h3 className={`text-lg sm:text-[28px] font-medium text-[#18181b] capitalize`}>Reviews</h3>"
+    },
+    {
+      "file": "src/app/components/TotalReviews.jsx",
+      "line": 9,
+      "column": 33,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<h2 className=\"text-3xl text-[#18181b] font-extrabold\">{rating || '5.0'}</h2>"
+    },
+    {
+      "file": "src/app/components/TransfertCard.jsx",
+      "line": 31,
+      "column": 25,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#f2f7f5]",
+      "lineText": "<div className=\"bg-[#f2f7f5] py-4 px-8 w-full flex  gap-2 sm:gap-4\">"
+    },
+    {
+      "file": "src/app/components/TransfertCard.jsx",
+      "line": 43,
+      "column": 31,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#273F4E]",
+      "lineText": "<span className=\" text-[#273F4E] font-semibold text-lg\">$6,790.18</span>"
+    },
+    {
+      "file": "src/app/components/TransfertCard.jsx",
+      "line": 44,
+      "column": 30,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5A5A5A]",
+      "lineText": "<span className=\"text-[#5A5A5A]\">Detailed BreakDown</span>"
+    },
+    {
+      "file": "src/app/components/WhatAbout.jsx",
+      "line": 21,
+      "column": 26,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<ul className=\"bg-white grid grid-cols-1 sm:grid-cols-2 justify-center shadow-sm rounded-md mt-8\">"
+    },
+    {
+      "file": "src/app/components/WhatAbout.jsx",
+      "line": 47,
+      "column": 24,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<ul className=\"bg-white grid grid-cols-2 justify-center shadow-sm rounded-md mt-8\">"
+    },
+    {
+      "file": "src/app/components/singleproductguide.jsx",
+      "line": 9,
+      "column": 58,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"max-w-full sm:max-w-sm flex flex-col bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 mb-4\">"
+    },
+    {
+      "file": "src/app/components/singleproductguide.jsx",
+      "line": 9,
+      "column": 266,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-50",
+      "lineText": "<div className=\"max-w-full sm:max-w-sm flex flex-col bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50 mb-4\">"
+    },
+    {
+      "file": "src/app/components/singleproductguide.jsx",
+      "line": 14,
+      "column": 60,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<p className=\"text-base sm:text-xl font-semibold text-[#18181b] line-clamp-2\">{modifiedSubtitle || 'Best Places for Solo Travel'}</p>"
+    },
+    {
+      "file": "src/app/components/singleproductguide.jsx",
+      "line": 29,
+      "column": 58,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<div className=\"max-w-full sm:max-w-sm flex flex-col bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50\">"
+    },
+    {
+      "file": "src/app/components/singleproductguide.jsx",
+      "line": 29,
+      "column": 266,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-50",
+      "lineText": "<div className=\"max-w-full sm:max-w-sm flex flex-col bg-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-gray-50\">"
+    },
+    {
+      "file": "src/app/components/singleproductguide.jsx",
+      "line": 34,
+      "column": 49,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#142A38]",
+      "lineText": "<p className=\"text-[20px] font-medium text-[#142A38]\">{modifiedSubtitle || 'Best Places for Solo Travel'}</p>"
+    },
+    {
+      "file": "src/app/components/singleproductguide.jsx",
+      "line": 48,
+      "column": 47,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#143042]",
+      "lineText": "<h3 className=\"capitalize text-base text-[#143042] font-bold\">"
+    },
+    {
+      "file": "src/app/components/singleproductguide.jsx",
+      "line": 49,
+      "column": 99,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5A5A5A]",
+      "lineText": "{authorName ? authorName : 'Jessica Jone'} <span className=\"flex flex-col font-medium text-[#5A5A5A] text-sm first-letter:capitalize\">Updated at 16 Oct</span>"
+    },
+    {
+      "file": "src/app/components/singleproductguide.jsx",
+      "line": 53,
+      "column": 28,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5A5A5A]",
+      "lineText": "<span className=\"text-[#5A5A5A] flex items-center gap-2\">"
+    },
+    {
+      "file": "src/app/components/singleproductguide.jsx",
+      "line": 54,
+      "column": 39,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#FF8686]",
+      "lineText": "<Heart className=\" size-4 text-[#FF8686] fill-[#FF8686]\" />"
+    },
+    {
+      "file": "src/app/components/singleproductguide.jsx",
+      "line": 57,
+      "column": 28,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5A5A5A]",
+      "lineText": "<span className=\"text-[#5A5A5A] flex items-center gap-2\">"
+    },
+    {
+      "file": "src/app/components/singleproductguide.jsx",
+      "line": 58,
+      "column": 36,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#5A5A5A]",
+      "lineText": "<Eye className=\"size-4 text-[#5A5A5A]\" />"
+    },
+    {
+      "file": "src/app/components/sliders/GallerySlider.jsx",
+      "line": 67,
+      "column": 112,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"md:block absolute bottom-4 right-4 text-weelp-steel text-sm font-medium z-10 capitalize bg-white py-3 px-6 rounded-lg active:bg-weelp-steel active:text-white gallery_slider_toggle_btn\""
+    },
+    {
+      "file": "src/app/components/ui/BlogSection.jsx",
+      "line": 37,
+      "column": 107,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "className={`${navigationId}-prev flex size-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}"
+    },
+    {
+      "file": "src/app/components/ui/BlogSection.jsx",
+      "line": 37,
+      "column": 124,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`${navigationId}-prev flex size-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}"
+    },
+    {
+      "file": "src/app/components/ui/BlogSection.jsx",
+      "line": 37,
+      "column": 133,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#1A1918]",
+      "lineText": "className={`${navigationId}-prev flex size-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}"
+    },
+    {
+      "file": "src/app/components/ui/BlogSection.jsx",
+      "line": 44,
+      "column": 107,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "className={`${navigationId}-next flex size-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}"
+    },
+    {
+      "file": "src/app/components/ui/BlogSection.jsx",
+      "line": 44,
+      "column": 124,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`${navigationId}-next flex size-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}"
+    },
+    {
+      "file": "src/app/components/ui/BlogSection.jsx",
+      "line": 44,
+      "column": 133,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#1A1918]",
+      "lineText": "className={`${navigationId}-next flex size-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}"
+    },
+    {
+      "file": "src/app/components/ui/Pagination.jsx",
+      "line": 40,
+      "column": 100,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#52525b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition-[color,background-color,border-color,box-shadow,opacity] duration-200 motion-reduce:transition-none disabled:opacity-45\""
+    },
+    {
+      "file": "src/app/components/ui/Pagination.jsx",
+      "line": 40,
+      "column": 109,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "className=\"flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#52525b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition-[color,background-color,border-color,box-shadow,opacity] duration-200 motion-reduce:transition-none disabled:opacity-45\""
+    },
+    {
+      "file": "src/app/components/ui/Pagination.jsx",
+      "line": 59,
+      "column": 39,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "currentPage === page ? 'bg-white opacity-100 shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)]' : 'bg-white opacity-45'"
+    },
+    {
+      "file": "src/app/components/ui/Pagination.jsx",
+      "line": 59,
+      "column": 109,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "currentPage === page ? 'bg-white opacity-100 shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)]' : 'bg-white opacity-45'"
+    },
+    {
+      "file": "src/app/components/ui/Pagination.jsx",
+      "line": 76,
+      "column": 100,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#52525b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition-[color,background-color,border-color,box-shadow,opacity] duration-200 motion-reduce:transition-none disabled:opacity-45\""
+    },
+    {
+      "file": "src/app/components/ui/Pagination.jsx",
+      "line": 76,
+      "column": 109,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "className=\"flex size-10 md:size-[35px] items-center justify-center rounded-[7.68px] border bg-white text-[#52525b] shadow-[0_1.89px_4.13px_rgba(60,66,87,0.08)] transition-[color,background-color,border-color,box-shadow,opacity] duration-200 motion-reduce:transition-none disabled:opacity-45\""
+    },
+    {
+      "file": "src/app/components/ui/ProductSliderSection.jsx",
+      "line": 41,
+      "column": 109,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "className={`${navigationId}-prev flex size-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}"
+    },
+    {
+      "file": "src/app/components/ui/ProductSliderSection.jsx",
+      "line": 41,
+      "column": 126,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`${navigationId}-prev flex size-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}"
+    },
+    {
+      "file": "src/app/components/ui/ProductSliderSection.jsx",
+      "line": 41,
+      "column": 135,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#1A1918]",
+      "lineText": "className={`${navigationId}-prev flex size-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}"
+    },
+    {
+      "file": "src/app/components/ui/ProductSliderSection.jsx",
+      "line": 48,
+      "column": 109,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "className={`${navigationId}-next flex size-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}"
+    },
+    {
+      "file": "src/app/components/ui/ProductSliderSection.jsx",
+      "line": 48,
+      "column": 126,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`${navigationId}-next flex size-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}"
+    },
+    {
+      "file": "src/app/components/ui/ProductSliderSection.jsx",
+      "line": 48,
+      "column": 135,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#1A1918]",
+      "lineText": "className={`${navigationId}-next flex size-11 items-center justify-center rounded-full border border-[#e4e4e7] bg-white text-[#1A1918] transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}"
+    },
+    {
+      "file": "src/app/components/ui/SectionFallback.jsx",
+      "line": 30,
+      "column": 90,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#52525b]",
+      "lineText": "{eyebrow && <span className=\"text-[13px] font-semibold uppercase tracking-[0.08em] text-[#52525b]\">{eyebrow}</span>}"
+    },
+    {
+      "file": "src/app/components/ui/SectionFallback.jsx",
+      "line": 32,
+      "column": 52,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#eaeaea]",
+      "lineText": "<div className=\"flex flex-col gap-5 border-t border-[#eaeaea] pt-8\">"
+    },
+    {
+      "file": "src/app/components/ui/SectionFallback.jsx",
+      "line": 33,
+      "column": 74,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<p className=\"max-w-[60ch] text-[18px] font-medium leading-[1.4] text-[#18181b] sm:text-[20px]\">{message}</p>"
+    },
+    {
+      "file": "src/app/components/ui/SectionFallback.jsx",
+      "line": 39,
+      "column": 139,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#4d8069]",
+      "lineText": "className=\"inline-flex items-center gap-2 rounded-sm text-[15px] font-semibold text-weelp-sage-deep transition-colors hover:text-[#4d8069] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40\""
+    },
+    {
+      "file": "src/app/components/ui/SectionFallback.jsx",
+      "line": 50,
+      "column": 80,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "className=\"inline-flex items-center gap-1.5 rounded-[8px] border border-[#e4e4e7] bg-white px-3.5 py-2 text-[14px] font-semibold text-[#18181b] transition-colors hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40\""
+    },
+    {
+      "file": "src/app/components/ui/SectionFallback.jsx",
+      "line": 50,
+      "column": 97,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className=\"inline-flex items-center gap-1.5 rounded-[8px] border border-[#e4e4e7] bg-white px-3.5 py-2 text-[14px] font-semibold text-[#18181b] transition-colors hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40\""
+    },
+    {
+      "file": "src/app/components/ui/SectionFallback.jsx",
+      "line": 50,
+      "column": 144,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "className=\"inline-flex items-center gap-1.5 rounded-[8px] border border-[#e4e4e7] bg-white px-3.5 py-2 text-[14px] font-semibold text-[#18181b] transition-colors hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40\""
+    },
+    {
+      "file": "src/app/components/ui/SectionFallback.jsx",
+      "line": 50,
+      "column": 183,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#f4f4f5]",
+      "lineText": "className=\"inline-flex items-center gap-1.5 rounded-[8px] border border-[#e4e4e7] bg-white px-3.5 py-2 text-[14px] font-semibold text-[#18181b] transition-colors hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40\""
+    },
+    {
+      "file": "src/app/components/ui/SectionHeader.jsx",
+      "line": 4,
+      "column": 82,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#6f7680]",
+      "lineText": "{superTitle && <span className=\"text-[14px] font-semibold tracking-[0.2px] text-[#6f7680]\">{superTitle}</span>}"
+    },
+    {
+      "file": "src/app/components/ui/SectionHeader.jsx",
+      "line": 5,
+      "column": 91,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<h2 className={`text-lg ${titleSize === 'lg' ? 'sm:text-[36px]' : 'sm:text-[28px]'} text-[#18181b]`}>{title}</h2>"
+    },
+    {
+      "file": "src/app/components/ui/SectionHeader.jsx",
+      "line": 6,
+      "column": 82,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#6f7680]",
+      "lineText": "{subtitle && <p className=\"max-w-[520px] text-sm font-medium leading-[1.5] text-[#6f7680] sm:text-base\">{subtitle}</p>}"
+    },
+    {
+      "file": "src/app/components/ui/item-card.jsx",
+      "line": 30,
+      "column": 78,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-white transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${className}`}"
+    },
+    {
+      "file": "src/app/components/ui/item-card.jsx",
+      "line": 34,
+      "column": 78,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "bg-[#f2f7f5]",
+      "lineText": "<div className=\"relative h-[175px] w-full overflow-hidden rounded-lg bg-[#f2f7f5] sm:h-[185px] lg:h-[200px]\">"
+    },
+    {
+      "file": "src/app/components/ui/item-card.jsx",
+      "line": 56,
+      "column": 74,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<span className=\"text-[13px] lg:text-[14px] leading-[1.38] text-[#71717a]\" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 400 }}>"
+    },
+    {
+      "file": "src/app/components/ui/item-card.jsx",
+      "line": 67,
+      "column": 79,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<h3 className=\"text-[15px] sm:text-base lg:text-[18px] leading-[1.59] text-[#18181b] line-clamp-2\" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>"
+    },
+    {
+      "file": "src/app/components/ui/item-card.jsx",
+      "line": 71,
+      "column": 69,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "{isFull && excerpt && <p className=\"text-sm leading-relaxed text-[#71717a] line-clamp-2\">{excerpt}</p>}"
+    },
+    {
+      "file": "src/app/components/ui/item-card.jsx",
+      "line": 76,
+      "column": 38,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "border-[#e4e4e7]",
+      "lineText": "<div className=\"border-t border-[#e4e4e7]\" />"
+    },
+    {
+      "file": "src/app/components/ui/item-card.jsx",
+      "line": 79,
+      "column": 74,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#71717a]",
+      "lineText": "<span className=\"text-sm lg:text-[15.6px] leading-[1.37] text-[#71717a]\" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontWeight: 400 }}>"
+    },
+    {
+      "file": "src/app/components/ui/item-card.jsx",
+      "line": 82,
+      "column": 74,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": "<span className=\"text-sm lg:text-[15.6px] leading-[1.37] text-[#18181b]\" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontWeight: 700 }}>"
+    },
+    {
+      "file": "src/app/globals.css",
+      "line": 936,
+      "column": 10,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": ".dark .bg-white,"
+    },
+    {
+      "file": "src/app/globals.css",
+      "line": 942,
+      "column": 18,
+      "rule": "arbitrary-hex-color-utility",
+      "value": "text-[#18181b]",
+      "lineText": ".dark [class*='text-[#18181b]'] {"
+    },
+    {
+      "file": "src/app/styles/date-picker.css",
+      "line": 253,
+      "column": 10,
+      "rule": "neutral-color-utility",
+      "value": "text-neutral-500",
+      "lineText": "@apply text-neutral-500 hover:bg-transparent cursor-not-allowed;"
+    },
+    {
+      "file": "src/app/styles/date-picker.css",
+      "line": 265,
+      "column": 76,
+      "rule": "neutral-color-utility",
+      "value": "border-neutral-200",
+      "lineText": "@apply h-8 w-8 inline-flex items-center justify-center rounded-md border border-neutral-200 bg-white text-[var(--weelp-cal-fg)] hover:bg-neutral-50 transition-colors motion-reduce:transition-none;"
+    },
+    {
+      "file": "src/app/styles/date-picker.css",
+      "line": 265,
+      "column": 95,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "@apply h-8 w-8 inline-flex items-center justify-center rounded-md border border-neutral-200 bg-white text-[var(--weelp-cal-fg)] hover:bg-neutral-50 transition-colors motion-reduce:transition-none;"
+    },
+    {
+      "file": "src/app/styles/date-picker.css",
+      "line": 265,
+      "column": 137,
+      "rule": "neutral-color-utility",
+      "value": "bg-neutral-50",
+      "lineText": "@apply h-8 w-8 inline-flex items-center justify-center rounded-md border border-neutral-200 bg-white text-[var(--weelp-cal-fg)] hover:bg-neutral-50 transition-colors motion-reduce:transition-none;"
+    },
+    {
+      "file": "src/app/styles/date-picker.css",
+      "line": 277,
+      "column": 29,
+      "rule": "neutral-color-utility",
+      "value": "border-neutral-200",
+      "lineText": "@apply mt-3 pt-3 border-t border-neutral-200;"
+    },
+    {
+      "file": "src/app/styles/swiper.css",
+      "line": 84,
+      "column": 10,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "@apply bg-white rounded-[10px] size-10 border border-gray-100 flex items-center justify-center transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-300 motion-reduce:transition-none !important;"
+    },
+    {
+      "file": "src/app/styles/swiper.css",
+      "line": 84,
+      "column": 49,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-100",
+      "lineText": "@apply bg-white rounded-[10px] size-10 border border-gray-100 flex items-center justify-center transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-300 motion-reduce:transition-none !important;"
+    },
+    {
+      "file": "src/app/styles/swiper.css",
+      "line": 189,
+      "column": 10,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "@apply bg-white border rounded-lg size-10;"
+    },
+    {
+      "file": "src/components/ui/AvatarUpload.jsx",
+      "line": 108,
+      "column": 46,
+      "rule": "background-white-black",
+      "value": "bg-black",
+      "lineText": "<div className=\"absolute inset-0 bg-black/50 flex items-center justify-center\">"
+    },
+    {
+      "file": "src/components/ui/alert-dialog.jsx",
+      "line": 17,
+      "column": 45,
+      "rule": "background-white-black",
+      "value": "bg-black",
+      "lineText": "className={cn('fixed inset-0 z-[100010] bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0', className)}"
+    },
+    {
+      "file": "src/components/ui/dialog.jsx",
+      "line": 20,
+      "column": 39,
+      "rule": "background-white-black",
+      "value": "bg-black",
+      "lineText": "className={cn('fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0', className)}"
+    },
+    {
+      "file": "src/components/ui/sheet.jsx",
+      "line": 19,
+      "column": 45,
+      "rule": "background-white-black",
+      "value": "bg-black",
+      "lineText": "className={cn('fixed inset-0 z-[100000] bg-black/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0', className)}"
+    },
+    {
+      "file": "src/mdx-components.jsx",
+      "line": 8,
+      "column": 64,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-900",
+      "lineText": "h1: ({ children }) => <h1 className=\"text-4xl font-extrabold text-gray-900 sm:text-5xl mb-4\">{children}</h1>,"
+    },
+    {
+      "file": "src/mdx-components.jsx",
+      "line": 10,
+      "column": 63,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-800",
+      "lineText": "h2: ({ children }) => <h2 className=\"text-3xl font-semibold text-gray-800 sm:text-4xl mb-3\">{children}</h2>,"
+    },
+    {
+      "file": "src/mdx-components.jsx",
+      "line": 12,
+      "column": 61,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-700",
+      "lineText": "h3: ({ children }) => <h3 className=\"text-2xl font-medium text-gray-700 sm:text-3xl mb-3\">{children}</h3>,"
+    },
+    {
+      "file": "src/mdx-components.jsx",
+      "line": 14,
+      "column": 46,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-800",
+      "lineText": "p: ({ children }) => <p className=\"text-lg text-gray-800 leading-relaxed mb-4\">{children}</p>,"
+    },
+    {
+      "file": "src/mdx-components.jsx",
+      "line": 20,
+      "column": 40,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-700",
+      "lineText": "li: ({ children }) => <li className=\"text-gray-700\">{children}</li>,"
+    },
+    {
+      "file": "src/mdx-components.jsx",
+      "line": 30,
+      "column": 42,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-800",
+      "lineText": "pre: ({ children }) => <pre className=\"bg-gray-800 text-white p-4 rounded-md overflow-x-auto\">{children}</pre>,"
+    },
+    {
+      "file": "src/mdx-components.jsx",
+      "line": 32,
+      "column": 44,
+      "rule": "neutral-color-utility",
+      "value": "bg-gray-200",
+      "lineText": "code: ({ children }) => <code className=\"bg-gray-200 text-gray-800 rounded px-1 py-0.5\">{children}</code>,"
+    },
+    {
+      "file": "src/mdx-components.jsx",
+      "line": 32,
+      "column": 56,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-800",
+      "lineText": "code: ({ children }) => <code className=\"bg-gray-200 text-gray-800 rounded px-1 py-0.5\">{children}</code>,"
+    },
+    {
+      "file": "src/mdx-components.jsx",
+      "line": 34,
+      "column": 95,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-600",
+      "lineText": "blockquote: ({ children }) => <blockquote className=\"border-l-4 border-blue-500 pl-4 italic text-gray-600 mb-4\">{children}</blockquote>,"
+    },
+    {
+      "file": "src/mdx-components.jsx",
+      "line": 36,
+      "column": 39,
+      "rule": "neutral-color-utility",
+      "value": "border-gray-300",
+      "lineText": "hr: () => <hr className=\"border-t-2 border-gray-300 my-8\" />,"
+    },
+    {
+      "file": "src/mdx-components.jsx",
+      "line": 38,
+      "column": 58,
+      "rule": "neutral-color-utility",
+      "value": "text-gray-900",
+      "lineText": "strong: ({ children }) => <strong className=\"font-bold text-gray-900\">{children}</strong>,"
+    }
+  ]
+}
