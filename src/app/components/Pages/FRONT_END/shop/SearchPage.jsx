@@ -10,7 +10,7 @@ import { GlobalCard } from '@/app/components/SingleProductCard';
 import { Star } from 'lucide-react';
 import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import Link from 'next/link';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -220,8 +220,8 @@ export const SearchPage = () => {
                 <div className="grid h-full  ">
                   <span className="text-muted-foreground">Sorry No Items</span>
                   <Button asChild>
-                    <Link className={'bg-weelp-sage-deep'} href={'/shop'}>
-                      Back To Shop
+                    <Link className={'bg-weelp-sage-deep'} href={'/cities'}>
+                      Explore Cities
                     </Link>
                   </Button>
                 </div>
