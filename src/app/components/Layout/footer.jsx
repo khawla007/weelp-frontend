@@ -48,10 +48,7 @@ const Footer = () => {
                             />
                           </Link>
                         ) : (
-                          <span
-                            className="text-[14px] md:text-[15px] lg:text-[18px] text-foreground"
-                            style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}
-                          >
+                          <span className="text-[14px] md:text-[15px] lg:text-[18px] text-foreground" style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}>
                             {link.label}
                           </span>
                         )}
