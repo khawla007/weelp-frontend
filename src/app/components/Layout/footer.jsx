@@ -49,7 +49,7 @@ const Footer = () => {
                           </Link>
                         ) : (
                           <span
-                            className="text-[14px] md:text-[15px] lg:text-[18px] text-foreground cursor-pointer transition-colors duration-200 ease-out hover:text-foreground/70"
+                            className="text-[14px] md:text-[15px] lg:text-[18px] text-foreground"
                             style={{ fontFamily: fontIT, fontWeight: 500, letterSpacing: '-0.38px' }}
                           >
                             {link.label}
