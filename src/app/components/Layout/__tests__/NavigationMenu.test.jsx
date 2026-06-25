@@ -271,4 +271,21 @@ describe('DesktopMenu', () => {
     fireEvent.keyDown(document, { key: 'Escape' });
     expect(screen.queryByTestId('account-submenu')).not.toBeInTheDocument();
   });
+
+  it('closes the account menu when another header dropdown opens', () => {
+    render(<DesktopMenu stickyHeader={false} />);
+
+    const accountTrigger = screen.getByRole('button', { name: /open account menu/i });
+
+    fireEvent.click(accountTrigger);
+    expect(accountTrigger).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByTestId('account-submenu')).toBeInTheDocument();
+
+    act(() => {
+      window.dispatchEvent(new CustomEvent('weelp-header-dropdown-open', { detail: { source: 'theme' } }));
+    });
+
+    expect(accountTrigger).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByTestId('account-submenu')).not.toBeInTheDocument();
+  });
 });

@@ -157,7 +157,7 @@ export default function NotificationBell({ overHero = false }) {
         aria-label={showBadge ? `Notifications ${displayCount}` : 'Notifications'}
         aria-haspopup="menu"
         aria-expanded={open}
-        className={`relative flex items-center justify-center ${overHero ? 'text-foreground dark:text-white focus-visible:ring-offset-white' : 'text-foreground focus-visible:ring-offset-background'} rounded-sm transition hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2`}
+        className={`relative flex h-11 w-11 items-center justify-center ${overHero ? 'text-foreground dark:text-white focus-visible:ring-offset-white' : 'text-foreground focus-visible:ring-offset-background'} rounded-full transition hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2`}
         onClick={() => {
           setOpen((isOpen) => {
             if (!isOpen) {
@@ -174,7 +174,7 @@ export default function NotificationBell({ overHero = false }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-10 w-[360px] bg-popover text-popover-foreground rounded-xl shadow-[0_14px_30px_rgba(24,24,27,0.1)] dark:shadow-none border border-border z-[9999] overflow-hidden">
+        <div className="absolute right-0 top-full mt-1 w-[360px] bg-popover text-popover-foreground rounded-xl shadow-[0_14px_30px_rgba(24,24,27,0.1)] dark:shadow-none border border-border z-[9999] overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border">
             <h3 className="text-sm font-semibold text-foreground">Notifications</h3>
