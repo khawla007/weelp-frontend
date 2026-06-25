@@ -337,28 +337,33 @@ export const HeaderAccount = ({ overHero = false }) => {
   const cartItemCount = cartItems?.length ?? 0;
   const [showSubmenu, setShowSubmenu] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const submenuOpenTimer = useRef(null);
-  const submenuCloseTimer = useRef(null);
+  const accountMenuRef = useRef(null);
 
   const iconChip = overHero ? 'bg-background/85 text-foreground backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:shadow-none' : '';
   const iconButtonTone = overHero ? 'text-foreground' : 'text-foreground';
 
-  const clearSubmenuTimers = useCallback(() => {
-    if (submenuOpenTimer.current) clearTimeout(submenuOpenTimer.current);
-    if (submenuCloseTimer.current) clearTimeout(submenuCloseTimer.current);
-  }, []);
+  useEffect(() => {
+    if (!showSubmenu) return undefined;
 
-  const openSubmenu = useCallback(() => {
-    clearSubmenuTimers();
-    setShowSubmenu(true);
-  }, [clearSubmenuTimers]);
+    const handlePointerDown = (event) => {
+      if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
+        setShowSubmenu(false);
+      }
+    };
 
-  const scheduleCloseSubmenu = useCallback(() => {
-    clearSubmenuTimers();
-    submenuCloseTimer.current = setTimeout(() => setShowSubmenu(false), 180);
-  }, [clearSubmenuTimers]);
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setShowSubmenu(false);
+      }
+    };
 
-  useEffect(() => () => clearSubmenuTimers(), [clearSubmenuTimers]);
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showSubmenu]);
 
   const handleShowForm = () => {
     setShowForm((prev) => !prev);
@@ -377,7 +382,7 @@ export const HeaderAccount = ({ overHero = false }) => {
   };
 
   return (
-    <div className="relative justify-self-end">
+    <div className="relative justify-self-end" ref={accountMenuRef}>
       <ul className="flex items-center gap-5 xl:gap-[24px]">
         <li>
           <button
@@ -412,12 +417,12 @@ export const HeaderAccount = ({ overHero = false }) => {
         <li>
           <ThemeToggle className={overHero ? iconChip : ''} />
         </li>
-        <li onMouseEnter={openSubmenu} onMouseLeave={scheduleCloseSubmenu}>
+        <li>
           <button
             type="button"
             aria-label="Open account menu"
             aria-expanded={!!showSubmenu}
-            onFocus={openSubmenu}
+            onClick={() => setShowSubmenu((isOpen) => !isOpen)}
             className={`flex h-11 w-[65px] items-center justify-center gap-2 rounded-[30px] border border-border ${iconButtonTone} overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${iconChip}`}
           >
             {isLoggedIn && avatarSrc ? (
@@ -445,7 +450,7 @@ export const HeaderAccount = ({ overHero = false }) => {
 
       {/* AccountSubMenu */}
       {showSubmenu && (
-        <div onMouseEnter={openSubmenu} onMouseLeave={scheduleCloseSubmenu}>
+        <div>
           <SubmenuAccount showSubmenu={showSubmenu} setShowSubmenu={setShowSubmenu} />
         </div>
       )}

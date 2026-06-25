@@ -51,7 +51,7 @@ jest.mock(
   '../../Modals/SubmenuAccount',
   () =>
     function SubmenuAccountMock() {
-      return null;
+      return <div data-testid="account-submenu">Account menu</div>;
     },
 );
 
@@ -235,5 +235,40 @@ describe('DesktopMenu', () => {
     expect(headerBar().className).toContain('dark:shadow-none');
     expect(headerBar().className).not.toMatch(/transition-\[[^\]]*(opacity|transform)/);
     expect(container.innerHTML).not.toMatch(/transition-all|transition:\s*all/);
+  });
+
+  it('opens the account menu on click instead of hover', () => {
+    render(<DesktopMenu stickyHeader={false} />);
+
+    const accountTrigger = screen.getByRole('button', { name: /open account menu/i });
+
+    fireEvent.mouseEnter(accountTrigger.closest('li'));
+    expect(screen.queryByTestId('account-submenu')).not.toBeInTheDocument();
+
+    fireEvent.click(accountTrigger);
+    expect(accountTrigger).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByTestId('account-submenu')).toBeInTheDocument();
+
+    fireEvent.click(accountTrigger);
+    expect(accountTrigger).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByTestId('account-submenu')).not.toBeInTheDocument();
+  });
+
+  it('closes the account menu on outside pointer down and Escape', () => {
+    render(<DesktopMenu stickyHeader={false} />);
+
+    const accountTrigger = screen.getByRole('button', { name: /open account menu/i });
+
+    fireEvent.click(accountTrigger);
+    expect(screen.getByTestId('account-submenu')).toBeInTheDocument();
+
+    fireEvent.pointerDown(document.body);
+    expect(screen.queryByTestId('account-submenu')).not.toBeInTheDocument();
+
+    fireEvent.click(accountTrigger);
+    expect(screen.getByTestId('account-submenu')).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByTestId('account-submenu')).not.toBeInTheDocument();
   });
 });

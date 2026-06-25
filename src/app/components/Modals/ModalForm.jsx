@@ -94,7 +94,7 @@ const ModalForm = ({ showForm, setShowForm, handleShowForm }) => {
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay
           data-search-modal-layer=""
-          className="fixed inset-0 z-[100000] bg-foreground/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:duration-300 data-[state=closed]:duration-200 motion-reduce:animate-none"
+          className="fixed inset-0 z-[100000] bg-foreground/80 backdrop-blur-sm dark:bg-background/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:duration-300 data-[state=closed]:duration-200 motion-reduce:animate-none"
         />
         <DialogPrimitive.Content
           ref={contentRef}

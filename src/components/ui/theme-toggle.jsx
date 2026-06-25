@@ -10,9 +10,14 @@ export function ThemeToggle({ className = '', compact = false }) {
   const isClient = useIsClient();
   const { theme, setTheme, resolvedTheme } = useTheme();
   const TriggerIcon = !isClient ? Sun : resolvedTheme === 'dark' ? Moon : Sun;
+  const handleOpenChange = (open) => {
+    if (open) {
+      window.dispatchEvent(new CustomEvent('weelp-header-dropdown-open', { detail: { source: 'theme' } }));
+    }
+  };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger
         aria-label="Toggle theme"
         className={cn(

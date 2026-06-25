@@ -38,7 +38,7 @@ const WeelpRecommendations = async () => {
     <Reveal as="section" initialHidden className="w-full bg-surface-tint pb-10 pt-10 md:pb-16 md:pt-16 lg:pb-24 lg:pt-24">
       <div className="w-full px-4 lg:px-[60px]">
         <Reveal variant="lift">
-          <h3 className="text-[20px] text-foreground mb-4">Weelp Recommendations</h3>
+          <h3 className="text-[20px] text-foreground mb-5">Weelp Recommendations</h3>
           <div className="mb-4 border-t border-border" />
         </Reveal>
         <Reveal stagger={45} variant="lift" className="grid grid-cols-2 gap-x-6 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">

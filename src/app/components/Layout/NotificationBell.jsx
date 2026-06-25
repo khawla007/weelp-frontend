@@ -107,6 +107,17 @@ export default function NotificationBell({ overHero = false }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [open]);
 
+  useEffect(() => {
+    const handleHeaderDropdownOpen = (event) => {
+      if (event.detail?.source !== 'notifications') {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener('weelp-header-dropdown-open', handleHeaderDropdownOpen);
+    return () => window.removeEventListener('weelp-header-dropdown-open', handleHeaderDropdownOpen);
+  }, []);
+
   const handleMarkAsRead = async (id) => {
     await markAsRead(id);
     setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read_at: new Date().toISOString() } : n)));
@@ -147,7 +158,14 @@ export default function NotificationBell({ overHero = false }) {
         aria-haspopup="menu"
         aria-expanded={open}
         className={`relative flex items-center justify-center ${overHero ? 'text-foreground dark:text-white focus-visible:ring-offset-white' : 'text-foreground focus-visible:ring-offset-background'} rounded-sm transition hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2`}
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          setOpen((isOpen) => {
+            if (!isOpen) {
+              window.dispatchEvent(new CustomEvent('weelp-header-dropdown-open', { detail: { source: 'notifications' } }));
+            }
+            return !isOpen;
+          });
+        }}
       >
         <Bell className="size-5" strokeWidth={1.5} />
         {/* Gate the badge on isClient so the server render (no badge) matches the

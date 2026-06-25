@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import NotificationBell from '../NotificationBell';
 
 jest.mock('next-auth/react', () => ({ useSession: () => ({ data: null }) }));
@@ -11,5 +11,22 @@ describe('NotificationBell (anonymous)', () => {
   test('renders the bell button when logged out', () => {
     render(<NotificationBell />);
     expect(screen.getByRole('button', { name: /notifications/i })).toBeInTheDocument();
+  });
+
+  test('closes when another header dropdown opens', async () => {
+    render(<NotificationBell />);
+
+    const trigger = screen.getByRole('button', { name: /notifications/i });
+    fireEvent.click(trigger);
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+    act(() => {
+      window.dispatchEvent(new CustomEvent('weelp-header-dropdown-open', { detail: { source: 'theme' } }));
+    });
+
+    await waitFor(() => {
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    });
   });
 });

@@ -58,13 +58,7 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
   const closeDropdown = () => setShowSubmenu(false);
 
   return (
-    <div
-      onMouseLeave={(e) => {
-        e.stopPropagation();
-        setShowSubmenu(false);
-      }}
-      className="absolute right-0 top-3/4 border border-border rounded-xl bg-popover z-10 whitespace-nowrap animate-fade-in"
-    >
+    <div className="absolute right-0 top-3/4 border border-border rounded-xl bg-popover z-10 whitespace-nowrap animate-fade-in">
       <ul>
         {!session ? (
           <>

@@ -74,7 +74,13 @@ const Footer = () => {
                 <h3 className="text-[15px] md:text-[16px] lg:text-[18px] text-foreground" style={{ fontFamily: fontIT, fontWeight: 700, letterSpacing: '-0.38px' }}>
                   Payment Partners
                 </h3>
-                <img src="/assets/images/payment-partners.png" alt="Payment Partners - Visa, Mastercard, PayPal, Apple Pay, Google Pay" className="w-full max-w-[355px] h-auto" />
+                <span className="inline-block max-w-[355px] bg-background">
+                  <img
+                    src="/assets/images/payment-partners.png"
+                    alt="Payment Partners - Visa, Mastercard, PayPal, Apple Pay, Google Pay"
+                    className="h-auto w-full dark:mix-blend-lighten dark:[filter:invert(1)_hue-rotate(180deg)]"
+                  />
+                </span>
               </div>
             </div>
 
