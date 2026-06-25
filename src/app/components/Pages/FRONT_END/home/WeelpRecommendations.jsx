@@ -35,7 +35,7 @@ const WeelpRecommendations = async () => {
   const itineraries = getRandomItems(items, 32);
 
   return (
-    <Reveal as="section" initialHidden className="w-full bg-surface-tint pb-10 md:pb-16 lg:pb-24">
+    <Reveal as="section" initialHidden className="w-full bg-surface-tint pb-10 pt-10 md:pb-16 md:pt-16 lg:pb-24 lg:pt-24">
       <div className="w-full px-4 lg:px-[60px]">
         <Reveal variant="lift">
           <h3 className="text-[20px] text-foreground mb-4">Weelp Recommendations</h3>

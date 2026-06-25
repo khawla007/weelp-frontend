@@ -27,7 +27,7 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
     <Link
       href={href}
       style={style}
-      className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] bg-background transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${className}`}
+      className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] border border-border bg-background transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${className}`}
     >
       {/* Image — inset inside card with own rounded corners to match reference */}
       <div className="px-3 pt-3">
