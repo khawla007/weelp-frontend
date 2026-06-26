@@ -1,16 +1,17 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import '@/app/styles/range-slider.css';
 import { GlobalCard } from '@/app/components/SingleProductCard';
-import { Star } from 'lucide-react';
+import { Search, Star } from 'lucide-react';
 import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -32,6 +33,8 @@ export const SearchPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [sortby, setSortby] = useState('');
+  const [categorySearch, setCategorySearch] = useState('');
+  const [locationSearch, setLocationSearch] = useState('');
 
   // Extract values from query params
   useEffect(() => {
@@ -116,6 +119,22 @@ export const SearchPage = () => {
     { name: 'Price High to Low', value: 'price_desc' },
   ];
 
+  const filteredCategories = useMemo(() => {
+    const query = categorySearch.trim().toLowerCase();
+
+    if (!query) return categories;
+
+    return categories.filter((category) => category.name.toLowerCase().includes(query));
+  }, [categories, categorySearch]);
+
+  const filteredLocations = useMemo(() => {
+    const query = locationSearch.trim().toLowerCase();
+
+    if (!query) return locations;
+
+    return locations.filter((location) => location.name.toLowerCase().includes(query));
+  }, [locations, locationSearch]);
+
   return (
     <section className="flex flex-col w-full">
       {/* Top Bar Filter */}
@@ -141,19 +160,34 @@ export const SearchPage = () => {
         {/* Sidebar Filters */}
         <div className="w-full sm:max-w-xs p-4 bg-background shadow-md dark:shadow-none rounded-lg">
           <h2 className="text-lg font-medium text-foreground my-4">Category</h2>
-          <div className="flex flex-col space-y-2 h-48 overflow-scroll overflow-x-hidden">
-            {categories.map((category) => (
-              <label key={category.id} className="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  value={category.name}
-                  checked={selectedCategories.includes(category.name)}
-                  onChange={() => setSelectedCategories((prev) => (prev.includes(category.name) ? prev.filter((c) => c !== category.name) : [...prev, category.name]))}
-                  className="size-5 cursor-pointer checked:accent-weelp-sage-deep"
-                />
-                <span>{category.name}</span>
-              </label>
-            ))}
+          <div className="relative mb-3">
+            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="search"
+              aria-label="Search categories"
+              placeholder="Search categories"
+              value={categorySearch}
+              onChange={(event) => setCategorySearch(event.target.value)}
+              className="h-9 pl-9"
+            />
+          </div>
+          <div data-testid="category-filter-options" className="flex max-h-48 flex-col space-y-2 overflow-y-auto overflow-x-hidden pr-1">
+            {filteredCategories.length > 0 ? (
+              filteredCategories.map((category) => (
+                <label key={category.id} className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value={category.name}
+                    checked={selectedCategories.includes(category.name)}
+                    onChange={() => setSelectedCategories((prev) => (prev.includes(category.name) ? prev.filter((c) => c !== category.name) : [...prev, category.name]))}
+                    className="size-5 cursor-pointer checked:accent-weelp-sage-deep"
+                  />
+                  <span>{category.name}</span>
+                </label>
+              ))
+            ) : (
+              <p className="rounded-md border border-dashed border-border px-3 py-4 text-sm text-muted-foreground">No categories found.</p>
+            )}
           </div>
 
           <h2 className="text-lg font-medium text-foreground mt-6 mb-4">Price Range</h2>
@@ -178,19 +212,29 @@ export const SearchPage = () => {
           </div>
 
           <h2 className="text-lg font-medium text-foreground my-4">Location</h2>
-          {locations.map((location) => (
-            <label key={location.id} className="flex items-center space-x-2 pb-2 cursor-pointer">
-              <input
-                type="radio"
-                name="location"
-                value={location.id}
-                checked={selectedLocation?.id === location.id}
-                onChange={() => setSelectedLocation(location)}
-                className="size-5 cursor-pointer checked:accent-weelp-sage-deep"
-              />
-              <span>{location.name}</span>
-            </label>
-          ))}
+          <div className="relative mb-3">
+            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input type="search" aria-label="Search locations" placeholder="Search locations" value={locationSearch} onChange={(event) => setLocationSearch(event.target.value)} className="h-9 pl-9" />
+          </div>
+          <div data-testid="location-filter-options" className="flex max-h-56 flex-col space-y-2 overflow-y-auto overflow-x-hidden pr-1">
+            {filteredLocations.length > 0 ? (
+              filteredLocations.map((location) => (
+                <label key={location.id} className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="location"
+                    value={location.id}
+                    checked={selectedLocation?.id === location.id}
+                    onChange={() => setSelectedLocation(location)}
+                    className="size-5 cursor-pointer checked:accent-weelp-sage-deep"
+                  />
+                  <span>{location.name}</span>
+                </label>
+              ))
+            ) : (
+              <p className="rounded-md border border-dashed border-border px-3 py-4 text-sm text-muted-foreground">No locations found.</p>
+            )}
+          </div>
         </div>
 
         {/* Product Display */}
@@ -217,7 +261,7 @@ export const SearchPage = () => {
                   );
                 })
               ) : (
-                <div className="grid h-full  ">
+                <div data-testid="search-empty-results" className="flex min-h-[420px] w-full flex-col items-center justify-center gap-4 text-center">
                   <span className="text-muted-foreground">Sorry No Items</span>
                   <Button asChild>
                     <Link className={'bg-weelp-sage-deep'} href={'/cities'}>
