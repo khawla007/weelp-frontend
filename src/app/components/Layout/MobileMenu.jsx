@@ -30,28 +30,36 @@ const getInitials = (name) => {
 
 const MobileMenu = ({ stickyHeader, variant = 'solid' }) => {
   const isOverHero = variant === 'over-hero';
-  const topStripVisible = stickyHeader;
+  const topStripVisible = !stickyHeader;
   const mainBarTransparent = isOverHero && !stickyHeader;
+  const topStripTransparent = isOverHero && topStripVisible;
+  const topStripSurfaceClass = topStripTransparent ? 'border-transparent bg-transparent text-black dark:text-black' : 'border-border bg-surface-tint text-foreground';
+  const topStripOfferPillClass = topStripTransparent ? 'border-black/10 bg-transparent text-black dark:text-black' : 'border-border bg-background/80';
+  const topStripLocalePillClass = topStripTransparent
+    ? 'border-transparent bg-background/85 text-foreground backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:shadow-none'
+    : 'border-border bg-background text-foreground';
+  const topStripSpacingClass = topStripTransparent ? 'px-3 pb-1.5 pt-[18px] sm:px-4' : 'px-3 py-2.5 sm:px-4 sm:py-3';
+  const topStripInnerPaddingClass = topStripTransparent ? 'py-0.5' : 'py-1 sm:py-1.5';
 
   return (
     <div className={`lg:hidden w-full ${stickyHeader ? 'fixed top-0 left-0 right-0 z-40 shadow-md dark:shadow-none' : ''}`}>
       <div
         aria-hidden={topStripVisible ? undefined : true}
-        className={`border-b border-border bg-surface-tint overflow-hidden transition-[opacity,max-height,padding] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+        className={`${topStripVisible ? 'border-b' : 'border-b-0'} overflow-hidden transition-[opacity,max-height,padding] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${topStripSurfaceClass} ${
           topStripVisible ? 'opacity-100 max-h-24' : 'opacity-0 max-h-0 pointer-events-none'
         }`}
       >
-        <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground sm:px-4 sm:py-3 sm:text-[11px] sm:tracking-[0.16em]">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-warning/40 bg-warning/15 px-2.5 py-1 sm:gap-2 sm:px-3 sm:py-1.5">
-            <Smartphone className="size-3.5" />
-            <span>Get Exclusive offer on the App</span>
+        <div className={`grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] sm:text-[11px] sm:tracking-[0.14em] ${topStripSpacingClass}`}>
+          <div className={`inline-flex min-w-0 items-center gap-1.5 rounded-full border px-2.5 sm:gap-2 sm:px-3 ${topStripInnerPaddingClass} ${topStripOfferPillClass}`}>
+            <Smartphone className="size-3.5 shrink-0" />
+            <span className="truncate">Get Exclusive offer on the App</span>
           </div>
-          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/80 px-2.5 py-1 sm:px-3 sm:py-1.5">
-              <Globe className="size-3.5" />
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+            <div className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 sm:px-3 ${topStripInnerPaddingClass} ${topStripLocalePillClass}`}>
+              <Globe className="size-3.5 shrink-0" />
               <span>{HEADER_SECONDARY_META[0]}</span>
             </div>
-            <div className="rounded-full border border-border bg-background/80 px-2.5 py-1 sm:px-3 sm:py-1.5">{HEADER_SECONDARY_META[1]}</div>
+            <div className={`rounded-full border px-2.5 sm:px-3 ${topStripInnerPaddingClass} ${topStripLocalePillClass}`}>{HEADER_SECONDARY_META[1]}</div>
           </div>
         </div>
       </div>
@@ -311,7 +319,7 @@ const HeaderAccountMobile = () => {
   return (
     <div>
       <div className="flex gap-2">
-        <ThemeToggle />
+        <ThemeToggle className="border border-border bg-background text-foreground focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background" />
         <button
           type="button"
           aria-label={cartItemCount > 0 ? `Open cart, ${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'}` : 'Open cart'}

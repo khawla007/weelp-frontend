@@ -42,7 +42,7 @@ const Header = () => {
     // is out of normal flow, so the strip collapse animation inside cannot shift
     // page content. Keep the existing combined layout.
     return (
-      <header className="fixed top-0 left-0 right-0 z-[99999]" data-weelp-header-variant={variant}>
+      <header className={`fixed top-0 left-0 right-0 z-[99999] ${isScrolled ? 'lg:top-0' : 'lg:top-[14px]'}`} data-weelp-header-variant={variant}>
         <DesktopMenu stickyHeader={isScrolled} variant={variant} />
         <MobileMenu stickyHeader={isScrolled} variant={variant} />
       </header>

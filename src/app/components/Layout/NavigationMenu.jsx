@@ -35,35 +35,38 @@ const getInitials = (name) => {
 export const DesktopTopStrip = ({ topStripVisible, topStripOverHero, collapsible = true }) => {
   // collapsible=false: strip keeps constant 46px height; visibility controlled by parent rendering it conditionally
   // collapsible=true: strip animates max-height/opacity for the in-flow over-hero case (no doc-height oscillation since parent is fixed)
+  const topStripHeightClass = topStripOverHero ? 'h-[52px]' : 'h-[46px]';
   const collapseClass = collapsible
     ? `overflow-hidden transition-[max-height,opacity,background-color,border-color] duration-200 ease-out motion-reduce:transition-none ${
-        topStripVisible ? 'max-h-[46px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+        topStripVisible ? `${topStripOverHero ? 'max-h-[52px]' : 'max-h-[46px]'} opacity-100` : 'max-h-0 opacity-0 pointer-events-none'
       }`
     : 'h-[46px]';
   const surfaceClass = topStripVisible ? (topStripOverHero ? 'border-b border-transparent bg-transparent' : 'border-b border-border bg-card') : 'border-b-0 bg-transparent';
   const textClass = topStripOverHero ? HOME_HEADER_TEXT_CLASS : 'text-foreground';
+  const offerPillClass = topStripOverHero ? 'border-black/10 bg-transparent text-black dark:text-black' : 'border-border bg-background/80 text-foreground';
+  const localePillClass = topStripOverHero
+    ? 'border-transparent bg-background/85 text-foreground backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:shadow-none'
+    : 'border-border bg-background text-foreground';
   return (
     <div aria-hidden={topStripVisible ? undefined : true} className={`hidden lg:block ${collapseClass} ${surfaceClass}`}>
-      <div className={`mx-auto flex h-[46px] w-full items-center justify-between gap-4 px-4 md:px-8 xl:px-[60px] ${textClass}`}>
-        <div className="flex items-center gap-4">
-          <div className="inline-flex items-center gap-2 text-[14px]">
+      <div className={`mx-auto flex ${topStripHeightClass} w-full items-center justify-between gap-6 px-4 md:px-8 xl:px-[60px] ${textClass}`}>
+        <div className="flex min-w-0 items-center gap-3">
+          <div className={`inline-flex h-8 items-center gap-2 rounded-full border px-3 text-[13px] font-semibold ${offerPillClass}`}>
             <Smartphone className="size-[18px]" />
             <span>{HEADER_PRIMARY_META[0].label}</span>
           </div>
-          <div className="inline-flex items-center gap-2 text-[14px]">
+          <div className="inline-flex items-center gap-2 text-[13px] font-medium">
             <Headphones className="size-[18px]" />
             <span>{HEADER_PRIMARY_META[1].label}</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="inline-flex items-center gap-[13px] text-[14px]">
+        <div className="flex shrink-0 items-center gap-2 text-[13px] font-semibold">
+          <div className={`inline-flex h-8 items-center gap-2 rounded-full border px-3 ${localePillClass}`}>
             <Globe className="size-[18px]" />
             <span>{HEADER_SECONDARY_META[0]}</span>
           </div>
-          <div className="inline-flex items-center gap-[13px] text-[14px]">
-            <span>{HEADER_SECONDARY_META[1]}</span>
-          </div>
+          <div className={`inline-flex h-8 items-center rounded-full border px-3 ${localePillClass}`}>{HEADER_SECONDARY_META[1]}</div>
         </div>
       </div>
     </div>

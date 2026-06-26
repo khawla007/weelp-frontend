@@ -86,10 +86,12 @@ describe('Header', () => {
     usePathnameMock.mockReturnValue('/');
     setScroll(70);
     render(<Header />);
+    expect(screen.getByRole('banner')).toHaveClass('lg:top-[14px]');
     expect(screen.getByTestId('desktop-menu')).toHaveAttribute('data-sticky', 'false');
 
     setScroll(120);
     await flushRaf();
+    expect(screen.getByRole('banner')).toHaveClass('lg:top-0');
     expect(screen.getByTestId('desktop-menu')).toHaveAttribute('data-sticky', 'true');
   });
 
