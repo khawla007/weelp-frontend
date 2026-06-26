@@ -8,7 +8,7 @@ const SAGE_LEAF_PATH = 'M0 571.5c4.16667-99 64.89999-297 274.5-297-219.60001 0-2
 
 const WanderersBanner = () => {
   return (
-    <Reveal as="section" initialHidden aria-labelledby="wanderers-heading" className="relative h-[220px] w-full overflow-hidden bg-background md:h-[260px] mb-10 md:mb-16 lg:mb-24">
+    <Reveal as="section" initialHidden aria-labelledby="wanderers-heading" className="relative h-[164px] w-full overflow-hidden bg-background sm:h-[200px] md:h-[260px] mb-6 md:mb-16 lg:mb-24">
       <svg
         aria-hidden="true"
         viewBox="0 0 275 572"
@@ -28,7 +28,7 @@ const WanderersBanner = () => {
         <path d={SAGE_LEAF_PATH} fill="currentColor" />
       </svg>
 
-      <Reveal variant="lift" className="container-page relative z-10 flex h-full flex-col items-center gap-4 pt-[5px] text-center md:pt-[21px]">
+      <Reveal variant="lift" className="container-page relative z-10 flex h-full flex-col items-center gap-3 pt-4 text-center md:gap-4 md:pt-[21px]">
         <ul className="flex items-center gap-1.5" aria-hidden="true">
           {AVATARS.map((i) => (
             <li key={i} className="size-7 overflow-hidden rounded-full border border-background shadow-sm dark:shadow-none ring-1 ring-border md:size-8">
@@ -42,12 +42,12 @@ const WanderersBanner = () => {
         </p>
       </Reveal>
 
-      <div className="container-page absolute inset-x-0 top-[calc(50%-5px)] z-10 -translate-y-1/2">
-        <Reveal variant="lift" delay={120} className="flex items-center justify-center gap-4">
+      <div className="container-page absolute inset-x-0 top-[64%] z-10 -translate-y-1/2 md:top-[calc(50%-5px)]">
+        <Reveal variant="lift" delay={120} className="flex items-center justify-center gap-3 md:gap-4">
           <span aria-hidden="true" className="h-px flex-1 bg-border" />
           <Link
             href="/cities"
-            className="group relative inline-flex h-[40px] w-[88px] shrink-0 items-center justify-center text-base font-medium leading-none !text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-weelp-sage-deep"
+            className="group relative inline-flex h-[42px] w-[96px] shrink-0 items-center justify-center text-base font-medium leading-none !text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-weelp-sage-deep md:h-[40px] md:w-[88px]"
           >
             <span aria-hidden="true" className="absolute inset-0 rounded-[5px] bg-weelp-sage-deep transition-colors group-hover:bg-weelp-sage-hover" style={{ transform: 'skewX(-10deg)' }} />
             <span className="relative z-10">Curate</span>

@@ -15,7 +15,7 @@ const FULL_DEFAULTS = { rating: '4.5', reviewCount: '3.4K', discount: '40% OFF' 
  * values so every card looks complete even before API data is available.
  * Pass explicit values (or null) to override.
  */
-export default function ItemCard({ href, image, title, category, excerpt, price, rating, reviewCount, discount, variant = 'full', className = '', style }) {
+export default function ItemCard({ href, image, title, category, excerpt, price, rating, reviewCount, discount, variant = 'full', className = '', imageClassName = '', style }) {
   const isFull = variant === 'full';
 
   // Apply defaults for full variant when values are not explicitly provided
@@ -31,7 +31,7 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
     >
       {/* Image — inset inside card with own rounded corners to match reference */}
       <div className="px-3 pt-3">
-        <div className="relative h-[175px] w-full overflow-hidden rounded-lg bg-weelp-sage-wash sm:h-[185px] lg:h-[200px]">
+        <div className={`relative h-[175px] w-full overflow-hidden rounded-lg bg-weelp-sage-wash sm:h-[185px] lg:h-[200px] ${imageClassName}`}>
           <Image
             src={image}
             alt={title}

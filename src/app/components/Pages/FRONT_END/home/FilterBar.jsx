@@ -162,7 +162,7 @@ export default function FilterBar({ appearance = 'card' }) {
         <div
           className={
             isPill
-              ? 'grid grid-cols-1 items-stretch sm:grid-cols-[minmax(0,1fr)_minmax(210px,1fr)_minmax(0,1fr)_auto] sm:gap-0'
+              ? 'grid grid-cols-1 items-stretch gap-1.5 sm:grid-cols-[minmax(0,1fr)_minmax(210px,1fr)_minmax(0,1fr)_auto] sm:gap-0'
               : 'grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(210px,1fr)_minmax(0,1fr)] sm:gap-0'
           }
         >
@@ -183,7 +183,7 @@ export default function FilterBar({ appearance = 'card' }) {
                   onClick={handleInputClick}
                   className={
                     isPill
-                      ? 'relative flex items-center gap-3 bg-transparent px-7 h-24 cursor-pointer sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border sm:first:before:hidden'
+                      ? 'relative flex min-h-16 items-center gap-3 rounded-2xl bg-muted/45 px-4 py-3 cursor-pointer sm:h-24 sm:rounded-none sm:bg-transparent sm:px-7 sm:py-0 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border sm:first:before:hidden'
                       : 'flex items-center gap-3 rounded-xl border border-border bg-card px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer sm:rounded-r-none'
                   }
                   style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
@@ -292,7 +292,7 @@ export default function FilterBar({ appearance = 'card' }) {
                   aria-label="Choose dates"
                   className={
                     isPill
-                      ? 'relative flex w-full items-center gap-3 bg-transparent px-7 h-24 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border'
+                      ? 'relative flex w-full min-h-16 items-center gap-3 rounded-2xl bg-muted/45 px-4 py-3 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:h-24 sm:rounded-none sm:bg-transparent sm:px-7 sm:py-0 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border'
                       : `${FIELD_TRIGGER_CLASS} sm:rounded-none`
                   }
                   style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
@@ -364,7 +364,7 @@ export default function FilterBar({ appearance = 'card' }) {
                   aria-label="Choose guests"
                   className={
                     isPill
-                      ? 'relative flex w-full items-center gap-3 bg-transparent px-7 h-24 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border'
+                      ? 'relative flex w-full min-h-16 items-center gap-3 rounded-2xl bg-muted/45 px-4 py-3 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:h-24 sm:rounded-none sm:bg-transparent sm:px-7 sm:py-0 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border'
                       : `${FIELD_TRIGGER_CLASS} sm:rounded-l-none`
                   }
                   style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
@@ -424,10 +424,10 @@ export default function FilterBar({ appearance = 'card' }) {
           </Popover>
 
           {isPill && (
-            <div className="flex items-center justify-end pr-4 sm:pr-5">
+            <div className="flex items-center justify-stretch sm:justify-end sm:pr-5">
               <Link
                 href={buildSearchUrl(watchedWhereTo, watchedFrom, watchedhowMany)}
-                className="inline-flex h-16 min-w-[200px] items-center justify-center gap-2 rounded-[18px] bg-weelp-sage-deep px-10 text-sm font-semibold text-white transition-colors duration-200 ease-out hover:bg-weelp-sage-deep/85 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none"
+                className="inline-flex h-[52px] min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-weelp-sage-deep px-8 text-sm font-semibold text-white transition-colors duration-200 ease-out hover:bg-weelp-sage-deep/85 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none sm:h-16 sm:w-auto sm:min-w-[200px] sm:px-10"
               >
                 <Search className="size-4" strokeWidth={2} />
                 Search escapes

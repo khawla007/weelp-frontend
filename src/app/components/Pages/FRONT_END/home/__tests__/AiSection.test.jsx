@@ -36,7 +36,7 @@ describe('AiSection', () => {
     const section = container.querySelector('section');
 
     // Normal content section: bottom padding owns the gap, no page-level top padding.
-    expect(section).toHaveClass('pb-10', 'md:pb-16', 'lg:pb-24');
+    expect(section).toHaveClass('pb-12', 'md:pb-16', 'lg:pb-24');
     expect(section).not.toHaveClass('pt-14', 'md:pt-[72px]', 'lg:pt-24');
   });
 
@@ -49,7 +49,7 @@ describe('AiSection', () => {
     const globe = container.querySelector('[data-personalised-cobe-globe]');
     const card = container.querySelector('[data-personalised-card]');
 
-    expect(card).toHaveClass('min-h-[260px]', 'sm:min-h-[300px]', 'md:min-h-[360px]', 'lg:min-h-[440px]');
+    expect(card).toHaveClass('min-h-[220px]', 'sm:min-h-[300px]', 'md:min-h-[360px]', 'lg:min-h-[440px]');
     expect(card).not.toHaveClass('aspect-[32/10]');
     expect(stage).toHaveClass('absolute', 'inset-0', 'overflow-hidden', 'bg-card');
     expect(stage).toHaveAttribute('data-animated-globe');

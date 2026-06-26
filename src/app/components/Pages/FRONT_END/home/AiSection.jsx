@@ -14,12 +14,12 @@ const AiSection = async () => {
   const buddyItems = featured.map((a) => mapProductToItemCard(a));
 
   return (
-    <Reveal as="section" initialHidden className="container-page flex flex-col items-center gap-12 pb-10 md:pb-16 lg:pb-24">
+    <Reveal as="section" initialHidden className="container-page flex flex-col items-center gap-8 pb-12 md:gap-12 md:pb-16 lg:pb-24">
       <Reveal variant="lift" as="h2" className="text-center text-[28px] font-medium text-foreground">
         Your AI Travel Buddy
       </Reveal>
 
-      <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
+      <div className="grid w-full grid-cols-1 gap-4 md:gap-6 lg:grid-cols-3">
         <TravelBuddyWidget items={buddyItems} />
 
         <article className={`${SHARED_CARD} group aspect-[16/10] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}>
@@ -43,7 +43,7 @@ const AiSection = async () => {
 
         <article
           data-personalised-card
-          className={`${SHARED_CARD} group min-h-[260px] sm:min-h-[300px] md:min-h-[360px] lg:col-span-2 lg:min-h-[440px] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}
+          className={`${SHARED_CARD} group min-h-[220px] sm:min-h-[300px] md:min-h-[360px] lg:col-span-2 lg:min-h-[440px] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}
         >
           {/* Dotted globe — bottom-anchored and clipped by the card. */}
           <PersonalisedGlobe />

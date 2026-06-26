@@ -24,7 +24,7 @@ const TravelBuddyWidget = ({ items = [] }) => {
   return (
     <>
       <article className={`${SHARED_CARD} lg:row-span-2`}>
-        <div className="flex min-h-[360px] flex-1 flex-col">
+        <div className="flex min-h-[300px] flex-1 flex-col md:min-h-[360px]">
           <BuddyChat messages={messages} isThinking={isThinking} sendMessage={sendMessage} presets={presets} />
         </div>
 
@@ -50,7 +50,7 @@ const TravelBuddyWidget = ({ items = [] }) => {
                 navigationPrefix="buddy-activities"
                 breakpoints={BUDDY_SLIDER_BREAKPOINTS}
                 slideClassName="!h-auto"
-                renderSlide={(card) => <ItemCard {...card} variant="full" />}
+                renderSlide={(card) => <ItemCard {...card} variant="compact" imageClassName="h-[112px] sm:h-[185px] lg:h-[200px]" />}
               />
             </div>
           </>
@@ -58,7 +58,7 @@ const TravelBuddyWidget = ({ items = [] }) => {
       </article>
 
       <article className={`${SHARED_CARD} group motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100 md:aspect-[16/10]`}>
-        <div className="relative h-full min-h-[280px] w-full overflow-hidden">
+        <div className="relative h-full min-h-[220px] w-full overflow-hidden md:min-h-[280px]">
           <TravelBuddyMap markers={lastPayload.markers} route={lastPayload.route} fitBounds={lastPayload.fitBounds} showPreview={isInitial} />
           <div
             data-overlay

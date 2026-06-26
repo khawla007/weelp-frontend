@@ -39,7 +39,7 @@ const HomePage = async () => {
       <HeroSection />
 
       {featuredActivities.length > 0 ? (
-        <ProductSliderSection items={featuredActivities.map((a) => mapProductToItemCard(a))} title="Top activities" navigationId="top-activities" />
+        <ProductSliderSection items={featuredActivities.map((a) => mapProductToItemCard(a))} title="Top activities" navigationId="top-activities" className="pb-12 md:pb-16 lg:pb-24" />
       ) : (
         <SectionFallback
           eyebrow="Top activities"
@@ -50,7 +50,7 @@ const HomePage = async () => {
       )}
 
       {featuredCities.length > 0 ? (
-        <BrowseDestinationsSection cities={featuredCities} />
+        <BrowseDestinationsSection cities={featuredCities} className="pb-12 md:pb-16 lg:pb-24" />
       ) : (
         <SectionFallback
           eyebrow="Top destinations"
@@ -79,7 +79,7 @@ const HomePage = async () => {
       <AiSection />
 
       {blogs.length > 0 ? (
-        <BlogSection blogs={blogs} navigationId="guide-blog" />
+        <BlogSection blogs={blogs} navigationId="guide-blog" className="pb-12 md:pb-16 lg:pb-24" />
       ) : (
         <SectionFallback
           eyebrow="Your guide"
