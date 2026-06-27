@@ -16,6 +16,7 @@ export default function ToursFilterBar() {
   const [fromInputValue, setFromInputValue] = useState('');
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const fromRef = useRef(null);
+  const fromInputRef = useRef(null);
   const [fromHasTyped, setFromHasTyped] = useState(false);
 
   const [to, setTo] = useState(null);
@@ -23,6 +24,7 @@ export default function ToursFilterBar() {
   const [toInputValue, setToInputValue] = useState('');
   const [showToDropdown, setShowToDropdown] = useState(false);
   const toRef = useRef(null);
+  const toInputRef = useRef(null);
   const [toHasTyped, setToHasTyped] = useState(false);
 
   // Date range state
@@ -139,6 +141,7 @@ export default function ToursFilterBar() {
     setShowToDropdown(false);
     setShowCalendar(false);
     setShowGuests(false);
+    fromInputRef.current?.focus();
     if (!fromHasTyped) {
       setFilteredFromCities(cities);
     }
@@ -165,6 +168,7 @@ export default function ToursFilterBar() {
     setShowFromDropdown(false);
     setShowCalendar(false);
     setShowGuests(false);
+    toInputRef.current?.focus();
     if (!toHasTyped) {
       setFilteredToCities(cities);
     }
@@ -231,7 +235,7 @@ export default function ToursFilterBar() {
     <div className="relative w-full">
       <div className="flex flex-col gap-2 sm:flex-row sm:gap-0 sm:-space-x-px">
         {/* From */}
-        <div className="flex-1 relative" ref={fromRef}>
+        <div className="flex-1 min-w-0 relative" ref={fromRef}>
           <div
             onClick={handleFromInputClick}
             className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer sm:rounded-r-none"
@@ -239,12 +243,13 @@ export default function ToursFilterBar() {
           >
             <MapPin size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
             <input
+              ref={fromInputRef}
               type="text"
               placeholder="From?"
               value={fromInputValue}
               onChange={handleFromInputChange}
               onClick={handleFromInputClick}
-              className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
+              className="min-w-0 flex-1 bg-transparent border-0 text-sm font-medium placeholder:text-muted-foreground outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
               style={{ color: 'rgb(var(--copy-rgb))', fontFamily: 'inherit' }}
               autoComplete="off"
             />
@@ -279,7 +284,7 @@ export default function ToursFilterBar() {
         </div>
 
         {/* Where To */}
-        <div className="flex-1 relative" ref={toRef}>
+        <div className="flex-1 min-w-0 relative" ref={toRef}>
           <div
             onClick={handleToInputClick}
             className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer sm:rounded-none"
@@ -287,12 +292,13 @@ export default function ToursFilterBar() {
           >
             <MapPin size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
             <input
+              ref={toInputRef}
               type="text"
               placeholder="Where To?"
               value={toInputValue}
               onChange={handleToInputChange}
               onClick={handleToInputClick}
-              className="w-full bg-transparent border-0 text-sm font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded"
+              className="min-w-0 flex-1 bg-transparent border-0 text-sm font-medium placeholder:text-muted-foreground outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
               style={{ color: 'rgb(var(--copy-rgb))', fontFamily: 'inherit' }}
               autoComplete="off"
             />
@@ -327,7 +333,7 @@ export default function ToursFilterBar() {
         </div>
 
         {/* When */}
-        <div className="flex-1 relative">
+        <div className="flex-1 min-w-0 relative">
           <div
             onClick={() => {
               const opening = !showCalendar;
@@ -340,7 +346,7 @@ export default function ToursFilterBar() {
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
             <Calendar size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
-            <span className="text-sm font-medium" style={{ color: 'rgb(var(--copy-rgb))' }}>
+            <span className="min-w-0 truncate whitespace-nowrap text-sm font-medium" style={{ color: 'rgb(var(--copy-rgb))' }}>
               {dateRange?.from && dateRange?.to
                 ? `${dateRange.from.toLocaleDateString('en-US', {
                     month: 'short',
@@ -375,7 +381,7 @@ export default function ToursFilterBar() {
         </div>
 
         {/* How Many */}
-        <div className="flex-1 relative">
+        <div className="flex-1 min-w-0 relative">
           <div
             onClick={() => {
               setShowGuests(!showGuests);
@@ -387,7 +393,7 @@ export default function ToursFilterBar() {
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
           >
             <Users size={20} className="flex-shrink-0" style={{ color: 'rgb(var(--copy-rgb))' }} />
-            <span className="text-sm font-medium" style={{ color: 'rgb(var(--copy-rgb))' }}>
+            <span className="min-w-0 truncate whitespace-nowrap text-sm font-medium" style={{ color: 'rgb(var(--copy-rgb))' }}>
               {totalGuests > 0 ? `${totalGuests} ${totalGuests === 1 ? 'Guest' : 'Guests'}` : 'How Many?'}
             </span>
           </div>
