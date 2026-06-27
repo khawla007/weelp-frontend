@@ -89,6 +89,37 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
   // Use modified schedules when editing, otherwise use the prop
   const displaySchedules = isEditing && modifiedSchedules ? modifiedSchedules : schedules;
 
+  const hasScheduleNavigation = startDate && (displaySchedules.length > 0 || isEditing);
+  const renderEditActionButton = (className = '') => {
+    if (canEdit && !isEditing) {
+      return (
+        <button
+          onClick={handleStartEdit}
+          className={`px-6 py-2.5 bg-weelp-sage-deep hover:bg-weelp-sage-hover text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2 ${className}`}
+        >
+          <Pencil size={16} />
+          {isLoggedIn ? 'Customize This Itinerary' : 'Login to Customize'}
+        </button>
+      );
+    }
+
+    if (isEditing) {
+      return (
+        <button
+          onClick={() => {
+            setUserStartedEdit(false);
+            useItineraryEditStore.getState().resetChanges();
+          }}
+          className={`px-6 py-2.5 bg-muted hover:bg-muted text-copy font-medium rounded-lg transition-colors ${className}`}
+        >
+          Exit Edit Mode
+        </button>
+      );
+    }
+
+    return null;
+  };
+
   const scrollToDay = (dayIndex) => {
     const el = dayRefs.current[dayIndex];
     if (el) {
@@ -125,36 +156,17 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between md:sticky md:top-[121px] md:z-10 md:bg-background md:py-2">
         <SectionHeader title={title} />
 
-        {/* Action buttons */}
-        {canEdit && !isEditing && (
-          <button onClick={handleStartEdit} className="px-6 py-2.5 bg-weelp-sage-deep hover:bg-weelp-sage-hover text-white font-medium rounded-lg transition-colors flex items-center gap-2">
-            <Pencil size={16} />
-            {isLoggedIn ? 'Customize This Itinerary' : 'Login to Customize'}
-          </button>
-        )}
-
-        {/* Exit Edit button - shows when in edit mode */}
-        {isEditing && (
-          <button
-            onClick={() => {
-              setUserStartedEdit(false);
-              useItineraryEditStore.getState().resetChanges();
-            }}
-            className="px-6 py-2.5 bg-muted hover:bg-muted text-copy font-medium rounded-lg transition-colors"
-          >
-            Exit Edit Mode
-          </button>
-        )}
+        <div>{renderEditActionButton()}</div>
       </div>
 
       {/* Date Navigation Buttons + Schedule Detail - inline layout */}
-      {startDate && (displaySchedules.length > 0 || isEditing) && (
+      {hasScheduleNavigation && (
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left: Date Navigation Buttons - vertical column on desktop */}
-          <div className="flex md:flex-col gap-2 flex-shrink-0 md:w-fit overflow-x-auto pb-2 md:pb-0">
+          <div className="flex md:flex-col gap-2 flex-shrink-0 md:w-fit overflow-x-auto pb-2 md:pb-0 md:sticky md:top-[176px] md:self-start">
             {displaySchedules.map((_, index) => {
               const dayDate = new Date(startDate);
               dayDate.setDate(dayDate.getDate() + index);

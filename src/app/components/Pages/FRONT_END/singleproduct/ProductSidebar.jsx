@@ -119,7 +119,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
 
   return (
     <FormProvider {...methods}>
-      <div className="p-6 lg:pl-[60px] lg:pr-0 lg:pt-[60px] lg:pb-[70px] lg:sticky lg:top-[76px]">
+      <div className="p-6 lg:px-[60px] lg:pt-[60px] lg:pb-[70px] lg:sticky lg:top-[76px]">
         {/* Base Price */}
         {productType === 'itinerary' ? (
           (() => {
