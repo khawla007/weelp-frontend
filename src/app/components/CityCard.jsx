@@ -22,7 +22,7 @@ export default function CityCard({ city, className = '', subtitleMode = 'count' 
   return (
     <Link
       href={`/cities/${city.slug}`}
-      className={`group relative block h-[360px] overflow-hidden rounded-lg bg-background border border-border transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] hover:border-transparent ${className}`}
+      className={`group relative block h-[360px] overflow-hidden rounded-lg border border-white/80 bg-background ring-1 ring-white/80 transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:border-white/10 dark:ring-white/10 ${className}`}
     >
       <Image
         src={image}
