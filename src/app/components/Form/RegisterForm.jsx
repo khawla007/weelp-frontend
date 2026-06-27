@@ -334,7 +334,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
   };
 
   return (
-    <div className="relative space-y-4 bg-background rounded-xl w-full">
+    <div className="relative w-full space-y-4 rounded-xl bg-weelp-auth-neu-surface">
       {showCloseButton && (
         <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-background rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
           <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
@@ -343,10 +343,10 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
       {step === 'info' ? (
         <form onSubmit={handleSubmit(onSubmitInfo)}>
-          <fieldset className={`space-y-4 bg-background py-4 ${isSubmitting && 'cursor-wait'}`} disabled={isSubmitting}>
+          <fieldset className={`space-y-4 bg-weelp-auth-neu-surface py-4 ${isSubmitting && 'cursor-wait'}`} disabled={isSubmitting}>
             {/* Name Input */}
             <div>
-              <label htmlFor="name" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md">
+              <label htmlFor="name" className="flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
                 <User className="text-copy size-4" />
                 <input
                   placeholder="Full Name"
@@ -354,7 +354,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                   id="name"
                   {...register('name')}
                   autoComplete="name"
-                  className="mt-1 py-2 px-3 focus:outline-none bg-background placeholder:bg-background text-base flex-1"
+                  className="mt-1 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
                 />
               </label>
               {errors.name && <p className="text-sm text-red-600 pt-2">{errors.name.message}</p>}
@@ -362,7 +362,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
             {/* Username Input */}
             <div>
-              <label htmlFor="username" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md relative">
+              <label htmlFor="username" className="relative flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
                 <User className="text-copy size-4" />
                 <input
                   placeholder="Username"
@@ -370,7 +370,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                   id="username"
                   {...register('username')}
                   autoComplete="username"
-                  className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-background placeholder:bg-background text-base flex-1"
+                  className="mt-1 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 pr-10 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
                 />
                 {/* Username availability indicator */}
                 {username && username.length >= 3 && (
@@ -391,7 +391,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md">
+              <label htmlFor="email" className="flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
                 <AtSign className="text-copy size-4" />
                 <input
                   placeholder="Email ID"
@@ -399,15 +399,15 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                   id="email"
                   {...register('email')}
                   autoComplete="email"
-                  className="mt-1 py-2 px-3 focus:outline-none bg-background placeholder:bg-background text-base flex-1"
+                  className="mt-1 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
                 />
               </label>
               {errors.email && <p className="text-sm text-red-600 pt-2">{errors.email.message}</p>}
             </div>
 
             {/* Password Input */}
-            <div className="border relative mb-4">
-              <label htmlFor="password" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md relative">
+            <div className="relative mb-4">
+              <label htmlFor="password" className="relative flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
                 <KeyRound className="text-copy size-4" />
                 <input
                   type={visible ? 'text' : 'password'}
@@ -415,7 +415,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                   placeholder="Password"
                   {...register('password')}
                   autoComplete="new-password"
-                  className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-background placeholder:bg-background text-base flex-1"
+                  className="mt-1 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 pr-10 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
                 />
                 {!visible ? <Eye size={20} className="absolute right-4 cursor-pointer" onClick={toggle} /> : <EyeClosed size={20} className="absolute right-4 cursor-pointer" onClick={toggle} />}
               </label>
@@ -455,7 +455,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
             {/* Confirm Password Input */}
             <div>
-              <label htmlFor="password_confirmation" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md relative">
+              <label htmlFor="password_confirmation" className="relative flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
                 <KeyRound className="text-copy size-4" />
                 <input
                   type={visible ? 'text' : 'password'}
@@ -463,7 +463,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                   placeholder="Confirm Password"
                   {...register('password_confirmation')}
                   autoComplete="new-password"
-                  className="mt-1 py-2 px-3 pr-10 focus:outline-none bg-background placeholder:bg-background text-base flex-1"
+                  className="mt-1 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 pr-10 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
                 />
                 {/* Live password match indicator */}
                 {passwordConfirmation && (
@@ -481,7 +481,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-muted-foreground cursor-not-allowed border-border' : 'bg-weelp-sage-deep text-white hover:bg-background hover:text-weelp-sage-deep'}`}
+                className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-muted-foreground cursor-not-allowed border-border' : 'bg-weelp-sage-deep text-white hover:bg-weelp-auth-neu-surface hover:text-weelp-sage-deep'}`}
               >
                 {isSubmitting ? (
                   <>
@@ -496,7 +496,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
           </fieldset>
         </form>
       ) : (
-        <fieldset className={`space-y-4 bg-background py-4`} disabled={isOtpSubmitting}>
+        <fieldset className={`space-y-4 bg-weelp-auth-neu-surface py-4`} disabled={isOtpSubmitting}>
           <div className="text-center">
             <h3 className="font-semibold text-xl">Verify Your Email</h3>
             <sub className="text-copy">

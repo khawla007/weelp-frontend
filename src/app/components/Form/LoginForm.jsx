@@ -135,17 +135,17 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
   };
   if (isClient) {
     return (
-      <div className={`relative bg-background rounded-xl w-full ${isSubmitting && 'cursor-wait'}`}>
+      <div className={`relative w-full rounded-xl bg-weelp-auth-neu-surface ${isSubmitting && 'cursor-wait'}`}>
         {/* Custom Close Button */}
         {showCloseButton && (
           <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-background rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
             <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
           </button>
         )}
-        <form onSubmit={handleSubmit(onSubmit)} className={`space-y-4 bg-background py-4`}>
+        <form onSubmit={handleSubmit(onSubmit)} className={`space-y-4 bg-weelp-auth-neu-surface py-4`}>
           {/* Email Input */}
           <div>
-            <label htmlFor="email" className=" flex items-center bg-background shadow-md border p-1 px-2 rounded-md">
+            <label htmlFor="email" className="flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
               <AtSign className="text-copy size-4" />
               <input
                 placeholder={'Email ID'}
@@ -153,7 +153,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
                 id="email"
                 {...register('email')}
                 autoComplete="off"
-                className="mt-1  py-2 px-3 focus:outline-none bg-background placeholder:bg-background text-base w-full"
+                className="mt-1  w-full !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
               />
             </label>
             {errors.email && <p className="text-sm text-red-600 pt-2">{errors.email.message}</p>}
@@ -161,7 +161,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
 
           {/* Password Input */}
           <div>
-            <label htmlFor="password" className="flex items-center bg-background shadow-md border p-1 px-2 rounded-md relative">
+            <label htmlFor="password" className="relative flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
               <KeyRound className="text-copy size-4" />
               <input
                 type={visible ? 'text' : 'password'}
@@ -169,7 +169,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
                 placeholder="Password"
                 {...register('password')}
                 autoComplete="off"
-                className="mt-1  py-2 px-3 focus:outline-none bg-background placeholder:bg-background text-base w-full"
+                className="mt-1  w-full !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
               />
 
               {visible ? (
@@ -186,7 +186,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
           <Button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-muted-foreground cursor-not-allowed border-border' : 'bg-weelp-sage-deep text-white hover:bg-background hover:text-weelp-sage-deep'}`}
+            className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-muted-foreground cursor-not-allowed border-border' : 'bg-weelp-sage-deep text-white hover:bg-weelp-auth-neu-surface hover:text-weelp-sage-deep'}`}
           >
             {isSubmitting ? 'Logging in...' : 'Continue'}
           </Button>

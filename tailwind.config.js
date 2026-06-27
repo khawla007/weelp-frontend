@@ -78,6 +78,7 @@ const config = {
           'sage-hover': 'hsl(var(--weelp-sage-hover) / <alpha-value>)',
           'sage-tint': 'hsl(var(--weelp-sage-tint) / <alpha-value>)',
           'sage-wash': 'hsl(var(--weelp-sage-wash) / <alpha-value>)',
+          'auth-neu-surface': 'hsl(var(--weelp-auth-neu-surface) / <alpha-value>)',
           steel: 'hsl(var(--weelp-steel) / <alpha-value>)',
           copy: 'rgb(var(--copy-rgb) / <alpha-value>)',
           label: 'rgb(var(--label-rgb) / <alpha-value>)',

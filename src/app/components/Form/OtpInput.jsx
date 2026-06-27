@@ -117,6 +117,7 @@ export const OtpInput = forwardRef(({ length = 6, value = '', onChange, onComple
           disabled={disabled}
           className={cn(
             'w-12 h-14 text-center text-2xl font-semibold',
+            '!bg-weelp-auth-neu-surface',
             'border-2 rounded-lg',
             'focus:outline-none focus:ring-2 focus:ring-weelp-sage-deep',
             'disabled:opacity-50 disabled:cursor-not-allowed',

@@ -81,6 +81,7 @@ body {
     --info: 213 94% 50%;
     --surface-elevated: 0 0% 100%;
     --surface-tint: 150 28% 96%;
+    --weelp-auth-neu-surface: 150 22% 92%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -193,6 +194,7 @@ body {
     --info: 213 90% 60%;
     --surface-elevated: 0 0% 10%;
     --surface-tint: 150 12% 12%;
+    --weelp-auth-neu-surface: 150 12% 16%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
