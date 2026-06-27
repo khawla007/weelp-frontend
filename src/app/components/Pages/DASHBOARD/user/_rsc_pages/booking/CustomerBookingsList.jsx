@@ -132,9 +132,9 @@ export const CustomerBookingsList = () => {
       </div>
 
       {/* Filtered Orders */}
-      <div className="bg-weelp-sage-wash p-4 md:p-8 min-h-screen pb-20">
+      <div className="bg-weelp-sage-wash p-4 md:p-6 lg:min-h-screen xl:p-8">
         <div className="flex flex-col bg-weelp-sage-wash gap-4">
-          <div className="flex flex-wrap gap-4">
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
             {filteredOrders.length > 0 ? filteredOrders.map((order) => <BookingCard key={order.id} bookingItem={order} />) : <p> No bookings found</p>}
 
             {/* isloading */}

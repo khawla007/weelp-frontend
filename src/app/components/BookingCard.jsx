@@ -17,67 +17,73 @@ const BookingCard = ({ bookingItem = {} }) => {
   const rating = review?.rating ?? 0;
 
   return (
-    <Card className="bg-background rounded-lg p-4 flex flex-col gap-4  shadow-md max-w-lg w-full dark:bg-foreground">
-      <CardHeader className="grid grid-cols-2 py-2 flex-wrap">
-        <CardTitle className={'text-foreground text-xl font-semibold'}>{name}</CardTitle>
-        <span className="text-foreground text-base font-normal text-end ">{travel_date}</span>
-        <span className="text-weelp-steel text-base font-normal">{city}</span>
+    <Card className="bg-background rounded-lg p-3 flex w-full min-w-0 flex-col gap-3 shadow-md dark:bg-foreground sm:p-4">
+      <CardHeader className="flex flex-col gap-2 p-0 sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+        <CardTitle className="min-w-0 break-words text-lg font-semibold leading-snug text-foreground sm:text-xl">{name}</CardTitle>
+        <span className="text-sm font-normal text-foreground sm:text-right sm:text-base">{travel_date}</span>
+        <span className="min-w-0 break-words text-sm font-normal text-weelp-steel sm:text-base">{city}</span>
 
-        <span className="text-muted-foreground  text-base text-end font-medium">Booking Id :{id}</span>
+        <span className="text-sm font-medium text-muted-foreground opacity-70 sm:text-right sm:text-base">Booking ID: {id}</span>
       </CardHeader>
-      <CardContent className="border py-2 space-y-2 border-y-graycolor border-x-0">
-        <div className="flex justify-between">
+      <CardContent className="rounded-md border border-border/70 bg-muted/30 p-3">
+        <div className="flex flex-col gap-3">
           {/* Reviews */}
-          {rating !== 0 && (
-            <>
-              <CardTitle className="text-foreground text-base font-semibold">Your Review</CardTitle>
-              <ul className="flex">
-                {Array.from({ length: rating }, (star, index) => (
-                  <li key={index}>
-                    <Star className="fill-yellow-300 text-yellow-300" />
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-
-          {/* Controlled Dialog */}
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              {rating === 0 ? (
-                <Button className="ml-auto border border-weelp-sage-deep bg-weelp-sage-deep text-white hover:bg-background hover:text-foreground" onClick={() => setOpen(true)}>
-                  Add Review
-                </Button>
+          <div className="flex min-w-0 items-start justify-between gap-3">
+            <div className="min-w-0 space-y-1">
+              <CardTitle className="text-sm font-semibold text-foreground sm:text-base">Your Review</CardTitle>
+              {rating !== 0 ? (
+                <ul className="flex shrink-0 gap-0.5" aria-label={`${rating} out of 5 stars`}>
+                  {Array.from({ length: rating }, (star, index) => (
+                    <li key={index}>
+                      <Star className="size-4 fill-yellow-300 text-yellow-300 sm:size-5" />
+                    </li>
+                  ))}
+                </ul>
               ) : (
-                <Button variant="outline" className="flex items-center gap-2" onClick={() => setOpen(true)}>
-                  <Edit size={16} />
-                </Button>
+                <p className="text-sm text-muted-foreground">No review added yet.</p>
               )}
-            </DialogTrigger>
+            </div>
 
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle className="sr-only">Create/Edit Review</DialogTitle>
-                <DialogDescription className="sr-only">Update your review and click save when you &apos; re done.</DialogDescription>
+            {/* Controlled Dialog */}
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogTrigger asChild>
+                {rating === 0 ? (
+                  <Button className="h-9 shrink-0 border border-weelp-sage-deep bg-weelp-sage-deep px-3 text-sm text-white hover:bg-background hover:text-foreground" onClick={() => setOpen(true)}>
+                    Add Review
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="icon" className="size-9 shrink-0" onClick={() => setOpen(true)} aria-label="Edit review">
+                    <Edit size={16} />
+                  </Button>
+                )}
+              </DialogTrigger>
 
-                {/* Review Form */}
-                <ReviewForm reviewData={bookingItem} onClose={setOpen} />
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+              <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle className="sr-only">Create/Edit Review</DialogTitle>
+                  <DialogDescription className="sr-only">Update your review and click save when you &apos; re done.</DialogDescription>
+
+                  {/* Review Form */}
+                  <ReviewForm reviewData={bookingItem} onClose={setOpen} />
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
       </CardContent>
 
-      <Card className="flex justify-between items-center shadow-none border-none px-4 dark:bg-foreground">
+      <div className="flex items-center justify-between gap-3">
         <Image
           src="/assets/Review.png"
           alt="Review"
           width={400} // intrinsic width of the image
           height={400} // intrinsic height of the image
-          className="w-12 h-auto"
+          className="hidden h-auto w-10 sm:block sm:w-12"
         />
-        <Button className="bg-weelp-sage-deep text-base font-normal hover:bg-weelp-sage-deep dark:hover:bg-weelp-sage-deep dark:hover:text-white">View Booking</Button>
-      </Card>
+        <Button className="ml-auto w-full bg-weelp-sage-deep text-sm font-normal hover:bg-weelp-sage-deep dark:hover:bg-weelp-sage-deep dark:hover:text-white sm:w-auto sm:text-base">
+          View Booking
+        </Button>
+      </div>
     </Card>
   );
 };

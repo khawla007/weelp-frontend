@@ -28,7 +28,7 @@ const ReviewsPage = () => {
           <CardTitle className="text-xl text-foreground font-semibold">Your Reviews</CardTitle>
           <CardDescription className="text-lg text-muted-foreground">See your reviews, thoughts.</CardDescription>
         </CardHeader>
-        <div className="bg-weelp-sage-wash p-8 min-h-screen flex items-center justify-center">
+        <div className="bg-weelp-sage-wash p-8 min-h-[320px] flex items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-weelp-sage-deep"></div>
         </div>
       </Card>
@@ -43,7 +43,7 @@ const ReviewsPage = () => {
           <CardTitle className="text-xl text-foreground font-semibold">Your Reviews</CardTitle>
           <CardDescription className="text-lg text-muted-foreground">See your reviews, thoughts.</CardDescription>
         </CardHeader>
-        <div className="bg-weelp-sage-wash p-8 min-h-screen flex items-center justify-center">
+        <div className="bg-weelp-sage-wash p-8 min-h-[320px] flex items-center justify-center">
           <p className="text-destructive">Failed to load reviews. Please try again.</p>
         </div>
       </Card>
@@ -53,11 +53,11 @@ const ReviewsPage = () => {
   // Success state - pass reviews to child component
   return (
     <Card className="shadow-none border-none bg-inherit bg-background">
-      <CardHeader className={'px-8'}>
+      <CardHeader className="px-4 md:px-6 xl:px-8">
         <CardTitle className="text-xl text-foreground font-semibold">Your Reviews</CardTitle>
         <CardDescription className="text-lg text-muted-foreground">Manage your Reviews, Create New.</CardDescription>
       </CardHeader>
-      <div className="bg-weelp-sage-wash p-8 min-h-screen pb-20">
+      <div className="bg-weelp-sage-wash p-4 md:p-6 lg:min-h-screen xl:p-8">
         <div className="flex flex-col bg-weelp-sage-wash gap-4">
           <CustomerReviewList reviews={reviews} mutate={mutate} />
 

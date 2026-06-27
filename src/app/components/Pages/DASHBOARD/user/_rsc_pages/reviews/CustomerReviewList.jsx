@@ -52,7 +52,7 @@ export const CustomerReviewList = ({ reviews = [], mutate }) => {
   };
 
   return (
-    <div className="flex flex-wrap  bg-weelp-sage-wash gap-4">
+    <div className="grid grid-cols-1 gap-4 bg-weelp-sage-wash xl:grid-cols-2 2xl:grid-cols-3">
       {reviews.length > 0 ? (
         reviews.map((review, index) => {
           return <UserDashboardReviewCard key={review.id || index} review={review} onDelete={handleOnDelete} />;
