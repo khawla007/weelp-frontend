@@ -1,6 +1,6 @@
 'use client';
 
-import { Sun, Moon, Monitor } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useIsClient } from '@/hooks/useIsClient';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
@@ -8,8 +8,10 @@ import { cn } from '@/lib/utils';
 
 export function ThemeToggle({ className = '', compact = false }) {
   const isClient = useIsClient();
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
+  const isDark = isClient && resolvedTheme === 'dark';
   const TriggerIcon = !isClient ? Sun : resolvedTheme === 'dark' ? Moon : Sun;
+  const option = isDark ? { label: 'Light', value: 'light', Icon: Sun } : { label: 'Dark', value: 'dark', Icon: Moon };
   const handleOpenChange = (open) => {
     if (open) {
       window.dispatchEvent(new CustomEvent('weelp-header-dropdown-open', { detail: { source: 'theme' } }));
@@ -29,17 +31,9 @@ export function ThemeToggle({ className = '', compact = false }) {
         <TriggerIcon className={compact ? 'h-4 w-4' : 'h-5 w-5'} aria-hidden="true" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[10rem]">
-        <DropdownMenuItem onSelect={() => setTheme('light')} data-active={theme === 'light'} className="data-[active=true]:bg-accent data-[active=true]:text-accent-foreground">
-          <Sun className="mr-2 h-4 w-4" />
-          <span>Light</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => setTheme('dark')} data-active={theme === 'dark'} className="data-[active=true]:bg-accent data-[active=true]:text-accent-foreground">
-          <Moon className="mr-2 h-4 w-4" />
-          <span>Dark</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => setTheme('system')} data-active={theme === 'system'} className="data-[active=true]:bg-accent data-[active=true]:text-accent-foreground">
-          <Monitor className="mr-2 h-4 w-4" />
-          <span>System</span>
+        <DropdownMenuItem onSelect={() => setTheme(option.value)}>
+          <option.Icon className="mr-2 h-4 w-4" />
+          <span>{option.label}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
