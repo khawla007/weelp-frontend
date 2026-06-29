@@ -1,10 +1,11 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useTheme } from 'next-themes';
-import { Sun, Moon, Monitor } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
@@ -22,12 +23,11 @@ const formSchema = z.object({
 const THEME_OPTIONS = [
   { value: 'light', label: 'Light', icon: Sun, description: 'Bright surfaces, dark text.' },
   { value: 'dark', label: 'Dark', icon: Moon, description: 'Dim surfaces, light text.' },
-  { value: 'system', label: 'System', icon: Monitor, description: 'Follow OS preference.' },
 ];
 
 export function AppearanceSettings() {
   const { font, setFont } = useUIStore();
-  const { theme, setTheme } = useTheme();
+  const { theme, resolvedTheme, setTheme } = useTheme();
   const { toast } = useToast();
   const isClient = useIsClient();
   const activeTheme = isClient ? theme : 'light';
@@ -37,6 +37,12 @@ export function AppearanceSettings() {
     defaultValues: { font },
   });
   const { isDirty } = form.formState;
+
+  useEffect(() => {
+    if (theme === 'system') {
+      setTheme(resolvedTheme === 'dark' ? 'dark' : 'light');
+    }
+  }, [resolvedTheme, setTheme, theme]);
 
   const onSubmit = (data) => {
     setFont(data.font);
@@ -59,7 +65,7 @@ export function AppearanceSettings() {
         <Label asChild>
           <legend>Theme</legend>
         </Label>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md">
           {THEME_OPTIONS.map(({ value, label, icon: Icon, description }) => {
             const isActive = activeTheme === value;
             return (
@@ -82,7 +88,7 @@ export function AppearanceSettings() {
             );
           })}
         </div>
-        <p className="text-sm text-muted-foreground">Choose how the dashboard looks. System follows your operating system setting.</p>
+        <p className="text-sm text-muted-foreground">Choose how the dashboard looks.</p>
       </fieldset>
 
       <Form {...form}>

@@ -76,6 +76,12 @@ export default function DashboardSidebar({ nav, user, accent = 'text-foreground'
 
   const isOpen = !collapsed;
 
+  const closeCompactSidebar = () => {
+    if (isCompact) {
+      setCollapsed(true);
+    }
+  };
+
   useEffect(() => {
     const handleDashboardSidebarToggle = (event) => {
       if (typeof event?.detail?.offset === 'number') {
@@ -97,7 +103,7 @@ export default function DashboardSidebar({ nav, user, accent = 'text-foreground'
 
       <aside
         aria-hidden={isCompact && !isOpen ? true : undefined}
-        inert={isCompact && !isOpen ? '' : undefined}
+        inert={isCompact && !isOpen ? true : undefined}
         className={`bg-background border-r border-border flex flex-col transition-[width,transform] duration-300 ease-in-out motion-reduce:transition-none ${
           isCompact ? `fixed bottom-0 left-0 z-[100] w-72 max-w-[85vw] shadow-xl ${isOpen ? 'translate-x-0' : '-translate-x-full'}` : `${collapsed ? 'w-16' : 'w-64'} shrink-0`
         }`}
@@ -124,6 +130,7 @@ export default function DashboardSidebar({ nav, user, accent = 'text-foreground'
                   key={route.url}
                   href={route.url}
                   data-active={active ? 'true' : 'false'}
+                  onClick={closeCompactSidebar}
                   className={`flex items-center gap-2 px-3 py-2 text-md transition-colors duration-200 ease-out rounded-full ${active ? accent : 'text-foreground hover:text-foreground/70'}`}
                 >
                   <route.icon strokeWidth={2} className="size-5" />

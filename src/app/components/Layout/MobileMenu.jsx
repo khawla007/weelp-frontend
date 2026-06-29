@@ -33,7 +33,7 @@ const MobileMenu = ({ stickyHeader, variant = 'solid' }) => {
   const topStripVisible = !stickyHeader;
   const mainBarTransparent = isOverHero && !stickyHeader;
   const topStripTransparent = isOverHero && topStripVisible;
-  const topStripSurfaceClass = topStripTransparent ? 'border-transparent bg-transparent text-black dark:text-black' : 'border-border bg-surface-tint text-foreground';
+  const topStripSurfaceClass = topStripTransparent ? 'border-transparent bg-transparent text-black dark:text-black' : 'border-border bg-card text-foreground';
   const topStripOfferPillClass = topStripTransparent ? 'border-black/10 bg-transparent text-black dark:text-black' : 'border-border bg-background/80';
   const topStripLocalePillClass = topStripTransparent
     ? 'border-transparent bg-background/85 text-foreground backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:shadow-none'
@@ -42,11 +42,11 @@ const MobileMenu = ({ stickyHeader, variant = 'solid' }) => {
   const topStripInnerPaddingClass = topStripTransparent ? 'py-0.5' : 'py-1 sm:py-1.5';
 
   return (
-    <div className={`lg:hidden w-full ${stickyHeader ? 'fixed top-0 left-0 right-0 z-40 shadow-md dark:shadow-none' : ''}`}>
+    <div data-weelp-mobile-menu="true" className={`lg:hidden w-full ${stickyHeader ? 'fixed top-0 left-0 right-0 z-40 shadow-md dark:shadow-none' : ''}`}>
       <div
         aria-hidden={topStripVisible ? undefined : true}
-        className={`${topStripVisible ? 'border-b' : 'border-b-0'} overflow-hidden transition-[opacity,max-height,padding] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${topStripSurfaceClass} ${
-          topStripVisible ? 'opacity-100 max-h-24' : 'opacity-0 max-h-0 pointer-events-none'
+        className={`${topStripVisible ? 'border-b' : 'border-b-0'} overflow-hidden transition-[max-height,padding] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${topStripSurfaceClass} ${
+          topStripVisible ? 'max-h-24' : 'max-h-0 pointer-events-none'
         }`}
       >
         <div className={`grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] sm:text-[11px] sm:tracking-[0.14em] ${topStripSpacingClass}`}>

@@ -100,7 +100,7 @@ export const CustomerBookingsList = () => {
         <div className="flex flex-wrap items-center gap-3 lg:ml-auto" suppressHydrationWarning>
           <div className="lg:hidden">
             <Select onValueChange={handleStatusChange} value={status || 'all'}>
-              <SelectTrigger className="w-[140px] dark:bg-foreground">
+              <SelectTrigger className="w-[140px]">
                 <SelectValue placeholder="Status">{status ? ORDER_STATUS.find((s) => s.value === status)?.name : 'Status'}</SelectValue>
               </SelectTrigger>
               <SelectContent>
@@ -115,7 +115,7 @@ export const CustomerBookingsList = () => {
             </Select>
           </div>
           <Select onValueChange={handleSortByChange} value={sortBy || 'all'}>
-            <SelectTrigger className="w-[140px] dark:bg-foreground">
+            <SelectTrigger className="w-[140px]">
               <SelectValue placeholder="Item Type">{sortBy ? ITEM_TYPE.find((t) => t.value === sortBy)?.name : 'Item Type'}</SelectValue>
             </SelectTrigger>
             <SelectContent>
@@ -135,7 +135,13 @@ export const CustomerBookingsList = () => {
       <div className="bg-weelp-sage-wash p-4 md:p-6 lg:min-h-screen xl:p-8">
         <div className="flex flex-col bg-weelp-sage-wash gap-4">
           <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
-            {filteredOrders.length > 0 ? filteredOrders.map((order) => <BookingCard key={order.id} bookingItem={order} />) : <p> No bookings found</p>}
+            {filteredOrders.length > 0 ? (
+              filteredOrders.map((order) => <BookingCard key={order.id} bookingItem={order} />)
+            ) : (
+              <div className="col-span-full flex min-h-[320px] items-center justify-center text-center">
+                <p className="text-lg text-muted-foreground">No bookings found</p>
+              </div>
+            )}
 
             {/* isloading */}
             {isloadingOrders && <ListingCardSkeleton count={6} className="w-full" />}

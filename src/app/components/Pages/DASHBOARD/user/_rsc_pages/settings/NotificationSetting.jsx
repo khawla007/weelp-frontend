@@ -52,7 +52,7 @@ export const NotificationSetting = () => {
             control={form.control}
             name="notifyabout"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-3">
                 <Label className="text-sm font-medium">Notify me about...</Label>
                 <RadioGroup value={field.value} onValueChange={field.onChange} className="space-y-2">
                   <FormItem className="flex items-center space-x-2">

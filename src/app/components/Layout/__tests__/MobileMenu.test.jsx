@@ -43,7 +43,8 @@ describe('MobileMenu', () => {
 
     const topStrip = getTopStrip();
     expect(topStrip).not.toHaveAttribute('aria-hidden', 'true');
-    expect(topStrip).toHaveClass('border-b', 'opacity-100', 'max-h-24');
+    expect(topStrip).toHaveClass('border-b', 'max-h-24');
+    expect(topStrip).not.toHaveClass('pointer-events-none');
   });
 
   it('hides the mobile top strip after the header becomes sticky', () => {
@@ -51,7 +52,7 @@ describe('MobileMenu', () => {
 
     const topStrip = getTopStrip();
     expect(topStrip).toHaveAttribute('aria-hidden', 'true');
-    expect(topStrip).toHaveClass('border-b-0', 'opacity-0', 'max-h-0', 'pointer-events-none');
+    expect(topStrip).toHaveClass('border-b-0', 'max-h-0', 'pointer-events-none');
   });
 
   it('uses a transparent top strip over the home hero before scroll', () => {
