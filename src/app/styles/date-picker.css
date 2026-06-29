@@ -39,6 +39,7 @@
 .weelp-calendar {
   --weelp-cal-fg: #1f2937;
   --weelp-cal-muted: #6b7280;
+  --weelp-cal-disabled: #9ca3af;
   --weelp-cal-selected: #588f7a;
   --weelp-cal-selected-soft: rgb(181 216 203 / 0.68);
   --weelp-cal-selected-hover: #4c7d6b;
@@ -58,6 +59,15 @@
   --rdp-range_middle-color: var(--weelp-cal-fg);
   --rdp-range_start-color: var(--weelp-cal-fg);
   --rdp-range_end-color: var(--weelp-cal-fg);
+}
+
+.dark .weelp-calendar {
+  --weelp-cal-fg: #e5e7eb;
+  --weelp-cal-muted: #9ca3af;
+  --weelp-cal-disabled: #374151;
+  --weelp-cal-selected-soft: rgb(88 143 122 / 0.32);
+  --weelp-cal-single: #27272a;
+  --weelp-cal-single-hover: #3f3f46;
 }
 
 /* Default `.rdp-root` ships at one-month width; grow to fit
@@ -250,7 +260,8 @@
    - default `.rdp-disabled` opacity (already overridden via --rdp-disabled-opacity
      on `.rdp-root` above; reasserted here for safety against future changes). */
 .weelp-calendar .rdp-disabled .rdp-day_button {
-  @apply text-muted-foreground hover:bg-transparent cursor-not-allowed;
+  @apply hover:bg-transparent cursor-not-allowed;
+  color: var(--weelp-cal-disabled);
   opacity: 1;
 }
 
@@ -263,6 +274,7 @@
 .weelp-calendar .rdp-button_previous,
 .weelp-calendar .rdp-button_next {
   @apply h-8 w-8 inline-flex items-center justify-center rounded-md border border-border bg-background text-[var(--weelp-cal-fg)] hover:bg-muted transition-colors motion-reduce:transition-none;
+  color: var(--weelp-cal-fg);
 }
 .weelp-calendar .rdp-button_previous:focus-visible,
 .weelp-calendar .rdp-button_next:focus-visible {
