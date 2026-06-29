@@ -8,7 +8,7 @@ const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible
 const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null, primaryLocation = null, city = null, scheduleDisplay = null }) => {
   return (
     <section className="weelp-hero-rise bg-background mb-10 md:mb-16 lg:mb-24">
-      <div className="max-w-pen mx-auto px-4">
+      <div className="max-w-pen mx-auto bg-background px-4">
         {/* Breadcrumb + Title + Stats */}
         <div className="flex flex-col gap-2 pt-[70px]">
           <div className="weelp-hero-ui-rise" style={{ '--weelp-motion-delay': '120ms' }}>
