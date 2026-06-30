@@ -19,7 +19,7 @@ const MiniCartNew = () => {
 
   return (
     <Sheet open={isMiniCartOpen} onOpenChange={setMiniCartOpen}>
-      <SheetContent className="!max-w-[485px] w-full h-full p-6 bg-muted shadow-xl">
+      <SheetContent className="w-full !max-w-full p-0 bg-muted shadow-xl sm:!max-w-[485px]">
         <SheetHeader>
           <SheetTitle className="sr-only">MiniCart</SheetTitle>
           <SheetDescription className="sr-only"></SheetDescription>
@@ -28,24 +28,24 @@ const MiniCartNew = () => {
         <div className="w-full h-full bg-inherit">
           {cartItems && cartItems.length > 0 ? (
             // if data exist
-            <div className="px-4 flex flex-col gap-2 h-full min-h-full tfc_scroll overflow-y-scroll group">
+            <div className="flex h-full min-h-full flex-col overflow-y-auto px-3 pb-4 pt-3 tfc_scroll group sm:px-8 sm:pt-6">
               <X
                 onClick={() => setMiniCartOpen(!isMiniCartOpen)}
-                className="self-end cursor-pointer size-10 p-2 absolute top-2 z-10 left-1/2 bg-muted-foreground text-background ease-in-out duration-200  -translate-y-12   group-hover:translate-y-0   rounded-full"
+                className="absolute right-3 top-3 z-10 size-9 cursor-pointer rounded-full bg-muted-foreground p-2 text-background duration-200 ease-in-out sm:left-1/2 sm:right-auto sm:top-2 sm:size-10 sm:-translate-y-12 sm:group-hover:translate-y-0"
               />
-              <div className="flex justify-between mt-4">
-                <h3 className="text-Blueish font-bold text-2xl">Your Cart</h3>
-                <div className="flex gap-2 text-base items-center text-copy">
-                  <Heart size={20} />
+              <div className="mt-1 flex items-center justify-between pr-11 sm:mt-4 sm:pr-0">
+                <h3 className="text-xl font-bold text-Blueish sm:text-2xl">Your Cart</h3>
+                <div className="flex items-center gap-2 text-sm text-copy sm:text-base">
+                  <Heart size={18} />
                   Save
                 </div>
               </div>
 
-              <BreakSection marginTop={'my-4'} />
+              <BreakSection marginTop={'my-3 sm:my-4'} />
 
-              <div className="flex justify-between flex-col h-full">
+              <div className="flex min-h-0 flex-1 flex-col justify-between">
                 {/* From  ->  To */}
-                <div className="rounded-xl shadow-sm flex flex-col gap-4">
+                <div className="flex flex-col gap-3 rounded-xl shadow-sm sm:gap-4">
                   {cartItems.map((val, index) => {
                     return (
                       <MiniCartProductCard
@@ -72,11 +72,11 @@ const MiniCartNew = () => {
                 <MinicartReviewcontent />
 
                 {/* Payments */}
-                <div className="flex flex-col">
-                  <BreakSection marginTop={'my-4'} />
+                <div className="sticky bottom-0 z-10 -mx-3 mt-3 flex flex-col bg-muted px-3 pb-2 pt-1 sm:static sm:mx-0 sm:bg-transparent sm:px-0 sm:pb-0">
+                  <BreakSection marginTop={'my-3 sm:my-4'} />
 
                   {breakdownOpen && (
-                    <div className="bg-card border border-border rounded-lg p-4 mb-3 text-sm text-copy space-y-4 max-h-72 overflow-y-auto">
+                    <div className="mb-3 max-h-56 space-y-4 overflow-y-auto rounded-lg border border-border bg-card p-3 text-sm text-copy shadow-sm sm:max-h-72 sm:p-4">
                       {cartItems.map((item) => {
                         const cur = item?.currency || cartCurrency;
                         const isItin = item?.type === 'itinerary';
@@ -122,13 +122,13 @@ const MiniCartNew = () => {
                     </div>
                   )}
 
-                  <div className="flex justify-between">
-                    <div className="flex flex-col gap-1 w-full">
-                      <h3 className="capitalize text-lg font-semibold text-Blueish">{formatCurrency(totalPrice ?? 0, cartCurrency)}</h3>
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex w-full flex-col gap-1">
+                      <h3 className="text-lg font-semibold capitalize text-Blueish">{formatCurrency(totalPrice ?? 0, cartCurrency)}</h3>
                       <button
                         type="button"
                         onClick={() => setBreakdownOpen((open) => !open)}
-                        className="flex items-center gap-1 capitalize text-copy text-sm hover:text-weelp-steel cursor-pointer underline w-fit"
+                        className="flex w-fit cursor-pointer items-center gap-1 text-sm capitalize text-copy underline hover:text-weelp-steel"
                         aria-expanded={breakdownOpen}
                       >
                         Detailed Breakdown
@@ -139,7 +139,7 @@ const MiniCartNew = () => {
                       onClick={() => {
                         (router.push('/checkout'), setMiniCartOpen(false));
                       }}
-                      className="w-full capitalize rounded-md bg-weelp-sage-deep text-white text-base font-medium"
+                      className="min-h-12 w-full rounded-md bg-weelp-sage-deep px-4 py-3 text-base font-medium capitalize text-white sm:min-h-11"
                     >
                       Make Payment
                     </button>
@@ -148,9 +148,9 @@ const MiniCartNew = () => {
               </div>
             </div>
           ) : (
-            <div className="px-8 py-8 flex flex-col gap-2 h-full min-h-full tfc_scroll overflow-y-scroll group ">
+            <div className="flex h-full min-h-full flex-col gap-2 overflow-y-auto px-4 py-6 tfc_scroll group sm:px-8 sm:py-8">
               <SheetClose asChild>
-                <X className="self-end cursor-pointer size-10 p-2 absolute top-2 z-10 left-1/2 bg-muted-foreground text-background ease-in-out duration-200  -translate-y-12   group-hover:translate-y-0   rounded-full" />
+                <X className="absolute right-3 top-3 z-10 size-9 cursor-pointer rounded-full bg-muted-foreground p-2 text-background duration-200 ease-in-out sm:left-1/2 sm:right-auto sm:top-2 sm:size-10 sm:-translate-y-12 sm:group-hover:translate-y-0" />
               </SheetClose>
 
               <div className="h-full flex items-center justify-center">

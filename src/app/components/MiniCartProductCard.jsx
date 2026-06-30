@@ -19,38 +19,46 @@ const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, it
   const { adults, children } = howMany ?? {};
   const { from } = dateRange ?? {};
   return (
-    <div className="flex flex-col gap-2 px-6 py-4 items-center border rounded-lg shadow-sm justify-between bg-background">
-      <div className="flex justify-between w-full p-4 py-2">
-        <h3 className="text-wrap font-medium capitalize text-Blueish text-lg">{itemType}</h3>
-        <div className="flex gap-4 justify-between">
+    <div className="flex flex-col gap-2 rounded-lg border bg-background px-3 py-3 shadow-sm sm:px-6 sm:py-4">
+      <div className="flex w-full items-center justify-between gap-3 px-1 py-1 sm:p-4 sm:py-2">
+        <h3 className="text-base font-medium capitalize text-Blueish sm:text-lg">{itemType}</h3>
+        <div className="flex shrink-0 justify-between gap-3 sm:gap-4">
           <DeleteItem id={itemId} name={productName} onClose={onClose} />
           <SquarePen size={18} className="text-copy" />
         </div>
       </div>
-      <div className="flex w-full justify-between border rounded-lg p-4">
-        <div className="flex flex-col">
-          <h3 className="text-wrap font-medium capitalize text-Blueish text-lg">{productName ?? 'Melaka Wonderland Water Theme'}</h3>
-          <span className="flex gap-2 capitalize text-copy text-sm mt-2 font-medium">
-            <User size={20} className="text-copy capitalize" />
+      <div className="flex w-full gap-3 rounded-lg border p-3 sm:justify-between sm:p-4">
+        <div className="flex min-w-0 flex-1 flex-col">
+          <h3 className="line-clamp-2 text-base font-medium capitalize text-Blueish sm:text-lg">{productName ?? 'Melaka Wonderland Water Theme'}</h3>
+          <span className="mt-2 flex items-start gap-2 text-sm font-medium capitalize text-copy">
+            <User size={18} className="mt-0.5 shrink-0 text-copy capitalize sm:size-5" />
             {`${adults ?? 0} adults ${children ? ', ' + children + ' children ' : ''}  `}
           </span>
 
-          <span className="flex gap-2 capitalize text-copy text-sm mt-2 font-medium">
-            <Calendar size={20} className="text-copy" />
+          <span className="mt-2 flex items-start gap-2 text-sm font-medium capitalize text-copy">
+            <Calendar size={18} className="mt-0.5 shrink-0 text-copy sm:size-5" />
             {from && actualDate(from)}
           </span>
           {addons.length > 0 && (
             <div className="flex flex-col mt-2 gap-1">
               {addons.map((addon, i) => (
-                <span key={i} className="flex gap-2 capitalize text-copy text-sm font-medium">
-                  <Sparkles size={20} className="text-copy" />+ {addon.addon_name}
+                <span key={i} className="flex items-start gap-2 text-sm font-medium capitalize text-copy">
+                  <Sparkles size={18} className="mt-0.5 shrink-0 text-copy sm:size-5" />+ {addon.addon_name}
                 </span>
               ))}
             </div>
           )}
         </div>
-        <div className="flex">
-          <img src={productImage || '/assets/images/placeholder.png'} className="max-w-32 min-h-28 object-cover w-full h-full rounded-md" alt={productName || 'product'} />
+        <div className="flex shrink-0">
+          <img
+            src={productImage || '/assets/fallback-image.png'}
+            className="h-24 w-24 rounded-md object-cover sm:h-28 sm:w-32"
+            alt={productName || 'product'}
+            onError={(event) => {
+              event.currentTarget.onerror = null;
+              event.currentTarget.src = '/assets/fallback-image.png';
+            }}
+          />
         </div>
       </div>
     </div>
