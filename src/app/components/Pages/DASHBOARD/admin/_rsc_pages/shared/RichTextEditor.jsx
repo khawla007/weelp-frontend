@@ -105,11 +105,12 @@ const ToolbarButton = ({ active = false, label, children, onClick, disabled = fa
     variant="ghost"
     size="icon"
     aria-label={label}
+    aria-pressed={active}
     title={label}
     disabled={disabled}
     onMouseDown={(event) => event.preventDefault()}
     onClick={onClick}
-    className={`h-9 w-9 rounded-md ${active ? 'bg-accent text-foreground' : 'text-foreground hover:bg-muted'}`}
+    className={`h-9 w-9 rounded-md ${active ? 'bg-muted text-foreground shadow-sm ring-1 ring-border' : 'text-foreground hover:bg-muted'}`}
   >
     {children}
   </Button>
@@ -123,8 +124,24 @@ const textBlockNode = (type, text, attrs) => ({
   ...(textNode(text) ? { content: textNode(text) } : {}),
 });
 
-export const buildPartialHeadingBlocks = ({ beforeText = '', selectedText = '', afterText = '', level }) =>
-  [beforeText ? textBlockNode('paragraph', beforeText) : null, textBlockNode('heading', selectedText, { level }), afterText ? textBlockNode('paragraph', afterText) : null].filter(Boolean);
+const textBlockNodeSize = (text = '') => text.length + 2;
+
+export const getPartialSelectionTextRange = ({ blockFrom, beforeText = '', selectedText = '' }) => {
+  const selectedTextStart = blockFrom + (beforeText ? textBlockNodeSize(beforeText) : 0) + 1;
+  return { from: selectedTextStart, to: selectedTextStart + selectedText.length };
+};
+
+export const buildPartialHeadingBlocks = ({ beforeText = '', selectedText = '', afterText = '', level, selectedIsActiveHeading = false }) => {
+  const surroundingBlockType = selectedIsActiveHeading ? 'heading' : 'paragraph';
+  const surroundingAttrs = selectedIsActiveHeading ? { level } : undefined;
+  const selectedBlock = selectedIsActiveHeading ? textBlockNode('paragraph', selectedText) : textBlockNode('heading', selectedText, { level });
+
+  return [
+    beforeText ? textBlockNode(surroundingBlockType, beforeText, surroundingAttrs) : null,
+    selectedBlock,
+    afterText ? textBlockNode(surroundingBlockType, afterText, surroundingAttrs) : null,
+  ].filter(Boolean);
+};
 
 export const buildPartialTextAlignBlocks = ({ beforeText = '', selectedText = '', afterText = '', textAlign }) =>
   [
@@ -150,12 +167,13 @@ const applyPartialSelectionTransform = (editor, buildReplacement) => {
   const beforeText = doc.textBetween(contentFrom, from, '\n', '\n');
   const afterText = doc.textBetween(to, contentTo, '\n', '\n');
   const replacement = buildReplacement({ beforeText, selectedText, afterText });
+  const textRange = getPartialSelectionTextRange({ blockFrom, beforeText, selectedText });
 
-  return editor.chain().focus().insertContentAt({ from: blockFrom, to: blockTo }, replacement).run();
+  return editor.chain().focus().insertContentAt({ from: blockFrom, to: blockTo }, replacement).setTextSelection(textRange).run();
 };
 
-const applyPartialSelectionHeading = (editor, level) =>
-  applyPartialSelectionTransform(editor, ({ beforeText, selectedText, afterText }) => buildPartialHeadingBlocks({ beforeText, selectedText, afterText, level }));
+const applyPartialSelectionHeading = (editor, level, selectedIsActiveHeading) =>
+  applyPartialSelectionTransform(editor, ({ beforeText, selectedText, afterText }) => buildPartialHeadingBlocks({ beforeText, selectedText, afterText, level, selectedIsActiveHeading }));
 
 const applyPartialSelectionTextAlign = (editor, textAlign) =>
   applyPartialSelectionTransform(editor, ({ beforeText, selectedText, afterText }) => buildPartialTextAlignBlocks({ beforeText, selectedText, afterText, textAlign }));
@@ -260,7 +278,8 @@ export const RichTextEditor = ({ content = '', onChange, editable = true, mediaP
   const handleHeading = (level) => {
     if (!editor) return;
 
-    const changed = applyPartialSelectionHeading(editor, level) || editor.chain().focus().toggleHeading({ level }).run();
+    const selectedIsActiveHeading = editor.isActive('heading', { level });
+    const changed = applyPartialSelectionHeading(editor, level, selectedIsActiveHeading) || editor.chain().focus().toggleHeading({ level }).run();
     if (changed) emitChange();
   };
 

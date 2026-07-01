@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 
-import { buildPartialHeadingBlocks, buildPartialTextAlignBlocks, createEmptyEditorDocument, parseEditorContent, RichTextEditor } from '../RichTextEditor';
+import { buildPartialHeadingBlocks, buildPartialTextAlignBlocks, createEmptyEditorDocument, getPartialSelectionTextRange, parseEditorContent, RichTextEditor } from '../RichTextEditor';
 import { hasEditorContent } from '../richTextContent';
 
 describe('parseEditorContent', () => {
@@ -40,6 +40,23 @@ describe('RichTextEditor', () => {
     expect(latestContent.content[0].type).toBe('paragraph');
   });
 
+  it('highlights toolbar buttons for formatting used by the selected text', () => {
+    const headingContent = JSON.stringify({
+      type: 'doc',
+      content: [{ type: 'heading', attrs: { level: 1 }, content: [{ type: 'text', text: 'Heading text' }] }],
+    });
+
+    render(<RichTextEditor content={headingContent} onChange={jest.fn()} />);
+
+    const headingButton = screen.getByRole('button', { name: /heading 1/i });
+    const boldButton = screen.getByRole('button', { name: /^bold$/i });
+
+    expect(headingButton).toHaveAttribute('aria-pressed', 'true');
+    expect(headingButton).toHaveClass('bg-muted', 'ring-1');
+    expect(boldButton).toHaveAttribute('aria-pressed', 'false');
+    expect(boldButton).not.toHaveClass('bg-muted');
+  });
+
   it('keeps editor selection when toolbar buttons are clicked', () => {
     const onChange = jest.fn();
 
@@ -75,6 +92,28 @@ describe('RichTextEditor', () => {
       { type: 'heading', attrs: { level: 1 }, content: [{ type: 'text', text: 'beta' }] },
       { type: 'paragraph', content: [{ type: 'text', text: ' gamma' }] },
     ]);
+  });
+
+  it('builds paragraph content when selected heading text is toggled off', () => {
+    expect(
+      buildPartialHeadingBlocks({
+        beforeText: '',
+        selectedText: 'beta',
+        afterText: '',
+        level: 1,
+        selectedIsActiveHeading: true,
+      }),
+    ).toEqual([{ type: 'paragraph', content: [{ type: 'text', text: 'beta' }] }]);
+  });
+
+  it('calculates the selected text range after partial selection replacement', () => {
+    expect(
+      getPartialSelectionTextRange({
+        blockFrom: 12,
+        beforeText: 'alpha ',
+        selectedText: 'beta',
+      }),
+    ).toEqual({ from: 21, to: 25 });
   });
 
   it('builds separate blocks when partial text is centered', () => {
