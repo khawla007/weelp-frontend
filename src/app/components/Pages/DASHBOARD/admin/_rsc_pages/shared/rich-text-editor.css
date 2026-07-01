@@ -6,6 +6,12 @@
   overflow-wrap: break-word;
 }
 
+.ProseMirror.rich-text-editor-content {
+  font-size: 1rem;
+  line-height: 1.75;
+  min-height: 420px;
+}
+
 .rich-text-editor-content :first-child,
 .tiptap :first-child {
   margin-top: 0;
@@ -72,6 +78,13 @@
   color: hsl(var(--muted-foreground));
   margin: 1.25rem 0;
   padding-left: 1rem;
+}
+
+.rich-text-editor-content hr,
+.tiptap hr {
+  border: 0;
+  border-top: 1px solid hsl(var(--border));
+  margin: 1.5rem auto;
 }
 
 .rich-text-editor-content code,

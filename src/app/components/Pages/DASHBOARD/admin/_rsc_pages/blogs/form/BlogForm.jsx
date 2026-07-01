@@ -9,6 +9,9 @@ import { useRouter } from 'next/navigation';
 import { createBlog, updateBlog } from '@/lib/actions/blogs';
 import { defaultSeoValues, parseSeoSchemaData } from '../../shared/SeoFields';
 import { getRecommendedSchemaType } from '@/lib/seo/schemaGenerator';
+import { normalizeBlogPayload } from './blogPayload';
+import { useBlogAutosave } from './useBlogAutosave';
+import { Button } from '@/components/ui/button';
 
 /**
  * Shape of Form Data
@@ -83,23 +86,18 @@ export const BlogForm = ({ editPage = false, data: blogData, mutate }) => {
   // eslint-disable-next-line react-hooks/incompatible-library
   const media_gallery = methods.watch('media_gallery');
 
+  const { clearDraft, discardDraft, hasDraft, restoreDraft } = useBlogAutosave({
+    methods,
+    blogId: blogData?.id,
+    serverUpdatedAt: blogData?.updated_at,
+  });
+
   // form data
   const onSubmit = async (data) => {
     try {
       console.log('Blog form data:', data);
       // prepare Data
-      const finalData = {
-        ...data,
-        media_gallery:
-          data?.media_gallery?.length > 0
-            ? data?.media_gallery.map((media) => ({
-                media_id: media.media_id,
-                is_featured: media.is_featured ?? false,
-              }))
-            : [], // safely handle data with is_featured
-        tags: data?.tags?.length > 0 ? data?.tags.map((tag, index) => tag.value) : [], // safely handle data
-        categories: data?.categories?.length > 0 ? data?.categories.map((category, index) => category.value) : [], // safely handle data
-      };
+      const finalData = normalizeBlogPayload(data);
 
       console.log('Final data to send:', finalData);
 
@@ -120,6 +118,7 @@ export const BlogForm = ({ editPage = false, data: blogData, mutate }) => {
       }
 
       toast({ title: response?.message || 'Submitting Successfully' });
+      clearDraft();
 
       // Invalidate SWR cache to ensure fresh data on next navigation
       if (mutate) {
@@ -143,6 +142,20 @@ export const BlogForm = ({ editPage = false, data: blogData, mutate }) => {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col space-y-4">
         <BlogHeader editPage={editPage} blogData={blogData} />
+
+        {hasDraft && (
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+            <span>Unsaved local draft found.</span>
+            <div className="flex gap-2">
+              <Button type="button" size="sm" onClick={restoreDraft}>
+                Restore
+              </Button>
+              <Button type="button" size="sm" variant="ghost" onClick={discardDraft}>
+                Discard
+              </Button>
+            </div>
+          </div>
+        )}
 
         <div className="flex flex-col md:flex-row w-full  gap-4 ">
           {/* Content Area */}

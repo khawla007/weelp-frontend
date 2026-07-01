@@ -68,7 +68,7 @@ export const PostMedia = ({ setDialogOpen, onSelectionChange }) => {
   useEffect(() => {
     // Mark this as our own update to prevent syncing back
     isExternalUpdateRef.current = true;
-    setValue('media_gallery', activityImages); // sync form
+    setValue('media_gallery', activityImages, { shouldDirty: true, shouldValidate: true }); // sync form
   }, [activityImages, setValue]);
 
   // handleDelteImage

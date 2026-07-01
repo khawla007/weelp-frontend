@@ -2,7 +2,6 @@ import React from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { WidgetCard } from './components/WidgetCard';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { RichTextEditor } from '../shared/RichTextEditor';
 import { Medialibrary } from '../media/MediaLibrary';
 import { hasEditorContent } from '../shared/richTextContent';
@@ -65,8 +64,7 @@ export const BlogMain = ({ content }) => {
           control={control}
           render={({ field, fieldState: { error } }) => (
             <div className="space-y-2">
-              <Label htmlFor="blog-slug">URL slug</Label>
-              <Input id="blog-slug" placeholder="best-places-to-visit" {...field} onChange={(event) => field.onChange(slugify(event.target.value))} />
+              <Input id="blog-slug" aria-label="Slug" placeholder="best-places-to-visit" {...field} onChange={(event) => field.onChange(slugify(event.target.value))} />
               {error?.message && <span className="text-sm text-destructive">{error.message}</span>}
             </div>
           )}

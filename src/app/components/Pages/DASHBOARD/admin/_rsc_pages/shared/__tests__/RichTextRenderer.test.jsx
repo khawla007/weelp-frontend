@@ -66,4 +66,21 @@ describe('RichTextRenderer', () => {
     expect(html).not.toContain('javascript:');
     expect(html).not.toContain('<img');
   });
+
+  it('renders saved text alignment on blocks', () => {
+    const content = JSON.stringify({
+      type: 'doc',
+      content: [
+        {
+          type: 'heading',
+          attrs: { level: 1, textAlign: 'center' },
+          content: [{ type: 'text', text: 'Centered title' }],
+        },
+      ],
+    });
+
+    const html = renderToStaticMarkup(<RichTextRenderer content={content} />);
+
+    expect(html).toContain('<h1 style="text-align:center">Centered title</h1>');
+  });
 });

@@ -7,6 +7,9 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { hasEditorContent } from '../../shared/richTextContent';
+import { isBlogCreateReady } from './blogReadiness';
+
+export { isBlogCreateReady } from './blogReadiness';
 
 const previewStorageKey = 'weelp:blog-preview';
 
@@ -32,12 +35,24 @@ export const BlogHeader = ({ editPage = false, blogData }) => {
   const nameValue = useWatch({ control, name: 'name' });
   const slugValue = useWatch({ control, name: 'slug' });
   const contentValue = useWatch({ control, name: 'content' });
+  const excerptValue = useWatch({ control, name: 'excerpt' });
+  const mediaGalleryValue = useWatch({ control, name: 'media_gallery' });
+  const categoriesValue = useWatch({ control, name: 'categories' });
+  const tagsValue = useWatch({ control, name: 'tags' });
 
   const hasContent = hasEditorContent(contentValue || blogData?.content);
 
-  // Create: enabled when name and content are filled
+  // Create: enabled only when the payload can pass backend create validation.
   // Edit: enabled when any field is changed (dirty)
-  const isCreateValid = !!(nameValue?.trim() && slugValue?.trim() && hasContent);
+  const isCreateValid = isBlogCreateReady({
+    name: nameValue,
+    slug: slugValue,
+    content: contentValue || blogData?.content,
+    excerpt: excerptValue,
+    mediaGallery: mediaGalleryValue,
+    categories: categoriesValue,
+    tags: tagsValue,
+  });
   const computedDisabled = editPage ? !isDirty : !isCreateValid;
   const originalSlug = blogData?.slug;
 

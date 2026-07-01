@@ -299,7 +299,7 @@ const FilterBlog = () => {
                 onDelete={handleMultpleDelete}
               />
             ) : (
-              <AddNewButton label="Add New" href="/dashboard/admin/blogs/new" />
+              <AddNewButton label="Add New" href="/dashboard/admin/blogs/new" className="!text-white hover:!text-white" />
             )}
 
             {/* Recommended */}

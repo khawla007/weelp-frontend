@@ -41,6 +41,8 @@ const renderMarks = (children, marks = [], keyPrefix = 'mark') =>
 
 const renderChildren = (nodes = [], keyPrefix = 'node') => nodes.map((node, index) => renderNode(node, `${keyPrefix}-${index}`)).filter(Boolean);
 
+const blockStyle = (node) => (node.attrs?.textAlign ? { textAlign: node.attrs.textAlign } : undefined);
+
 const renderNode = (node, key) => {
   if (!node) return null;
 
@@ -50,12 +52,34 @@ const renderNode = (node, key) => {
 
   const children = renderChildren(node.content || [], key);
 
-  if (node.type === 'paragraph') return <p key={key}>{children}</p>;
+  if (node.type === 'paragraph') {
+    return (
+      <p key={key} style={blockStyle(node)}>
+        {children}
+      </p>
+    );
+  }
   if (node.type === 'heading') {
     const level = Number(node.attrs?.level) || 2;
-    if (level === 1) return <h1 key={key}>{children}</h1>;
-    if (level === 3) return <h3 key={key}>{children}</h3>;
-    return <h2 key={key}>{children}</h2>;
+    if (level === 1) {
+      return (
+        <h1 key={key} style={blockStyle(node)}>
+          {children}
+        </h1>
+      );
+    }
+    if (level === 3) {
+      return (
+        <h3 key={key} style={blockStyle(node)}>
+          {children}
+        </h3>
+      );
+    }
+    return (
+      <h2 key={key} style={blockStyle(node)}>
+        {children}
+      </h2>
+    );
   }
   if (node.type === 'bulletList') return <ul key={key}>{children}</ul>;
   if (node.type === 'orderedList') return <ol key={key}>{children}</ol>;

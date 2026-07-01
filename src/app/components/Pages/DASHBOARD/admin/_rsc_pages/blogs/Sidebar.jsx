@@ -15,8 +15,9 @@ import { PostMedia } from './PostMedia';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Medialibrary } from '../media/MediaLibrary';
-import { Upload } from 'lucide-react';
+import { CheckCircle2, Circle, Upload } from 'lucide-react';
 import SeoFields from '../shared/SeoFields';
+import { getBlogReadinessItems } from './components/blogReadiness';
 
 const BlogSidebar = () => {
   const { control, setValue } = useFormContext(); // conext provider
@@ -24,9 +25,16 @@ const BlogSidebar = () => {
   const { tagList, error: isTagError, isLoading: isTagLoading } = useAlltagsOptionsAdmin();
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  // Get media_gallery from form state
-  const media_gallery = useWatch({
-    name: 'media_gallery',
+  const formValues = useWatch({ control });
+  const media_gallery = formValues?.media_gallery || [];
+  const readinessItems = getBlogReadinessItems({
+    name: formValues?.name,
+    slug: formValues?.slug,
+    content: formValues?.content,
+    excerpt: formValues?.excerpt,
+    mediaGallery: media_gallery,
+    categories: formValues?.categories,
+    tags: formValues?.tags,
   });
 
   // Options For categories
@@ -58,6 +66,17 @@ const BlogSidebar = () => {
 
   return (
     <div className="space-y-6">
+      <WidgetCard cardTitle="Publish Readiness">
+        <ul className="space-y-2">
+          {readinessItems.map((item) => (
+            <li key={item.key} className="flex items-center gap-2 text-sm">
+              {item.complete ? <CheckCircle2 className="h-4 w-4 text-weelp-sage-deep" /> : <Circle className="h-4 w-4 text-muted-foreground" />}
+              <span className={item.complete ? 'text-foreground' : 'text-muted-foreground'}>{item.label}</span>
+            </li>
+          ))}
+        </ul>
+      </WidgetCard>
+
       {/* Excerpt */}
       <WidgetCard cardTitle="Excerpt">
         <Controller
@@ -104,7 +123,7 @@ const BlogSidebar = () => {
           <Controller
             name="categories"
             control={control}
-            rules={{ required: 'Field Required' }}
+            rules={{ validate: (value) => value?.length > 0 || 'Select at least 1 category' }}
             render={({ field, fieldState: { error } }) => {
               return (
                 <>
@@ -124,7 +143,7 @@ const BlogSidebar = () => {
           <Controller
             name="tags"
             control={control}
-            rules={{ required: 'Field Required' }}
+            rules={{ validate: (value) => value?.length > 0 || 'Select at least 1 tag' }}
             defaultValue={[]}
             render={({ field, fieldState: { error } }) => {
               return (
