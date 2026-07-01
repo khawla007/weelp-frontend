@@ -159,12 +159,11 @@ export default function NotificationBell({ overHero = false }) {
         aria-expanded={open}
         className={`relative flex h-11 w-11 items-center justify-center ${overHero ? 'text-foreground dark:text-white focus-visible:ring-offset-white' : 'text-foreground focus-visible:ring-offset-background'} rounded-full transition hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2`}
         onClick={() => {
-          setOpen((isOpen) => {
-            if (!isOpen) {
-              window.dispatchEvent(new CustomEvent('weelp-header-dropdown-open', { detail: { source: 'notifications' } }));
-            }
-            return !isOpen;
-          });
+          const willOpen = !open;
+          if (willOpen) {
+            window.dispatchEvent(new CustomEvent('weelp-header-dropdown-open', { detail: { source: 'notifications' } }));
+          }
+          setOpen(willOpen);
         }}
       >
         <Bell className="size-5" strokeWidth={1.5} />

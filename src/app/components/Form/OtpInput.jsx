@@ -118,10 +118,10 @@ export const OtpInput = forwardRef(({ length = 6, value = '', onChange, onComple
           className={cn(
             'w-12 h-14 text-center text-2xl font-semibold',
             '!bg-weelp-auth-neu-surface',
-            'border-2 rounded-lg',
+            'border rounded-lg',
             'focus:outline-none focus:ring-2 focus:ring-weelp-sage-deep',
             'disabled:opacity-50 disabled:cursor-not-allowed',
-            error ? 'border-red-500 focus:border-red-500' : 'border-border focus:border-weelp-sage-deep',
+            error ? 'border-red-500 focus:border-red-500' : 'border-weelp-sage-deep/25 dark:border-white/10 focus:border-weelp-sage-deep',
           )}
           autoComplete="one-time-code"
         />

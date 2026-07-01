@@ -437,12 +437,11 @@ export const HeaderAccount = ({ overHero = false }) => {
             aria-label="Open account menu"
             aria-expanded={!!showSubmenu}
             onClick={() => {
-              setShowSubmenu((isOpen) => {
-                if (!isOpen) {
-                  window.dispatchEvent(new CustomEvent('weelp-header-dropdown-open', { detail: { source: 'account' } }));
-                }
-                return !isOpen;
-              });
+              const willOpen = !showSubmenu;
+              if (willOpen) {
+                window.dispatchEvent(new CustomEvent('weelp-header-dropdown-open', { detail: { source: 'account' } }));
+              }
+              setShowSubmenu(willOpen);
             }}
             className={`flex h-11 w-[65px] items-center justify-center gap-2 rounded-[30px] border border-border ${iconButtonTone} overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${iconChip}`}
           >

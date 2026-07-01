@@ -61,13 +61,21 @@ export function AuthPageClient({ defaultTab = 'login', returnUrl = null }) {
           <div className="mb-5 flex gap-2 sm:mb-6 sm:gap-3">
             <button
               onClick={() => handleTabSwitch('login')}
-              className={`flex-1 rounded-lg border border-weelp-sage-deep py-2.5 text-center text-sm font-medium transition-colors duration-200 motion-reduce:transition-none sm:py-3 sm:text-base ${isLogin ? 'bg-weelp-sage-deep text-white hover:bg-weelp-auth-neu-surface hover:text-weelp-sage-deep' : 'bg-weelp-auth-neu-surface text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white'}`}
+              className={`flex-1 rounded-lg border border-weelp-sage-deep py-2.5 text-center text-sm font-medium transition-colors duration-200 motion-reduce:transition-none sm:py-3 sm:text-base ${
+                isLogin
+                  ? 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep dark:hover:bg-weelp-auth-neu-surface dark:hover:text-white'
+                  : 'bg-white text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white dark:bg-weelp-auth-neu-surface dark:text-white dark:hover:bg-weelp-sage-deep dark:hover:text-white'
+              }`}
             >
               Log In
             </button>
             <button
               onClick={() => handleTabSwitch('signup')}
-              className={`flex-1 rounded-lg border border-weelp-sage-deep py-2.5 text-center text-sm font-medium transition-colors duration-200 motion-reduce:transition-none sm:py-3 sm:text-base ${!isLogin ? 'bg-weelp-sage-deep text-white hover:bg-weelp-auth-neu-surface hover:text-weelp-sage-deep' : 'bg-weelp-auth-neu-surface text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white'}`}
+              className={`flex-1 rounded-lg border border-weelp-sage-deep py-2.5 text-center text-sm font-medium transition-colors duration-200 motion-reduce:transition-none sm:py-3 sm:text-base ${
+                !isLogin
+                  ? 'bg-weelp-sage-deep text-white hover:bg-white hover:text-weelp-sage-deep dark:hover:bg-weelp-auth-neu-surface dark:hover:text-white'
+                  : 'bg-white text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white dark:bg-weelp-auth-neu-surface dark:text-white dark:hover:bg-weelp-sage-deep dark:hover:text-white'
+              }`}
             >
               Sign Up
             </button>
