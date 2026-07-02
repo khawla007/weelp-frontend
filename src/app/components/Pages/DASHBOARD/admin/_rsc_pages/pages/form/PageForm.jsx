@@ -24,6 +24,11 @@ export function PageForm({ editPage = false, data: pageData, mutate }) {
       status: getPageStatus(pageData || { status: PAGE_STATUS.draft }),
       excerpt: pageData?.excerpt || '',
       content: pageData?.content || '',
+      hero_background_image_url: pageData?.hero_background_image_url || '',
+      hero_heading: pageData?.hero_heading || '',
+      hero_text: pageData?.hero_text || '',
+      hero_button_label: pageData?.hero_button_label || '',
+      hero_button_url: pageData?.hero_button_url || '',
       seo: {
         ...defaultSeoValues,
         ...(pageData?.seo || {

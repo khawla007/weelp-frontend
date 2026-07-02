@@ -62,6 +62,11 @@ export function normalizePageFormPayload(data = {}) {
     status,
     excerpt: data.excerpt || '',
     content: data.content || '',
+    hero_background_image_url: data.hero_background_image_url?.trim() || '',
+    hero_heading: data.hero_heading?.trim() || '',
+    hero_text: data.hero_text?.trim() || '',
+    hero_button_label: data.hero_button_label?.trim() || '',
+    hero_button_url: data.hero_button_url?.trim() || '',
     seo: data.seo || {},
   };
 }

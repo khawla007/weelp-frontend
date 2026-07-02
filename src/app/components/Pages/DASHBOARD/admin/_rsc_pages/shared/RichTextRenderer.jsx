@@ -84,6 +84,18 @@ const renderNode = (node, key) => {
   if (node.type === 'bulletList') return <ul key={key}>{children}</ul>;
   if (node.type === 'orderedList') return <ol key={key}>{children}</ol>;
   if (node.type === 'listItem') return <li key={key}>{children}</li>;
+  if (node.type === 'table') {
+    return (
+      <div key={key} className="rich-text-editor-table-wrap">
+        <table>
+          <tbody>{children}</tbody>
+        </table>
+      </div>
+    );
+  }
+  if (node.type === 'tableRow') return <tr key={key}>{children}</tr>;
+  if (node.type === 'tableHeader') return <th key={key}>{children}</th>;
+  if (node.type === 'tableCell') return <td key={key}>{children}</td>;
   if (node.type === 'blockquote') return <blockquote key={key}>{children}</blockquote>;
   if (node.type === 'codeBlock') return <pre key={key}>{children}</pre>;
   if (node.type === 'hardBreak') return <br key={key} />;

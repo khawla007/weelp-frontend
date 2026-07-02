@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { Extension } from '@tiptap/core';
+import { Extension, Node, mergeAttributes } from '@tiptap/core';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
@@ -73,6 +73,64 @@ const TextAlignExtension = Extension.create({
   },
 });
 
+const TableNode = Node.create({
+  name: 'table',
+  group: 'block',
+  content: 'tableRow+',
+  isolating: true,
+
+  parseHTML() {
+    return [{ tag: 'table' }];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['table', mergeAttributes(HTMLAttributes, { class: 'rich-text-editor-table' }), ['tbody', 0]];
+  },
+});
+
+const TableRowNode = Node.create({
+  name: 'tableRow',
+  content: '(tableCell | tableHeader)*',
+
+  parseHTML() {
+    return [{ tag: 'tr' }];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['tr', HTMLAttributes, 0];
+  },
+});
+
+const TableCellNode = Node.create({
+  name: 'tableCell',
+  content: 'block+',
+  tableRole: 'cell',
+  isolating: true,
+
+  parseHTML() {
+    return [{ tag: 'td' }];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['td', HTMLAttributes, 0];
+  },
+});
+
+const TableHeaderNode = Node.create({
+  name: 'tableHeader',
+  content: 'block+',
+  tableRole: 'header_cell',
+  isolating: true,
+
+  parseHTML() {
+    return [{ tag: 'th' }];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['th', HTMLAttributes, 0];
+  },
+});
+
 const editorExtensions = [
   StarterKit.configure({
     heading: {
@@ -96,6 +154,10 @@ const editorExtensions = [
       target: '_blank',
     },
   }),
+  TableNode,
+  TableRowNode,
+  TableHeaderNode,
+  TableCellNode,
   TextAlignExtension,
 ];
 

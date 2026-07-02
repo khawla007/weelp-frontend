@@ -32,7 +32,35 @@ describe('CMS page normalizers', () => {
       status: 'published',
       excerpt: '',
       content: '',
+      hero_background_image_url: '',
+      hero_heading: '',
+      hero_text: '',
+      hero_button_label: '',
+      hero_button_url: '',
       seo: { meta_title: 'About' },
+    });
+  });
+
+  test('trims hero fields in form payloads', () => {
+    expect(
+      normalizePageFormPayload({
+        title: ' About ',
+        slug: ' about ',
+        status: 'published',
+        content: '{}',
+        excerpt: 'Summary',
+        hero_background_image_url: ' /storage/hero.jpg ',
+        hero_heading: ' Hero ',
+        hero_text: ' Hero text ',
+        hero_button_label: ' Start ',
+        hero_button_url: ' /start ',
+      }),
+    ).toMatchObject({
+      hero_background_image_url: '/storage/hero.jpg',
+      hero_heading: 'Hero',
+      hero_text: 'Hero text',
+      hero_button_label: 'Start',
+      hero_button_url: '/start',
     });
   });
 

@@ -60,6 +60,7 @@ export default function FilterPagesPage() {
   const queryParams = useMemo(() => {
     const params = new URLSearchParams();
 
+    params.append('per_page', '3');
     if (debouncedFilters.search) params.append('search', debouncedFilters.search);
     if (debouncedFilters.status && debouncedFilters.status !== 'all') params.append('status', debouncedFilters.status);
     if (debouncedFilters.sort_by) params.append('sort_by', debouncedFilters.sort_by);
@@ -69,7 +70,7 @@ export default function FilterPagesPage() {
   }, [debouncedFilters, filters.page]);
 
   const { data, error, isValidating, mutate } = useSWR(`/api/admin/pages?${queryParams}`, fetcher, { revalidateIfStale: true });
-  const { data: items = [], current_page = 1, per_page = 10, total: totalItems = 0 } = data?.data || {};
+  const { data: items = [], current_page = 1, per_page = 3, total: totalItems = 0 } = data?.data || {};
 
   const closeDialog = () => {
     setModalState((prev) => ({ ...prev, openDialogIndex: '' }));
