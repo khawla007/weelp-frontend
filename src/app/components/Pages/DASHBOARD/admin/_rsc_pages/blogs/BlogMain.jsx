@@ -14,7 +14,7 @@ const slugify = (value = '') =>
     .replace(/^-+|-+$/g, '');
 
 export const BlogMain = ({ content }) => {
-  const { control, getValues, setValue } = useFormContext(); // context provider
+  const { control, setValue } = useFormContext(); // context provider
 
   return (
     <div className="w-full flex-[3] gap-8 flex flex-col">
@@ -34,9 +34,7 @@ export const BlogMain = ({ content }) => {
                     {...field}
                     onChange={(event) => {
                       field.onChange(event);
-                      if (!getValues('slug')) {
-                        setValue('slug', slugify(event.target.value), { shouldDirty: true, shouldValidate: true });
-                      }
+                      setValue('slug', slugify(event.target.value), { shouldDirty: true, shouldValidate: true });
                     }}
                   />
                 </WidgetCard>
