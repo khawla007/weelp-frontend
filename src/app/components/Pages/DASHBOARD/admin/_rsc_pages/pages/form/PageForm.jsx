@@ -29,6 +29,30 @@ export function PageForm({ editPage = false, data: pageData, mutate }) {
       hero_text: pageData?.hero_text || '',
       hero_button_label: pageData?.hero_button_label || '',
       hero_button_url: pageData?.hero_button_url || '',
+      hero_overlay_color: pageData?.hero_overlay_color || '',
+      hero_overlay_opacity: pageData?.hero_overlay_opacity ?? '',
+      hero_content_vertical_position: pageData?.hero_content_vertical_position || '',
+      hero_heading_size: pageData?.hero_heading_size || '',
+      hero_heading_color: pageData?.hero_heading_color || '',
+      hero_heading_align: pageData?.hero_heading_align || '',
+      hero_heading_bold: Boolean(pageData?.hero_heading_bold),
+      hero_heading_italic: Boolean(pageData?.hero_heading_italic),
+      hero_heading_underline: Boolean(pageData?.hero_heading_underline),
+      hero_text_size: pageData?.hero_text_size || '',
+      hero_text_color: pageData?.hero_text_color || '',
+      hero_text_align: pageData?.hero_text_align || '',
+      hero_text_bold: Boolean(pageData?.hero_text_bold),
+      hero_text_italic: Boolean(pageData?.hero_text_italic),
+      hero_text_underline: Boolean(pageData?.hero_text_underline),
+      hero_button_radius: pageData?.hero_button_radius || '',
+      hero_button_border_width: pageData?.hero_button_border_width || '',
+      hero_button_padding: pageData?.hero_button_padding || '',
+      hero_button_margin: pageData?.hero_button_margin || '',
+      hero_button_text_color: pageData?.hero_button_text_color || '',
+      hero_button_bg_color: pageData?.hero_button_bg_color || '',
+      hero_button_border_color: pageData?.hero_button_border_color || '',
+      hero_button_text_size: pageData?.hero_button_text_size || '',
+      hero_button_align: pageData?.hero_button_align || '',
       seo: {
         ...defaultSeoValues,
         ...(pageData?.seo || {
@@ -68,6 +92,12 @@ export function PageForm({ editPage = false, data: pageData, mutate }) {
 
       toast({ title: response?.message || 'Page saved successfully' });
       mutate?.();
+      if (editPage) {
+        router.refresh();
+        methods.reset(data);
+        return;
+      }
+
       router.push('/dashboard/admin/pages');
     } catch (error) {
       console.error(error);

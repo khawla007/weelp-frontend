@@ -55,18 +55,48 @@ export function unwrapPageListResponse(payload) {
 
 export function normalizePageFormPayload(data = {}) {
   const status = data.status === PAGE_STATUS.published ? PAGE_STATUS.published : PAGE_STATUS.draft;
+  const textField = (field) => {
+    const value = data[field];
+    if (value === null || value === undefined) return '';
+    return String(value).trim();
+  };
+  const boolField = (field) => Boolean(data[field]);
 
   return {
-    title: data.title?.trim() || '',
-    slug: data.slug?.trim() || '',
+    title: textField('title'),
+    slug: textField('slug'),
     status,
     excerpt: data.excerpt || '',
     content: data.content || '',
-    hero_background_image_url: data.hero_background_image_url?.trim() || '',
-    hero_heading: data.hero_heading?.trim() || '',
-    hero_text: data.hero_text?.trim() || '',
-    hero_button_label: data.hero_button_label?.trim() || '',
-    hero_button_url: data.hero_button_url?.trim() || '',
+    hero_background_image_url: textField('hero_background_image_url'),
+    hero_heading: textField('hero_heading'),
+    hero_text: textField('hero_text'),
+    hero_button_label: textField('hero_button_label'),
+    hero_button_url: textField('hero_button_url'),
+    hero_overlay_color: textField('hero_overlay_color'),
+    hero_overlay_opacity: textField('hero_overlay_opacity'),
+    hero_content_vertical_position: textField('hero_content_vertical_position'),
+    hero_heading_size: textField('hero_heading_size'),
+    hero_heading_color: textField('hero_heading_color'),
+    hero_heading_align: textField('hero_heading_align'),
+    hero_heading_bold: boolField('hero_heading_bold'),
+    hero_heading_italic: boolField('hero_heading_italic'),
+    hero_heading_underline: boolField('hero_heading_underline'),
+    hero_text_size: textField('hero_text_size'),
+    hero_text_color: textField('hero_text_color'),
+    hero_text_align: textField('hero_text_align'),
+    hero_text_bold: boolField('hero_text_bold'),
+    hero_text_italic: boolField('hero_text_italic'),
+    hero_text_underline: boolField('hero_text_underline'),
+    hero_button_radius: textField('hero_button_radius'),
+    hero_button_border_width: textField('hero_button_border_width'),
+    hero_button_padding: textField('hero_button_padding'),
+    hero_button_margin: textField('hero_button_margin'),
+    hero_button_text_color: textField('hero_button_text_color'),
+    hero_button_bg_color: textField('hero_button_bg_color'),
+    hero_button_border_color: textField('hero_button_border_color'),
+    hero_button_text_size: textField('hero_button_text_size'),
+    hero_button_align: textField('hero_button_align'),
     seo: data.seo || {},
   };
 }

@@ -34,6 +34,52 @@ const isSafePublicUrl = (url) => {
 };
 
 const cssUrl = (url) => `url("${String(url).replace(/["\\]/g, '\\$&')}")`;
+const HORIZONTAL_ALIGN = {
+  left: 'left',
+  center: 'center',
+  right: 'right',
+};
+const HORIZONTAL_JUSTIFY = {
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end',
+};
+const VERTICAL_ALIGN = {
+  top: 'flex-start',
+  middle: 'center',
+  bottom: 'flex-end',
+};
+
+const safeAlign = (value, fallback = 'left') => HORIZONTAL_ALIGN[value] || fallback;
+const safeJustify = (value, fallback = 'flex-start') => HORIZONTAL_JUSTIFY[value] || fallback;
+const safeVerticalAlign = (value) => VERTICAL_ALIGN[value] || 'center';
+const safeBlockMargin = (value) => {
+  if (value === 'center') return '0 auto';
+  if (value === 'right') return '0 0 0 auto';
+  return undefined;
+};
+const safeCssValue = (value) => {
+  const normalized = String(value || '').trim();
+  return /^[\d\s.]+(px|rem|em|%)?(\s+[\d\s.]+(px|rem|em|%)?){0,3}$/.test(normalized) ? normalized : undefined;
+};
+const safeColor = (value) => {
+  const normalized = String(value || '').trim();
+  return /^#([\da-f]{3}|[\da-f]{6})$/i.test(normalized) ? normalized : undefined;
+};
+const hexToRgba = (hex, opacity) => {
+  const color = safeColor(hex);
+  const alpha = Number.isFinite(Number(opacity)) ? Math.min(Math.max(Number(opacity), 0), 1) : 0.62;
+  if (!color) return `rgba(20, 35, 30, ${alpha})`;
+  const raw = color.length === 4 ? color.replace(/^#(.)(.)(.)$/, '#$1$1$2$2$3$3') : color;
+  const int = Number.parseInt(raw.slice(1), 16);
+  const red = (int >> 16) & 255;
+  const green = (int >> 8) & 255;
+  const blue = int & 255;
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+};
+const textDecoration = (enabled) => (enabled ? 'underline' : undefined);
+const fontWeight = (enabled, fallback) => (enabled ? 700 : fallback);
+const fontStyle = (enabled) => (enabled ? 'italic' : undefined);
 
 export async function buildCmsPageMetadata(slug, canonicalPath = `/pages/${slug}`) {
   const { success, data } = await getPublishedPage(slug);
@@ -69,33 +115,70 @@ export async function CmsPageTemplate({ slug }) {
   const hasHero = Boolean(heroBackgroundUrl || data.hero_heading || data.hero_text || data.hero_button_label || heroButtonUrl);
   const heroHeading = data.hero_heading || title;
   const heroText = data.hero_text || data.excerpt;
+  const overlay = hexToRgba(data.hero_overlay_color, data.hero_overlay_opacity);
+  const heroSectionStyle = heroBackgroundUrl
+    ? {
+        backgroundImage: `linear-gradient(${overlay}, ${overlay}), ${cssUrl(heroBackgroundUrl)}`,
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
+      }
+    : undefined;
+  const heroLayoutStyle = { alignItems: safeVerticalAlign(data.hero_content_vertical_position) };
+  const headingStyle = {
+    color: safeColor(data.hero_heading_color),
+    fontSize: safeCssValue(data.hero_heading_size),
+    textAlign: safeAlign(data.hero_heading_align),
+    fontWeight: fontWeight(data.hero_heading_bold, 600),
+    fontStyle: fontStyle(data.hero_heading_italic),
+    textDecoration: textDecoration(data.hero_heading_underline),
+  };
+  const textStyle = {
+    color: safeColor(data.hero_text_color),
+    fontSize: safeCssValue(data.hero_text_size),
+    textAlign: safeAlign(data.hero_text_align),
+    margin: safeBlockMargin(data.hero_text_align),
+    fontWeight: fontWeight(data.hero_text_bold, 400),
+    fontStyle: fontStyle(data.hero_text_italic),
+    textDecoration: textDecoration(data.hero_text_underline),
+  };
+  const buttonStyle = {
+    borderRadius: safeCssValue(data.hero_button_radius),
+    borderWidth: safeCssValue(data.hero_button_border_width),
+    padding: safeCssValue(data.hero_button_padding),
+    margin: safeCssValue(data.hero_button_margin),
+    color: safeColor(data.hero_button_text_color),
+    backgroundColor: safeColor(data.hero_button_bg_color),
+    borderColor: safeColor(data.hero_button_border_color),
+    fontSize: safeCssValue(data.hero_button_text_size),
+  };
+  const buttonWrapStyle = { justifyContent: safeJustify(data.hero_button_align) };
 
   return (
     <>
       {hasHero && (
-        <section
-          className="relative isolate overflow-hidden bg-weelp-sage-deep px-4 py-20 text-white sm:px-6 lg:px-8"
-          style={
-            heroBackgroundUrl
-              ? {
-                  backgroundImage: `linear-gradient(rgba(20, 35, 30, 0.62), rgba(20, 35, 30, 0.62)), ${cssUrl(heroBackgroundUrl)}`,
-                  backgroundPosition: 'center',
-                  backgroundSize: 'cover',
-                }
-              : undefined
-          }
-        >
-          <div className="mx-auto max-w-4xl space-y-5">
-            <h1 className="text-4xl font-semibold tracking-normal sm:text-5xl">{heroHeading}</h1>
-            {heroText && <p className="max-w-2xl text-base leading-7 text-white/90 sm:text-lg">{heroText}</p>}
-            {data.hero_button_label && heroButtonUrl && (
-              <a
-                href={heroButtonUrl}
-                className="inline-flex min-h-10 items-center justify-center rounded-md bg-background px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-background/90"
-              >
-                {data.hero_button_label}
-              </a>
-            )}
+        <section className="relative isolate flex min-h-[420px] overflow-hidden bg-weelp-sage-deep px-4 py-20 text-white sm:px-6 lg:px-8" style={heroSectionStyle}>
+          <div className="mx-auto flex w-full max-w-4xl" style={heroLayoutStyle}>
+            <div className="w-full space-y-5">
+              <h1 className="text-4xl tracking-normal sm:text-5xl" style={headingStyle}>
+                {heroHeading}
+              </h1>
+              {heroText && (
+                <p className="max-w-2xl text-base leading-7 text-white/90 sm:text-lg" style={textStyle}>
+                  {heroText}
+                </p>
+              )}
+              {data.hero_button_label && heroButtonUrl && (
+                <div className="flex" style={buttonWrapStyle}>
+                  <a
+                    href={heroButtonUrl}
+                    className="inline-flex min-h-10 items-center justify-center rounded-md border border-transparent bg-background px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-background/90"
+                    style={buttonStyle}
+                  >
+                    {data.hero_button_label}
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
         </section>
       )}

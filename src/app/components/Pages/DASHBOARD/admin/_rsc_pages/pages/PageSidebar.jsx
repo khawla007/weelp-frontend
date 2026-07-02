@@ -33,10 +33,6 @@ export function PageSidebar() {
         />
       </WidgetCard>
 
-      <WidgetCard cardTitle="Hero Section">
-        <PageHeroFields />
-      </WidgetCard>
-
       <WidgetCard cardTitle="Excerpt">
         <Controller
           name="excerpt"
@@ -44,11 +40,15 @@ export function PageSidebar() {
           rules={{ maxLength: { value: 300, message: 'Excerpt too long (max 300 characters)' } }}
           render={({ field, fieldState: { error } }) => (
             <>
-              <Textarea id="cms-page-excerpt" rows={4} placeholder="Short page summary for listings and SEO fallbacks" {...field} />
+              <Textarea id="cms-page-excerpt" rows={4} placeholder="Short page summary for listings and SEO fallbacks" {...field} value={field.value ?? ''} />
               {error?.message && <span className="text-sm text-destructive">{error.message}</span>}
             </>
           )}
         />
+      </WidgetCard>
+
+      <WidgetCard cardTitle="Hero Section">
+        <PageHeroFields />
       </WidgetCard>
 
       <WidgetCard cardTitle="SEO & Schema">

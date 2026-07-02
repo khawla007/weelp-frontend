@@ -37,6 +37,30 @@ describe('CMS page normalizers', () => {
       hero_text: '',
       hero_button_label: '',
       hero_button_url: '',
+      hero_overlay_color: '',
+      hero_overlay_opacity: '',
+      hero_content_vertical_position: '',
+      hero_heading_size: '',
+      hero_heading_color: '',
+      hero_heading_align: '',
+      hero_heading_bold: false,
+      hero_heading_italic: false,
+      hero_heading_underline: false,
+      hero_text_size: '',
+      hero_text_color: '',
+      hero_text_align: '',
+      hero_text_bold: false,
+      hero_text_italic: false,
+      hero_text_underline: false,
+      hero_button_radius: '',
+      hero_button_border_width: '',
+      hero_button_padding: '',
+      hero_button_margin: '',
+      hero_button_text_color: '',
+      hero_button_bg_color: '',
+      hero_button_border_color: '',
+      hero_button_text_size: '',
+      hero_button_align: '',
       seo: { meta_title: 'About' },
     });
   });
@@ -61,6 +85,76 @@ describe('CMS page normalizers', () => {
       hero_text: 'Hero text',
       hero_button_label: 'Start',
       hero_button_url: '/start',
+    });
+  });
+
+  test('normalizes hero style controls in form payloads', () => {
+    expect(
+      normalizePageFormPayload({
+        title: ' About ',
+        slug: ' about ',
+        status: 'published',
+        hero_overlay_color: ' #000000 ',
+        hero_overlay_opacity: '0.5',
+        hero_content_vertical_position: ' middle ',
+        hero_heading_size: ' 56px ',
+        hero_heading_color: ' #ffffff ',
+        hero_heading_align: ' center ',
+        hero_heading_bold: true,
+        hero_heading_italic: false,
+        hero_heading_underline: true,
+        hero_text_size: ' 20px ',
+        hero_text_color: ' #f8fafc ',
+        hero_text_align: ' right ',
+        hero_text_bold: false,
+        hero_text_italic: true,
+        hero_text_underline: false,
+        hero_button_radius: ' 999px ',
+        hero_button_border_width: ' 2px ',
+        hero_button_padding: ' 14px 28px ',
+        hero_button_margin: ' 24px 0 0 ',
+        hero_button_text_color: ' #111827 ',
+        hero_button_bg_color: ' #ffffff ',
+        hero_button_border_color: ' #ffffff ',
+        hero_button_text_size: ' 16px ',
+        hero_button_align: ' center ',
+      }),
+    ).toMatchObject({
+      hero_overlay_color: '#000000',
+      hero_overlay_opacity: '0.5',
+      hero_content_vertical_position: 'middle',
+      hero_heading_size: '56px',
+      hero_heading_color: '#ffffff',
+      hero_heading_align: 'center',
+      hero_heading_bold: true,
+      hero_heading_italic: false,
+      hero_heading_underline: true,
+      hero_text_size: '20px',
+      hero_text_color: '#f8fafc',
+      hero_text_align: 'right',
+      hero_text_italic: true,
+      hero_button_radius: '999px',
+      hero_button_border_width: '2px',
+      hero_button_padding: '14px 28px',
+      hero_button_margin: '24px 0 0',
+      hero_button_text_color: '#111827',
+      hero_button_bg_color: '#ffffff',
+      hero_button_border_color: '#ffffff',
+      hero_button_text_size: '16px',
+      hero_button_align: 'center',
+    });
+  });
+
+  test('preserves numeric decimal overlay opacity from edit payloads', () => {
+    expect(
+      normalizePageFormPayload({
+        title: 'About',
+        slug: 'about',
+        status: 'published',
+        hero_overlay_opacity: 0.5,
+      }),
+    ).toMatchObject({
+      hero_overlay_opacity: '0.5',
     });
   });
 

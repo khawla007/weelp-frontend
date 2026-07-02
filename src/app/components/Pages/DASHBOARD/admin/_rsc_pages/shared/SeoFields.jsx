@@ -127,7 +127,6 @@ const getGeneratedSchemaType = (schema, fallbackType) => {
 const getRequiredRule = (enabled, message) => (enabled ? { required: message } : {});
 
 const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
-  const [openItem, setOpenItem] = useState('item-1');
   const {
     register,
     control,
@@ -236,19 +235,12 @@ const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
   };
 
   return (
-    <Accordion
-      type="single"
-      collapsible
-      value={openItem}
-      onValueChange={(value) => {
-        if (value) setOpenItem(value);
-      }}
-    >
-      <AccordionItem value="item-1">
-        <AccordionTrigger className="hover:bg-muted px-4">
-          <h2 className="text-foreground font-semibold text-xl">Basic Settings</h2>
+    <Accordion type="multiple" className="space-y-3">
+      <AccordionItem value="item-1" className="rounded-md border px-3">
+        <AccordionTrigger className="py-3 text-sm">
+          <span>Basic Settings</span>
         </AccordionTrigger>
-        <AccordionContent className="px-2 space-y-4">
+        <AccordionContent className="space-y-4 pb-3">
           <div className="space-y-2">
             <Label className={`${errors?.seo?.meta_title?.message && 'text-destructive'}`}>Meta Title</Label>
             <Input
@@ -315,12 +307,12 @@ const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
           </div>
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value="item-2">
-        <AccordionTrigger className="hover:bg-muted px-4">
-          <h2 className="text-foreground font-semibold text-xl">Schema Markup</h2>
-          {errors?.seo?.schema_data?.message && <div className="bg-destructive/15 text-destructive">{errors?.seo?.schema_data?.message}</div>}
+      <AccordionItem value="item-2" className="rounded-md border px-3">
+        <AccordionTrigger className="py-3 text-sm">
+          <span>Schema Markup</span>
+          {errors?.seo?.schema_data?.message && <span className="bg-destructive/15 text-destructive text-xs">{errors?.seo?.schema_data?.message}</span>}
         </AccordionTrigger>
-        <AccordionContent className="px-2 flex flex-col">
+        <AccordionContent className="flex flex-col pb-3">
           <Card className="p-8 space-y-4">
             <div className="flex flex-col gap-3 md:flex-row md:items-end">
               <div className="flex-1 space-y-2">
@@ -370,11 +362,11 @@ const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
           </Card>
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value="item-3">
-        <AccordionTrigger className="hover:bg-muted px-4">
-          <h2 className="text-foreground font-semibold text-xl">Script Slots</h2>
+      <AccordionItem value="item-3" className="rounded-md border px-3">
+        <AccordionTrigger className="py-3 text-sm">
+          <span>Script Slots</span>
         </AccordionTrigger>
-        <AccordionContent className="px-2 space-y-4">
+        <AccordionContent className="space-y-4 pb-3">
           <div className="space-y-2">
             <Label>Head Code</Label>
             <Textarea className="font-mono text-sm min-h-32" placeholder="Trusted head snippet" {...register('seo.head_code')} />
