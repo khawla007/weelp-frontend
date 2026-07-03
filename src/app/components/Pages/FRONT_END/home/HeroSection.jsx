@@ -11,10 +11,10 @@ const TRUST_ITEMS = [
 
 const HeroSection = () => {
   return (
-    <section className="weelp-hero-rise relative mb-12 md:mb-16 lg:mb-24 w-full overflow-hidden bg-surface-tint lg:min-h-screen">
+    <section className="weelp-hero-rise relative h-[100svh] w-full overflow-hidden bg-surface-tint">
       <Image src="/assets/images/home-hero-bg-new.png" alt="" fill priority sizes="100vw" className="object-cover object-[60%_50%] -z-10" />
 
-      <div className="container-page relative z-0 flex min-h-[inherit] flex-col items-start gap-5 pt-[156px] pb-10 sm:pt-[170px] md:gap-6 md:pt-[180px] md:pb-20 lg:pt-[214px] lg:pb-32">
+      <div className="container-page relative z-0 flex h-full flex-col items-start gap-5 pt-[156px] pb-10 sm:pt-[170px] md:gap-6 md:pt-[180px] md:pb-20 lg:pt-[214px] lg:pb-32">
         <span
           className="weelp-hero-ui-rise inline-flex items-center gap-2 rounded-full border border-weelp-sage-deep/30 bg-transparent px-4 py-2 text-xs font-bold text-weelp-sage-deep"
           style={{ '--weelp-motion-delay': '80ms' }}
