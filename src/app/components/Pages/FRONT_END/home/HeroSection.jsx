@@ -11,7 +11,7 @@ const TRUST_ITEMS = [
 
 const HeroSection = () => {
   return (
-    <section className="weelp-hero-rise relative h-[100svh] w-full overflow-hidden bg-surface-tint">
+    <section className="weelp-hero-rise relative mb-24 h-[100svh] w-full overflow-hidden bg-surface-tint">
       <Image src="/assets/images/home-hero-bg-new.png" alt="" fill priority sizes="100vw" className="object-cover object-[60%_50%] -z-10" />
 
       <div className="container-page relative z-0 flex h-full flex-col items-start gap-5 pt-[156px] pb-10 sm:pt-[170px] md:gap-6 md:pt-[180px] md:pb-20 lg:pt-[214px] lg:pb-32">
