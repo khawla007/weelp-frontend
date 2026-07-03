@@ -321,16 +321,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
               name="featured_package"
               defaultValue={false}
               control={methods.control}
-              render={({ field }) => (
-                <Switch
-                  id="featured_package"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-border data-[state=checked]:bg-weelp-sage-deep"
-                >
-                  <span className="absolute left-1 h-4 w-4 rounded-full bg-background transition-transform group-data-[state=checked]:translate-x-5" />
-                </Switch>
-              )}
+              render={({ field }) => <Switch id="featured_package" checked={field.value} onCheckedChange={field.onChange} />}
             />
             Featured
           </Label>
@@ -339,16 +330,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
               name="private_package"
               defaultValue={false}
               control={methods.control}
-              render={({ field }) => (
-                <Switch
-                  id="private_package"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-border data-[state=checked]:bg-weelp-sage-deep"
-                >
-                  <span className="absolute left-1 h-4 w-4 rounded-full bg-background transition-transform group-data-[state=checked]:translate-x-5" />
-                </Switch>
-              )}
+              render={({ field }) => <Switch id="private_package" checked={field.value} onCheckedChange={field.onChange} />}
             />
             Private
           </Label>
@@ -1498,11 +1480,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
           {/* Date Based Package Switch */}
           <div className="flex items-center gap-4">
             <Label htmlFor="date_based_package">Date Based Package</Label>
-            <Controller
-              control={control}
-              name="availability.date_based_package"
-              render={({ field }) => <Switch id="date_based_package" className="data-[state=checked]:bg-weelp-sage-deep" checked={field.value} onCheckedChange={field.onChange} />}
-            />
+            <Controller control={control} name="availability.date_based_package" render={({ field }) => <Switch id="date_based_package" checked={field.value} onCheckedChange={field.onChange} />} />
           </div>
 
           {dateBased && (
@@ -1597,7 +1575,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
             <Controller
               control={control}
               name="availability.quantity_based_package"
-              render={({ field }) => <Switch id="quantity_based_package" checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-weelp-sage-deep" />}
+              render={({ field }) => <Switch id="quantity_based_package" checked={field.value} onCheckedChange={field.onChange} />}
             />
           </div>
 
@@ -1760,9 +1738,7 @@ export const EditPackageForm = ({ categories, attributes, tags, locations = [], 
                 control={control}
                 name={`inclusions_exclusions.${index}.included`}
                 defaultValue={false}
-                render={({ field }) => (
-                  <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-weelp-sage-deep" />
-                )}
+                render={({ field }) => <Switch id={`inclusions_exclusions.${index}.included`} checked={field.value} onCheckedChange={field.onChange} />}
               />
               <Label htmlFor={`inclusions_exclusions.${index}.included`}>Included</Label>
             </div>

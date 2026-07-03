@@ -186,7 +186,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
           <Button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-muted-foreground cursor-not-allowed border-border' : 'bg-white text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white dark:bg-weelp-sage-deep dark:text-white dark:hover:bg-weelp-auth-neu-surface dark:hover:text-weelp-sage-deep'}`}
+            className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-muted-foreground cursor-not-allowed border-border' : 'bg-background text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white dark:bg-weelp-sage-deep dark:text-white dark:hover:bg-weelp-auth-neu-surface dark:hover:text-weelp-sage-deep'}`}
           >
             {isSubmitting ? 'Logging in...' : 'Continue'}
           </Button>

@@ -9,7 +9,7 @@ export const DiscountBlock = ({ title, description, prefix, register, setValue, 
   return (
     <div className="space-y-4 border-b pb-6">
       <div className="flex items-center gap-2">
-        <Switch checked={enabled} className="data-[state=checked]:bg-weelp-sage-deep" onCheckedChange={(checked) => setValue(`${prefix}.enabled`, checked)} />
+        <Switch checked={enabled} onCheckedChange={(checked) => setValue(`${prefix}.enabled`, checked)} />
 
         <div>
           <p className="font-medium">{title}</p>

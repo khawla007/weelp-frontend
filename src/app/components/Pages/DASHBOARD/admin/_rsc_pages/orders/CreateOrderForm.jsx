@@ -504,20 +504,7 @@ const CreateOrderForm = () => {
             <Label id="payment.is_custom_amount" className="text-sm font-medium text-copy">
               Custom Amount
             </Label>
-            <Controller
-              name="payment.is_custom_amount"
-              control={control}
-              render={({ field }) => (
-                <Switch
-                  id="payment.is_custom_amount"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-border data-[state=checked]:bg-weelp-sage-deep"
-                >
-                  <span className="absolute left-1 h-4 w-4 rounded-full bg-background transition-transform group-data-[state=checked]:translate-x-5" />
-                </Switch>
-              )}
-            />
+            <Controller name="payment.is_custom_amount" control={control} render={({ field }) => <Switch id="payment.is_custom_amount" checked={field.value} onCheckedChange={field.onChange} />} />
           </div>
         </div>
 

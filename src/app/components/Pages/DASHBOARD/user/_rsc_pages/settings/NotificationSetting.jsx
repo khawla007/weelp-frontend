@@ -90,7 +90,7 @@ export const NotificationSetting = () => {
                   <CardDescription className="text-xs text-muted-foreground">Get updates about your account activity.</CardDescription>
                 </Card>
                 <FormControl>
-                  <Switch className={'self-start data-[state=checked]:bg-weelp-sage-deep'} checked={field.value} onCheckedChange={field.onChange} />
+                  <Switch className="self-start" checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
@@ -107,7 +107,7 @@ export const NotificationSetting = () => {
                   <CardDescription className="text-xs text-muted-foreground">Receive emails abouts new products, features, and more.</CardDescription>
                 </Card>
                 <FormControl>
-                  <Switch className={'self-start data-[state=checked]:bg-weelp-sage-deep'} checked={field.value} onCheckedChange={field.onChange} />
+                  <Switch className="self-start" checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
@@ -124,7 +124,7 @@ export const NotificationSetting = () => {
                   <CardDescription className="text-xs text-muted-foreground">Receive emails for friend requests, follows and more.</CardDescription>
                 </Card>
                 <FormControl>
-                  <Switch className={'self-start data-[state=checked]:bg-weelp-sage-deep'} checked={field.value} onCheckedChange={field.onChange} />
+                  <Switch className="self-start" checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
@@ -141,7 +141,7 @@ export const NotificationSetting = () => {
                   <CardDescription className="text-xs text-muted-foreground">Receive emails about your account activity and security.</CardDescription>
                 </Card>
                 <FormControl>
-                  <Switch className={'self-start data-[state=checked]:bg-weelp-sage-deep'} checked={field.value} onCheckedChange={field.onChange} />
+                  <Switch className="self-start" checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}

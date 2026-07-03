@@ -342,7 +342,7 @@ export const TransferSearchModal = ({ day, onClose, transfers = [], addTransfer 
               </div>
 
               <div className="flex flex-col gap-4 mt-4">
-                <Button onClick={handleAddTransfer} className="p-2 rounded-md w-full bg-weelp-sage-deep">
+                <Button onClick={handleAddTransfer} className="p-2 rounded-md w-full bg-weelp-sage-deep text-white hover:bg-weelp-sage-deep/90 hover:text-white">
                   Done
                 </Button>
                 {/* <Button onClick={closeModal} className="bg-destructive text-white p-2 rounded-md">
@@ -496,7 +496,7 @@ export const ItinerarySearchModal = ({ day, onClose, itineraries = [], addItiner
               </div>
 
               <div className="flex flex-col gap-4 mt-4">
-                <Button onClick={handleAddItinerary} className="p-2 rounded-md w-full bg-weelp-sage-deep">
+                <Button onClick={handleAddItinerary} className="p-2 rounded-md w-full bg-weelp-sage-deep text-white hover:bg-weelp-sage-deep/90 hover:text-white">
                   Done
                 </Button>
               </div>
@@ -630,7 +630,7 @@ export const CustomizedEditActivityForm = ({ isEditOn, updateActivity, day, sele
             </div>
 
             <div className="flex flex-col gap-4 mt-4">
-              <Button onClick={handleUpdateActivity} className="p-2 rounded-md w-full bg-weelp-sage-deep ">
+              <Button onClick={handleUpdateActivity} className="p-2 rounded-md w-full bg-weelp-sage-deep text-white hover:bg-weelp-sage-deep/90 hover:text-white">
                 Submit
               </Button>
             </div>
@@ -777,7 +777,7 @@ export const CustomizedEditTransferForm = ({ isEditOn, updateTransfer, day, sele
             </div>
 
             <div className="flex flex-col gap-4 mt-4">
-              <Button onClick={handleUpdateTransfer} className="p-2 rounded-md w-full bg-weelp-sage-deep">
+              <Button onClick={handleUpdateTransfer} className="p-2 rounded-md w-full bg-weelp-sage-deep text-white hover:bg-weelp-sage-deep/90 hover:text-white">
                 Submit
               </Button>
             </div>
@@ -906,7 +906,7 @@ export const CustomizedEditItineraryForm = ({ isEditOn, updateItinerary, day, se
             </div>
 
             <div className="flex flex-col gap-4 mt-4">
-              <Button onClick={handleUpdateItinerary} className="p-2 rounded-md w-full bg-weelp-sage-deep">
+              <Button onClick={handleUpdateItinerary} className="p-2 rounded-md w-full bg-weelp-sage-deep text-white hover:bg-weelp-sage-deep/90 hover:text-white">
                 Submit
               </Button>
             </div>

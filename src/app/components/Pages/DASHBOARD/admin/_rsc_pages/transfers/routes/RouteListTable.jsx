@@ -65,7 +65,7 @@ export default function RouteListTable({ routes = [], selectedIds = [], onToggle
                 </Button>
               </TableCell>
               <TableCell>
-                <Switch checked={Boolean(r.is_active)} onCheckedChange={() => onToggleStatus?.(r.id)} className="data-[state=checked]:bg-weelp-sage-deep" />
+                <Switch checked={Boolean(r.is_active)} onCheckedChange={() => onToggleStatus?.(r.id)} />
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end">

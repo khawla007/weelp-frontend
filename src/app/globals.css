@@ -952,6 +952,113 @@ body {
   height: 100%;
 }
 
+/* Shared neumorphism switch */
+.neumorphism-switch-root {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 58px;
+  height: 30px;
+  background: #d6d6d6;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow:
+    inset -3px -3px 6px #ffffff,
+    inset 3px 3px 6px #b0b0b0 !important;
+}
+
+.neumorphism-switch-root[data-state='checked'] {
+  background: #d6d6d6 !important;
+}
+
+.neumorphism-switch-root:focus-visible {
+  outline: 2px solid rgba(88, 143, 122, 0.45);
+  outline-offset: 2px;
+}
+
+.dark .neumorphism-switch-root {
+  background: #202020;
+  box-shadow:
+    inset -3px -3px 6px #2a2a2a,
+    inset 3px 3px 6px #0c0c0c !important;
+}
+
+.dark .neumorphism-switch-root[data-state='checked'] {
+  background: #202020 !important;
+}
+
+.neumorphism-switch-toggle {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 28px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 5px;
+  background: linear-gradient(145deg, #d9d9d9, #bfbfbf);
+  border-radius: 999px;
+  box-shadow:
+    -2px -2px 4px #ffffff,
+    2px 2px 4px #b0b0b0;
+  transition:
+    left 0.3s ease-in-out,
+    background 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
+}
+
+.dark .neumorphism-switch-toggle {
+  background: linear-gradient(145deg, #2a2a2a, #171717);
+  box-shadow:
+    -2px -2px 4px #2f2f2f,
+    2px 2px 4px #070707;
+}
+
+.neumorphism-switch-led {
+  width: 6px;
+  height: 6px;
+  background: grey;
+  border-radius: 50%;
+  box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.2);
+  transition:
+    background 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
+}
+
+.neumorphism-switch-root[data-state='checked'] .neumorphism-switch-toggle {
+  left: 26px;
+  background: linear-gradient(145deg, #cfcfcf, #a9a9a9);
+  box-shadow:
+    -2px -2px 4px #ffffff,
+    2px 2px 4px #8a8a8a;
+}
+
+.dark .neumorphism-switch-root[data-state='checked'] .neumorphism-switch-toggle {
+  background: linear-gradient(145deg, #2c2c2c, #1b1b1b);
+  box-shadow:
+    -2px -2px 4px #303030,
+    2px 2px 4px #070707;
+}
+
+.neumorphism-switch-root[data-state='checked'] .neumorphism-switch-led {
+  background: yellow;
+  box-shadow: 0 0 8px 2px yellow;
+}
+
+.neumorphism-switch-root:hover .neumorphism-switch-toggle {
+  box-shadow:
+    -2px -2px 6px #ffffff,
+    2px 2px 6px #9b9b9b;
+}
+
+.dark .neumorphism-switch-root:hover .neumorphism-switch-toggle {
+  box-shadow:
+    -2px -2px 6px #303030,
+    2px 2px 6px #050505;
+}
+
 /* Range slider + city-price-slider extracted to src/app/styles/range-slider.css */
 /* Date picker tfc_calendar rdp_day_range_start moved to src/app/styles/date-picker.css */
 /* tfc_admin_activitiesmultiselect rules removed — dead code, no JSX consumer */

@@ -337,7 +337,9 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       };
 
       return (
-        <div className="space-y-4 py-6">
+        <div className="space-y-4 pb-6">
+          <h2 className="text-base font-semibold text-foreground">Basic Information</h2>
+
           <div className="pb-2 space-y-2 w-full">
             <div className="pb-2 space-y-2">
               <Label htmlFor="name" className={`block text-sm font-medium ${errors?.name ? 'text-destructive' : 'text-copy'}`}>
@@ -396,7 +398,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
             {errors?.short_description && <p className="text-destructive text-sm mt-1">{errors.short_description.message}</p>}
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-4">
             <Label htmlFor="featured_activity" className="text-sm font-medium text-copy">
               Feature Activity
             </Label>
@@ -404,16 +406,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               name="featured_activity"
               defaultValue={false}
               control={methods.control}
-              render={({ field }) => (
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  id="featured_activity"
-                  className="group relative inline-flex h-6 w-11 items-center rounded-full transition bg-border data-[state=checked]:bg-weelp-sage-deep"
-                >
-                  <span className="absolute left-1 h-4 w-4 rounded-full bg-background transition-transform group-data-[state=checked]:translate-x-5" />
-                </Switch>
-              )}
+              render={({ field }) => <Switch id="featured_activity" name={field.name} checked={!!field.value} onBlur={field.onBlur} onCheckedChange={field.onChange} aria-label="Feature Activity" />}
             />
           </div>
         </div>
@@ -1196,7 +1189,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               {/* Switch for Seasonal Pricing*/}
               <div className="flex items-center gap-4">
                 <Switch
-                  className="data-[state=checked]:bg-weelp-sage-deep ease-in-out duration-500"
+                  className="ease-in-out duration-500"
                   checked={isSeasonPricing}
                   onCheckedChange={(checked) => {
                     setSeasonPricing(checked);
@@ -1581,13 +1574,13 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
   };
 
   return (
-    <div className="w-full bg-muted py-6 sm:px-4 lg:px-6" style={{ overflowAnchor: 'none', overflowY: 'auto' }}>
+    <div className="min-h-screen w-full bg-muted py-12 sm:px-6 lg:px-8" style={{ overflowAnchor: 'none', overflowY: 'auto' }}>
       <NavigationActivity title={'Edit Activity'} desciption={'Edit activity for your customers'} backurl={'/dashboard/admin/activities/'} />
-      <div className="w-full space-y-6">
+      <div className="w-full space-y-4">
         <FormProvider {...methods}>
-          <div className="w-full bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <div className="mb-8 w-full">
-              <ul className="flex justify-between gap-8 items-stretch w-full mb-4 flex-wrap md:flex-nowrap">
+          <div className="w-full">
+            <div className="w-full">
+              <ul className="w-fit flex justify-between items-center">
                 {steps &&
                   steps.map((step) => (
                     <li
@@ -1600,15 +1593,15 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                         }
                         goWithDirection(step?.id, currentStep, setCurrentStep);
                       }}
-                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-muted ${currentStep == step?.id && 'bg-gradient-to-t from-weelp-sage-deep/20 to-muted border-b-weelp-sage-deep border-b-2'}`}
+                      className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-muted ${currentStep == step?.id && ' bg-gradient-to-t from-weelp-sage-deep/20 to-muted border-b-weelp-sage-deep border-b-2'}`}
                     >
-                      <Separator className={`pt-1 rounded-full ${currentStep >= step?.id ? 'bg-weelp-sage-deep group-hover:bg-muted' : 'bg-accent group-hover:bg-weelp-sage-deep'}`} />
-
-                      <div className={`text-sm font-medium pt-2 ${currentStep == step?.id ? 'text-weelp-sage-deep' : 'text-muted-foreground'}`}>{step.title}</div>
-                      <span className="text-sm text-muted-foreground">{step?.description}</span>
+                      <div className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-muted-foreground'}`}>
+                        {step.title}
+                      </div>
                     </li>
                   ))}
               </ul>
+              <Separator className="" />
             </div>
           </div>
           <form
@@ -1621,7 +1614,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                   }
             }
           >
-            <fieldset className={`space-y-6 ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
+            <fieldset className={`bg-background p-8 border shadow rounded-lg ${isSubmitting && ' cursor-wait'}`} disabled={isSubmitting}>
               <StepPanel stepRef={stepRef}>{renderStep()}</StepPanel>
               <div className="flex justify-between pt-4">
                 {currentStep > 1 && (

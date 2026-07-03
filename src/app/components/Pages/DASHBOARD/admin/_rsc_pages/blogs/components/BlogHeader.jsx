@@ -107,12 +107,7 @@ export const BlogHeader = ({ editPage = false, blogData }) => {
           render={({ field }) => (
             <div className="flex items-center space-x-2">
               <Label htmlFor="publish">Publish</Label>
-              <Switch
-                id="publish"
-                checked={field.value} // true / false
-                onCheckedChange={field.onChange} // updates RHF state
-                className="data-[state=checked]:bg-weelp-sage-deep"
-              />
+              <Switch id="publish" checked={field.value} onCheckedChange={field.onChange} />
             </div>
           )}
         />
