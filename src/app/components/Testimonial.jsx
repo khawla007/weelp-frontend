@@ -1,6 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
-import { ArrowRight, BadgeCheck, Star } from 'lucide-react';
+import { BadgeCheck, Star } from 'lucide-react';
 
 const Testimonial = ({ username, title, date, itemName, rating }) => {
   return (
@@ -24,7 +23,7 @@ const Testimonial = ({ username, title, date, itemName, rating }) => {
       </div>
       {/* title / review text */}
       <div>
-        <h3 className="text-foreground text-xl mb-3 line-clamp-3">{title || 'Great experience!'}</h3>
+        <p className="text-foreground text-base font-normal mb-3 line-clamp-3">{title || 'Great experience!'}</p>
       </div>
       {/* date */}
       <div className="flex justify-between flex-wrap">
