@@ -5,10 +5,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from '@/components/ui/separator';
 import Link from 'next/link';
 
-const ReviewCard = ({ title, rating, comment, as: TitleTag = 'h3' }) => {
+const ReviewCard = ({ title, rating, comment, itemLabel, as: TitleTag = 'h3' }) => {
   return (
-    <div className="w-full sm:w-[360px] bg-background border rounded-2xl p-5 sm:p-6 md:p-8 min-h-[200px] shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-2 overflow-hidden">
+    <div className="flex h-full min-h-[200px] w-full min-w-0 flex-col gap-2 overflow-hidden rounded-2xl border bg-background p-5 shadow-[0_0_20px_rgba(0,0,0,0.1)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] motion-reduce:transition-none sm:p-6 md:p-8">
       <TitleTag className="text-foreground font-medium text-sm md:text-base font-semibold line-clamp-1">{title}</TitleTag>
+      {itemLabel && <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground line-clamp-1">{itemLabel}</p>}
       <div className="flex">
         {Array(rating)
           .fill()

@@ -57,6 +57,7 @@ export default async function CityPage({ params }) {
   const { data: itineraryData = [] } = itineraryResponse;
   const blogsData = blogsResponse?.data || [];
   const featuredReviews = Array.isArray(featuredReviewsResponse?.data) ? featuredReviewsResponse.data : [];
+  const reviewSummary = featuredReviewsResponse?.summary || null;
 
   if (!citydata || Object.keys(citydata).length === 0) {
     notFound();
@@ -83,7 +84,7 @@ export default async function CityPage({ params }) {
       {hasAnyProducts && <SharedFilterSection scope="city" slug={city} variant="home" />}
 
       {/* Reviews + What About + FAQ — only if city data is a valid object */}
-      {typeof citydata === 'object' && citydata?.location_details && <ReviewSectionCity cityData={citydata} reviews={featuredReviews} />}
+      {typeof citydata === 'object' && citydata?.location_details && <ReviewSectionCity cityData={citydata} reviews={featuredReviews} reviewSummary={reviewSummary} />}
 
       {/* Blogs Slider — only if blogs exist */}
       {blogsData.length > 0 && <BlogSection blogs={blogsData} title="Blogs" navigationId="city-blogs" />}

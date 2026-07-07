@@ -13,7 +13,8 @@ const ReviewSlider = ({ reviews = [] }) => {
     <div className="carousel-shell-wrapper">
       <Swiper
         modules={[Navigation, Autoplay]}
-        spaceBetween={20}
+        slidesPerView={1}
+        spaceBetween={16}
         navigation={{
           prevEl: '.review-prev',
           nextEl: '.review-next',
@@ -25,30 +26,32 @@ const ReviewSlider = ({ reviews = [] }) => {
           disableOnInteraction: false,
         }}
         breakpoints={{
-          450: {
-            slidesPerView: 1,
-            spaceBetween: 10,
-          },
-          640: {
-            slidesPerView: 2,
-          },
           768: {
             slidesPerView: 2,
+            spaceBetween: 20,
           },
-          1440: {
-            slidesPerView: 3,
+          1280: {
+            slidesPerView: 2,
+            spaceBetween: 20,
           },
         }}
         className="w-full"
       >
         {reviews.map((review) => (
-          <SwiperSlide key={review.id}>
-            <ReviewCard title={review.user?.name || 'Anonymous'} rating={review.rating} comment={review.review_text} />
+          <SwiperSlide key={review.id} className="!h-auto">
+            <ReviewCard title={review.user?.name || 'Anonymous'} rating={review.rating} comment={review.review_text} itemLabel={formatReviewItemLabel(review.item)} />
           </SwiperSlide>
         ))}
       </Swiper>
     </div>
   );
+};
+
+const formatReviewItemLabel = (item) => {
+  if (!item?.name) return null;
+
+  const type = item.type ? `${item.type.charAt(0).toUpperCase()}${item.type.slice(1)}` : 'Experience';
+  return `${type}: ${item.name}`;
 };
 
 export default ReviewSlider;
