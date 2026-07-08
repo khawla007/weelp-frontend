@@ -63,7 +63,7 @@ Existing audit debt is recorded in `docs/dark-mode/dark-lint-baseline.json` so P
 | --------------- | --------------------------------------------------------------------------- |
 | Theme manager   | `next-themes`                                                               |
 | Persistence key | `weelp-theme`                                                               |
-| Default theme   | `system`                                                                    |
+| Default theme   | `light`                                                                     |
 | Token model     | CSS variables in `globals.css`, consumed by Tailwind                        |
 | Component rule  | Token utilities only; no new hardcoded neutral or hex color utilities       |
 | Exemptions      | `dark-mode-exempt` comment directly above the intentional line              |
