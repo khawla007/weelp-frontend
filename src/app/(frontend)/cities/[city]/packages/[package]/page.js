@@ -50,7 +50,21 @@ export default async function PackagePage({ params, searchParams }) {
   return (
     <>
       <AffiliateTracker creatorId={ref} />
-      <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} primaryLocation={primaryLocation} city={locationCity} scheduleDisplay={scheduleDisplay} />
+      <BannerSection
+        activityName={name}
+        media_gallery={media_gallery}
+        reviewSummary={review_summary}
+        primaryLocation={primaryLocation}
+        city={locationCity}
+        scheduleDisplay={scheduleDisplay}
+        itemId={id}
+        itemType="package"
+        slug={pack}
+        citySlug={city}
+        cityName={primaryLocation?.city}
+        price={packageData?.price}
+        currency={packageData?.currency}
+      />
       <SingleProductTabSection productType="package" productId={id} productData={packageData} packageSlug={pack} similarActivities={similarPackages} />
     </>
   );

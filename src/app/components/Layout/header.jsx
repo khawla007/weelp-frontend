@@ -2,8 +2,11 @@
 
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { createPortal } from 'react-dom';
 import DesktopMenu, { DesktopTopStrip, DesktopMainBar } from './NavigationMenu';
 import MobileMenu from './MobileMenu';
+import MiniCartNew from '../Modals/MiniCartNew';
+import useMiniCartStore from '@/lib/store/useMiniCartStore';
 
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
@@ -13,6 +16,8 @@ const Header = () => {
   const threshold = 80;
 
   const [isScrolled, setIsScrolled] = useState(false);
+  const isMiniCartOpen = useMiniCartStore((state) => state.isMiniCartOpen);
+  const miniCartPortalTarget = typeof document !== 'undefined' ? document.body : null;
 
   useIsomorphicLayoutEffect(() => {
     if (typeof window === 'undefined') return undefined;
@@ -45,6 +50,7 @@ const Header = () => {
       <header className={`fixed top-0 left-0 right-0 z-[99999] ${isScrolled ? 'lg:top-0' : 'lg:top-[14px]'}`} data-weelp-header-variant={variant}>
         <DesktopMenu stickyHeader={isScrolled} variant={variant} />
         <MobileMenu stickyHeader={isScrolled} variant={variant} />
+        {miniCartPortalTarget && isMiniCartOpen ? createPortal(<MiniCartNew />, miniCartPortalTarget) : null}
       </header>
     );
   }
@@ -62,6 +68,7 @@ const Header = () => {
       <header className="block w-full relative z-40 lg:sticky lg:top-0 lg:z-[99999]" data-weelp-header-variant={variant}>
         <DesktopMainBar stickyHeader={isScrolled} mainBarTransparent={false} />
         <MobileMenu stickyHeader={isScrolled} variant={variant} />
+        {miniCartPortalTarget && isMiniCartOpen ? createPortal(<MiniCartNew />, miniCartPortalTarget) : null}
       </header>
     </>
   );

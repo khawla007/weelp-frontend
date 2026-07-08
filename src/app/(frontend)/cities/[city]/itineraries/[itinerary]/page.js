@@ -75,7 +75,21 @@ export default async function IterenaryPage({ params, searchParams }) {
       <SeoHeadScripts seo={itineraryHeadScripts} />
       <AffiliateTracker creatorId={ref} />
       <SeoBodyScripts seo={itinerarySeo} />
-      <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} primaryLocation={primaryLocation} city={locationCity} scheduleDisplay={scheduleDisplay} />
+      <BannerSection
+        activityName={name}
+        media_gallery={media_gallery}
+        reviewSummary={review_summary}
+        primaryLocation={primaryLocation}
+        city={locationCity}
+        scheduleDisplay={scheduleDisplay}
+        itemId={id}
+        itemType="itinerary"
+        slug={itinerary}
+        citySlug={city}
+        cityName={primaryLocation?.city}
+        price={data?.price}
+        currency={data?.currency}
+      />
       <SingleProductTabSection productType="itinerary" productId={id} productData={data} itinerarySlug={itinerary} similarActivities={similarItineraries} session={session} itinerary={data} />
       <SeoFooterScripts seo={itinerarySeo} />
     </>

@@ -84,7 +84,7 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
                 className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep"
                 onClick={() => {
                   closeDropdown();
-                  openAuthModal({ redirectTo: '/dashboard' });
+                  openAuthModal({ redirectTo: '/dashboard/customer/wishlist' });
                 }}
               >
                 <Heart className="size-5" />
@@ -151,7 +151,7 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
                   </Link>
                 </li>
                 <li className="p-4 px-8 border-b border-border text-copy">
-                  <Link href="/dashboard/customer" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep">
+                  <Link href="/dashboard/customer/wishlist" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep">
                     <Heart className="size-5" />
                     Wishlist
                   </Link>

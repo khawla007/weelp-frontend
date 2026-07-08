@@ -80,7 +80,20 @@ export default async function SingleActivityPage({ params, searchParams }) {
       <SeoHeadScripts seo={activityHeadScripts} />
       <AffiliateTracker creatorId={ref} />
       <SeoBodyScripts seo={activitySeo} />
-      <BannerSection activityName={name} media_gallery={media_gallery} reviewSummary={review_summary} primaryLocation={primaryLocation} city={city} />
+      <BannerSection
+        activityName={name}
+        media_gallery={media_gallery}
+        reviewSummary={review_summary}
+        primaryLocation={primaryLocation}
+        city={city}
+        itemId={id}
+        itemType="activity"
+        slug={slug}
+        citySlug={city}
+        cityName={primaryLocation?.city}
+        price={activityData?.price}
+        currency={activityData?.currency}
+      />
       <SingleProductTabSection productType="activity" productId={id} productData={activityData} similarActivities={similarActivities} activitySlug={slug} />
       <SeoFooterScripts seo={activitySeo} />
     </>

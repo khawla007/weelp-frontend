@@ -1,11 +1,96 @@
+'use client';
+
+import { useCallback, useMemo, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import BreadCrumb from '@/app/components/BreadCrumb';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { CircleCheckBig, Clock4, MapPin, Star, Heart } from 'lucide-react';
 import GallerySlider from '@/app/components/sliders/GallerySlider';
+import { useToast } from '@/hooks/use-toast';
+import useAuthModalStore from '@/lib/store/useAuthModalStore';
+import { addWishlistItem } from '@/lib/services/customer/wishlist';
+import { normalizeWishlistPayload } from '@/lib/wishlist/normalizeWishlistItem';
 
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
 
-const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null, primaryLocation = null, city = null, scheduleDisplay = null }) => {
+const BannerSection = ({
+  activityName,
+  media_gallery = [],
+  reviewSummary = null,
+  primaryLocation = null,
+  city = null,
+  scheduleDisplay = null,
+  itemId = null,
+  itemType = null,
+  slug = null,
+  citySlug = null,
+  cityName = null,
+  price = null,
+  currency = null,
+}) => {
+  const { data: session, status } = useSession();
+  const { openAuthModal } = useAuthModalStore();
+  const { toast } = useToast();
+  const [isSaving, setIsSaving] = useState(false);
+
+  const wishlistItem = useMemo(
+    () => ({
+      id: itemId,
+      type: itemType,
+      title: activityName,
+      slug,
+      citySlug,
+      cityName,
+      price,
+      currency,
+    }),
+    [activityName, cityName, citySlug, currency, itemId, itemType, price, slug]
+  );
+
+  const saveWishlistItem = useCallback(async () => {
+    const payload = normalizeWishlistPayload(wishlistItem);
+
+    if (!payload) {
+      toast({
+        title: 'Unable to save wishlist item',
+        description: 'This item is missing required wishlist details.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      await addWishlistItem(payload);
+      toast({
+        title: 'Saved to wishlist',
+        description: `${activityName || 'This item'} has been added to your wishlist.`,
+      });
+    } catch (error) {
+      toast({
+        title: 'Unable to save wishlist item',
+        description: error?.response?.data?.message || error?.message || 'Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  }, [activityName, toast, wishlistItem]);
+
+  const handleSaveClick = () => {
+    if (status === 'loading' || isSaving) return;
+
+    if (!session?.user) {
+      openAuthModal({ onSuccess: saveWishlistItem });
+      return;
+    }
+
+    saveWishlistItem();
+  };
+
+  const isSaveDisabled = status === 'loading' || isSaving;
+
   return (
     <section className="weelp-hero-rise bg-background mb-10 md:mb-16 lg:mb-24">
       <div className="max-w-pen mx-auto bg-background px-4">
@@ -53,7 +138,12 @@ const BannerSection = ({ activityName, media_gallery = [], reviewSummary = null,
             </ul>
 
             {/* Save to Wishlist — desktop only */}
-            <button type="button" className={`hidden lg:flex items-center gap-2 text-copy hover:text-foreground font-medium text-base rounded-sm px-1 py-1 transition-colors ${focusRing}`}>
+            <button
+              type="button"
+              onClick={handleSaveClick}
+              disabled={isSaveDisabled}
+              className={`hidden lg:flex items-center gap-2 text-copy hover:text-foreground font-medium text-base rounded-sm px-1 py-1 transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${focusRing}`}
+            >
               <Heart size={18} />
               Save to Wishlist
             </button>

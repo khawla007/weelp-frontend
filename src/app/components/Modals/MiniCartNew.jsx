@@ -1,21 +1,80 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { ChevronDown, Heart, X } from 'lucide-react';
 import BreakSection from '../BreakSection';
 import MiniCartProductCard from '../MiniCartProductCard';
 import { MinicartReviewcontent } from '../MiniCartReviewCard';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
+import useAuthModalStore from '@/lib/store/useAuthModalStore';
+import { addWishlistItem } from '@/lib/services/customer/wishlist';
+import { normalizeWishlistPayload } from '@/lib/wishlist/normalizeWishlistItem';
 import { buttonVariants } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { formatCurrency } from '@/lib/utils';
 
 const MiniCartNew = () => {
   const router = useRouter(); // intialize route
-  const { cartItems, totalPrice, isMiniCartOpen, setMiniCartOpen } = useMiniCartStore();
+  const { status } = useSession();
+  const { toast } = useToast();
+  const { openAuthModal } = useAuthModalStore();
+  const { cartItems, totalPrice, isMiniCartOpen, setMiniCartOpen, clearCart } = useMiniCartStore();
   const cartCurrency = cartItems?.[0]?.currency || 'USD';
   const [breakdownOpen, setBreakdownOpen] = useState(false);
+  const [isSavingCart, setIsSavingCart] = useState(false);
+
+  const saveCartToWishlist = useCallback(async () => {
+    if (!cartItems?.length || isSavingCart) return;
+
+    const wishlistPayloads = cartItems.map((item) => normalizeWishlistPayload(item));
+
+    if (wishlistPayloads.some((payload) => !payload)) {
+      toast({
+        title: 'Could not save cart',
+        description: 'One or more cart items cannot be saved to your wishlist.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsSavingCart(true);
+
+    try {
+      await Promise.all(wishlistPayloads.map((payload) => addWishlistItem(payload)));
+      clearCart();
+      setMiniCartOpen(false);
+      toast({
+        title: 'Cart saved to wishlist',
+        description: 'Every item in your cart was moved to your wishlist.',
+      });
+    } catch {
+      toast({
+        title: 'Could not save cart',
+        description: 'Your cart was not changed. Please try saving it again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSavingCart(false);
+    }
+  }, [cartItems, clearCart, isSavingCart, setMiniCartOpen, toast]);
+
+  const handleSaveCart = useCallback(() => {
+    if (status === 'loading' || isSavingCart) return;
+
+    if (status !== 'authenticated') {
+      openAuthModal({
+        onSuccess: () => {
+          void saveCartToWishlist();
+        },
+      });
+      return;
+    }
+
+    void saveCartToWishlist();
+  }, [isSavingCart, openAuthModal, saveCartToWishlist, status]);
 
   return (
     <Sheet open={isMiniCartOpen} onOpenChange={setMiniCartOpen}>
@@ -35,10 +94,16 @@ const MiniCartNew = () => {
               />
               <div className="mt-1 flex items-center justify-between pr-11 sm:mt-4 sm:pr-0">
                 <h3 className="text-xl font-bold text-Blueish sm:text-2xl">Your Cart</h3>
-                <div className="flex items-center gap-2 text-sm text-copy sm:text-base">
-                  <Heart size={18} />
-                  Save
-                </div>
+                <button
+                  type="button"
+                  aria-label="Save cart to wishlist"
+                  onClick={handleSaveCart}
+                  disabled={isSavingCart || status === 'loading'}
+                  className="flex items-center gap-2 rounded-md px-2 py-1 text-sm text-copy transition-colors hover:bg-muted-foreground/10 hover:text-weelp-sage-deep disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
+                >
+                  <Heart size={18} aria-hidden="true" />
+                  {isSavingCart ? 'Saving...' : 'Save cart'}
+                </button>
               </div>
 
               <BreakSection marginTop={'my-3 sm:my-4'} />

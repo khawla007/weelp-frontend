@@ -3,11 +3,9 @@ import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTi
 import { ArrowLeft, ChevronRight, Globe, MenuIcon, Search, ShoppingCart, Smartphone, UserRound, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { useSession } from 'next-auth/react';
 import { Badge } from '@/components/ui/badge';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
-import dynamic from 'next/dynamic';
 import { useMegaMenu } from '@/hooks/api/public/menu/megaMenu';
 import { HEADER_NAV_ITEMS, HEADER_SECONDARY_META } from './shellContent';
 import { getLogoUrl } from '@/lib/config/brand';
@@ -15,8 +13,6 @@ import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const brandFont = 'var(--font-interTight), Inter Tight, sans-serif';
 const HOME_HEADER_TEXT_CLASS = 'text-black dark:text-black';
-
-const MiniCartNew = dynamic(() => import('../Modals/MiniCartNew', { ssr: false })); // lazy load minicart
 
 // Helper function to generate initials from name
 const getInitials = (name) => {
@@ -360,7 +356,6 @@ const HeaderAccountMobile = () => {
         )}
       </div>
 
-      {isMiniCartOpen && createPortal(<MiniCartNew />, document.body)}
     </div>
   );
 };

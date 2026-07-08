@@ -11,7 +11,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { actualDate } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
@@ -71,37 +70,47 @@ export default MiniCartProductCard;
 export function DeleteItem({ id, name, onClose }) {
   const { removeItem } = useMiniCartStore();
   const { toast } = useToast();
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
+  const itemName = name || 'this item';
 
   // remove item from modal action
   const removeItemAlertAction = () => {
     removeItem(id);
+    setConfirmOpen(false);
     if (onClose) onClose();
 
     // display notice
     toast({
-      title: 'Item Remove from Cart',
+      title: 'Item removed from cart',
       duration: 1000,
     });
   };
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Trash2 size={18} className="text-copy" />
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure to remove item ?</AlertDialogTitle>
-          <AlertDialogDescription>
-            <b>{'Name: ' + name ?? ''}</b>
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className={'bg-weelp-sage-deep'} onClick={removeItemAlertAction}>
-            Continue
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <>
+      <button
+        type="button"
+        className="inline-flex size-8 items-center justify-center rounded-md text-copy transition-colors hover:bg-muted-foreground/10 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        aria-label={`Remove ${itemName} from cart`}
+        onClick={() => setConfirmOpen(true)}
+      >
+        <Trash2 size={18} aria-hidden="true" />
+      </button>
+      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove this item from your cart?</AlertDialogTitle>
+            <AlertDialogDescription>
+              <b>{`Name: ${itemName}`}</b>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction className={'bg-weelp-sage-deep'} onClick={removeItemAlertAction}>
+              Remove item
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

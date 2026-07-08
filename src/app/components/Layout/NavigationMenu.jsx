@@ -6,7 +6,6 @@ import { createPortal } from 'react-dom';
 import { useSession } from 'next-auth/react';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { Badge } from '@/components/ui/badge';
-import MiniCartNew from '../Modals/MiniCartNew';
 import ModalForm from '../Modals/ModalForm';
 import SubmenuAccount from '../Modals/SubmenuAccount';
 import { HEADER_NAV_ITEMS, HEADER_PRIMARY_META, HEADER_SECONDARY_META } from './shellContent';
@@ -474,9 +473,6 @@ export const HeaderAccount = ({ overHero = false }) => {
           <SubmenuAccount showSubmenu={showSubmenu} setShowSubmenu={setShowSubmenu} />
         </div>
       )}
-
-      {/* Mini Cart With React Portal */}
-      {isMiniCartOpen && createPortal(<MiniCartNew />, document.body)}
 
       {/* Search Modal */}
       {showForm && createPortal(<ModalForm showForm={showForm} setShowForm={setShowForm} handleShowForm={handleShowForm} />, document.body)}

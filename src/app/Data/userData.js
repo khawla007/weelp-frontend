@@ -1,4 +1,4 @@
-import { HelpCircle, Settings, Star, Tag, Home, Route, BarChart3, DollarSign, ClipboardCheck, Wallet } from 'lucide-react';
+import { HelpCircle, Settings, Star, Tag, Home, Route, BarChart3, DollarSign, ClipboardCheck, Wallet, Heart } from 'lucide-react';
 
 // User Navigation
 export const DashboardUserNav = {
@@ -12,6 +12,7 @@ export const DashboardUserNav = {
     { title: 'Overview', icon: Home, url: '/dashboard/customer/overview', creatorOnly: true },
     // Shared items
     { title: 'Bookings', icon: Tag, url: '/dashboard/customer' },
+    { title: 'Wishlist', icon: Heart, url: '/dashboard/customer/wishlist' },
     { title: 'Reviews', icon: Star, url: '/dashboard/customer/reviews' },
     // My Itineraries (replaces My Posts)
     { title: 'My Itineraries', icon: Route, url: '/dashboard/customer/my-itineraries' },

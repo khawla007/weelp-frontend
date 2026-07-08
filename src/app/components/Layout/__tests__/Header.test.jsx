@@ -1,9 +1,10 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 
 import Header from '../header';
 
 const usePathnameMock = jest.fn();
+let miniCartState;
 
 jest.mock('next/navigation', () => ({
   __esModule: true,
@@ -35,6 +36,17 @@ jest.mock('../MobileMenu', () => {
   return MobileMenuMock;
 });
 
+jest.mock('../../Modals/MiniCartNew', () => {
+  const MiniCartNewMock = () => <div data-testid="mini-cart">Mini cart</div>;
+  MiniCartNewMock.displayName = 'MiniCartNewMock';
+  return MiniCartNewMock;
+});
+
+jest.mock('@/lib/store/useMiniCartStore', () => ({
+  __esModule: true,
+  default: (selector) => selector(miniCartState),
+}));
+
 const setScroll = (y) => {
   Object.defineProperty(window, 'scrollY', { configurable: true, value: y, writable: true });
 };
@@ -53,6 +65,9 @@ beforeAll(() => {
 
 beforeEach(() => {
   usePathnameMock.mockReset();
+  miniCartState = {
+    isMiniCartOpen: false,
+  };
   setScroll(0);
 });
 
@@ -104,5 +119,17 @@ describe('Header', () => {
     setScroll(120);
     await flushRaf();
     expect(screen.getByTestId('desktop-main-bar')).toHaveAttribute('data-sticky', 'true');
+  });
+
+  it('mounts one shared mini cart portal when the cart store is open', async () => {
+    usePathnameMock.mockReturnValue('/cities/dubai');
+    miniCartState.isMiniCartOpen = true;
+
+    render(<Header />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('mini-cart')).toBeInTheDocument();
+    });
+    expect(screen.getAllByTestId('mini-cart')).toHaveLength(1);
   });
 });
