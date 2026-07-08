@@ -16,7 +16,7 @@ import FilterDrawer from './FilterDrawer';
  */
 const SECTION_CLASS_BY_VARIANT = {
   default: 'mx-auto max-w-pen px-4 sm:px-6 xl:px-0 pb-10 md:pb-16 lg:pb-24',
-  home: 'container-page pb-10 md:pb-16 lg:pb-24',
+  home: 'container-page pb-7 md:pb-16 lg:pb-24',
 };
 
 export default function SharedFilterSection({ scope, slug, variant = 'default', className = '' }) {
@@ -87,7 +87,7 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
   return (
     <div ref={sectionRef} className={sectionClassName}>
       {/* Sidebar + Grid */}
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col gap-4 lg:flex-row lg:gap-6">
         <div className="hidden lg:block">
           <FilterSidebar
             selectedItemType={selectedItemType}
@@ -112,7 +112,7 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
 
         {/* Product Grid */}
         <div className="flex-1">
-          <div className="mb-4 lg:hidden">
+          <div className="mb-3 lg:hidden">
             <FilterDrawer
               selectedItemType={selectedItemType}
               onItemTypeChange={(type) => {

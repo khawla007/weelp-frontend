@@ -19,7 +19,7 @@ const SORT_OPTIONS = [
 
 const SECTION_CLASS_BY_VARIANT = {
   default: 'mx-auto flex w-full max-w-pen flex-col gap-8 px-4 md:px-6 xl:px-0 pb-10 md:pb-16 lg:pb-24',
-  home: 'container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24',
+  home: 'container-page flex flex-col gap-5 pb-7 md:gap-8 md:pb-16 lg:pb-24',
 };
 
 export default function SharedToursSection({ scope, slug, title, variant = 'default', className = '' }) {
@@ -121,7 +121,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
         {title} Tours
       </Reveal>
 
-      <div className="flex flex-wrap items-center gap-4">
+      <div className="flex flex-wrap items-center gap-3 md:gap-4">
         {/* Featured Tags — Simple Box Design */}
         <div className="flex flex-1 flex-wrap items-center gap-3">
           <button
@@ -168,7 +168,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
         </div>
 
         {/* Sort + View on Map — Always on right */}
-        <div className="flex shrink-0 items-center gap-3 w-full md:w-auto md:ml-auto">
+        <div className="flex w-full shrink-0 items-center gap-2 md:ml-auto md:w-auto md:gap-3">
           {/* Sort Dropdown */}
           <div className="relative" ref={sortRef}>
             <button

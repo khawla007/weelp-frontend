@@ -30,12 +30,12 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
   if (!items.length) return null;
 
   return (
-    <section className={`container-page flex flex-col gap-6 md:gap-8 pb-10 md:pb-16 lg:pb-24 ${className}`}>
+    <section className={`container-page flex flex-col gap-4 pb-7 md:gap-8 md:pb-16 lg:pb-24 ${className}`}>
       <Reveal initialHidden variant="lift" className="flex items-center justify-between">
         <SectionHeader title={title} />
 
         {headerAction === 'navigation' && (
-          <div className="flex items-center gap-2">
+          <div className="hidden items-center gap-2 sm:flex">
             <button
               type="button"
               className={`${navigationId}-prev flex size-11 items-center justify-center rounded-full border border-border bg-background text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}
