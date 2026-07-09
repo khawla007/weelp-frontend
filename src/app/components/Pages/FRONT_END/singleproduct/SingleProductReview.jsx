@@ -3,14 +3,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Star, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { allReviewsData } from '@/app/Data/SingleActivityData';
-import { getActivityReviews, getActivityFeaturedReviews } from '@/lib/services/reviews';
+import { getActivityReviews, getActivityFeaturedReviews, getItineraryReviews, getItineraryFeaturedReviews } from '@/lib/services/reviews';
 import useSWR from 'swr';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import SectionHeader from '@/app/components/ui/SectionHeader';
 import '@/app/styles/swiper.css';
 
-export const SingleProductReview = ({ productData, activitySlug }) => {
+export const SingleProductReview = ({ productData, productType = 'activity', activitySlug, itinerarySlug }) => {
   const [activeFilter, setActiveFilter] = useState('all'); // all, photos
   const [sortOrder, setSortOrder] = useState('newest'); // newest, oldest
   const [showSortDropdown, setShowSortDropdown] = useState(false);
@@ -35,18 +35,18 @@ export const SingleProductReview = ({ productData, activitySlug }) => {
     };
   }, [showSortDropdown]);
 
+  const reviewSlug = productType === 'itinerary' ? itinerarySlug : activitySlug;
+  const getReviews = productType === 'itinerary' ? getItineraryReviews : getActivityReviews;
+  const getFeaturedReviews = productType === 'itinerary' ? getItineraryFeaturedReviews : getActivityFeaturedReviews;
+
   // Fetch reviews from API
-  const {
-    data: reviewsData,
-    error: reviewsError,
-    isLoading: reviewsLoading,
-  } = useSWR(activitySlug ? `/api/reviews/activity/${activitySlug}` : null, () => getActivityReviews(activitySlug, { sort: 'recent', per_page: 50 }), {
+  const { data: reviewsData } = useSWR(reviewSlug ? `/api/reviews/${productType}/${reviewSlug}` : null, () => getReviews(reviewSlug, { sort: 'recent', per_page: 50 }), {
     revalidateOnFocus: false,
     dedupingInterval: 60000, // Cache for 1 minute
   });
 
   // Fetch featured reviews
-  const { data: featuredData } = useSWR(activitySlug ? `/api/reviews/activity/${activitySlug}/featured` : null, () => getActivityFeaturedReviews(activitySlug), {
+  const { data: featuredData } = useSWR(reviewSlug ? `/api/reviews/${productType}/${reviewSlug}/featured` : null, () => getFeaturedReviews(reviewSlug), {
     revalidateOnFocus: false,
     dedupingInterval: 60000,
   });

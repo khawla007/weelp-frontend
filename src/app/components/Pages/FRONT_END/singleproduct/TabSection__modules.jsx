@@ -99,10 +99,10 @@ const InclusionList = ({ items, included = false }) => {
 };
 
 // Review Panel
-export const ReviewPanel = ({ productData, activitySlug }) => {
+export const ReviewPanel = ({ productData, productType, activitySlug, itinerarySlug }) => {
   return (
     <div>
-      <SingleProductReview productData={productData} activitySlug={activitySlug} />
+      <SingleProductReview productData={productData} productType={productType} activitySlug={activitySlug} itinerarySlug={itinerarySlug} />
     </div>
   );
 };

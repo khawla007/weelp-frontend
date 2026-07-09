@@ -220,7 +220,7 @@ const SingleProductTabSection = ({
               {hasReviews && (
                 <Reveal variant="lift">
                   <div id="tab_3" ref={(el) => (sectionRefs.current['tab_3'] = el)} className="pt-[35px] lg:mb-[35px]">
-                    <ReviewPanel productData={productData} activitySlug={activitySlug} />
+                    <ReviewPanel productData={productData} productType={productType} activitySlug={activitySlug} itinerarySlug={itinerarySlug} />
                   </div>
                 </Reveal>
               )}
