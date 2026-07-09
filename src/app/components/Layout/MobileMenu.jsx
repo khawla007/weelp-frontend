@@ -355,7 +355,6 @@ const HeaderAccountMobile = () => {
           </Link>
         )}
       </div>
-
     </div>
   );
 };

@@ -99,7 +99,10 @@ function WishlistRow({ item, removing, onRemove }) {
 
       <div className="flex shrink-0 gap-2 sm:justify-end">
         {href && (
-          <NavigationLink href={href} className="inline-flex h-9 items-center justify-center rounded-md border border-border px-3 text-sm font-medium text-copy transition-colors hover:bg-muted hover:text-foreground">
+          <NavigationLink
+            href={href}
+            className="inline-flex h-9 items-center justify-center rounded-md border border-border px-3 text-sm font-medium text-copy transition-colors hover:bg-muted hover:text-foreground"
+          >
             View
           </NavigationLink>
         )}

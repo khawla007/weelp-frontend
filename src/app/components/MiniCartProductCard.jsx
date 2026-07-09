@@ -2,16 +2,7 @@
 import React from 'react';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { Calendar, Sparkles, SquarePen, Trash2, User } from 'lucide-react';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { actualDate } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, itemId, itemType, onClose, addons = [] }) => {

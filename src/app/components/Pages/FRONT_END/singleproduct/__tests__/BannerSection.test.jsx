@@ -89,18 +89,7 @@ describe('BannerSection', () => {
   });
 
   it('saves the normalized wishlist payload for an authenticated user', async () => {
-    render(
-      <BannerSection
-        activityName="Scuba Diving Tour"
-        itemId={42}
-        itemType="activity"
-        slug="scuba-diving-tour"
-        citySlug="dubai"
-        cityName="Dubai"
-        price={120}
-        currency="USD"
-      />
-    );
+    render(<BannerSection activityName="Scuba Diving Tour" itemId={42} itemType="activity" slug="scuba-diving-tour" citySlug="dubai" cityName="Dubai" price={120} currency="USD" />);
 
     fireEvent.click(screen.getByRole('button', { name: /save to wishlist/i }));
 

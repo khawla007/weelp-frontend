@@ -243,24 +243,14 @@ const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
         <AccordionContent className="space-y-4 pb-3">
           <div className="space-y-2">
             <Label className={`${errors?.seo?.meta_title?.message && 'text-destructive'}`}>Meta Title</Label>
-            <Input
-              type="text"
-              maxLength="60"
-              placeholder="Enter meta title"
-              {...register('seo.meta_title', getRequiredRule(requiredBasicFields, 'Meta Title Required'))}
-            />
+            <Input type="text" maxLength="60" placeholder="Enter meta title" {...register('seo.meta_title', getRequiredRule(requiredBasicFields, 'Meta Title Required'))} />
             <span className="block text-xs p-1 text-muted-foreground">{`${String(metaTitle || '').length}/60`} Characters</span>
             {errors?.seo?.meta_title && <p className="text-destructive text-sm">{errors?.seo?.meta_title?.message}</p>}
           </div>
 
           <div className="space-y-2">
             <Label className={`${errors?.seo?.meta_description?.message && 'text-destructive'}`}>Meta Description</Label>
-            <Input
-              type="text"
-              placeholder="Enter meta description"
-              maxLength="160"
-              {...register('seo.meta_description', getRequiredRule(requiredBasicFields, 'Meta Description Required'))}
-            />
+            <Input type="text" placeholder="Enter meta description" maxLength="160" {...register('seo.meta_description', getRequiredRule(requiredBasicFields, 'Meta Description Required'))} />
             <span className="block text-xs p-1 text-muted-foreground">{`${String(metaDescription || '').length}/160`} Characters</span>
             {errors?.seo?.meta_description && <p className="text-destructive text-sm">{errors?.seo?.meta_description.message}</p>}
           </div>
@@ -283,21 +273,13 @@ const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
 
           <div className="space-y-2">
             <Label className={`${errors?.seo?.og_image_url?.message && 'text-destructive'}`}>OG Image Url</Label>
-            <Input
-              type="text"
-              placeholder="Enter OG Image Url"
-              {...register('seo.og_image_url', getRequiredRule(requiredBasicFields, 'og_image_url Required'))}
-            />
+            <Input type="text" placeholder="Enter OG Image Url" {...register('seo.og_image_url', getRequiredRule(requiredBasicFields, 'og_image_url Required'))} />
             {errors?.seo?.og_image_url && <p className="text-destructive text-sm">{errors?.seo?.og_image_url?.message}</p>}
           </div>
 
           <div className="space-y-2">
             <Label className={`${errors?.seo?.canonical_url?.message && 'text-destructive'}`}>Canonical Url</Label>
-            <Input
-              type="text"
-              placeholder="Enter canonical URL"
-              {...register('seo.canonical_url', getRequiredRule(requiredBasicFields, 'canonical_url Required'))}
-            />
+            <Input type="text" placeholder="Enter canonical URL" {...register('seo.canonical_url', getRequiredRule(requiredBasicFields, 'canonical_url Required'))} />
             {errors?.seo?.canonical_url && <p className="text-destructive text-sm">{errors?.seo?.canonical_url?.message}</p>}
           </div>
         </AccordionContent>

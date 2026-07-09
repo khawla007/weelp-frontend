@@ -90,7 +90,7 @@ describe('IterenaryPage wishlist banner props', () => {
         slug: 'dubai-family-itinerary',
         citySlug: 'dubai',
         cityName: 'Dubai',
-      })
+      }),
     );
   });
 });

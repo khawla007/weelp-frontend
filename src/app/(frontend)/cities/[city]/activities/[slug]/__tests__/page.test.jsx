@@ -86,7 +86,7 @@ describe('SingleActivityPage wishlist banner props', () => {
         slug: 'scuba-diving-tour',
         citySlug: 'dubai',
         cityName: 'Dubai',
-      })
+      }),
     );
   });
 });

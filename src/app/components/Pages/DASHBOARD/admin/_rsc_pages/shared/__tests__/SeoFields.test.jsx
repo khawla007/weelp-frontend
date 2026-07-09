@@ -22,18 +22,17 @@ const renderSeoFields = () => {
 };
 
 describe('SeoFields', () => {
-  it('starts every accordion section closed and lets sections open independently', () => {
+  it('starts with basic settings open and lets sections toggle independently', () => {
     renderSeoFields();
 
     const basicSettings = screen.getByRole('button', { name: /basic settings/i });
     const schemaMarkup = screen.getByRole('button', { name: /schema markup/i });
     const scriptSlots = screen.getByRole('button', { name: /script slots/i });
 
-    expect(basicSettings).toHaveAttribute('data-state', 'closed');
+    expect(basicSettings).toHaveAttribute('data-state', 'open');
     expect(schemaMarkup).toHaveAttribute('data-state', 'closed');
     expect(scriptSlots).toHaveAttribute('data-state', 'closed');
 
-    fireEvent.click(basicSettings);
     fireEvent.click(schemaMarkup);
 
     expect(basicSettings).toHaveAttribute('data-state', 'open');

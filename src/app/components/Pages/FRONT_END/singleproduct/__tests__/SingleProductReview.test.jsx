@@ -51,13 +51,7 @@ describe('SingleProductReview', () => {
       ],
     });
 
-    renderWithSWR(
-      <SingleProductReview
-        productType="itinerary"
-        itinerarySlug="adventure-tour-in-dubai"
-        productData={{ review_summary: { average_rating: 4.6, total_reviews: 12 } }}
-      />,
-    );
+    renderWithSWR(<SingleProductReview productType="itinerary" itinerarySlug="adventure-tour-in-dubai" productData={{ review_summary: { average_rating: 4.6, total_reviews: 12 } }} />);
 
     await waitFor(() => expect(getItineraryReviews).toHaveBeenCalledWith('adventure-tour-in-dubai', { sort: 'recent', per_page: 50 }));
 

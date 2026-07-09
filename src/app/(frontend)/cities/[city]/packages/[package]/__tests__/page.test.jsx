@@ -60,7 +60,7 @@ describe('PackagePage wishlist banner props', () => {
         slug: 'dubai-family-package',
         citySlug: 'dubai',
         cityName: 'Dubai',
-      })
+      }),
     );
   });
 });

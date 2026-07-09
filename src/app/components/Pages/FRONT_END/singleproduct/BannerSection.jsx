@@ -44,7 +44,7 @@ const BannerSection = ({
       price,
       currency,
     }),
-    [activityName, cityName, citySlug, currency, itemId, itemType, price, slug]
+    [activityName, cityName, citySlug, currency, itemId, itemType, price, slug],
   );
 
   const saveWishlistItem = useCallback(async () => {

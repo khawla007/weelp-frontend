@@ -1,11 +1,6 @@
 import useSWR from 'swr';
 
-import {
-  addWishlistItem,
-  getWishlistItems,
-  removeWishlistItem,
-  removeWishlistItemByIdentity,
-} from '@/lib/services/customer/wishlist';
+import { addWishlistItem, getWishlistItems, removeWishlistItem, removeWishlistItemByIdentity } from '@/lib/services/customer/wishlist';
 
 export const WISHLIST_ITEMS_KEY = '/api/customer/wishlist';
 
@@ -70,15 +65,7 @@ async function wishlistFetcher(key) {
 
 function unwrapWishlistResponse(data) {
   const payload = data?.data ?? data;
-  const items = Array.isArray(payload)
-    ? payload
-    : Array.isArray(payload?.data)
-      ? payload.data
-      : Array.isArray(payload?.items)
-        ? payload.items
-        : Array.isArray(data?.items)
-          ? data.items
-          : [];
+  const items = Array.isArray(payload) ? payload : Array.isArray(payload?.data) ? payload.data : Array.isArray(payload?.items) ? payload.items : Array.isArray(data?.items) ? data.items : [];
 
   const meta = data?.meta ?? payload?.meta ?? payload?.pagination ?? data?.pagination ?? null;
 
