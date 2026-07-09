@@ -2,8 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
-/** Default static values applied when variant="full" and no data is provided. */
-const FULL_DEFAULTS = { rating: '4.5', reviewCount: '3.4K', discount: '40% OFF' };
+/** Default static values applied when variant="full" and no discount data is provided. */
+const FULL_DEFAULTS = { discount: '40% OFF' };
 
 /**
  * Shared content card used across the site.
@@ -11,16 +11,14 @@ const FULL_DEFAULTS = { rating: '4.5', reviewCount: '3.4K', discount: '40% OFF' 
  * variant="full"    — image, rating, title, price, discount badge (default)
  * variant="compact" — image, category badge, title only
  *
- * For "full" variant, rating / reviewCount / discount default to static placeholder
- * values so every card looks complete even before API data is available.
- * Pass explicit values (or null) to override.
+ * For "full" variant, discount keeps its existing placeholder fallback.
+ * Rating and review count are only rendered when API data is available.
  */
 export default function ItemCard({ href, image, title, category, excerpt, price, rating, reviewCount, discount, variant = 'full', className = '', imageClassName = '', style }) {
   const isFull = variant === 'full';
 
-  // Apply defaults for full variant when values are not explicitly provided
-  const displayRating = isFull ? (rating ?? FULL_DEFAULTS.rating) : rating;
-  const displayReviewCount = isFull ? (reviewCount ?? FULL_DEFAULTS.reviewCount) : reviewCount;
+  const displayRating = rating;
+  const displayReviewCount = reviewCount;
   const displayDiscount = isFull ? (discount ?? FULL_DEFAULTS.discount) : discount;
 
   return (

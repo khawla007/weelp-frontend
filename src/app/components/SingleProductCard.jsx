@@ -13,7 +13,53 @@ const ITEM_TYPE_PLURAL = {
   transfer: 'transfers',
 };
 
-export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productRating, productTitle, productPrice, currency, is_featured, citySlug: citySlugProp, as: TitleTag = 'h3' }) => {
+const toNumber = (value) => {
+  if (value === null || value === undefined || value === '') return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+};
+
+const formatRating = (value) => {
+  const number = toNumber(value);
+  if (!number || number <= 0) return null;
+  return Number.isInteger(number) ? `${number}` : number.toFixed(1);
+};
+
+const formatReviewCount = (value) => {
+  const number = toNumber(value);
+  if (!number || number <= 0) return null;
+  return `${number >= 1000 ? `${(number / 1000).toFixed(1)}K` : number}`;
+};
+
+const RatingSummary = ({ rating, reviewCount }) => {
+  const displayRating = formatRating(rating);
+  const displayReviewCount = formatReviewCount(reviewCount);
+
+  if (!displayRating) return null;
+
+  return (
+    <div className="flex gap-1 text-weelp-copy text-sm">
+      <Star className="fill-current" size={18} />
+      {displayRating}
+      {displayReviewCount && <span className="text-copy">({displayReviewCount})</span>}
+    </div>
+  );
+};
+
+export const GlobalCard = ({
+  productId,
+  item_type,
+  productSlug,
+  imgsrc,
+  productRating,
+  reviewCount,
+  productTitle,
+  productPrice,
+  currency,
+  is_featured,
+  citySlug: citySlugProp,
+  as: TitleTag = 'h3',
+}) => {
   const params = useParams();
   const citySlug = citySlugProp || params?.city;
   const pluralType = ITEM_TYPE_PLURAL[item_type] || item_type;
@@ -32,11 +78,7 @@ export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productR
       <NavigationLink href={itemHref} className="block">
         <img src={imgsrc ?? '/assets/Card.webp'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
         <div className="flex flex-col gap-[6px] justify-evenly p-4">
-          <div className="flex gap-1 text-weelp-copy text-sm pt-2">
-            <Star className="fill-current" size={18} />
-            {productRating || 4.5}
-            <span className="text-copy" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
-          </div>
+          <RatingSummary rating={productRating} reviewCount={reviewCount} />
           <TitleTag className="text-foreground text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
           <hr className=" border-t border-dashed border-border mb-3" />
           <div className="flex justify-between flex-wrap gap-2">
@@ -87,7 +129,7 @@ export const GlobalCard = ({ productId, item_type, productSlug, imgsrc, productR
   );
 };
 
-const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, productPrice, discount, productSlug, featured_activity, as: TitleTag = 'h3' }) => {
+const SingleProductCard = ({ productId, imgsrc, productRating, reviewCount, productTitle, productPrice, discount, productSlug, featured_activity, as: TitleTag = 'h3' }) => {
   const params = useParams();
   const { region, city } = params;
 
@@ -104,11 +146,7 @@ const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, pro
       <NavigationLink href={city ? `/cities/${city}/activities/${productSlug}` : `/activity/${productSlug}`} className="block">
         <img src={imgsrc || '/assets/Card.webp'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
         <div className="flex flex-col gap-[6px] justify-evenly p-4">
-          <div className="flex gap-1 text-weelp-copy text-sm">
-            <Star className="fill-current" size={18} />
-            {productRating || 4.5}
-            <span className="text-copy" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
-          </div>
+          <RatingSummary rating={productRating} reviewCount={reviewCount} />
           <TitleTag className="text-foreground text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
           <hr className=" border-t border-dashed border-border mb-1" />
           <div className="flex justify-between flex-wrap gap-2">
@@ -131,7 +169,7 @@ const SingleProductCard = ({ productId, imgsrc, productRating, productTitle, pro
 export default SingleProductCard;
 
 // Itinerary card
-export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, productTitle, productPrice, discount, productSlug, is_featured, as: TitleTag = 'h3' }) => {
+export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, reviewCount, productTitle, productPrice, discount, productSlug, is_featured, as: TitleTag = 'h3' }) => {
   const params = useParams();
   const { region, city } = params;
   return (
@@ -147,11 +185,7 @@ export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, p
       <NavigationLink href={city ? `/cities/${city}/itineraries/${productSlug}` : `/itinerary/${productSlug}`} className="block">
         <img src={imgsrc || '/assets/Card.webp'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
         <div className="flex flex-col gap-[6px] justify-evenly p-4">
-          <div className="flex gap-1 text-weelp-copy text-sm">
-            <Star className="fill-current" size={18} />
-            {productRating || 4.5}
-            <span className="text-copy" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
-          </div>
+          <RatingSummary rating={productRating} reviewCount={reviewCount} />
           <TitleTag className="text-foreground text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
           <hr className=" border-t border-dashed border-border mb-1" />
           <div className="flex justify-between flex-wrap gap-2">
@@ -168,7 +202,7 @@ export const SingleProductCardItinerary = ({ productId, imgsrc, productRating, p
 };
 
 // package card
-export const SingleProductCardPackage = ({ productId, imgsrc, productRating, productTitle, productPrice, discount, productSlug, is_featured, as: TitleTag = 'h3' }) => {
+export const SingleProductCardPackage = ({ productId, imgsrc, productRating, reviewCount, productTitle, productPrice, discount, productSlug, is_featured, as: TitleTag = 'h3' }) => {
   const params = useParams();
   const { region, city } = params;
 
@@ -185,11 +219,7 @@ export const SingleProductCardPackage = ({ productId, imgsrc, productRating, pro
       <NavigationLink href={city ? `/cities/${city}/packages/${productSlug}` : `/package/${productSlug}`} className="block">
         <img src={imgsrc || '/assets/Card.webp'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
         <div className="flex flex-col gap-[6px] justify-evenly p-4">
-          <div className="flex gap-1 text-weelp-copy text-sm">
-            <Star className="fill-current" size={18} />
-            {productRating || 4.5}
-            <span className="text-copy" dangerouslySetInnerHTML={{ __html: '(3.4K)' }} />
-          </div>
+          <RatingSummary rating={productRating} reviewCount={reviewCount} />
           <TitleTag className="text-foreground text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
           <hr className=" border-t border-dashed border-border mb-1" />
           <div className="flex justify-between flex-wrap gap-2">

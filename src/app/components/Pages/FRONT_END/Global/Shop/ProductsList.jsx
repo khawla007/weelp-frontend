@@ -19,7 +19,14 @@ const ProductsList = ({ data }) => {
       <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-y-4 gap-4 py-4 sm:py-12">
         {data.slice(0, 12).map((product) => (
           <li key={product.id}>
-            <SingleProductCard productId={product.id} imgsrc={product.image} productTitle={product.name} productRating={product.rating} productPrice={product.price} />
+            <SingleProductCard
+              productId={product.id}
+              imgsrc={product.image}
+              productTitle={product.name}
+              productRating={product.average_rating ?? product.rating_average ?? product.review_summary?.average_rating ?? product.rating}
+              reviewCount={product.reviews_count ?? product.review_count ?? product.review_summary?.total_reviews}
+              productPrice={product.price}
+            />
           </li>
         ))}
       </ul>

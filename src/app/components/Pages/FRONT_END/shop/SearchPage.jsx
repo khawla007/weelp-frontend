@@ -257,6 +257,8 @@ export const SearchPage = () => {
                       item_type={product?.item_type}
                       productSlug={product?.slug}
                       citySlug={product?.city_slug}
+                      productRating={product?.average_rating ?? product?.rating_average ?? product?.review_summary?.average_rating ?? product?.rating}
+                      reviewCount={product?.reviews_count ?? product?.review_count ?? product?.review_summary?.total_reviews}
                     />
                   );
                 })

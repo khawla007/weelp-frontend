@@ -57,7 +57,8 @@ const ProductSlider = ({ data }) => {
                 item_type={product?.item_type}
                 productPrice={product?.item_type === 'itinerary' ? product?.schedule_total_price : (product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price)}
                 currency={product?.item_type === 'itinerary' ? product?.schedule_total_currency : product?.pricing?.currency}
-                productRating={product?.rating}
+                productRating={product?.average_rating ?? product?.rating_average ?? product?.review_summary?.average_rating ?? product?.rating}
+                reviewCount={product?.reviews_count ?? product?.review_count ?? product?.review_summary?.total_reviews}
                 imgsrc={product?.featured_image || product?.media_gallery?.[0]?.media?.url || product?.image}
                 citySlug={product?.city_slug}
               />

@@ -7,6 +7,24 @@ const ITEM_TYPE_PLURAL = {
   transfer: 'transfers',
 };
 
+const toNumber = (value) => {
+  if (value === null || value === undefined || value === '') return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+};
+
+const formatRating = (value) => {
+  const number = toNumber(value);
+  if (!number || number <= 0) return null;
+  return Number.isInteger(number) ? `${number}` : number.toFixed(1);
+};
+
+const formatReviewCount = (value) => {
+  const number = toNumber(value);
+  if (!number || number <= 0) return null;
+  return `${number >= 1000 ? `${(number / 1000).toFixed(1)}K` : number}`;
+};
+
 /**
  * Maps a raw API product object to ItemCard props.
  * @param {object} product - Raw product from API
@@ -36,9 +54,9 @@ export function mapProductToItemCard(product, citySlug) {
 
   const category = product.item_type ? product.item_type.charAt(0).toUpperCase() + product.item_type.slice(1) : '';
 
-  const rating = product.average_rating ? `${product.average_rating}` : null;
+  const rating = formatRating(product.average_rating ?? product.rating_average ?? product.review_summary?.average_rating ?? product.reviewSummary?.averageRating);
 
-  const reviewCount = product.reviews_count ? `${product.reviews_count >= 1000 ? `${(product.reviews_count / 1000).toFixed(1)}K` : product.reviews_count}` : null;
+  const reviewCount = formatReviewCount(product.reviews_count ?? product.review_count ?? product.review_summary?.total_reviews ?? product.reviewSummary?.totalReviews);
 
   const discount = product.discount_percentage ? `${product.discount_percentage}% OFF` : null;
 
