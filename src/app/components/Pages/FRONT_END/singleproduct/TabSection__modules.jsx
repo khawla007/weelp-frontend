@@ -27,22 +27,29 @@ export const OverViewPanel = ({ description }) => {
   );
 };
 
-// What's Included
 const getStaticInclusionItems = () => inclusionsList.map((item) => ({ title: item.text, included: item.included }));
 
+export const normalizeInclusionItems = (items) =>
+  (Array.isArray(items) ? items : [])
+    .map((item) => {
+      const rawTitle = item?.title || item?.text;
+
+      return {
+        id: item?.id,
+        title: typeof rawTitle === 'string' ? rawTitle.trim() : '',
+        description: typeof item?.description === 'string' ? item.description.trim() : '',
+        included: item?.included !== false,
+      };
+    })
+    .filter((item) => item.title);
+
+// What's Included
 export const WhatIncludedPanel = ({ items, useStaticFallback = false }) => {
   const [expanded, setExpanded] = useState(false);
   const normalizedItems = useMemo(() => {
     const sourceItems = items === undefined && useStaticFallback ? getStaticInclusionItems() : items;
 
-    return (Array.isArray(sourceItems) ? sourceItems : [])
-      .map((item) => ({
-        id: item?.id,
-        title: item?.title || item?.text,
-        description: item?.description || '',
-        included: item?.included !== false,
-      }))
-      .filter((item) => item.title);
+    return normalizeInclusionItems(sourceItems);
   }, [items, useStaticFallback]);
 
   const visibleItems = expanded ? normalizedItems : normalizedItems.slice(0, INITIAL_VISIBLE_INCLUDED_ROWS);

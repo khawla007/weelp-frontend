@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import throttle from 'lodash/throttle';
-import { OverViewPanel, WhatIncludedPanel, ReviewPanel, FaqPanel } from './TabSection__modules';
+import { OverViewPanel, WhatIncludedPanel, ReviewPanel, FaqPanel, normalizeInclusionItems } from './TabSection__modules';
 import SimilarExperiences from './SimilarExperiences';
 import ProductSidebar from './ProductSidebar';
 import ItineraryPanel from './ItineraryPanel';
@@ -57,9 +57,11 @@ const SingleProductTabSection = ({
 
   // Date state for itinerary/package
   const isActivityProduct = productType === 'activity';
+  const usesDynamicInclusions = productType === 'activity' || productType === 'itinerary';
   const isScheduleType = productType === 'itinerary' || productType === 'package';
   const scheduleCount = productData?.schedules?.length || 0;
-  const inclusionItems = isActivityProduct ? productData?.inclusions_exclusions || [] : undefined;
+  const inclusionItems = usesDynamicInclusions ? productData?.inclusions_exclusions || [] : undefined;
+  const hasInclusionRows = usesDynamicInclusions ? normalizeInclusionItems(inclusionItems).length > 0 : true;
 
   const [selectedStartDate, setSelectedStartDate] = useState(() => {
     if (isScheduleType) {
@@ -87,9 +89,21 @@ const SingleProductTabSection = ({
 
   // Build tabs
   const tabs = useMemo(
-    () => [{ id: 'tab_1', label: TAB_1_LABELS[productType] }, { id: 'tab_2', label: "What's Included" }, ...(hasReviews ? [{ id: 'tab_3', label: 'Reviews' }] : []), { id: 'tab_4', label: 'FAQs' }],
-    [productType, hasReviews],
+    () => [
+      { id: 'tab_1', label: TAB_1_LABELS[productType] },
+      ...(hasInclusionRows ? [{ id: 'tab_2', label: "What's Included" }] : []),
+      ...(hasReviews ? [{ id: 'tab_3', label: 'Reviews' }] : []),
+      { id: 'tab_4', label: 'FAQs' },
+    ],
+    [productType, hasInclusionRows, hasReviews],
   );
+
+  useEffect(() => {
+    if (!tabs.some((tab) => tab.id === activeTab) && tabs[0]) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reconciles tab state when optional sections disappear after data changes
+      setActiveTab(tabs[0].id);
+    }
+  }, [activeTab, tabs]);
 
   // Sticky tab + intersection observer
   useEffect(() => {
@@ -119,7 +133,7 @@ const SingleProductTabSection = ({
       window.removeEventListener('scroll', throttledCheckScrollY);
       observer.disconnect();
     };
-  }, []);
+  }, [tabs]);
 
   useEffect(() => {
     if (fixedTab) {
@@ -194,11 +208,13 @@ const SingleProductTabSection = ({
               </Reveal>
 
               {/* Tab 2: What's Included */}
-              <Reveal variant="lift">
-                <div id="tab_2" ref={(el) => (sectionRefs.current['tab_2'] = el)} className="pt-[35px] lg:mb-[35px]">
-                  <WhatIncludedPanel items={inclusionItems} useStaticFallback={!isActivityProduct} />
-                </div>
-              </Reveal>
+              {hasInclusionRows && (
+                <Reveal variant="lift">
+                  <div id="tab_2" ref={(el) => (sectionRefs.current['tab_2'] = el)} className="pt-[35px] lg:mb-[35px]">
+                    <WhatIncludedPanel items={inclusionItems} useStaticFallback={!usesDynamicInclusions} />
+                  </div>
+                </Reveal>
+              )}
 
               {/* Tab 3: Reviews (conditional) */}
               {hasReviews && (
