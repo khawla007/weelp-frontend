@@ -235,7 +235,7 @@ const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
   };
 
   return (
-    <Accordion type="multiple" className="space-y-3">
+    <Accordion type="multiple" defaultValue={['item-1']} className="space-y-3">
       <AccordionItem value="item-1" className="rounded-md border px-3">
         <AccordionTrigger className="py-3 text-sm">
           <span>Basic Settings</span>
@@ -247,7 +247,6 @@ const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
               type="text"
               maxLength="60"
               placeholder="Enter meta title"
-              className="focus-visible:ring-weelp-sage-deep"
               {...register('seo.meta_title', getRequiredRule(requiredBasicFields, 'Meta Title Required'))}
             />
             <span className="block text-xs p-1 text-muted-foreground">{`${String(metaTitle || '').length}/60`} Characters</span>
@@ -260,7 +259,6 @@ const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
               type="text"
               placeholder="Enter meta description"
               maxLength="160"
-              className="focus-visible:ring-weelp-sage-deep"
               {...register('seo.meta_description', getRequiredRule(requiredBasicFields, 'Meta Description Required'))}
             />
             <span className="block text-xs p-1 text-muted-foreground">{`${String(metaDescription || '').length}/160`} Characters</span>
@@ -272,7 +270,6 @@ const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
             <Input
               type="text"
               placeholder="Enter keywords separated by commas"
-              className="focus-visible:ring-weelp-sage-deep"
               {...register('seo.keywords', {
                 ...getRequiredRule(requiredBasicFields, 'Keywords Required'),
                 onBlur: (e) => {
@@ -289,7 +286,6 @@ const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
             <Input
               type="text"
               placeholder="Enter OG Image Url"
-              className="focus-visible:ring-weelp-sage-deep"
               {...register('seo.og_image_url', getRequiredRule(requiredBasicFields, 'og_image_url Required'))}
             />
             {errors?.seo?.og_image_url && <p className="text-destructive text-sm">{errors?.seo?.og_image_url?.message}</p>}
@@ -300,7 +296,6 @@ const SeoFields = ({ itemType = 'activity', requiredBasicFields = true }) => {
             <Input
               type="text"
               placeholder="Enter canonical URL"
-              className="focus-visible:ring-weelp-sage-deep"
               {...register('seo.canonical_url', getRequiredRule(requiredBasicFields, 'canonical_url Required'))}
             />
             {errors?.seo?.canonical_url && <p className="text-destructive text-sm">{errors?.seo?.canonical_url?.message}</p>}

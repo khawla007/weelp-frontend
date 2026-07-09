@@ -23,11 +23,14 @@ export const STEP_SLIDE = { forward: 'slide-in-from-right-2', back: 'slide-in-fr
  * change) never replays the slide — even if the would-be direction differs from last time.
  *
  * @param {number} currentStep - the form's current step (the hook watches this to replay)
+ * @param {{ scrollRef?: React.RefObject }} options - optional top target to reveal on step change
  * @returns {{ stepRef: React.RefObject, goWithDirection: (next:number, current:number, setCurrent:Function)=>void }}
  */
-export function useStepTransition(currentStep) {
+export function useStepTransition(currentStep, options = {}) {
   const stepRef = useRef(null);
   const hasMounted = useRef(false);
+  const frameRef = useRef(null);
+  const { scrollRef } = options;
   // +1 advancing, -1 going back. A ref (not state) so it can't independently trigger the
   // replay effect — only a real `currentStep` change replays.
   const directionRef = useRef(1);
@@ -49,7 +52,28 @@ export function useStepTransition(currentStep) {
     el.classList.remove(...enterClasses, STEP_SLIDE.forward, STEP_SLIDE.back);
     void el.offsetWidth;
     el.classList.add(...enterClasses);
+
+    if (scrollRef?.current) {
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
+      frameRef.current = requestAnimationFrame(() => {
+        scrollRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+        frameRef.current = null;
+      });
+    }
   }, [currentStep]);
+
+  useEffect(() => {
+    return () => {
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
+    };
+  }, []);
 
   return { stepRef, goWithDirection };
 }

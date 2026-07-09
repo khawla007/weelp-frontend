@@ -43,7 +43,8 @@ const FaqFields = dynamic(() => import('../shared/FaqFields'), { ssr: false });
 
 export const EditActivityForm = ({ categories, attributes, tags, locations = [], activitydata }) => {
   const [currentStep, setCurrentStep] = useState(1);
-  const { stepRef, goWithDirection } = useStepTransition(currentStep);
+  const wizardTopRef = useRef(null);
+  const { stepRef, goWithDirection } = useStepTransition(currentStep, { scrollRef: wizardTopRef });
   const [toggleUpdate, setToggleUpdate] = useState(false);
   const [formData, setFormData] = useState({});
   const router = useRouter();
@@ -68,77 +69,6 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       setCityPlaces([]);
     }
   };
-
-  // Ref to preserve scroll position during re-renders in step 6
-  const scrollPositionRef = useRef(0);
-  const isRestoringRef = useRef(false);
-  const interactionEndTimeRef = useRef(0);
-
-  // Smart scroll position restoration for step 6
-  useEffect(() => {
-    if (currentStep !== 6) {
-      return;
-    }
-
-    // Save current scroll position
-    scrollPositionRef.current = window.scrollY;
-
-    // Track user interactions to pause restoration
-    const handleInteractionStart = () => {
-      interactionEndTimeRef.current = Date.now() + 300; // Pause for 300ms after interaction
-    };
-
-    // Scroll restoration check - runs less frequently to avoid blocking UI
-    const restoreScrollIfNeeded = () => {
-      const now = Date.now();
-
-      // Skip restoration if user recently interacted
-      if (now < interactionEndTimeRef.current) {
-        setTimeout(restoreScrollIfNeeded, 50);
-        return;
-      }
-
-      // Only restore if there's a significant deviation (>50px)
-      // and we're not already restoring
-      if (scrollPositionRef.current > 50 && Math.abs(window.scrollY - scrollPositionRef.current) > 50 && !isRestoringRef.current) {
-        isRestoringRef.current = true;
-        window.scrollTo({
-          top: scrollPositionRef.current,
-          behavior: 'auto', // Instant scroll, no animation
-        });
-        // Reset flag immediately after scroll
-        requestAnimationFrame(() => {
-          isRestoringRef.current = false;
-        });
-      }
-
-      // Continue checking periodically
-      setTimeout(restoreScrollIfNeeded, 100);
-    };
-
-    // Update scroll position on user scroll
-    const handleScroll = () => {
-      if (!isRestoringRef.current) {
-        scrollPositionRef.current = window.scrollY;
-      }
-    };
-
-    // Set up listeners
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('mousedown', handleInteractionStart);
-    window.addEventListener('keydown', handleInteractionStart);
-    window.addEventListener('touchstart', handleInteractionStart);
-
-    // Start monitoring
-    restoreScrollIfNeeded();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousedown', handleInteractionStart);
-      window.removeEventListener('keydown', handleInteractionStart);
-      window.removeEventListener('touchstart', handleInteractionStart);
-    };
-  }, [currentStep]);
 
   //desctructure data
   const {
@@ -244,7 +174,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
     },
   });
 
-  const { errors, isValid, isSubmitting, isDirty } = methods?.formState;
+  const { errors, isSubmitting, isDirty } = methods?.formState;
 
   // Pre-populate selectedCityId from the first location's city_id
   useEffect(() => {
@@ -349,7 +279,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                 placeholder="Activity name"
                 id="name"
                 {...register('name', { required: 'Name is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus:outline-weelp-sage-deep"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus:outline-none"
                 onBlur={handleBlur}
               />
               {errors?.name && <p className="text-destructive text-sm mt-1">{errors.name.message}</p>}
@@ -362,7 +292,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                 placeholder="Enter Url slug"
                 id="slug"
                 {...register('slug', { required: 'Slug is required' })}
-                className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus-visible:ring-weelp-sage-deep"
+                className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm focus-visible:ring-0"
                 onBlur={handleBlur}
               />
               {errors?.slug && <p className="text-destructive text-sm mt-1">{errors?.slug.message}</p>}
@@ -378,7 +308,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               {...register('description', {
                 required: 'Description is required',
               })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm h-28 focus:outline-weelp-sage-deep"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-border shadow-sm h-28 focus:outline-none"
             />
             {errors?.description && <p className="text-destructive text-sm mt-1">{errors.description.message}</p>}
           </div>
@@ -393,7 +323,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               {...register('short_description', {
                 required: 'Field is required',
               })}
-              className="mt-1 p-2 text-sm block w-full rounded-md border border-border h-20 focus:outline-weelp-sage-deep"
+              className="mt-1 p-2 text-sm block w-full rounded-md border border-border h-20 focus:outline-none"
             />
             {errors?.short_description && <p className="text-destructive text-sm mt-1">{errors.short_description.message}</p>}
           </div>
@@ -499,7 +429,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                   placeholder="Min Age"
                   value={field.value || ''} // Ensure it's controlled
                   onChange={(e) => field.onChange(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-border shadow-sm focus-visible:focus:outline-weelp-sage-deep"
+                  className="mt-1 block w-full rounded-md border-border shadow-sm focus-visible:outline-none"
                 />
               )}
             />
@@ -524,7 +454,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                   placeholder="Max group size"
                   value={field.value || ''} // Ensure it's controlled
                   onChange={(e) => field.onChange(e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-border shadow-sm focus-visible:outline-weelp-sage-deep"
+                  className="mt-1 block w-full rounded-md border border-border shadow-sm focus-visible:outline-none"
                 />
               )}
             />
@@ -548,8 +478,8 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                 // Clear all place_id values and update city_id when city changes
                 const currentLocations = methods.getValues('locations') || [];
                 currentLocations.forEach((_, i) => {
-                  methods.setValue(`locations.${i}.place_id`, null);
-                  methods.setValue(`locations.${i}.city_id`, cityId);
+                  methods.setValue(`locations.${i}.place_id`, null, { shouldDirty: true, shouldValidate: true });
+                  methods.setValue(`locations.${i}.city_id`, cityId, { shouldDirty: true, shouldValidate: true });
                 });
               }}
               placeholder="Select City..."
@@ -577,7 +507,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               rules={{ required: 'Type required' }}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="w-full rounded-md text-start focus:outline-weelp-sage-deep">
+                  <SelectTrigger className="w-full rounded-md text-start focus:outline-none">
                     <SelectValue placeholder="Location Type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -637,7 +567,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                       control={methods.control}
                       render={({ field }) => (
                         <Select onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger className="w-full rounded-md text-start focus:outline-weelp-sage-deep">
+                          <SelectTrigger className="w-full rounded-md text-start focus:outline-none">
                             <SelectValue placeholder="Location Type" />
                           </SelectTrigger>
                           <SelectContent>
@@ -782,7 +712,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
               defaultValue="easy"
               render={({ field }) => (
                 <Select id={'difficulty_level'} onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger className="mt-1 w-full capitalize rounded-md p-2 focus:outline-weelp-sage-deep">
+                  <SelectTrigger className="mt-1 w-full capitalize rounded-md p-2 focus:outline-none">
                     <SelectValue placeholder="Select a unit" />
                   </SelectTrigger>
                   <SelectContent>
@@ -806,19 +736,20 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
   const MediaTab = useMemo(
     // eslint-disable-next-line react/display-name
     () => () => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const [dialogOpen, setDialogOpen] = useState(false);
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const [activityImages, setActivityImages] = useState([]); // all images intialize
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const { selectedMedia, resetMedia } = useMediaStore(); // Retrive images From Media
-
       const {
         setValue,
         formState: { errors },
         getValues,
         // eslint-disable-next-line react-hooks/rules-of-hooks
       } = useFormContext();
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const initialMediaGalleryRef = useRef(getValues('media_gallery') || []);
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [dialogOpen, setDialogOpen] = useState(false);
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [activityImages, setActivityImages] = useState(() => initialMediaGalleryRef.current); // all images intialize
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const { selectedMedia, resetMedia } = useMediaStore(); // Retrive images From Media
 
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const media_gallery = useWatch({
@@ -827,14 +758,6 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
 
       // Derive featured image ID from media_gallery
       const featuredImageId = media_gallery?.find((img) => img.is_featured)?.media_id ?? null;
-
-      //  Hydrate first if there is already media exist
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      useEffect(() => {
-        if (media_gallery?.length > 0) {
-          setActivityImages(media_gallery); // Sync from form to local state
-        }
-      }, []);
 
       // sideeffect for getting image from gallery popup
       // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -856,14 +779,15 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       // sync with form
       // eslint-disable-next-line react-hooks/rules-of-hooks
       useEffect(() => {
-        setValue('media_gallery', activityImages, { shouldDirty: true }); // sync form
+        const hasChanged = JSON.stringify(activityImages || []) !== JSON.stringify(initialMediaGalleryRef.current || []);
+        setValue('media_gallery', activityImages, { shouldDirty: hasChanged, shouldValidate: true }); // sync form
       }, [activityImages, setValue]);
 
       // handleDelteImage
       const handleDeleteImage = (image) => {
         setActivityImages((prev) => {
           const updatedImages = prev.filter((img) => img.url !== image.url);
-          setTimeout(() => setValue('media_gallery', updatedImages), 0);
+          setTimeout(() => setValue('media_gallery', updatedImages, { shouldDirty: true, shouldValidate: true }), 0);
           return updatedImages;
         });
       };
@@ -1201,7 +1125,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                         enable_seasonal_pricing: true,
                       }));
                       // Update your form values or state
-                      setValue('seasonal_pricing', updated);
+                      setValue('seasonal_pricing', updated, { shouldDirty: true, shouldValidate: true });
                     }
 
                     // Optional: on toggle OFF, disable all
@@ -1210,7 +1134,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                         ...item,
                         enable_seasonal_pricing: false,
                       }));
-                      setValue('seasonal_pricing', updated);
+                      setValue('seasonal_pricing', updated, { shouldDirty: true, shouldValidate: true });
                     }
                   }}
                 />
@@ -1578,7 +1502,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       <NavigationActivity title={'Edit Activity'} desciption={'Edit activity for your customers'} backurl={'/dashboard/admin/activities/'} />
       <div className="w-full space-y-4">
         <FormProvider {...methods}>
-          <div className="w-full">
+          <div className="w-full scroll-mt-24" ref={wizardTopRef}>
             <div className="w-full">
               <ul className="w-fit flex justify-between items-center">
                 {steps &&
@@ -1642,7 +1566,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
 
                 {/* Final step: Use FormActionButtons, previous steps: Use Next button */}
                 {currentStep === steps.length ? (
-                  <FormActionButtons mode="update" isSubmitting={isSubmitting} isDisabled={!isValid || !isDirty} cancelAlwaysEnabled={true} containerType="div" className="flex gap-4" />
+                  <FormActionButtons mode="update" isSubmitting={isSubmitting} isDisabled={!isDirty} cancelAlwaysEnabled={true} containerType="div" className="flex gap-4" />
                 ) : (
                   <Button type="submit" disabled={isSubmitting} className={`ml-auto py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-weelp-sage-deep cursor-pointer`}>
                     {isSubmitting ? 'Next' : 'Next'}
