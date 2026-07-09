@@ -131,7 +131,15 @@ export async function deleteActivity(activityId) {
  * @param {Array} delete_type - deleted_location_ids deleted_seasonal_pricing_ids  deleted_group_discounts_ids deleted_promo_codes_ids
  * @returns
  */
-export async function deleteActivityItems({ activityId, deleted_location_ids = [], deleted_seasonal_pricing_ids = [], deleted_group_discounts_ids = [], deleted_promo_codes_ids = [] }) {
+export async function deleteActivityItems({
+  activityId,
+  deleted_location_ids = [],
+  deleted_seasonal_pricing_ids = [],
+  deleted_group_discounts_ids = [],
+  deleted_promo_codes_ids = [],
+  deleted_faq_ids = [],
+  deleted_inclusion_exclusion_ids = [],
+}) {
   try {
     // delete data
     const api = await getAuthApi();
@@ -141,6 +149,8 @@ export async function deleteActivityItems({ activityId, deleted_location_ids = [
         deleted_seasonal_pricing_ids,
         deleted_group_discounts_ids,
         deleted_promo_codes_ids,
+        deleted_faq_ids,
+        deleted_inclusion_exclusion_ids,
       },
     });
 

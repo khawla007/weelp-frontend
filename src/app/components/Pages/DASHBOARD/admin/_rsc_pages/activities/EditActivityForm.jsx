@@ -40,6 +40,7 @@ import { defaultSeoValues, parseSeoSchemaData } from '../shared/SeoFields';
 const SharedAddOnMultiSelect = dynamic(() => import('../shared_tabs/addon/SharedAddOnActivity'), { ssr: false });
 const SeoFields = dynamic(() => import('../shared/SeoFields'), { ssr: false });
 const FaqFields = dynamic(() => import('../shared/FaqFields'), { ssr: false });
+const InclusionExclusionFields = dynamic(() => import('../shared/InclusionExclusionFields'), { ssr: false });
 
 export const EditActivityForm = ({ categories, attributes, tags, locations = [], activitydata }) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -89,6 +90,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
     early_bird_discount,
     last_minute_discount,
     addons = [],
+    inclusions_exclusions = [],
     faqs = [],
     reviews = [],
     review_summary = {},
@@ -162,6 +164,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       early_bird_discount: early_bird_discount,
       last_minute_discount: last_minute_discount,
       addons: initialAdd,
+      inclusions_exclusions,
       faqs,
       reviews,
       review_summary,
@@ -233,11 +236,16 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
     },
     {
       id: 7,
+      title: 'Inclusions',
+      description: 'What is included and excluded',
+    },
+    {
+      id: 8,
       title: 'FAQ',
       description: 'Questions and answers for this activity',
     },
     {
-      id: 8,
+      id: 9,
       title: 'Seo',
       description: 'Metadata, schema, and trusted scripts',
     },
@@ -1409,24 +1417,46 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       case 6:
         return <PricingTab />;
       case 7:
-        return <FaqFields />;
+        return <InclusionExclusionFields />;
       case 8:
+        return <FaqFields />;
+      case 9:
         return <SeoFields itemType="activity" />;
       default:
         return null;
     }
   };
 
-  // Handle Next button click (steps 1-5) - validates step 1 fields
-  const handleNext = async () => {
-    // Validate step 1 required fields before proceeding
-    if (currentStep === 1) {
+  const validateStepBeforeLeaving = async (nextStep) => {
+    if (currentStep === 1 && nextStep !== 1) {
       const isValid = await methods.trigger(['name', 'slug', 'description', 'short_description']);
       if (!isValid) return;
     }
+
+    if (currentStep === 7 && nextStep !== 7) {
+      const isValid = await methods.trigger('inclusions_exclusions');
+      if (!isValid) return false;
+    }
+
+    return true;
+  };
+
+  const handleStepChange = async (nextStep) => {
+    const isValid = await validateStepBeforeLeaving(nextStep);
+    if (!isValid) return;
+
+    goWithDirection(nextStep, currentStep, setCurrentStep);
+  };
+
+  // Handle Next button click (steps 1-5) - validates step fields before proceeding
+  const handleNext = async () => {
+    const nextStep = currentStep + 1;
+    const isValid = await validateStepBeforeLeaving(nextStep);
+    if (!isValid) return;
+
     const currentData = methods.getValues();
     setFormData({ ...formData, ...currentData });
-    goWithDirection(currentStep + 1, currentStep, setCurrentStep);
+    goWithDirection(nextStep, currentStep, setCurrentStep);
   };
 
   // Handle final form submission (step 6) - with validation
@@ -1450,6 +1480,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       early_bird_discount,
       last_minute_discount,
       addons,
+      inclusions_exclusions,
       faqs,
       seo,
     } = mergedData;
@@ -1471,6 +1502,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
       early_bird_discount,
       last_minute_discount,
       addons,
+      inclusions_exclusions: Array.isArray(inclusions_exclusions) ? inclusions_exclusions.map(({ fieldArrayId, ...item }) => item) : [],
       faqs: Array.isArray(faqs) ? faqs.map(({ fieldArrayId, ...faq }) => faq) : [],
       seo: seo || {},
     };
@@ -1497,6 +1529,12 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
     }
   };
 
+  const handleInvalidSubmit = (errors) => {
+    if (errors?.inclusions_exclusions) {
+      goWithDirection(7, currentStep, setCurrentStep);
+    }
+  };
+
   return (
     <div className="min-h-screen w-full bg-muted py-12 sm:px-6 lg:px-8" style={{ overflowAnchor: 'none', overflowY: 'auto' }}>
       <NavigationActivity title={'Edit Activity'} desciption={'Edit activity for your customers'} backurl={'/dashboard/admin/activities/'} />
@@ -1509,14 +1547,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                   steps.map((step) => (
                     <li
                       key={step.id}
-                      onClick={async () => {
-                        // Validate step 1 fields before allowing navigation away
-                        if (currentStep === 1 && step?.id !== 1) {
-                          const isValid = await methods.trigger(['name', 'slug', 'description', 'short_description']);
-                          if (!isValid) return;
-                        }
-                        goWithDirection(step?.id, currentStep, setCurrentStep);
-                      }}
+                      onClick={() => handleStepChange(step?.id)}
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-muted ${currentStep == step?.id && ' bg-gradient-to-t from-weelp-sage-deep/20 to-muted border-b-weelp-sage-deep border-b-2'}`}
                     >
                       <div className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-muted-foreground'}`}>
@@ -1531,7 +1562,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
           <form
             onSubmit={
               currentStep === steps.length
-                ? methods.handleSubmit(onSubmit)
+                ? methods.handleSubmit(onSubmit, handleInvalidSubmit)
                 : (e) => {
                     e.preventDefault();
                     handleNext();
@@ -1544,7 +1575,7 @@ export const EditActivityForm = ({ categories, attributes, tags, locations = [],
                 {currentStep > 1 && (
                   <Button
                     type="button"
-                    onClick={() => goWithDirection(currentStep - 1, currentStep, setCurrentStep)}
+                    onClick={() => handleStepChange(currentStep - 1)}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-copy bg-muted hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
                   >
                     Previous

@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Check, X, ChevronRight } from 'lucide-react';
 import SectionHeader from '@/app/components/ui/SectionHeader';
 import { SingleProductReview } from './SingleProductReview';
 import { activityHighlights, inclusionsList } from '@/app/Data/SingleActivityData';
 
 const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
+const INITIAL_VISIBLE_INCLUDED_ROWS = 6;
 
 // OverView Panel
 export const OverViewPanel = ({ description }) => {
@@ -27,35 +28,66 @@ export const OverViewPanel = ({ description }) => {
 };
 
 // What's Included
-export const WhatIncludedPanel = () => {
-  const included = inclusionsList.filter((item) => item.included);
-  const excluded = inclusionsList.filter((item) => !item.included);
+const getStaticInclusionItems = () => inclusionsList.map((item) => ({ title: item.text, included: item.included }));
+
+export const WhatIncludedPanel = ({ items, useStaticFallback = false }) => {
+  const [expanded, setExpanded] = useState(false);
+  const normalizedItems = useMemo(() => {
+    const sourceItems = items === undefined && useStaticFallback ? getStaticInclusionItems() : items;
+
+    return (Array.isArray(sourceItems) ? sourceItems : [])
+      .map((item) => ({
+        id: item?.id,
+        title: item?.title || item?.text,
+        description: item?.description || '',
+        included: item?.included !== false,
+      }))
+      .filter((item) => item.title);
+  }, [items, useStaticFallback]);
+
+  const visibleItems = expanded ? normalizedItems : normalizedItems.slice(0, INITIAL_VISIBLE_INCLUDED_ROWS);
+  const hiddenCount = Math.max(0, normalizedItems.length - visibleItems.length);
+  const included = visibleItems.filter((item) => item.included);
+  const excluded = visibleItems.filter((item) => !item.included);
 
   return (
     <div className="flex flex-col border-t border-border pt-6">
       <SectionHeader title="What's Included" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 mt-4">
-        <ul className="flex flex-col gap-4">
-          {included.map((item, index) => (
-            <li key={index} className="flex items-start gap-3 text-base text-foreground">
-              <Check className="w-5 h-5 flex-shrink-0 mt-0.5 text-weelp-sage-deep" size={20} aria-hidden="true" />
-              {item.text}
-            </li>
-          ))}
-        </ul>
-        <ul className="flex flex-col gap-4">
-          {excluded.map((item, index) => (
-            <li key={index} className="flex items-start gap-3 text-base text-muted-foreground">
-              <X className="w-5 h-5 flex-shrink-0 mt-0.5 text-muted-foreground" size={20} aria-hidden="true" />
-              {item.text}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <button type="button" className={`text-left text-base font-medium text-foreground mt-4 hover:underline rounded-sm w-fit ${FOCUS_RING}`}>
-        See 14 More
-      </button>
+      {normalizedItems.length > 0 && (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 mt-4">
+            <InclusionList items={included} included />
+            <InclusionList items={excluded} />
+          </div>
+          {hiddenCount > 0 && (
+            <button type="button" onClick={() => setExpanded(true)} className={`text-left text-base font-medium text-foreground mt-4 hover:underline rounded-sm w-fit ${FOCUS_RING}`}>
+              See {hiddenCount} more
+            </button>
+          )}
+        </>
+      )}
     </div>
+  );
+};
+
+const InclusionList = ({ items, included = false }) => {
+  const Icon = included ? Check : X;
+  const iconClass = included ? 'text-weelp-sage-deep' : 'text-muted-foreground';
+  const textClass = included ? 'text-foreground' : 'text-muted-foreground';
+  const listLabel = included ? 'Included' : 'Not included';
+
+  return (
+    <ul className="flex flex-col gap-4" aria-label={listLabel}>
+      {items.map((item, index) => (
+        <li key={item.id ?? `${item.title}-${index}`} className={`flex items-start gap-3 text-base ${textClass}`}>
+          <Icon className={`w-5 h-5 flex-shrink-0 mt-0.5 ${iconClass}`} size={20} aria-hidden="true" />
+          <span className="flex flex-col gap-1">
+            <span>{item.title}</span>
+            {item.description && <span className="text-sm leading-relaxed text-muted-foreground">{item.description}</span>}
+          </span>
+        </li>
+      ))}
+    </ul>
   );
 };
 

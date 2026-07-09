@@ -56,8 +56,10 @@ const SingleProductTabSection = ({
   const [pinSettled, setPinSettled] = useState(false);
 
   // Date state for itinerary/package
+  const isActivityProduct = productType === 'activity';
   const isScheduleType = productType === 'itinerary' || productType === 'package';
   const scheduleCount = productData?.schedules?.length || 0;
+  const inclusionItems = isActivityProduct ? productData?.inclusions_exclusions || [] : undefined;
 
   const [selectedStartDate, setSelectedStartDate] = useState(() => {
     if (isScheduleType) {
@@ -194,7 +196,7 @@ const SingleProductTabSection = ({
               {/* Tab 2: What's Included */}
               <Reveal variant="lift">
                 <div id="tab_2" ref={(el) => (sectionRefs.current['tab_2'] = el)} className="pt-[35px] lg:mb-[35px]">
-                  <WhatIncludedPanel />
+                  <WhatIncludedPanel items={inclusionItems} useStaticFallback={!isActivityProduct} />
                 </div>
               </Reveal>
 
