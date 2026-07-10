@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import CityCard from '@/app/components/CityCard';
 import BreadCrumb from '@/app/components/BreadCrumb';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import Reveal from '@/app/components/ui/Reveal';
 import { getAllCities } from '@/lib/services/cities';
 
@@ -49,9 +49,9 @@ export default async function CitiesPage({ searchParams }) {
         <div className="flex flex-col items-center gap-4 py-20 text-center">
           <p className="text-lg text-muted-foreground">No cities found.</p>
           {currentPage > 1 && (
-            <Link href="/cities" className="text-brand-500 hover:underline">
+            <NavigationLink href="/cities" className="text-brand-500 hover:underline">
               Back to first page
-            </Link>
+            </NavigationLink>
           )}
         </div>
       ) : (
@@ -86,66 +86,66 @@ function Pagination({ currentPage, lastPage }) {
   return (
     <nav className="flex items-center justify-center gap-2 pt-4" aria-label="Pagination">
       {currentPage > 1 ? (
-        <Link
+        <NavigationLink
           href={`/cities?page=${currentPage - 1}`}
-          className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm dark:shadow-none transition hover:bg-muted"
+          className="flex size-11 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition hover:bg-muted dark:shadow-none"
           aria-label="Previous page"
         >
           <ChevronLeft className="size-4" />
-        </Link>
+        </NavigationLink>
       ) : (
-        <span className="flex size-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground shadow-sm dark:shadow-none">
+        <span className="flex size-11 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground shadow-sm dark:shadow-none">
           <ChevronLeft className="size-4" />
         </span>
       )}
 
       {start > 1 && (
         <>
-          <Link
+          <NavigationLink
             href="/cities?page=1"
-            className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm dark:shadow-none transition hover:bg-muted"
+            className="hidden size-11 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted dark:shadow-none sm:flex"
           >
             1
-          </Link>
-          {start > 2 && <span className="px-1 text-muted-foreground">...</span>}
+          </NavigationLink>
+          {start > 2 && <span className="hidden px-1 text-muted-foreground sm:inline">...</span>}
         </>
       )}
 
       {pages.map((page) => (
-        <Link
+        <NavigationLink
           key={page}
           href={`/cities?page=${page}`}
           aria-current={page === currentPage ? 'page' : undefined}
-          className={`flex size-9 items-center justify-center rounded-full border text-sm shadow-sm dark:shadow-none transition ${
+          className={`${Math.abs(page - currentPage) <= 1 ? 'flex' : 'hidden sm:flex'} size-11 items-center justify-center rounded-full border text-sm shadow-sm transition dark:shadow-none ${
             page === currentPage ? 'border-foreground bg-foreground text-background' : 'border-border bg-background text-foreground hover:bg-muted'
           }`}
         >
           {page}
-        </Link>
+        </NavigationLink>
       ))}
 
       {end < lastPage && (
         <>
-          {end < lastPage - 1 && <span className="px-1 text-muted-foreground">...</span>}
-          <Link
+          {end < lastPage - 1 && <span className="hidden px-1 text-muted-foreground sm:inline">...</span>}
+          <NavigationLink
             href={`/cities?page=${lastPage}`}
-            className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm dark:shadow-none transition hover:bg-muted"
+            className="hidden size-11 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted dark:shadow-none sm:flex"
           >
             {lastPage}
-          </Link>
+          </NavigationLink>
         </>
       )}
 
       {currentPage < lastPage ? (
-        <Link
+        <NavigationLink
           href={`/cities?page=${currentPage + 1}`}
-          className="flex size-9 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm dark:shadow-none transition hover:bg-muted"
+          className="flex size-11 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition hover:bg-muted dark:shadow-none"
           aria-label="Next page"
         >
           <ChevronRight className="size-4" />
-        </Link>
+        </NavigationLink>
       ) : (
-        <span className="flex size-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground shadow-sm dark:shadow-none">
+        <span className="flex size-11 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground shadow-sm dark:shadow-none">
           <ChevronRight className="size-4" />
         </span>
       )}

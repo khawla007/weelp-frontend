@@ -3,6 +3,7 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
 
 const BreadCrumb = ({ className }) => {
   const pathName = usePathname();
@@ -29,10 +30,10 @@ const BreadCrumb = ({ className }) => {
         <BreadcrumbList>
           <BreadcrumbItem className={'text-base text-muted-foreground font-medium'}>
             <BreadcrumbLink
-              href="/"
+              asChild
               className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
             >
-              Home
+              <NavigationLink href="/">Home</NavigationLink>
             </BreadcrumbLink>
           </BreadcrumbItem>
           {items.map((item, index) => {
@@ -45,10 +46,10 @@ const BreadCrumb = ({ className }) => {
                     item.label
                   ) : (
                     <BreadcrumbLink
-                      href={item.href}
+                      asChild
                       className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
                     >
-                      {item.label}
+                      <NavigationLink href={item.href}>{item.label}</NavigationLink>
                     </BreadcrumbLink>
                   )}
                 </BreadcrumbItem>

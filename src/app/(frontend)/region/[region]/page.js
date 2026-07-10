@@ -78,7 +78,7 @@ export default async function Region({ params }) {
 
   return (
     <>
-      <BannerSection />
+      <BannerSection regionDetails={{ ...regionDetails, name: regionName }} />
       {/* <CitySection data={whiteCardData} /> */}
 
       {cityData.length > 0 && <BrowseDestinationsSection cities={cityData} title="Must Visit Cities" subtitleMode="count" navigationPrefix="region-must-visit" />}
