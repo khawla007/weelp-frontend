@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import Reveal from '@/app/components/ui/Reveal';
 
 const AVATARS = Array.from({ length: 6 }, (_, i) => i);
@@ -45,13 +45,13 @@ const WanderersBanner = () => {
       <div className="container-page absolute inset-x-0 top-[64%] z-10 -translate-y-1/2 md:top-[calc(50%-5px)]">
         <Reveal variant="lift" delay={120} className="flex items-center justify-center gap-3 md:gap-4">
           <span aria-hidden="true" className="h-px flex-1 bg-border" />
-          <Link
+          <NavigationLink
             href="/cities"
-            className="group relative inline-flex h-[42px] w-[96px] shrink-0 items-center justify-center text-base font-medium leading-none !text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-weelp-sage-deep md:h-[40px] md:w-[88px]"
+            className="group relative inline-flex h-11 w-[96px] shrink-0 items-center justify-center text-base font-medium leading-none !text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-weelp-sage-deep md:w-[88px] lg:h-[40px]"
           >
             <span aria-hidden="true" className="absolute inset-0 rounded-[5px] bg-weelp-sage-deep transition-colors group-hover:bg-weelp-sage-hover" style={{ transform: 'skewX(-10deg)' }} />
             <span className="relative z-10">Curate</span>
-          </Link>
+          </NavigationLink>
           <span aria-hidden="true" className="h-px flex-1 bg-border" />
         </Reveal>
       </div>

@@ -125,7 +125,7 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
                   key={preset}
                   type="button"
                   onClick={() => handlePreset(preset)}
-                  className="rounded-full border border-border bg-background px-3 py-1.5 text-[12px] font-medium text-foreground transition-colors hover:border-weelp-sage-deep hover:bg-weelp-sage-deep/5 hover:text-weelp-sage-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
+                  className="min-h-11 rounded-full border border-border bg-background px-3 py-1.5 text-[12px] font-medium text-foreground transition-colors hover:border-weelp-sage-deep hover:bg-weelp-sage-deep/5 hover:text-weelp-sage-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 lg:min-h-0"
                 >
                   {preset}
                 </button>
@@ -184,13 +184,13 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
           onChange={(event) => setDraft(event.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask Buddy: weekend in Paris…"
-          className="max-h-24 min-h-[40px] w-full flex-1 resize-none rounded-lg border border-border bg-background px-3 py-2 text-[13px] font-medium text-foreground placeholder:text-muted-foreground focus:border-weelp-sage-deep focus:outline-none focus:ring-2 focus:ring-weelp-sage-deep/30"
+          className="max-h-24 min-h-11 w-full flex-1 resize-none rounded-lg border border-border bg-background px-3 py-2 text-[13px] font-medium text-foreground placeholder:text-muted-foreground focus:border-weelp-sage-deep focus:outline-none focus:ring-2 focus:ring-weelp-sage-deep/30 lg:min-h-[40px]"
         />
         <button
           type="submit"
           aria-label="Send message"
           disabled={!draft.trim() || isThinking}
-          className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-lg bg-weelp-sage-deep text-white transition-colors hover:bg-weelp-sage-hover disabled:cursor-not-allowed disabled:bg-weelp-sage-deep/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:w-10"
+          className="inline-flex h-11 w-full shrink-0 items-center justify-center rounded-lg bg-weelp-sage-deep text-white transition-colors hover:bg-weelp-sage-hover disabled:cursor-not-allowed disabled:bg-weelp-sage-deep/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:w-11 lg:h-10 lg:w-10"
         >
           <Send className="h-4 w-4" />
         </button>
