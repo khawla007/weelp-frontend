@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import MobileMenu from '../MobileMenu';
 
@@ -61,5 +61,15 @@ describe('MobileMenu', () => {
     const topStrip = getTopStrip();
     expect(topStrip).toHaveClass('border-transparent', 'bg-transparent');
     expect(topStrip).not.toHaveClass('bg-surface-tint');
+  });
+
+  it('gives both mobile brand links a minimum 44px touch target', () => {
+    render(<MobileMenu stickyHeader={false} />);
+
+    expect(screen.getByRole('link', { name: /weelp weelp\./i })).toHaveClass('min-h-11');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open main navigation' }));
+
+    expect(screen.getByRole('link', { name: /weelp weelp\./i })).toHaveClass('min-h-11');
   });
 });

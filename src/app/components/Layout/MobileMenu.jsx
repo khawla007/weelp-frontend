@@ -85,7 +85,7 @@ const MobileMenuSlider = ({ brandTextClass = 'text-foreground' }) => {
     return (
       <div className="flex justify-between items-center">
         <div className="h-11 w-11 rounded-full border border-border bg-background" />
-        <Link href="/" className={`flex items-center gap-2 ${brandTextClass}`}>
+        <Link href="/" className={`flex min-h-11 items-center gap-2 ${brandTextClass}`}>
           <img src={getLogoUrl()} alt="Weelp" className="h-8 w-auto" />
           <span className="text-[18px] font-semibold" style={{ fontFamily: brandFont }}>
             Weelp.
@@ -109,7 +109,7 @@ const MobileMenuSlider = ({ brandTextClass = 'text-foreground' }) => {
           </Button>
         </SheetTrigger>
 
-        <Link href="/" className={`flex items-center gap-2 ${brandTextClass}`}>
+        <Link href="/" className={`flex min-h-11 items-center gap-2 ${brandTextClass}`}>
           <img src={getLogoUrl()} alt="Weelp" className="h-8 w-auto" />
           <span className="text-[18px] font-semibold" style={{ fontFamily: brandFont }}>
             Weelp.
@@ -165,7 +165,7 @@ const NavigationMenuMobile = () => {
             <ArrowLeft className="size-4" />
           </button>
         ) : (
-          <Link href="/" className="flex items-center gap-2 text-foreground">
+          <Link href="/" className="flex min-h-11 items-center gap-2 text-foreground">
             <img src={getLogoUrl()} alt="Weelp" className="h-7 w-auto" />
             <span className="text-[16px] font-semibold" style={{ fontFamily: brandFont }}>
               Weelp.
