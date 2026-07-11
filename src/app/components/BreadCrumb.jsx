@@ -31,7 +31,7 @@ const BreadCrumb = ({ className }) => {
           <BreadcrumbItem className={'text-base text-muted-foreground font-medium'}>
             <BreadcrumbLink
               asChild
-              className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             >
               <NavigationLink href="/">Home</NavigationLink>
             </BreadcrumbLink>
@@ -47,7 +47,7 @@ const BreadCrumb = ({ className }) => {
                   ) : (
                     <BreadcrumbLink
                       asChild
-                      className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+                      className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                     >
                       <NavigationLink href={item.href}>{item.label}</NavigationLink>
                     </BreadcrumbLink>

@@ -49,4 +49,21 @@ describe('mapProductToItemCard', () => {
     expect(card.rating).toBeNull();
     expect(card.reviewCount).toBeNull();
   });
+
+  test('uses the API listing price instead of variation order', () => {
+    const card = mapProductToItemCard({
+      id: 4,
+      name: 'Family Package',
+      slug: 'family-package',
+      item_type: 'package',
+      city_slug: 'dubai',
+      listing_price: 100,
+      base_pricing: {
+        currency: 'USD',
+        variations: [{ regular_price: 500 }, { regular_price: 100 }],
+      },
+    });
+
+    expect(card.price).toBe('$100.00');
+  });
 });
