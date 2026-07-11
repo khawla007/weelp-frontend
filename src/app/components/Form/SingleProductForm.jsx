@@ -43,6 +43,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
 
   const [selectedDates, setSelectedDates] = useState(defaultDateRange ?? { from: null, to: null });
   const isSingleDateMode = scheduleCount > 0;
+  const selectorIdBase = productId ?? productData?.id ?? formId ?? 'booking';
 
   const getPanelMotionClass = (state) => `${PANEL_MOTION_CLASS} ${state === 'open' ? OPEN_PANEL_MOTION_CLASS : CLOSED_PANEL_MOTION_CLASS}`;
 
@@ -251,21 +252,27 @@ export default function SingleProductForm({ productId, productData, selectedAddo
           {/* For Date & Travelers */}
           <div className="w-full flex flex-col gap-4">
             <h5 className="self-start text-copy">Select Date & Travelers</h5>
-            <div className="flex gap-3 w-full">
+            <div className="flex flex-col sm:flex-row gap-3 w-full">
               {/* Travelers Card */}
-              <div
-                className={`flex-1 bg-background rounded-xl border shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[24px] cursor-pointer ${errors.howMany ? 'border-red-500' : 'border-border/50'}`}
+              <button
+                type="button"
+                aria-expanded={showHowMany}
+                aria-controls={`traveler-selector-${selectorIdBase}`}
+                className={`flex-1 min-w-0 bg-background rounded-xl border shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[18px] sm:px-[24px] cursor-pointer ${errors.howMany ? 'border-red-500' : 'border-border/50'}`}
                 onClick={toggleHowMany}
               >
                 <div className="flex items-center gap-3 text-copy">
                   <Users size={20} />
                   <span className="text-base">{howMany?.adults + howMany?.children} Travelers</span>
                 </div>
-              </div>
+              </button>
 
               {/* Date Card */}
-              <div
-                className={`flex-1 bg-background rounded-xl border shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[24px] cursor-pointer ${errors.dateRange ? 'border-red-500' : 'border-border/50'}`}
+              <button
+                type="button"
+                aria-expanded={showCalendar}
+                aria-controls={`date-selector-${selectorIdBase}`}
+                className={`flex-1 min-w-0 bg-background rounded-xl border shadow-[0_3px_9px_rgba(0,0,0,0.04)] py-[18px] px-[18px] sm:px-[24px] cursor-pointer ${errors.dateRange ? 'border-red-500' : 'border-border/50'}`}
                 onClick={toggleCalendar}
               >
                 <div className="flex items-center gap-3 text-copy">
@@ -276,7 +283,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                       : 'When?'}
                   </span>
                 </div>
-              </div>
+              </button>
             </div>
 
             {/* Toggle Fields */}
@@ -284,6 +291,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
               {calendarPresence.isMounted && (
                 <div
                   data-testid="single-product-calendar-panel"
+                  id={`date-selector-${selectorIdBase}`}
                   data-state={calendarPresence.state}
                   role="dialog"
                   aria-label="Date selector"
@@ -341,6 +349,9 @@ export default function SingleProductForm({ productId, productData, selectedAddo
               {showHowMany && (
                 <div className="text-nowrap flex flex-col gap-4  w-full items-center ">
                   <div
+                    id={`traveler-selector-${selectorIdBase}`}
+                    role="dialog"
+                    aria-label="Traveler selector"
                     onMouseLeave={(e) => {
                       setShowHowMany(!showHowMany);
                     }}

@@ -59,6 +59,27 @@ beforeEach(() => {
 });
 
 describe('SingleProductTabSection activity inclusions', () => {
+  it('contains the detail tabs in a horizontally scrollable mobile strip', () => {
+    render(
+      <SingleProductTabSection
+        productType="activity"
+        productId={1}
+        productData={{
+          description: 'Activity description',
+          inclusions_exclusions: [{ title: 'Pickup', included: true }],
+          review_summary: { total_reviews: 2 },
+          faqs: [],
+        }}
+      />,
+    );
+
+    const tabList = screen.getByRole('button', { name: 'Overview' }).parentElement;
+
+    expect(tabList).toHaveClass('overflow-x-auto', 'justify-start', 'sm:justify-center');
+    expect(screen.getByRole('button', { name: 'Overview' })).toHaveClass('shrink-0');
+    expect(screen.getByRole('button', { name: 'Overview' })).not.toHaveStyle({ marginRight: '44px' });
+  });
+
   it('passes activity inclusion rows to the public panel', () => {
     render(
       <SingleProductTabSection

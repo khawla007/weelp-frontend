@@ -164,17 +164,16 @@ const SingleProductTabSection = ({
         }`}
         style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}
       >
-        <div className="flex items-center justify-center">
-          {tabs.map((tab, index) => (
+        <div className="flex items-center justify-start sm:justify-center gap-2 sm:gap-6 lg:gap-11 overflow-x-auto px-4">
+          {tabs.map((tab) => (
             <button
               key={tab.id}
               type="button"
               onClick={() => toggleTab(tab.id)}
               aria-current={activeTab === tab.id ? 'true' : undefined}
-              className={`relative px-6 lg:px-8 py-4 text-sm cursor-pointer transition-colors rounded-sm ${FOCUS_RING} ${
+              className={`relative shrink-0 px-4 sm:px-6 lg:px-8 py-4 text-sm cursor-pointer transition-colors rounded-sm ${FOCUS_RING} ${
                 activeTab === tab.id ? 'font-semibold text-foreground' : 'font-normal text-muted-foreground hover:text-foreground'
               }`}
-              style={index < tabs.length - 1 ? { marginRight: '44px' } : undefined}
             >
               {tab.label}
               <span

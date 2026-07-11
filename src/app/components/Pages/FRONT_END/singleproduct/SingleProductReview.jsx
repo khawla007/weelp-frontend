@@ -347,8 +347,8 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
       <h3 className="text-lg sm:text-[28px] text-foreground capitalize">All Reviews</h3>
 
       {/* Filter + Sort Row - Match pen design */}
-      <div className="flex items-center justify-between px-0">
-        <div className="flex gap-[22px]">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 px-0">
+        <div className="flex flex-wrap gap-2 sm:gap-[22px]">
           <button
             type="button"
             onClick={() => handleFilterChange('all')}
@@ -373,7 +373,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
             onClick={() => setShowSortDropdown((prev) => !prev)}
             aria-expanded={showSortDropdown}
             aria-haspopup="true"
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-weelp-steel border border-border bg-background min-w-[141px]"
+            className="flex w-full sm:w-auto items-center justify-between gap-2 px-3 py-2 rounded-lg text-sm font-medium text-weelp-steel border border-border bg-background min-w-[141px]"
           >
             <span className="sr-only">Sort reviews by </span>
             {sortOrder === 'newest' ? 'Newest' : 'Oldest'}

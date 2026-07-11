@@ -57,6 +57,9 @@ describe('SingleProductReview', () => {
 
     expect(getActivityReviews).not.toHaveBeenCalled();
     expect(screen.getByRole('heading', { name: 'Reviews' })).toBeInTheDocument();
+    const reviewControls = screen.getByRole('button', { name: 'All' }).parentElement.parentElement;
+    expect(reviewControls).toHaveClass('flex-col', 'sm:flex-row', 'items-stretch', 'sm:items-center');
+    expect(screen.getByRole('button', { name: /sort reviews by/i })).toHaveClass('w-full', 'sm:w-auto');
     expect(screen.getAllByText('Atul Sharma')).toHaveLength(2);
     expect(screen.getAllByAltText(/review/i)).toEqual(expect.arrayContaining([expect.objectContaining({ src: expect.stringContaining('/api/media/8') })]));
   });
