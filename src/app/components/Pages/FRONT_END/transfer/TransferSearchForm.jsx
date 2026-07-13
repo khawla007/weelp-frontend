@@ -175,7 +175,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
           type="button"
           onClick={handleSwap}
           aria-label="Swap pickup and destination"
-          className="absolute left-1/2 top-[29px] z-20 flex h-[27px] w-[27px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background shadow-[4px_4px_12px_rgba(0,0,0,0.1)] dark:shadow-none hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:left-1/4 sm:top-1/2"
+          className="absolute left-1/2 top-[29px] z-20 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background shadow-[4px_4px_12px_rgba(0,0,0,0.1)] dark:shadow-none hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:left-1/4 sm:top-1/2 lg:h-[27px] lg:w-[27px]"
         >
           <ArrowLeftRight className="h-3 w-3 text-foreground" />
         </button>
@@ -308,7 +308,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                         type="button"
                         onClick={() => decrement(row.key)}
                         disabled={row.value <= row.min}
-                        className="w-8 h-8 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-40"
+                        className="h-11 w-11 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-40 lg:h-8 lg:w-8"
                         aria-label={`Decrease ${row.label}`}
                       >
                         <Minus size={14} />
@@ -317,7 +317,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                       <button
                         type="button"
                         onClick={() => increment(row.key)}
-                        className="w-8 h-8 rounded-full border border-weelp-sage-deep flex items-center justify-center text-weelp-sage-deep hover:bg-muted"
+                        className="h-11 w-11 rounded-full border border-weelp-sage-deep flex items-center justify-center text-weelp-sage-deep hover:bg-muted lg:h-8 lg:w-8"
                         aria-label={`Increase ${row.label}`}
                       >
                         <Plus size={14} />

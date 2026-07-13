@@ -110,7 +110,7 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
       </div>
 
       {expanded && (
-        <div className="py-4 px-8 border-t border-b border-border flex flex-col gap-4 bg-surface-tint">
+        <div className="flex flex-col gap-4 border-t border-b border-border bg-surface-tint px-4 py-4 sm:px-8">
           <ExtraRow
             label="Extra luggage"
             sublabel={luggageRate > 0 ? `${formatCurrency(luggageRate, currency)} per bag` : 'Not available'}
@@ -179,19 +179,19 @@ function ExtraRow({ label, sublabel, value, onChange, disabled, min, step, amoun
   const increment = () => onChange(value + step);
 
   return (
-    <div className="flex items-center justify-between gap-4">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
       <div className="flex flex-col">
         <span className="text-foreground text-sm font-medium">{label}</span>
         <span className="text-muted-foreground text-xs">{sublabel}</span>
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 sm:flex-nowrap">
         <span className="text-foreground text-sm font-medium min-w-[5rem] text-right">+ {formatCurrency(amount, currency)}</span>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={decrement}
             disabled={disabled || value <= min}
-            className="h-7 w-7 rounded-full border border-border flex items-center justify-center text-foreground disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted"
+            className="h-11 w-11 rounded-full border border-border flex items-center justify-center text-foreground disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted lg:h-7 lg:w-7"
             aria-label={`Decrease ${label}`}
           >
             <Minus className="h-3 w-3" />
@@ -204,7 +204,7 @@ function ExtraRow({ label, sublabel, value, onChange, disabled, min, step, amoun
             type="button"
             onClick={increment}
             disabled={disabled}
-            className="h-7 w-7 rounded-full border border-border flex items-center justify-center text-foreground disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted"
+            className="h-11 w-11 rounded-full border border-border flex items-center justify-center text-foreground disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted lg:h-7 lg:w-7"
             aria-label={`Increase ${label}`}
           >
             <Plus className="h-3 w-3" />

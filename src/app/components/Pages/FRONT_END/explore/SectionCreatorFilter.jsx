@@ -174,7 +174,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
         </div>
 
         {/* Content Tabs + Action Button */}
-        <div className="mt-4 flex items-center gap-[22px]">
+        <div className="mt-4 flex w-full flex-wrap items-center justify-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-[22px]">
           {/* Home / Trending tabs */}
           {CONTENT_TABS.map((tab) => {
             const TabIcon = tab.icon;
@@ -182,10 +182,9 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
               <button
                 key={tab.value}
                 onClick={() => onTabChange(tab.value)}
-                className="text-[18px] font-medium flex items-center gap-1.5"
+                className={`flex min-h-11 items-center gap-1.5 py-[7px] text-sm font-medium sm:text-[18px] ${activeTab === tab.value ? 'px-3 sm:px-[21px]' : 'px-0'}`}
                 style={{
                   color: 'hsl(var(--weelp-steel))',
-                  padding: activeTab === tab.value ? '7px 21px' : '7px 0',
                   backgroundColor: activeTab === tab.value ? '#f2f7f5' : 'transparent',
                   borderRadius: activeTab === tab.value ? '8.5px' : '0',
                 }}
@@ -203,7 +202,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
               <button
                 onClick={onActionClick}
                 disabled={applicationStatus === 'pending'}
-                className="flex items-center gap-1.5 text-[18px] font-medium text-white bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 px-5 py-[7px] rounded-[8.5px] transition-colors disabled:opacity-60"
+                className="flex min-h-11 items-center gap-1.5 rounded-[8.5px] bg-weelp-sage-deep px-3 py-[7px] text-sm font-medium text-white transition-colors hover:bg-weelp-sage-deep/90 disabled:opacity-60 sm:px-5 sm:text-[18px]"
               >
                 <ActionIcon size={16} />
                 {actionBtn.label}
