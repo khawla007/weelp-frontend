@@ -1,4 +1,5 @@
 import React from 'react';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { parseEditorContent } from './richTextContent';
 import './rich-text-editor.css';
 
@@ -28,6 +29,14 @@ const renderMarks = (children, marks = [], keyPrefix = 'mark') =>
     if (mark.type === 'link') {
       const href = safeUrl(mark.attrs?.href);
       if (!href) return current;
+
+      if (href.startsWith('/') || href.startsWith('#')) {
+        return (
+          <NavigationLink key={key} href={href}>
+            {current}
+          </NavigationLink>
+        );
+      }
 
       return (
         <a key={key} href={href} target="_blank" rel="noopener noreferrer nofollow">

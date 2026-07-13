@@ -170,3 +170,23 @@
   margin: 1rem 0;
   max-width: 100%;
 }
+
+/* Public article/CMS renderers must expose layout defects instead of clipping
+   them. Dashboard editor canvases keep their existing overflow behaviour. */
+.rich-text-editor-content.public-rich-text {
+  min-width: 0;
+  overflow-x: visible;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.public-rich-text :where(p, h1, h2, h3, a, li, blockquote) {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.public-rich-text .rich-text-editor-table-wrap,
+.public-rich-text pre {
+  max-width: 100%;
+  overflow-x: auto;
+}

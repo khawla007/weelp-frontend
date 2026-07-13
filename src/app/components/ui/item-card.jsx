@@ -14,7 +14,7 @@ const FULL_DEFAULTS = { discount: '40% OFF' };
  * For "full" variant, discount keeps its existing placeholder fallback.
  * Rating and review count are only rendered when API data is available.
  */
-export default function ItemCard({ href, image, title, category, excerpt, price, rating, reviewCount, discount, variant = 'full', className = '', imageClassName = '', style }) {
+export default function ItemCard({ href, image, title, category, excerpt, price, rating, reviewCount, discount, variant = 'full', className = '', imageClassName = '', style, LinkComponent = Link }) {
   const isFull = variant === 'full';
 
   const displayRating = rating;
@@ -22,7 +22,7 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
   const displayDiscount = isFull ? (discount ?? FULL_DEFAULTS.discount) : discount;
 
   return (
-    <Link
+    <LinkComponent
       href={href}
       style={style}
       className={`group flex h-full flex-col overflow-hidden rounded-[8.5px] border border-border bg-background transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${className}`}
@@ -93,6 +93,6 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
           </>
         )}
       </div>
-    </Link>
+    </LinkComponent>
   );
 }

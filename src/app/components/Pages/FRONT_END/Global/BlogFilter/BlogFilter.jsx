@@ -9,6 +9,7 @@ import { CustomPagination } from '@/app/components/Pagination';
 import { BLOGSORT_OPTIONS } from '../../../DASHBOARD/admin/_rsc_pages/blogs/FilterBlogPage';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Reveal from '@/app/components/ui/Reveal';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
 
 const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
   // Initialize form with default values
@@ -59,7 +60,7 @@ const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-64">
+                      <SelectTrigger className="h-11 w-64">
                         <SelectValue placeholder="Recommended" />
                       </SelectTrigger>
                       <SelectContent>
@@ -97,7 +98,7 @@ const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
             const item = mapBlogToItemCard(blog);
             return (
               <li key={blog.id || blog.slug}>
-                <ItemCard href={item.href} image={item.image} title={item.title} category={item.category} variant="compact" />
+                <ItemCard href={item.href} image={item.image} title={item.title} category={item.category} variant="compact" LinkComponent={NavigationLink} />
               </li>
             );
           })}
@@ -105,7 +106,16 @@ const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
       )}
 
       {/* Pagination */}
-      <CustomPagination totalItems={totalItems} itemsPerPage={per_page} currentPage={current_page} onPageChange={handlePageChange} />
+      <CustomPagination
+        totalItems={totalItems}
+        itemsPerPage={per_page}
+        currentPage={current_page}
+        onPageChange={handlePageChange}
+        className="max-sm:flex-col max-sm:items-stretch"
+        controlsClassName="max-sm:flex-wrap max-sm:justify-center max-sm:gap-1"
+        controlClassName="h-11 min-w-11 px-3"
+        inputClassName="h-11 w-14"
+      />
     </div>
   );
 };

@@ -1,12 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Frown, LoaderCircle, Search, X } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { debounce } from 'lodash';
 import { useCallback } from 'react';
 import { useBlogs } from '@/hooks/api/public/blogs/useBlogs';
 import { FALLBACK_IMAGE } from '@/constants/image';
 import Link from 'next/link';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
+import MediaImage from '@/app/components/MediaImage';
 
 export const SearchFormCreator = () => {
   const [results, setResults] = useState([]);
@@ -168,17 +170,13 @@ export const SearchFormCreator = () => {
 export const SearchFormBlogs = () => {
   const [search, setSearch] = useState('');
 
-  // Initialize form once - empty effect as all logic is inline
-  useEffect(() => {
-    // Placeholder for any future initialization
-  }, []);
-
   // Using react-hook-form
   const {
     register,
     handleSubmit,
+    setValue,
+    control,
     formState: { errors, isSubmitting },
-    reset,
   } = useForm({
     defaultValues: {
       search: '',
@@ -186,42 +184,53 @@ export const SearchFormBlogs = () => {
     mode: 'onSubmit',
   });
 
-  const onSubmit = async (data) => {
-    // console.log('debouced search', data);
-    setSearch(data);
+  const onSubmit = (data) => {
+    setSearch(data.search.trim());
   };
 
-  const query = new URLSearchParams(search);
+  const searchValue = useWatch({ control, name: 'search' });
+  const clearSearch = () => {
+    setValue('search', '');
+    setSearch('');
+  };
 
-  const { blogs, isValidating, error } = useBlogs(query.size > 0 ? `?${query.toString()}` : '');
+  const { blogs, isValidating, error } = useBlogs(search ? { search } : {});
 
-  const searchedBlogs = (query.size > 0 && blogs?.data) || [];
+  const searchedBlogs = (search && blogs?.data) || [];
 
   return (
     <div className="flex flex-col max-w-[30rem] w-full mx-auto">
-      <form
-        onKeyUp={debounce(handleSubmit(onSubmit), 1000)}
-        className={`w-full bg-background border  flex items-center justify-evenly rounded-xl shadow ${errors?.search?.message ? 'border-red-400 border' : null}`}
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className={`w-full bg-background border  flex items-center justify-evenly rounded-xl shadow ${errors?.search?.message ? 'border-red-400 border' : null}`}>
         <input
           id="search"
+          aria-label="Search blogs"
           autoComplete="off"
           type="text"
           {...register('search', {
             required: 'Field Required',
             minLength: { value: 3, message: 'Minimum 3 characters required' },
+            onChange: (event) => {
+              if (!event.target.value) setSearch('');
+            },
           })}
           placeholder={'What`s your want to read ?'}
-          className="w-10/12 p-4 focus-visible:outline-none placeholder:text-weelp-steel"
+          className="min-w-0 flex-1 p-4 focus-visible:outline-none placeholder:text-weelp-steel"
         />
-        <div>{isSubmitting ? <LoaderCircle size={16} className="animate-spin duration-1000" /> : <X size={16} />}</div>
+        {searchValue && (
+          <button type="button" aria-label="Clear blog search" onClick={clearSearch} className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg">
+            <X size={16} />
+          </button>
+        )}
+        <button type="submit" aria-label="Search blogs" className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg">
+          {isSubmitting || isValidating ? <LoaderCircle size={16} className="animate-spin duration-1000" /> : <Search size={16} />}
+        </button>
       </form>
 
-      <span className={`${errors?.search?.message ? 'flex' : 'hidden'} items-center  gap-1 mx-4 p-2 text-base text-red-400 `}>
+      <span role="alert" className={`${errors?.search?.message ? 'flex' : 'hidden'} items-center  gap-1 mx-4 p-2 text-base text-red-400 `}>
         <b>Error: </b> {errors?.search?.message}
       </span>
 
-      <div className="relative">
+      <div className="relative" aria-live="polite">
         <div>
           {/* Error state */}
           {error && <span className="text-red-500">Something went wrong</span>}
@@ -229,19 +238,19 @@ export const SearchFormBlogs = () => {
           {/* Success with data */}
           {!error && !isValidating && searchedBlogs.length > 0 && (
             <ul className="absolute z-10 top-4 bg-background w-full rounded-md flex flex-col gap-2 max-h-52 shadow-md overflow-y-auto tfc_scroll">
-              {searchedBlogs.map((val, index) => (
-                <li key={index}>
-                  <Link href={`/blogs/${val?.slug}`} className="hover:bg-weelp-steel flex justify-between items-center py-2 px-6 hover:text-white hover:cursor-pointer">
+              {searchedBlogs.map((val) => (
+                <li key={val.id || val.slug}>
+                  <NavigationLink href={`/blogs/${val?.slug}`} className="hover:bg-weelp-steel flex min-h-11 items-center justify-between gap-3 px-4 py-2 hover:cursor-pointer hover:text-white">
                     {val?.name}
-                    <img alt="logo" src={val?.media_gallery?.[0]?.url ?? FALLBACK_IMAGE.src} className="size-9 rounded-full" />
-                  </Link>
+                    <MediaImage alt="" src={val?.media_gallery?.[0]?.url ?? FALLBACK_IMAGE.src} width={36} height={36} sizes="36px" className="size-9 shrink-0 rounded-full object-cover" />
+                  </NavigationLink>
                 </li>
               ))}
             </ul>
           )}
 
           {/* No result */}
-          {query.size > 0 && !error && !isValidating && searchedBlogs.length === 0 && (
+          {search && !error && !isValidating && searchedBlogs.length === 0 && (
             <div className="hover:bg-weelp-steel flex justify-between rounded-md items-center py-2 px-6 hover:text-white bg-background mt-2">
               Sorry No Result Found
               <Frown size={24} className="animate-pulse" />

@@ -1,0 +1,49 @@
+import { render, screen } from '@testing-library/react';
+
+import BlogFilterBar from '../BlogFilter';
+
+const useBlogs = jest.fn();
+
+jest.mock('@/hooks/api/public/blogs/useBlogs', () => ({
+  useBlogs: (...args) => useBlogs(...args),
+}));
+
+jest.mock('@/hooks/api/public/categories', () => ({
+  useCategories: () => ({ data: { data: [] } }),
+}));
+
+jest.mock('@/app/components/Pages/DASHBOARD/admin/_rsc_pages/blogs/FilterBlogPage', () => ({
+  BLOGSORT_OPTIONS: [{ name: 'Latest', value: 'latest' }],
+}));
+
+jest.mock('@/app/components/ui/Reveal', () => ({
+  __esModule: true,
+  default: ({ as: Component = 'div', children, ...props }) => <Component {...props}>{children}</Component>,
+}));
+
+describe('BlogFilterBar states', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('shows contained mobile skeletons while loading', () => {
+    useBlogs.mockReturnValue({ blogs: {}, isLoading: true, error: null });
+    const { container } = render(<BlogFilterBar />);
+
+    expect(container.querySelector('ul[aria-hidden="true"]')).toHaveClass('grid-cols-1');
+  });
+
+  it('shows a readable empty state', () => {
+    useBlogs.mockReturnValue({ blogs: { data: [], total: 0, current_page: 1, per_page: 5 }, isLoading: false, error: null });
+    render(<BlogFilterBar />);
+
+    expect(screen.getByText('No blogs found')).toBeVisible();
+  });
+
+  it('shows a readable API error state', () => {
+    useBlogs.mockReturnValue({ blogs: {}, isLoading: false, error: new Error('offline') });
+    render(<BlogFilterBar />);
+
+    expect(screen.getByText('Error loading blogs')).toBeVisible();
+  });
+});

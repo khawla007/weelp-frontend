@@ -3,6 +3,7 @@ import { buildSeoMetadata } from '@/lib/seo/seoMetadata';
 import { getPublishedPage } from '@/lib/services/pages';
 import { isPublishedPage } from '@/lib/pages/normalizers';
 import { RichTextRenderer } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/shared/RichTextRenderer';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
 
 const META_DESCRIPTION_LIMIT = 155;
 const FALLBACK_DESCRIPTION = 'Learn more about Weelp.';
@@ -159,23 +160,33 @@ export async function CmsPageTemplate({ slug }) {
         <section className="relative isolate flex min-h-[420px] overflow-hidden bg-weelp-sage-deep px-4 py-20 text-white sm:px-6 lg:px-8" style={heroSectionStyle}>
           <div className="mx-auto flex w-full max-w-4xl" style={heroLayoutStyle}>
             <div className="w-full space-y-5">
-              <h1 className="text-4xl tracking-normal sm:text-5xl" style={headingStyle}>
+              <h1 data-cms-hero-heading className="min-w-0 break-words text-4xl tracking-normal sm:text-5xl" style={headingStyle}>
                 {heroHeading}
               </h1>
               {heroText && (
-                <p className="max-w-2xl text-base leading-7 text-white/90 sm:text-lg" style={textStyle}>
+                <p data-cms-hero-text className="min-w-0 max-w-2xl break-words text-base leading-7 text-white/90 sm:text-lg" style={textStyle}>
                   {heroText}
                 </p>
               )}
               {data.hero_button_label && heroButtonUrl && (
                 <div className="flex" style={buttonWrapStyle}>
-                  <a
-                    href={heroButtonUrl}
-                    className="inline-flex min-h-10 items-center justify-center rounded-md border border-transparent bg-background px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-background/90"
-                    style={buttonStyle}
-                  >
-                    {data.hero_button_label}
-                  </a>
+                  {heroButtonUrl.startsWith('/') || heroButtonUrl.startsWith('#') ? (
+                    <NavigationLink
+                      href={heroButtonUrl}
+                      className="inline-flex min-h-11 items-center justify-center rounded-md border border-transparent bg-background px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-background/90"
+                      style={buttonStyle}
+                    >
+                      {data.hero_button_label}
+                    </NavigationLink>
+                  ) : (
+                    <a
+                      href={heroButtonUrl}
+                      className="inline-flex min-h-11 items-center justify-center rounded-md border border-transparent bg-background px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-background/90"
+                      style={buttonStyle}
+                    >
+                      {data.hero_button_label}
+                    </a>
+                  )}
                 </div>
               )}
             </div>
@@ -191,7 +202,7 @@ export async function CmsPageTemplate({ slug }) {
           </header>
         )}
         <article className="prose prose-zinc max-w-none dark:prose-invert">
-          <RichTextRenderer content={data.content || ''} />
+          <RichTextRenderer content={data.content || ''} className="public-rich-text" />
         </article>
       </main>
     </>
