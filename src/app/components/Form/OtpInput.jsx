@@ -100,12 +100,13 @@ export const OtpInput = forwardRef(({ length = 6, value = '', onChange, onComple
   };
 
   return (
-    <div className={cn('flex gap-2 justify-center', className)}>
+    <div role="group" aria-label="Verification code" className={cn('flex w-full min-w-0 justify-center gap-1', className)}>
       {Array.from({ length }).map((_, index) => (
         <input
           key={index}
           ref={(el) => (inputRefs.current[index] = el)}
           type="text"
+          aria-label={`Digit ${index + 1} of ${length}`}
           inputMode="numeric"
           pattern="\d*"
           maxLength={1}
@@ -116,7 +117,7 @@ export const OtpInput = forwardRef(({ length = 6, value = '', onChange, onComple
           onFocus={handleFocus}
           disabled={disabled}
           className={cn(
-            'w-12 h-14 text-center text-2xl font-semibold',
+            'h-14 min-w-0 max-w-12 flex-1 text-center text-2xl font-semibold',
             '!bg-weelp-auth-neu-surface',
             'border rounded-lg',
             'focus:outline-none focus:ring-2 focus:ring-weelp-sage-deep',

@@ -13,10 +13,15 @@ export function AuthModal({ customUrl, onCloseDialog }) {
   const switchToLogin = () => setView('login');
 
   return (
-    <div className="relative bg-weelp-auth-neu-surface border rounded-xl shadow-md w-full max-w-fit sm:max-w-md pb-8">
+    <div className="relative max-h-[calc(100dvh-2rem)] w-full min-w-0 max-w-full overflow-y-auto rounded-xl border bg-weelp-auth-neu-surface pb-8 shadow-md sm:max-w-md">
       {/* Close Button */}
-      <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-weelp-auth-neu-surface rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
-        <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
+      <button
+        type="button"
+        onClick={onCloseDialog}
+        className="absolute right-2 top-2 z-10 size-11 rounded-full bg-weelp-auth-neu-surface shadow-md transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep"
+        aria-label="Close"
+      >
+        <X aria-hidden="true" className="mx-auto size-5 text-red-500" strokeWidth={2.5} />
       </button>
 
       {/* Logo */}
@@ -30,14 +35,18 @@ export function AuthModal({ customUrl, onCloseDialog }) {
       </div>
 
       {/* Form Content */}
-      <div className="px-8">
+      <div className="px-4 sm:px-8">
         {/* Header with switch link */}
         <div className="pt-4 pb-2">
           {view === 'login' ? (
             <>
               <h3 className="font-semibold text-xl">
                 Log In or{' '}
-                <button type="button" onClick={switchToSignup} className="underline">
+                <button
+                  type="button"
+                  onClick={switchToSignup}
+                  className="inline-flex min-h-11 items-center rounded-sm underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2"
+                >
                   Sign Up
                 </button>
               </h3>
@@ -47,7 +56,11 @@ export function AuthModal({ customUrl, onCloseDialog }) {
             <>
               <h3 className="font-semibold text-xl">
                 Sign Up or{' '}
-                <button type="button" onClick={switchToLogin} className="underline">
+                <button
+                  type="button"
+                  onClick={switchToLogin}
+                  className="inline-flex min-h-11 items-center rounded-sm underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2"
+                >
                   Back to Login
                 </button>
               </h3>
@@ -60,7 +73,7 @@ export function AuthModal({ customUrl, onCloseDialog }) {
         {view === 'login' ? (
           <LoginForm customUrl={customUrl} showCloseButton={false} onCloseDialog={onCloseDialog} onSwitchToSignup={switchToSignup} />
         ) : (
-          <RegisterForm showCloseButton={false} onCloseDialog={onCloseDialog} onSwitchToLogin={switchToLogin} />
+          <RegisterForm customUrl={customUrl} showCloseButton={false} onCloseDialog={onCloseDialog} onSwitchToLogin={switchToLogin} />
         )}
       </div>
     </div>

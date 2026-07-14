@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { LoginForm } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
 import { useIsClient } from '@/hooks/useIsClient';
+import { getSafeAuthReturnUrl } from '@/lib/auth/authRedirect';
 import { getLogoUrl } from '@/lib/config/brand';
 
 const AuthBrandLogo = ({ size = 'default', className = '' }) => {
@@ -25,6 +26,7 @@ export function AuthPageClient({ defaultTab = 'login', returnUrl = null }) {
   const isClient = useIsClient();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(defaultTab);
+  const safeReturnUrl = getSafeAuthReturnUrl(returnUrl);
 
   if (!isClient) {
     return null;
@@ -34,7 +36,11 @@ export function AuthPageClient({ defaultTab = 'login', returnUrl = null }) {
 
   const handleTabSwitch = (tab) => {
     setActiveTab(tab);
-    router.replace(`/user/login?tab=${tab}`, { scroll: false });
+    const params = new URLSearchParams({ tab });
+    if (safeReturnUrl) {
+      params.set('return', safeReturnUrl);
+    }
+    router.replace(`/user/login?${params.toString()}`, { scroll: false });
   };
 
   return (
@@ -61,7 +67,7 @@ export function AuthPageClient({ defaultTab = 'login', returnUrl = null }) {
           <div className="mb-5 flex gap-2 sm:mb-6 sm:gap-3">
             <button
               onClick={() => handleTabSwitch('login')}
-              className={`flex-1 rounded-lg border border-weelp-sage-deep py-2.5 text-center text-sm font-medium transition-colors duration-200 motion-reduce:transition-none sm:py-3 sm:text-base ${
+              className={`min-h-11 flex-1 rounded-lg border border-weelp-sage-deep py-2.5 text-center text-sm font-medium transition-colors duration-200 motion-reduce:transition-none sm:py-3 sm:text-base ${
                 isLogin
                   ? 'bg-weelp-sage-deep text-white hover:bg-background hover:text-weelp-sage-deep dark:hover:bg-weelp-auth-neu-surface dark:hover:text-white'
                   : 'bg-background text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white dark:bg-weelp-auth-neu-surface dark:text-white dark:hover:bg-weelp-sage-deep dark:hover:text-white'
@@ -71,7 +77,7 @@ export function AuthPageClient({ defaultTab = 'login', returnUrl = null }) {
             </button>
             <button
               onClick={() => handleTabSwitch('signup')}
-              className={`flex-1 rounded-lg border border-weelp-sage-deep py-2.5 text-center text-sm font-medium transition-colors duration-200 motion-reduce:transition-none sm:py-3 sm:text-base ${
+              className={`min-h-11 flex-1 rounded-lg border border-weelp-sage-deep py-2.5 text-center text-sm font-medium transition-colors duration-200 motion-reduce:transition-none sm:py-3 sm:text-base ${
                 !isLogin
                   ? 'bg-weelp-sage-deep text-white hover:bg-background hover:text-weelp-sage-deep dark:hover:bg-weelp-auth-neu-surface dark:hover:text-white'
                   : 'bg-background text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white dark:bg-weelp-auth-neu-surface dark:text-white dark:hover:bg-weelp-sage-deep dark:hover:text-white'
@@ -83,9 +89,9 @@ export function AuthPageClient({ defaultTab = 'login', returnUrl = null }) {
 
           {/* Form */}
           {isLogin ? (
-            <LoginForm showCloseButton={false} onSwitchToSignup={() => handleTabSwitch('signup')} customUrl={returnUrl} />
+            <LoginForm showCloseButton={false} onSwitchToSignup={() => handleTabSwitch('signup')} customUrl={safeReturnUrl} />
           ) : (
-            <RegisterForm showCloseButton={false} onSwitchToLogin={() => handleTabSwitch('login')} />
+            <RegisterForm showCloseButton={false} onSwitchToLogin={() => handleTabSwitch('login')} customUrl={safeReturnUrl} />
           )}
         </div>
       </div>

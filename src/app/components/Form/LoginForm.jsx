@@ -1,18 +1,17 @@
 'use client';
 
-import { useState } from 'react';
-import { signIn, useSession, getSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { signIn, getSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { AtSign, Eye, EyeOff, KeyRound } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import Link from 'next/link';
 import Image from 'next/image';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { useIsClient } from '@/hooks/useIsClient';
 import { useTogglePassword } from '@/hooks/useTogglePassword';
+import { getSafeAuthReturnUrl } from '@/lib/auth/authRedirect';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
 import { X } from 'lucide-react';
 
@@ -56,7 +55,6 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
   const isClient = useIsClient(); // custom hook for hydration
   const { visible, toggle } = useTogglePassword(); // toggle password hook
   const { redirectTo: storeRedirectTo, closeAuthModal } = useAuthModalStore();
-  const { data: session, update: updateSession } = useSession(); // get session after login
 
   const {
     register,
@@ -67,8 +65,6 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
   });
 
   // const [error, setError] = useState("");
-  const router = useRouter();
-
   const onSubmit = async (data) => {
     try {
       const result = await signIn('credentials', {
@@ -99,7 +95,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
         closeAuthModal();
 
         // Determine redirect target
-        const targetUrl = storeRedirectTo || customUrl;
+        const targetUrl = getSafeAuthReturnUrl(storeRedirectTo) || getSafeAuthReturnUrl(customUrl);
 
         if (targetUrl) {
           // Use router.push or window.location.assign
@@ -129,8 +125,11 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
           });
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      toast({
+        variant: 'destructive',
+        ...LOGIN_ERROR_TOASTS.login_unavailable,
+      });
     }
   };
   if (isClient) {
@@ -145,44 +144,67 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
         <form onSubmit={handleSubmit(onSubmit)} className={`space-y-4 bg-weelp-auth-neu-surface py-4`}>
           {/* Email Input */}
           <div>
-            <label htmlFor="email" className="flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
-              <AtSign className="text-copy size-4" />
+            <label
+              htmlFor="email"
+              className="flex min-w-0 items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 focus-within:border-weelp-sage-deep focus-within:ring-2 focus-within:ring-weelp-sage-deep/30 dark:border-white/10"
+            >
+              <AtSign aria-hidden="true" className="text-copy size-4 shrink-0" />
               <input
                 placeholder={'Email ID'}
                 type="email"
                 id="email"
                 {...register('email')}
-                autoComplete="off"
-                className="mt-1  w-full !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
+                aria-label="Email address"
+                aria-invalid={Boolean(errors.email)}
+                aria-describedby={errors.email ? 'login-email-error' : undefined}
+                autoComplete="email"
+                className="mt-1 min-w-0 w-full !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
               />
             </label>
-            {errors.email && <p className="text-sm text-red-600 pt-2">{errors.email.message}</p>}
+            {errors.email && (
+              <p id="login-email-error" role="alert" className="pt-2 text-sm text-red-600">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           {/* Password Input */}
           <div>
-            <label htmlFor="password" className="relative flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
-              <KeyRound className="text-copy size-4" />
+            <label
+              htmlFor="password"
+              className="relative flex min-w-0 items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 pl-2 focus-within:border-weelp-sage-deep focus-within:ring-2 focus-within:ring-weelp-sage-deep/30 dark:border-white/10"
+            >
+              <KeyRound aria-hidden="true" className="text-copy size-4 shrink-0" />
               <input
                 type={visible ? 'text' : 'password'}
                 id="password"
                 placeholder="Password"
                 {...register('password')}
-                autoComplete="off"
-                className="mt-1  w-full !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
+                aria-label="Password"
+                aria-invalid={Boolean(errors.password)}
+                aria-describedby={errors.password ? 'login-password-error' : undefined}
+                autoComplete="current-password"
+                className="mt-1 min-w-0 w-full !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
               />
-
-              {visible ? (
-                <EyeOff onClick={toggle} className="text-copy size-5 absolute right-6 cursor-pointer" />
-              ) : (
-                <Eye onClick={toggle} className="text-copy size-5 absolute right-6 cursor-pointer" />
-              )}
+              <button
+                type="button"
+                onClick={toggle}
+                aria-label={visible ? 'Hide password' : 'Show password'}
+                aria-pressed={visible}
+                className="size-11 shrink-0 rounded-md text-copy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-1"
+              >
+                {visible ? <EyeOff aria-hidden="true" className="mx-auto size-5" /> : <Eye aria-hidden="true" className="mx-auto size-5" />}
+              </button>
             </label>
-            {errors.password && <p className="text-sm text-red-600 p-2">{errors.password.message}</p>}
+            {errors.password && (
+              <p id="login-password-error" role="alert" className="p-2 text-sm text-red-600">
+                {errors.password.message}
+              </p>
+            )}
           </div>
-          <Link className="pt-2 block" href={'/user/forgot-password'} onClick={closeAuthModal}>
+          <NavigationLink className="inline-flex min-h-11 items-center pt-2" href="/user/forgot-password" onClick={closeAuthModal}>
             Forgot Password ?
-          </Link>
+          </NavigationLink>
           <Button
             type="submit"
             disabled={isSubmitting}

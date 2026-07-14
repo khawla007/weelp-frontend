@@ -12,7 +12,7 @@ import { useTogglePassword } from '@/hooks/useTogglePassword';
 import { useState, useEffect } from 'react';
 import { OtpInput } from './OtpInput';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { getSafeAuthReturnUrl } from '@/lib/auth/authRedirect';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
 
 // Zod schema for validation
@@ -33,7 +33,7 @@ const schema = z
       .regex(/[A-Z]/, 'Must contain at least one uppercase letter (A-Z)')
       .regex(/[a-z]/, 'Must contain at least one lowercase letter (a-z)')
       .regex(/\d/, 'Must contain at least one number (0-9)')
-      .regex(/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/, 'Must contain at least one special character'),
+      .regex(/[@#$%^&+=]/, 'Must contain at least one special character (@#$%^&+=)'),
     password_confirmation: z.string().nonempty('Please confirm your password'),
   })
   .refine((data) => data.password === data.password_confirmation, {
@@ -41,15 +41,15 @@ const schema = z
     message: 'Passwords do not match',
   });
 
-export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton = true }) {
-  const { visible, toggle } = useTogglePassword();
+export function RegisterForm({ customUrl, onCloseDialog, onSwitchToLogin, showCloseButton = true }) {
+  const { visible: passwordVisible, toggle: togglePassword } = useTogglePassword();
+  const { visible: confirmationVisible, toggle: toggleConfirmation } = useTogglePassword();
   const { toast } = useToast();
-  const router = useRouter();
   const { redirectTo: storeRedirectTo, closeAuthModal } = useAuthModalStore();
 
   // Helper function to check if password meets all requirements
   const isPasswordValid = (pwd) => {
-    return pwd.length >= 8 && /[A-Z]/.test(pwd) && /[a-z]/.test(pwd) && /\d/.test(pwd) && /[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(pwd);
+    return pwd.length >= 8 && /[A-Z]/.test(pwd) && /[a-z]/.test(pwd) && /\d/.test(pwd) && /[@#$%^&+=]/.test(pwd);
   };
 
   // Setup form with watch for real-time password match validation
@@ -266,8 +266,6 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
           redirect: false,
         });
 
-        console.log('SignIn result:', result);
-
         if (result?.ok) {
           // If onSuccess callback exists in store, don't redirect — AuthModalDialog handles it
           const { onSuccess } = useAuthModalStore.getState();
@@ -286,8 +284,8 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
             title: 'Welcome to Weelp!',
           });
 
-          // Redirect to store target or fallback to dashboard
-          const targetUrl = storeRedirectTo || '/dashboard/customer';
+          // Redirect only to a same-origin target or fall back to the dashboard.
+          const targetUrl = getSafeAuthReturnUrl(storeRedirectTo) || getSafeAuthReturnUrl(customUrl) || '/dashboard/customer';
           setTimeout(() => {
             window.location.href = targetUrl;
           }, 300);
@@ -334,7 +332,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
   };
 
   return (
-    <div className="relative w-full space-y-4 rounded-xl bg-weelp-auth-neu-surface">
+    <div className="relative w-full min-w-0 space-y-4 rounded-xl bg-weelp-auth-neu-surface">
       {showCloseButton && (
         <button onClick={onCloseDialog} className="absolute -top-3 -right-3 bg-background rounded-full p-1.5 shadow-md hover:bg-red-50 transition-colors z-10" aria-label="Close">
           <X className="text-red-500 w-5 h-5" strokeWidth={2.5} />
@@ -342,35 +340,51 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
       )}
 
       {step === 'info' ? (
-        <form onSubmit={handleSubmit(onSubmitInfo)}>
-          <fieldset className={`space-y-4 bg-weelp-auth-neu-surface py-4 ${isSubmitting && 'cursor-wait'}`} disabled={isSubmitting}>
+        <form onSubmit={handleSubmit(onSubmitInfo)} className="w-full min-w-0">
+          <fieldset className={`w-full min-w-0 space-y-4 bg-weelp-auth-neu-surface py-4 ${isSubmitting && 'cursor-wait'}`} disabled={isSubmitting}>
             {/* Name Input */}
             <div>
-              <label htmlFor="name" className="flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
-                <User className="text-copy size-4" />
+              <label
+                htmlFor="name"
+                className="flex min-w-0 items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 focus-within:border-weelp-sage-deep focus-within:ring-2 focus-within:ring-weelp-sage-deep/30 dark:border-white/10"
+              >
+                <User aria-hidden="true" className="text-copy size-4 shrink-0" />
                 <input
                   placeholder="Full Name"
                   type="text"
                   id="name"
                   {...register('name')}
+                  aria-label="Full name"
+                  aria-invalid={Boolean(errors.name)}
+                  aria-describedby={errors.name ? 'register-name-error' : undefined}
                   autoComplete="name"
-                  className="mt-1 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
+                  className="mt-1 min-w-0 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
                 />
               </label>
-              {errors.name && <p className="text-sm text-red-600 pt-2">{errors.name.message}</p>}
+              {errors.name && (
+                <p id="register-name-error" role="alert" className="pt-2 text-sm text-red-600">
+                  {errors.name.message}
+                </p>
+              )}
             </div>
 
             {/* Username Input */}
             <div>
-              <label htmlFor="username" className="relative flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
-                <User className="text-copy size-4" />
+              <label
+                htmlFor="username"
+                className="relative flex min-w-0 items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 focus-within:border-weelp-sage-deep focus-within:ring-2 focus-within:ring-weelp-sage-deep/30 dark:border-white/10"
+              >
+                <User aria-hidden="true" className="text-copy size-4 shrink-0" />
                 <input
                   placeholder="Username"
                   type="text"
                   id="username"
                   {...register('username')}
+                  aria-label="Username"
+                  aria-invalid={Boolean(errors.username || usernameError)}
+                  aria-describedby={errors.username ? 'register-username-error' : usernameError ? 'register-username-availability-error' : undefined}
                   autoComplete="username"
-                  className="mt-1 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 pr-10 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
+                  className="mt-1 min-w-0 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 pr-10 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
                 />
                 {/* Username availability indicator */}
                 {username && username.length >= 3 && (
@@ -385,41 +399,77 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                   </div>
                 )}
               </label>
-              {errors.username && <p className="text-sm text-red-600 pt-2">{errors.username.message}</p>}
-              {usernameError && <p className="text-sm text-red-600 pt-2">{usernameError}</p>}
+              {errors.username && (
+                <p id="register-username-error" role="alert" className="pt-2 text-sm text-red-600">
+                  {errors.username.message}
+                </p>
+              )}
+              {usernameError && (
+                <p id="register-username-availability-error" role="alert" className="pt-2 text-sm text-red-600">
+                  {usernameError}
+                </p>
+              )}
             </div>
 
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
-                <AtSign className="text-copy size-4" />
+              <label
+                htmlFor="email"
+                className="flex min-w-0 items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 focus-within:border-weelp-sage-deep focus-within:ring-2 focus-within:ring-weelp-sage-deep/30 dark:border-white/10"
+              >
+                <AtSign aria-hidden="true" className="text-copy size-4 shrink-0" />
                 <input
                   placeholder="Email ID"
                   type="email"
                   id="email"
                   {...register('email')}
+                  aria-label="Email address"
+                  aria-invalid={Boolean(errors.email)}
+                  aria-describedby={errors.email ? 'register-email-error' : undefined}
                   autoComplete="email"
-                  className="mt-1 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
+                  className="mt-1 min-w-0 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
                 />
               </label>
-              {errors.email && <p className="text-sm text-red-600 pt-2">{errors.email.message}</p>}
+              {errors.email && (
+                <p id="register-email-error" role="alert" className="pt-2 text-sm text-red-600">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
             {/* Password Input */}
             <div className="relative mb-4">
-              <label htmlFor="password" className="relative flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
-                <KeyRound className="text-copy size-4" />
+              <label
+                htmlFor="password"
+                className="relative flex min-w-0 items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 pl-2 focus-within:border-weelp-sage-deep focus-within:ring-2 focus-within:ring-weelp-sage-deep/30 dark:border-white/10"
+              >
+                <KeyRound aria-hidden="true" className="text-copy size-4 shrink-0" />
                 <input
-                  type={visible ? 'text' : 'password'}
+                  type={passwordVisible ? 'text' : 'password'}
                   id="password"
                   placeholder="Password"
                   {...register('password')}
+                  aria-label="Password"
+                  aria-invalid={Boolean(errors.password)}
+                  aria-describedby={errors.password ? 'register-password-error' : undefined}
                   autoComplete="new-password"
-                  className="mt-1 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 pr-10 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
+                  className="mt-1 min-w-0 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
                 />
-                {!visible ? <Eye size={20} className="absolute right-4 cursor-pointer" onClick={toggle} /> : <EyeClosed size={20} className="absolute right-4 cursor-pointer" onClick={toggle} />}
+                <button
+                  type="button"
+                  onClick={togglePassword}
+                  aria-label={passwordVisible ? 'Hide password' : 'Show password'}
+                  aria-pressed={passwordVisible}
+                  className="size-11 shrink-0 rounded-md text-copy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-1"
+                >
+                  {passwordVisible ? <EyeClosed aria-hidden="true" className="mx-auto size-5" /> : <Eye aria-hidden="true" className="mx-auto size-5" />}
+                </button>
               </label>
-              {errors.password && <p className="text-sm text-red-600 pt-2">{errors.password.message}</p>}
+              {errors.password && (
+                <p id="register-password-error" role="alert" className="pt-2 text-sm text-red-600">
+                  {errors.password.message}
+                </p>
+              )}
 
               {/* Password Requirements Checklist */}
               {password && (
@@ -442,9 +492,9 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                       {/[0-9]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
                       <span>One number (0-9)</span>
                     </div>
-                    <div className={`flex items-center gap-1 ${/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? 'text-green-600' : 'text-muted-foreground'}`}>
-                      {/[@#$%^&+=!*?(),.<>{}[\]|/\\~`_-]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
-                      <span>One special character</span>
+                    <div className={`flex items-center gap-1 ${/[@#$%^&+=]/.test(password) ? 'text-green-600' : 'text-muted-foreground'}`}>
+                      {/[@#$%^&+=]/.test(password) ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={2} />}
+                      <span>One special character (@#$%^&amp;+=)</span>
                     </div>
                   </div>
                   {/* Password strength message */}
@@ -455,15 +505,21 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
             {/* Confirm Password Input */}
             <div>
-              <label htmlFor="password_confirmation" className="relative flex items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 dark:border-white/10">
-                <KeyRound className="text-copy size-4" />
+              <label
+                htmlFor="password_confirmation"
+                className="relative flex min-w-0 items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 pl-2 focus-within:border-weelp-sage-deep focus-within:ring-2 focus-within:ring-weelp-sage-deep/30 dark:border-white/10"
+              >
+                <KeyRound aria-hidden="true" className="text-copy size-4 shrink-0" />
                 <input
-                  type={visible ? 'text' : 'password'}
+                  type={confirmationVisible ? 'text' : 'password'}
                   id="password_confirmation"
                   placeholder="Confirm Password"
                   {...register('password_confirmation')}
+                  aria-label="Confirm password"
+                  aria-invalid={Boolean(errors.password_confirmation)}
+                  aria-describedby={errors.password_confirmation ? 'register-password-confirmation-error' : undefined}
                   autoComplete="new-password"
-                  className="mt-1 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 pr-10 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
+                  className="mt-1 min-w-0 flex-1 !bg-weelp-auth-neu-surface px-3 py-2 pr-8 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
                 />
                 {/* Live password match indicator */}
                 {passwordConfirmation && (
@@ -471,9 +527,21 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                     {password === passwordConfirmation ? <Check className="text-green-500 size-5" strokeWidth={3} /> : <X className="text-red-500 size-5" strokeWidth={3} />}
                   </div>
                 )}
-                {!visible ? <Eye size={20} className="absolute right-4 cursor-pointer" onClick={toggle} /> : <EyeClosed size={20} className="absolute right-4 cursor-pointer" onClick={toggle} />}
+                <button
+                  type="button"
+                  onClick={toggleConfirmation}
+                  aria-label={confirmationVisible ? 'Hide password confirmation' : 'Show password confirmation'}
+                  aria-pressed={confirmationVisible}
+                  className="size-11 shrink-0 rounded-md text-copy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-1"
+                >
+                  {confirmationVisible ? <EyeClosed aria-hidden="true" className="mx-auto size-5" /> : <Eye aria-hidden="true" className="mx-auto size-5" />}
+                </button>
               </label>
-              {errors.password_confirmation && <p className="text-sm text-red-600 pt-2">{errors.password_confirmation.message}</p>}
+              {errors.password_confirmation && (
+                <p id="register-password-confirmation-error" role="alert" className="pt-2 text-sm text-red-600">
+                  {errors.password_confirmation.message}
+                </p>
+              )}
             </div>
 
             {/* Submit Button - with added spacing */}
@@ -496,7 +564,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
           </fieldset>
         </form>
       ) : (
-        <fieldset className={`space-y-4 bg-weelp-auth-neu-surface py-4`} disabled={isOtpSubmitting}>
+        <fieldset className="w-full min-w-0 space-y-4 bg-weelp-auth-neu-surface py-4" disabled={isOtpSubmitting}>
           <div className="text-center">
             <h3 className="font-semibold text-xl">Verify Your Email</h3>
             <sub className="text-copy">
@@ -513,7 +581,11 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
                 <span className="text-sm font-medium">Verifying your code...</span>
               </div>
             )}
-            {otpError && !isOtpSubmitting && <p className="text-sm text-red-600 pt-4 text-center">{otpError}</p>}
+            {otpError && !isOtpSubmitting && (
+              <p role="alert" className="pt-4 text-center text-sm text-red-600">
+                {otpError}
+              </p>
+            )}
           </div>
 
           {/* Resend Button */}
@@ -523,7 +595,7 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
               type="button"
               onClick={handleResendOtp}
               disabled={timeUntilResend > 0 || isResending}
-              className="text-sm font-semibold text-weelp-sage-deep hover:underline disabled:text-muted-foreground disabled:no-underline"
+              className="inline-flex min-h-11 items-center rounded-sm text-sm font-semibold text-weelp-sage-deep hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2 disabled:text-muted-foreground disabled:no-underline"
             >
               {isResending ? 'Sending...' : timeUntilResend > 0 ? `Resend in ${timeUntilResend}s` : 'Resend OTP'}
             </button>
@@ -531,7 +603,11 @@ export function RegisterForm({ onCloseDialog, onSwitchToLogin, showCloseButton =
 
           {/* Back Button */}
           <div className="text-center pt-2">
-            <button type="button" onClick={handleBackToInfo} className="text-sm text-copy hover:text-weelp-sage-deep">
+            <button
+              type="button"
+              onClick={handleBackToInfo}
+              className="inline-flex min-h-11 items-center rounded-sm text-sm text-copy hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2"
+            >
               ← Back to registration
             </button>
           </div>
