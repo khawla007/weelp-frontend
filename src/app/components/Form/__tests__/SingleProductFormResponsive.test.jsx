@@ -37,6 +37,8 @@ it('renders responsive keyboard-operable date and traveler controls', async () =
   fireEvent.click(travelerButton);
   expect(travelerButton).toHaveAttribute('aria-expanded', 'true');
   expect(screen.getByRole('dialog', { name: 'Traveler selector' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /decrease adults/i })).toHaveClass('size-11');
+  expect(screen.getByRole('button', { name: /increase children/i })).toHaveClass('size-11');
 
   fireEvent.click(dateButton);
   expect(dateButton).toHaveAttribute('aria-expanded', 'true');

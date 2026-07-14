@@ -39,10 +39,11 @@ export const editUserProfileAction = async (formData) => {
 
     return { success: true, data: response?.data };
   } catch (error) {
-    console.error('Error in editUserProfileAction:', error);
+    const status = error?.response?.status;
     return {
       success: false,
-      message: error.response?.data?.message || 'Something went wrong.',
+      status,
+      message: status === 401 ? 'Your session has expired. Please sign in again.' : status === 422 ? 'Please review your profile details.' : 'Profile could not be updated. Please try again.',
     };
   }
 };

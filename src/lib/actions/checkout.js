@@ -1,40 +1,6 @@
 'use server';
 
-import { publicApi } from '@/lib/axiosInstance';
-import { log } from '@/lib/utils';
-import stripe from '../stripe/stripe-server';
-
-/**
- * Handle for intialization checkout
- * IN THIS INTENT IS CREATED BY LARAVEL
- * @param {object} payload { amount and currency } required is handled
- * @returns {object}
- */
-export const initializeCheckout = async (payload = {}) => {
-  try {
-    const response = await publicApi.post(`/api/stripe/initialize`, payload, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    // response is 200
-    if (response.status === 200) {
-      return { success: true, data: response.data };
-    }
-
-    return {
-      success: false,
-      error: `Unexpected status code: ${response?.status}`,
-    };
-  } catch (error) {
-    const status = error?.response?.status || 500;
-    return {
-      success: false,
-      error: `Server Error Please Try Again: ${status}`,
-    };
-  }
-};
+import { createAuthenticatedServerApi } from '@/lib/axiosInstance';
 
 /**
  * Handle for Create Order Action in checkout
@@ -42,10 +8,9 @@ export const initializeCheckout = async (payload = {}) => {
  * @returns {Promise<{ success: boolean; data?: any; error?: string }>}
  */
 export async function checkoutCreateOrder(orderDetail = {}) {
-  log(orderDetail);
-
   try {
-    const response = await publicApi.post(`/api/stripe/create-order`, orderDetail, {
+    const api = await createAuthenticatedServerApi();
+    const response = await api.post(`/api/stripe/create-order`, orderDetail, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -71,48 +36,16 @@ export async function checkoutCreateOrder(orderDetail = {}) {
         code: 'ORDERABLE_NOT_FOUND',
       };
     }
+    if (status === 401) {
+      return {
+        success: false,
+        error: 'Your session has expired. Please sign in again.',
+        code: 'SESSION_EXPIRED',
+      };
+    }
     return {
       success: false,
       error: backendMsg || `Server Error. Please Try Again (${status}).`,
     };
   }
 }
-
-/**
- * Action for Create Payment Intent
- * @param {object} payload { amount and currency } required
- * @returns {object} {success , clientSecret}
- */
-export const createPaymentIntent = async (payload = {}) => {
-  try {
-    //  Stripe customer create per user
-    const customer = await stripe.customers.create({
-      email: payload.email,
-      name: payload.name,
-    });
-
-    // Stripe expects amount in smallest currency unit (cents)
-    const amountInCents = Math.round(Number(payload.amount) * 100);
-
-    // Create Intent — card only, no Link/wallets
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: amountInCents,
-      currency: payload.currency || 'usd',
-      receipt_email: payload.email,
-      customer: customer.id,
-      payment_method_types: ['card'],
-    });
-
-    return {
-      success: true,
-      clientSecret: paymentIntent.client_secret,
-      paymentIntent: paymentIntent.id,
-    };
-  } catch (error) {
-    log(error);
-    return {
-      success: false,
-      error: `Server Error Please Try Again: ${error.message}`,
-    };
-  }
-};

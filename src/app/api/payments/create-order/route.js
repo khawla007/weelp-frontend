@@ -1,7 +1,6 @@
 // /api/payments/create-order
 
 import { NextResponse } from 'next/server';
-import { log } from '@/lib/utils';
 import { checkoutCreateOrder } from '@/lib/actions/checkout';
 
 export async function POST(req) {
@@ -12,9 +11,7 @@ export async function POST(req) {
 
     // Propagate the inner success/failure status directly
     return NextResponse.json(orderResponse);
-  } catch (error) {
-    console.error('Create Order API Error:', error);
-
+  } catch {
     return NextResponse.json({ success: false, error: 'Error creating order' }, { status: 500 });
   }
 }

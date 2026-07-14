@@ -27,17 +27,24 @@ export const CheckoutUserDetailCard = ({ userImagesrc, userName, userEmail }) =>
 };
 
 // This Module Handle Checkout Items
-export const CheckoutItems = () => {
+export const CheckoutItems = ({ quote = null }) => {
   const { cartItems = [] } = useMiniCartStore();
 
   return (
     <div className="flex flex-col gap-4 justify-between">
       {cartItems && cartItems.length > 0 ? (
-        cartItems.map((val, index) => {
-          return <CheckoutItemCard key={index} item={val} itemName={val?.name} totalPassenger={val?.howMany} date={val?.dateRange} addons={val?.addons || []} />;
+        cartItems.map((val) => {
+          return <CheckoutItemCard key={val.id} item={val} itemName={val?.name} totalPassenger={val?.howMany} date={val?.dateRange} addons={val?.addons || []} />;
         })
       ) : (
         <p>Sorry No items in cart</p>
+      )}
+
+      {quote && Number.isFinite(Number(quote.amount)) && (
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-xl border border-border bg-background p-4 text-foreground" aria-label="Order total">
+          <span className="font-semibold">Order total</span>
+          <span className="text-right text-lg font-bold text-Blueish">{formatCurrency(Number(quote.amount), quote.currency || 'USD')}</span>
+        </div>
       )}
 
       <CheckoutReview />
@@ -399,12 +406,15 @@ export const CheckoutItemCard = ({ item, itemName, totalPassenger, date, addons 
   const { adults = '', children = '' } = totalPassenger;
   const { from } = date;
   return (
-    <div className="bg-background max-w-md flex flex-col rounded-xl p-6 gap-2">
-      <h3 className="text-Blueish font-semibold text-lg">{itemName || 'Melaka Wonderland Water Theme Park'}</h3>
+    <div className="flex min-w-0 max-w-md flex-col gap-2 rounded-xl bg-background p-4 sm:p-6">
+      <h3 className="break-words text-lg font-semibold text-Blueish">{itemName || 'Melaka Wonderland Water Theme Park'}</h3>
 
       <div className="flex items-center gap-2 text-copy text-sm">
         <User size={20} />
-        <span className="font-medium capitalize">{`${adults} adults , ${children && children + ' children '}`}</span>
+        <span className="min-w-0 break-words font-medium capitalize">
+          {adults || 0} {(adults || 0) === 1 ? 'adult' : 'adults'}
+          {children ? `, ${children} ${children === 1 ? 'child' : 'children'}` : ''}
+        </span>
       </div>
 
       <div className="flex items-center gap-2 text-copy text-sm">
@@ -416,7 +426,7 @@ export const CheckoutItemCard = ({ item, itemName, totalPassenger, date, addons 
         <div className="flex flex-col mt-1">
           <span className="text-copy text-xs font-semibold">Add-ons:</span>
           {addons.map((addon, i) => (
-            <span key={i} className="text-copy text-xs font-medium ml-2">
+            <span key={addon.addon_id ?? i} className="ml-2 break-words text-xs font-medium text-copy">
               + {addon.addon_name}
             </span>
           ))}
@@ -429,7 +439,7 @@ export const CheckoutItemCard = ({ item, itemName, totalPassenger, date, addons 
 export const CheckoutReview = () => {
   return (
     <div className="mt-6">
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <h3 className="text-Blueish text-xl font-semibold flex gap-[2px]">Excellent</h3>
         <div className="flex gap-[1px]">
           <Star className="bg-success text-white fill-white p-[4px] text-lg size-5" />
@@ -438,7 +448,7 @@ export const CheckoutReview = () => {
           <Star className="bg-success text-white fill-white p-[4px] text-lg size-5" />
           <Star className="bg-success text-white fill-white p-[4px] text-lg size-5" />
         </div>
-        <span className="flex gap-1 font-semibold">
+        <span className="flex min-w-0 gap-1 font-semibold">
           <Star className="text-xl size-5 text-success fill-success" />
           Trustpilot
         </span>

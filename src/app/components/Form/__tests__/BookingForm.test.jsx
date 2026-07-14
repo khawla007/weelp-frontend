@@ -45,4 +45,16 @@ describe('BookingForm', () => {
     });
     expect(screen.queryByRole('button', { name: /^submit$/i })).not.toBeInTheDocument();
   });
+
+  it('gives each guest stepper a named 44px target', async () => {
+    renderWithSWR(<BookingForm variant="searchPage" />);
+    fireEvent.click(screen.getByText(/^1\s+Guest$/));
+
+    const decreaseAdults = await screen.findByRole('button', { name: /decrease adults/i });
+    const increaseChildren = screen.getByRole('button', { name: /increase children/i });
+
+    expect(decreaseAdults).toHaveClass('size-11');
+    expect(increaseChildren).toHaveClass('size-11');
+    expect(decreaseAdults).toBeDisabled();
+  });
 });

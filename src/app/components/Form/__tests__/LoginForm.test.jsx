@@ -122,6 +122,8 @@ describe('LoginForm', () => {
     expect(screen.getByPlaceholderText(/email id/i)).toHaveAttribute('autocomplete', 'email');
     expect(screen.getByPlaceholderText(/password/i)).toHaveAccessibleName('Password');
     expect(screen.getByPlaceholderText(/password/i)).toHaveAttribute('autocomplete', 'current-password');
+    expect(screen.getByPlaceholderText(/email id/i).closest('label')).toHaveClass('min-h-11');
+    expect(screen.getByPlaceholderText(/password/i).closest('label')).toHaveClass('min-h-11');
   });
 
   it('provides a semantic 44px password visibility control', () => {

@@ -3,19 +3,17 @@
 import { useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
 import { buttonVariants } from '@/components/ui/button';
-import Link from 'next/link';
-import { LoaderCircle } from 'lucide-react';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
+import { LoaderCircle, ShoppingCart } from 'lucide-react';
 
 const CheckoutMainManual = dynamic(() => import('@/app/components/Pages/FRONT_END/checkout/checkoutmanual/CheckoutMain'), { ssr: false });
 
 const CheckoutPage = () => {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const { cartItems = [] } = useMiniCartStore();
+  const { status } = useSession();
+  const { cartItems = [], setMiniCartOpen } = useMiniCartStore();
   const { openAuthModal } = useAuthModalStore();
   const hasOpenedModal = useRef(false);
 
@@ -42,11 +40,26 @@ const CheckoutPage = () => {
       <div className="h-[80vh] flex items-center justify-center py-16">
         <p className="flex flex-col gap-4 text-center">
           Your cart is empty.{' '}
-          <Link href="/" className={buttonVariants({ variant: 'secondary' }) + ' bg-weelp-sage-deep'}>
+          <NavigationLink href="/" className={buttonVariants({ variant: 'secondary' }) + ' min-h-11 bg-weelp-sage-deep'}>
             Back to Home
-          </Link>
+          </NavigationLink>
         </p>
       </div>
+    );
+  }
+
+  if (cartItems.length > 1) {
+    return (
+      <section className="flex min-h-[70vh] items-center justify-center px-4 py-16 sm:px-6">
+        <div className="flex w-full max-w-lg flex-col items-center gap-4 rounded-2xl border border-border bg-background p-6 text-center shadow-sm sm:p-8">
+          <ShoppingCart className="size-8 text-weelp-sage-deep" aria-hidden="true" />
+          <h1 className="text-xl font-semibold text-foreground sm:text-2xl">Checkout one booking at a time</h1>
+          <p className="text-sm leading-6 text-copy sm:text-base">Your cart has {cartItems.length} bookings. Review the cart and keep one booking before continuing to payment.</p>
+          <button type="button" onClick={() => setMiniCartOpen(true)} className={buttonVariants({ variant: 'default' }) + ' min-h-11 w-full sm:w-auto'}>
+            Review cart
+          </button>
+        </div>
+      </section>
     );
   }
 

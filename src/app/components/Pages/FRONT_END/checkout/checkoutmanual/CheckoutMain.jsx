@@ -11,7 +11,7 @@ import { AlertTriangle } from 'lucide-react';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { useUserProfile } from '@/hooks/api/customer/profile';
 import { useNavigationStore } from '@/lib/store/useNavigationStore';
-import { createPaymentIntent } from '@/lib/actions/checkout'; // action for intent
+import { buildCheckoutSelection } from '@/lib/checkout/selection';
 import axios from 'axios';
 const stripePromise = getStripe(); // import stripe promise
 
@@ -21,68 +21,30 @@ export default function CheckoutMainManual() {
   const { cartItems = [] } = useMiniCartStore(); // store items
   const { user, isLoading: isUserLoading } = useUserProfile(); // client side fetch user
   const item = cartItems.at(0) || {}; // item destructure
-  const { price, currency = 'usd' } = item;
-
-  const amount = Number(price) || 0; // preserve decimals; Stripe rounding happens server-side
   const [clientSecret, setClientSecret] = useState('');
-  const [paymentIntent, setPayMentIntent] = useState('');
+  const [paymentIntent, setPaymentIntent] = useState('');
+  const [quote, setQuote] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const initRef = useRef(false); // prevent double-mount PI creation
 
-  const name = user?.name;
-  const email = user?.email;
-
   // initialize paymnet
   const initializePaymentIntent = async () => {
-    // try {
-    //   // console.log('wrogin')
-    //   const res = await createPaymentIntent({
-    //     amount,
-    //     currency: String(currency).toLowerCase(),
-    //     email: session?.user?.email || '',
-    //   });
-
-    //   // console.log(res)
-    //   if (res?.success && res?.clientSecret) {
-    //     setClientSecret(res?.clientSecret);
-    //     setPayMentIntent(res?.paymentIntent);
-
-    //     sessionStorage.setItem('clientSecret', res?.clientSecret); // create session
-    //     sessionStorage.setItem('paymentIntent', res?.paymentIntent); // create session
-    //   } else {
-    //     setError('Client secret not received');
-    //   }
-    // } catch (err) {
-    //   setError(err.message || 'Something went wrong');
-    // } finally {
-    //   setLoading(false);
-    // }
-
-    // client secret
     try {
-      // POST request to your test API route
-      const res = await axios.post('/api/payments/create-intent', {
-        amount, // from cart item
-        currency: String(currency || 'usd').toLowerCase(),
-        email: email,
-        name: name,
-      });
+      const selection = buildCheckoutSelection(item);
+      const res = await axios.post('/api/payments/create-intent', selection);
 
       const data = await res?.data;
 
-      if (data?.success && data?.clientSecret) {
+      if (data?.success && data?.clientSecret && data?.paymentIntent && data?.quote) {
         setClientSecret(data.clientSecret);
-        setPayMentIntent(data.paymentIntent);
-
-        // store in session storage
-        sessionStorage.setItem('clientSecret', data.clientSecret);
-        sessionStorage.setItem('paymentIntent', data.paymentIntent);
+        setPaymentIntent(data.paymentIntent);
+        setQuote(data.quote);
       } else {
-        setError(data?.error || 'Client secret not received');
+        setError(data?.error || 'Checkout could not be prepared. Please try again.');
       }
     } catch (err) {
-      setError(err.message || 'Something went wrong');
+      setError(err?.response?.data?.error || 'Checkout could not be prepared. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -193,13 +155,13 @@ export default function CheckoutMainManual() {
 
           {/* Checkout Fields */}
           <Elements key={`${clientSecret}-${resolvedTheme}`} stripe={stripePromise} options={stripeOptions}>
-            <CheckoutForm clientSecret={clientSecret} paymentIntentId={paymentIntent} />
+            <CheckoutForm paymentIntentId={paymentIntent} />
           </Elements>
         </div>
       </div>
 
       <div className="w-full p-6 pt-10 pb-24 xl:w-2/5 xl:ps-20 bg-muted">
-        <CheckoutItems />
+        <CheckoutItems quote={quote} />
       </div>
     </section>
   );

@@ -215,7 +215,8 @@ export default function SingleProductForm({ productId, productData, selectedAddo
 
   const handleDecrement = (type) => {
     const current = Number(howMany?.[type] ?? 0);
-    setValue(`howMany.${type}`, Math.max(current - 1, 0));
+    const minimum = type === 'adults' ? 1 : 0;
+    setValue(`howMany.${type}`, Math.max(current - 1, minimum));
   };
 
   // Toggle Calendar
@@ -366,16 +367,20 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                         <div className="flex items-center gap-4">
                           <button
                             type="button"
+                            aria-label={`Decrease ${type}`}
                             onClick={() => handleDecrement(type)}
-                            className="w-8 h-8 rounded-full border text-lg flex items-center justify-center text-copy bg-graycolor hover:bg-weelp-sage-wash hover:opacity-80"
+                            disabled={Number(howMany?.[type] ?? 0) <= (type === 'adults' ? 1 : 0)}
+                            className="size-11 rounded-full border text-lg flex items-center justify-center text-copy bg-graycolor hover:bg-weelp-sage-wash hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             <Minus size={14} />
                           </button>
                           <span className="font-semibold">{howMany?.[type] ?? 0}</span>
                           <button
                             type="button"
+                            aria-label={`Increase ${type}`}
                             onClick={() => handleIncrement(type)}
-                            className="w-8 h-8 rounded-full border border-weelp-sage-tint text-lg flex items-center justify-center text-weelp-sage-deep hover:bg-weelp-sage-wash hover:opacity-80 "
+                            disabled={type !== 'infants' && Number(productData?.max_guests) > 0 && Number(howMany?.adults ?? 0) + Number(howMany?.children ?? 0) >= Number(productData.max_guests)}
+                            className="size-11 rounded-full border border-weelp-sage-tint text-lg flex items-center justify-center text-weelp-sage-deep hover:bg-weelp-sage-wash hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             <Plus size={14} />
                           </button>

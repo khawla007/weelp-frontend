@@ -1,253 +1,175 @@
 'use client';
 
-import React, { Suspense, useEffect } from 'react';
-import { PageSkeleton } from '@/app/components/Animation/Cards';
-import useMiniCartStore from '@/lib/store/useMiniCartStore';
+import { Suspense, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+
+import CheckoutResultState, { ResultActionButton, ResultActionLink } from '@/app/components/Pages/FRONT_END/checkout/CheckoutResultState';
 import { useOrderThankyou } from '@/hooks/api/public/order/thankyou';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import Link from 'next/link';
+import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { formatCurrency } from '@/lib/utils';
 
-const SucceceedPageContent = () => {
-  const searchParams = useSearchParams(); // params serach
+const VALID_PAYMENT_INTENT = /^pi_[A-Za-z0-9_]+$/;
 
-  const { clearCart, cartItems } = useMiniCartStore(); // store for itesm
-  const { data: session } = useSession(); // prevent user to page
-
-  const payment_intent = searchParams.get('payment_intent'); // retrieve session id
-  const { orderData, isValidating, error } = useOrderThankyou(payment_intent); // retrieve data
-
-  const { success, order = {} } = orderData;
-
-  // cart cleared
-  useEffect(() => {
-    clearCart(); // clear cart
-    sessionStorage.removeItem('clientSecret'); // clear client secret
-    sessionStorage.removeItem('paymentIntent'); // clear intent
-  }, []);
-
-  // error handling
-  if (error) {
-    return <div className="my-4 border border-black h-full min-h-screen text-red-400">Something Went Wrong</div>;
+function paymentStateContent(status) {
+  if (status === 'pending' || status === 'processing') {
+    return { title: 'Payment is still processing', description: 'Stripe has not finished confirming this payment. Check again in a moment.', tone: 'warning' };
   }
+  if (status === 'cancelled' || status === 'canceled') {
+    return { title: 'Payment was cancelled', description: 'Your booking has not been confirmed and your saved booking details remain available.', tone: 'warning' };
+  }
+  if (status === 'refunded') {
+    return { title: 'Payment was refunded', description: 'This payment is no longer active. Open your bookings for the current order details.', tone: 'warning' };
+  }
+  if (status === 'expired') {
+    return { title: 'Payment link expired', description: 'The payment window expired before confirmation. Your saved booking details remain available.', tone: 'warning' };
+  }
+  return { title: 'Payment was not completed', description: 'We did not receive a completed payment for this booking. Your saved booking details have not been cleared.', tone: 'danger' };
+}
 
-  // loading state
-  if (isValidating) {
+function errorContent(error) {
+  const status = error?.response?.status;
+  if (status === 401) return { title: 'Sign in to view this payment', description: 'Your session may have expired. Sign in again and open the booking from your account.' };
+  if (status === 404) return { title: 'Payment confirmation not found', description: 'This payment is unavailable or does not belong to the signed-in account.' };
+  return { title: 'We could not check the payment', description: 'A temporary connection problem prevented verification. Your booking details have been retained.' };
+}
+
+function PaidOrderDetails({ order }) {
+  const item = order?.item ?? {};
+  const payment = order?.payment ?? {};
+  const amount = Number.parseFloat(payment.amount);
+  const currency = payment.currency || 'USD';
+  const addons = Array.isArray(order?.addons) ? order.addons : [];
+  const rows = [
+    ['Booking reference', order?.id ? `#${order.id}` : null],
+    ['Item', item.name],
+    ['Amount paid', Number.isFinite(amount) ? formatCurrency(amount, currency) : null],
+    ['Travel date', order?.travel_date],
+    ['Preferred time', order?.preferred_time],
+    ['Adults', order?.number_of_adults],
+    ['Children', order?.number_of_children],
+    [
+      'Add-ons',
+      addons
+        .map((addon) => addon.addon_name)
+        .filter(Boolean)
+        .join(', '),
+    ],
+  ].filter(([, value]) => value !== undefined && value !== null && value !== '');
+
+  return (
+    <dl className="grid min-w-0 gap-3 rounded-xl border bg-background p-4 sm:grid-cols-2 sm:p-5">
+      {rows.map(([label, value]) => (
+        <div key={label} className="min-w-0 border-b pb-3 last:border-b-0 sm:border-b-0 sm:pb-0">
+          <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</dt>
+          <dd className="mt-1 break-words text-sm font-medium text-foreground">{value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+function ThankYouContent() {
+  const searchParams = useSearchParams();
+  const rawPaymentIntent = searchParams.get('payment_intent');
+  const paymentIntent = rawPaymentIntent && VALID_PAYMENT_INTENT.test(rawPaymentIntent) ? rawPaymentIntent : null;
+  const { clearCart } = useMiniCartStore();
+  const { data: session } = useSession();
+  const { orderData, isLoading, error, refresh } = useOrderThankyou(paymentIntent);
+  const cleanedPaymentIntent = useRef(null);
+  const order = orderData?.order;
+  const paymentStatus = order?.payment?.payment_status?.toLowerCase();
+  const isPaid = orderData?.success === true && paymentStatus === 'paid';
+
+  useEffect(() => {
+    if (!isPaid || cleanedPaymentIntent.current === paymentIntent) return;
+
+    clearCart();
+    sessionStorage.removeItem('clientSecret');
+    sessionStorage.removeItem('paymentIntent');
+    cleanedPaymentIntent.current = paymentIntent;
+  }, [clearCart, isPaid, paymentIntent]);
+
+  const recoveryActions = (
+    <>
+      <ResultActionLink href="/checkout" emphasis="primary">
+        Return to checkout
+      </ResultActionLink>
+      <ResultActionLink href="/booking">Review booking</ResultActionLink>
+    </>
+  );
+
+  if (!paymentIntent) {
     return (
-      <div className="my-4 h-screen flex items-center justify-center">
-        <PageSkeleton />
-      </div>
+      <CheckoutResultState
+        title="Unable to verify this payment"
+        description="This confirmation link is missing or invalid. No booking or payment state has been changed."
+        tone="warning"
+        actions={recoveryActions}
+      />
     );
   }
 
-  const { emergency_contact = {}, item = {}, payment = {}, user = {} } = order || {}; // destructure order data
-  const isTransfer = order?.order_type === 'transfer' || item?.item_type === 'transfer';
-  const addons = order?.addons || [];
-  const baseAmount = order?.base_amount;
-  const addonsAmount = order?.addons_amount || 0;
-  const dashboardUrl = session?.user?.role === 'super_admin' ? '/dashboard/admin' : '/dashboard/customer'; // use role send based on use link
-  const amount = parseFloat(payment?.amount || 0);
-  const currency = payment?.currency || 'USD';
-  const priceAmount = formatCurrency(amount, currency);
+  if (isLoading) {
+    return <CheckoutResultState title="Checking your payment" description="Please wait while we securely verify the latest payment status." />;
+  }
 
-  // console.log(priceAmount)
+  if (error || !orderData) {
+    const content = errorContent(error);
+    return (
+      <CheckoutResultState
+        {...content}
+        tone="danger"
+        actions={
+          <>
+            <ResultActionButton onClick={() => refresh?.()}>Try again</ResultActionButton>
+            <ResultActionLink href="/booking">Review booking</ResultActionLink>
+          </>
+        }
+      />
+    );
+  }
 
+  if (!isPaid) {
+    const content = paymentStateContent(paymentStatus);
+    const isPending = paymentStatus === 'pending' || paymentStatus === 'processing';
+    return (
+      <CheckoutResultState
+        {...content}
+        actions={
+          <>
+            {isPending ? <ResultActionButton onClick={() => refresh?.()}>Check payment status</ResultActionButton> : null}
+            {recoveryActions}
+          </>
+        }
+      />
+    );
+  }
+
+  const dashboardUrl = session?.user?.role === 'admin' || session?.user?.role === 'super_admin' ? '/dashboard/admin' : '/dashboard/customer';
   return (
-    <div className="min-h-[85vh] bg-background py-10 flex justify-center items-center">
-      <div className="container-page grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Booking Summary */}
-        <Card className="lg:col-span-2 space-y-4">
-          <CardHeader className="rounded-md space-y-2">
-            <CardTitle>Booking Successful</CardTitle>
-            <Alert variant="success">
-              <AlertDescription>Congrats! Your order has been booked.</AlertDescription>
-            </Alert>
-          </CardHeader>
-          <CardContent>
-            <CardTitle>Booking Summary</CardTitle>
-            <Table>
-              <TableBody>
-                {user?.name && (
-                  <TableRow>
-                    <TableCell className="font-semibold">Name</TableCell>
-                    <TableCell>{user.name}</TableCell>
-                  </TableRow>
-                )}
-
-                {user?.email && (
-                  <TableRow>
-                    <TableCell className="font-semibold">Email</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                  </TableRow>
-                )}
-
-                <TableRow>
-                  <TableCell className="font-semibold">Item</TableCell>
-                  <TableCell>{item?.name}</TableCell>
-                </TableRow>
-
-                {isTransfer && (item?.origin_name || item?.destination_name || item?.route_name) && (
-                  <TableRow>
-                    <TableCell className="font-semibold">Route</TableCell>
-                    <TableCell>{item?.origin_name && item?.destination_name ? `${item.origin_name} → ${item.destination_name}` : item?.route_name}</TableCell>
-                  </TableRow>
-                )}
-
-                {isTransfer && item?.vehicle_type && (
-                  <TableRow>
-                    <TableCell className="font-semibold">Vehicle</TableCell>
-                    <TableCell className="capitalize">{item.vehicle_type}</TableCell>
-                  </TableRow>
-                )}
-
-                {isTransfer && item?.transfer_type && (
-                  <TableRow>
-                    <TableCell className="font-semibold">Transfer Type</TableCell>
-                    <TableCell className="capitalize">{String(item.transfer_type).replace(/_/g, ' ')}</TableCell>
-                  </TableRow>
-                )}
-
-                {isTransfer && item?.inclusion && (
-                  <TableRow>
-                    <TableCell className="font-semibold">Inclusion</TableCell>
-                    <TableCell>{item.inclusion}</TableCell>
-                  </TableRow>
-                )}
-
-                {addons.length > 0 && (
-                  <TableRow>
-                    <TableCell className="font-semibold">Add-ons</TableCell>
-                    <TableCell>
-                      {addons.map((a, i) => (
-                        <span key={i} className="block text-sm">
-                          {a.addon_name}
-                        </span>
-                      ))}
-                    </TableCell>
-                  </TableRow>
-                )}
-
-                <TableRow>
-                  <TableCell className="font-semibold">Amount Paid</TableCell>
-                  <TableCell className="font-semibold text-weelp-copy">{priceAmount}</TableCell>
-                </TableRow>
-
-                <TableRow>
-                  <TableCell className="font-semibold">Travel Date</TableCell>
-                  <TableCell>{order?.travel_date}</TableCell>
-                </TableRow>
-
-                <TableRow>
-                  <TableCell className="font-semibold">Preferred Time</TableCell>
-                  <TableCell>{order?.preferred_time}</TableCell>
-                </TableRow>
-
-                <TableRow>
-                  <TableCell className="font-semibold">Adults</TableCell>
-                  <TableCell>{order?.number_of_adults}</TableCell>
-                </TableRow>
-
-                <TableRow>
-                  <TableCell className="font-semibold">Children</TableCell>
-                  <TableCell>{order?.number_of_children}</TableCell>
-                </TableRow>
-
-                {order?.special_requirements && (
-                  <TableRow>
-                    <TableCell className="font-semibold">Special Requirements</TableCell>
-                    <TableCell>{order.special_requirements}</TableCell>
-                  </TableRow>
-                )}
-
-                {emergency_contact && (
-                  <TableRow>
-                    <TableCell className="font-semibold">Emergency Contact</TableCell>
-                    <TableCell>
-                      {emergency_contact.contact_name} ({emergency_contact.contact_phone})
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-
-            {/* Navigation */}
-            <div className="flex justify-between w-full mt-6">
-              <Link
-                href="/"
-                className="bg-background text-foreground border border-weelp-sage-deep p-2 rounded-2xl text-sm font-medium px-4 transition-colors hover:bg-weelp-sage-deep hover:text-white"
-              >
-                Back to Home
-              </Link>
-              <Link
-                href={dashboardUrl}
-                className="bg-weelp-sage-deep text-white border border-weelp-sage-deep p-2 px-4 rounded-2xl text-sm font-medium transition-colors hover:bg-background hover:text-foreground"
-              >
-                Go To Bookings
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Payment Info */}
-        <Card className="h-fit rounded-md border">
-          <CardHeader className="bg-weelp-sage-deep text-white rounded-md">
-            <CardTitle>Payment Info</CardTitle>
-            <h2 className="font-semibold text-lg">{item?.name}</h2>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm p-4">
-            <div className="text-foreground flex w-full justify-between">
-              <strong>Status:</strong> {payment?.payment_status}
-            </div>
-            <div className="text-foreground flex w-full justify-between">
-              <strong>Method:</strong> {payment?.payment_method}
-            </div>
-
-            {baseAmount != null && (
-              <div className="text-foreground flex w-full justify-between">
-                <strong>Item Price:</strong> {formatCurrency(parseFloat(baseAmount), currency)}
-              </div>
-            )}
-
-            {addons.length > 0 && (
-              <div className="text-foreground flex flex-col gap-1">
-                <strong>Add-ons:</strong>
-                {addons.map((a, i) => (
-                  <div key={i} className="flex justify-between ml-2 text-xs">
-                    <span>{a.addon_name}</span>
-                    <span>{formatCurrency(parseFloat(a.price), currency)}</span>
-                  </div>
-                ))}
-                <div className="flex justify-between font-medium border-t pt-1 mt-1">
-                  <span>Add-ons Total:</span>
-                  <span>{formatCurrency(parseFloat(addonsAmount), currency)}</span>
-                </div>
-              </div>
-            )}
-
-            <div className="text-foreground flex w-full justify-between font-bold border p-4 rounded-md">
-              <strong>Total:</strong> {priceAmount}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <CheckoutResultState
+      title="Booking confirmed"
+      description="Your payment has been verified and the booking is now available in your account."
+      tone="success"
+      actions={
+        <>
+          <ResultActionLink href={dashboardUrl} emphasis="primary">
+            View bookings
+          </ResultActionLink>
+          <ResultActionLink href="/">Back to home</ResultActionLink>
+        </>
+      }
+    >
+      <PaidOrderDetails order={order} />
+    </CheckoutResultState>
   );
-};
+}
 
-const SucceceedPage = () => (
-  <Suspense
-    fallback={
-      <div className="my-4 h-screen flex items-center justify-center">
-        <PageSkeleton />
-      </div>
-    }
-  >
-    <SucceceedPageContent />
-  </Suspense>
-);
-
-export default SucceceedPage;
+export default function ThankYouPage() {
+  return (
+    <Suspense fallback={<CheckoutResultState title="Checking your payment" description="Please wait while we securely verify the latest payment status." />}>
+      <ThankYouContent />
+    </Suspense>
+  );
+}

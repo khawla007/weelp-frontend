@@ -1,145 +1,157 @@
 'use client';
 
-import { useEffect } from 'react';
-import { PageSkeleton } from '@/app/components/Animation/Cards';
-import Link from 'next/link';
+import { useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
+
+import CheckoutResultState, { ResultActionButton, ResultActionLink } from '@/app/components/Pages/FRONT_END/checkout/CheckoutResultState';
 import { useBookingData } from '@/hooks/api/public/checkout';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { formatCurrency } from '@/lib/utils';
 
+const VALID_SESSION_ID = /^cs_[A-Za-z0-9_]+$/;
+
+function statusContent(status) {
+  if (status === 'pending' || status === 'processing') {
+    return { title: 'Payment is still processing', description: 'Payment confirmation can take a moment. Keep this page open or check the status again.', tone: 'warning' };
+  }
+  if (status === 'cancelled' || status === 'canceled') {
+    return { title: 'Payment was cancelled', description: 'Your booking has not been confirmed. You can safely return to checkout and try again.', tone: 'warning' };
+  }
+  if (status === 'refunded') {
+    return { title: 'Payment was refunded', description: 'This payment is no longer active. Open your bookings for the latest order details.', tone: 'warning' };
+  }
+  if (status === 'expired') {
+    return { title: 'Payment link expired', description: 'The payment window expired before confirmation. Your booking details have been retained.', tone: 'warning' };
+  }
+  return { title: 'Payment was not completed', description: 'We could not confirm a completed payment for this booking. Your booking details have been retained.', tone: 'danger' };
+}
+
+function errorContent(error) {
+  const status = error?.response?.status;
+  if (status === 401) {
+    return { title: 'Sign in to view this payment', description: 'Your session may have expired. Sign in again, then reopen the confirmation from your bookings.' };
+  }
+  if (status === 404) {
+    return { title: 'Payment confirmation not found', description: 'This confirmation is unavailable or does not belong to the signed-in account.' };
+  }
+  return { title: 'We could not check the payment', description: 'A temporary connection problem prevented verification. Try checking again.' };
+}
+
+function BookingDetails({ result }) {
+  const { item_detail: item = {}, order = {} } = result?.data ?? {};
+  const payment = order?.payment ?? {};
+  const amount = Number.parseFloat(payment.amount);
+  const price = Number.isFinite(amount) ? formatCurrency(amount, payment.currency || 'USD') : null;
+  const rows = [
+    ['Booking reference', order.id ? `#${order.id}` : null],
+    ['Item', item.item_name],
+    ['Amount paid', price],
+    ['Travel date', order.travel_date],
+    ['Preferred time', order.preferred_time],
+    ['Adults', order.number_of_adults],
+    ['Children', order.number_of_children],
+  ].filter(([, value]) => value !== undefined && value !== null && value !== '');
+
+  return (
+    <dl className="grid min-w-0 gap-3 rounded-xl border bg-background p-4 sm:grid-cols-2 sm:p-5">
+      {rows.map(([label, value]) => (
+        <div key={label} className="min-w-0 border-b pb-3 last:border-b-0 sm:border-b-0 sm:pb-0">
+          <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</dt>
+          <dd className="mt-1 break-words text-sm font-medium text-foreground">{value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 export default function PaymentSuccessClient({ sessionId }) {
+  const validSessionId = typeof sessionId === 'string' && VALID_SESSION_ID.test(sessionId) ? sessionId : null;
   const { clearCart } = useMiniCartStore();
   const { data: session } = useSession();
-  const { bookingData, loading, error } = useBookingData(sessionId);
+  const { bookingData, loading, error, refresh } = useBookingData(validSessionId);
+  const cleanedSessionId = useRef(null);
+  const paymentStatus = bookingData?.data?.order?.payment?.payment_status?.toLowerCase();
+  const isPaid = bookingData?.success === true && paymentStatus === 'paid';
 
   useEffect(() => {
-    if (!loading && bookingData) {
+    if (isPaid && cleanedSessionId.current !== validSessionId) {
       clearCart();
+      cleanedSessionId.current = validSessionId;
     }
-  }, [loading, bookingData, clearCart]);
+  }, [clearCart, isPaid, validSessionId]);
 
-  if (!sessionId) {
-    return <div className="mt-10 text-center text-red-500">No Session Found</div>;
+  const recoveryActions = (
+    <>
+      <ResultActionLink href="/checkout" emphasis="primary">
+        Return to checkout
+      </ResultActionLink>
+      <ResultActionLink href="/booking">Review booking</ResultActionLink>
+    </>
+  );
+
+  if (!validSessionId) {
+    return (
+      <CheckoutResultState
+        title="Unable to verify this payment"
+        description="This confirmation link is missing or invalid. No booking or payment state has been changed."
+        tone="warning"
+        actions={recoveryActions}
+      />
+    );
   }
 
   if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <PageSkeleton />
-      </div>
-    );
+    return <CheckoutResultState title="Checking your payment" description="Please wait while we securely verify the latest payment status." />;
   }
 
   if (error || !bookingData) {
+    const content = errorContent(error);
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="mt-10 text-center text-red-500">Something went wrong.</div>
-      </div>
+      <CheckoutResultState
+        {...content}
+        tone="danger"
+        actions={
+          <>
+            <ResultActionButton onClick={() => refresh?.()}>Try again</ResultActionButton>
+            <ResultActionLink href="/booking">Review booking</ResultActionLink>
+          </>
+        }
+      />
     );
   }
 
-  const { user_detail = {}, item_detail = {}, order = {} } = bookingData?.data || {};
-  const dashboardUrl = session?.user?.role === 'admin' ? '/dashboard/admin' : '/dashboard/user';
-  const amount = parseFloat(order?.payment?.amount || 0);
-  const currency = order?.payment?.currency || '';
-  const priceAmount = formatCurrency(amount, currency);
-  const tableRowClass = '';
+  if (!isPaid) {
+    const content = statusContent(paymentStatus);
+    const isPending = paymentStatus === 'pending' || paymentStatus === 'processing';
+    return (
+      <CheckoutResultState
+        {...content}
+        actions={
+          <>
+            {isPending ? <ResultActionButton onClick={() => refresh?.()}>Check payment status</ResultActionButton> : null}
+            {recoveryActions}
+          </>
+        }
+      />
+    );
+  }
 
+  const dashboardUrl = session?.user?.role === 'admin' || session?.user?.role === 'super_admin' ? '/dashboard/admin' : '/dashboard/customer';
   return (
-    <div className="flex min-h-[85vh] items-center justify-center bg-background py-10">
-      <div className="container-page grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <Card className="space-y-4 lg:col-span-2">
-          <CardHeader className="space-y-2 rounded-md">
-            <CardTitle>Booking Successfull</CardTitle>
-            <Alert variant="success">
-              <AlertDescription>Congrats Your Order has been booked</AlertDescription>
-            </Alert>
-          </CardHeader>
-          <CardContent>
-            <CardTitle>Booking Summary</CardTitle>
-            <Table>
-              <TableBody>
-                <TableRow className={tableRowClass}>
-                  <TableCell className="font-semibold">Name</TableCell>
-                  <TableCell>{user_detail?.name}</TableCell>
-                </TableRow>
-                <TableRow className={tableRowClass}>
-                  <TableCell className="font-semibold">Email</TableCell>
-                  <TableCell>{user_detail?.email}</TableCell>
-                </TableRow>
-                <TableRow className={tableRowClass}>
-                  <TableCell className="font-semibold">Item</TableCell>
-                  <TableCell>{item_detail?.item_name}</TableCell>
-                </TableRow>
-                <TableRow className={tableRowClass}>
-                  <TableCell className="font-semibold">Amount Paid</TableCell>
-                  <TableCell className="font-semibold text-weelp-copy">{priceAmount}</TableCell>
-                </TableRow>
-                <TableRow className={tableRowClass}>
-                  <TableCell className="font-semibold">Travel Date</TableCell>
-                  <TableCell>{order?.travel_date}</TableCell>
-                </TableRow>
-                <TableRow className={tableRowClass}>
-                  <TableCell className="font-semibold">Preferred Time</TableCell>
-                  <TableCell>{order?.preferred_time}</TableCell>
-                </TableRow>
-                <TableRow className={tableRowClass}>
-                  <TableCell className="font-semibold">Adults</TableCell>
-                  <TableCell>{order?.number_of_adults}</TableCell>
-                </TableRow>
-                <TableRow className={tableRowClass}>
-                  <TableCell className="font-semibold">Children</TableCell>
-                  <TableCell>{order?.number_of_children}</TableCell>
-                </TableRow>
-                <TableRow className={tableRowClass}>
-                  <TableCell className="font-semibold">Special Requirements</TableCell>
-                  <TableCell>{order?.special_requirements}</TableCell>
-                </TableRow>
-                <TableRow className={tableRowClass}>
-                  <TableCell className="font-semibold">Emergency Contact</TableCell>
-                  <TableCell>
-                    {order?.emergency_contact?.contact_name} ({order?.emergency_contact?.contact_phone})
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-
-            <div className="flex w-full justify-between">
-              <Link href="/" className="rounded-2xl border bg-background p-2 px-4 text-sm font-medium text-foreground">
-                Back to Home
-              </Link>
-              <Link href={dashboardUrl} className="rounded-2xl border bg-foreground p-2 px-4 text-sm font-medium text-background">
-                Go To Bookings
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="h-fit rounded-md border">
-          <CardHeader className="rounded-md bg-foreground text-background">
-            <CardTitle>Payment Info</CardTitle>
-            <h2 className="text-lg font-semibold">{item_detail?.item_name}</h2>
-          </CardHeader>
-          <CardContent className="space-y-3 p-4 text-sm">
-            <div className="flex w-full justify-between text-foreground">
-              <strong>Status:</strong> {order?.payment?.payment_status}
-            </div>
-            <div className="flex w-full justify-between text-foreground">
-              <strong>Method:</strong> {order?.payment?.payment_method}
-            </div>
-            <div className="flex w-full justify-between text-foreground">
-              <strong>Amount:</strong> {priceAmount}
-            </div>
-            <div className="flex w-full justify-between border p-4 font-bold text-foreground">
-              <strong>Total:</strong> {priceAmount}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <CheckoutResultState
+      title="Booking confirmed"
+      description="Your payment has been verified and the booking is now available in your account."
+      tone="success"
+      actions={
+        <>
+          <ResultActionLink href={dashboardUrl} emphasis="primary">
+            View bookings
+          </ResultActionLink>
+          <ResultActionLink href="/">Back to home</ResultActionLink>
+        </>
+      }
+    >
+      <BookingDetails result={bookingData} />
+    </CheckoutResultState>
   );
 }

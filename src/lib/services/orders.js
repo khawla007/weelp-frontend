@@ -1,5 +1,4 @@
-import { createAuthenticatedServerApi, publicApi } from '../axiosInstance';
-import { log } from '../utils';
+import { createAuthenticatedServerApi } from '../axiosInstance';
 
 /**
  * Get Single Order Admin
@@ -47,18 +46,11 @@ export async function getAllOrdersAdmin(search = '') {
  * @returns {object} Order data or empty object if not found or failed
  */
 export async function getUserOrderThankyou(payment_intent = '') {
-  try {
-    const res = await publicApi.get(`/api/order/thankyou`, {
-      params: { payment_intent },
-      headers: { Accept: 'application/json' },
-    });
+  const api = await createAuthenticatedServerApi();
+  const response = await api.get('/api/order/thankyou', {
+    params: { payment_intent },
+    headers: { Accept: 'application/json' },
+  });
 
-    if (res.status === 200) return res.data;
-    if (res.status === 404) return {}; // Not found
-
-    return {}; // Other unexpected status
-  } catch (error) {
-    log('Order Thankyou fetch error:', error?.response || error);
-    return {};
-  }
+  return response.data;
 }

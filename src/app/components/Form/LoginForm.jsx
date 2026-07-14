@@ -146,7 +146,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
           <div>
             <label
               htmlFor="email"
-              className="flex min-w-0 items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 focus-within:border-weelp-sage-deep focus-within:ring-2 focus-within:ring-weelp-sage-deep/30 dark:border-white/10"
+              className="flex min-h-11 min-w-0 items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 px-2 focus-within:border-weelp-sage-deep focus-within:ring-2 focus-within:ring-weelp-sage-deep/30 dark:border-white/10"
             >
               <AtSign aria-hidden="true" className="text-copy size-4 shrink-0" />
               <input
@@ -172,7 +172,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
           <div>
             <label
               htmlFor="password"
-              className="relative flex min-w-0 items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 pl-2 focus-within:border-weelp-sage-deep focus-within:ring-2 focus-within:ring-weelp-sage-deep/30 dark:border-white/10"
+              className="relative flex min-h-11 min-w-0 items-center rounded-lg border border-weelp-sage-deep/25 bg-weelp-auth-neu-surface p-1 pl-2 focus-within:border-weelp-sage-deep focus-within:ring-2 focus-within:ring-weelp-sage-deep/30 dark:border-white/10"
             >
               <KeyRound aria-hidden="true" className="text-copy size-4 shrink-0" />
               <input

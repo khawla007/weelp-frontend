@@ -110,7 +110,8 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
 
   const handleDecrement = (type) => {
     setHowMany((prev) => {
-      const updated = { ...prev, [type]: Math.max(prev[type] - 1, 0) };
+      const minimum = type === 'adults' ? 1 : 0;
+      const updated = { ...prev, [type]: Math.max(prev[type] - 1, minimum) };
       setValue(`howMany.${type}`, updated[type]); // Update React Hook Form value
       return updated;
     });
@@ -282,16 +283,19 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
                     <div className="flex items-center gap-3">
                       <button
                         type="button"
+                        aria-label={`Decrease ${type}`}
                         onClick={() => handleDecrement(type)}
-                        className="w-8 h-8 rounded-full border flex items-center justify-center text-copy bg-graycolor hover:bg-weelp-sage-wash"
+                        disabled={howMany[type] <= (type === 'adults' ? 1 : 0)}
+                        className="size-11 rounded-full border flex items-center justify-center text-copy bg-graycolor hover:bg-weelp-sage-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         <Minus size={14} />
                       </button>
                       <span className="w-6 text-center font-semibold">{howMany[type]}</span>
                       <button
                         type="button"
+                        aria-label={`Increase ${type}`}
                         onClick={() => handleIncrement(type)}
-                        className="w-8 h-8 rounded-full border border-weelp-sage-tint flex items-center justify-center text-weelp-sage-deep hover:bg-weelp-sage-wash"
+                        className="size-11 rounded-full border border-weelp-sage-tint flex items-center justify-center text-weelp-sage-deep hover:bg-weelp-sage-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2"
                       >
                         <Plus size={14} />
                       </button>
