@@ -31,6 +31,8 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
   const [itineraries, setItineraries] = useState([]);
   const [pagination, setPagination] = useState({ last_page: 1, total: 0 });
   const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
+  const [retryNonce, setRetryNonce] = useState(0);
   const sortRef = useRef(null);
   const sectionRef = useRef(null);
 
@@ -59,6 +61,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(true);
+      setFetchError(false);
       const query = new URLSearchParams();
       query.set('page', currentPage);
       query.set('per_page', '8');
@@ -83,18 +86,25 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
               last_page: res.data.last_page || 1,
               total: res.data.total || 0,
             });
+            setFetchError(false);
+          } else {
+            setItineraries([]);
+            setAllTags([]);
+            setPagination({ last_page: 1, total: 0 });
+            setFetchError(true);
           }
         })
         .catch(() => {
           setItineraries([]);
           setAllTags([]);
           setPagination({ last_page: 1, total: 0 });
+          setFetchError(true);
         })
         .finally(() => setIsLoading(false));
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [scope, slug, currentPage, selectedTags, sortBy]);
+  }, [scope, slug, currentPage, selectedTags, sortBy, retryNonce]);
 
   const handleTagToggle = (tagName) => {
     setCurrentPage(1);
@@ -113,7 +123,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
   const sectionClassName = `${SECTION_CLASS_BY_VARIANT[variant] || SECTION_CLASS_BY_VARIANT.default} ${className}`.trim();
 
   // Don't render section if initial load returns no itineraries and no tags
-  if (!isLoading && itineraries.length === 0 && allTags.length === 0 && selectedTags.length === 0) return null;
+  if (!isLoading && !fetchError && itineraries.length === 0 && allTags.length === 0 && selectedTags.length === 0) return null;
 
   return (
     <section ref={sectionRef} className={sectionClassName}>
@@ -229,6 +239,19 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
           {[...Array(6)].map((_, i) => (
             <ProductCardSkelton key={i} className="sm:max-w-xs w-full" />
           ))}
+        </div>
+      ) : fetchError ? (
+        <div data-testid="destination-tours-error" className="flex min-h-[220px] flex-col items-center justify-center gap-4 text-center">
+          <span className="text-sm md:text-base text-muted-foreground" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 500 }}>
+            We could not load destination tours.
+          </span>
+          <button
+            type="button"
+            onClick={() => setRetryNonce((value) => value + 1)}
+            className="inline-flex min-h-[44px] items-center rounded-[11.5px] border border-weelp-sage-deep bg-background px-5 py-2.5 text-[16px] font-medium text-weelp-copy transition-colors duration-200 motion-reduce:transition-none hover:bg-weelp-sage-deep hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          >
+            Try again
+          </button>
         </div>
       ) : cards.length > 0 ? (
         <Reveal stagger={60} variant="lift" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-[18px]">

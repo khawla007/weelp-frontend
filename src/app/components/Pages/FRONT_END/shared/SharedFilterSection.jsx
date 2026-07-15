@@ -31,6 +31,8 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [fetchError, setFetchError] = useState(false);
+  const [retryNonce, setRetryNonce] = useState(0);
   const [revealKey, setRevealKey] = useState(0);
 
   const handlePageChange = useCallback(
@@ -54,6 +56,7 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(true);
+      setFetchError(false);
       let query = `?min_price=${priceRange[0]}&max_price=${priceRange[1]}&page=${currentPage}&per_page=8&min_rating=${ratingFilter}`;
       if (selectedItemType) query += `&item_type=${selectedItemType}`;
       if (selectedCategories.length > 0) query += `&categories=${selectedCategories.join(',')}`;
@@ -67,11 +70,13 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
             setProducts(res?.data?.data || []);
             setPagination(res?.data);
             setRevealKey((k) => k + 1);
+            setFetchError(false);
           }
         })
         .catch(() => {
           setProducts([]);
           setPagination(null);
+          setFetchError(true);
         })
         .finally(() => {
           setIsLoading(false);
@@ -80,7 +85,7 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [priceRange, selectedItemType, selectedCategories, currentPage, slug, ratingFilter, scope]);
+  }, [priceRange, selectedItemType, selectedCategories, currentPage, slug, ratingFilter, scope, retryNonce]);
 
   const sectionClassName = `${SECTION_CLASS_BY_VARIANT[variant] || SECTION_CLASS_BY_VARIANT.default} ${className}`.trim();
 
@@ -148,7 +153,18 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
                 isLoading ? 'opacity-60 pointer-events-none motion-reduce:opacity-100' : 'opacity-100'
               }`}
             >
-              {products.length > 0 ? (
+              {fetchError ? (
+                <div data-testid="destination-listings-error" className="weelp-fade-up col-span-full flex min-h-[300px] flex-col items-center justify-center gap-4 text-center">
+                  <p className="text-lg text-muted-foreground">We could not load these destination listings.</p>
+                  <button
+                    type="button"
+                    onClick={() => setRetryNonce((value) => value + 1)}
+                    className="inline-flex min-h-[44px] items-center rounded-[11.5px] border border-weelp-sage-deep bg-background px-5 py-2.5 text-[16px] font-medium text-weelp-copy transition-colors duration-200 motion-reduce:transition-none hover:bg-weelp-sage-deep hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  >
+                    Try again
+                  </button>
+                </div>
+              ) : products.length > 0 ? (
                 products.map((product, i) => {
                   const fallbackCity = scope === 'city' ? slug : undefined;
                   const card = mapProductToItemCard(product, product?.city_slug || fallbackCity);

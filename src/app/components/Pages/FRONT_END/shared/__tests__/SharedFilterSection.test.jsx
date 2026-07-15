@@ -17,6 +17,15 @@ jest.mock('../FilterDrawer', () => {
   return MockFilterDrawer;
 });
 
+jest.mock('@/app/components/ui/item-card', () => ({
+  __esModule: true,
+  default: ({ title, className = '', style }) => (
+    <div className={className} style={style}>
+      {title}
+    </div>
+  ),
+}));
+
 const makeProduct = (id) => ({
   id,
   item_type: 'activity',
@@ -37,17 +46,18 @@ describe('SharedFilterSection grid refresh + reveal', () => {
   });
 
   afterEach(() => {
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     jest.useRealTimers();
   });
 
   const flushFetch = async () => {
-    // advance past the 500ms debounce so the fetch effect fires
     await act(async () => {
+      // advance past the 500ms debounce so the fetch effect fires, then let
+      // the resolved axios promise + finally settle in the same act boundary.
       jest.advanceTimersByTime(500);
-    });
-    // let the resolved axios promise + finally settle
-    await act(async () => {
+      await Promise.resolve();
       await Promise.resolve();
       await Promise.resolve();
     });
@@ -72,6 +82,7 @@ describe('SharedFilterSection grid refresh + reveal', () => {
 
     await act(async () => {
       resolveFetch(respond(8));
+      await Promise.resolve();
       await Promise.resolve();
       await Promise.resolve();
     });
@@ -112,6 +123,7 @@ describe('SharedFilterSection grid refresh + reveal', () => {
 
     await act(async () => {
       resolveSecond(respond(8));
+      await Promise.resolve();
       await Promise.resolve();
       await Promise.resolve();
     });
@@ -166,7 +178,9 @@ describe('SharedFilterSection empty state + pagination scroll', () => {
   });
 
   afterEach(() => {
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     jest.useRealTimers();
     delete window.matchMedia;
   });
@@ -174,8 +188,7 @@ describe('SharedFilterSection empty state + pagination scroll', () => {
   const flushFetch = async () => {
     await act(async () => {
       jest.advanceTimersByTime(500);
-    });
-    await act(async () => {
+      await Promise.resolve();
       await Promise.resolve();
       await Promise.resolve();
     });
@@ -209,6 +222,22 @@ describe('SharedFilterSection empty state + pagination scroll', () => {
     // clearing resets the price range (new array) so the debounced fetch refires
     await flushFetch();
     expect(axios.get).toHaveBeenCalled();
+  });
+
+  it('separates API failures from empty filters and retries the same destination request', async () => {
+    axios.get.mockRejectedValueOnce(new Error('controlled destination failure'));
+    render(<SharedFilterSection scope="city" slug="dubai" />);
+    await flushFetch();
+
+    expect(screen.getByText('We could not load these destination listings.')).toBeInTheDocument();
+    expect(screen.queryByText('No items match your filters.')).not.toBeInTheDocument();
+    expect(screen.getByTestId('result-grid')).toHaveClass('grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'xl:grid-cols-4');
+
+    axios.get.mockResolvedValueOnce({ status: 200, data: { data: [makeProduct(1)], last_page: 1 } });
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
+    await flushFetch();
+
+    expect(screen.getByText('Item 1')).toBeInTheDocument();
   });
 
   it('uses smooth scroll on page change when reduced-motion is not preferred', async () => {
