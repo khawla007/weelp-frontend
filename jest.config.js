@@ -10,6 +10,7 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jsdom',
   coverageProvider: 'v8',
+  testPathIgnorePatterns: ['<rootDir>/scripts/dark-tools\\.test\\.mjs$'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
