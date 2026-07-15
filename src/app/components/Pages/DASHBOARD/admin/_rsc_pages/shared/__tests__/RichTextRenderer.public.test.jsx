@@ -18,6 +18,8 @@ const content = JSON.stringify({
     { type: 'bulletList', content: [{ type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'List item' }] }] }] },
     { type: 'blockquote', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Quotation' }] }] },
     { type: 'image', attrs: { src: '/image.jpg', alt: 'Inline media' } },
+    { type: 'video', attrs: { src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4', title: 'Fixture video' } },
+    { type: 'iframe', attrs: { src: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ', title: 'Fixture iframe' } },
     { type: 'table', content: [{ type: 'tableRow', content: [{ type: 'tableCell', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Table cell' }] }] }] }] },
     { type: 'codeBlock', content: [{ type: 'text', text: 'averyveryveryveryveryveryveryverylongcodevalue' }] },
   ],
@@ -29,6 +31,8 @@ describe('RichTextRenderer public mode', () => {
 
     expect(container.firstElementChild).toHaveClass('public-rich-text');
     expect(screen.getByRole('img', { name: 'Inline media' })).toBeInTheDocument();
+    expect(container.querySelector('video')).toHaveClass('rich-text-editor-media');
+    expect(container.querySelector('.rich-text-editor-embed iframe')).toHaveAttribute('title', 'Fixture iframe');
     expect(container.querySelector('.rich-text-editor-table-wrap')).toBeInTheDocument();
     expect(container.querySelector('pre')).toBeInTheDocument();
   });

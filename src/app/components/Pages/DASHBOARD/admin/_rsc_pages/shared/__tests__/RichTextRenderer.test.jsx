@@ -67,6 +67,34 @@ describe('RichTextRenderer', () => {
     expect(html).not.toContain('<img');
   });
 
+  it('renders allowlisted videos and embeds while dropping unsafe embeds', () => {
+    const content = JSON.stringify({
+      type: 'doc',
+      content: [
+        {
+          type: 'video',
+          attrs: { src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4', title: 'Fixture video' },
+        },
+        {
+          type: 'iframe',
+          attrs: { src: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ', title: 'Fixture iframe' },
+        },
+        {
+          type: 'embed',
+          attrs: { src: 'https://evil.example/embed', title: 'Unsafe iframe' },
+        },
+      ],
+    });
+
+    const html = renderToStaticMarkup(<RichTextRenderer content={content} />);
+
+    expect(html).toContain('<video');
+    expect(html).toContain('src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"');
+    expect(html).toContain('<iframe');
+    expect(html).toContain('src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"');
+    expect(html).not.toContain('evil.example');
+  });
+
   it('renders saved text alignment on blocks', () => {
     const content = JSON.stringify({
       type: 'doc',

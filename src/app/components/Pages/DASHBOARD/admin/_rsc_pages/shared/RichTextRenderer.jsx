@@ -18,6 +18,20 @@ const safeUrl = (value = '', { images = false } = {}) => {
   }
 };
 
+const allowedEmbedHosts = new Set(['www.youtube.com', 'youtube.com', 'www.youtube-nocookie.com', 'youtube-nocookie.com', 'player.vimeo.com']);
+
+const safeEmbedUrl = (value = '') => {
+  const url = safeUrl(value);
+  if (!url || url.startsWith('/') || url.startsWith('#')) return '';
+
+  try {
+    const parsed = new URL(url);
+    return allowedEmbedHosts.has(parsed.hostname) ? url : '';
+  } catch {
+    return '';
+  }
+};
+
 const renderMarks = (children, marks = [], keyPrefix = 'mark') =>
   marks.reduce((current, mark, index) => {
     const key = `${keyPrefix}-${index}`;
@@ -113,6 +127,33 @@ const renderNode = (node, key) => {
     const src = safeUrl(node.attrs?.src, { images: true });
     if (!src) return null;
     return <img key={key} src={src} alt={node.attrs?.alt || ''} title={node.attrs?.title || undefined} loading="lazy" />;
+  }
+  if (node.type === 'video') {
+    const src = safeUrl(node.attrs?.src, { images: true });
+    if (!src) return null;
+
+    return (
+      <video key={key} className="rich-text-editor-media" src={src} title={node.attrs?.title || undefined} controls preload="metadata">
+        <track kind="captions" />
+      </video>
+    );
+  }
+  if (node.type === 'iframe' || node.type === 'embed') {
+    const src = safeEmbedUrl(node.attrs?.src);
+    if (!src) return null;
+
+    return (
+      <div key={key} className="rich-text-editor-embed">
+        <iframe
+          src={src}
+          title={node.attrs?.title || 'Embedded content'}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          sandbox="allow-scripts allow-same-origin allow-presentation"
+        />
+      </div>
+    );
   }
 
   if (children.length > 0) return <React.Fragment key={key}>{children}</React.Fragment>;

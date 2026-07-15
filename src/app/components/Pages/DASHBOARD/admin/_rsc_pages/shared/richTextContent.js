@@ -26,6 +26,7 @@ const hasNodeContent = (node) => {
   if (!node) return false;
   if (node.type === 'text') return Boolean(node.text?.trim());
   if (node.type === 'image') return Boolean(node.attrs?.src);
+  if (node.type === 'video' || node.type === 'iframe' || node.type === 'embed') return Boolean(node.attrs?.src);
   if (Array.isArray(node.content)) return node.content.some(hasNodeContent);
   return false;
 };
