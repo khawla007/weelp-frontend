@@ -14,7 +14,7 @@ import { Sparkles, Clock, HelpCircle } from 'lucide-react';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
 import { useSession } from 'next-auth/react';
 
-export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
+export default function ExploreClientWrapper({ initialItineraries, lastPage, initialError = false }) {
   const [applicationFormOpen, setApplicationFormOpen] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(null);
   const [activeTab, setActiveTab] = useState('home');
@@ -125,6 +125,7 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage }) {
       <CreatorFilter
         initialItineraries={initialItineraries}
         lastPage={lastPage}
+        initialError={initialError}
         activeTab={activeTab}
         onTabChange={setActiveTab}
         onActionClick={handleActionClick}

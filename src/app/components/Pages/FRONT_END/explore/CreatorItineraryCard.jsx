@@ -36,8 +36,8 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
     return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
   })();
 
-  const cityName = itinerary?.locations?.[0]?.city?.name || '';
-  const citySlug = cityName ? cityName.toLowerCase().replace(/\s+/g, '-') : '';
+  const city = itinerary?.locations?.[0]?.city;
+  const citySlug = city?.slug || (city?.name ? city.name.toLowerCase().replace(/\s+/g, '-') : '');
   const href = citySlug && slug ? `/cities/${citySlug}/itineraries/${slug}` : '#';
 
   const handleLike = async (e) => {

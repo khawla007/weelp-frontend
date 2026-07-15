@@ -37,12 +37,15 @@ function getActionButton(isLoggedIn, isCreator, applicationStatus, statusLoading
   return { label: 'Apply as Creator', icon: Sparkles };
 }
 
-const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, onActionClick, isLoggedIn, isCreator, applicationStatus, statusLoading }) => {
+const CreatorFilter = ({ initialItineraries, lastPage, initialError = false, activeTab, onTabChange, onActionClick, isLoggedIn, isCreator, applicationStatus, statusLoading }) => {
   const { data: session } = useSession();
   const [itineraries, setItineraries] = useState(initialItineraries || []);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(lastPage || 1);
   const [loading, setLoading] = useState(false);
+  const [fetchError, setFetchError] = useState(initialError);
+  const [loadMoreError, setLoadMoreError] = useState(false);
+  const [retryNonce, setRetryNonce] = useState(0);
   const [activeSort, setActiveSort] = useState('latest');
   const [activeSource, setActiveSource] = useState('all');
   const observerRef = useRef(null);
@@ -74,16 +77,32 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
     let cancelled = false;
     const refetch = async () => {
       setLoading(true);
+      setFetchError(false);
+      setLoadMoreError(false);
       setItineraries([]);
       try {
         const data = await fetchItineraries(1, activeSort, activeSource);
         if (!cancelled) {
+          if (data?.success === false) {
+            setFetchError(true);
+            setItineraries([]);
+            setPage(1);
+            setMaxPage(1);
+            return;
+          }
           setItineraries(data?.data || []);
           setPage(1);
           setMaxPage(data?.last_page || 1);
+          setFetchError(false);
         }
       } catch (error) {
         console.error('Error fetching itineraries:', error);
+        if (!cancelled) {
+          setFetchError(true);
+          setItineraries([]);
+          setPage(1);
+          setMaxPage(1);
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -93,29 +112,37 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
     return () => {
       cancelled = true;
     };
-  }, [activeSort, activeSource, fetchItineraries, activeTab]);
+  }, [activeSort, activeSource, fetchItineraries, activeTab, retryNonce]);
 
-  const loadMoreItineraries = useCallback(async () => {
-    // Disable infinite scroll on trending tab (client-side sort of existing data)
-    if (activeTab === 'trending') return;
-    if (loading || page >= maxPage) return;
+  const loadMoreItineraries = useCallback(
+    async ({ manual = false } = {}) => {
+      // Disable infinite scroll on trending tab (client-side sort of existing data)
+      if (activeTab === 'trending') return;
+      if (loadMoreError && !manual) return;
+      if (loading || page >= maxPage) return;
 
-    setLoading(true);
-    try {
-      const nextPage = page + 1;
-      const data = await fetchItineraries(nextPage, activeSort, activeSource);
+      setLoading(true);
+      setLoadMoreError(false);
+      try {
+        const nextPage = page + 1;
+        const data = await fetchItineraries(nextPage, activeSort, activeSource);
 
-      if (data?.data?.length > 0) {
-        setItineraries((prev) => [...prev, ...data.data]);
-        setPage(nextPage);
-        setMaxPage(data.last_page);
+        if (data?.success === false) {
+          setLoadMoreError(true);
+        } else if (data?.data?.length > 0) {
+          setItineraries((prev) => [...prev, ...data.data]);
+          setPage(nextPage);
+          setMaxPage(data.last_page);
+        }
+      } catch (error) {
+        console.error('Error loading more itineraries:', error);
+        setLoadMoreError(true);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error loading more itineraries:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [loading, page, maxPage, fetchItineraries, activeSort, activeSource, activeTab]);
+    },
+    [loadMoreError, loading, page, maxPage, fetchItineraries, activeSort, activeSource, activeTab],
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -246,6 +273,20 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
           <div className="flex justify-center py-12">
             <div className="w-8 h-8 border-2 border-weelp-sage-deep border-t-transparent rounded-full animate-spin" />
           </div>
+        ) : fetchError ? (
+          <div data-testid="creator-itineraries-error" className="flex min-h-[220px] flex-col items-center justify-center gap-4 text-center text-weelp-steel">
+            <p className="text-lg font-medium">We could not load creator itineraries.</p>
+            <button
+              type="button"
+              onClick={() => {
+                isInitialMount.current = false;
+                setRetryNonce((value) => value + 1);
+              }}
+              className="inline-flex min-h-[44px] items-center rounded-[11.5px] border border-weelp-sage-deep bg-background px-5 py-2.5 text-[16px] font-medium text-weelp-copy transition-colors duration-200 hover:bg-weelp-sage-deep hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            >
+              Try again
+            </button>
+          </div>
         ) : displayItineraries.length === 0 ? (
           <div className="text-center py-12 text-weelp-steel">
             <p className="text-lg font-medium">{activeSource === 'mine' ? "You haven't created any itineraries yet" : 'No itineraries yet'}</p>
@@ -265,6 +306,11 @@ const CreatorFilter = ({ initialItineraries, lastPage, activeTab, onTabChange, o
         {activeTab === 'home' && page < maxPage && (
           <div ref={observerRef} className="flex justify-center py-4">
             {loading && <div className="w-8 h-8 border-2 border-weelp-sage-deep border-t-transparent rounded-full animate-spin" />}
+            {loadMoreError && !loading && (
+              <button type="button" onClick={() => loadMoreItineraries({ manual: true })} className="text-sm font-medium text-weelp-copy underline underline-offset-4">
+                Try loading more again
+              </button>
+            )}
           </div>
         )}
       </div>

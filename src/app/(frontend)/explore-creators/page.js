@@ -7,12 +7,13 @@ const ExplorePage = async () => {
   const itinerariesData = await getExploreItineraries(1);
   const initialItineraries = itinerariesData?.data || [];
   const lastPage = itinerariesData?.last_page || 1;
+  const initialError = itinerariesData?.success === false;
 
   return (
     <>
       <BannerSectionSearchForm title={'Explore Creators'} description={'Discover travel experiences shared by creators. Find inspiration and book your next adventure.'} />
 
-      <ExploreClientWrapper initialItineraries={initialItineraries} lastPage={lastPage} />
+      <ExploreClientWrapper initialItineraries={initialItineraries} lastPage={lastPage} initialError={initialError} />
     </>
   );
 };
