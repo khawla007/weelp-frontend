@@ -7,6 +7,7 @@ import NavigationLink from '@/app/components/Navigation/NavigationLink';
 
 const META_DESCRIPTION_LIMIT = 155;
 const FALLBACK_DESCRIPTION = 'Learn more about Weelp.';
+const CMS_NOT_FOUND_MESSAGES = new Set(['Page not found', 'Slug not found']);
 
 const stripHtml = (input) =>
   String(input ?? '')
@@ -81,9 +82,18 @@ const hexToRgba = (hex, opacity) => {
 const textDecoration = (enabled) => (enabled ? 'underline' : undefined);
 const fontWeight = (enabled, fallback) => (enabled ? 700 : fallback);
 const fontStyle = (enabled) => (enabled ? 'italic' : undefined);
+const isCmsNotFoundResponse = ({ success, message }) => !success && CMS_NOT_FOUND_MESSAGES.has(message);
+const assertNoCmsApiError = (response) => {
+  if (!response?.success && !isCmsNotFoundResponse(response)) {
+    throw new Error(response?.message || 'Failed to fetch CMS page');
+  }
+};
 
 export async function buildCmsPageMetadata(slug, canonicalPath = `/pages/${slug}`) {
-  const { success, data } = await getPublishedPage(slug);
+  const response = await getPublishedPage(slug);
+  assertNoCmsApiError(response);
+
+  const { success, data } = response;
 
   if (!success || !data || !isPublishedPage(data)) {
     return {
@@ -104,7 +114,10 @@ export async function buildCmsPageMetadata(slug, canonicalPath = `/pages/${slug}
 }
 
 export async function CmsPageTemplate({ slug }) {
-  const { success, data } = await getPublishedPage(slug);
+  const response = await getPublishedPage(slug);
+  assertNoCmsApiError(response);
+
+  const { success, data } = response;
 
   if (!success || !data || !isPublishedPage(data)) {
     notFound();
