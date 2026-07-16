@@ -11,7 +11,7 @@ export const FILTER_FONT = { fontFamily: 'var(--font-interTight), Inter Tight, s
 
 export function ListingFilterPanel({ children, className, testId }) {
   return (
-    <div data-testid={testId} className={cn('h-fit w-full rounded-[11.5px] bg-background p-4 shadow-sm dark:shadow-none sm:p-5 lg:max-w-xs lg:p-6 lg:px-7', className)}>
+    <div data-testid={testId} className={cn('h-fit w-full rounded-[11.5px] border border-border bg-background p-4 shadow-sm dark:shadow-none sm:p-5 lg:max-w-xs lg:p-6 lg:px-7', className)}>
       {children}
     </div>
   );

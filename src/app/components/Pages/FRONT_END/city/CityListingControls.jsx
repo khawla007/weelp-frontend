@@ -2,18 +2,14 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { ChevronDown, Search, SlidersHorizontal, X } from 'lucide-react';
+import { SlidersHorizontal, X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { FILTER_FONT, ListingFilterPanel, ListingOptionGroup, ListingPriceRange, ListingRatingFilter } from '@/app/components/Pages/FRONT_END/shared/ListingFilterPanel';
+import { ListingFilterPanel, ListingOptionGroup, ListingPriceRange, ListingRatingFilter } from '@/app/components/Pages/FRONT_END/shared/ListingFilterPanel';
+import ListingSearchSortControls, { ListingSearchControl, ListingSortControl } from '@/app/components/Pages/FRONT_END/shared/ListingSearchSortControls';
 
 const DEFAULT_SORT = 'id_desc';
-// dark-mode-exempt: requested search action hover is explicitly white
-const SEARCH_WHITE_HOVER = 'hover:!bg-white';
-// dark-mode-exempt: city Tours sort control intentionally changes to white on hover
-const SORT_WHITE_HOVER = 'hover:bg-white';
 let pendingQuery = null;
 let committedQuery = '';
 let queryPathname = null;
@@ -74,12 +70,6 @@ export default function CityListingControls({ categories = [], tags = [] }) {
     navigate({ [key]: [...values].sort().join(',') });
   };
 
-  const submitSearch = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    navigate({ search: String(formData.get('search') || '').trim() });
-  };
-
   const submitPrices = ([minimum, maximum]) => {
     navigate({
       min_price: String(minimum),
@@ -90,7 +80,18 @@ export default function CityListingControls({ categories = [], tags = [] }) {
   return (
     <div className="flex flex-col gap-4" aria-label="Listing controls">
       <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 lg:hidden">
-        <SearchSortControls searchParams={searchParams} onSearch={submitSearch} onSort={(value) => navigate({ sort_by: value })} />
+        <ListingSearchSortControls
+          searchParams={searchParams}
+          sortOptions={SORT_OPTIONS}
+          defaultSort={DEFAULT_SORT}
+          searchLabel="Search listings"
+          searchFormLabel="Search city listings"
+          searchPlaceholder="Search listings"
+          sortLabel="Sort listings"
+          sortIdBase="listing-sort"
+          onSearch={(value) => navigate({ search: value })}
+          onSort={(value) => navigate({ sort_by: value })}
+        />
         <div data-testid="mobile-listing-filters" className="lg:hidden">
           <Sheet>
             <SheetTrigger asChild>
@@ -132,7 +133,14 @@ export default function CityListingControls({ categories = [], tags = [] }) {
       <div data-testid="desktop-listing-filters" className="hidden lg:block">
         <ListingFilterPanel testId="listing-filter-panel" className="sticky top-28">
           <div className="flex flex-col gap-6 md:gap-8 lg:gap-10">
-            <SearchControl searchParams={searchParams} onSearch={submitSearch} desktop />
+            <ListingSearchControl
+              searchParams={searchParams}
+              searchLabel="Search listings"
+              searchFormLabel="Search city listings"
+              searchPlaceholder="Search listings"
+              onSearch={(value) => navigate({ search: value })}
+              desktop
+            />
             <FilterFields
               key={`desktop-${priceKey}`}
               categories={categories}
@@ -180,60 +188,16 @@ export function CityListingToolbar() {
     router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
   };
 
-  return <SortControl searchParams={searchParams} onSort={(value) => update('sort_by', value)} desktop />;
-}
-
-function SearchSortControls({ searchParams, onSearch, onSort, desktop = false }) {
   return (
-    <>
-      <SearchControl searchParams={searchParams} onSearch={onSearch} />
-      <SortControl searchParams={searchParams} onSort={onSort} />
-    </>
-  );
-}
-
-function SearchControl({ searchParams, onSearch, desktop = false }) {
-  return (
-    <form aria-label="Search city listings" className={desktop ? 'flex min-w-0 gap-2' : 'col-span-2 flex min-w-0 gap-2'} onSubmit={onSearch}>
-      <Input
-        key={`search-${desktop}-${searchParams.get('search') || ''}`}
-        name="search"
-        type="search"
-        aria-label="Search listings"
-        defaultValue={searchParams.get('search') || ''}
-        placeholder="Search listings"
-        className="min-h-11 min-w-0"
-      />
-      <Button
-        type="submit"
-        size="icon"
-        variant="outline"
-        className={`size-11 shrink-0 border-weelp-sage-deep bg-weelp-sage-deep text-white hover:!border-weelp-sage-deep hover:!text-weelp-sage-deep ${SEARCH_WHITE_HOVER}`}
-        aria-label="Submit search"
-      >
-        <Search />
-      </Button>
-    </form>
-  );
-}
-
-function SortControl({ searchParams, onSort, desktop = false }) {
-  const sortId = desktop ? 'listing-sort-desktop' : 'listing-sort-mobile';
-  const sortClassName = `min-h-11 w-full appearance-none rounded-[7.86px] border border-[rgba(67,90,103,0.26)] bg-muted py-2 pl-4 pr-10 text-sm font-medium text-weelp-steel transition md:text-base ${SORT_WHITE_HOVER}`;
-  return (
-    <div className={desktop ? 'relative ml-auto w-fit' : 'relative min-w-0'}>
-      <label className="sr-only" htmlFor={sortId}>
-        Sort listings
-      </label>
-      <select id={sortId} aria-label="Sort listings" className={sortClassName} style={FILTER_FONT} value={searchParams.get('sort_by') || DEFAULT_SORT} onChange={(event) => onSort(event.target.value)}>
-        {SORT_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-weelp-steel" />
-    </div>
+    <ListingSortControl
+      searchParams={searchParams}
+      sortOptions={SORT_OPTIONS}
+      defaultSort={DEFAULT_SORT}
+      sortLabel="Sort listings"
+      sortIdBase="listing-sort"
+      onSort={(value) => update('sort_by', value)}
+      desktop
+    />
   );
 }
 

@@ -132,9 +132,16 @@ export async function getAllFeaturedCities() {
  * @param {number} perPage - Items per page (default 8)
  * @returns {Promise<{success:boolean, data:[], current_page:number, last_page:number, per_page:number, total:number}>}
  */
-export async function getAllCities(page = 1, perPage = 8) {
+export async function getAllCities(page = 1, perPage = 8, params = {}) {
   try {
-    const response = await publicApi.get(`/api/cities?page=${page}&per_page=${perPage}`, {
+    const query = new URLSearchParams({ page, per_page: perPage });
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        query.set(key, value);
+      }
+    });
+
+    const response = await publicApi.get(`/api/cities?${query.toString()}`, {
       headers: { Accept: 'application/json' },
     });
 

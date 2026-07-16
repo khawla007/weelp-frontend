@@ -165,7 +165,7 @@ function Pagination({ currentPage, lastPage, basePath, query }) {
             href={pageHref(page)}
             aria-current={page === currentPage ? 'page' : undefined}
             className={`flex size-11 items-center justify-center rounded-full border text-sm shadow-sm dark:shadow-none transition ${
-              page === currentPage ? 'border-foreground bg-foreground text-white' : 'border-border bg-card text-foreground hover:bg-muted'
+              page === currentPage ? 'border-foreground bg-foreground text-background' : 'border-border bg-card text-foreground hover:bg-muted'
             }`}
           >
             {page}

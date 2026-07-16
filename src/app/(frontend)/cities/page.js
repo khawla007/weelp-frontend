@@ -3,6 +3,7 @@ import CityCard from '@/app/components/CityCard';
 import BreadCrumb from '@/app/components/BreadCrumb';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import Reveal from '@/app/components/ui/Reveal';
+import CitiesListingControls, { CitiesListingToolbar } from '@/app/components/Pages/FRONT_END/cities/CitiesListingControls';
 import { getAllCities } from '@/lib/services/cities';
 
 export const metadata = {
@@ -11,35 +12,40 @@ export const metadata = {
 };
 
 export default async function CitiesPage({ searchParams }) {
-  const { page: pageParam } = await searchParams;
+  const resolvedSearchParams = await searchParams;
+  const { page: pageParam } = resolvedSearchParams;
   const currentPage = Math.max(1, parseInt(pageParam, 10) || 1);
-  const response = await getAllCities(currentPage, 10);
+  const filters = normalizeCityFilters(resolvedSearchParams);
+  const response = await getAllCities(currentPage, 10, filters);
 
   const isError = !response?.success;
   const cities = response?.success ? response.data : [];
   const lastPage = response?.last_page ?? 1;
   const total = response?.total ?? 0;
+  const hasActiveFilters = Object.keys(filters).length > 0;
 
   return (
     <section className="container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24">
-      <BreadCrumb />
-
-      <section className="weelp-hero-rise flex flex-col items-center gap-3 pt-6 text-center">
-        <h1 className="text-3xl font-semibold text-foreground sm:text-5xl">
-          <span className="weelp-rise-mask weelp-rise-mask--block">
-            <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
-              Cities
-            </span>
-          </span>
-        </h1>
-        <p className="max-w-xl text-sm font-medium text-weelp-steel sm:text-lg">
-          <span className="weelp-rise-mask weelp-rise-mask--block">
-            <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '280ms' }}>
-              Explore destinations city by city and find the perfect place for your next trip.
-            </span>
-          </span>
-        </p>
-      </section>
+      <div className="flex flex-col gap-4 pt-[70px]">
+        <BreadCrumb />
+        <div className="weelp-rise-mask weelp-rise-mask--block -mt-0.5 w-full">
+          <div className="weelp-rise-item w-full" style={{ '--weelp-rise-delay': '200ms' }}>
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+              <div className="flex flex-col gap-2">
+                <span className="text-[14px] font-semibold tracking-[0.2px] text-muted-foreground">Explore destinations</span>
+                <h1 className="text-lg text-foreground sm:text-[36px]">All Cities</h1>
+                <p className="max-w-[520px] text-sm font-medium leading-[1.5] text-muted-foreground sm:text-base">Find cities by country, season, activity count, or name.</p>
+              </div>
+              {!isError && (
+                <div className="hidden shrink-0 lg:flex lg:-translate-y-6 lg:flex-col lg:items-end lg:gap-2">
+                  <p className="text-sm font-medium text-muted-foreground">{total} cities</p>
+                  <CitiesListingToolbar />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
 
       {isError ? (
         <div className="flex flex-col items-center gap-4 py-20 text-center">
@@ -49,28 +55,38 @@ export default async function CitiesPage({ searchParams }) {
         <div className="flex flex-col items-center gap-4 py-20 text-center">
           <p className="text-lg text-muted-foreground">No cities found.</p>
           {currentPage > 1 && (
-            <NavigationLink href="/cities" className="text-brand-500 hover:underline">
+            <NavigationLink href={{ pathname: '/cities', query: filters }} className="text-brand-500 hover:underline">
               Back to first page
+            </NavigationLink>
+          )}
+          {hasActiveFilters && (
+            <NavigationLink href="/cities" className="text-brand-500 hover:underline">
+              Clear filters
             </NavigationLink>
           )}
         </div>
       ) : (
-        <>
-          <h2 className="sr-only">All cities</h2>
-          <Reveal as="section" initialHidden stagger={60} variant="lift" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-            {cities.map((city) => (
-              <CityCard key={city.id} city={city} />
-            ))}
-          </Reveal>
+        <div data-testid="cities-listing-layout" className="grid items-start gap-6 lg:grid-cols-[224px_minmax(0,1fr)] lg:gap-6">
+          <aside data-testid="cities-listing-sidebar" className="min-w-0 lg:col-start-1 lg:row-start-1">
+            <CitiesListingControls countries={response?.available_countries || []} seasons={response?.available_seasons || []} />
+          </aside>
+          <div data-testid="cities-listing-results" className="flex min-w-0 flex-col gap-6 lg:col-start-2 lg:row-start-1">
+            <h2 className="sr-only">All cities</h2>
+            <Reveal as="section" initialHidden stagger={60} variant="lift" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+              {cities.map((city) => (
+                <CityCard key={city.id} city={city} />
+              ))}
+            </Reveal>
 
-          {lastPage > 1 && <Pagination currentPage={currentPage} lastPage={lastPage} />}
-        </>
+            {lastPage > 1 && <Pagination currentPage={currentPage} lastPage={lastPage} query={filters} />}
+          </div>
+        </div>
       )}
     </section>
   );
 }
 
-function Pagination({ currentPage, lastPage }) {
+function Pagination({ currentPage, lastPage, query }) {
   const pages = [];
   const maxVisible = 5;
   let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
@@ -83,11 +99,13 @@ function Pagination({ currentPage, lastPage }) {
     pages.push(i);
   }
 
+  const pageHref = (page) => ({ pathname: '/cities', query: { ...query, page } });
+
   return (
-    <nav className="flex items-center justify-center gap-2 pt-4" aria-label="Pagination">
+    <nav className="flex max-w-full flex-wrap items-center justify-center gap-2 pt-4" aria-label="Pagination">
       {currentPage > 1 ? (
         <NavigationLink
-          href={`/cities?page=${currentPage - 1}`}
+          href={pageHref(currentPage - 1)}
           className="flex size-11 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition hover:bg-muted dark:shadow-none"
           aria-label="Previous page"
         >
@@ -102,21 +120,21 @@ function Pagination({ currentPage, lastPage }) {
       {start > 1 && (
         <>
           <NavigationLink
-            href="/cities?page=1"
-            className="hidden size-11 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted dark:shadow-none sm:flex"
+            href={pageHref(1)}
+            className="flex size-11 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted dark:shadow-none"
           >
             1
           </NavigationLink>
-          {start > 2 && <span className="hidden px-1 text-muted-foreground sm:inline">...</span>}
+          {start > 2 && <span className="px-1 text-muted-foreground">...</span>}
         </>
       )}
 
       {pages.map((page) => (
         <NavigationLink
           key={page}
-          href={`/cities?page=${page}`}
+          href={pageHref(page)}
           aria-current={page === currentPage ? 'page' : undefined}
-          className={`${Math.abs(page - currentPage) <= 1 ? 'flex' : 'hidden sm:flex'} size-11 items-center justify-center rounded-full border text-sm shadow-sm transition dark:shadow-none ${
+          className={`flex size-11 items-center justify-center rounded-full border text-sm shadow-sm transition dark:shadow-none ${
             page === currentPage ? 'border-foreground bg-foreground text-background' : 'border-border bg-background text-foreground hover:bg-muted'
           }`}
         >
@@ -126,10 +144,10 @@ function Pagination({ currentPage, lastPage }) {
 
       {end < lastPage && (
         <>
-          {end < lastPage - 1 && <span className="hidden px-1 text-muted-foreground sm:inline">...</span>}
+          {end < lastPage - 1 && <span className="px-1 text-muted-foreground">...</span>}
           <NavigationLink
-            href={`/cities?page=${lastPage}`}
-            className="hidden size-11 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted dark:shadow-none sm:flex"
+            href={pageHref(lastPage)}
+            className="flex size-11 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted dark:shadow-none"
           >
             {lastPage}
           </NavigationLink>
@@ -138,7 +156,7 @@ function Pagination({ currentPage, lastPage }) {
 
       {currentPage < lastPage ? (
         <NavigationLink
-          href={`/cities?page=${currentPage + 1}`}
+          href={pageHref(currentPage + 1)}
           className="flex size-11 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition hover:bg-muted dark:shadow-none"
           aria-label="Next page"
         >
@@ -151,4 +169,14 @@ function Pagination({ currentPage, lastPage }) {
       )}
     </nav>
   );
+}
+
+function normalizeCityFilters(searchParams) {
+  const query = {};
+  ['search', 'country', 'season', 'sort_by'].forEach((key) => {
+    const value = typeof searchParams[key] === 'string' ? searchParams[key].trim() : '';
+    if (value) query[key] = value;
+  });
+
+  return query;
 }

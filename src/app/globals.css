@@ -772,10 +772,6 @@ body {
     color: var(--link-hover);
   }
 
-  a:visited {
-    color: inherit;
-  }
-
   button {
     font-family: var(--font-interTight), 'Inter Tight', sans-serif;
     font-size: 0.875rem;
