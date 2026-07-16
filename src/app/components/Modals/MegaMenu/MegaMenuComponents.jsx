@@ -78,7 +78,7 @@ export const CountryCards = ({ countries = [], selectedCountryId, onSelect }) =>
             <span
               className="leading-tight"
               style={{
-                color: 'hsl(var(--muted-foreground))',
+                color: 'hsl(var(--background))',
                 fontFamily: FONT_FAMILY,
                 fontSize: '10px',
                 fontWeight: 500,
@@ -103,7 +103,7 @@ export const CityGrid = ({ cities = [] }) => {
         <li key={city.id}>
           <Link
             href={`/cities/${city.slug}`}
-            className="text-muted-foreground transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-popover"
+            className="text-foreground transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-popover"
             style={{
               fontFamily: FONT_FAMILY,
               fontSize: '14px',
