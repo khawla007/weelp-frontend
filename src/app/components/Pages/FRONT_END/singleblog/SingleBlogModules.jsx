@@ -1,24 +1,67 @@
 import React from 'react';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
+
+const taxonomyLabelClasses = 'font-medium capitalize px-6 py-4 text-Lynchcolor text-base border rounded-md w-fit max-w-full break-words';
+const taxonomyLinkClasses = `${taxonomyLabelClasses} hover:text-weelp-sage-deep hover:border-weelp-sage-deep hover:bg-surface-tint`;
+
+const buildBlogFilterHref = (type, slug) => {
+  const params = new URLSearchParams({ [type]: slug });
+  return `/blogs?${params.toString()}`;
+};
+
+const getTaxonomyName = (item, fallbackKey) => item?.name || item?.[fallbackKey];
+
+const TaxonomyItem = ({ item, type, fallbackKey }) => {
+  const name = getTaxonomyName(item, fallbackKey);
+
+  if (!name) {
+    return null;
+  }
+
+  if (!item?.slug) {
+    return <span className={taxonomyLabelClasses}>{name}</span>;
+  }
+
+  return (
+    <NavigationLink href={buildBlogFilterHref(type, item.slug)} className={taxonomyLinkClasses}>
+      {name}
+    </NavigationLink>
+  );
+};
 
 /**
  * @type {Category}
  * @returns {Component}
  */
-export const RelatedLinks = ({ categories = [] }) => {
-  if (categories && categories.length > 0) {
+export const RelatedLinks = ({ categories = [], tags = [] }) => {
+  if (categories.length > 0 || tags.length > 0) {
     return (
-      <ul className="flex flex-wrap max-w-52  gap-2 sm:gap-4">
-        {categories.map((category, index) => {
-          return (
-            <li
-              key={index}
-              className="font-medium capitalize px-6 py-4 text-Lynchcolor hover:text-weelp-sage-deep text-base border hover:border-weelp-sage-deep hover:bg-surface-tint cursor-pointer rounded-md w-fit"
-            >
-              {category.name}
-            </li>
-          );
-        })}
-      </ul>
+      <div className="flex flex-col gap-4">
+        {categories.length > 0 && (
+          <div className="flex flex-col gap-3">
+            <h3 className="text-lg sm:text-[28px] lg:mt-4 font-semibold text-foreground capitalize">Categories</h3>
+            <ul className="flex flex-wrap max-w-52 gap-2 sm:gap-4">
+              {categories.map((category, index) => (
+                <li key={`category-${category?.slug || category?.id || index}`} className="contents">
+                  <TaxonomyItem item={category} type="category" fallbackKey="category_name" />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {tags.length > 0 && (
+          <div className="flex flex-col gap-3">
+            <h3 className="text-lg sm:text-[28px] font-semibold text-foreground capitalize">Tags</h3>
+            <ul className="flex flex-wrap max-w-52 gap-2 sm:gap-4">
+              {tags.map((tag, index) => (
+                <li key={`tag-${tag?.slug || tag?.id || index}`} className="contents">
+                  <TaxonomyItem item={tag} type="tag" fallbackKey="tag_name" />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     );
   }
   return;

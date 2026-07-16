@@ -4,7 +4,7 @@ import { FollowUs, RelatedLinks } from './SingleBlogModules';
 import { RichTextRenderer } from '../../DASHBOARD/admin/_rsc_pages/shared/RichTextRenderer';
 import Reveal from '@/app/components/ui/Reveal';
 
-const ContentSection = ({ content = '', categories = [] }) => {
+const ContentSection = ({ content = '', categories = [], tags = [] }) => {
   return (
     <section className="flex flex-col lg:flex-row">
       <Reveal variant="lift" initialHidden className="flex-[2]">
@@ -22,8 +22,7 @@ const ContentSection = ({ content = '', categories = [] }) => {
       </Reveal>
 
       <Reveal variant="lift" initialHidden delay={120} className="flex flex-col gap-4 lg:gap-12 flex-1 p-6 px-8">
-        <h3 className="text-lg sm:text-[28px] lg:mt-4 font-semibold text-foreground capitalize">Categories</h3>
-        <RelatedLinks categories={categories || []} />
+        <RelatedLinks categories={categories || []} tags={tags || []} />
         <FollowUs />
       </Reveal>
     </section>

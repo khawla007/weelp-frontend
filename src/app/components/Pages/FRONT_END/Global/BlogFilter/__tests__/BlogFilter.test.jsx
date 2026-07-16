@@ -46,4 +46,18 @@ describe('BlogFilterBar states', () => {
 
     expect(screen.getByText('Error loading blogs')).toBeVisible();
   });
+
+  it('passes initial category and tag filters to the public blog query', () => {
+    useBlogs.mockReturnValue({ blogs: { data: [], total: 0, current_page: 1, per_page: 5 }, isLoading: false, error: null });
+    render(<BlogFilterBar initialFilters={{ category: 'travel-tips', tag: 'family' }} />);
+
+    expect(useBlogs).toHaveBeenCalledWith(
+      expect.objectContaining({
+        category: 'travel-tips',
+        tag: 'family',
+        page: 1,
+        per_page: 5,
+      }),
+    );
+  });
 });

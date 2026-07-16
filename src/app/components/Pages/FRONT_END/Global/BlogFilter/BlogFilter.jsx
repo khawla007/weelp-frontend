@@ -11,11 +11,12 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import Reveal from '@/app/components/ui/Reveal';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 
-const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
+const BlogFilterBar = ({ title = 'Browse Blogs', initialFilters = {} }) => {
   // Initialize form with default values
   const { control, setValue } = useForm({
     defaultValues: {
-      // categories: [],
+      category: initialFilters.category || '',
+      tag: initialFilters.tag || '',
       sort_by: '',
       page: 1,
     },
@@ -28,6 +29,8 @@ const BlogFilterBar = ({ title = 'Browse Blogs' }) => {
 
   // Build query params for API
   const filterQuery = {
+    category: filters.category,
+    tag: filters.tag,
     sort_by: filters.sort_by,
     page: filters.page,
     per_page: 5,

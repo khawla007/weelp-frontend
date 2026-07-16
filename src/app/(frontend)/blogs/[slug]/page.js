@@ -93,7 +93,7 @@ const SingleBlogPage = async ({ params }) => {
       <SeoHeadScripts seo={data.seo} />
       <SeoBodyScripts seo={data.seo} />
       <BannerSectionBlog {...data} />
-      <ContentSection content={data?.content || ''} categories={data?.categories} />
+      <ContentSection content={data?.content || ''} categories={data?.categories} tags={data?.tags} />
       <GuideSection sectionTitle={'Recommended'} data={fakeData} />
       <SeoFooterScripts seo={data.seo} />
     </>
