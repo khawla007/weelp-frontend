@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import Reveal from '@/app/components/ui/Reveal';
@@ -9,10 +9,34 @@ import '@/app/styles/swiper.css';
 export default function CarouselShell({ items = [], navigationPrefix, renderSlide, breakpoints, className = '', slideClassName = '', showMobilePagination = false }) {
   const swiperRef = useRef(null);
   const hasNavigation = Boolean(navigationPrefix);
+  const prevSelector = hasNavigation ? `.${navigationPrefix}-prev` : undefined;
+  const nextSelector = hasNavigation ? `.${navigationPrefix}-next` : undefined;
+  const navigationSelectors = hasNavigation ? { prevEl: prevSelector, nextEl: nextSelector } : undefined;
 
   const modules = [];
   if (hasNavigation) modules.push(Navigation);
   if (showMobilePagination) modules.push(Pagination);
+
+  useEffect(() => {
+    const swiper = swiperRef.current;
+
+    if (!swiper?.navigation || !prevSelector || !nextSelector) return;
+
+    const prevEl = document.querySelector(prevSelector);
+    const nextEl = document.querySelector(nextSelector);
+
+    if (!prevEl || !nextEl) return;
+
+    swiper.params.navigation = {
+      ...(swiper.params.navigation || {}),
+      prevEl,
+      nextEl,
+    };
+
+    swiper.navigation.destroy();
+    swiper.navigation.init();
+    swiper.navigation.update();
+  }, [nextSelector, prevSelector]);
 
   if (!items.length) return null;
 
@@ -22,9 +46,11 @@ export default function CarouselShell({ items = [], navigationPrefix, renderSlid
         modules={modules}
         onBeforeInit={(swiper) => {
           swiperRef.current = swiper;
-          if (hasNavigation && typeof swiper.params.navigation === 'object') {
-            swiper.params.navigation.prevEl = `.${navigationPrefix}-prev`;
-            swiper.params.navigation.nextEl = `.${navigationPrefix}-next`;
+          if (navigationSelectors) {
+            swiper.params.navigation = {
+              ...(swiper.params.navigation || {}),
+              ...navigationSelectors,
+            };
           }
         }}
         onInit={(swiper) => {
@@ -38,6 +64,7 @@ export default function CarouselShell({ items = [], navigationPrefix, renderSlid
         slidesPerView={1.08}
         spaceBetween={18}
         breakpoints={breakpoints}
+        navigation={navigationSelectors}
         pagination={showMobilePagination ? { clickable: true, dynamicBullets: true } : undefined}
         className={className}
       >

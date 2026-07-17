@@ -15,6 +15,9 @@ const PRODUCT_BREAKPOINTS = {
   1440: { slidesPerView: 5, spaceBetween: 18 },
 };
 
+const PRODUCT_NAV_BUTTON_CLASS =
+  'flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-background text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:size-11';
+
 /**
  * Shared product carousel section used across pages (homepage, city, etc.).
  *
@@ -35,19 +38,11 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
         <SectionHeader title={title} />
 
         {headerAction === 'navigation' && (
-          <div className="hidden items-center gap-2 sm:flex">
-            <button
-              type="button"
-              className={`${navigationId}-prev flex size-11 items-center justify-center rounded-full border border-border bg-background text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}
-              aria-label={`Previous ${title} item`}
-            >
+          <div className="flex shrink-0 items-center gap-2">
+            <button type="button" className={`${navigationId}-prev ${PRODUCT_NAV_BUTTON_CLASS}`} aria-label={`Previous ${title} item`}>
               <ChevronLeft className="size-4" />
             </button>
-            <button
-              type="button"
-              className={`${navigationId}-next flex size-11 items-center justify-center rounded-full border border-border bg-background text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}
-              aria-label={`Next ${title} item`}
-            >
+            <button type="button" className={`${navigationId}-next ${PRODUCT_NAV_BUTTON_CLASS}`} aria-label={`Next ${title} item`}>
               <ChevronRight className="size-4" />
             </button>
           </div>
