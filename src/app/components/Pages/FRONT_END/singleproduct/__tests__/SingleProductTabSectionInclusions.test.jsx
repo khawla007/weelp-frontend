@@ -19,7 +19,12 @@ jest.mock('../ProductSidebar', () => {
 });
 
 jest.mock('../ItineraryPanel', () => {
-  const MockItineraryPanel = () => <div>Itinerary panel</div>;
+  const MockItineraryPanel = () => (
+    <div>
+      <h2>Itinerary</h2>
+      <div>Itinerary panel</div>
+    </div>
+  );
   MockItineraryPanel.displayName = 'MockItineraryPanel';
   return MockItineraryPanel;
 });
@@ -243,5 +248,101 @@ describe('SingleProductTabSection activity inclusions', () => {
 
     await waitFor(() => expect(screen.getByRole('button', { name: 'Overview' })).toHaveAttribute('aria-current', 'true'));
     expect(screen.queryByRole('button', { name: "What's Included" })).not.toBeInTheDocument();
+  });
+
+  it('scrolls tab clicks to the section heading below the fixed header and tabs', () => {
+    jest.useFakeTimers();
+    render(
+      <SingleProductTabSection
+        productType="activity"
+        productId={1}
+        productData={{
+          description: 'Activity description',
+          inclusions_exclusions: [{ title: 'Dynamic hotel pickup', included: true }],
+          review_summary: { total_reviews: 0 },
+          faqs: [{ question: 'What should I bring?', answer: 'Comfortable clothing.' }],
+        }}
+      />,
+    );
+
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 1000 });
+
+    const faqSection = document.getElementById('tab_4');
+    const faqHeading = screen.getByRole('heading', { name: 'FAQs' });
+
+    faqSection.getBoundingClientRect = jest.fn(() => ({ top: 500 }));
+    faqHeading.getBoundingClientRect = jest.fn(() => ({ top: 560 }));
+
+    fireEvent.click(screen.getByRole('button', { name: 'FAQs' }));
+
+    expect(window.scrollTo).toHaveBeenCalledWith({ top: 1418, behavior: 'smooth' });
+
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 1300 });
+    faqHeading.getBoundingClientRect = jest.fn(() => ({ top: 300 }));
+
+    jest.advanceTimersByTime(800);
+
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 1458, behavior: 'smooth' });
+    jest.useRealTimers();
+  });
+
+  it('scrolls the itinerary tab to the itinerary section wrapper instead of the sticky title row', () => {
+    render(
+      <SingleProductTabSection
+        productType="itinerary"
+        productId={2}
+        productData={{
+          schedules: [{ day: 1, title: 'Day 1', activities: [], transfers: [] }],
+          inclusions_exclusions: [{ title: 'Private airport transfer', included: true }],
+          review_summary: { total_reviews: 0 },
+          faqs: [],
+        }}
+      />,
+    );
+
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 3000 });
+
+    const itinerarySection = document.getElementById('tab_1');
+    const itineraryHeading = screen.getByRole('heading', { name: 'Itinerary' });
+
+    itinerarySection.getBoundingClientRect = jest.fn(() => ({ top: -2400 }));
+    itineraryHeading.getBoundingClientRect = jest.fn(() => ({ top: -2328 }));
+
+    fireEvent.click(screen.getByRole('button', { name: 'Itinerary' }));
+
+    expect(window.scrollTo).toHaveBeenCalledWith({ top: 458, behavior: 'smooth' });
+  });
+
+  it('cancels delayed tab scroll corrections when the user manually scrolls', () => {
+    jest.useFakeTimers();
+    render(
+      <SingleProductTabSection
+        productType="activity"
+        productId={1}
+        productData={{
+          description: 'Activity description',
+          inclusions_exclusions: [{ title: 'Dynamic hotel pickup', included: true }],
+          review_summary: { total_reviews: 0 },
+          faqs: [{ question: 'What should I bring?', answer: 'Comfortable clothing.' }],
+        }}
+      />,
+    );
+
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 1000 });
+
+    const faqHeading = screen.getByRole('heading', { name: 'FAQs' });
+    faqHeading.getBoundingClientRect = jest.fn(() => ({ top: 560 }));
+
+    fireEvent.click(screen.getByRole('button', { name: 'FAQs' }));
+    expect(window.scrollTo).toHaveBeenCalledTimes(1);
+
+    window.dispatchEvent(new WheelEvent('wheel'));
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 100 });
+    faqHeading.getBoundingClientRect = jest.fn(() => ({ top: 1200 }));
+
+    jest.advanceTimersByTime(2400);
+
+    expect(window.scrollTo).toHaveBeenCalledTimes(1);
+    jest.useRealTimers();
   });
 });

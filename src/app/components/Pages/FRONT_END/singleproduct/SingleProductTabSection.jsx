@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 import throttle from 'lodash/throttle';
 import { OverViewPanel, WhatIncludedPanel, ReviewPanel, FaqPanel, normalizeInclusionItems } from './TabSection__modules';
@@ -12,6 +12,8 @@ import Reveal from '@/app/components/ui/Reveal';
 
 const HEADER_HEIGHT = 66;
 const TAB_BAR_HEIGHT = 60;
+const TAB_SCROLL_GAP = 16;
+const TAB_SCROLL_CORRECTION_DELAYS = [800, 1600, 2400];
 const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
 
 const SIDEBAR_IMAGES = {
@@ -52,8 +54,14 @@ const SingleProductTabSection = ({
 }) => {
   const [activeTab, setActiveTab] = useState('tab_1');
   const sectionRefs = useRef({});
+  const scrollCorrectionTimers = useRef([]);
   const [fixedTab, setFixedTab] = useState(false);
   const [pinSettled, setPinSettled] = useState(false);
+
+  const clearScrollCorrectionTimers = useCallback(() => {
+    scrollCorrectionTimers.current.forEach((timer) => window.clearTimeout(timer));
+    scrollCorrectionTimers.current = [];
+  }, []);
 
   // Date state for itinerary/package
   const isActivityProduct = productType === 'activity';
@@ -144,13 +152,46 @@ const SingleProductTabSection = ({
     setPinSettled(false);
   }, [fixedTab]);
 
+  useEffect(
+    () => () => {
+      clearScrollCorrectionTimers();
+    },
+    [clearScrollCorrectionTimers],
+  );
+
+  useEffect(() => {
+    const cancelPendingCorrections = () => clearScrollCorrectionTimers();
+
+    window.addEventListener('wheel', cancelPendingCorrections, { passive: true });
+    window.addEventListener('touchstart', cancelPendingCorrections, { passive: true });
+    window.addEventListener('keydown', cancelPendingCorrections);
+
+    return () => {
+      window.removeEventListener('wheel', cancelPendingCorrections);
+      window.removeEventListener('touchstart', cancelPendingCorrections);
+      window.removeEventListener('keydown', cancelPendingCorrections);
+    };
+  }, [clearScrollCorrectionTimers]);
+
   const toggleTab = (tab) => {
     setActiveTab(tab);
+    clearScrollCorrectionTimers();
     const element = sectionRefs.current[tab];
     if (!element) return;
-    const offsetTop = element.getBoundingClientRect().top + window.scrollY - TAB_BAR_HEIGHT - 16;
+    const scrollTarget = tab === 'tab_1' && productType === 'itinerary' ? element : element.querySelector('h2, h3') || element;
+    const getOffsetTop = () => scrollTarget.getBoundingClientRect().top + window.scrollY - HEADER_HEIGHT - TAB_BAR_HEIGHT - TAB_SCROLL_GAP;
+    const offsetTop = getOffsetTop();
     const prefersReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({ top: offsetTop, behavior: prefersReduced ? 'instant' : 'smooth' });
+    const correctionDelays = prefersReduced ? [0] : TAB_SCROLL_CORRECTION_DELAYS;
+    scrollCorrectionTimers.current = correctionDelays.map((delay) =>
+      window.setTimeout(() => {
+        const correctedOffsetTop = getOffsetTop();
+        if (Math.abs(correctedOffsetTop - window.scrollY) > 2) {
+          window.scrollTo({ top: correctedOffsetTop, behavior: prefersReduced ? 'instant' : 'smooth' });
+        }
+      }, delay),
+    );
   };
 
   const bottomImage = sidebarBottomImage || SIDEBAR_IMAGES[productType];
@@ -159,10 +200,10 @@ const SingleProductTabSection = ({
     <section className="w-full bg-background">
       {/* Sticky Tab Bar */}
       <div
-        className={`${fixedTab ? 'fixed' : 'relative'} z-[11] w-full bg-card border-b border-border transition-[opacity,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+        className={`sticky z-[11] w-full bg-card border-b border-border transition-[opacity,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
           fixedTab ? `shadow-[0_4px_12px_rgba(0,0,0,0.06)] dark:shadow-none ${pinSettled ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1'}` : 'opacity-100 translate-y-0'
         }`}
-        style={fixedTab ? { top: `${HEADER_HEIGHT}px` } : undefined}
+        style={{ top: `${HEADER_HEIGHT}px` }}
       >
         <div className="flex items-center justify-start sm:justify-center gap-2 sm:gap-6 lg:gap-11 overflow-x-auto px-4">
           {tabs.map((tab) => (
@@ -188,7 +229,7 @@ const SingleProductTabSection = ({
       </div>
 
       {/* Two-Column Content */}
-      <div className={`max-w-pen mx-auto px-4 ${fixedTab ? 'mt-[60px]' : ''}`}>
+      <div className="max-w-pen mx-auto px-4">
         <div className="flex flex-col xl:flex-row">
           {/* Left Column — Content */}
           <div className="w-full xl:w-[58%]">
