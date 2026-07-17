@@ -1,8 +1,15 @@
 import { render, screen } from '@testing-library/react';
 
+const gallerySliderMock = jest.fn(() => <div data-testid="gallery-slider" />);
+
 jest.mock('@/app/components/sliders/GallerySlider', () => ({
   __esModule: true,
-  default: () => null,
+  default: (props) => gallerySliderMock(props),
+}));
+
+jest.mock('@/app/components/BreadCrumb', () => ({
+  __esModule: true,
+  default: ({ className = '' }) => <nav className={className}>Breadcrumb</nav>,
 }));
 
 import BannerSectionBlog from '../BannerSection';
@@ -14,10 +21,14 @@ const media = [
 ];
 
 describe('BannerSectionBlog', () => {
+  beforeEach(() => {
+    gallerySliderMock.mockClear();
+  });
+
   it('uses the public API name as the responsive page heading', () => {
     render(<BannerSectionBlog name="A published travel story" excerpt="Story summary" />);
 
-    expect(screen.getByRole('heading', { level: 1, name: 'A published travel story' })).toHaveClass('text-3xl', 'sm:text-[52px]');
+    expect(screen.getByRole('heading', { level: 1, name: 'A published travel story' })).toHaveClass('text-2xl', 'lg:text-[38px]');
   });
 
   it('renders tags as wrapping labels rather than inert controls', () => {
@@ -39,25 +50,43 @@ describe('BannerSectionBlog', () => {
   it('shows every gallery image in featured-first order with stable responsive media wrappers', () => {
     const { container } = render(<BannerSectionBlog name="Story" media_gallery={media} />);
 
-    const images = screen.getAllByRole('img');
-    expect(images.map((image) => image.getAttribute('alt'))).toEqual(['Featured image', 'First image', 'Last image']);
-    expect(images[0]).toHaveAttribute('sizes', '(max-width: 1023px) 82vw, 320px');
-    expect(container.querySelector('[data-blog-gallery]')).toHaveClass('overflow-x-auto', 'max-w-full');
-    expect(container.querySelectorAll('[data-blog-gallery-item]')).toHaveLength(3);
-    expect(container.querySelector('[data-blog-gallery-item]')).toHaveClass('aspect-[4/3]', 'shrink-0');
+    expect(screen.getByTestId('gallery-slider')).toBeInTheDocument();
+    expect(gallerySliderMock).toHaveBeenCalledWith({
+      data: [
+        { ...media[1], image: media[1].url, alt_text: 'Featured image' },
+        { ...media[0], image: media[0].url, alt_text: 'First image' },
+        { ...media[2], image: media[2].url, alt_text: 'Last image' },
+      ],
+      collapseHiddenThumbnails: true,
+    });
+    expect(container.querySelector('[data-blog-gallery]')).toHaveClass('weelp-hero-ui-rise', 'mt-6');
   });
 
   it('ignores media records without usable URLs', () => {
     render(<BannerSectionBlog name="Story" media_gallery={[{ media_id: 1, url: null }, { media_id: 2, url: '' }, media[0]]} />);
 
-    expect(screen.getAllByRole('img')).toHaveLength(1);
-    expect(screen.getByRole('img')).toHaveAttribute('src', expect.stringContaining('/api/media/11'));
+    expect(gallerySliderMock).toHaveBeenCalledWith({
+      data: [{ ...media[0], image: media[0].url, alt_text: 'First image' }],
+      collapseHiddenThumbnails: true,
+    });
   });
 
-  it('keeps a single desktop hero image wide while retaining the mobile card ratio', () => {
+  it('keeps image-only media records that the shared gallery slider supports', () => {
+    render(<BannerSectionBlog name="Story" media_gallery={[{ media_id: 20, image: '/api/media/20', alt_text: 'Image-only media', is_featured: 0 }]} />);
+
+    expect(gallerySliderMock).toHaveBeenCalledWith({
+      data: [{ media_id: 20, image: '/api/media/20', url: '/api/media/20', alt_text: 'Image-only media', is_featured: 0 }],
+      collapseHiddenThumbnails: true,
+    });
+  });
+
+  it('uses the shared single item gallery slider for one image too', () => {
     const { container } = render(<BannerSectionBlog name="Story" media_gallery={[media[0]]} />);
 
-    expect(container.querySelector('[data-blog-gallery-item]')).toHaveClass('lg:w-full', 'lg:max-w-none', 'lg:aspect-[2/1]');
-    expect(screen.getByRole('img')).toHaveAttribute('sizes', '(max-width: 1023px) 82vw, 50vw');
+    expect(container.querySelector('[data-blog-gallery]')).toBeInTheDocument();
+    expect(gallerySliderMock).toHaveBeenCalledWith({
+      data: [{ ...media[0], image: media[0].url, alt_text: 'First image' }],
+      collapseHiddenThumbnails: true,
+    });
   });
 });

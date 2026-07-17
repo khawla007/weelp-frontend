@@ -6,7 +6,7 @@ import Reveal from '@/app/components/ui/Reveal';
 
 const ContentSection = ({ content = '', categories = [], tags = [] }) => {
   return (
-    <section className="flex flex-col lg:flex-row">
+    <section className="mx-auto flex max-w-pen flex-col px-4 pb-12 md:pb-16 lg:flex-row lg:pb-24">
       <Reveal variant="lift" initialHidden className="flex-[2]">
         {/* Post Author */}
         <BlogAuthorInfo />
