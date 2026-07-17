@@ -11,12 +11,12 @@ const TRUST_ITEMS = [
 
 const HeroSection = () => {
   return (
-    <section className="weelp-hero-rise relative isolate mb-24 h-[100svh] w-full overflow-hidden bg-surface-tint">
+    <section className="weelp-hero-rise relative isolate mb-10 w-full overflow-hidden bg-surface-tint sm:mb-16 md:h-[100svh] lg:mb-24">
       <Image src="/assets/images/home-hero-bg-new.png" alt="" fill priority sizes="100vw" className="-z-20 object-cover object-[60%_50%]" />
       {/* dark-mode-exempt: requested photographic hero overlay uses white at 10 percent opacity */}
       <div aria-hidden="true" data-testid="home-hero-overlay" className="absolute inset-0 -z-10 bg-white/10" />
 
-      <div className="container-page relative z-0 flex h-full flex-col items-start gap-5 pt-[156px] pb-10 sm:pt-[170px] md:gap-6 md:pt-[180px] md:pb-20 lg:pt-[214px] lg:pb-32">
+      <div className="container-page relative z-0 flex flex-col items-start gap-5 pb-10 pt-[135px] sm:pb-16 sm:pt-[170px] md:h-full md:gap-6 md:pb-20 md:pt-[180px] lg:pb-32 lg:pt-[214px]">
         <span
           className="weelp-hero-ui-rise inline-flex items-center gap-2 rounded-full border border-weelp-sage-deep/30 bg-transparent px-4 py-2 text-xs font-bold text-weelp-sage-deep"
           style={{ '--weelp-motion-delay': '80ms' }}
