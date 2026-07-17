@@ -10,6 +10,9 @@ import { Navigation } from 'swiper/modules';
 import SectionHeader from '@/app/components/ui/SectionHeader';
 import '@/app/styles/swiper.css';
 
+const REVIEW_FILTER_LOADING_MS = 350;
+const REVIEW_FILTER_SCROLL_OFFSET = 140;
+
 export const SingleProductReview = ({ productData, productType = 'activity', activitySlug, itinerarySlug }) => {
   const [activeFilter, setActiveFilter] = useState('all'); // all, photos
   const [sortOrder, setSortOrder] = useState('newest'); // newest, oldest
@@ -86,6 +89,7 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
       avatar: null, // Avatar not in current API response
       image: images.length > 0 ? images[0] : null, // Keep first image for backward compatibility
       images, // All images for slider
+      isInfluencer: Boolean(review.is_influencer || review.is_influencer_review || review.user?.is_influencer || review.user?.is_creator),
     };
   };
 
@@ -97,7 +101,11 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
   const featuredReviewsData =
     featuredData?.data && featuredData.data.length > 0 ? featuredData.data.map(transformReview) : transformedReviews.filter((r) => r.images && r.images.length > 0).slice(0, 4);
 
-  const allReviewsDataFinal = transformedReviews;
+  const allReviewsDataFinal = transformedReviews.map((review) => ({
+    ...review,
+    images: review.images || (review.image ? [review.image] : []),
+    isInfluencer: Boolean(review.isInfluencer || review.is_influencer || review.is_influencer_review || review.user?.is_influencer || review.user?.is_creator),
+  }));
 
   // Get all reviews with photos
   const allReviewsWithPhotos = allReviewsDataFinal.filter((review) => review.images && review.images.length > 0);
@@ -110,6 +118,9 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
     switch (activeFilter) {
       case 'photos':
         filtered = filtered.filter((review) => review.images && review.images.length > 0);
+        break;
+      case 'influencers':
+        filtered = filtered.filter((review) => review.isInfluencer);
         break;
       default:
         // all reviews
@@ -302,7 +313,18 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
   const REVIEWS_PER_GROUP = 3;
   const totalGroups = Math.ceil(filteredReviews.length / REVIEWS_PER_GROUP);
   const [currentGroup, setCurrentGroup] = useState(0);
+  const [isReviewListLoading, setIsReviewListLoading] = useState(false);
   const sectionRef = useRef(null);
+  const filterRowRef = useRef(null);
+  const loadingTimerRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (loadingTimerRef.current) {
+        clearTimeout(loadingTimerRef.current);
+      }
+    };
+  }, []);
 
   // Get the 3 reviews for the current group
   const getCurrentReviews = () => {
@@ -311,31 +333,56 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
     return filteredReviews.slice(start, end);
   };
 
-  const scrollToSection = () => {
-    sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const scrollToFilterControls = () => {
+    if (!filterRowRef.current) {
+      return;
+    }
+
+    const targetTop = filterRowRef.current.getBoundingClientRect().top + window.scrollY - REVIEW_FILTER_SCROLL_OFFSET;
+    window.scrollTo({ top: Math.max(targetTop, 0), behavior: 'smooth' });
+    filterRowRef.current.focus({ preventScroll: true });
   };
 
   const handlePrevious = () => {
     setCurrentGroup((prev) => (prev === 0 ? totalGroups - 1 : prev - 1));
-    scrollToSection();
+    scrollToFilterControls();
   };
 
   const handleNext = () => {
     setCurrentGroup((prev) => (prev === totalGroups - 1 ? 0 : prev + 1));
-    scrollToSection();
+    scrollToFilterControls();
   };
 
-  const handleDotClick = (groupIndex) => {
-    setCurrentGroup(groupIndex);
+  const showReviewListLoading = () => {
+    if (loadingTimerRef.current) {
+      clearTimeout(loadingTimerRef.current);
+    }
+
+    setIsReviewListLoading(true);
+    loadingTimerRef.current = setTimeout(() => {
+      setIsReviewListLoading(false);
+      loadingTimerRef.current = null;
+    }, REVIEW_FILTER_LOADING_MS);
   };
 
   const handleFilterChange = (filter) => {
+    if (filter === activeFilter) {
+      return;
+    }
+
+    showReviewListLoading();
     setActiveFilter(filter);
     setCurrentGroup(0); // Reset to first group when filter changes
     onFilterChange();
   };
 
   const handleSortChange = (order) => {
+    if (order === sortOrder) {
+      setShowSortDropdown(false);
+      return;
+    }
+
+    showReviewListLoading();
     setSortOrder(order);
     setShowSortDropdown(false);
     setCurrentGroup(0); // Reset to first group when sort changes
@@ -347,23 +394,32 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
       <h3 className="text-lg sm:text-[28px] text-foreground capitalize">All Reviews</h3>
 
       {/* Filter + Sort Row - Match pen design */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 px-0">
+      <div ref={filterRowRef} tabIndex={-1} className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 px-0 scroll-mt-24 focus:outline-none">
         <div className="flex flex-wrap gap-2 sm:gap-[22px]">
           <button
             type="button"
             onClick={() => handleFilterChange('all')}
-            className={`px-[21px] py-[7px] rounded-[8px] text-sm font-medium ${activeFilter === 'all' ? 'bg-muted text-weelp-steel' : 'bg-transparent text-weelp-steel'}`}
+            aria-pressed={activeFilter === 'all'}
+            className={`px-[21px] py-[7px] rounded-[8px] text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${activeFilter === 'all' ? 'bg-muted text-weelp-steel' : 'bg-transparent text-weelp-steel hover:bg-muted/70'}`}
           >
             All
           </button>
           <button
             type="button"
             onClick={() => handleFilterChange('photos')}
-            className={`px-[21px] py-[7px] rounded-[8px] text-sm font-medium ${activeFilter === 'photos' ? 'bg-muted text-weelp-steel' : 'bg-transparent text-weelp-steel'}`}
+            aria-pressed={activeFilter === 'photos'}
+            className={`px-[21px] py-[7px] rounded-[8px] text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${activeFilter === 'photos' ? 'bg-muted text-weelp-steel' : 'bg-transparent text-weelp-steel hover:bg-muted/70'}`}
           >
             With Photos Only
           </button>
-          <span className="px-[21px] py-[7px] rounded-[8px] text-sm font-medium text-weelp-steel">Influencers</span>
+          <button
+            type="button"
+            onClick={() => handleFilterChange('influencers')}
+            aria-pressed={activeFilter === 'influencers'}
+            className={`px-[21px] py-[7px] rounded-[8px] text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${activeFilter === 'influencers' ? 'bg-muted text-weelp-steel' : 'bg-transparent text-weelp-steel hover:bg-muted/70'}`}
+          >
+            Influencers
+          </button>
         </div>
 
         {/* Sort Dropdown - Newest/Oldest */}
@@ -393,113 +449,122 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
       </div>
 
       {/* Review Cards Slider - Custom Vertical Slider (3 cards stacked) */}
-      <div className="mt-4">
+      <div className="mt-4" aria-busy={isReviewListLoading}>
         {/* Reviews Container - Fixed height for 3 cards */}
         <div className="flex flex-col gap-4 min-h-[600px]">
-          {getCurrentReviews().map((review, index) => (
-            <div key={index} className="p-6 bg-background rounded-xl border border-border">
-              {/* First Row: Avatar + Name/Date */}
-              <div className="flex items-center gap-3">
-                {/* Left: Avatar */}
-                <div className="w-[44px] h-[44px] rounded-full overflow-hidden bg-muted border border-border flex-shrink-0">
-                  {review.avatar ? (
-                    <img src={review.avatar} alt={review.userName} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-sm font-bold text-copy">{review.userName.charAt(0)}</div>
-                  )}
-                </div>
-
-                {/* Right: 2 divs - Name above, Date below */}
-                <div className="flex flex-col justify-center">
-                  <p className="text-base font-semibold text-foreground">{review.userName}</p>
-                  <p className="text-sm font-semibold text-foreground">{review.date}</p>
-                </div>
-              </div>
-
-              {/* Stars - increased spacing */}
-              <div className="flex gap-[7px] mt-4">
-                {Array(review.rating)
-                  .fill(0)
-                  .map((_, i) => (
-                    <Star key={i} className="fill-warning stroke-none" size={16} />
-                  ))}
-              </div>
-
-              {/* Review Images - Single image or Slider - increased spacing */}
-              {review.images &&
-                review.images.length > 0 &&
-                (review.images.length > 1 ? (
-                  <div className="relative w-full mt-4">
-                    <Swiper
-                      key={`review-slider-${index}`}
-                      modules={[Navigation]}
-                      spaceBetween={12}
-                      navigation={{
-                        prevEl: `.review-img-prev-${index}`,
-                        nextEl: `.review-img-next-${index}`,
-                      }}
-                      loop={review.images.length > 1}
-                      slidesPerView={1.2}
-                      breakpoints={{
-                        640: { slidesPerView: 2 },
-                        768: { slidesPerView: 2.5 },
-                        1024: { slidesPerView: 3 },
-                      }}
-                      className="w-full"
-                    >
-                      {review.images.map((img, imgIndex) => (
-                        <SwiperSlide key={`${index}-${imgIndex}`}>
-                          <div className="h-[280px] rounded-xl overflow-hidden bg-muted cursor-pointer hover:opacity-90 transition-opacity">
-                            <img src={img} alt={`Review ${imgIndex + 1}`} className="w-full h-full object-cover" />
-                          </div>
-                        </SwiperSlide>
-                      ))}
-                    </Swiper>
-                    {review.images.length > 1 && (
-                      <div className="absolute bottom-[10px] right-[10px] flex gap-3 z-10">
-                        <button
-                          type="button"
-                          className={`review-img-prev-${index} w-11 h-11 rounded-full flex items-center justify-center bg-card shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
-                          aria-label={`Previous image for ${review.userName}'s review`}
-                        >
-                          <ChevronLeft size={16} className="text-copy" />
-                        </button>
-                        <button
-                          type="button"
-                          className={`review-img-next-${index} w-11 h-11 rounded-full flex items-center justify-center bg-card shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
-                          aria-label={`Next image for ${review.userName}'s review`}
-                        >
-                          <ChevronRight size={16} className="text-copy" />
-                        </button>
-                      </div>
+          {isReviewListLoading ? (
+            <div className="flex flex-col gap-4" role="status" aria-label="Loading reviews">
+              <span className="sr-only">Loading reviews</span>
+              <ReviewListSkeleton />
+            </div>
+          ) : filteredReviews.length === 0 ? (
+            <div className="rounded-xl border border-border bg-background p-6 text-sm text-muted-foreground">No reviews match this filter yet.</div>
+          ) : (
+            getCurrentReviews().map((review, index) => (
+              <div key={index} className="p-6 bg-background rounded-xl border border-border">
+                {/* First Row: Avatar + Name/Date */}
+                <div className="flex items-center gap-3">
+                  {/* Left: Avatar */}
+                  <div className="w-[44px] h-[44px] rounded-full overflow-hidden bg-muted border border-border flex-shrink-0">
+                    {review.avatar ? (
+                      <img src={review.avatar} alt={review.userName} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-sm font-bold text-copy">{review.userName.charAt(0)}</div>
                     )}
                   </div>
-                ) : (
-                  <div className="w-full h-[280px] rounded-xl overflow-hidden bg-muted mt-4">
-                    <img src={review.images[0]} alt="Review" className="w-full h-full object-cover" />
+
+                  {/* Right: 2 divs - Name above, Date below */}
+                  <div className="flex flex-col justify-center">
+                    <p className="text-base font-semibold text-foreground">{review.userName}</p>
+                    <p className="text-sm font-semibold text-foreground">{review.date}</p>
                   </div>
-                ))}
+                </div>
 
-              {/* Review Content - increased spacing */}
-              <p className="text-base text-foreground leading-[1.5] my-6">{review.comment}</p>
+                {/* Stars - increased spacing */}
+                <div className="flex gap-[7px] mt-4">
+                  {Array(review.rating)
+                    .fill(0)
+                    .map((_, i) => (
+                      <Star key={i} className="fill-warning stroke-none" size={16} />
+                    ))}
+                </div>
 
-              {/* Separator Line + Helpful Section - increased spacing */}
-              <div className="border-t border-border pt-4 mt-6">
-                <div className="flex items-center gap-2 py-2">
-                  <button type="button" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-copy transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
-                    </svg>
-                    Helpful
-                  </button>
+                {/* Review Images - Single image or Slider - increased spacing */}
+                {review.images &&
+                  review.images.length > 0 &&
+                  (review.images.length > 1 ? (
+                    <div className="relative w-full mt-4">
+                      <Swiper
+                        key={`review-slider-${index}`}
+                        modules={[Navigation]}
+                        spaceBetween={12}
+                        navigation={{
+                          prevEl: `.review-img-prev-${index}`,
+                          nextEl: `.review-img-next-${index}`,
+                        }}
+                        loop={review.images.length > 1}
+                        slidesPerView={1.2}
+                        breakpoints={{
+                          640: { slidesPerView: 2 },
+                          768: { slidesPerView: 2.5 },
+                          1024: { slidesPerView: 3 },
+                        }}
+                        className="w-full"
+                      >
+                        {review.images.map((img, imgIndex) => (
+                          <SwiperSlide key={`${index}-${imgIndex}`}>
+                            <div className="h-[280px] rounded-xl overflow-hidden bg-muted cursor-pointer hover:opacity-90 transition-opacity">
+                              <img src={img} alt={`Review ${imgIndex + 1}`} className="w-full h-full object-cover" />
+                            </div>
+                          </SwiperSlide>
+                        ))}
+                      </Swiper>
+                      {review.images.length > 1 && (
+                        <div className="absolute bottom-[10px] right-[10px] flex gap-3 z-10">
+                          <button
+                            type="button"
+                            className={`review-img-prev-${index} w-11 h-11 rounded-full flex items-center justify-center bg-card shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
+                            aria-label={`Previous image for ${review.userName}'s review`}
+                          >
+                            <ChevronLeft size={16} className="text-copy" />
+                          </button>
+                          <button
+                            type="button"
+                            className={`review-img-next-${index} w-11 h-11 rounded-full flex items-center justify-center bg-card shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
+                            aria-label={`Next image for ${review.userName}'s review`}
+                          >
+                            <ChevronRight size={16} className="text-copy" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="w-full h-[280px] rounded-xl overflow-hidden bg-muted mt-4">
+                      <img src={review.images[0]} alt="Review" className="w-full h-full object-cover" />
+                    </div>
+                  ))}
+
+                {/* Review Content - increased spacing */}
+                <p className="text-base text-foreground leading-[1.5] my-6">{review.comment}</p>
+
+                {/* Separator Line + Helpful Section - increased spacing */}
+                <div className="border-t border-border pt-4 mt-6">
+                  <div className="flex items-center gap-2 py-2">
+                    <button type="button" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-copy transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+                      </svg>
+                      Helpful
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         {/* Navigation buttons - right side without dots */}
-        {filteredReviews.length > 3 && (
+        {!isReviewListLoading && filteredReviews.length > 3 && (
           <div className="flex items-center justify-end gap-3 mt-6">
             <button
               type="button"
@@ -522,4 +587,33 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
       </div>
     </div>
   );
+};
+
+const ReviewListSkeleton = () => {
+  return Array.from({ length: 3 }).map((_, index) => (
+    <div key={index} className="rounded-xl border border-border bg-background p-6" aria-hidden="true">
+      <div className="animate-pulse">
+        <div className="flex items-center gap-3">
+          <div className="size-[44px] rounded-full bg-muted" />
+          <div className="flex flex-col gap-2">
+            <div className="h-4 w-32 rounded bg-muted" />
+            <div className="h-3 w-20 rounded bg-muted" />
+          </div>
+        </div>
+        <div className="mt-4 flex gap-[7px]">
+          {Array.from({ length: 5 }).map((__, starIndex) => (
+            <div key={starIndex} className="size-4 rounded-sm bg-muted" />
+          ))}
+        </div>
+        <div className="mt-6 space-y-3">
+          <div className="h-4 w-full rounded bg-muted" />
+          <div className="h-4 w-11/12 rounded bg-muted" />
+          <div className="h-4 w-8/12 rounded bg-muted" />
+        </div>
+        <div className="mt-6 border-t border-border pt-4">
+          <div className="h-4 w-24 rounded bg-muted" />
+        </div>
+      </div>
+    </div>
+  ));
 };
