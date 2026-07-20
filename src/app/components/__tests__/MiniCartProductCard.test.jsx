@@ -71,7 +71,7 @@ describe('MiniCartProductCard', () => {
     expect(screen.getByRole('link', { name: /edit dubai desert safari booking/i })).toHaveAttribute('href', '/cities/dubai/activities/desert-safari?editCartItem=cart-line-1');
   });
 
-  it('shows the selected date from a freshly added cart item', () => {
+  it('shows a short selected date from a freshly added cart item', () => {
     render(
       <MiniCartProductCard
         productName="Dubai Desert Safari"
@@ -83,7 +83,22 @@ describe('MiniCartProductCard', () => {
       />,
     );
 
-    expect(screen.getByText('2026-08-20')).toBeInTheDocument();
+    expect(screen.getByText('Aug 20')).toBeInTheDocument();
+  });
+
+  it('shows a short selected date range when start and end differ', () => {
+    render(
+      <MiniCartProductCard
+        productName="Luxury Safari"
+        howMany={{ adults: 2, children: 1 }}
+        dateRange={{ from: '2026-08-20T00:00:00.000Z', to: '2026-08-24T00:00:00.000Z' }}
+        itemId="itinerary-1"
+        itemType="itinerary"
+        productImage="/assets/fallback-image.png"
+      />,
+    );
+
+    expect(screen.getByText('Aug 20 - Aug 24')).toBeInTheDocument();
   });
 
   it('hides the edit action for package cart items', () => {

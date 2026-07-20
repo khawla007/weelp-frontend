@@ -19,9 +19,37 @@ const buildEditHref = ({ itemId, itemType, citySlug, itemSlug }) => {
   return `/cities/${encodeURIComponent(citySlug)}/${segment}/${encodeURIComponent(itemSlug)}?editCartItem=${encodeURIComponent(itemId)}`;
 };
 
+const toValidDate = (value) => {
+  if (!value) return null;
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+};
+
+const formatShortDate = (value, includeYear = false) => {
+  const date = toValidDate(value);
+  if (!date) return '';
+
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    ...(includeYear ? { year: 'numeric' } : {}),
+  });
+};
+
+const formatCartDateRange = (dateRange) => {
+  const from = toValidDate(dateRange?.from);
+  if (!from) return '';
+
+  const to = toValidDate(dateRange?.to);
+  if (!to || actualDate(from) === actualDate(to)) return formatShortDate(from);
+
+  const crossesYear = from.getFullYear() !== to.getFullYear();
+  return `${formatShortDate(from, crossesYear)} - ${formatShortDate(to, crossesYear)}`;
+};
+
 const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, itemId, itemType, onClose, addons = [], citySlug, itemSlug }) => {
   const { adults, children } = howMany ?? {};
-  const { from } = dateRange ?? {};
+  const travelDate = formatCartDateRange(dateRange);
   const editHref = buildEditHref({ itemId, itemType, citySlug, itemSlug });
   const itemName = productName || 'this booking';
   return (
@@ -52,7 +80,7 @@ const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, it
 
           <span className="mt-2 flex items-start gap-2 text-sm font-medium capitalize text-copy">
             <Calendar size={18} className="mt-0.5 shrink-0 text-copy sm:size-5" />
-            {from && actualDate(from)}
+            {travelDate}
           </span>
           {addons.length > 0 && (
             <div className="flex flex-col mt-2 gap-1">
