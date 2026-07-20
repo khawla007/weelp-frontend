@@ -40,13 +40,26 @@ export const generateSlug = (value) => {
     .replace(/[^a-z0-9-]/g, ''); // Remove special characters
 };
 
+const padDatePart = (value) => String(value).padStart(2, '0');
+
 /**
- * Get Actual date from Date Instances
- * @param {*} str
+ * Get Actual date from Date instances or persisted ISO date strings.
+ * @param {*} value
  * @returns "string"
  */
-export const actualDate = (str) => {
-  return String(str).split('T').at(0);
+export const actualDate = (value) => {
+  if (!value) return '';
+
+  if (value instanceof Date) {
+    if (Number.isNaN(value.getTime())) return '';
+
+    return `${value.getFullYear()}-${padDatePart(value.getMonth() + 1)}-${padDatePart(value.getDate())}`;
+  }
+
+  const dateText = String(value);
+  if (!dateText || dateText === 'Invalid Date') return '';
+
+  return dateText.split('T').at(0);
 };
 
 /**
