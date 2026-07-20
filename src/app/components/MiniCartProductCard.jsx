@@ -73,20 +73,20 @@ const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, it
       <div className="flex w-full gap-3 rounded-lg border p-3 sm:justify-between sm:p-4">
         <div className="flex min-w-0 flex-1 flex-col">
           <h3 className="line-clamp-2 text-base font-medium capitalize text-Blueish sm:text-lg">{productName ?? 'Melaka Wonderland Water Theme'}</h3>
-          <span className="mt-2 flex items-start gap-2 text-sm font-medium capitalize text-copy">
-            <User size={18} className="mt-0.5 shrink-0 text-copy capitalize sm:size-5" />
+          <span className="mt-2 flex items-center gap-2 text-sm font-medium capitalize text-copy">
+            <User size={18} className="shrink-0 text-copy capitalize sm:size-5" />
             {`${adults ?? 0} adults ${children ? ', ' + children + ' children ' : ''}  `}
           </span>
 
-          <span className="mt-2 flex items-start gap-2 text-sm font-medium capitalize text-copy">
-            <Calendar size={18} className="mt-0.5 shrink-0 text-copy sm:size-5" />
+          <span className="mt-2 flex items-center gap-2 text-sm font-medium capitalize text-copy">
+            <Calendar size={18} className="shrink-0 text-copy sm:size-5" />
             {travelDate}
           </span>
           {addons.length > 0 && (
             <div className="flex flex-col mt-2 gap-1">
               {addons.map((addon, i) => (
-                <span key={i} className="flex items-start gap-2 text-sm font-medium capitalize text-copy">
-                  <Sparkles size={18} className="mt-0.5 shrink-0 text-copy sm:size-5" />+ {addon.addon_name}
+                <span key={i} className="flex items-center gap-2 text-sm font-medium capitalize text-copy">
+                  <Sparkles size={18} className="shrink-0 text-copy sm:size-5" />+ {addon.addon_name}
                 </span>
               ))}
             </div>

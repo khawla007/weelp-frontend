@@ -101,6 +101,24 @@ describe('MiniCartProductCard', () => {
     expect(screen.getByText('Aug 20 - Aug 24')).toBeInTheDocument();
   });
 
+  it('centers metadata icons with their text rows', () => {
+    render(
+      <MiniCartProductCard
+        productName="Dubai Desert Safari"
+        howMany={{ adults: 2, children: 1 }}
+        dateRange={{ from: '2026-08-20T00:00:00.000Z', to: '2026-08-24T00:00:00.000Z' }}
+        itemId="cart-line-1"
+        itemType="activity"
+        productImage="/assets/fallback-image.png"
+        addons={[{ addon_id: 1, addon_name: 'WiFi Access', price: 5 }]}
+      />,
+    );
+
+    expect(screen.getByText(/2 adults/i).closest('span')).toHaveClass('items-center');
+    expect(screen.getByText('Aug 20 - Aug 24').closest('span')).toHaveClass('items-center');
+    expect(screen.getAllByText((_, element) => element?.tagName === 'SPAN' && element.textContent === '+ WiFi Access')[0]).toHaveClass('items-center');
+  });
+
   it('hides the edit action for package cart items', () => {
     render(
       <MiniCartProductCard
