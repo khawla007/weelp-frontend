@@ -151,6 +151,8 @@ export default function SingleProductForm({ productId, productData, selectedAddo
       price = pricing.final;
       basePrice = pricing.subtotal;
       currency = pricing.currency;
+      cartItemExtras.slug = productData?.slug;
+      cartItemExtras.city_slug = getPrimaryCitySlug(productData);
     } else if (productData?.item_type === 'itinerary') {
       const headcount = Math.max(1, Number(data?.howMany?.adults ?? 1) + Number(data?.howMany?.children ?? 0));
       const breakdown = productData?.pricing_breakdown ?? null;
@@ -165,9 +167,6 @@ export default function SingleProductForm({ productId, productData, selectedAddo
       cartItemExtras.per_person_price = Number(productData?.schedule_total_price ?? perPax) || perPax;
       cartItemExtras.slug = productData?.slug;
       cartItemExtras.city_slug = productData?.city_slug;
-    } else if (productData?.item_type === 'activity') {
-      cartItemExtras.slug = productData?.slug;
-      cartItemExtras.city_slug = getPrimaryCitySlug(productData);
     } else {
       // Package fallback — same legacy behavior as before.
       basePrice = Number(productData?.schedule_total_price ?? 0);

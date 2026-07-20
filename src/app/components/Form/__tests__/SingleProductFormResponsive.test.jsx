@@ -1,10 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+const mockAddItem = jest.fn();
+const mockSetMiniCartOpen = jest.fn();
+
 jest.mock('next/navigation', () => ({ useRouter: () => ({ push: jest.fn() }) }));
 jest.mock('@/lib/store/useMiniCartStore', () => ({
   __esModule: true,
-  default: () => ({ setMiniCartOpen: jest.fn(), addItem: jest.fn(), clearCart: jest.fn() }),
+  default: () => ({ setMiniCartOpen: mockSetMiniCartOpen, addItem: mockAddItem }),
 }));
 jest.mock('@/hooks/use-toast', () => ({ useToast: () => ({ toast: jest.fn() }) }));
 jest.mock('@/components/calendar', () => ({
@@ -14,10 +17,14 @@ jest.mock('@/components/calendar', () => ({
 
 import SingleProductForm from '../SingleProductForm';
 
-const Wrapper = ({ children }) => {
-  const methods = useForm({ defaultValues: { howMany: { adults: 1, children: 0, infants: 0 }, dateRange: { from: null, to: null } } });
+const Wrapper = ({ children, defaultValues = { howMany: { adults: 1, children: 0, infants: 0 }, dateRange: { from: null, to: null } } }) => {
+  const methods = useForm({ defaultValues });
   return <FormProvider {...methods}>{children}</FormProvider>;
 };
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 it('renders responsive keyboard-operable date and traveler controls', async () => {
   render(<SingleProductForm productData={{ id: 2 }} formId="booking-form-2" scheduleCount={3} />, { wrapper: Wrapper });
@@ -44,4 +51,39 @@ it('renders responsive keyboard-operable date and traveler controls', async () =
   expect(dateButton).toHaveAttribute('aria-expanded', 'true');
   expect(screen.getByRole('dialog', { name: 'Date selector' })).toBeInTheDocument();
   await waitFor(() => expect(screen.getByText('Calendar choices')).toBeInTheDocument());
+});
+
+it('adds activity route metadata to cart items so mini-cart edit can render', async () => {
+  render(
+    <Wrapper
+      defaultValues={{
+        howMany: { adults: 2, children: 1, infants: 0 },
+        dateRange: { from: new Date('2026-08-20T00:00:00'), to: new Date('2026-08-20T00:00:00') },
+      }}
+    >
+      <SingleProductForm
+        productData={{
+          id: 42,
+          item_type: 'activity',
+          name: 'Dubai Desert Safari With BBQ',
+          slug: 'dubai-desert-safari-with-bbq',
+          locations: [{ location_type: 'primary', city_slug: 'dubai' }],
+          pricing: { regular_price: 100, currency: 'USD' },
+        }}
+        formId="booking-form-42"
+      />
+    </Wrapper>,
+  );
+
+  fireEvent.submit(document.querySelector('#booking-form-42'));
+
+  await waitFor(() => expect(mockAddItem).toHaveBeenCalledTimes(1));
+  expect(mockAddItem).toHaveBeenCalledWith(
+    expect.objectContaining({
+      id: 42,
+      type: 'activity',
+      slug: 'dubai-desert-safari-with-bbq',
+      city_slug: 'dubai',
+    }),
+  );
 });
