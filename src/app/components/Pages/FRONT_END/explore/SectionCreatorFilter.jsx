@@ -172,10 +172,10 @@ const CreatorFilter = ({ initialItineraries, lastPage, initialError = false, act
   const ActionIcon = actionBtn?.icon;
 
   return (
-    <section className="relative max-w-[95%] mx-auto">
+    <section className="container-page relative flex flex-col gap-6 pb-10 md:gap-8 md:pb-16 lg:pb-24">
       <SectionHeader className="sr-only" title="Creator itineraries" />
       {/* Top Bar */}
-      <Reveal variant="lift" className="flex justify-between items-center flex-col sm:flex-row px-6">
+      <Reveal variant="lift" className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
         {/* Sort Dropdown — hidden on Trending tab */}
         <div className="mt-[1.5rem]">
           {activeTab === 'home' ? (
@@ -268,7 +268,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, initialError = false, act
       </Reveal>
 
       {/* Results Section */}
-      <div className="flex flex-col gap-4 py-6">
+      <div className="flex flex-col gap-6">
         {loading && displayItineraries.length === 0 ? (
           <div className="flex justify-center py-12">
             <div className="w-8 h-8 border-2 border-weelp-sage-deep border-t-transparent rounded-full animate-spin" />
@@ -293,7 +293,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, initialError = false, act
             <p className="text-sm mt-2">{activeSource === 'mine' ? 'Share your travel experiences with the community!' : 'Be the first creator to share your travel experience!'}</p>
           </div>
         ) : (
-          <Reveal as="ul" initialHidden stagger={60} variant="lift" className="w-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+          <Reveal as="ul" initialHidden stagger={60} variant="lift" className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-6">
             {displayItineraries.map((itinerary) => (
               <li key={itinerary.id}>
                 <CreatorItineraryCard itinerary={itinerary} isLoggedIn={isAuthenticated} />

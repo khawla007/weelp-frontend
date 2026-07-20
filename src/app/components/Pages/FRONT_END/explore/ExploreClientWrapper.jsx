@@ -71,48 +71,48 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage, ini
   return (
     <>
       {/* Creator Stats */}
-      {isCreator && <CreatorStatCards />}
+      {isCreator && <CreatorStatCards className="container-page" />}
 
       {/* Creator Welcome / Pending / Apply Banner */}
       {isLoggedIn && !statusLoading && (
-        <Reveal variant="lift" className="relative z-10 max-w-[95%] mx-auto px-6 py-4">
+        <Reveal variant="lift" className="container-page relative z-10 py-4">
           {isCreator ? (
-            <div className="flex items-center justify-between bg-gradient-to-r from-weelp-sage-deep/10 to-weelp-sage-deep/5 rounded-xl p-6">
+            <div className="flex flex-col gap-4 rounded-xl bg-gradient-to-r from-weelp-sage-deep/10 to-weelp-sage-deep/5 p-4 sm:p-6 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-foreground">Welcome, Creator!</h3>
                 <p className="text-sm text-muted-foreground mt-1">Share your travel experiences and inspire the community.</p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto lg:items-center">
                 <NavigationLink href="/dashboard/customer/my-itineraries/new">
-                  <Button className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white">
+                  <Button className="w-full bg-weelp-sage-deep text-white hover:bg-weelp-sage-deep/90 sm:w-auto">
                     <Sparkles className="size-4 mr-2" />
                     Create Itinerary
                   </Button>
                 </NavigationLink>
-                <Button onClick={() => setGuideOpen(true)} variant="outline" className="border-weelp-sage-deep text-weelp-copy hover:text-weelp-sage-deep hover:bg-weelp-sage-deep/10">
+                <Button onClick={() => setGuideOpen(true)} variant="outline" className="w-full border-weelp-sage-deep text-weelp-copy hover:bg-weelp-sage-deep/10 hover:text-weelp-sage-deep sm:w-auto">
                   <HelpCircle className="size-4 mr-2" />
                   How to Create Itinerary
                 </Button>
               </div>
             </div>
           ) : applicationStatus === 'pending' ? (
-            <div className="flex items-center justify-between bg-gradient-to-r from-warning/15 to-warning/5 rounded-xl p-6">
+            <div className="flex flex-col gap-4 rounded-xl bg-gradient-to-r from-warning/15 to-warning/5 p-4 sm:p-6 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-foreground">Application Pending</h3>
                 <p className="text-sm text-muted-foreground mt-1">Your creator application is under review. We&apos;ll notify you once it&apos;s approved.</p>
               </div>
-              <div className="flex items-center gap-2 text-amber-600 bg-amber-50 px-4 py-2 rounded-lg">
+              <div className="flex w-fit items-center gap-2 rounded-lg bg-amber-50 px-4 py-2 text-amber-600">
                 <Clock className="size-4" />
                 <span className="text-sm font-medium">Under Review</span>
               </div>
             </div>
           ) : (
-            <div className="flex items-center justify-between bg-gradient-to-r from-weelp-sage-deep/10 to-weelp-sage-deep/5 rounded-xl p-6">
+            <div className="flex flex-col gap-4 rounded-xl bg-gradient-to-r from-weelp-sage-deep/10 to-weelp-sage-deep/5 p-4 sm:p-6 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-foreground">Become a Creator</h3>
                 <p className="text-sm text-muted-foreground mt-1">Share your travel experiences and earn commissions on bookings.</p>
               </div>
-              <Button onClick={() => setApplicationFormOpen(true)} className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white">
+              <Button onClick={() => setApplicationFormOpen(true)} className="w-full bg-weelp-sage-deep text-white hover:bg-weelp-sage-deep/90 sm:w-auto">
                 <Sparkles className="size-4 mr-2" />
                 Apply Now
               </Button>

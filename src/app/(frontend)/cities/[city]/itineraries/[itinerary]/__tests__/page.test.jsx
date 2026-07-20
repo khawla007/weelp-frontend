@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 
 const BannerSection = jest.fn(() => <div data-testid="banner-section" />);
+const CreatorItineraryViewRecorder = jest.fn(() => <div data-testid="creator-view-recorder" />);
 const getSingleItinerary = jest.fn();
 const getRandomSimilarItineraries = jest.fn();
 const auth = jest.fn();
@@ -13,6 +14,11 @@ jest.mock('next/dynamic', () => ({
 jest.mock('@/app/components/Pages/FRONT_END/singleproduct/BannerSection', () => ({
   __esModule: true,
   default: (props) => BannerSection(props),
+}));
+
+jest.mock('@/app/components/Pages/FRONT_END/explore/CreatorItineraryViewRecorder', () => ({
+  __esModule: true,
+  default: (props) => CreatorItineraryViewRecorder(props),
 }));
 
 jest.mock('@/lib/services/itineraries', () => ({
@@ -64,8 +70,9 @@ describe('IterenaryPage wishlist banner props', () => {
     jest.clearAllMocks();
     auth.mockResolvedValue(null);
     getSingleItinerary.mockResolvedValue({
-      id: 77,
+      success: true,
       data: {
+        id: 77,
         name: 'Dubai Family Itinerary',
         media_gallery: [],
         review_summary: { total_reviews: 2, average_rating: 5 },
@@ -73,6 +80,7 @@ describe('IterenaryPage wishlist banner props', () => {
         schedules: [{ day: 1 }, { day: 2 }],
         price: 300,
         currency: 'USD',
+        is_creator_itinerary: true,
       },
     });
     getRandomSimilarItineraries.mockResolvedValue([]);
@@ -90,6 +98,19 @@ describe('IterenaryPage wishlist banner props', () => {
         slug: 'dubai-family-itinerary',
         citySlug: 'dubai',
         cityName: 'Dubai',
+      }),
+    );
+  });
+
+  it('records creator itinerary views from the detail page only', async () => {
+    const IterenaryPage = (await import('../page')).default;
+
+    render(await IterenaryPage({ params: Promise.resolve({ city: 'dubai', itinerary: 'dubai-family-itinerary' }), searchParams: Promise.resolve({}) }));
+
+    expect(CreatorItineraryViewRecorder).toHaveBeenCalledWith(
+      expect.objectContaining({
+        itineraryId: 77,
+        enabled: true,
       }),
     );
   });

@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { Heart, Eye } from 'lucide-react';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import MediaImage from '@/app/components/MediaImage';
-import { toggleItineraryLike, recordItineraryView } from '@/lib/actions/creatorItineraries';
+import { toggleItineraryLike } from '@/lib/actions/creatorItineraries';
+import useAuthModalStore from '@/lib/store/useAuthModalStore';
 
 const FALLBACK_COVER = '/assets/Card.webp';
 
@@ -14,9 +15,9 @@ const formatCount = (count) => {
 };
 
 export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleTag = 'h3' }) {
+  const { openAuthModal } = useAuthModalStore();
   const [liked, setLiked] = useState(itinerary?.is_liked || false);
   const [likesCount, setLikesCount] = useState(itinerary?.likes_count || 0);
-  const [viewsCount, setViewsCount] = useState(itinerary?.views_count || 0);
 
   const featuredMedia = itinerary?.media_gallery?.find((m) => m.is_featured)?.media?.url || itinerary?.media_gallery?.[0]?.media?.url;
   const initialCover = featuredMedia || itinerary?.featured_image || FALLBACK_COVER;
@@ -26,6 +27,7 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
   const currency = itinerary?.display_currency ?? '';
   const title = itinerary?.name || 'Untitled Itinerary';
   const slug = itinerary?.slug;
+  const itineraryId = itinerary?.id;
 
   const creatorName = itinerary?.creator?.name || '';
   const creatorAvatar = itinerary?.creator?.avatar_media?.url || itinerary?.creator?.profile?.avatar || '';
@@ -43,12 +45,16 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
   const handleLike = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!isLoggedIn) return;
+    if (!isLoggedIn) {
+      openAuthModal();
+      return;
+    }
+    if (!itineraryId) return;
 
     setLiked((prev) => !prev);
     setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
 
-    const result = await toggleItineraryLike(itinerary.id);
+    const result = await toggleItineraryLike(itineraryId);
     if (result.success) {
       setLiked(result.liked);
       setLikesCount(result.likes_count);
@@ -59,23 +65,19 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
     }
   };
 
-  const handleCardClick = async () => {
-    try {
-      const result = await recordItineraryView(itinerary.id);
-      if (result.success) {
-        setViewsCount(result.views_count);
-      }
-    } catch {
-      // Non-blocking
-    }
-  };
-
   return (
-    <div className="w-full max-w-full sm:max-w-sm">
+    <div className="w-full max-w-full">
       {/* Image with price overlay */}
-      <NavigationLink href={href} onClick={handleCardClick}>
+      <NavigationLink href={href}>
         <div className="group relative w-full aspect-[93/100] overflow-hidden rounded-lg">
-          <MediaImage src={coverSrc} alt={title} fill sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw" className="object-cover" onError={() => setCoverSrc(FALLBACK_COVER)} />
+          <MediaImage
+            src={coverSrc}
+            alt={title}
+            fill
+            sizes="(min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
+            className="object-cover"
+            onError={() => setCoverSrc(FALLBACK_COVER)}
+          />
 
           {/* Price overlay - slides up on hover */}
           {price && (
@@ -90,13 +92,13 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
 
       {/* Engagement row */}
       <div className="px-2 pt-2 flex items-center gap-4">
-        <button onClick={handleLike} className="text-muted-foreground flex items-center gap-1.5 text-sm">
+        <button onClick={handleLike} aria-label={`${liked ? 'Unlike' : 'Like'} ${title}. ${formatCount(likesCount)} likes`} className="text-muted-foreground flex items-center gap-1.5 text-sm">
           <Heart className={`size-4 ${liked ? 'text-weelp-discount fill-weelp-discount' : 'text-weelp-discount'}`} />
           {formatCount(likesCount)}
         </button>
         <span className="text-muted-foreground flex items-center gap-1.5 text-sm">
           <Eye className="size-4 text-muted-foreground" />
-          {formatCount(viewsCount)}
+          {formatCount(itinerary?.views_count || 0)}
         </span>
       </div>
 

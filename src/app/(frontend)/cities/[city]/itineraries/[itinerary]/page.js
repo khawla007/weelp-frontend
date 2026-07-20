@@ -4,6 +4,7 @@ import BannerSection from '@/app/components/Pages/FRONT_END/singleproduct/Banner
 import { notFound } from 'next/navigation';
 import { getSingleItinerary, getRandomSimilarItineraries } from '@/lib/services/itineraries';
 import AffiliateTracker from '@/app/components/AffiliateTracker';
+import CreatorItineraryViewRecorder from '@/app/components/Pages/FRONT_END/explore/CreatorItineraryViewRecorder';
 import { auth } from '@/lib/auth/auth';
 import SeoBodyScripts from '@/app/components/SEO/SeoBodyScripts';
 import SeoFooterScripts from '@/app/components/SEO/SeoFooterScripts';
@@ -45,7 +46,8 @@ export default async function IterenaryPage({ params, searchParams }) {
     notFound();
   }
 
-  const { data, id } = iterenaryData;
+  const { data } = iterenaryData;
+  const id = data?.id;
   const { name, media_gallery = [], review_summary, locations = [], schedules = [] } = data;
   const itinerarySeo = withGeneratedSchema({
     itemType: 'itinerary',
@@ -72,6 +74,7 @@ export default async function IterenaryPage({ params, searchParams }) {
   return (
     <>
       <SeoStructuredData seo={itinerarySeo} id="itinerary-structured-data" />
+      <CreatorItineraryViewRecorder itineraryId={id} enabled={!!data?.is_creator_itinerary} />
       <SeoHeadScripts seo={itineraryHeadScripts} />
       <AffiliateTracker creatorId={ref} />
       <SeoBodyScripts seo={itinerarySeo} />

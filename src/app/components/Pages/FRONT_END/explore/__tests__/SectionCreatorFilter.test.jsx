@@ -77,7 +77,7 @@ describe('CreatorFilter', () => {
   });
 
   it('renders populated creator itineraries from initial server data', () => {
-    render(
+    const { container } = render(
       <CreatorFilter
         initialItineraries={[
           { id: 1, name: 'Creator Dubai weekend', slug: 'creator-dubai-weekend' },
@@ -96,6 +96,8 @@ describe('CreatorFilter', () => {
 
     expect(screen.getByText('Creator Dubai weekend')).toBeInTheDocument();
     expect(screen.getByText('Creator Paris food map')).toBeInTheDocument();
+    expect(container.querySelector('section')).toHaveClass('container-page');
+    expect(container.querySelector('ul')).toHaveClass('grid-cols-1', 'gap-5', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'xl:grid-cols-5', 'xl:gap-6');
   });
 
   it('shows a retryable failure state when a controlled explore API fixture fails', async () => {
