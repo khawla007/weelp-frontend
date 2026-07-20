@@ -17,6 +17,13 @@ const CLOSED_PANEL_MOTION_CLASS = 'pointer-events-none opacity-0 -translate-y-1 
 const PANEL_EXIT_MS = 160;
 const CLOSED_PANEL_A11Y_PROPS = { 'aria-hidden': true, inert: true };
 
+const getPrimaryCitySlug = (productData) => {
+  if (productData?.city_slug) return productData.city_slug;
+
+  const primaryLocation = productData?.locations?.find((location) => location?.location_type === 'primary' && location?.city_slug);
+  return primaryLocation?.city_slug ?? productData?.locations?.find((location) => location?.city_slug)?.city_slug;
+};
+
 // activity
 export default function SingleProductForm({ productId, productData, selectedAddons = [], formId, defaultDateRange = null, onDateChange = null, scheduleCount = 0 }) {
   const [initform] = useState(() => true);
@@ -25,7 +32,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
   const [showResponse, setShowResponse] = useState(false);
   const panelTimersRef = useRef({});
   const [calendarPresence, setCalendarPresence] = useState({ isMounted: false, state: 'closed' });
-  const { setMiniCartOpen, addItem, clearCart } = useMiniCartStore();
+  const { setMiniCartOpen, addItem } = useMiniCartStore();
   const { toast } = useToast();
 
   const router = useRouter(); // intialize router
@@ -102,6 +109,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
   // Previously this was a parallel useState, which caused a cross-component
   // update during render when setValue fired inside the setHowMany updater.
   const howMany = watch('howMany') ?? { adults: 1, children: 0, infants: 0 };
+  const currentDateRange = watch('dateRange') ?? selectedDates;
 
   // Handle validation errors — toast limit is 1, so show only the first error
   const onError = (formErrors) => {
@@ -131,7 +139,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     let price;
     let currency;
     let basePrice;
-    const itineraryExtras = {};
+    const cartItemExtras = {};
 
     if (productData?.item_type === 'activity') {
       const pricing = calculateActivityPrice({
@@ -151,12 +159,15 @@ export default function SingleProductForm({ productId, productData, selectedAddo
       basePrice = breakdown ? Math.round((perPax * headcount + flat) * 100) / 100 : Number(productData?.schedule_total_price ?? 0) * headcount;
       price = Math.round((basePrice + addonsTotal) * 100) / 100;
       currency = productData?.schedule_total_currency || 'usd';
-      itineraryExtras.headcount = headcount;
-      itineraryExtras.per_pax_total = perPax;
-      itineraryExtras.flat_total = flat;
-      itineraryExtras.per_person_price = Number(productData?.schedule_total_price ?? perPax) || perPax;
-      itineraryExtras.slug = productData?.slug;
-      itineraryExtras.city_slug = productData?.city_slug;
+      cartItemExtras.headcount = headcount;
+      cartItemExtras.per_pax_total = perPax;
+      cartItemExtras.flat_total = flat;
+      cartItemExtras.per_person_price = Number(productData?.schedule_total_price ?? perPax) || perPax;
+      cartItemExtras.slug = productData?.slug;
+      cartItemExtras.city_slug = productData?.city_slug;
+    } else if (productData?.item_type === 'activity') {
+      cartItemExtras.slug = productData?.slug;
+      cartItemExtras.city_slug = getPrimaryCitySlug(productData);
     } else {
       // Package fallback — same legacy behavior as before.
       basePrice = Number(productData?.schedule_total_price ?? 0);
@@ -173,7 +184,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
       name: productData?.name,
       currency: currency,
       ...data,
-      ...itineraryExtras,
+      ...cartItemExtras,
       featured_image: productData?.featured_image || 'https://picsum.photos/200/300',
       type: productData?.item_type,
       addons: selectedAddons.map((a) => ({
@@ -279,8 +290,8 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                 <div className="flex items-center gap-3 text-copy">
                   <Calendar size={20} />
                   <span className="text-base">
-                    {selectedDates?.from && selectedDates?.to
-                      ? `${selectedDates.from.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${selectedDates.to.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+                    {currentDateRange?.from && currentDateRange?.to
+                      ? `${currentDateRange.from.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${currentDateRange.to.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
                       : 'When?'}
                   </span>
                 </div>

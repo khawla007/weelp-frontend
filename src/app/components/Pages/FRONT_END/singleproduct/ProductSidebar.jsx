@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Check } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import { useForm, FormProvider, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useSWR from 'swr';
@@ -11,6 +12,26 @@ import { getItineraryAddons, getPackageAddons } from '@/lib/services/addOn';
 import { bookingSchema } from '@/lib/validation/bookingSchema';
 import { calculateActivityPrice } from '@/lib/pricing/calculateActivityPrice';
 import { formatCurrency } from '@/lib/utils';
+
+const DEFAULT_TRAVELERS = { adults: 1, children: 0, infants: 0 };
+
+const toDateOrNull = (value) => {
+  if (!value) return null;
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+};
+
+const normalizeCartDateRange = (dateRange) => {
+  const from = toDateOrNull(dateRange?.from);
+  const to = toDateOrNull(dateRange?.to) ?? from;
+  return { from, to };
+};
+
+const normalizeCartTravelers = (howMany) => ({
+  adults: Number(howMany?.adults ?? DEFAULT_TRAVELERS.adults),
+  children: Number(howMany?.children ?? DEFAULT_TRAVELERS.children),
+  infants: Number(howMany?.infants ?? DEFAULT_TRAVELERS.infants),
+});
 
 function RowPulse({ value, className = '', children }) {
   const [prevValue, setPrevValue] = useState(value);
@@ -27,8 +48,17 @@ function RowPulse({ value, className = '', children }) {
 }
 
 const ProductSidebar = ({ productId, productData, productType = 'activity', itinerarySlug, packageSlug, defaultDateRange = null, onDateChange = null, scheduleCount = 0 }) => {
+  const searchParams = useSearchParams();
   const [selectedAddons, setSelectedAddons] = useState([]);
+  const [hasChangedAddons, setHasChangedAddons] = useState(false);
   const { cartItems, setMiniCartOpen } = useMiniCartStore();
+  const editCartItemId = searchParams?.get('editCartItem');
+  const editingCartItem = useMemo(() => {
+    if (!editCartItemId) return null;
+
+    return cartItems.find((item) => String(item?.id) === String(editCartItemId) && item?.type === productType) ?? null;
+  }, [cartItems, editCartItemId, productType]);
+  const isEditingCartItem = Boolean(editingCartItem);
   const isInCart = cartItems.some((item) => item.id === productData?.id);
 
   // Lift form state to sidebar for live pricing updates
@@ -36,7 +66,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
     resolver: zodResolver(bookingSchema),
     defaultValues: {
       dateRange: defaultDateRange ?? { from: null, to: null },
-      howMany: { adults: 1, children: 0, infants: 0 },
+      howMany: DEFAULT_TRAVELERS,
     },
   });
 
@@ -58,6 +88,24 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
   // Use addons from API response (activity) or fetched data (itinerary/package)
   const addons = productType === 'activity' ? productData?.addons || [] : addonsResponse?.data || [];
 
+  useEffect(() => {
+    if (!editingCartItem) return;
+
+    methods.reset({
+      dateRange: normalizeCartDateRange(editingCartItem.dateRange),
+      howMany: normalizeCartTravelers(editingCartItem.howMany),
+    });
+  }, [editingCartItem, methods]);
+
+  const editSelectedAddons = useMemo(() => {
+    if (!editingCartItem) return [];
+
+    const selectedAddonIds = new Set((editingCartItem.addons || []).map((addon) => Number(addon?.addon_id)).filter((addonId) => Number.isInteger(addonId) && addonId > 0));
+    return addons.filter((addon) => selectedAddonIds.has(Number(addon?.addon_id)));
+  }, [addons, editingCartItem]);
+
+  const activeSelectedAddons = isEditingCartItem && !hasChangedAddons ? editSelectedAddons : selectedAddons;
+
   // Subscribe to form changes for live pricing updates
   const [dateRange, howMany] = useWatch({
     control: methods.control,
@@ -65,13 +113,15 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
   });
 
   const toggleAddon = (addon) => {
+    setHasChangedAddons(true);
     setSelectedAddons((prev) => {
-      const exists = prev.some((a) => a.addon_id === addon.addon_id);
-      return exists ? prev.filter((a) => a.addon_id !== addon.addon_id) : [...prev, addon];
+      const currentAddons = isEditingCartItem && !hasChangedAddons ? editSelectedAddons : prev;
+      const exists = currentAddons.some((a) => a.addon_id === addon.addon_id);
+      return exists ? currentAddons.filter((a) => a.addon_id !== addon.addon_id) : [...currentAddons, addon];
     });
   };
 
-  const addonsTotal = selectedAddons.reduce((sum, a) => sum + Number(a.addon_sale_price ?? a.addon_price), 0);
+  const addonsTotal = activeSelectedAddons.reduce((sum, a) => sum + Number(a.addon_sale_price ?? a.addon_price), 0);
 
   // Compute live pricing for activities
   const pricing = useMemo(() => {
@@ -80,11 +130,11 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
         activity: productData,
         dateRange: dateRange ?? { from: null, to: null },
         people: howMany ?? { adults: 1, children: 0, infants: 0 },
-        selectedAddons,
+        selectedAddons: activeSelectedAddons,
       });
     }
     return null;
-  }, [productData, dateRange, howMany, selectedAddons, productType]);
+  }, [productData, dateRange, howMany, activeSelectedAddons, productType]);
 
   // For itinerary: total = per_pax × (adults+children) + flat. Per-person preview
   // value comes from schedule_total_price; pricing_breakdown enables live pax recompute.
@@ -304,7 +354,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
         <SingleProductForm
           productId={productId}
           productData={productData}
-          selectedAddons={selectedAddons}
+          selectedAddons={activeSelectedAddons}
           formId={`booking-form-${productId}`}
           defaultDateRange={defaultDateRange}
           onDateChange={onDateChange}
@@ -317,7 +367,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             <p className="text-muted-foreground text-base font-medium mb-3 mt-6">Select Addon</p>
             <div className="bg-background rounded-xl border border-border p-5 flex flex-col gap-3">
               {addons.map((addon) => {
-                const isChecked = selectedAddons.some((a) => a.addon_id === addon.addon_id);
+                const isChecked = activeSelectedAddons.some((a) => a.addon_id === addon.addon_id);
                 return (
                   <div
                     key={addon.addon_id}
@@ -372,7 +422,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
 
         {/* Select Card */}
         <div className="bg-background rounded-xl border border-border p-5 mt-4 flex items-center justify-between">
-          {isInCart ? (
+          {isInCart && !isEditingCartItem ? (
             <>
               <p className="text-lg font-medium text-foreground">Item Moved to Cart</p>
               <button
@@ -393,7 +443,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                       {formatCurrency(pricing.final, pricing.currency)}
                     </span>
                   </p>
-                ) : selectedAddons.length > 0 ? (
+                ) : activeSelectedAddons.length > 0 ? (
                   <>
                     <p className="text-sm font-medium text-weelp-copy">
                       + Add-ons:{' '}
@@ -421,7 +471,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
                 form={`booking-form-${productId}`}
                 className="px-8 py-3 text-base font-medium bg-weelp-sage-deep hover:bg-weelp-sage-hover text-white rounded-md disabled:bg-muted-foreground disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
-                Select
+                {isEditingCartItem ? 'Update booking' : 'Select'}
               </button>
             </>
           )}

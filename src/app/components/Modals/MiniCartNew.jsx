@@ -119,6 +119,8 @@ const MiniCartNew = () => {
                         itemType={val?.type}
                         productName={val?.name}
                         productImage={val?.image || val?.featured_image}
+                        citySlug={val?.city_slug}
+                        itemSlug={val?.slug}
                         howMany={val?.howMany}
                         dateRange={val?.dateRange}
                         addons={val?.addons || []}

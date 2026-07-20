@@ -49,21 +49,7 @@ const useMiniCartStore = create(
           }
 
           const normalized = { ...newItem, price: round2(newItem.price) };
-          const existingItemIndex = state.cartItems.findIndex((item) => item.id === normalized.id);
-
-          let updatedCart;
-          if (existingItemIndex !== -1) {
-            updatedCart = [...state.cartItems];
-            updatedCart[existingItemIndex] = {
-              ...updatedCart[existingItemIndex],
-              ...normalized,
-              price: updatedCart[existingItemIndex].price,
-            };
-          } else {
-            updatedCart = [...state.cartItems, normalized];
-          }
-
-          return { cartItems: updatedCart, totalPrice: sumLinePrices(updatedCart) };
+          return { cartItems: [normalized], totalPrice: normalized.price };
         }),
 
       // Update fields on an existing cart line. For transfers, accepts only
