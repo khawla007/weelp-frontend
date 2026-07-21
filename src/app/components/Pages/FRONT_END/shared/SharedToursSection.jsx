@@ -8,6 +8,7 @@ import ItemCard from '@/app/components/ui/item-card';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import { ProductCardSkelton } from '@/app/components/Animation/Cards';
 import Reveal from '@/app/components/ui/Reveal';
+import { SLIDER_NAV_INTERACTION_CLASS } from '@/app/components/ui/sliderNavigationClasses';
 import ToursMapView from './ToursMapView';
 import { buildTourMapMarkers } from './tourMapMarkers';
 
@@ -23,6 +24,10 @@ const SECTION_CLASS_BY_VARIANT = {
   default: 'mx-auto flex w-full max-w-pen flex-col gap-8 px-4 md:px-6 xl:px-0 pb-10 md:pb-16 lg:pb-24',
   home: 'container-page flex flex-col gap-5 pb-7 md:gap-8 md:pb-16 lg:pb-24',
 };
+
+const TOUR_FILTER_BUTTON_CLASS = `min-h-[44px] rounded-[7.86px] px-4 py-2 text-sm sm:min-h-0 md:text-base ${SLIDER_NAV_INTERACTION_CLASS}`;
+
+const TOUR_ACTION_BUTTON_CLASS = `flex items-center gap-2 ${TOUR_FILTER_BUTTON_CLASS}`;
 
 export default function SharedToursSection({ scope, slug, title, variant = 'default', className = '', cityCoordinates }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -145,15 +150,11 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
               setSelectedTags([]);
               setCurrentPage(1);
             }}
-            className="min-h-[44px] sm:min-h-0 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
+            className={TOUR_FILTER_BUTTON_CLASS}
             style={{
-              backgroundColor: 'hsl(var(--muted))',
-              borderColor: 'rgba(67, 90, 103, 0.26)',
               fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
               fontWeight: selectedTags.length === 0 ? 600 : 500,
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f4f4f5')}
           >
             All
           </button>
@@ -166,15 +167,11 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
                   key={tag.id || tag.name}
                   type="button"
                   onClick={() => handleTagToggle(tag.name)}
-                  className="min-h-[44px] sm:min-h-0 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
+                  className={TOUR_FILTER_BUTTON_CLASS}
                   style={{
-                    backgroundColor: 'hsl(var(--muted))',
-                    borderColor: 'rgba(67, 90, 103, 0.26)',
                     fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
                     fontWeight: isActive ? 600 : 500,
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f4f4f5')}
                 >
                   {tag.name}
                 </button>
@@ -189,15 +186,11 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
             <button
               type="button"
               onClick={() => setShowSortDropdown((prev) => !prev)}
-              className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
+              className={TOUR_ACTION_BUTTON_CLASS}
               style={{
-                backgroundColor: 'hsl(var(--muted))',
-                borderColor: 'rgba(67, 90, 103, 0.26)',
                 fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
                 fontWeight: 500,
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f4f4f5')}
             >
               Sort
               <ChevronDown className="size-4" />
@@ -223,15 +216,11 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
             <button
               type="button"
               onClick={() => setIsMapView((value) => !value)}
-              className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
+              className={TOUR_ACTION_BUTTON_CLASS}
               style={{
-                backgroundColor: 'hsl(var(--muted))',
-                borderColor: 'rgba(67, 90, 103, 0.26)',
                 fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
                 fontWeight: 500,
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f4f4f5')}
             >
               <MapPin className="size-5" strokeWidth={1.2} />
               {isMapView ? 'View as List' : 'View on Map'}
