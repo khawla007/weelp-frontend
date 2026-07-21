@@ -116,7 +116,7 @@ const BannerSection = ({
                   {Array(5)
                     .fill(0)
                     .map((_, i) => (
-                      <Star key={i} className={i < Math.round(reviewSummary?.average_rating || 0) ? 'stroke-none fill-warning' : 'stroke-none fill-muted'} size={16} />
+                      <Star key={i} className={i < Math.round(reviewSummary?.average_rating || 0) ? 'stroke-none fill-warning' : 'stroke-none fill-muted-foreground/60'} size={16} />
                     ))}
                 </span>
                 <span className="text-muted-foreground text-sm lg:text-base font-medium">{reviewSummary?.total_reviews || 0} Reviews</span>
