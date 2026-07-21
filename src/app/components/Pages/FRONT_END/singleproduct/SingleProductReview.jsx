@@ -168,7 +168,9 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
               prevEl: '.photo-prev',
               nextEl: '.photo-next',
             }}
-            loop={allReviewsWithPhotos.length > 3}
+            loop={false}
+            rewind={false}
+            watchOverflow={true}
             breakpoints={{
               450: {
                 slidesPerView: 1,
@@ -233,7 +235,9 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
               prevEl: '.featured-prev',
               nextEl: '.featured-next',
             }}
-            loop={featuredReviewsData.length > 2}
+            loop={false}
+            rewind={false}
+            watchOverflow={true}
             ref={featuredSwiperRef}
             breakpoints={{
               450: {
@@ -302,6 +306,10 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
   const sectionRef = useRef(null);
   const filterRowRef = useRef(null);
   const loadingTimerRef = useRef(null);
+  const maxGroup = Math.max(totalGroups - 1, 0);
+  const visibleGroup = Math.min(currentGroup, maxGroup);
+  const isFirstGroup = visibleGroup === 0;
+  const isLastGroup = visibleGroup >= maxGroup;
 
   useEffect(() => {
     return () => {
@@ -313,7 +321,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
 
   // Get the 3 reviews for the current group
   const getCurrentReviews = () => {
-    const start = currentGroup * REVIEWS_PER_GROUP;
+    const start = visibleGroup * REVIEWS_PER_GROUP;
     const end = start + REVIEWS_PER_GROUP;
     return filteredReviews.slice(start, end);
   };
@@ -329,12 +337,20 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
   };
 
   const handlePrevious = () => {
-    setCurrentGroup((prev) => (prev === 0 ? totalGroups - 1 : prev - 1));
+    if (isFirstGroup) {
+      return;
+    }
+
+    setCurrentGroup(visibleGroup - 1);
     scrollToFilterControls();
   };
 
   const handleNext = () => {
-    setCurrentGroup((prev) => (prev === totalGroups - 1 ? 0 : prev + 1));
+    if (isLastGroup) {
+      return;
+    }
+
+    setCurrentGroup(visibleGroup + 1);
     scrollToFilterControls();
   };
 
@@ -487,7 +503,9 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
                           prevEl: `.review-img-prev-${index}`,
                           nextEl: `.review-img-next-${index}`,
                         }}
-                        loop={review.images.length > 1}
+                        loop={false}
+                        rewind={false}
+                        watchOverflow={true}
                         slidesPerView={1.2}
                         breakpoints={{
                           640: { slidesPerView: 2 },
@@ -551,10 +569,22 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
         {/* Navigation buttons - right side without dots */}
         {!isReviewListLoading && filteredReviews.length > 3 && (
           <div className="flex items-center justify-end gap-3 mt-6">
-            <button type="button" onClick={handlePrevious} className={COMPACT_SLIDER_NAV_BUTTON_CLASS} aria-label="Previous review page">
+            <button
+              type="button"
+              onClick={handlePrevious}
+              disabled={isFirstGroup}
+              className={`${COMPACT_SLIDER_NAV_BUTTON_CLASS} disabled:cursor-not-allowed disabled:opacity-50`}
+              aria-label="Previous review page"
+            >
               <ChevronLeft size={16} />
             </button>
-            <button type="button" onClick={handleNext} className={COMPACT_SLIDER_NAV_BUTTON_CLASS} aria-label="Next review page">
+            <button
+              type="button"
+              onClick={handleNext}
+              disabled={isLastGroup}
+              className={`${COMPACT_SLIDER_NAV_BUTTON_CLASS} disabled:cursor-not-allowed disabled:opacity-50`}
+              aria-label="Next review page"
+            >
               <ChevronRight size={16} />
             </button>
           </div>

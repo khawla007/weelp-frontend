@@ -11,8 +11,13 @@ jest.mock('@/lib/services/reviews', () => ({
   getItineraryFeaturedReviews: jest.fn(),
 }));
 
+let mockSwiperProps;
+
 jest.mock('swiper/react', () => ({
-  Swiper: ({ children, className }) => <div className={`swiper ${className || ''}`}>{children}</div>,
+  Swiper: ({ children, className, ...props }) => {
+    mockSwiperProps.push(props);
+    return <div className={`swiper ${className || ''}`}>{children}</div>;
+  },
   SwiperSlide: ({ children, className, style }) => (
     <div className={`swiper-slide ${className || ''}`} style={style}>
       {children}
@@ -31,6 +36,7 @@ const originalScrollTo = window.scrollTo;
 describe('SingleProductReview', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockSwiperProps = [];
     getActivityReviews.mockResolvedValue({ success: true, data: [], summary: { average_rating: 0, total_reviews: 0, total_photos: 0 } });
     getActivityFeaturedReviews.mockResolvedValue({ success: true, data: [] });
     getItineraryFeaturedReviews.mockResolvedValue({ success: true, data: [] });
@@ -210,12 +216,88 @@ describe('SingleProductReview', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Next review page' })).toBeInTheDocument());
 
     const filterControls = screen.getByRole('button', { name: 'All' }).parentElement.parentElement;
+    const previousButton = screen.getByRole('button', { name: 'Previous review page' });
+    const nextButton = screen.getByRole('button', { name: 'Next review page' });
 
-    fireEvent.click(screen.getByRole('button', { name: 'Next review page' }));
+    expect(previousButton).toBeDisabled();
+    expect(nextButton).not.toBeDisabled();
+
+    fireEvent.click(previousButton);
+
+    expect(scrollTo).not.toHaveBeenCalled();
+    expect(screen.getByText('First Guest')).toBeInTheDocument();
+
+    fireEvent.click(nextButton);
 
     expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
     expect(document.activeElement).toBe(filterControls);
     expect(screen.getByText('Fourth Guest')).toBeInTheDocument();
     expect(screen.queryByText('First Guest')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Previous review page' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Next review page' })).toBeDisabled();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Next review page' }));
+
+    expect(scrollTo).toHaveBeenCalledTimes(1);
+    expect(screen.getByText('Fourth Guest')).toBeInTheDocument();
+    expect(screen.queryByText('First Guest')).not.toBeInTheDocument();
+  });
+
+  it('keeps single product review sliders from looping', async () => {
+    getActivityReviews.mockResolvedValue({
+      success: true,
+      summary: { average_rating: 4.8, total_reviews: 4, total_photos: 5 },
+      data: [
+        {
+          id: 1,
+          rating: 5,
+          review_text: 'First photo review.',
+          user: { id: 1, name: 'First Guest' },
+          media_gallery: [
+            { id: 1, name: 'Photo 1', alt: 'Photo 1', url: '/api/media/1' },
+            { id: 2, name: 'Photo 2', alt: 'Photo 2', url: '/api/media/2' },
+          ],
+          created_at: '2026-06-30',
+        },
+        {
+          id: 2,
+          rating: 5,
+          review_text: 'Second photo review.',
+          user: { id: 2, name: 'Second Guest' },
+          media_gallery: [{ id: 3, name: 'Photo 3', alt: 'Photo 3', url: '/api/media/3' }],
+          created_at: '2026-06-29',
+        },
+        {
+          id: 3,
+          rating: 5,
+          review_text: 'Third photo review.',
+          user: { id: 3, name: 'Third Guest' },
+          media_gallery: [{ id: 4, name: 'Photo 4', alt: 'Photo 4', url: '/api/media/4' }],
+          created_at: '2026-06-28',
+        },
+        {
+          id: 4,
+          rating: 5,
+          review_text: 'Fourth photo review.',
+          user: { id: 4, name: 'Fourth Guest' },
+          media_gallery: [{ id: 5, name: 'Photo 5', alt: 'Photo 5', url: '/api/media/5' }],
+          created_at: '2026-06-27',
+        },
+      ],
+    });
+
+    renderWithSWR(<SingleProductReview productType="activity" activitySlug="desert-safari" productData={{ review_summary: { average_rating: 4.8, total_reviews: 4 } }} />);
+
+    await waitFor(() => expect(screen.getAllByText('First photo review.').length).toBeGreaterThan(0));
+
+    expect(mockSwiperProps.length).toBeGreaterThanOrEqual(3);
+    expect(mockSwiperProps).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ navigation: expect.objectContaining({ prevEl: '.photo-prev' }), loop: false, rewind: false, watchOverflow: true }),
+        expect.objectContaining({ navigation: expect.objectContaining({ prevEl: '.featured-prev' }), loop: false, rewind: false, watchOverflow: true }),
+        expect.objectContaining({ navigation: expect.objectContaining({ prevEl: '.review-img-prev-0' }), loop: false, rewind: false, watchOverflow: true }),
+      ]),
+    );
+    expect(mockSwiperProps.every((props) => props.loop !== true)).toBe(true);
   });
 });
