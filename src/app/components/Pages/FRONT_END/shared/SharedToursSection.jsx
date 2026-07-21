@@ -8,6 +8,8 @@ import ItemCard from '@/app/components/ui/item-card';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import { ProductCardSkelton } from '@/app/components/Animation/Cards';
 import Reveal from '@/app/components/ui/Reveal';
+import ToursMapView from './ToursMapView';
+import { buildTourMapMarkers } from './tourMapMarkers';
 
 const SORT_OPTIONS = [
   { value: 'id_desc', label: 'Newest First' },
@@ -22,11 +24,12 @@ const SECTION_CLASS_BY_VARIANT = {
   home: 'container-page flex flex-col gap-5 pb-7 md:gap-8 md:pb-16 lg:pb-24',
 };
 
-export default function SharedToursSection({ scope, slug, title, variant = 'default', className = '' }) {
+export default function SharedToursSection({ scope, slug, title, variant = 'default', className = '', cityCoordinates }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTags, setSelectedTags] = useState([]);
   const [sortBy, setSortBy] = useState('id_desc');
   const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [isMapView, setIsMapView] = useState(false);
   const [allTags, setAllTags] = useState([]);
   const [itineraries, setItineraries] = useState([]);
   const [pagination, setPagination] = useState({ last_page: 1, total: 0 });
@@ -119,6 +122,8 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
 
   const fallbackCity = scope === 'city' ? slug : undefined;
   const cards = itineraries.map((item) => mapProductToItemCard(item, item?.city_slug || fallbackCity));
+  const mapMarkers = buildTourMapMarkers(itineraries, cards, { citySlug: fallbackCity, cityCoordinates });
+  const canShowMapView = mapMarkers.length > 0;
   const totalPages = pagination.last_page;
   const sectionClassName = `${SECTION_CLASS_BY_VARIANT[variant] || SECTION_CLASS_BY_VARIANT.default} ${className}`.trim();
 
@@ -214,22 +219,24 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
             )}
           </div>
 
-          {/* View on Map — static */}
-          <button
-            type="button"
-            className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
-            style={{
-              backgroundColor: 'hsl(var(--muted))',
-              borderColor: 'rgba(67, 90, 103, 0.26)',
-              fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
-              fontWeight: 500,
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f4f4f5')}
-          >
-            <MapPin className="size-5" strokeWidth={1.2} />
-            View on Map
-          </button>
+          {canShowMapView && (
+            <button
+              type="button"
+              onClick={() => setIsMapView((value) => !value)}
+              className="flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-[7.86px] border px-4 py-2 text-weelp-steel transition text-sm md:text-base"
+              style={{
+                backgroundColor: 'hsl(var(--muted))',
+                borderColor: 'rgba(67, 90, 103, 0.26)',
+                fontFamily: 'var(--font-interTight), Inter Tight, sans-serif',
+                fontWeight: 500,
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f4f4f5')}
+            >
+              <MapPin className="size-5" strokeWidth={1.2} />
+              {isMapView ? 'View as List' : 'View on Map'}
+            </button>
+          )}
         </div>
       </div>
 
@@ -253,6 +260,8 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
             Try again
           </button>
         </div>
+      ) : cards.length > 0 && isMapView && canShowMapView ? (
+        <ToursMapView cards={cards} markers={mapMarkers} cityName={title} />
       ) : cards.length > 0 ? (
         <Reveal stagger={60} variant="lift" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-[18px]">
           {cards.map((card, index) => (

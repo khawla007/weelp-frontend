@@ -78,7 +78,16 @@ export default async function CityPage({ params }) {
       {activitesData?.length > 0 && <ProductSliderSection items={activitesData.map((a) => mapProductToItemCard(a, city))} title="Top activities" navigationId="city-activities" />}
 
       {/* Tours grid section — fetches its own data with pagination, tag filter, sort */}
-      <SharedToursSection scope="city" slug={city} title={citydata?.name || city} variant="home" />
+      <SharedToursSection
+        scope="city"
+        slug={city}
+        title={citydata?.name || city}
+        variant="home"
+        cityCoordinates={{
+          latitude: citydata?.location_details?.latitude,
+          longitude: citydata?.location_details?.longitude,
+        }}
+      />
 
       {/* Filter Section (tabs, sort, sidebar, grid, pagination) — only if any product data */}
       {hasAnyProducts && <SharedFilterSection scope="city" slug={city} variant="home" />}

@@ -33,11 +33,23 @@ jest.mock('@/app/components/ui/Pagination', () => ({
   ),
 }));
 
+jest.mock('../ToursMapView', () => ({
+  __esModule: true,
+  default: ({ cards, markers, cityName }) => (
+    <section data-testid="tours-map-view" data-card-count={cards.length} data-marker-count={markers.length} aria-label={`${cityName} tours map`}>
+      {cards.map((card) => (
+        <span key={card.id}>{card.title}</span>
+      ))}
+    </section>
+  ),
+}));
+
 jest.mock('@/lib/mapProductToItemCard', () => ({
   mapProductToItemCard: (item, citySlug) => ({
     id: item.id,
     href: `/cities/${citySlug}/itineraries/${item.slug}`,
     title: item.name,
+    price: item.schedule_total_price ? `$${item.schedule_total_price}` : '',
   }),
 }));
 
@@ -114,5 +126,57 @@ describe('SharedToursSection destination states', () => {
 
     expect(screen.getByText('No itineraries found for the selected tags')).toBeInTheDocument();
     expect(screen.queryByText('We could not load destination tours.')).not.toBeInTheDocument();
+  });
+
+  it('toggles destination tours between list and map views', async () => {
+    axios.get.mockResolvedValueOnce({
+      data: {
+        success: true,
+        data: [
+          { id: 1, name: 'Dubai two-day itinerary', slug: 'dubai-two-day-itinerary', city_slug: 'dubai' },
+          { id: 2, name: 'Dubai desert plan', slug: 'dubai-desert-plan', city_slug: 'dubai' },
+        ],
+        all_tags: [],
+        last_page: 1,
+        total: 2,
+      },
+    });
+
+    render(<SharedToursSection scope="city" slug="dubai" title="Dubai" cityCoordinates={{ latitude: '25.2048', longitude: '55.2708' }} />);
+    await flushFetch();
+
+    expect(screen.getByRole('link', { name: 'Dubai two-day itinerary' })).toBeInTheDocument();
+    expect(screen.queryByTestId('tours-map-view')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'View on Map' }));
+
+    const mapView = screen.getByTestId('tours-map-view');
+    expect(mapView).toHaveAttribute('data-card-count', '2');
+    expect(mapView).toHaveAttribute('data-marker-count', '2');
+    expect(screen.getByRole('button', { name: 'View as List' })).toBeInTheDocument();
+    expect(screen.getByText('Dubai desert plan')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'View as List' }));
+
+    expect(screen.queryByTestId('tours-map-view')).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Dubai desert plan' })).toBeInTheDocument();
+  });
+
+  it('does not offer map mode when fetched tours have no usable coordinates', async () => {
+    axios.get.mockResolvedValueOnce({
+      data: {
+        success: true,
+        data: [{ id: 3, name: 'Middle East highlights', slug: 'middle-east-highlights', city_slug: 'dubai' }],
+        all_tags: [],
+        last_page: 1,
+        total: 1,
+      },
+    });
+
+    render(<SharedToursSection scope="region" slug="middle-east" title="Middle East" />);
+    await flushFetch();
+
+    expect(screen.getByRole('link', { name: 'Middle East highlights' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'View on Map' })).not.toBeInTheDocument();
   });
 });
