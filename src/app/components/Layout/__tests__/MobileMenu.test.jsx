@@ -55,6 +55,22 @@ describe('MobileMenu', () => {
     expect(topStrip).toHaveClass('border-b-0', 'max-h-0', 'pointer-events-none');
   });
 
+  it('does not switch solid mobile pages to fixed positioning on scroll', () => {
+    const { container } = render(<MobileMenu stickyHeader variant="solid" />);
+
+    const mobileMenu = container.querySelector('[data-weelp-mobile-menu]');
+
+    expect(mobileMenu).not.toHaveClass('fixed', 'top-0', 'left-0', 'right-0');
+  });
+
+  it('keeps the over-hero mobile menu fixed after scroll', () => {
+    const { container } = render(<MobileMenu stickyHeader variant="over-hero" />);
+
+    const mobileMenu = container.querySelector('[data-weelp-mobile-menu]');
+
+    expect(mobileMenu).toHaveClass('fixed', 'top-0', 'left-0', 'right-0');
+  });
+
   it('uses a transparent top strip over the home hero before scroll', () => {
     render(<MobileMenu stickyHeader={false} variant="over-hero" />);
 

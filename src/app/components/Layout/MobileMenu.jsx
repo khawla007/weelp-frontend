@@ -26,6 +26,7 @@ const getInitials = (name) => {
 
 const MobileMenu = ({ stickyHeader, variant = 'solid' }) => {
   const isOverHero = variant === 'over-hero';
+  const fixedToViewport = isOverHero && stickyHeader;
   const topStripVisible = !stickyHeader;
   const mainBarTransparent = isOverHero && !stickyHeader;
   const topStripTransparent = isOverHero && topStripVisible;
@@ -38,7 +39,7 @@ const MobileMenu = ({ stickyHeader, variant = 'solid' }) => {
   const topStripInnerPaddingClass = topStripTransparent ? 'py-0.5' : 'py-1 sm:py-1.5';
 
   return (
-    <div data-weelp-mobile-menu="true" className={`lg:hidden w-full ${stickyHeader ? 'fixed top-0 left-0 right-0 z-40 shadow-md dark:shadow-none' : ''}`}>
+    <div data-weelp-mobile-menu="true" className={`lg:hidden w-full ${fixedToViewport ? 'fixed top-0 left-0 right-0 z-40 shadow-md dark:shadow-none' : ''}`}>
       <div
         aria-hidden={topStripVisible ? undefined : true}
         className={`${topStripVisible ? 'border-b' : 'border-b-0'} overflow-hidden transition-[max-height,padding] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${topStripSurfaceClass} ${

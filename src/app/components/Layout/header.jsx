@@ -56,16 +56,14 @@ const Header = () => {
   }
 
   // Solid (non-home) variant:
-  // The top strip is rendered as a sibling above <header> so it sits in normal
-  // flow and scrolls off naturally. <header> itself is the sticky element and
-  // only contains the main bar (constant 66px). Because the sticky element's
-  // height never changes, the document height stays constant on scroll, which
-  // prevents the browser scroll-anchoring loop that previously caused the
-  // header to visibly blink/jump around the 80px threshold.
+  // The desktop top strip is rendered as a sibling above <header> so it sits in
+  // normal flow and scrolls off naturally. <header> itself is the sticky element
+  // across mobile, tablet, and desktop, so child menus do not switch between
+  // in-flow and fixed positioning around the scroll threshold.
   return (
     <>
       <DesktopTopStrip topStripVisible topStripOverHero={false} collapsible={false} />
-      <header className="block w-full relative z-40 lg:sticky lg:top-0 lg:z-[99999]" data-weelp-header-variant={variant}>
+      <header className="sticky top-0 z-[99999] block w-full" data-weelp-header-variant={variant}>
         <DesktopMainBar stickyHeader={isScrolled} mainBarTransparent={false} />
         <MobileMenu stickyHeader={isScrolled} variant={variant} />
         {miniCartPortalTarget && isMiniCartOpen ? createPortal(<MiniCartNew />, miniCartPortalTarget) : null}

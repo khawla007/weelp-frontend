@@ -83,8 +83,9 @@ describe('Header', () => {
     usePathnameMock.mockReturnValue('/cities/dubai');
     render(<Header />);
     expect(screen.getByRole('banner')).toHaveAttribute('data-weelp-header-variant', 'solid');
+    expect(screen.getByRole('banner')).toHaveClass('sticky', 'top-0', 'z-[99999]');
     // Solid renders DesktopTopStrip + DesktopMainBar separately (not the combined DesktopMenu) so
-    // the sticky element has a constant height — preventing the scroll-anchor oscillation bug.
+    // the sticky element owns the scroll behavior across mobile, tablet, and desktop.
     expect(screen.queryByTestId('desktop-menu')).not.toBeInTheDocument();
     expect(screen.getByTestId('desktop-top-strip')).toHaveAttribute('data-collapsible', 'false');
     expect(screen.getByTestId('desktop-main-bar')).toHaveAttribute('data-sticky', 'false');

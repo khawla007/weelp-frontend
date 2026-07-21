@@ -95,7 +95,7 @@ const BannerSection = ({
     <section className="weelp-hero-rise bg-background mb-10 md:mb-16 lg:mb-24">
       <div className="max-w-pen mx-auto bg-background px-4">
         {/* Breadcrumb + Title + Stats */}
-        <div className="flex flex-col gap-2 pt-[70px]">
+        <div className="flex flex-col gap-2 pt-6 md:pt-[70px]">
           <div className="weelp-hero-ui-rise" style={{ '--weelp-motion-delay': '120ms' }}>
             <BreadCrumb className="mb-2" />
           </div>

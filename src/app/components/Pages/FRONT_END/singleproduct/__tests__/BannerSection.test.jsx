@@ -88,6 +88,15 @@ describe('BannerSection', () => {
     expect(inner).toHaveClass('bg-background');
   });
 
+  it('matches the City page mobile hero top spacing', () => {
+    const { container } = render(<BannerSection activityName="Scuba Diving Tour" />);
+
+    const headerStack = container.querySelector('section .max-w-pen > div');
+
+    expect(headerStack).toHaveClass('pt-6', 'md:pt-[70px]');
+    expect(headerStack).not.toHaveClass('pt-[70px]');
+  });
+
   it('saves the normalized wishlist payload for an authenticated user', async () => {
     render(<BannerSection activityName="Scuba Diving Tour" itemId={42} itemType="activity" slug="scuba-diving-tour" citySlug="dubai" cityName="Dubai" price={120} currency="USD" />);
 
