@@ -8,7 +8,7 @@ import { ProductGalleryAnimation } from '../Animation/ProductAnimation';
 import '@/app/styles/swiper.css';
 
 // Slider for City Page and
-const GallerySlider = ({ data, classNames = '', navColor = '#fff', collapseHiddenThumbnails = false }) => {
+const GallerySlider = ({ data, classNames = '', navColor = '#588f7a', collapseHiddenThumbnails = false }) => {
   const [showGallery, setShowGallery] = useState(false); // toggle gallery visibility
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 

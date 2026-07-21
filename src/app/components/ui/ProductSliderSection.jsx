@@ -6,6 +6,7 @@ import SectionHeader from '@/app/components/ui/SectionHeader';
 import CarouselShell from '@/app/components/ui/CarouselShell';
 import ItemCard from '@/app/components/ui/item-card';
 import Reveal from '@/app/components/ui/Reveal';
+import { SLIDER_NAV_BUTTON_CLASS } from '@/app/components/ui/sliderNavigationClasses';
 
 const PRODUCT_BREAKPOINTS = {
   450: { slidesPerView: 1, spaceBetween: 18 },
@@ -14,9 +15,6 @@ const PRODUCT_BREAKPOINTS = {
   1024: { slidesPerView: 4, spaceBetween: 18 },
   1440: { slidesPerView: 5, spaceBetween: 18 },
 };
-
-const PRODUCT_NAV_BUTTON_CLASS =
-  'flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-background text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:size-11';
 
 /**
  * Shared product carousel section used across pages (homepage, city, etc.).
@@ -39,10 +37,10 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
 
         {headerAction === 'navigation' && (
           <div className="flex shrink-0 items-center gap-2">
-            <button type="button" className={`${navigationId}-prev ${PRODUCT_NAV_BUTTON_CLASS}`} aria-label={`Previous ${title} item`}>
+            <button type="button" className={`${navigationId}-prev ${SLIDER_NAV_BUTTON_CLASS}`} aria-label={`Previous ${title} item`}>
               <ChevronLeft className="size-4" />
             </button>
-            <button type="button" className={`${navigationId}-next ${PRODUCT_NAV_BUTTON_CLASS}`} aria-label={`Next ${title} item`}>
+            <button type="button" className={`${navigationId}-next ${SLIDER_NAV_BUTTON_CLASS}`} aria-label={`Next ${title} item`}>
               <ChevronRight className="size-4" />
             </button>
           </div>

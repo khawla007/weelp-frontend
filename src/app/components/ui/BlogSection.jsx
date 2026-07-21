@@ -5,6 +5,7 @@ import SectionHeader from '@/app/components/ui/SectionHeader';
 import CarouselShell from '@/app/components/ui/CarouselShell';
 import ItemCard from '@/app/components/ui/item-card';
 import Reveal from '@/app/components/ui/Reveal';
+import { COMPACT_SLIDER_NAV_BUTTON_CLASS } from '@/app/components/ui/sliderNavigationClasses';
 import { mapBlogToItemCard } from '@/lib/mapProductToItemCard';
 
 const BLOG_BREAKPOINTS = {
@@ -32,18 +33,10 @@ export default function BlogSection({ blogs = [], title = 'Your Guide', navigati
       <Reveal initialHidden variant="lift" className="flex items-center justify-between">
         <SectionHeader title={title} />
         <div className="hidden sm:flex items-center gap-2">
-          <button
-            type="button"
-            className={`${navigationId}-prev flex size-11 items-center justify-center rounded-full border border-border bg-background text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}
-            aria-label="Previous blog post"
-          >
+          <button type="button" className={`${navigationId}-prev ${COMPACT_SLIDER_NAV_BUTTON_CLASS}`} aria-label="Previous blog post">
             <ChevronLeft className="size-4" />
           </button>
-          <button
-            type="button"
-            className={`${navigationId}-next flex size-11 items-center justify-center rounded-full border border-border bg-background text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-[4px_4px_15px_rgba(88,143,122,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40`}
-            aria-label="Next blog post"
-          >
+          <button type="button" className={`${navigationId}-next ${COMPACT_SLIDER_NAV_BUTTON_CLASS}`} aria-label="Next blog post">
             <ChevronRight className="size-4" />
           </button>
         </div>

@@ -8,6 +8,7 @@ import useSWR from 'swr';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import SectionHeader from '@/app/components/ui/SectionHeader';
+import { COMPACT_SLIDER_NAV_BUTTON_CLASS } from '@/app/components/ui/sliderNavigationClasses';
 import '@/app/styles/swiper.css';
 
 const REVIEW_FILTER_LOADING_MS = 350;
@@ -196,19 +197,11 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
           {/* Navigation buttons - bottom right with 10px spacing */}
           {allReviewsWithPhotos.length > 2 && (
             <div className="absolute bottom-[10px] right-[10px] flex gap-3 z-10">
-              <button
-                type="button"
-                className="photo-prev w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                aria-label="Previous review photo"
-              >
-                <ChevronLeft size={16} className="text-copy" />
+              <button type="button" className={`photo-prev ${COMPACT_SLIDER_NAV_BUTTON_CLASS} disabled:cursor-not-allowed disabled:opacity-50`} aria-label="Previous review photo">
+                <ChevronLeft size={16} />
               </button>
-              <button
-                type="button"
-                className="photo-next w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                aria-label="Next review photo"
-              >
-                <ChevronRight size={16} className="text-copy" />
+              <button type="button" className={`photo-next ${COMPACT_SLIDER_NAV_BUTTON_CLASS} disabled:cursor-not-allowed disabled:opacity-50`} aria-label="Next review photo">
+                <ChevronRight size={16} />
               </button>
             </div>
           )}
@@ -223,19 +216,11 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
             <h3 className="text-lg sm:text-[28px] text-foreground">Featured review</h3>
             {featuredReviewsData.length > 2 && (
               <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  className="featured-prev w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                  aria-label="Previous featured review"
-                >
-                  <ChevronLeft size={16} className="text-copy" />
+                <button type="button" className={`featured-prev ${COMPACT_SLIDER_NAV_BUTTON_CLASS} disabled:cursor-not-allowed disabled:opacity-50`} aria-label="Previous featured review">
+                  <ChevronLeft size={16} />
                 </button>
-                <button
-                  type="button"
-                  className="featured-next w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                  aria-label="Next featured review"
-                >
-                  <ChevronRight size={16} className="text-copy" />
+                <button type="button" className={`featured-next ${COMPACT_SLIDER_NAV_BUTTON_CLASS} disabled:cursor-not-allowed disabled:opacity-50`} aria-label="Next featured review">
+                  <ChevronRight size={16} />
                 </button>
               </div>
             )}
@@ -523,17 +508,17 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
                         <div className="absolute bottom-[10px] right-[10px] flex gap-3 z-10">
                           <button
                             type="button"
-                            className={`review-img-prev-${index} w-11 h-11 rounded-full flex items-center justify-center bg-card shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
+                            className={`review-img-prev-${index} ${COMPACT_SLIDER_NAV_BUTTON_CLASS} disabled:cursor-not-allowed disabled:opacity-50`}
                             aria-label={`Previous image for ${review.userName}'s review`}
                           >
-                            <ChevronLeft size={16} className="text-copy" />
+                            <ChevronLeft size={16} />
                           </button>
                           <button
                             type="button"
-                            className={`review-img-next-${index} w-11 h-11 rounded-full flex items-center justify-center bg-card shadow-md dark:shadow-none border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
+                            className={`review-img-next-${index} ${COMPACT_SLIDER_NAV_BUTTON_CLASS} disabled:cursor-not-allowed disabled:opacity-50`}
                             aria-label={`Next image for ${review.userName}'s review`}
                           >
-                            <ChevronRight size={16} className="text-copy" />
+                            <ChevronRight size={16} />
                           </button>
                         </div>
                       )}
@@ -566,21 +551,11 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
         {/* Navigation buttons - right side without dots */}
         {!isReviewListLoading && filteredReviews.length > 3 && (
           <div className="flex items-center justify-end gap-3 mt-6">
-            <button
-              type="button"
-              onClick={handlePrevious}
-              className="w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md dark:shadow-none border border-border hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-              aria-label="Previous review page"
-            >
-              <ChevronLeft size={16} className="text-copy" />
+            <button type="button" onClick={handlePrevious} className={COMPACT_SLIDER_NAV_BUTTON_CLASS} aria-label="Previous review page">
+              <ChevronLeft size={16} />
             </button>
-            <button
-              type="button"
-              onClick={handleNext}
-              className="w-11 h-11 rounded-full flex items-center justify-center bg-background shadow-md dark:shadow-none border border-border hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-              aria-label="Next review page"
-            >
-              <ChevronRight size={16} className="text-copy" />
+            <button type="button" onClick={handleNext} className={COMPACT_SLIDER_NAV_BUTTON_CLASS} aria-label="Next review page">
+              <ChevronRight size={16} />
             </button>
           </div>
         )}

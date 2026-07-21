@@ -7,6 +7,7 @@ import Accordion from '../../../Faq';
 import { faqItems, destinationInfo } from '@/app/Data/ShopData'; //static data
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Reveal from '@/app/components/ui/Reveal';
+import { COMPACT_SLIDER_NAV_BUTTON_CLASS } from '@/app/components/ui/sliderNavigationClasses';
 
 const bgImage = '/assets/images/whatabout.webp';
 
@@ -39,10 +40,10 @@ export const ReviewSectionCity = ({ cityData, reviews = [], reviewSummary = null
               <div className="flex items-center justify-between w-full relative min-h-[40px]">
                 <h2 className="text-lg md:text-2xl lg:text-[28px] font-extrabold tracking-[-0.04em] text-[var(--weelp-home-ink)]">Top traveler reviews</h2>
                 <div className="flex gap-3 items-center">
-                  <button type="button" className="review-prev flex size-11 items-center justify-center rounded-full bg-muted text-foreground transition hover:bg-muted" aria-label="Previous review">
+                  <button type="button" className={`review-prev ${COMPACT_SLIDER_NAV_BUTTON_CLASS}`} aria-label="Previous review">
                     <ChevronLeft className="size-[18px]" />
                   </button>
-                  <button type="button" className="review-next flex size-11 items-center justify-center rounded-full bg-foreground text-white transition hover:bg-foreground" aria-label="Next review">
+                  <button type="button" className={`review-next ${COMPACT_SLIDER_NAV_BUTTON_CLASS}`} aria-label="Next review">
                     <ChevronRight className="size-[18px]" />
                   </button>
                 </div>
@@ -72,10 +73,10 @@ export const ReviewSectionRegion = ({ cityData }) => {
             <div className="flex items-center justify-between w-full relative min-h-[40px]">
               <h2 className="text-lg sm:text-[28px] font-extrabold tracking-[-0.04em] text-[var(--weelp-home-ink)]">Featured review</h2>
               <div className="flex gap-3 items-center">
-                <button type="button" className="review-prev flex size-11 items-center justify-center rounded-full bg-muted text-foreground transition hover:bg-muted" aria-label="Previous review">
+                <button type="button" className={`review-prev ${COMPACT_SLIDER_NAV_BUTTON_CLASS}`} aria-label="Previous review">
                   <ChevronLeft className="size-[18px]" />
                 </button>
-                <button type="button" className="review-next flex size-11 items-center justify-center rounded-full bg-foreground text-white transition hover:bg-foreground" aria-label="Next review">
+                <button type="button" className={`review-next ${COMPACT_SLIDER_NAV_BUTTON_CLASS}`} aria-label="Next review">
                   <ChevronRight className="size-[18px]" />
                 </button>
               </div>

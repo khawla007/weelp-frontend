@@ -5,6 +5,7 @@ import BuddyChat from './BuddyChat';
 import TravelBuddyMap from './TravelBuddyMapClient';
 import CarouselShell from '@/app/components/ui/CarouselShell';
 import ItemCard from '@/app/components/ui/item-card';
+import { COMPACT_SLIDER_NAV_BUTTON_CLASS } from '@/app/components/ui/sliderNavigationClasses';
 import useBuddyChat from '@/hooks/useBuddyChat';
 
 const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-card shadow-sm ring-1 ring-border dark:shadow-none';
@@ -12,9 +13,6 @@ const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-card 
 const BUDDY_SLIDER_BREAKPOINTS = {
   0: { slidesPerView: 2, spaceBetween: 12 },
 };
-
-const NAV_BUTTON_CLASS =
-  'flex size-11 items-center justify-center rounded-full border border-border bg-card text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep hover:shadow-sm dark:hover:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40';
 
 const TravelBuddyWidget = ({ items = [] }) => {
   const { messages, isThinking, sendMessage, presets, lastPayload } = useBuddyChat();
@@ -36,10 +34,10 @@ const TravelBuddyWidget = ({ items = [] }) => {
               <div className="flex items-center justify-between">
                 <h3 className="text-[14px] font-semibold text-foreground">Featured activities</h3>
                 <div className="flex items-center gap-2">
-                  <button type="button" className={`buddy-activities-prev ${NAV_BUTTON_CLASS}`} aria-label="Previous featured activities">
+                  <button type="button" className={`buddy-activities-prev ${COMPACT_SLIDER_NAV_BUTTON_CLASS}`} aria-label="Previous featured activities">
                     <ChevronLeft className="size-4" />
                   </button>
-                  <button type="button" className={`buddy-activities-next ${NAV_BUTTON_CLASS}`} aria-label="Next featured activities">
+                  <button type="button" className={`buddy-activities-next ${COMPACT_SLIDER_NAV_BUTTON_CLASS}`} aria-label="Next featured activities">
                     <ChevronRight className="size-4" />
                   </button>
                 </div>

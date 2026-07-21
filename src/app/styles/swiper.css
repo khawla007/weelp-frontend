@@ -88,8 +88,8 @@
 
 .swiper-button-prev:hover,
 .swiper-button-next:hover {
-  @apply bg-weelp-sage-deep border-weelp-sage-deep !important;
-  --swiper-navigation-color: #ffffff !important;
+  @apply bg-background border-weelp-sage-deep text-weelp-sage-deep !important;
+  --swiper-navigation-color: #588f7a !important;
   box-shadow: 4px 4px 15px rgba(88, 143, 122, 0.3) !important;
 }
 
@@ -127,8 +127,8 @@
 
 .swiper-button-prev:hover svg,
 .swiper-button-next:hover svg {
-  color: #ffffff !important;
-  fill: #ffffff !important;
+  color: #588f7a !important;
+  fill: #588f7a !important;
 }
 
 /* Ensure centering and small size for Swiper's default font icons */
@@ -148,7 +148,7 @@
 
 .swiper-button-prev:hover::after,
 .swiper-button-next:hover::after {
-  color: #ffffff !important;
+  color: #588f7a !important;
 }
 
 .productSlider .swiper-button-prev,
@@ -186,8 +186,21 @@
 /* Custom Config Gallery Slider For City and SingleProduct Page */
 .gallery_slider .swiper-button-prev,
 .gallery_slider .swiper-button-next {
-  @apply bg-background border rounded-lg size-10;
+  @apply bg-background border border-border rounded-full size-10 text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none;
+  border-radius: 9999px !important;
   margin: 0 !important;
+}
+
+.gallery_slider .swiper-button-prev:hover,
+.gallery_slider .swiper-button-next:hover {
+  @apply bg-background border-weelp-sage-deep text-weelp-sage-deep !important;
+  --swiper-navigation-color: #588f7a !important;
+  box-shadow: 4px 4px 15px rgba(88, 143, 122, 0.3) !important;
+}
+
+.gallery_slider .swiper-button-prev:hover::after,
+.gallery_slider .swiper-button-next:hover::after {
+  color: #588f7a !important;
 }
 
 .gallery_slider .swiper-button-prev {
