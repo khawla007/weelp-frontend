@@ -12,6 +12,7 @@ import { getItineraryAddons, getPackageAddons } from '@/lib/services/addOn';
 import { bookingSchema } from '@/lib/validation/bookingSchema';
 import { calculateActivityPrice } from '@/lib/pricing/calculateActivityPrice';
 import { formatCurrency } from '@/lib/utils';
+import SimilarExperiences from './SimilarExperiences';
 
 const DEFAULT_TRAVELERS = { adults: 1, children: 0, infants: 0 };
 
@@ -47,7 +48,17 @@ function RowPulse({ value, className = '', children }) {
   );
 }
 
-const ProductSidebar = ({ productId, productData, productType = 'activity', itinerarySlug, packageSlug, defaultDateRange = null, onDateChange = null, scheduleCount = 0 }) => {
+const ProductSidebar = ({
+  productId,
+  productData,
+  productType = 'activity',
+  itinerarySlug,
+  packageSlug,
+  defaultDateRange = null,
+  onDateChange = null,
+  scheduleCount = 0,
+  mobileSimilarActivities = [],
+}) => {
   const searchParams = useSearchParams();
   const [selectedAddons, setSelectedAddons] = useState([]);
   const [hasChangedAddons, setHasChangedAddons] = useState(false);
@@ -476,6 +487,12 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', itin
             </>
           )}
         </div>
+
+        {productType === 'activity' && mobileSimilarActivities.length > 0 && (
+          <div className="md:hidden mt-6">
+            <SimilarExperiences activities={mobileSimilarActivities} />
+          </div>
+        )}
 
         {/* Questions Card */}
         <div className="mt-4 border border-border rounded-xl p-7 bg-background">

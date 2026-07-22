@@ -273,7 +273,7 @@ const SingleProductTabSection = ({
               </Reveal>
 
               {/* Similar Experiences */}
-              <Reveal variant="lift" className="lg:mb-[70px]">
+              <Reveal variant="lift" className="hidden md:block lg:mb-[70px]">
                 <SimilarExperiences activities={similarActivities} />
               </Reveal>
             </div>
@@ -294,6 +294,7 @@ const SingleProductTabSection = ({
               defaultDateRange={defaultDateRange}
               onDateChange={isScheduleType ? handleDateChange : null}
               scheduleCount={isScheduleType ? scheduleCount : 0}
+              mobileSimilarActivities={similarActivities}
             />
           </Reveal>
         </div>

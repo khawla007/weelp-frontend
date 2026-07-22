@@ -10,7 +10,7 @@ jest.mock('../TabSection__modules', () => ({
 
 jest.mock('../SimilarExperiences', () => ({
   __esModule: true,
-  default: () => <div />,
+  default: () => <section aria-label="Similar Experiences">Similar Experiences</section>,
 }));
 
 jest.mock('../ItineraryPanel', () => ({
@@ -72,5 +72,23 @@ describe('single product sidebar layering', () => {
 
     expect(container.firstElementChild).toHaveClass('relative', 'z-[1]');
     expect(screen.getByRole('heading', { name: 'Questions?' })).toBeInTheDocument();
+  });
+
+  it('places mobile similar experiences between the booking action and questions card', () => {
+    render(
+      <ProductSidebar
+        productId={3}
+        productType="activity"
+        productData={{ id: 3, pricing: { regular_price: 244, currency: 'USD' }, addons: [] }}
+        mobileSimilarActivities={[{ id: 10, name: 'Desert Safari' }]}
+      />,
+    );
+
+    const bookingAction = screen.getByRole('button', { name: 'Select' });
+    const similarExperiences = screen.getByLabelText('Similar Experiences');
+    const questionsHeading = screen.getByRole('heading', { name: 'Questions?' });
+
+    expect(bookingAction.compareDocumentPosition(similarExperiences)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(similarExperiences.compareDocumentPosition(questionsHeading)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 });
