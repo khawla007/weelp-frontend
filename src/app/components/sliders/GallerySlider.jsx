@@ -17,12 +17,18 @@ const GallerySlider = ({ data, classNames = '', navColor = '#588f7a', collapseHi
     setShowGallery(!showGallery);
   };
 
+  const preventDoubleClickSelection = (event) => {
+    if (event.detail > 1) {
+      event.preventDefault();
+    }
+  };
+
   const imageData = data || [];
 
   // check for having data
   if (imageData.length > 0) {
     return (
-      <div className={`gallery_slider ${classNames}`}>
+      <div className={`gallery_slider select-none ${classNames}`}>
         {/* Main Slider */}
         <Swiper
           style={{
@@ -64,7 +70,9 @@ const GallerySlider = ({ data, classNames = '', navColor = '#588f7a', collapseHi
 
           {/* Show Gallery Button */}
           <button
-            className="md:block absolute bottom-4 right-4 text-weelp-steel text-sm font-medium z-10 capitalize bg-background py-3 px-6 rounded-lg active:bg-weelp-steel active:text-white gallery_slider_toggle_btn"
+            type="button"
+            className="md:block absolute bottom-4 right-4 text-weelp-steel text-sm font-medium z-10 capitalize bg-background py-3 px-6 rounded-lg active:bg-weelp-steel active:text-white gallery_slider_toggle_btn select-none"
+            onMouseDown={preventDoubleClickSelection}
             onClick={toggleGallery}
           >
             View Gallery

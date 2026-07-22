@@ -84,6 +84,8 @@
   @apply bg-background rounded-[10px] size-10 border border-border flex items-center justify-center transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-300 motion-reduce:transition-none !important;
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1) !important;
   margin-top: 0 !important;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .swiper-button-prev:hover,
@@ -189,6 +191,8 @@
   @apply bg-background border border-border rounded-full size-10 text-foreground transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none;
   border-radius: 9999px !important;
   margin: 0 !important;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .gallery_slider .swiper-button-prev:hover,
