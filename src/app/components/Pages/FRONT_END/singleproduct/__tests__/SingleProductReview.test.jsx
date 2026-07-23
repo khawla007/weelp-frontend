@@ -48,6 +48,15 @@ describe('SingleProductReview', () => {
     window.scrollTo = originalScrollTo;
   });
 
+  it('does not render nonexistent static review images when the API has no review media', async () => {
+    renderWithSWR(<SingleProductReview productType="activity" activitySlug="desert-safari" productData={{ review_summary: { average_rating: 0, total_reviews: 0 } }} />);
+
+    await waitFor(() => expect(getActivityReviews).toHaveBeenCalledWith('desert-safari', { sort: 'recent', per_page: 50 }));
+
+    expect(document.querySelectorAll('img[src^="/images/reviews/"]')).toHaveLength(0);
+    expect(screen.getByRole('img', { name: '0 out of 5 stars' })).toBeInTheDocument();
+  });
+
   it('fetches itinerary reviews and renders review media images', async () => {
     getItineraryReviews.mockResolvedValue({
       success: true,

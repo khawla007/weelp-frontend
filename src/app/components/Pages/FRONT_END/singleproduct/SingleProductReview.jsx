@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Star, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
-import { allReviewsData } from '@/app/Data/SingleActivityData';
 import { getActivityReviews, getActivityFeaturedReviews, getItineraryReviews, getItineraryFeaturedReviews } from '@/lib/services/reviews';
 import useSWR from 'swr';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -94,19 +93,15 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
     };
   };
 
-  // Use API reviews or fallback to static data
+  // Static sample reviews do not represent persisted review records.
   const apiReviews = reviewsData?.data || [];
-  const transformedReviews = apiReviews.length > 0 ? apiReviews.map(transformReview) : allReviewsData;
+  const transformedReviews = apiReviews.map(transformReview);
 
   // Featured reviews from API or filtered from all reviews
   const featuredReviewsData =
     featuredData?.data && featuredData.data.length > 0 ? featuredData.data.map(transformReview) : transformedReviews.filter((r) => r.images && r.images.length > 0).slice(0, 4);
 
-  const allReviewsDataFinal = transformedReviews.map((review) => ({
-    ...review,
-    images: review.images || (review.image ? [review.image] : []),
-    isInfluencer: Boolean(review.isInfluencer || review.is_influencer || review.is_influencer_review || review.user?.is_influencer || review.user?.is_creator),
-  }));
+  const allReviewsDataFinal = transformedReviews;
 
   // Get all reviews with photos
   const allReviewsWithPhotos = allReviewsDataFinal.filter((review) => review.images && review.images.length > 0);
@@ -139,6 +134,7 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
   };
 
   const filteredReviews = getFilteredReviews();
+  const averageRating = reviewSummary?.average_rating ?? 0;
 
   return (
     <div className="flex flex-col border-t border-border">
@@ -146,12 +142,12 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
       <div className="pt-6 pb-2">
         <SectionHeader title="Reviews" />
         <div className="flex items-center gap-2 mt-2">
-          <span className="text-[38px] font-bold leading-none text-foreground">{reviewSummary?.average_rating || '5.0'}</span>
-          <div className="flex gap-[2px]" role="img" aria-label={`${reviewSummary?.average_rating || 5} out of 5 stars`}>
+          <span className="text-[38px] font-bold leading-none text-foreground">{averageRating}</span>
+          <div className="flex gap-[2px]" role="img" aria-label={`${averageRating} out of 5 stars`}>
             {Array(5)
               .fill(0)
               .map((_, i) => (
-                <Star key={i} className={i < Math.round(reviewSummary?.average_rating || 5) ? 'fill-warning stroke-none' : 'fill-muted stroke-none'} size={24} aria-hidden="true" />
+                <Star key={i} className={i < Math.round(averageRating) ? 'fill-warning stroke-none' : 'fill-muted stroke-none'} size={24} aria-hidden="true" />
               ))}
           </div>
         </div>
