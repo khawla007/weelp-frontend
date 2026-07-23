@@ -30,7 +30,7 @@ const BannerSectionBlog = ({ name = '', title = '', excerpt = '', tags = [], med
   return (
     <section className="weelp-hero-rise mb-10 bg-background md:mb-16 lg:mb-24">
       <div className="mx-auto max-w-pen bg-background px-4">
-        <div className="flex flex-col gap-2 pt-[70px]">
+        <div data-blog-heading className="flex flex-col gap-2 pt-6 md:pt-[70px]">
           <div className="weelp-hero-ui-rise" style={{ '--weelp-motion-delay': '120ms' }}>
             <BreadCrumb className="mb-2" />
           </div>

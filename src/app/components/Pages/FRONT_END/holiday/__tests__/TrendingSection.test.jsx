@@ -25,10 +25,15 @@ describe('TrendingSection', () => {
     );
 
     const section = screen.getByTestId('browse-destinations');
+    const wrapper = section.parentElement;
 
     expect(section).toHaveAttribute('data-title', 'Trending Spots');
     expect(section).toHaveAttribute('data-subtitle-mode', 'count');
     expect(section).toHaveAttribute('data-navigation-prefix', 'holiday-trending-spots');
+    expect(wrapper).toHaveClass('bg-surface-tint', 'pt-10', 'md:pt-16', 'lg:pt-24');
+    expect(wrapper).not.toHaveClass('mb-10');
+    expect(wrapper).not.toHaveClass('md:mb-16');
+    expect(wrapper).not.toHaveClass('lg:mb-24');
     expect(screen.getByText('Dubai')).toBeInTheDocument();
     expect(screen.getByText('Abu Dhabi')).toBeInTheDocument();
   });

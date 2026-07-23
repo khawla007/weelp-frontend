@@ -9,6 +9,13 @@ jest.mock('@/hooks/useIsClient', () => ({
 }));
 
 describe('Footer', () => {
+  it('uses responsive top spacing across mobile, tablet, and desktop site-wide', () => {
+    const { container } = render(<Footer />);
+
+    expect(container.querySelector('[data-footer-main]')).toHaveClass('pt-10', 'md:pt-[84px]', 'lg:pt-24');
+    expect(container.querySelector('[data-footer-main]')).not.toHaveClass('pt-[84px]');
+  });
+
   it('gives column and legal links a minimum 44px touch target', () => {
     render(<Footer />);
 

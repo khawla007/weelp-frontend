@@ -26,9 +26,11 @@ describe('BannerSectionBlog', () => {
   });
 
   it('uses the public API name as the responsive page heading', () => {
-    render(<BannerSectionBlog name="A published travel story" excerpt="Story summary" />);
+    const { container } = render(<BannerSectionBlog name="A published travel story" excerpt="Story summary" />);
 
     expect(screen.getByRole('heading', { level: 1, name: 'A published travel story' })).toHaveClass('text-2xl', 'lg:text-[38px]');
+    expect(container.querySelector('[data-blog-heading]')).toHaveClass('pt-6', 'md:pt-[70px]');
+    expect(container.querySelector('[data-blog-heading]')).not.toHaveClass('pt-[70px]');
   });
 
   it('renders tags as wrapping labels rather than inert controls', () => {

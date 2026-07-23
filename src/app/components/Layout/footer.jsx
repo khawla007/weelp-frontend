@@ -1,18 +1,19 @@
 'use client';
-import { useIsClient } from '@/hooks/useIsClient';
 import Link from 'next/link';
+import { useIsClient } from '@/hooks/useIsClient';
 import { FOOTER_COLUMNS, FOOTER_LEGAL_ITEMS } from './shellContent';
 
 const fontIT = 'var(--font-interTight), Inter Tight, sans-serif';
 
 const Footer = () => {
   const isClient = useIsClient();
+
   if (!isClient) return null;
 
   return (
     <footer>
       {/* ── Main Footer ── */}
-      <div className="w-full bg-background pt-[84px]">
+      <div data-footer-main className="w-full bg-background pt-10 md:pt-[84px] lg:pt-24">
         <div className="w-full px-4 lg:px-[60px]">
           {/* Columns + watermark behind */}
           <div className="relative overflow-hidden">
