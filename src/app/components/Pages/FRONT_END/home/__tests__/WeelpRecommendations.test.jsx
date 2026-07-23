@@ -14,7 +14,7 @@ jest.mock('@/app/components/ui/Reveal', () => ({
 import WeelpRecommendations from '../WeelpRecommendations';
 
 describe('WeelpRecommendations', () => {
-  it('lets the footer own the spacing after the final tinted section', async () => {
+  it('keeps responsive internal padding while the footer owns the outer spacing', async () => {
     getFeaturedItinerariesMock.mockResolvedValue({
       success: true,
       data: [{ name: 'Desert itinerary', slug: 'desert-itinerary', city_slug: 'dubai' }],
@@ -24,9 +24,9 @@ describe('WeelpRecommendations', () => {
 
     const section = screen.getByRole('heading', { name: 'Weelp Recommendations' }).closest('section');
 
-    expect(section).toHaveClass('bg-surface-tint', 'pt-12', 'md:pt-16', 'lg:pt-24');
-    expect(section).not.toHaveClass('pb-12');
-    expect(section).not.toHaveClass('md:pb-16');
-    expect(section).not.toHaveClass('lg:pb-24');
+    expect(section).toHaveClass('bg-surface-tint', 'py-10', 'md:py-16', 'lg:py-24');
+    expect(section).not.toHaveClass('mb-10');
+    expect(section).not.toHaveClass('md:mb-16');
+    expect(section).not.toHaveClass('lg:mb-24');
   });
 });
