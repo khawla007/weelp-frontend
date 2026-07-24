@@ -157,7 +157,7 @@ export default function NotificationBell({ overHero = false }) {
         aria-label={showBadge ? `Notifications ${displayCount}` : 'Notifications'}
         aria-haspopup="menu"
         aria-expanded={open}
-        className={`relative flex h-11 w-11 items-center justify-center ${overHero ? 'text-foreground dark:text-white focus-visible:ring-offset-white' : 'text-foreground focus-visible:ring-offset-background'} rounded-full transition hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2`}
+        className={`relative flex h-11 w-11 items-center justify-center ${overHero ? 'text-foreground dark:text-white focus-visible:ring-offset-white' : 'text-foreground focus-visible:ring-offset-background'} rounded-full transition hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2`}
         onClick={() => {
           const willOpen = !open;
           if (willOpen) {
@@ -178,7 +178,7 @@ export default function NotificationBell({ overHero = false }) {
           <div className="flex items-center justify-between px-4 py-3 border-b border-border">
             <h3 className="text-sm font-semibold text-foreground">Notifications</h3>
             {userId && personalUnread > 0 && (
-              <button onClick={handleMarkAllRead} className="text-xs text-weelp-copy hover:text-weelp-sage-deep hover:underline flex items-center gap-1">
+              <button onClick={handleMarkAllRead} className="text-xs text-weelp-copy hover:text-weelp-sage-text hover:underline flex items-center gap-1">
                 <CheckCheck size={14} /> Mark all as read
               </button>
             )}
@@ -208,7 +208,7 @@ export default function NotificationBell({ overHero = false }) {
             <div className="px-4 py-2 border-t border-border text-center">
               <NavigationLink
                 href="/dashboard/customer/notifications"
-                className="text-xs text-weelp-copy hover:text-weelp-sage-deep hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+                className="text-xs text-weelp-copy hover:text-weelp-sage-text hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
                 onClick={() => setOpen(false)}
               >
                 View All

@@ -390,7 +390,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                             aria-label={`Increase ${type}`}
                             onClick={() => handleIncrement(type)}
                             disabled={type !== 'infants' && Number(productData?.max_guests) > 0 && Number(howMany?.adults ?? 0) + Number(howMany?.children ?? 0) >= Number(productData.max_guests)}
-                            className="size-11 rounded-full border border-weelp-sage-tint text-lg flex items-center justify-center text-weelp-sage-deep hover:bg-weelp-sage-wash hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="size-11 rounded-full border border-weelp-sage-tint text-lg flex items-center justify-center text-weelp-sage-text hover:bg-weelp-sage-wash hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             <Plus size={14} />
                           </button>

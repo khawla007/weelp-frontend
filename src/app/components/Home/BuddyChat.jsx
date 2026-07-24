@@ -125,7 +125,7 @@ const BuddyChat = ({ messages, isThinking, sendMessage, presets }) => {
                   key={preset}
                   type="button"
                   onClick={() => handlePreset(preset)}
-                  className="min-h-11 rounded-full border border-border bg-background px-3 py-1.5 text-[12px] font-medium text-foreground transition-colors hover:border-weelp-sage-deep hover:bg-weelp-sage-deep/5 hover:text-weelp-sage-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 lg:min-h-0"
+                  className="min-h-11 rounded-full border border-border bg-background px-3 py-1.5 text-[12px] font-medium text-foreground transition-colors hover:border-weelp-sage-deep hover:bg-weelp-sage-deep/5 hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 lg:min-h-0"
                 >
                   {preset}
                 </button>

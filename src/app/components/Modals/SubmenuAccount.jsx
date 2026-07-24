@@ -63,13 +63,13 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
         {!session ? (
           <>
             <li className="p-4 px-8 border-b border-border text-copy">
-              <Link href="/user/login" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep">
+              <Link href="/user/login" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text">
                 <User className="size-5" /> SignUp / Login
               </Link>
             </li>
             <li className="p-4 px-8 border-b border-border text-copy">
               <button
-                className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep"
+                className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
                 onClick={() => {
                   closeDropdown();
                   openAuthModal({ redirectTo: '/dashboard' });
@@ -81,7 +81,7 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
             </li>
             <li className="p-4 px-8 border-b border-border text-copy">
               <button
-                className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep"
+                className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
                 onClick={() => {
                   closeDropdown();
                   openAuthModal({ redirectTo: '/dashboard/customer/wishlist' });
@@ -108,26 +108,26 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
             {session?.user?.role === 'super_admin' ? (
               <>
                 <li className="p-4 px-8 border-b border-border text-copy">
-                  <Link href="/dashboard/admin" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep">
+                  <Link href="/dashboard/admin" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text">
                     <House className="size-5" />
                     Dashboard
                   </Link>
                 </li>
                 <li className="p-4 px-8 border-b border-border text-copy">
-                  <Link href="/dashboard/admin/settings" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep">
+                  <Link href="/dashboard/admin/settings" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text">
                     <Settings className="size-5" />
                     Settings
                   </Link>
                 </li>
                 <li className="p-4 px-8 border-b border-border text-copy">
-                  <Link href="/dashboard/admin/settings" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep">
+                  <Link href="/dashboard/admin/settings" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text">
                     <Tags className="size-5" />
                     Taxonomies
                   </Link>
                 </li>
                 <li className="p-4 px-8 border-b border-border text-copy">
                   <button
-                    className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep"
+                    className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
                     onClick={() => {
                       closeDropdown();
                       logout({ callbackUrl: '/' });
@@ -144,21 +144,21 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
                   <Link
                     href={is_creator ? '/dashboard/customer/overview' : '/dashboard/customer'}
                     onClick={closeDropdown}
-                    className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep"
+                    className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
                   >
                     <House className="size-5" />
                     Dashboard
                   </Link>
                 </li>
                 <li className="p-4 px-8 border-b border-border text-copy">
-                  <Link href="/dashboard/customer/wishlist" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep">
+                  <Link href="/dashboard/customer/wishlist" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text">
                     <Heart className="size-5" />
                     Wishlist
                   </Link>
                 </li>
                 <li className="p-4 px-8 border-b border-border text-copy">
                   <button
-                    className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-deep"
+                    className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
                     onClick={() => {
                       closeDropdown();
                       logout({ callbackUrl: '/' });

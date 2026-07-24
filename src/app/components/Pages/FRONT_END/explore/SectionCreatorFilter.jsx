@@ -190,7 +190,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, initialError = false, act
                 {SORT_OPTIONS.map((option) => (
                   <DropdownMenuItem key={option.value} onClick={() => setActiveSort(option.value)} className="flex items-center justify-between gap-4 cursor-pointer">
                     {option.label}
-                    {activeSort === option.value && <Check size={14} className="text-weelp-sage-deep" />}
+                    {activeSort === option.value && <Check size={14} className="text-weelp-sage-text" />}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -259,7 +259,7 @@ const CreatorFilter = ({ initialItineraries, lastPage, initialError = false, act
                     {option.label}
                     {option.value === 'mine' && !isAuthenticated && <span className="text-xs text-muted-foreground">(Login required)</span>}
                   </span>
-                  {activeSource === option.value && <Check size={14} className="text-weelp-sage-deep" />}
+                  {activeSource === option.value && <Check size={14} className="text-weelp-sage-text" />}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>

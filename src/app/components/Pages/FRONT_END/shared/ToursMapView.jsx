@@ -55,7 +55,7 @@ const popupMarkup = (marker) => {
 
   const link = document.createElement('a');
   link.href = marker.href;
-  link.className = 'inline-flex text-xs font-semibold text-weelp-sage-deep hover:underline';
+  link.className = 'inline-flex text-xs font-semibold text-weelp-sage-text hover:underline';
   link.textContent = 'View details';
   wrapper.appendChild(link);
 
@@ -174,13 +174,13 @@ export default function ToursMapView({ cards = [], markers = [], cityName = 'Thi
           >
             <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-weelp-sage-deep text-xs font-semibold text-white">{index + 1}</span>
             <span className="flex min-w-0 flex-1 flex-col gap-1">
-              <span className="line-clamp-2 text-sm font-semibold leading-snug text-foreground group-hover:text-weelp-sage-deep">{card.title}</span>
+              <span className="line-clamp-2 text-sm font-semibold leading-snug text-foreground group-hover:text-weelp-sage-text">{card.title}</span>
               <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
                 {card.rating && <span>{card.rating} rating</span>}
                 {card.price && <span>{card.price}</span>}
               </span>
             </span>
-            <MapPin className="mt-1 size-4 shrink-0 text-weelp-sage-deep" aria-hidden="true" />
+            <MapPin className="mt-1 size-4 shrink-0 text-weelp-sage-text" aria-hidden="true" />
           </NavigationLink>
         ))}
       </div>

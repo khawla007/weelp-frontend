@@ -156,7 +156,7 @@
 .rich-text-editor-link,
 .rich-text-editor-content a,
 .tiptap a {
-  color: hsl(var(--weelp-sage-hover));
+  color: hsl(var(--weelp-sage-text));
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }

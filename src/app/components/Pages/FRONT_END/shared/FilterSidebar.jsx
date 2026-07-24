@@ -55,7 +55,7 @@ export default function FilterSidebar({ disabled = false, selectedItemType, onIt
                 />
                 <span
                   className="text-[18px] transition-colors duration-200 motion-reduce:transition-none"
-                  style={{ ...FONT, fontWeight: 500, color: selectedItemType === type.value ? 'hsl(var(--weelp-sage-deep))' : '#435a67' }}
+                  style={{ ...FONT, fontWeight: 500, color: selectedItemType === type.value ? 'hsl(var(--weelp-sage-text))' : '#435a67' }}
                 >
                   {type.label}
                 </span>

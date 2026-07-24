@@ -36,7 +36,7 @@ export default function SectionFallback({ eyebrow, message, pivotHref, pivotLabe
           {pivotHref && pivotLabel && (
             <Link
               href={pivotHref}
-              className="inline-flex items-center gap-2 rounded-sm text-[15px] font-semibold text-weelp-sage-deep transition-colors hover:text-weelp-sage-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
+              className="inline-flex items-center gap-2 rounded-sm text-[15px] font-semibold text-weelp-sage-text transition-colors hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
             >
               {pivotLabel}
               <ArrowRight className="size-4" aria-hidden="true" />

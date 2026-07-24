@@ -99,7 +99,7 @@ const MiniCartNew = () => {
                   aria-label="Save cart to wishlist"
                   onClick={handleSaveCart}
                   disabled={isSavingCart || status === 'loading'}
-                  className="flex items-center gap-2 rounded-md px-2 py-1 text-sm text-copy transition-colors hover:bg-muted-foreground/10 hover:text-weelp-sage-deep disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
+                  className="flex items-center gap-2 rounded-md px-2 py-1 text-sm text-copy transition-colors hover:bg-muted-foreground/10 hover:text-weelp-sage-text disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
                 >
                   <Heart size={18} aria-hidden="true" />
                   {isSavingCart ? 'Saving...' : 'Save cart'}

@@ -17,7 +17,7 @@ export default function FilterDrawer(props) {
       <SheetTrigger asChild>
         <button
           type="button"
-          className="flex min-h-[44px] items-center gap-2 rounded-[11.5px] border border-border bg-background px-4 py-2.5 text-[16px] font-medium text-foreground shadow-sm dark:shadow-none transition-colors duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          className="flex min-h-[44px] items-center gap-2 rounded-[11.5px] border border-border bg-background px-4 py-2.5 text-[16px] font-medium text-foreground shadow-sm dark:shadow-none transition-colors duration-200 motion-reduce:transition-none hover:border-weelp-sage-deep hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
         >
           <SlidersHorizontal className="size-4" />
           Filters

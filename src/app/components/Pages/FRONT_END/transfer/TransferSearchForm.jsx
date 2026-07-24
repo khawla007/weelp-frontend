@@ -317,7 +317,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                       <button
                         type="button"
                         onClick={() => increment(row.key)}
-                        className="h-11 w-11 rounded-full border border-weelp-sage-deep flex items-center justify-center text-weelp-sage-deep hover:bg-muted lg:h-8 lg:w-8"
+                        className="h-11 w-11 rounded-full border border-weelp-sage-deep flex items-center justify-center text-weelp-sage-text hover:bg-muted lg:h-8 lg:w-8"
                         aria-label={`Increase ${row.label}`}
                       >
                         <Plus size={14} />

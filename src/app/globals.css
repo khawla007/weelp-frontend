@@ -57,6 +57,7 @@ body {
 
 @layer base {
   :root {
+    color-scheme: light;
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -109,6 +110,7 @@ body {
     --weelp-home-hero-ink: #18181b;
     --weelp-home-hero-copy: rgba(24, 24, 27, 0.8);
     --weelp-home-hero-muted: rgba(24, 24, 27, 0.72);
+    --weelp-hero-foreground: 0 0% 0%;
     --weelp-home-search-shell: rgba(255, 255, 255, 0.95);
     --weelp-home-search-border: #d6dde2;
     --weelp-card-radius: 24px;
@@ -131,6 +133,7 @@ body {
     --weelp-sage-hover-rgb: 77 128 105;
     --weelp-sage-tint-rgb: 181 216 203;
     --weelp-sage-deep: 152 23% 45%;
+    --weelp-sage-text: 154 24% 34%;
     --weelp-sage-hover: 152 25% 40%;
     --weelp-sage-tint: 156 34% 78%;
     --weelp-sage-wash: 150 28% 96%;
@@ -170,98 +173,101 @@ body {
   }
 
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    color-scheme: dark;
+    --weelp-hero-foreground: 0 0% 0%;
+    --background: 160 36% 5%;
+    --foreground: 144 26% 96%;
+    --card: 159 30% 9%;
+    --card-foreground: 144 26% 96%;
+    --popover: 158 29% 11%;
+    --popover-foreground: 144 26% 96%;
+    --primary: 154 29% 63%;
+    --primary-foreground: 160 39% 5%;
+    --secondary: 158 28% 13%;
+    --secondary-foreground: 144 26% 96%;
+    --muted: 158 28% 13%;
+    --muted-foreground: 153 10% 66%;
+    --accent: 158 28% 13%;
+    --accent-foreground: 144 26% 96%;
+    --destructive: 0 91% 71%;
+    --destructive-foreground: 160 39% 5%;
+    --border: 157 22% 19%;
+    --input: 153 25% 40%;
+    --ring: 154 29% 63%;
     --success: 142 65% 55%;
     --warning: 38 80% 60%;
     --info: 213 90% 60%;
-    --surface-elevated: 0 0% 10%;
-    --surface-tint: 150 12% 12%;
-    --weelp-auth-neu-surface: 0 0% 7%;
+    --surface-elevated: 158 29% 11%;
+    --surface-tint: 159 30% 9%;
+    --weelp-auth-neu-surface: 159 30% 9%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 159 30% 9%;
+    --sidebar-foreground: 144 26% 96%;
+    --sidebar-primary: 154 29% 63%;
+    --sidebar-primary-foreground: 160 39% 5%;
+    --sidebar-accent: 158 28% 13%;
+    --sidebar-accent-foreground: 144 26% 96%;
+    --sidebar-border: 157 22% 19%;
+    --sidebar-ring: 154 29% 63%;
 
     /* Canonical text tokens — dark parity */
-    --ink: #fafafa;
-    --copy: #d4d4d8;
-    --label: #a1a1aa;
-    --ink-rgb: 250 250 250;
-    --copy-rgb: 212 212 216;
-    --label-rgb: 161 161 170;
-    --link-default: #d4d4d8;
-    --link-hover: #7fb59c;
+    --ink: #f3f8f5;
+    --copy: #c8d7d0;
+    --label: #9fb1a9;
+    --ink-rgb: 243 248 245;
+    --copy-rgb: 200 215 208;
+    --label-rgb: 159 177 169;
+    --link-default: #c8d7d0;
+    --link-hover: #86bda5;
 
     /* Weelp home surfaces — dark parity */
-    --weelp-home-page: #0a0a0a;
-    --weelp-home-ink: #fafafa;
-    --weelp-home-copy: #d4d4d8;
-    --weelp-home-label: #a1a1aa;
-    --weelp-home-soft: #18181b;
-    --weelp-home-surface: #0f0f10;
-    --weelp-home-border: #27272a;
+    --weelp-home-page: #08110e;
+    --weelp-home-ink: #f3f8f5;
+    --weelp-home-copy: #c8d7d0;
+    --weelp-home-label: #9fb1a9;
+    --weelp-home-soft: #182b24;
+    --weelp-home-surface: #101e19;
+    --weelp-home-border: #263b33;
     --weelp-home-accent: #f59e0b;
-    --weelp-home-brand: #6a7d88;
-    --weelp-home-muted: #8b9ba6;
-    --weelp-home-search-shell: rgba(15, 15, 16, 0.95);
-    --weelp-home-search-border: #2a3338;
-    --weelp-sage-deep-rgb: 88 143 122;
-    --weelp-sage-hover-rgb: 108 164 143;
-    --weelp-sage-tint-rgb: 58 90 79;
-    --weelp-sage-deep: 152 23% 45%;
-    --weelp-sage-hover: 155 26% 53%;
-    --weelp-sage-tint: 155 21% 29%;
-    --weelp-sage-wash: 0 0% 7%;
-    --weelp-steel: 201 25% 69%;
+    --weelp-home-brand: #86bda5;
+    --weelp-home-muted: #9fb1a9;
+    --weelp-home-search-shell: rgba(20, 36, 30, 0.95);
+    --weelp-home-search-border: #304b40;
+    --weelp-sage-deep-rgb: 77 128 105;
+    --weelp-sage-hover-rgb: 66 107 89;
+    --weelp-sage-tint-rgb: 48 75 64;
+    --weelp-sage-deep: 153 25% 40%;
+    --weelp-sage-text: 154 29% 63%;
+    --weelp-sage-hover: 154 24% 34%;
+    --weelp-sage-tint: 156 22% 24%;
+    --weelp-sage-wash: 159 30% 9%;
+    --weelp-steel: 152 16% 81%;
     --weelp-discount: 10 100% 73%;
-    --weelp-steel-rgb: 159 182 195;
+    --weelp-steel-rgb: 199 214 207;
     --weelp-discount-rgb: 255 138 115;
-    --weelp-gray-rgb: 54 68 78;
-    --weelp-bluewhale-rgb: 159 182 195;
-    --weelp-blueish-rgb: 207 219 229;
-    --weelp-lynch-rgb: 161 161 170;
-    --weelp-solitude-rgb: 39 39 42;
-    --weelp-blackish-rgb: 207 219 229;
+    --weelp-gray-rgb: 24 43 36;
+    --weelp-bluewhale-rgb: 200 215 208;
+    --weelp-blueish-rgb: 243 248 245;
+    --weelp-lynch-rgb: 159 177 169;
+    --weelp-solitude-rgb: 159 177 169;
+    --weelp-blackish-rgb: 200 215 208;
 
     /* Weelp card — dark parity */
-    --weelp-card-border: #27272a;
+    --weelp-card-border: #263b33;
     --weelp-card-hover-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.5);
-    --weelp-card-badge-bg: #27272a;
-    --weelp-card-badge-text: #d4d4d8;
+    --weelp-card-badge-bg: #182b24;
+    --weelp-card-badge-text: #c8d7d0;
     --weelp-card-category-text: #4ade80;
 
     /* Weelp city tabs — dark parity */
-    --weelp-city-tab-text: #cfdbe5;
-    --weelp-city-tab-bg: rgba(207, 219, 229, 0.06);
-    --weelp-city-tab-active-bg: rgba(207, 219, 229, 0.1);
-    --weelp-city-tab-active-border: rgba(207, 219, 229, 0.3);
+    --weelp-city-tab-text: #c8d7d0;
+    --weelp-city-tab-bg: rgba(134, 189, 165, 0.08);
+    --weelp-city-tab-active-bg: rgba(134, 189, 165, 0.14);
+    --weelp-city-tab-active-border: rgba(134, 189, 165, 0.35);
   }
 }
 
@@ -948,6 +954,14 @@ body {
   height: 100%;
 }
 
+.weelp-city-hero-surface {
+  background: linear-gradient(-165deg, #f8faf9, #f2f7f5);
+}
+
+.dark .weelp-city-hero-surface {
+  background: radial-gradient(circle at 78% 22%, hsl(var(--ring) / 0.12), transparent 34%), linear-gradient(145deg, hsl(var(--background)) 0%, hsl(var(--card)) 48%, hsl(var(--background)) 100%);
+}
+
 /* Shared neumorphism switch */
 .neumorphism-switch-root {
   position: relative;
@@ -973,15 +987,15 @@ body {
   outline-offset: 2px;
 }
 
-.dark .neumorphism-switch-root {
-  background: #202020;
-  box-shadow:
-    inset -3px -3px 6px #2a2a2a,
-    inset 3px 3px 6px #0c0c0c !important;
+.dark .neumorphism-switch-root,
+.dark .neumorphism-switch-root[data-state='checked'] {
+  background: hsl(var(--muted)) !important;
 }
 
-.dark .neumorphism-switch-root[data-state='checked'] {
-  background: #202020 !important;
+.dark .neumorphism-switch-root {
+  box-shadow:
+    inset -3px -3px 6px hsl(var(--input)),
+    inset 3px 3px 6px hsl(var(--background)) !important;
 }
 
 .neumorphism-switch-toggle {
@@ -1005,13 +1019,6 @@ body {
     box-shadow 0.3s ease-in-out;
 }
 
-.dark .neumorphism-switch-toggle {
-  background: linear-gradient(145deg, #2a2a2a, #171717);
-  box-shadow:
-    -2px -2px 4px #2f2f2f,
-    2px 2px 4px #070707;
-}
-
 .neumorphism-switch-led {
   width: 6px;
   height: 6px;
@@ -1031,11 +1038,12 @@ body {
     2px 2px 4px #8a8a8a;
 }
 
+.dark .neumorphism-switch-toggle,
 .dark .neumorphism-switch-root[data-state='checked'] .neumorphism-switch-toggle {
-  background: linear-gradient(145deg, #2c2c2c, #1b1b1b);
+  background: linear-gradient(145deg, hsl(var(--input)), hsl(var(--card)));
   box-shadow:
-    -2px -2px 4px #303030,
-    2px 2px 4px #070707;
+    -2px -2px 4px hsl(var(--border)),
+    2px 2px 4px hsl(var(--background));
 }
 
 .neumorphism-switch-root[data-state='checked'] .neumorphism-switch-led {
@@ -1051,8 +1059,8 @@ body {
 
 .dark .neumorphism-switch-root:hover .neumorphism-switch-toggle {
   box-shadow:
-    -2px -2px 6px #303030,
-    2px 2px 6px #050505;
+    -2px -2px 6px hsl(var(--border)),
+    2px 2px 6px hsl(var(--background));
 }
 
 /* Range slider + city-price-slider extracted to src/app/styles/range-slider.css */

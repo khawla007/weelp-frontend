@@ -191,7 +191,7 @@ export default function FilterBar({ appearance = 'card' }) {
                   <MapPin size={20} className="flex-shrink-0" style={{ color: 'hsl(var(--weelp-steel))' }} />
                   {isPill ? (
                     <div className="flex flex-1 flex-col leading-tight">
-                      <span className="text-base font-semibold text-weelp-sage-deep">Where to?</span>
+                      <span className="text-base font-semibold text-weelp-sage-text">Where to?</span>
                       <input
                         type="text"
                         placeholder="Search destinations"
@@ -300,7 +300,7 @@ export default function FilterBar({ appearance = 'card' }) {
                   <Calendar size={20} className="flex-shrink-0" style={{ color: 'hsl(var(--weelp-steel))' }} />
                   {isPill ? (
                     <span className="flex flex-1 flex-col leading-tight">
-                      <span className="text-base font-semibold text-weelp-sage-deep">When?</span>
+                      <span className="text-base font-semibold text-weelp-sage-text">When?</span>
                       <span className="block min-w-[140px] truncate whitespace-nowrap text-sm font-normal" style={{ color: 'rgb(var(--label-rgb))' }}>
                         {watchedFrom?.from && watchedFrom?.to ? formatRange(new Date(watchedFrom.from), new Date(watchedFrom.to)) : 'Add dates'}
                       </span>
@@ -372,7 +372,7 @@ export default function FilterBar({ appearance = 'card' }) {
                   <Users size={20} className="flex-shrink-0" style={{ color: 'hsl(var(--weelp-steel))' }} />
                   {isPill ? (
                     <span className="flex flex-1 flex-col leading-tight">
-                      <span className="text-base font-semibold text-weelp-sage-deep">Who?</span>
+                      <span className="text-base font-semibold text-weelp-sage-text">Who?</span>
                       <span data-testid="filter-guest-total" className={`text-sm font-normal ${COUNT_MOTION_CLASS}`} style={{ color: 'rgb(var(--label-rgb))' }}>
                         <span key={total || 1} className={COUNT_NUMBER_MOTION_CLASS}>
                           {total || 1}
@@ -481,7 +481,7 @@ export default function FilterBar({ appearance = 'card' }) {
               ))}
               <Link
                 href={buildSearchUrl(watchedWhereTo, watchedFrom, watchedhowMany)}
-                className="flex items-center justify-center gap-1.5 px-4 py-3 text-sm font-semibold text-weelp-copy hover:text-weelp-sage-deep hover:bg-weelp-sage-deep/5 transition-colors border-t border-border"
+                className="flex items-center justify-center gap-1.5 px-4 py-3 text-sm font-semibold text-weelp-copy hover:text-weelp-sage-text hover:bg-weelp-sage-deep/5 transition-colors border-t border-border"
               >
                 See all matches
                 <ChevronRight size={14} />

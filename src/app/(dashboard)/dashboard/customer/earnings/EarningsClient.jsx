@@ -196,7 +196,7 @@ export default function EarningsClient({ initial }) {
                       <TableCell>{fmtDate(r.created_at)}</TableCell>
                       <TableCell>
                         {r.itinerary?.slug ? (
-                          <NavigationLink href={`/itineraries/${r.itinerary.slug}`} className="text-weelp-sage-deep hover:underline">
+                          <NavigationLink href={`/itineraries/${r.itinerary.slug}`} className="text-weelp-sage-text hover:underline">
                             {r.itinerary.name}
                           </NavigationLink>
                         ) : (

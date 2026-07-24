@@ -1,6 +1,6 @@
 # Dark Mode Spec
 
-This spec is the working contract for the Weelp frontend dark-mode migration. Components should describe color by role, not by literal hue, so light and dark themes can swap from one token layer.
+This spec is the working contract for the Weelp frontend dark-mode migration. Deep Forest is the default across public pages and the customer, creator, and admin dashboards; Light remains an explicit optional choice. Components should describe color by role, not by literal hue, so light and dark themes can swap from one token layer.
 
 ## Tokens
 
@@ -11,13 +11,23 @@ Surface tokens live in `src/app/globals.css` and are exposed through `tailwind.c
 | Page background | `bg-background`, `text-foreground`                           | Route shells, empty page areas, default copy |
 | Card or panel   | `bg-card`, `text-card-foreground`, `border-border`           | Cards, booking panels, dashboard widgets     |
 | Popover         | `bg-popover`, `text-popover-foreground`                      | Menus, dropdowns, toast surfaces             |
-| Muted surface   | `bg-muted`, `text-muted-foreground`                          | Secondary panels, skeletons, helper text     |
-| Brand primary   | `bg-weelp-sage-deep`, `text-weelp-sage-deep`                 | Primary actions and brand accents            |
+| Muted surface   | `bg-muted`, `text-muted-foreground`                          | Secondary panels, input surfaces, skeletons  |
+| Sage fill       | `bg-weelp-sage-deep`, `border-weelp-sage-deep`               | Solid controls, stronger input boundaries    |
+| Sage text       | `text-weelp-sage-text`                                       | Theme-aware brand copy and accents           |
 | Brand hover     | `hover:bg-weelp-sage-hover`                                  | Interactive brand states                     |
 | Sage wash       | `bg-weelp-sage-wash`                                         | Intentional green-tinted sections only       |
 | Steel accent    | `text-weelp-steel`                                           | Cool secondary accent text                   |
 | Warning         | `bg-warning/15`, `text-warning`, `border-warning/40`         | Yellow/orange status surfaces                |
 | Destructive     | `bg-destructive/5`, `text-destructive`, `border-destructive` | Error and danger states                      |
+
+The approved Deep Forest design targets and behavior are defined in
+`src/docs/superpowers/specs/2026-07-24-deep-forest-dark-mode-design.md`. The
+implementation keeps roles explicit. In Deep Forest, the canvas is
+`hsl(160 36% 5%)`, sage fills and stronger input boundaries use
+`hsl(153 25% 40%)`, and sage text and interactive accents use
+`hsl(154 29% 63%)`. Light-theme sage text uses `hsl(154 24% 34%)`. The hex
+values in the design guide are close palette targets, not claims about the exact
+RGB output of these rounded HSL tokens.
 
 ## Swap Table
 
@@ -57,13 +67,28 @@ Existing audit debt is recorded in `docs/dark-mode/dark-lint-baseline.json` so P
 - Toasts: Radix toast primitives already use `bg-popover`, `text-popover-foreground`, `border-border`, and dark shadow removal.
 - Rich-text editors: Tiptap shared CSS now uses foreground, background, muted, border, and sage tokens instead of literal light colors.
 
+## Theme Behavior
+
+`next-themes` stores only the explicit `dark` and `light` choices under
+`weelp-theme`; the product does not follow the device theme. Before hydration, a
+bootstrap keeps a saved `light` value unchanged and normalizes missing, legacy
+`system`, empty, or corrupt values to `dark`. The normalized dark value is
+persisted when storage is available. If storage access throws, the bootstrap
+still applies the dark class and color scheme for the current page.
+
+Browser chrome starts with the server-rendered Deep Forest theme color. The
+bootstrap corrects it before hydration when saved Light wins, and the client
+keeps it synchronized after the user toggles themes. The application manifest
+also defaults its theme and background colors to Deep Forest.
+
 ## Decision Log
 
 | Decision        | Choice                                                                      |
 | --------------- | --------------------------------------------------------------------------- |
 | Theme manager   | `next-themes`                                                               |
 | Persistence key | `weelp-theme`                                                               |
-| Default theme   | `light`                                                                     |
+| Default theme   | `dark` (Deep Forest)                                                        |
+| System theme    | Disabled; users explicitly choose Dark or Light                             |
 | Token model     | CSS variables in `globals.css`, consumed by Tailwind                        |
 | Component rule  | Token utilities only; no new hardcoded neutral or hex color utilities       |
 | Exemptions      | `dark-mode-exempt` comment directly above the intentional line              |

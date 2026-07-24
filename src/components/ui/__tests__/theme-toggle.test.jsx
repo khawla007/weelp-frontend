@@ -64,4 +64,18 @@ describe('ThemeToggle', () => {
 
     expect(mockSetTheme).toHaveBeenCalledWith('light');
   });
+
+  it.each([
+    ['default', {}],
+    ['compact admin', { compact: true }],
+  ])('keeps a semantic keyboard focus ring on the %s trigger', (_placement, props) => {
+    render(<ThemeToggle {...props} className="focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:ring-red-500" />);
+
+    const trigger = screen.getByRole('button', { name: /change theme/i });
+    trigger.focus();
+
+    expect(trigger).toHaveFocus();
+    expect(trigger).toHaveClass('focus-visible:ring-2', 'focus-visible:ring-weelp-sage-text', 'focus-visible:ring-offset-2', 'focus-visible:ring-offset-background');
+    expect(trigger).not.toHaveClass('focus-visible:ring-0', 'focus-visible:ring-offset-0', 'focus-visible:ring-red-500');
+  });
 });

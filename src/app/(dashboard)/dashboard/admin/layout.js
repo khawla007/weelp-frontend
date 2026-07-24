@@ -12,17 +12,17 @@ const AdminLayout = async ({ children }) => {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen bg-muted w-full">
+      <div className="flex min-h-screen w-full min-w-0 bg-muted">
         <div>
           <AppSidebar session={session} />
         </div>
-        <div className="flex flex-col w-full">
+        <div className="flex min-w-0 flex-1 flex-col">
           <>
             <AdminHeader session={session} />
           </>
-          <main className="flex-1">
+          <main className="min-w-0 flex-1">
             <DashboardContentWrapper>
-              <div className="container mx-auto p-8 sm:p-12 w-full">{children}</div>
+              <div className="container mx-auto w-full min-w-0 p-8 sm:p-12">{children}</div>
             </DashboardContentWrapper>
           </main>
         </div>

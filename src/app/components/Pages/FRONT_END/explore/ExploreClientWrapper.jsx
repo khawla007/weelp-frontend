@@ -89,7 +89,7 @@ export default function ExploreClientWrapper({ initialItineraries, lastPage, ini
                     Create Itinerary
                   </Button>
                 </NavigationLink>
-                <Button onClick={() => setGuideOpen(true)} variant="outline" className="w-full border-weelp-sage-deep text-weelp-copy hover:bg-weelp-sage-deep/10 hover:text-weelp-sage-deep sm:w-auto">
+                <Button onClick={() => setGuideOpen(true)} variant="outline" className="w-full border-weelp-sage-deep text-weelp-copy hover:bg-weelp-sage-deep/10 hover:text-weelp-sage-text sm:w-auto">
                   <HelpCircle className="size-4 mr-2" />
                   How to Create Itinerary
                 </Button>

@@ -278,7 +278,7 @@ const FilterPackage = ({ categories = [], difficulties = [], durations = [] }) =
 
                       {/* Stats */}
                       <ListingCardStats>
-                        <Badge className="bg-weelp-sage-tint hover:bg-weelp-sage-tint text-weelp-sage-deep">4.8</Badge>
+                        <Badge className="bg-weelp-sage-tint hover:bg-weelp-sage-tint text-copy">4.8</Badge>
                         <ListingCardMeta icon={Users}>1200 Bookings</ListingCardMeta>
                       </ListingCardStats>
                     </ListingCardContent>

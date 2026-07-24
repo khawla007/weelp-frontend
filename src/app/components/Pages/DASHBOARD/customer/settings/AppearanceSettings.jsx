@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -15,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useUIStore } from '@/lib/store/uiStore';
 import { useIsClient } from '@/hooks/useIsClient';
 import { cn } from '@/lib/utils';
+import { DEFAULT_THEME, resolveExplicitTheme } from '@/app/components/Layout/themeConfig';
 
 const formSchema = z.object({
   font: z.string().min(1, 'Font selection is required'),
@@ -22,7 +22,7 @@ const formSchema = z.object({
 
 const THEME_OPTIONS = [
   { value: 'light', label: 'Light', icon: Sun, description: 'Bright surfaces, dark text.' },
-  { value: 'dark', label: 'Dark', icon: Moon, description: 'Dim surfaces, light text.' },
+  { value: 'dark', label: 'Dark', icon: Moon, description: 'Deep Forest — the default Weelp theme.' },
 ];
 
 export function AppearanceSettings() {
@@ -30,19 +30,13 @@ export function AppearanceSettings() {
   const { theme, resolvedTheme, setTheme } = useTheme();
   const { toast } = useToast();
   const isClient = useIsClient();
-  const activeTheme = isClient ? theme : 'light';
+  const activeTheme = isClient ? resolveExplicitTheme(theme ?? resolvedTheme) : DEFAULT_THEME;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: { font },
   });
   const { isDirty } = form.formState;
-
-  useEffect(() => {
-    if (theme === 'system') {
-      setTheme(resolvedTheme === 'dark' ? 'dark' : 'light');
-    }
-  }, [resolvedTheme, setTheme, theme]);
 
   const onSubmit = (data) => {
     setFont(data.font);

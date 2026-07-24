@@ -549,7 +549,7 @@ export function RegisterForm({ customUrl, onCloseDialog, onSwitchToLogin, showCl
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-muted-foreground cursor-not-allowed border-border' : 'bg-background text-weelp-sage-deep hover:bg-weelp-sage-deep hover:text-white dark:bg-weelp-sage-deep dark:text-white dark:hover:bg-weelp-auth-neu-surface dark:hover:text-weelp-sage-deep'}`}
+                className={`w-full h-auto py-3 rounded-lg text-base border border-weelp-sage-deep transition-colors duration-200 motion-reduce:transition-none ${isSubmitting ? 'bg-muted-foreground cursor-not-allowed border-border' : 'bg-background text-weelp-sage-text hover:bg-weelp-sage-deep hover:text-white dark:bg-weelp-sage-deep dark:text-white dark:hover:bg-weelp-auth-neu-surface dark:hover:text-weelp-sage-text'}`}
               >
                 {isSubmitting ? (
                   <>
@@ -576,7 +576,7 @@ export function RegisterForm({ customUrl, onCloseDialog, onSwitchToLogin, showCl
           <div className="py-4">
             <OtpInput length={6} value={otp} onChange={setOtp} onComplete={handleOtpComplete} error={otpError} disabled={isOtpSubmitting} />
             {isOtpSubmitting && (
-              <div className="flex items-center justify-center gap-2 pt-4 text-weelp-sage-deep">
+              <div className="flex items-center justify-center gap-2 pt-4 text-weelp-sage-text">
                 <LoaderCircle className="h-4 w-4 animate-spin" />
                 <span className="text-sm font-medium">Verifying your code...</span>
               </div>
@@ -595,7 +595,7 @@ export function RegisterForm({ customUrl, onCloseDialog, onSwitchToLogin, showCl
               type="button"
               onClick={handleResendOtp}
               disabled={timeUntilResend > 0 || isResending}
-              className="inline-flex min-h-11 items-center rounded-sm text-sm font-semibold text-weelp-sage-deep hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2 disabled:text-muted-foreground disabled:no-underline"
+              className="inline-flex min-h-11 items-center rounded-sm text-sm font-semibold text-weelp-sage-text hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2 disabled:text-muted-foreground disabled:no-underline"
             >
               {isResending ? 'Sending...' : timeUntilResend > 0 ? `Resend in ${timeUntilResend}s` : 'Resend OTP'}
             </button>
@@ -606,7 +606,7 @@ export function RegisterForm({ customUrl, onCloseDialog, onSwitchToLogin, showCl
             <button
               type="button"
               onClick={handleBackToInfo}
-              className="inline-flex min-h-11 items-center rounded-sm text-sm text-copy hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2"
+              className="inline-flex min-h-11 items-center rounded-sm text-sm text-copy hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2"
             >
               ← Back to registration
             </button>

@@ -295,7 +295,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
                         type="button"
                         aria-label={`Increase ${type}`}
                         onClick={() => handleIncrement(type)}
-                        className="size-11 rounded-full border border-weelp-sage-tint flex items-center justify-center text-weelp-sage-deep hover:bg-weelp-sage-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2"
+                        className="size-11 rounded-full border border-weelp-sage-tint flex items-center justify-center text-weelp-sage-text hover:bg-weelp-sage-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2"
                       >
                         <Plus size={14} />
                       </button>
@@ -316,7 +316,7 @@ export default function BookingForm({ variant = 'default', controlsSlot = null, 
             <button
               type="submit"
               aria-label="Search trips"
-              className="flex shrink-0 min-w-[112px] items-center justify-center rounded-xl border border-border bg-background px-6 py-[18px] text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-[background-color,color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-weelp-sage-wash hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:rounded-l-none motion-reduce:transition-none"
+              className="flex shrink-0 min-w-[112px] items-center justify-center rounded-xl border border-border bg-background px-6 py-[18px] text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-[background-color,color,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-weelp-sage-wash hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:rounded-l-none motion-reduce:transition-none"
             >
               Search
             </button>

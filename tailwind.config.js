@@ -74,7 +74,9 @@ const config = {
           ring: 'hsl(var(--sidebar-ring))',
         },
         weelp: {
+          'hero-foreground': 'hsl(var(--weelp-hero-foreground) / <alpha-value>)',
           'sage-deep': 'hsl(var(--weelp-sage-deep) / <alpha-value>)',
+          'sage-text': 'hsl(var(--weelp-sage-text) / <alpha-value>)',
           'sage-hover': 'hsl(var(--weelp-sage-hover) / <alpha-value>)',
           'sage-tint': 'hsl(var(--weelp-sage-tint) / <alpha-value>)',
           'sage-wash': 'hsl(var(--weelp-sage-wash) / <alpha-value>)',

@@ -30,13 +30,13 @@ export function FilterBar({
   statusOptions = [],
 }) {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex w-full min-w-0 flex-col items-stretch gap-4 xl:w-auto xl:flex-row xl:items-center">
       {/* Search Input */}
-      <DashboardSearch control={form.control} name={searchName} placeholder={searchPlaceholder} className="w-[500px]" />
+      <DashboardSearch control={form.control} name={searchName} placeholder={searchPlaceholder} className="w-full xl:w-[500px]" />
 
       {/* Type Filter */}
       {typeOptions.length > 0 && (
-        <div className="w-[180px] shrink-0">
+        <div className="w-full xl:w-[180px] xl:shrink-0">
           <FormField
             control={form.control}
             name={typeFieldName}
@@ -44,7 +44,7 @@ export function FilterBar({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <SelectField data={typeOptions} value={field.value} onChange={field.onChange} placeholder={typePlaceholder} className="w-[180px] focus:ring-0" />
+                  <SelectField data={typeOptions} value={field.value} onChange={field.onChange} placeholder={typePlaceholder} className="w-full xl:w-[180px] focus:ring-0" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -55,7 +55,7 @@ export function FilterBar({
 
       {/* Status Filter */}
       {statusOptions.length > 0 && (
-        <div className="w-[180px] shrink-0">
+        <div className="w-full xl:w-[180px] xl:shrink-0">
           <FormField
             control={form.control}
             name={statusFieldName}
@@ -63,7 +63,7 @@ export function FilterBar({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <SelectField data={statusOptions} value={field.value} onChange={field.onChange} placeholder={statusPlaceholder} className="w-[180px] focus:ring-0" />
+                  <SelectField data={statusOptions} value={field.value} onChange={field.onChange} placeholder={statusPlaceholder} className="w-full xl:w-[180px] focus:ring-0" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

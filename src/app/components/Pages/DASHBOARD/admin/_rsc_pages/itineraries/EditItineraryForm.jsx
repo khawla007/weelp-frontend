@@ -1599,7 +1599,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                     fill={isFeatured ? '#588f7a' : 'white'}
                     strokeWidth={2}
                     onClick={() => handleSetFeatured(image?.media_id)}
-                    className={`absolute top-4 right-4 transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-weelp-sage-deep' : 'text-weelp-sage-deep hover:scale-110'}`}
+                    className={`absolute top-4 right-4 transition-transform duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none cursor-pointer drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)] ${isFeatured ? 'text-weelp-sage-text' : 'text-weelp-sage-text hover:scale-110'}`}
                   />
                   {isFeatured && <div className="absolute top-4 left-4 bg-weelp-sage-deep text-white text-xs px-2 py-1 rounded-md font-medium">Featured</div>}
                   <Trash2
@@ -2150,7 +2150,7 @@ export const EditItineraryForm = ({ categories, attributes, tags, locations = []
                         currentStep == step?.id && ' bg-gradient-to-t from-weelp-sage-deep/20 to-muted border-b-weelp-sage-deep border-b-2'
                       }`}
                     >
-                      <div className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-muted-foreground'}`}>
+                      <div className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${currentStep == step?.id ? 'text-weelp-sage-text ' : 'text-muted-foreground'}`}>
                         {step.title}
                       </div>
                     </li>

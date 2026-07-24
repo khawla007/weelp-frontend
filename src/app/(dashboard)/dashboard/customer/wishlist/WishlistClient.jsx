@@ -52,7 +52,7 @@ function LoadingState() {
 function EmptyState() {
   return (
     <div className="rounded-lg border border-dashed border-weelp-sage/50 bg-background px-4 py-14 text-center">
-      <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-weelp-sage/15 text-weelp-sage-deep">
+      <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-weelp-sage/15 text-weelp-sage-text">
         <Heart className="size-5" />
       </div>
       <p className="mt-4 text-lg font-semibold text-foreground">Your wishlist is empty</p>
@@ -82,7 +82,7 @@ function WishlistRow({ item, removing, onRemove }) {
         {item?.image_url ? (
           <Image src={item.image_url} alt="" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-weelp-sage-deep">
+          <div className="flex h-full w-full items-center justify-center text-weelp-sage-text">
             <Heart className="size-5" />
           </div>
         )}

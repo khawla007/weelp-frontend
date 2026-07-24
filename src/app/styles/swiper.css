@@ -90,7 +90,7 @@
 
 .swiper-button-prev:hover,
 .swiper-button-next:hover {
-  @apply bg-background border-weelp-sage-deep text-weelp-sage-deep !important;
+  @apply bg-background border-weelp-sage-deep text-weelp-sage-text !important;
   --swiper-navigation-color: #588f7a !important;
   box-shadow: 4px 4px 15px rgba(88, 143, 122, 0.3) !important;
 }
@@ -197,7 +197,7 @@
 
 .gallery_slider .swiper-button-prev:hover,
 .gallery_slider .swiper-button-next:hover {
-  @apply bg-background border-weelp-sage-deep text-weelp-sage-deep !important;
+  @apply bg-background border-weelp-sage-deep text-weelp-sage-text !important;
   --swiper-navigation-color: #588f7a !important;
   box-shadow: 4px 4px 15px rgba(88, 143, 122, 0.3) !important;
 }

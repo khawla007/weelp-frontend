@@ -52,7 +52,7 @@ export function ListingOptionGroup({ title, options, activeValues, onToggle, onC
       <div className={cn('flex max-h-72 flex-col gap-1 overflow-y-auto', disabled && 'pointer-events-none opacity-50')}>
         <label className="flex min-h-11 cursor-pointer items-center gap-2">
           <input type="checkbox" checked={activeValues.length === 0} onChange={onClear} disabled={disabled} className="size-[19px] rounded-[2px] accent-weelp-sage-deep" />
-          <span className={cn('text-[18px] font-medium', activeValues.length === 0 ? 'text-weelp-sage-deep' : 'text-weelp-steel')} style={FILTER_FONT}>
+          <span className={cn('text-[18px] font-medium', activeValues.length === 0 ? 'text-weelp-sage-text' : 'text-weelp-steel')} style={FILTER_FONT}>
             All
           </span>
         </label>
@@ -61,7 +61,7 @@ export function ListingOptionGroup({ title, options, activeValues, onToggle, onC
           return (
             <label key={option.value} className="flex min-h-11 cursor-pointer items-center gap-2">
               <input type="checkbox" checked={active} onChange={() => onToggle(option.value)} disabled={disabled} className="size-[19px] rounded-[2px] accent-weelp-sage-deep" />
-              <span className={cn('break-words text-[18px] font-medium', active ? 'text-weelp-sage-deep' : 'text-weelp-steel')} style={FILTER_FONT}>
+              <span className={cn('break-words text-[18px] font-medium', active ? 'text-weelp-sage-text' : 'text-weelp-steel')} style={FILTER_FONT}>
                 {option.label}
               </span>
             </label>
@@ -78,7 +78,7 @@ export function ListingRatingFilter({ value, onChange, disabled = false }) {
       <div className={cn('flex flex-col gap-1', disabled && 'pointer-events-none opacity-50')}>
         <label className="flex min-h-11 cursor-pointer items-center gap-2">
           <input type="radio" name="rating" checked={value === 0} onChange={() => onChange(0)} disabled={disabled} className="size-[19px] accent-weelp-sage-deep" />
-          <span className={cn('text-[18px] font-medium', value === 0 ? 'text-weelp-sage-deep' : 'text-weelp-steel')} style={FILTER_FONT}>
+          <span className={cn('text-[18px] font-medium', value === 0 ? 'text-weelp-sage-text' : 'text-weelp-steel')} style={FILTER_FONT}>
             All
           </span>
         </label>

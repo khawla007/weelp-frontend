@@ -118,7 +118,7 @@ export default function CitiesListingControls({ countries = [], seasons = [] }) 
           )}
           <NavigationLink
             href={pathname}
-            className="inline-flex min-h-11 items-center rounded-[11.5px] border border-border bg-background px-3 text-sm font-medium text-muted-foreground transition hover:border-weelp-sage-deep hover:text-weelp-sage-deep"
+            className="inline-flex min-h-11 items-center rounded-[11.5px] border border-border bg-background px-3 text-sm font-medium text-muted-foreground transition hover:border-weelp-sage-deep hover:text-weelp-sage-text"
           >
             Clear all
           </NavigationLink>

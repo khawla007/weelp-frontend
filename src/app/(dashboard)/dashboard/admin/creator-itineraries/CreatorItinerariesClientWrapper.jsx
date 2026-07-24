@@ -209,7 +209,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     <TableCell>{item.name || item.title || '-'}</TableCell>
                     <TableCell>
                       {parentSlug ? (
-                        <a href={`/itineraries/${parentSlug}`} target="_blank" rel="noopener noreferrer" className="text-weelp-sage-deep hover:underline inline-flex items-center gap-1">
+                        <a href={`/itineraries/${parentSlug}`} target="_blank" rel="noopener noreferrer" className="text-weelp-sage-text hover:underline inline-flex items-center gap-1">
                           {item.parent_itinerary?.name || 'View'}
                           <ExternalLink className="size-3" />
                         </a>
@@ -218,7 +218,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                       )}
                     </TableCell>
                     <TableCell>
-                      <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer" className="text-weelp-sage-deep hover:underline inline-flex items-center gap-1">
+                      <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer" className="text-weelp-sage-text hover:underline inline-flex items-center gap-1">
                         Preview
                         <ExternalLink className="size-3" />
                       </a>

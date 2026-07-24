@@ -17,7 +17,7 @@ const BookingCard = ({ bookingItem = {} }) => {
   const rating = review?.rating ?? 0;
 
   return (
-    <Card className="bg-background rounded-lg p-3 flex w-full min-w-0 flex-col gap-3 shadow-md dark:bg-foreground sm:p-4">
+    <Card className="bg-card text-card-foreground rounded-lg p-3 flex w-full min-w-0 flex-col gap-3 shadow-md sm:p-4">
       <CardHeader className="flex flex-col gap-2 p-0 sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
         <CardTitle className="min-w-0 break-words text-lg font-semibold leading-snug text-foreground sm:text-xl">{name}</CardTitle>
         <span className="text-sm font-normal text-foreground sm:text-right sm:text-base">{travel_date}</span>

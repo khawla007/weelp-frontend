@@ -156,7 +156,7 @@ const UsersPageComponent = () => {
   };
 
   return (
-    <div className="space-y-4 sm:p-8 sm:pt-6">
+    <div className="min-w-0 space-y-4 sm:p-8 sm:pt-6">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl">Users</h2>
@@ -183,11 +183,11 @@ const UsersPageComponent = () => {
       </div>
 
       {/* tables */}
-      <div className="space-y-8">
+      <div className="min-w-0 space-y-8">
         <CardTitle className={'text-base'}>Users Overview</CardTitle>
 
         {/* Search and Status Filters with Buttons */}
-        <div className="flex justify-between items-center gap-4">
+        <div className="flex min-w-0 flex-col items-stretch gap-4 2xl:flex-row 2xl:items-center 2xl:justify-between">
           <Form {...form}>
             <FilterBar
               form={form}
@@ -205,18 +205,20 @@ const UsersPageComponent = () => {
             />
           </Form>
 
-          {selectedItems.length > 0 ? (
-            <BulkActionButtons
-              selectedCount={selectedItems.length}
-              totalCount={users.length}
-              isAllSelected={isAllSelected}
-              onSelectAllToggle={handleSelectAllToggle}
-              onDelete={handleBulkDelete}
-              deleteLabel="Delete"
-            />
-          ) : (
-            <AddNewButton href="/dashboard/admin/users/new" />
-          )}
+          <div className="w-full 2xl:w-auto">
+            {selectedItems.length > 0 ? (
+              <BulkActionButtons
+                selectedCount={selectedItems.length}
+                totalCount={users.length}
+                isAllSelected={isAllSelected}
+                onSelectAllToggle={handleSelectAllToggle}
+                onDelete={handleBulkDelete}
+                deleteLabel="Delete"
+              />
+            ) : (
+              <AddNewButton href="/dashboard/admin/users/new" className="w-full 2xl:w-auto" />
+            )}
+          </div>
         </div>
 
         {isValidating && <TableSkeleton columns={6} rows={10} />}

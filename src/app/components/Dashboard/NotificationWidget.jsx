@@ -50,7 +50,7 @@ export default function NotificationWidget({ session }) {
           {unreadCount > 0 && <span className="text-xs bg-red-500 text-white rounded-full px-2 py-0.5">{unreadCount}</span>}
         </div>
         {unreadCount > 0 && (
-          <button onClick={handleMarkAllRead} className="text-xs text-copy hover:text-weelp-sage-deep hover:underline flex items-center gap-1">
+          <button onClick={handleMarkAllRead} className="text-xs text-copy hover:text-weelp-sage-text hover:underline flex items-center gap-1">
             <CheckCheck size={14} /> Mark all read
           </button>
         )}
@@ -80,7 +80,7 @@ export default function NotificationWidget({ session }) {
       )}
 
       <div className="mt-4 text-center">
-        <NavigationLink href="/dashboard/customer/settings/notifications" className="text-xs text-copy hover:text-weelp-sage-deep hover:underline">
+        <NavigationLink href="/dashboard/customer/settings/notifications" className="text-xs text-copy hover:text-weelp-sage-text hover:underline">
           View All Notifications
         </NavigationLink>
       </div>

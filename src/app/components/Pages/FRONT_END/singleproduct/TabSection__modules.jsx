@@ -79,7 +79,7 @@ export const WhatIncludedPanel = ({ items, useStaticFallback = false }) => {
 
 const InclusionList = ({ items, included = false }) => {
   const Icon = included ? Check : X;
-  const iconClass = included ? 'text-weelp-sage-deep' : 'text-muted-foreground';
+  const iconClass = included ? 'text-weelp-sage-text' : 'text-muted-foreground';
   const textClass = included ? 'text-foreground' : 'text-muted-foreground';
   const listLabel = included ? 'Included' : 'Not included';
 

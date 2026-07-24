@@ -49,7 +49,7 @@ export function ListingSearchControl({ searchParams, searchLabel = 'Search listi
         type="submit"
         size="icon"
         variant="outline"
-        className="size-11 shrink-0 border-weelp-sage-deep bg-weelp-sage-deep text-white hover:!border-weelp-sage-deep hover:!bg-background hover:!text-weelp-sage-deep"
+        className="size-11 shrink-0 border-weelp-sage-deep bg-weelp-sage-deep text-white hover:!border-weelp-sage-deep hover:!bg-background hover:!text-weelp-sage-text"
         aria-label="Submit search"
       >
         <Search />

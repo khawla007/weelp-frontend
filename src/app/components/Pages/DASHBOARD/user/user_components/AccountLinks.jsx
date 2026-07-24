@@ -63,7 +63,7 @@ export function AccountLinks({ AccountRoutes }) {
                 ref={(node) => {
                   itemRefs.current[index] = node;
                 }}
-                className={`w-full py-2 rounded-md font-medium transition-colors ${isActive ? 'font-semibold text-weelp-sage-deep' : 'text-muted-foreground hover:text-weelp-sage-deep'}`}
+                className={`w-full py-2 rounded-md font-medium transition-colors ${isActive ? 'font-semibold text-weelp-sage-text' : 'text-muted-foreground hover:text-weelp-sage-text'}`}
               >
                 <NavigationMenuLink asChild className="w-full px-4">
                   <Link className="inline-block w-full" href={val?.url} aria-current={isActive ? 'page' : undefined}>

@@ -100,11 +100,11 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
 
       <div className="bg-muted py-4 px-8 flex flex-wrap gap-2 sm:gap-4">
         <span className="flex items-center gap-2 text-sm text-foreground">
-          <CircleCheckBig className="h-4 w-4 text-weelp-sage-deep" />
+          <CircleCheckBig className="h-4 w-4 text-weelp-sage-text" />
           <span>Live Guide</span>
         </span>
         <span className="flex items-center gap-2 text-sm text-foreground">
-          <Clock className="h-4 w-4 text-weelp-sage-deep" />
+          <Clock className="h-4 w-4 text-weelp-sage-text" />
           <span>Duration - {durationHours} Hours</span>
         </span>
       </div>

@@ -7,7 +7,7 @@ const CityHeroBanner = ({ city }) => {
   const { name = '', description = '', media_gallery = [] } = city || {};
 
   return (
-    <section className="weelp-hero-rise page_city_banner relative isolate mb-6 flex w-full items-center justify-center overflow-hidden bg-[linear-gradient(-165deg,#f8faf9,#f2f7f5)] py-6 dark:bg-[radial-gradient(circle_at_78%_22%,rgba(255,255,255,0.08),transparent_34%),linear-gradient(145deg,#050505_0%,#111111_48%,#000000_100%)] md:mb-16 md:min-h-[615px] md:py-10 lg:mb-24 lg:h-[615px] lg:py-0">
+    <section className="weelp-hero-rise page_city_banner weelp-city-hero-surface relative isolate mb-6 flex w-full items-center justify-center overflow-hidden py-6 md:mb-16 md:min-h-[615px] md:py-10 lg:mb-24 lg:h-[615px] lg:py-0">
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-weelp-sage-deep/35 to-transparent dark:via-white/10" />
       <div aria-hidden="true" className="pointer-events-none absolute -left-24 top-20 hidden size-72 rounded-full bg-weelp-sage-tint/25 blur-3xl dark:bg-foreground/5 lg:block" />
 

@@ -140,7 +140,7 @@ export const FormResetPassword = () => {
         {serverError && (
           <div role="alert" className="space-y-2 rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-foreground">
             <p>{serverError}</p>
-            <NavigationLink href="/user/forgot-password" className="inline-flex min-h-11 items-center font-medium text-weelp-sage-deep underline">
+            <NavigationLink href="/user/forgot-password" className="inline-flex min-h-11 items-center font-medium text-weelp-sage-text underline">
               Request a new reset link
             </NavigationLink>
           </div>

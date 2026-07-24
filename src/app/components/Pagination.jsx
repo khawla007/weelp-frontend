@@ -55,12 +55,12 @@ export const CustomPagination = ({
   const canGoNext = currentPage < totalPages;
 
   return (
-    <div className={`flex w-full items-center justify-between gap-4 ${className}`}>
+    <div className={`flex w-full min-w-0 flex-col items-start gap-4 lg:flex-row lg:items-center lg:justify-between ${className}`}>
       {/* Total items - Left aligned */}
       <span className="text-sm text-copy whitespace-nowrap">Total: {totalItems} items</span>
 
       {/* Pagination controls - Right aligned */}
-      <div className={`flex items-center gap-2 ${controlsClassName}`}>
+      <div className={`flex w-full min-w-0 flex-wrap items-center justify-center gap-2 lg:w-auto lg:flex-nowrap lg:justify-end ${controlsClassName}`}>
         {/* First page button */}
         <Button aria-label="First page" variant="outline" size="sm" onClick={() => onPageChange(1)} disabled={!canGoPrev} className={controlClassName}>
           <ChevronsLeft className="h-4 w-4" />

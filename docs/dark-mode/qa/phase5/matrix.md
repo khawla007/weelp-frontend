@@ -7,7 +7,9 @@ Phase 5 final sweep status after the June 24 cleanup:
 - The temporary Phase 1 color bridge was removed from `src/app/globals.css`.
 - Dark-mode shadow normalization remains as an explicit final policy: standard shadows are disabled in dark mode while tokenized borders/surfaces carry elevation.
 
-The route matrix below remains the full release capture set. This pass records targeted notes for the routes affected by the final cleanup.
+The route matrix below remains the full release capture set for public pages and
+the customer, creator, and admin dashboards. This pass records targeted notes
+for the routes affected by the final cleanup.
 
 ## June 24 Targeted Checks
 
@@ -24,42 +26,44 @@ Visible headed browser session: `agent-browser --session weelp-visible --headed 
 
 ## Public Routes
 
-| Route                              | Light desktop                 | Dark desktop                 | Light mobile                 | Dark mobile                 | System follow         |
-| ---------------------------------- | ----------------------------- | ---------------------------- | ---------------------------- | --------------------------- | --------------------- |
-| `/`                                | `home/home-light-desktop.png` | `home/home-dark-desktop.png` | `home/home-light-mobile.png` | `home/home-dark-mobile.png` | `home/home-system.md` |
-| `/cities`                          | Pending                       | Pending                      | Pending                      | Pending                     | Pending               |
-| `/cities/[slug]`                   | Pending                       | Pending                      | Pending                      | Pending                     | Pending               |
-| `/cities/[slug]/activities/[slug]` | Pending                       | Pending                      | Pending                      | Pending                     | Pending               |
-| `/search`                          | Pending                       | Pending                      | Pending                      | Pending                     | Pending               |
-| `/explore-creators`                | Pending                       | Pending                      | Pending                      | Pending                     | Pending               |
-| `/checkout`                        | Pending                       | Pending                      | Pending                      | Pending                     | Pending               |
-| `/booking/[id]`                    | Pending                       | Pending                      | Pending                      | Pending                     | Pending               |
-| `/user/login`                      | Pending                       | Pending                      | Pending                      | Pending                     | Pending               |
-| `/blogs`                           | Pending                       | Pending                      | Pending                      | Pending                     | Pending               |
-| `/blogs/[slug]`                    | Pending                       | Pending                      | Pending                      | Pending                     | Pending               |
-| `/terms`                           | Pending                       | Pending                      | Pending                      | Pending                     | Pending               |
-| `/about-us`                        | Pending                       | Pending                      | Pending                      | Pending                     | Pending               |
+| Route                              | Light desktop                 | Dark desktop                 | Light mobile                 | Dark mobile                 | First visit dark                |
+| ---------------------------------- | ----------------------------- | ---------------------------- | ---------------------------- | --------------------------- | ------------------------------- |
+| `/`                                | `home/home-light-desktop.png` | `home/home-dark-desktop.png` | `home/home-light-mobile.png` | `home/home-dark-mobile.png` | `home/home-first-visit-dark.md` |
+| `/cities`                          | Pending                       | Pending                      | Pending                      | Pending                     | Pending                         |
+| `/cities/[slug]`                   | Pending                       | Pending                      | Pending                      | Pending                     | Pending                         |
+| `/cities/[slug]/activities/[slug]` | Pending                       | Pending                      | Pending                      | Pending                     | Pending                         |
+| `/search`                          | Pending                       | Pending                      | Pending                      | Pending                     | Pending                         |
+| `/explore-creators`                | Pending                       | Pending                      | Pending                      | Pending                     | Pending                         |
+| `/checkout`                        | Pending                       | Pending                      | Pending                      | Pending                     | Pending                         |
+| `/booking/[id]`                    | Pending                       | Pending                      | Pending                      | Pending                     | Pending                         |
+| `/user/login`                      | Pending                       | Pending                      | Pending                      | Pending                     | Pending                         |
+| `/blogs`                           | Pending                       | Pending                      | Pending                      | Pending                     | Pending                         |
+| `/blogs/[slug]`                    | Pending                       | Pending                      | Pending                      | Pending                     | Pending                         |
+| `/terms`                           | Pending                       | Pending                      | Pending                      | Pending                     | Pending                         |
+| `/about-us`                        | Pending                       | Pending                      | Pending                      | Pending                     | Pending                         |
 
-## Customer Dashboard Routes
+## Customer and Creator Dashboard Routes
 
-| Route                                | Light desktop | Dark desktop | Light mobile | Dark mobile | System follow |
-| ------------------------------------ | ------------- | ------------ | ------------ | ----------- | ------------- |
-| `/dashboard/customer/overview`       | Pending       | Pending      | Pending      | Pending     | Pending       |
-| `/dashboard/customer/my-itineraries` | Pending       | Pending      | Pending      | Pending     | Pending       |
-| `/dashboard/customer/notifications`  | Pending       | Pending      | Pending      | Pending     | Pending       |
-| `/dashboard/customer/settings/*`     | Pending       | Pending      | Pending      | Pending     | Pending       |
+| Route                                    | Light desktop | Dark desktop | Light mobile | Dark mobile | First visit dark |
+| ---------------------------------------- | ------------- | ------------ | ------------ | ----------- | ---------------- |
+| `/dashboard/customer/overview`           | Pending       | Pending      | Pending      | Pending     | Pending          |
+| `/dashboard/customer/my-itineraries`     | Pending       | Pending      | Pending      | Pending     | Pending          |
+| `/dashboard/customer/earnings`           | Pending       | Pending      | Pending      | Pending     | Pending          |
+| `/dashboard/customer/application-status` | Pending       | Pending      | Pending      | Pending     | Pending          |
+| `/dashboard/customer/notifications`      | Pending       | Pending      | Pending      | Pending     | Pending          |
+| `/dashboard/customer/settings/*`         | Pending       | Pending      | Pending      | Pending     | Pending          |
 
 ## Admin Dashboard Routes
 
-| Route                           | Light desktop | Dark desktop | Light mobile | Dark mobile | System follow |
-| ------------------------------- | ------------- | ------------ | ------------ | ----------- | ------------- |
-| `/dashboard/admin/destinations` | Pending       | Pending      | Pending      | Pending     | Pending       |
-| `/dashboard/admin/cities`       | Pending       | Pending      | Pending      | Pending     | Pending       |
-| `/dashboard/admin/users`        | Pending       | Pending      | Pending      | Pending     | Pending       |
-| `/dashboard/admin/orders`       | Pending       | Pending      | Pending      | Pending     | Pending       |
-| `/dashboard/admin/packages`     | Pending       | Pending      | Pending      | Pending     | Pending       |
-| `/dashboard/admin/activities`   | Pending       | Pending      | Pending      | Pending     | Pending       |
-| `/dashboard/admin/reviews`      | Pending       | Pending      | Pending      | Pending     | Pending       |
+| Route                           | Light desktop | Dark desktop | Light mobile | Dark mobile | First visit dark |
+| ------------------------------- | ------------- | ------------ | ------------ | ----------- | ---------------- |
+| `/dashboard/admin/destinations` | Pending       | Pending      | Pending      | Pending     | Pending          |
+| `/dashboard/admin/cities`       | Pending       | Pending      | Pending      | Pending     | Pending          |
+| `/dashboard/admin/users`        | Pending       | Pending      | Pending      | Pending     | Pending          |
+| `/dashboard/admin/orders`       | Pending       | Pending      | Pending      | Pending     | Pending          |
+| `/dashboard/admin/packages`     | Pending       | Pending      | Pending      | Pending     | Pending          |
+| `/dashboard/admin/activities`   | Pending       | Pending      | Pending      | Pending     | Pending          |
+| `/dashboard/admin/reviews`      | Pending       | Pending      | Pending      | Pending     | Pending          |
 
 ## Artifact Naming
 
@@ -70,10 +74,14 @@ Use this pattern for captures:
 <route-slug>-dark-desktop.png
 <route-slug>-light-mobile.png
 <route-slug>-dark-mobile.png
-<route-slug>-system.md
+<route-slug>-first-visit-dark.md
+<route-slug>-saved-light.md
 ```
 
-System check notes should include the browser preference simulation used, the `localStorage['weelp-theme']` value, and whether the `html.dark` class followed the simulated preference after reload.
+First-visit notes should record that `localStorage['weelp-theme']` was absent
+before reload, `html.dark` was present on first paint, and no light flash was
+visible. Saved-light notes should record that the stored `light` preference won
+after reload.
 
 ## Third-Party Theming Status
 
@@ -86,4 +94,4 @@ System check notes should include the browser preference simulation used, the `l
 
 ## Current Blockers
 
-No audit or guardrail blockers remain. Authenticated dashboard screenshot capture still requires valid credentials/session state.
+No audit, guardrail, or authenticated dashboard verification blockers remain.

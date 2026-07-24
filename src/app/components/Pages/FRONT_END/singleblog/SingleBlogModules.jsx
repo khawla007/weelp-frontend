@@ -2,7 +2,7 @@ import React from 'react';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 
 const taxonomyLabelClasses = 'font-medium capitalize px-6 py-4 text-Lynchcolor text-base border rounded-md w-fit max-w-full break-words';
-const taxonomyLinkClasses = `${taxonomyLabelClasses} hover:text-weelp-sage-deep hover:border-weelp-sage-deep hover:bg-surface-tint`;
+const taxonomyLinkClasses = `${taxonomyLabelClasses} hover:text-weelp-sage-text hover:border-weelp-sage-deep hover:bg-surface-tint`;
 
 const buildBlogFilterHref = (type, slug) => {
   const params = new URLSearchParams({ [type]: slug });

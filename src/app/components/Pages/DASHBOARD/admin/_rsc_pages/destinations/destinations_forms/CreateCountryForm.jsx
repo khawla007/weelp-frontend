@@ -206,7 +206,7 @@ const CreateCountryForm = ({ apiFormData = {} }) => {
                       className={`flex flex-col items-center w-full space-y-1 cursor-pointer group relative p-4 duration-300 ease-in-out group hover:bg-muted ${currentStep == step?.id && ' bg-gradient-to-t from-weelp-sage-deep/20 to-muted border-b-weelp-sage-deep border-b-2'}`}
                     >
                       <div
-                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-foreground'} ${currentStep == step?.id ? 'text-weelp-sage-deep ' : 'text-muted-foreground'}`}
+                        className={`text-sm font-medium pt-2 w-full text-nowrap duration-300 ease-in-out ${!currentStep == step?.id && ' group-hover:text-foreground'} ${currentStep == step?.id ? 'text-weelp-sage-text ' : 'text-muted-foreground'}`}
                       >
                         {step.title}
                       </div>

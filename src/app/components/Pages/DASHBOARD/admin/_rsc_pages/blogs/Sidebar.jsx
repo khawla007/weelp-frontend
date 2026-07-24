@@ -70,7 +70,7 @@ const BlogSidebar = () => {
         <ul className="space-y-2">
           {readinessItems.map((item) => (
             <li key={item.key} className="flex items-center gap-2 text-sm">
-              {item.complete ? <CheckCircle2 className="h-4 w-4 text-weelp-sage-deep" /> : <Circle className="h-4 w-4 text-muted-foreground" />}
+              {item.complete ? <CheckCircle2 className="h-4 w-4 text-weelp-sage-text" /> : <Circle className="h-4 w-4 text-muted-foreground" />}
               <span className={item.complete ? 'text-foreground' : 'text-muted-foreground'}>{item.label}</span>
             </li>
           ))}

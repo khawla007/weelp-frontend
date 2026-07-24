@@ -63,7 +63,7 @@ const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, it
               href={editHref}
               onClick={onClose}
               aria-label={`Edit ${itemName} booking`}
-              className="inline-flex size-8 items-center justify-center rounded-md text-copy transition-colors hover:bg-muted-foreground/10 hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="inline-flex size-8 items-center justify-center rounded-md text-copy transition-colors hover:bg-muted-foreground/10 hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <SquarePen size={18} aria-hidden="true" />
             </NavigationLink>

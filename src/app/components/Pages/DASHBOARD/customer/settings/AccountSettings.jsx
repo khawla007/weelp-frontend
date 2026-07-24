@@ -46,7 +46,7 @@ const TabButton = ({ active, onClick, children }) => (
     type="button"
     onClick={onClick}
     className={`px-4 py-2 font-semibold transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border-x-0 border-t-0 border-b-[3px] outline-none focus:outline-none ${
-      active ? 'border-weelp-sage-deep text-weelp-sage-deep' : 'border-transparent text-muted-foreground hover:text-foreground'
+      active ? 'border-weelp-sage-deep text-weelp-sage-text' : 'border-transparent text-muted-foreground hover:text-foreground'
     }`}
   >
     {children}

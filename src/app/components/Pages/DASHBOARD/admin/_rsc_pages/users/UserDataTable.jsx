@@ -84,8 +84,8 @@ export function UserDataTable({ data, selectedItems = [], onSelectionChange, use
   });
 
   return (
-    <div>
-      <div className="rounded-md border">
+    <div className="min-w-0 max-w-full">
+      <div className="min-w-0 max-w-full overflow-hidden rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

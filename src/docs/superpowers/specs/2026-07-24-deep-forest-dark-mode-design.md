@@ -23,7 +23,7 @@ The target hierarchy is:
 | Raised surface   |    `#14241E` | Popovers, menus, dialogs, elevated controls              |
 | Muted surface    |    `#182B24` | Hover, selected, secondary, and input treatments         |
 | Border           |    `#263B33` | Dividers and standard boundaries                         |
-| Strong border    |    `#4D8069` | Inputs and boundaries needing more separation            |
+| Sage fill        |    `#4D8069` | Solid controls and stronger input boundaries             |
 | Main text        |    `#F3F8F5` | Headings and primary content                             |
 | Secondary text   |    `#C8D7D0` | Body copy                                                |
 | Muted text       |    `#9FB1A9` | Labels and supporting metadata                           |
@@ -31,9 +31,17 @@ The target hierarchy is:
 | Brand anchor     |    `#588F7A` | Brand graphics and contexts where contrast is sufficient |
 | On-sage text     |    `#07100D` | Text and icons placed on the lighter interactive sage    |
 
-These are target values, not permission to scatter hex codes through components. Shared semantic tokens remain the source of truth.
+These are design target values, not exact computed CSS output or permission to scatter hex codes through components. Shared semantic tokens remain the source of truth.
 
-The stronger control boundary is an accessibility refinement: `#4D8069` exceeds 3:1 against the standard card surface, while `#304B40` remains available as a non-essential tonal step.
+The stronger control-boundary target is an accessibility refinement: `#4D8069` exceeds 3:1 against the standard card surface, while `#304B40` remains available as a non-essential tonal step. The input surface itself remains the muted forest treatment; sage defines its stronger boundary.
+
+Sage is split by role rather than represented by one color everywhere. At the
+design level, `#4D8069` is the fill, boundary, and solid-control target,
+`#86BDA5` is the dark text and interactive target, and `#426C59` is the deeper
+light-theme text target. The implementation expresses those roles as
+`hsl(153 25% 40%)`, `hsl(154 29% 63%)`, and `hsl(154 24% 34%)`, respectively,
+so the rounded HSL output can differ slightly from the reference hexes. This
+keeps each pairing readable without changing the established control role.
 
 ## Surface and component rules
 
@@ -47,7 +55,7 @@ Dense admin screens need the same palette, not a separate neutral theme. Their t
 
 Travel photography keeps its natural color. Image overlays may use a translucent form of the canvas color rather than pure black. Error, warning, informational, discount, and success colors keep their semantic identities instead of being forced into the sage scale.
 
-Destructive copy uses `#F87171` on forest surfaces. Filled destructive controls use `#07100D` for their text and icons so the pairing remains contrast-safe.
+Destructive copy targets `#F87171` on forest surfaces, and filled destructive controls target `#07100D` for their text and icons. The implementation uses `hsl(0 91% 71%)` with `hsl(160 39% 5%)`, keeping the rounded CSS pairing contrast-safe.
 
 Disabled controls should look unavailable without disappearing. Empty, loading, and failure states use the same surface and text hierarchy as the surrounding component.
 
@@ -71,7 +79,7 @@ If the stored value is missing or cannot be used, Weelp falls back to dark. Them
 
 The global toggle remains available across the public and authenticated experiences. While Deep Forest is active, it offers Light. The dashboard appearance setting uses the same two choices and must not present a conflicting default.
 
-Browser color-scheme metadata, native controls, and the application manifest should agree with the dark-first experience where the platform allows it.
+Browser color-scheme metadata, native controls, and the application manifest should agree with the dark-first experience where the platform allows it. The server emits the Deep Forest `#08110E` theme color, the pre-hydration bootstrap corrects it when a saved Light choice exists, and the client keeps browser chrome synchronized after later theme changes. The manifest also launches with the dark default.
 
 ## How this fits the current frontend
 
@@ -89,7 +97,7 @@ The implementation should align:
 
 Hard-coded neutral dark values should be audited when they bypass a semantic token. A component should receive a direct dark color only when the visual cannot be expressed honestly through an existing semantic role.
 
-Light-mode tokens should remain visually unchanged unless a shared-token correction is required to prevent a regression.
+Light-mode tokens should remain visually unchanged unless a shared-token correction is required to prevent a regression. The light `--weelp-sage-text` role is one such correction: it uses `hsl(154 24% 34%)`, near the `#426C59` design target, for readable sage copy while fills and boundaries keep their existing role.
 
 ## Failure paths worth knowing
 

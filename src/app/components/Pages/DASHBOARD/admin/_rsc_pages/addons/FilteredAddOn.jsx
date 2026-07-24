@@ -143,9 +143,9 @@ export const FilteredAddOn = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="min-w-0 space-y-8">
       {/* Header with Search, Type, Status and AddNewButton */}
-      <div className="flex justify-between items-center gap-4">
+      <div className="flex min-w-0 flex-col items-stretch gap-4 2xl:flex-row 2xl:items-center 2xl:justify-between">
         <Form {...form}>
           <FilterBar
             form={form}
@@ -159,18 +159,20 @@ export const FilteredAddOn = () => {
             statusOptions={FORM_ADDON_STATUS}
           />
         </Form>
-        {selectedItems.length > 0 ? (
-          <BulkActionButtons
-            selectedCount={selectedItems.length}
-            totalCount={addOns.length}
-            isAllSelected={isAllSelected}
-            onSelectAllToggle={handleSelectAllToggle}
-            onDelete={handleBulkDelete}
-            deleteLabel="Delete"
-          />
-        ) : (
-          <AddNewButton href="/dashboard/admin/addon/new" />
-        )}
+        <div className="w-full 2xl:w-auto">
+          {selectedItems.length > 0 ? (
+            <BulkActionButtons
+              selectedCount={selectedItems.length}
+              totalCount={addOns.length}
+              isAllSelected={isAllSelected}
+              onSelectAllToggle={handleSelectAllToggle}
+              onDelete={handleBulkDelete}
+              deleteLabel="Delete"
+            />
+          ) : (
+            <AddNewButton href="/dashboard/admin/addon/new" className="w-full 2xl:w-auto" />
+          )}
+        </div>
       </div>
 
       {/* Table Data */}

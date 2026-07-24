@@ -171,7 +171,7 @@ export default function NotificationsAdmin() {
                 placeholder="Search name or email…"
                 className="w-full rounded-md border border-border px-3 py-2 text-sm"
               />
-              {targetUser && <p className="mt-1 text-xs text-weelp-sage-deep">Selected: {targetUser.email}</p>}
+              {targetUser && <p className="mt-1 text-xs text-weelp-sage-text">Selected: {targetUser.email}</p>}
               {userResults.length > 0 && (
                 <ul className="mt-1 max-h-40 overflow-y-auto rounded-md border border-border">
                   {userResults.map((u) => (
@@ -197,7 +197,7 @@ export default function NotificationsAdmin() {
 
         <div role="status" aria-live="polite">
           {error && <p className="text-sm text-destructive">{error}</p>}
-          {okMsg && <p className="text-sm text-weelp-sage-deep">{okMsg}</p>}
+          {okMsg && <p className="text-sm text-weelp-sage-text">{okMsg}</p>}
         </div>
         <button type="submit" disabled={saving} className="rounded-md bg-weelp-sage-deep px-4 py-2 text-sm font-medium text-white hover:bg-weelp-sage-hover disabled:opacity-50">
           {saving ? 'Sending…' : 'Send notification'}

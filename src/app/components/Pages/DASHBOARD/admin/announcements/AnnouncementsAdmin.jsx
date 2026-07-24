@@ -198,7 +198,7 @@ export default function AnnouncementsAdmin() {
                   <td className="px-4 py-2">{a.type}</td>
                   <td className="px-4 py-2">{a.is_active ? 'Yes' : 'No'}</td>
                   <td className="px-4 py-2 space-x-3">
-                    <button type="button" onClick={() => startEdit(a)} className="text-weelp-sage-deep hover:underline">
+                    <button type="button" onClick={() => startEdit(a)} className="text-weelp-sage-text hover:underline">
                       Edit
                     </button>
                     <button type="button" onClick={() => remove(a.id)} className="text-weelp-discount hover:underline">

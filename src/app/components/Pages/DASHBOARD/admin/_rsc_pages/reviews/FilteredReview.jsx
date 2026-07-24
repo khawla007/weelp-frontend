@@ -146,9 +146,9 @@ const FilteredReview = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="min-w-0 space-y-8">
       {/* Header with Search, Item Filter, and AddNewButton */}
-      <div className="flex justify-between items-center gap-4">
+      <div className="flex min-w-0 flex-col items-stretch gap-4 2xl:flex-row 2xl:items-center 2xl:justify-between">
         <Form {...form}>
           <FilterBar
             form={form}
@@ -167,18 +167,20 @@ const FilteredReview = () => {
           />
         </Form>
 
-        {selectedItems.length > 0 ? (
-          <BulkActionButtons
-            selectedCount={selectedItems.length}
-            totalCount={reveiws.length}
-            isAllSelected={isAllSelected}
-            onSelectAllToggle={handleSelectAllToggle}
-            onDelete={handleBulkDelete}
-            deleteLabel="Delete"
-          />
-        ) : (
-          <AddNewButton href="/dashboard/admin/reviews/new" />
-        )}
+        <div className="w-full 2xl:w-auto">
+          {selectedItems.length > 0 ? (
+            <BulkActionButtons
+              selectedCount={selectedItems.length}
+              totalCount={reveiws.length}
+              isAllSelected={isAllSelected}
+              onSelectAllToggle={handleSelectAllToggle}
+              onDelete={handleBulkDelete}
+              deleteLabel="Delete"
+            />
+          ) : (
+            <AddNewButton href="/dashboard/admin/reviews/new" className="w-full 2xl:w-auto" />
+          )}
+        </div>
       </div>
 
       {/* Table Data */}

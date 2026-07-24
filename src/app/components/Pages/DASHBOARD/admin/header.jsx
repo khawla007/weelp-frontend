@@ -116,12 +116,12 @@ const AdminHeader = ({ session }) => {
   };
 
   return (
-    <header className="h-16 border-b bg-background px-4 sticky top-0 z-50">
-      <div className="flex h-full items-center sm:justify-between gap-4">
+    <header className="sticky top-0 z-50 h-16 min-w-0 border-b bg-background px-4">
+      <div className="flex h-full min-w-0 items-center gap-4 sm:justify-between">
         {isMobile && <Menu className="cursor-pointer" onClick={toggleSidebar} />}
 
         {/* Search Input - Limited width on larger screens */}
-        <div className="w-full max-w-md self-center flex-1 sm:flex-none relative">
+        <div className="relative min-w-0 w-full max-w-md flex-1 self-center lg:flex-none">
           <div className="relative flex items-center">
             <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
 
@@ -162,7 +162,7 @@ const AdminHeader = ({ session }) => {
 
           {/* Search Results Dropdown */}
           {(isSearchFocused || searchQuery.length >= 2) && searchQuery.length >= 2 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-background dark:bg-foreground border rounded-lg shadow-lg max-h-96 overflow-y-auto z-50">
+            <div className="absolute top-full left-0 right-0 mt-2 border border-border bg-popover text-popover-foreground rounded-lg shadow-lg max-h-96 overflow-y-auto z-50">
               {isSearching ? (
                 <div className="p-4 text-center text-sm text-muted-foreground">Searching...</div>
               ) : searchResults.length > 0 ? (

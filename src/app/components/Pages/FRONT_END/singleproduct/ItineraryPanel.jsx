@@ -181,7 +181,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
                     ${
                       isActive
                         ? 'bg-gradient-to-b from-muted to-weelp-sage-deep/10 border border-weelp-sage-deep text-weelp-copy'
-                        : 'bg-card border border-border/50 text-muted-foreground hover:border-weelp-sage-deep hover:text-weelp-sage-deep'
+                        : 'bg-card border border-border/50 text-muted-foreground hover:border-weelp-sage-deep hover:text-weelp-sage-text'
                     }
                   `}
                 >
@@ -194,7 +194,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
             {isEditing && (
               <button
                 onClick={() => useItineraryEditStore.getState().addDay()}
-                className="px-[18px] py-3 text-base font-medium whitespace-nowrap rounded-[6px] transition-colors border border-dashed border-weelp-sage-deep text-weelp-copy hover:text-weelp-sage-deep hover:bg-weelp-sage-deep/5 flex items-center justify-center gap-2"
+                className="px-[18px] py-3 text-base font-medium whitespace-nowrap rounded-[6px] transition-colors border border-dashed border-weelp-sage-deep text-weelp-copy hover:text-weelp-sage-text hover:bg-weelp-sage-deep/5 flex items-center justify-center gap-2"
               >
                 <Plus size={16} /> Add Day
               </button>
@@ -424,13 +424,13 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
         <div className="flex gap-3">
           <button
             onClick={() => setActiveModal({ type: 'addActivity' })}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-weelp-copy hover:text-weelp-sage-deep border border-dashed border-weelp-sage-deep rounded-lg hover:bg-weelp-sage-deep/5 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-weelp-copy hover:text-weelp-sage-text border border-dashed border-weelp-sage-deep rounded-lg hover:bg-weelp-sage-deep/5 transition-colors"
           >
             <Plus size={14} /> Add Activity
           </button>
           <button
             onClick={() => setActiveModal({ type: 'addTransfer' })}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-weelp-copy hover:text-weelp-sage-deep border border-dashed border-weelp-sage-deep rounded-lg hover:bg-weelp-sage-deep/5 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-weelp-copy hover:text-weelp-sage-text border border-dashed border-weelp-sage-deep rounded-lg hover:bg-weelp-sage-deep/5 transition-colors"
           >
             <Plus size={14} /> Add Transfer
           </button>

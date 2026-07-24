@@ -3,17 +3,14 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { PageInfo } from '../settings_shared';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 
 export const Settings = () => {
   const form = useForm({
     defaultValues: {
-      theme: 'light',
       compactMode: false,
       language: 'en',
       timezone: 'UTC',
@@ -43,32 +40,6 @@ export const Settings = () => {
               <CardDescription>Customize how the application looks and feels</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <FormField
-                control={form.control}
-                name="theme"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Theme</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue className="" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem className={''} value="light">
-                          <Sun className="mr-2 h-4 w-4" /> Light
-                        </SelectItem>
-                        <SelectItem className={''} value="dark">
-                          <Moon className="mr-2 h-4 w-4" /> Dark
-                        </SelectItem>
-                        <SelectItem className={''} value="system">
-                          System
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name="compactMode"

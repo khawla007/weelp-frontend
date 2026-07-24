@@ -27,7 +27,7 @@ export const MenuList = ({ items = [], activeId, onSelect }) => (
             onFocus={() => onSelect(item.id)}
             aria-pressed={isActive}
             className={`flex w-full items-center justify-between px-[33px] py-3 text-left text-[15px] transition-[background-color,color] duration-200 ease-out motion-reduce:transition-none hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40 ${
-              isActive ? 'bg-weelp-sage-deep/10 text-weelp-sage-deep' : 'text-popover-foreground'
+              isActive ? 'bg-weelp-sage-deep/10 text-weelp-sage-text' : 'text-popover-foreground'
             }`}
             style={{
               fontFamily: FONT_FAMILY,

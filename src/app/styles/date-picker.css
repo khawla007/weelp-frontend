@@ -62,12 +62,13 @@
 }
 
 .dark .weelp-calendar {
-  --weelp-cal-fg: #e5e7eb;
-  --weelp-cal-muted: #9ca3af;
-  --weelp-cal-disabled: #374151;
-  --weelp-cal-selected-soft: rgb(88 143 122 / 0.32);
-  --weelp-cal-single: #27272a;
-  --weelp-cal-single-hover: #3f3f46;
+  --weelp-cal-fg: hsl(var(--foreground));
+  --weelp-cal-muted: hsl(var(--muted-foreground));
+  --weelp-cal-disabled: hsl(var(--muted-foreground) / 0.45);
+  --weelp-cal-selected: hsl(var(--weelp-sage-hover));
+  --weelp-cal-selected-soft: hsl(var(--weelp-sage-deep) / 0.32);
+  --weelp-cal-single: hsl(var(--muted));
+  --weelp-cal-single-hover: hsl(var(--accent));
 }
 
 /* Default `.rdp-root` ships at one-month width; grow to fit

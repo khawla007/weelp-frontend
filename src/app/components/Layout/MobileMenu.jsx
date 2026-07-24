@@ -12,7 +12,7 @@ import { getLogoUrl } from '@/lib/config/brand';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const brandFont = 'var(--font-interTight), Inter Tight, sans-serif';
-const HOME_HEADER_TEXT_CLASS = 'text-black dark:text-black';
+const HOME_HEADER_TEXT_CLASS = 'text-weelp-hero-foreground';
 
 // Helper function to generate initials from name
 const getInitials = (name) => {
@@ -30,8 +30,8 @@ const MobileMenu = ({ stickyHeader, variant = 'solid' }) => {
   const topStripVisible = !stickyHeader;
   const mainBarTransparent = isOverHero && !stickyHeader;
   const topStripTransparent = isOverHero && topStripVisible;
-  const topStripSurfaceClass = topStripTransparent ? 'border-transparent bg-transparent text-black dark:text-black' : 'border-border bg-card text-foreground';
-  const topStripOfferPillClass = topStripTransparent ? 'border-black/10 bg-transparent text-black dark:text-black' : 'border-border bg-background/80';
+  const topStripSurfaceClass = topStripTransparent ? 'border-transparent bg-transparent text-weelp-hero-foreground' : 'border-border bg-card text-foreground';
+  const topStripOfferPillClass = topStripTransparent ? 'border-weelp-hero-foreground/10 bg-transparent text-weelp-hero-foreground' : 'border-border bg-background/80';
   const topStripLocalePillClass = topStripTransparent
     ? 'border-transparent bg-background/85 text-foreground backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:shadow-none'
     : 'border-border bg-background text-foreground';

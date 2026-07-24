@@ -57,7 +57,7 @@ export const ReviewCard2 = ({ userImageSrc, userName, galleryImages, date, title
       {comment && <p className="text-base text-foreground capitalize h-24 overflow-y-scroll tfc_scroll">{comment}</p>}
       <BreakSection marginTop={'mt-2'} className={'mb-4'} />
       <button className="w-fit flex gap-2 items-center group-active:first:fill-weelp-sage-deep ">
-        <ThumbsUp size={20} className=" text-weelp-sage-deep active:fill-weelp-sage-deep " />
+        <ThumbsUp size={20} className=" text-weelp-sage-text active:fill-weelp-sage-deep " />
         <span className="capitalize underline font-medium">helpful</span>
       </button>
     </div>

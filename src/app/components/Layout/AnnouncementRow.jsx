@@ -72,7 +72,7 @@ export default function AnnouncementRow({ announcement, isRead, onOpenDetail, on
 
         {mode === 'visit' &&
           (isInternalLink(announcement.link) ? (
-            <NavigationLink href={announcement.link} onClick={handleVisitClick} className="mt-2 inline-block text-xs font-medium text-weelp-copy hover:text-weelp-sage-deep hover:underline">
+            <NavigationLink href={announcement.link} onClick={handleVisitClick} className="mt-2 inline-block text-xs font-medium text-weelp-copy hover:text-weelp-sage-text hover:underline">
               Visit
             </NavigationLink>
           ) : (
@@ -81,14 +81,14 @@ export default function AnnouncementRow({ announcement, isRead, onOpenDetail, on
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleVisitClick}
-              className="mt-2 inline-block text-xs font-medium text-weelp-copy hover:text-weelp-sage-deep hover:underline"
+              className="mt-2 inline-block text-xs font-medium text-weelp-copy hover:text-weelp-sage-text hover:underline"
             >
               Visit
             </a>
           ))}
 
         {mode === 'detail' && (
-          <button type="button" onClick={handleDetailClick} className="mt-2 inline-flex items-center text-xs font-medium text-weelp-copy hover:text-weelp-sage-deep hover:underline">
+          <button type="button" onClick={handleDetailClick} className="mt-2 inline-flex items-center text-xs font-medium text-weelp-copy hover:text-weelp-sage-text hover:underline">
             View detail
           </button>
         )}
@@ -98,7 +98,7 @@ export default function AnnouncementRow({ announcement, isRead, onOpenDetail, on
         type="button"
         aria-label={toggleLabel}
         onClick={handleToggle}
-        className="flex-shrink-0 text-muted-foreground hover:text-weelp-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 rounded-sm p-1"
+        className="flex-shrink-0 text-muted-foreground hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 rounded-sm p-1"
       >
         <ToggleIcon className="size-4" strokeWidth={1.5} />
       </button>

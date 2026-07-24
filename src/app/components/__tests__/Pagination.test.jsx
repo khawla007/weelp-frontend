@@ -38,9 +38,13 @@ describe('CustomPagination', () => {
   });
 
   it('preserves the original shared control sizing by default', () => {
-    render(<CustomPagination totalItems={30} itemsPerPage={10} currentPage={1} onPageChange={jest.fn()} />);
+    const { container } = render(<CustomPagination totalItems={30} itemsPerPage={10} currentPage={1} onPageChange={jest.fn()} />);
 
     expect(screen.getByRole('button', { name: 'Next page' })).toHaveClass('h-9');
     expect(screen.getByRole('textbox', { name: 'Page number' })).toHaveClass('h-9', 'w-16');
+    expect(container.firstElementChild).toHaveClass('min-w-0', 'flex-col', 'items-start', 'lg:flex-row', 'lg:justify-between');
+    expect(screen.getByRole('button', { name: 'Next page' }).parentElement).toHaveClass('w-full', 'min-w-0', 'flex-wrap', 'justify-center', 'lg:w-auto', 'lg:flex-nowrap', 'lg:justify-end');
+    expect(container.firstElementChild).not.toHaveClass('md:flex-row');
+    expect(screen.getByRole('button', { name: 'Next page' }).parentElement).not.toHaveClass('md:flex-nowrap');
   });
 });
