@@ -16,20 +16,20 @@ The original `#588F7A` remains the brand anchor, but it should not become the pa
 
 The target hierarchy is:
 
-| Role | Target color | Intended use |
-|---|---:|---|
-| Canvas | `#08110E` | Page background and deepest shell |
-| Standard surface | `#101E19` | Cards, panels, table containers |
-| Raised surface | `#14241E` | Popovers, menus, dialogs, elevated controls |
-| Muted surface | `#182B24` | Hover, selected, secondary, and input treatments |
-| Border | `#263B33` | Dividers and standard boundaries |
-| Strong border | `#304B40` | Inputs and boundaries needing more separation |
-| Main text | `#F3F8F5` | Headings and primary content |
-| Secondary text | `#C8D7D0` | Body copy |
-| Muted text | `#9FB1A9` | Labels and supporting metadata |
-| Interactive sage | `#86BDA5` | Focus, links, selected states, and suitable actions |
-| Brand anchor | `#588F7A` | Brand graphics and contexts where contrast is sufficient |
-| On-sage text | `#07100D` | Text and icons placed on the lighter interactive sage |
+| Role             | Target color | Intended use                                             |
+| ---------------- | -----------: | -------------------------------------------------------- |
+| Canvas           |    `#08110E` | Page background and deepest shell                        |
+| Standard surface |    `#101E19` | Cards, panels, table containers                          |
+| Raised surface   |    `#14241E` | Popovers, menus, dialogs, elevated controls              |
+| Muted surface    |    `#182B24` | Hover, selected, secondary, and input treatments         |
+| Border           |    `#263B33` | Dividers and standard boundaries                         |
+| Strong border    |    `#304B40` | Inputs and boundaries needing more separation            |
+| Main text        |    `#F3F8F5` | Headings and primary content                             |
+| Secondary text   |    `#C8D7D0` | Body copy                                                |
+| Muted text       |    `#9FB1A9` | Labels and supporting metadata                           |
+| Interactive sage |    `#86BDA5` | Focus, links, selected states, and suitable actions      |
+| Brand anchor     |    `#588F7A` | Brand graphics and contexts where contrast is sufficient |
+| On-sage text     |    `#07100D` | Text and icons placed on the lighter interactive sage    |
 
 These are target values, not permission to scatter hex codes through components. Shared semantic tokens remain the source of truth.
 
