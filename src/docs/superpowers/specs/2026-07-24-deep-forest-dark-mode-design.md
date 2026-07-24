@@ -23,7 +23,7 @@ The target hierarchy is:
 | Raised surface   |    `#14241E` | Popovers, menus, dialogs, elevated controls              |
 | Muted surface    |    `#182B24` | Hover, selected, secondary, and input treatments         |
 | Border           |    `#263B33` | Dividers and standard boundaries                         |
-| Strong border    |    `#304B40` | Inputs and boundaries needing more separation            |
+| Strong border    |    `#4D8069` | Inputs and boundaries needing more separation            |
 | Main text        |    `#F3F8F5` | Headings and primary content                             |
 | Secondary text   |    `#C8D7D0` | Body copy                                                |
 | Muted text       |    `#9FB1A9` | Labels and supporting metadata                           |
@@ -32,6 +32,8 @@ The target hierarchy is:
 | On-sage text     |    `#07100D` | Text and icons placed on the lighter interactive sage    |
 
 These are target values, not permission to scatter hex codes through components. Shared semantic tokens remain the source of truth.
+
+The stronger control boundary is an accessibility refinement: `#4D8069` exceeds 3:1 against the standard card surface, while `#304B40` remains available as a non-essential tonal step.
 
 ## Surface and component rules
 
@@ -44,6 +46,8 @@ Primary actions should use a sage treatment whose foreground passes contrast req
 Dense admin screens need the same palette, not a separate neutral theme. Their tint should remain restrained: use surface hierarchy, borders, typography, and spacing to separate data instead of filling table rows with stronger green.
 
 Travel photography keeps its natural color. Image overlays may use a translucent form of the canvas color rather than pure black. Error, warning, informational, discount, and success colors keep their semantic identities instead of being forced into the sage scale.
+
+Destructive copy uses `#F87171` on forest surfaces. Filled destructive controls use `#07100D` for their text and icons so the pairing remains contrast-safe.
 
 Disabled controls should look unavailable without disappearing. Empty, loading, and failure states use the same surface and text hierarchy as the surrounding component.
 
