@@ -163,10 +163,13 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
   };
 
   return (
-    <div className="mx-auto md:w-[735px] w-full relative flex flex-col gap-4">
-      <div className="relative grid grid-cols-2 overflow-hidden rounded-xl border border-border bg-background sm:flex sm:items-stretch">
+    <div className="relative mx-auto flex w-full flex-col gap-4 md:w-[735px]">
+      <div
+        data-transfer-search-grid
+        className="relative grid grid-cols-2 overflow-hidden rounded-2xl border border-border bg-background shadow-[0_10px_30px_rgba(24,24,27,0.08)] dark:shadow-none sm:flex sm:items-stretch sm:rounded-xl sm:shadow-none"
+      >
         {/* Pickup */}
-        <div className="min-w-0 border-r border-b border-border sm:flex-1 sm:border-b-0">
+        <div data-testid="transfer-pickup-field" className="col-span-2 min-w-0 border-b border-border sm:col-span-1 sm:flex-1 sm:border-r sm:border-b-0">
           <Controller name="pickup" control={control} render={({ field }) => <LocationComboboxPublic value={field.value} onChange={field.onChange} placeholder="Pickup Location" icon={MapPin} />} />
         </div>
 
@@ -175,13 +178,13 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
           type="button"
           onClick={handleSwap}
           aria-label="Swap pickup and destination"
-          className="absolute left-1/2 top-[29px] z-20 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background shadow-[4px_4px_12px_rgba(0,0,0,0.1)] dark:shadow-none hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:left-1/4 sm:top-1/2 lg:h-[27px] lg:w-[27px]"
+          className="absolute left-1/2 top-[58px] z-20 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background shadow-[4px_4px_12px_rgba(0,0,0,0.1)] dark:shadow-none hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:left-1/4 sm:top-1/2 lg:h-[27px] lg:w-[27px]"
         >
           <ArrowLeftRight className="h-3 w-3 text-foreground" />
         </button>
 
         {/* Destination */}
-        <div className="min-w-0 border-b border-border sm:flex-1 sm:border-r sm:border-b-0">
+        <div data-testid="transfer-destination-field" className="col-span-2 min-w-0 border-b border-border sm:col-span-1 sm:flex-1 sm:border-r sm:border-b-0">
           <Controller name="destination" control={control} render={({ field }) => <LocationComboboxPublic value={field.value} onChange={field.onChange} placeholder="Destination" icon={MapPin} />} />
         </div>
 
@@ -195,8 +198,10 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
               </button>
             </PopoverTrigger>
             <PopoverContent
-              className="w-auto p-2"
-              align="start"
+              data-testid="transfer-date-popover"
+              collisionPadding={16}
+              className="max-h-[var(--radix-popover-content-available-height)] w-[calc(100vw-2rem)] max-w-sm overflow-y-auto p-0 sm:w-auto sm:p-2"
+              align="center"
               onOpenAutoFocus={(e) => e.preventDefault()}
               onInteractOutside={(e) => {
                 const target = e.target;
@@ -205,8 +210,8 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                 }
               }}
             >
-              <div className="flex items-center gap-2 px-2 pt-1 pb-2 border-b border-border mb-1">
-                <span className="text-xs font-medium text-foreground shrink-0">Pickup time</span>
+              <div className="mb-1 flex flex-wrap items-center gap-2 border-b border-border px-1 pb-2 pt-1 sm:px-2">
+                <span className="w-full shrink-0 text-xs font-medium text-foreground sm:w-auto">Pickup time</span>
                 <Controller
                   name="time"
                   control={control}
@@ -217,12 +222,12 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                       field.onChange(to24h(next.hour, next.minute, next.ampm));
                     };
                     const triggerCls =
-                      'h-8 rounded-full border-0 bg-weelp-sage-deep px-3 text-sm font-medium text-white focus:ring-2 focus:ring-weelp-sage-deep/40 [&>svg]:text-white [&>svg]:opacity-100';
+                      'h-8 rounded-full border-0 bg-weelp-sage-deep px-2 text-sm font-medium text-white focus:ring-2 focus:ring-weelp-sage-deep/40 [&>svg]:text-white [&>svg]:opacity-100 sm:px-3';
                     const itemCls = 'text-sm focus:bg-weelp-sage-deep focus:text-white data-[state=checked]:bg-weelp-sage-deep data-[state=checked]:text-white';
                     return (
-                      <div className="flex items-center gap-1 flex-1">
+                      <div data-testid="transfer-time-controls" className="flex min-w-0 flex-1 items-center gap-1">
                         <Select value={parts.hour} onValueChange={(v) => setPart('hour', v)}>
-                          <SelectTrigger className={`${triggerCls} w-16`}>
+                          <SelectTrigger data-testid="transfer-time-hour" className={`${triggerCls} w-[58px] sm:w-16`}>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="z-[200] max-h-56 min-w-[4rem]">
@@ -235,7 +240,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                         </Select>
                         <span className="text-foreground font-semibold">:</span>
                         <Select value={parts.minute} onValueChange={(v) => setPart('minute', v)}>
-                          <SelectTrigger className={`${triggerCls} w-16`}>
+                          <SelectTrigger data-testid="transfer-time-minute" className={`${triggerCls} w-[58px] sm:w-16`}>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="z-[200] max-h-56 min-w-[4rem]">
@@ -247,7 +252,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                           </SelectContent>
                         </Select>
                         <Select value={parts.ampm} onValueChange={(v) => setPart('ampm', v)}>
-                          <SelectTrigger className={`${triggerCls} w-16`}>
+                          <SelectTrigger data-testid="transfer-time-period" className={`${triggerCls} w-[58px] sm:w-16`}>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="z-[200] min-w-[4rem]">
@@ -266,7 +271,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                   type="button"
                   onClick={() => setDateOpen(false)}
                   disabled={!date}
-                  className="rounded-md bg-weelp-sage-deep px-3 py-1 text-xs font-medium text-white hover:bg-weelp-sage-hover disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  className="shrink-0 rounded-md bg-weelp-sage-deep px-2 py-1 text-xs font-medium text-white hover:bg-weelp-sage-hover disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:px-3"
                 >
                   Done
                 </button>
@@ -291,7 +296,7 @@ export default function TransferSearchForm({ onResults, onLoadingChange, onSubmi
                 </span>
               </button>
             </PopoverTrigger>
-            <PopoverContent className="w-[280px] p-4" align="end">
+            <PopoverContent data-testid="transfer-passenger-popover" collisionPadding={16} className="w-[calc(100vw-2rem)] max-w-[280px] p-4" align="center">
               <div className="flex flex-col gap-4">
                 {[
                   { key: 'adults', label: 'Adults', sub: '13 or above', value: adults, min: 1 },

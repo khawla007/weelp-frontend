@@ -71,15 +71,15 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
 
   return (
     <Card className="group p-0 overflow-hidden border border-border transition-shadow duration-200 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:hover:shadow-none">
-      <div className="flex flex-row items-stretch">
-        <div className="flex-[3] flex flex-col gap-2 py-4 px-8">
+      <div data-testid="transfer-result-media-row" className="flex flex-col-reverse items-stretch sm:flex-row">
+        <div className="flex min-w-0 flex-col gap-2 px-4 py-4 sm:flex-[3] sm:px-8">
           <span className="text-xs text-muted-foreground font-medium">Private Transfer</span>
-          <p className="flex items-center gap-2 text-foreground font-semibold">
+          <p className="flex min-w-0 items-center gap-2 text-foreground font-semibold">
             <MapPin className="h-4 w-4 shrink-0" />
             <span className="truncate">{routeTitle}</span>
           </p>
           {vehicleType && (
-            <p className="flex items-center gap-2 text-muted-foreground text-sm">
+            <p className="flex min-w-0 items-center gap-2 text-muted-foreground text-sm">
               <Truck className="h-4 w-4 shrink-0" />
               <span className="truncate capitalize">{vehicleType}</span>
             </p>
@@ -92,13 +92,13 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
 
         <div
           style={{ backgroundImage: `url('${featuredImage}')` }}
-          className="flex-[3] h-40 bg-cover bg-left transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:group-hover:scale-100"
+          className="h-36 w-full bg-cover bg-center transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:group-hover:scale-100 sm:h-40 sm:flex-[3] sm:bg-left"
           role="img"
           aria-label={routeTitle}
         />
       </div>
 
-      <div className="bg-muted py-4 px-8 flex flex-wrap gap-2 sm:gap-4">
+      <div className="flex flex-wrap gap-2 bg-muted px-4 py-3 sm:gap-4 sm:px-8 sm:py-4">
         <span className="flex items-center gap-2 text-sm text-foreground">
           <CircleCheckBig className="h-4 w-4 text-weelp-sage-text" />
           <span>Live Guide</span>
@@ -137,8 +137,8 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
         </div>
       )}
 
-      <div className="py-4 px-8 flex justify-between items-center gap-4">
-        <div className="flex flex-col">
+      <div data-testid="transfer-result-footer" className="flex flex-col items-stretch gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <div data-testid="transfer-result-price" className="flex min-w-0 flex-col">
           {hasExtras ? (
             <>
               <span className="text-muted-foreground text-xs">Base {formatCurrency(basePrice, currency)}</span>
@@ -165,7 +165,7 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
         <Button
           type="button"
           onClick={handleSelectClick}
-          className="bg-weelp-sage-deep hover:bg-weelp-sage-hover text-white px-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          className="w-full bg-weelp-sage-deep px-10 text-white hover:bg-weelp-sage-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:w-auto"
         >
           Select
         </Button>

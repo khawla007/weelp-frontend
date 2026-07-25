@@ -67,9 +67,9 @@ const TransfersPage = () => {
 
   return (
     <>
-      <section className="weelp-hero-rise relative z-50 min-h-[320px] sm:min-h-[420px] flex justify-center items-center bg-surface-tint p-6 mb-10 md:mb-16 lg:mb-24">
-        <div className="w-full max-w-xl sm:max-w-3xl flex flex-col items-center gap-2 relative z-[60]">
-          <h1 className="text-xl sm:text-5xl font-semibold text-foreground text-center">
+      <section className="weelp-hero-rise relative z-50 mb-10 flex min-h-[360px] items-center justify-center bg-surface-tint px-4 py-8 sm:min-h-[420px] sm:p-6 md:mb-16 lg:mb-24">
+        <div className="relative z-[60] flex w-full max-w-xl flex-col items-center gap-3 sm:max-w-3xl sm:gap-2">
+          <h1 className="text-center text-3xl font-semibold text-foreground sm:text-5xl">
             <span className="weelp-rise-mask weelp-rise-mask--block">
               <span className="weelp-rise-item" style={{ '--weelp-rise-delay': '200ms' }}>
                 Book Your Taxi
@@ -84,7 +84,7 @@ const TransfersPage = () => {
             </span>
           </p>
 
-          <div className="weelp-hero-ui-rise mt-2 w-full relative z-[70]" style={{ '--weelp-motion-delay': '360ms' }}>
+          <div className="weelp-hero-ui-rise relative z-[70] mt-1 w-full sm:mt-2" style={{ '--weelp-motion-delay': '360ms' }}>
             <TransferSearchForm
               onResults={setResults}
               onLoadingChange={setLoading}
@@ -95,7 +95,7 @@ const TransfersPage = () => {
             />
 
             {open ? (
-              <div data-transfer-results-slot className="absolute left-1/2 top-full z-[80] mt-4 w-full max-w-full -translate-x-1/2 md:w-[735px]">
+              <div data-transfer-results-slot className="absolute inset-x-0 top-full z-[80] mt-3 w-full md:left-1/2 md:right-auto md:mt-4 md:w-[735px] md:-translate-x-1/2">
                 <TransferResultsDropdown open={open} loading={loading} transfers={results} onSelect={handleSelect} onClose={() => setOpen(false)} pickupAt={meta?.pickupAt} passengers={meta} />
               </div>
             ) : null}

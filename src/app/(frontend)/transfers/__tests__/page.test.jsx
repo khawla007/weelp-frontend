@@ -77,7 +77,8 @@ describe('TransfersPage', () => {
     const stage = container.querySelector('[data-animated-globe]');
     const shell = container.querySelector('[data-personalised-cobe-shell]');
 
-    expect(hero).toHaveClass('relative', 'z-50', 'min-h-[320px]', 'sm:min-h-[420px]', 'flex', 'justify-center', 'items-center', 'bg-surface-tint', 'p-6');
+    expect(hero).toHaveClass('relative', 'z-50', 'min-h-[360px]', 'px-4', 'py-8', 'sm:min-h-[420px]', 'sm:p-6', 'flex', 'justify-center', 'items-center', 'bg-surface-tint');
+    expect(hero.firstElementChild).toHaveClass('gap-3', 'sm:gap-2');
     expect(hero).not.toHaveClass('sm:min-h-[520px]');
     expect(hero).not.toHaveClass('pt-10', 'sm:pt-16');
     expect(background).toHaveClass('hidden', '2xl:block', 'absolute', 'inset-0', 'overflow-hidden', 'pointer-events-none');
@@ -98,7 +99,19 @@ describe('TransfersPage', () => {
 
     fireEvent.click(getByTestId('transfer-search-form'));
 
-    expect(container.querySelector('[data-transfer-results-slot]')).toHaveClass('absolute', 'left-1/2', 'top-full', 'z-[80]', 'mt-4', 'w-full', 'max-w-full', '-translate-x-1/2', 'md:w-[735px]');
+    expect(container.querySelector('[data-transfer-results-slot]')).toHaveClass(
+      'absolute',
+      'inset-x-0',
+      'top-full',
+      'z-[80]',
+      'mt-3',
+      'w-full',
+      'md:left-1/2',
+      'md:right-auto',
+      'md:mt-4',
+      'md:w-[735px]',
+      'md:-translate-x-1/2',
+    );
     expect(getByTestId('transfer-results-dropdown')).toBeInTheDocument();
   });
 });

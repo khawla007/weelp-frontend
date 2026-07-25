@@ -67,6 +67,8 @@ export default function LocationComboboxPublic({ value, onChange, placeholder = 
         </button>
       </PopoverTrigger>
       <PopoverContent
+        data-testid="transfer-location-popover"
+        collisionPadding={16}
         className="w-[320px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-border bg-background p-0 shadow-[0_8px_24px_rgba(24,24,27,0.12)] dark:shadow-none"
         align="start"
         sideOffset={4}
