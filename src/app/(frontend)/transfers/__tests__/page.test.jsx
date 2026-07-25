@@ -49,7 +49,9 @@ jest.mock('swiper/modules', () => ({
 
 jest.doMock(srcPath('app/components/Faq.jsx'), () => ({
   __esModule: true,
-  default: mockComponent('faq-accordion'),
+  default: function FaqMock({ headingClassName }) {
+    return <div data-testid="faq-accordion" data-heading-class-name={headingClassName} />;
+  },
 }));
 
 jest.mock(
@@ -135,7 +137,7 @@ describe('TransfersPage', () => {
 
     expect(queryByRole('heading', { name: 'Featured Reviews' })).not.toBeInTheDocument();
     expect(queryByTestId('review-slider')).not.toBeInTheDocument();
-    expect(getByTestId('faq-accordion')).toBeInTheDocument();
+    expect(getByTestId('faq-accordion')).toHaveAttribute('data-heading-class-name', 'py-6 text-2xl font-semibold text-[var(--weelp-home-ink)] sm:text-3xl');
     expect(mockUseSWR).toHaveBeenCalledWith('transfer-featured-reviews', getTransferFeaturedReviews, {
       revalidateOnFocus: false,
     });
@@ -148,7 +150,7 @@ describe('TransfersPage', () => {
     const TransfersPage = require('../page').default;
     const { getByRole, getByTestId } = render(<TransfersPage />);
 
-    expect(getByRole('heading', { name: 'Featured Reviews' })).toBeInTheDocument();
+    expect(getByRole('heading', { name: 'Featured Reviews' })).toHaveClass('text-2xl', 'font-semibold', 'sm:text-3xl');
     expect(getByTestId('review-slider')).toHaveTextContent('17');
   });
 });

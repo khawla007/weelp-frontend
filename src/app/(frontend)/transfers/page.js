@@ -122,7 +122,7 @@ const TransfersPage = () => {
       <div className="container-page productSlider space-y-8 pb-10 md:pb-16 lg:pb-24">
         {hasFeaturedReviews ? (
           <Reveal as="section" initialHidden className="relative space-y-8">
-            <Reveal as="h2" variant="lift" className="text-3xl font-semibold text-foreground">
+            <Reveal as="h2" variant="lift" className="text-2xl font-semibold text-foreground sm:text-3xl">
               Featured Reviews
             </Reveal>
             <Reveal variant="lift" delay={120}>
@@ -132,7 +132,7 @@ const TransfersPage = () => {
         ) : null}
 
         <Reveal as="section" initialHidden variant="lift" delay={hasFeaturedReviews ? 200 : 0}>
-          <Accordion items={faqItems} />
+          <Accordion items={faqItems} headingClassName="py-6 text-2xl font-semibold text-[var(--weelp-home-ink)] sm:text-3xl" />
         </Reveal>
       </div>
     </>

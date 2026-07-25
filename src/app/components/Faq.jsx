@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
-function Accordion({ items }) {
+function Accordion({ items, headingClassName = 'py-6 text-lg font-extrabold tracking-[-0.04em] text-[var(--weelp-home-ink)] md:text-2xl lg:text-[28px]' }) {
   const [openIndex, setOpenIndex] = useState(null);
   const pathName = usePathname();
 
@@ -13,7 +13,7 @@ function Accordion({ items }) {
 
   return (
     <div className="accordion">
-      {pathName !== '/booking' ? <h2 className="text-lg md:text-2xl lg:text-[28px] font-extrabold tracking-[-0.04em] text-[var(--weelp-home-ink)] py-6">FAQs</h2> : null}
+      {pathName !== '/booking' ? <h2 className={headingClassName}>FAQs</h2> : null}
 
       {items.map((item, index) => (
         <div key={index} className="mb-3 md:mb-4 border border-[var(--weelp-home-border)] bg-background rounded-2xl shadow-sm">
