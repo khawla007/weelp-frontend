@@ -4,6 +4,14 @@ import { join } from 'node:path';
 const readSource = (path) => readFileSync(join(process.cwd(), path), 'utf8');
 
 describe('dashboard mobile overflow contracts', () => {
+  it('publishes mobile bar offset changes through the shared sidebar position property', () => {
+    const layoutSource = readSource('src/app/(dashboard)/dashboard/customer/layout.js');
+
+    expect(layoutSource).toContain('document.documentElement.style.setProperty(DASHBOARD_SIDEBAR_TOP_PROPERTY');
+    expect(layoutSource).toContain('nextTop + barHeight');
+    expect(layoutSource).toContain('document.documentElement.style.removeProperty(DASHBOARD_SIDEBAR_TOP_PROPERTY)');
+  });
+
   it('keeps the customer header dropdown above the mobile welcome bar and below the sidebar', () => {
     const layoutSource = readSource('src/app/(dashboard)/dashboard/customer/layout.js');
     const sidebarSource = readSource('src/app/components/Layout/DashboardSidebar.jsx');

@@ -16,6 +16,8 @@ jest.mock('next/link', () => ({
 
 import DashboardSidebar from '../DashboardSidebar';
 
+let compactViewport = false;
+
 const NAV = [
   { title: 'Overview', icon: Home, url: '/dashboard/customer/overview', creatorOnly: true },
   { title: 'Bookings', icon: Tag, url: '/dashboard/customer' },
@@ -27,21 +29,20 @@ const NAV = [
 
 describe('DashboardSidebar', () => {
   beforeAll(() => {
-    if (!window.matchMedia) {
-      window.matchMedia = (query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addEventListener: () => {},
-        removeEventListener: () => {},
-        addListener: () => {},
-        removeListener: () => {},
-        dispatchEvent: () => false,
-      });
-    }
+    window.matchMedia = (query) => ({
+      matches: compactViewport,
+      media: query,
+      onchange: null,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    });
   });
 
   beforeEach(() => {
+    compactViewport = false;
     sessionStorage.clear();
   });
 
@@ -76,5 +77,22 @@ describe('DashboardSidebar', () => {
   it('renders avatar fallback initials from name', () => {
     render(<DashboardSidebar nav={NAV} user={{ name: 'Khawla Doe', is_creator: true }} />);
     expect(screen.getByText('KD')).toBeInTheDocument();
+  });
+
+  it('positions the open compact sidebar and overlay from the shared mobile stack offset', () => {
+    compactViewport = true;
+    const { container } = render(<DashboardSidebar nav={NAV} user={{ name: 'Khawla', is_creator: true }} />);
+
+    fireEvent(
+      window,
+      new CustomEvent('dashboard-sidebar-toggle', {
+        detail: { offset: 163 },
+      }),
+    );
+
+    const sidebar = container.querySelector('aside');
+    const overlay = screen.getByRole('button', { name: 'Close sidebar overlay' });
+    expect(sidebar.style.top).toBe('var(--dashboard-mobile-sidebar-top, 163px)');
+    expect(overlay.style.top).toBe('var(--dashboard-mobile-sidebar-top, 163px)');
   });
 });

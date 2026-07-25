@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { PanelLeft } from 'lucide-react';
@@ -8,6 +8,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 const STORAGE_KEY = 'dashboard_sidebar_collapsed';
 const COMPACT_BREAKPOINT = 1024;
+const COMPACT_TOP_PROPERTY = '--dashboard-mobile-sidebar-top';
 
 function getInitials(name) {
   if (!name) return 'U';
@@ -59,7 +60,7 @@ export default function DashboardSidebar({ nav, user, accent = 'text-foreground'
     return () => mql.removeEventListener('change', onChange);
   }, []);
 
-  const toggle = () => {
+  const toggle = useCallback(() => {
     setCollapsed((prev) => {
       const next = !prev;
 
@@ -69,7 +70,7 @@ export default function DashboardSidebar({ nav, user, accent = 'text-foreground'
 
       return next;
     });
-  };
+  }, [isCompact]);
 
   const visible = filterNav(nav, !!user?.is_creator);
   const initials = getInitials(user?.name);
@@ -98,7 +99,13 @@ export default function DashboardSidebar({ nav, user, accent = 'text-foreground'
   return (
     <>
       {isCompact && isOpen && (
-        <button type="button" aria-label="Close sidebar overlay" onClick={toggle} className="fixed inset-x-0 bottom-0 z-[90] bg-foreground/40 lg:hidden" style={{ top: compactTop }} />
+        <button
+          type="button"
+          aria-label="Close sidebar overlay"
+          onClick={toggle}
+          className="fixed inset-x-0 bottom-0 z-[90] bg-foreground/40 lg:hidden"
+          style={{ top: `var(${COMPACT_TOP_PROPERTY}, ${compactTop}px)` }}
+        />
       )}
 
       <aside
@@ -107,7 +114,7 @@ export default function DashboardSidebar({ nav, user, accent = 'text-foreground'
         className={`bg-background border-r border-border flex flex-col transition-[width,transform] duration-300 ease-in-out motion-reduce:transition-none ${
           isCompact ? `fixed bottom-0 left-0 z-[100] w-72 max-w-[85vw] shadow-xl ${isOpen ? 'translate-x-0' : '-translate-x-full'}` : `${collapsed ? 'w-16' : 'w-64'} shrink-0`
         }`}
-        style={isCompact ? { top: compactTop } : undefined}
+        style={isCompact ? { top: `var(${COMPACT_TOP_PROPERTY}, ${compactTop}px)` } : undefined}
       >
         <div className={isCompact ? 'flex h-full flex-col' : 'sticky top-[112px] h-[calc(100vh-112px)] flex flex-col'}>
           <div className="flex-1 py-4 px-2 space-y-2 overflow-y-auto">

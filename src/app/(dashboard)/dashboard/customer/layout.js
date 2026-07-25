@@ -11,6 +11,7 @@ import { DashboardUserNav } from '@/app/Data/userData';
 import { PanelLeft } from 'lucide-react';
 
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+const DASHBOARD_SIDEBAR_TOP_PROPERTY = '--dashboard-mobile-sidebar-top';
 
 function DashboardMobileBar({ user }) {
   const barRef = useRef(null);
@@ -33,6 +34,11 @@ function DashboardMobileBar({ user }) {
     const nextTop = Math.max(0, Math.max(...candidates, 0));
     if (barRef.current) {
       barRef.current.style.top = `${nextTop}px`;
+      const barHeight = barRef.current.getBoundingClientRect().height;
+      if (barHeight > 0) {
+        const offset = Math.round(nextTop + barHeight);
+        document.documentElement.style.setProperty(DASHBOARD_SIDEBAR_TOP_PROPERTY, `${offset}px`);
+      }
     }
   }, []);
 
@@ -85,6 +91,7 @@ function DashboardMobileBar({ user }) {
       if (frame) window.cancelAnimationFrame(frame);
       if (trackingFrame) window.cancelAnimationFrame(trackingFrame);
       resizeObserver?.disconnect();
+      document.documentElement.style.removeProperty(DASHBOARD_SIDEBAR_TOP_PROPERTY);
     };
   }, [syncTopOffset]);
 
