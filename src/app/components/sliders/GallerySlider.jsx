@@ -1,116 +1,59 @@
 'use client';
-import React, { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
 
-// Import required modules
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
-import { ProductGalleryAnimation } from '../Animation/ProductAnimation';
+import { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+
+import MediaImage from '../MediaImage';
+import GalleryLightbox from './GalleryLightbox';
+import { normalizeGalleryMedia } from './galleryMedia';
 import '@/app/styles/swiper.css';
 
-// Slider for City Page and
-const GallerySlider = ({ data, classNames = '', navColor = '#588f7a', collapseHiddenThumbnails = false }) => {
-  const [showGallery, setShowGallery] = useState(false); // toggle gallery visibility
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+const GallerySlider = ({ data, classNames = '', navColor = '#588f7a' }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const images = normalizeGalleryMedia(data);
 
-  // Handle Toggle Gallery visibility
-  const toggleGallery = () => {
-    setShowGallery(!showGallery);
-  };
+  if (images.length === 0) return null;
 
-  const preventDoubleClickSelection = (event) => {
-    if (event.detail > 1) {
-      event.preventDefault();
-    }
-  };
+  return (
+    <div className={`gallery_slider select-none ${classNames}`}>
+      <Swiper
+        style={{
+          '--swiper-navigation-color': navColor,
+          '--swiper-pagination-color': navColor,
+        }}
+        loop={false}
+        watchOverflow
+        spaceBetween={6}
+        navigation={images.length > 1}
+        watchSlidesProgress
+        onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+        modules={[Navigation]}
+        breakpoints={{
+          450: { slidesPerView: 1 },
+          640: { slidesPerView: 2 },
+          1440: { slidesPerView: 3 },
+        }}
+        className="main-slider relative w-full has-[.swiper-slide-active]:odd:rounded-xl"
+      >
+        {images.map((image) => (
+          <SwiperSlide key={image.src} className="group overflow-hidden">
+            <MediaImage
+              loading="lazy"
+              src={image.src}
+              alt={image.alt}
+              width={960}
+              height={640}
+              sizes="(min-width: 1440px) 22vw, (min-width: 640px) 44vw, 100vw"
+              className="h-[240px] w-full max-w-full object-cover transition-transform duration-500 ease-[var(--weelp-ease-out)] group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100 xs:max-w-80 sm:h-[280px] md:h-[280px] lg:h-[400px]"
+            />
+          </SwiperSlide>
+        ))}
 
-  const imageData = data || [];
-
-  // check for having data
-  if (imageData.length > 0) {
-    return (
-      <div className={`gallery_slider select-none ${classNames}`}>
-        {/* Main Slider */}
-        <Swiper
-          style={{
-            '--swiper-navigation-color': navColor,
-            '--swiper-pagination-color': navColor,
-          }}
-          loop={false}
-          watchOverflow={true}
-          spaceBetween={6} // Adjust the spacing between slides
-          navigation={true}
-          // thumbs={thumbsSwiper ? { swiper: thumbsSwiper } : undefined}
-          // thumbs={{ swiper: thumbsSwiper }}
-          watchSlidesProgress
-          onSwiper={setThumbsSwiper}
-          modules={[FreeMode, Navigation, Thumbs]}
-          breakpoints={{
-            450: {
-              slidesPerView: 1,
-            },
-            640: {
-              slidesPerView: 2,
-            },
-            1440: {
-              slidesPerView: 3,
-            },
-          }}
-          className="main-slider w-full relative has-[.swiper-slide-active]:odd:rounded-xl"
-        >
-          {imageData.map((val, index) => (
-            <SwiperSlide key={index} className="group overflow-hidden">
-              <img
-                loading="lazy"
-                src={val?.url || val?.image}
-                alt={val?.alt_text || `Slide ${index + 1}`}
-                className="max-w-full xs:max-w-80 w-full h-[240px] sm:h-[280px] md:h-[280px] lg:h-[400px] object-cover transition-transform duration-500 ease-[var(--weelp-ease-out)] group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-              />
-            </SwiperSlide>
-          ))}
-
-          {/* Show Gallery Button */}
-          <button
-            type="button"
-            className="md:block absolute bottom-4 right-4 text-weelp-steel text-sm font-medium z-10 capitalize bg-background py-3 px-6 rounded-lg active:bg-weelp-steel active:text-white gallery_slider_toggle_btn select-none"
-            onMouseDown={preventDoubleClickSelection}
-            onClick={toggleGallery}
-          >
-            View Gallery
-          </button>
-        </Swiper>
-
-        {/* Thumbnail Slider — grid-rows 0fr->1fr eases to the exact content
-            height (no max-height overshoot), so the reveal has no early-stop jump. */}
-        <div
-          className={`thumbnail-gallery grid transition-[grid-template-rows,margin-top,opacity] duration-500 ease-[var(--weelp-ease-panel)] motion-reduce:transition-none ${showGallery ? 'mt-4 grid-rows-[1fr] opacity-100' : collapseHiddenThumbnails ? 'mt-0 grid-rows-[0fr] opacity-0 pointer-events-none' : 'mt-4 grid-rows-[1fr] opacity-0'}`}
-        >
-          <div className="min-h-0 overflow-hidden">
-            <Swiper
-              onSwiper={setThumbsSwiper}
-              loop={false}
-              watchOverflow={true}
-              spaceBetween={8}
-              slidesPerView={2.5}
-              freeMode={true}
-              watchSlidesProgress={true}
-              modules={[FreeMode, Navigation, Thumbs]}
-              breakpoints={{
-                640: { slidesPerView: 3.5 },
-                1024: { slidesPerView: 4.5 },
-              }}
-              className="thumbnail-slider"
-            >
-              {imageData.map((val, index) => (
-                <SwiperSlide key={index}>
-                  <img loading="lazy" src={val?.url || val?.image} alt={`Thumbnail ${index + 1}`} className="w-full h-16 sm:h-20 lg:h-24 object-cover object-center rounded-md cursor-pointer" />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        </div>
-      </div>
-    );
-  }
+        {images.length > 1 ? <GalleryLightbox images={images} initialIndex={activeIndex} /> : null}
+      </Swiper>
+    </div>
+  );
 };
 
 export default GallerySlider;
