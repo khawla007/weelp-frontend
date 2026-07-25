@@ -3,9 +3,11 @@ import { fireEvent, render, screen } from '@testing-library/react';
 
 import MobileMenu from '../MobileMenu';
 
+const mockUseSession = jest.fn();
+
 jest.mock('next-auth/react', () => ({
   __esModule: true,
-  useSession: () => ({ data: null }),
+  useSession: () => mockUseSession(),
 }));
 
 jest.mock('@/lib/store/useMiniCartStore', () => {
@@ -38,6 +40,10 @@ jest.mock('@/components/ui/theme-toggle', () => ({
 const getTopStrip = () => screen.getByText('Get Exclusive offer on the App').closest('.grid')?.parentElement;
 
 describe('MobileMenu', () => {
+  beforeEach(() => {
+    mockUseSession.mockReturnValue({ data: null });
+  });
+
   it('shows the mobile top strip before the header becomes sticky', () => {
     render(<MobileMenu stickyHeader={false} />);
 
@@ -87,5 +93,29 @@ describe('MobileMenu', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Open main navigation' }));
 
     expect(screen.getByRole('link', { name: /weelp weelp\./i })).toHaveClass('min-h-11');
+  });
+
+  it('opens the account dropdown instead of navigating when an authenticated user taps their initials', () => {
+    mockUseSession.mockReturnValue({
+      data: {
+        user: {
+          name: 'Atul Sharma',
+          role: 'customer',
+          is_creator: true,
+        },
+      },
+    });
+
+    render(<MobileMenu stickyHeader={false} />);
+
+    const accountTrigger = screen.getByRole('button', { name: 'Open account menu' });
+    expect(accountTrigger).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: 'Open account' })).not.toBeInTheDocument();
+
+    fireEvent.click(accountTrigger);
+
+    expect(accountTrigger).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('Customer & Creator')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Dashboard' })).toHaveAttribute('href', '/dashboard/customer/overview');
   });
 });

@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { ArrowLeft, ChevronRight, Globe, MenuIcon, Search, ShoppingCart, Smartphone, UserRound, X } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { Badge } from '@/components/ui/badge';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
@@ -10,6 +10,7 @@ import { useMegaMenu } from '@/hooks/api/public/menu/megaMenu';
 import { HEADER_NAV_ITEMS, HEADER_SECONDARY_META } from './shellContent';
 import { getLogoUrl } from '@/lib/config/brand';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import SubmenuAccount from '../Modals/SubmenuAccount';
 
 const brandFont = 'var(--font-interTight), Inter Tight, sans-serif';
 const HOME_HEADER_TEXT_CLASS = 'text-weelp-hero-foreground';
@@ -300,21 +301,45 @@ const HeaderAccountMobile = () => {
   const setMiniCartOpen = useMiniCartStore((state) => state.setMiniCartOpen);
   const cartItems = useMiniCartStore((state) => state.cartItems);
   const cartItemCount = cartItems?.length ?? 0;
+  const [showSubmenu, setShowSubmenu] = useState(false);
+  const accountMenuRef = useRef(null);
 
   // Extract user data
   const user = session?.user || {};
-  const { name = '', role = '', avatar } = user;
+  const { name = '', avatar } = user;
   const userInitials = getInitials(name);
   const avatarSrc = avatar;
   const isLoggedIn = !!session;
-  const isAdmin = role === 'super_admin';
-  const accountLink = isAdmin ? '/dashboard/admin' : '/dashboard/customer';
+
+  useEffect(() => {
+    if (!showSubmenu) return undefined;
+
+    const handlePointerDown = (event) => {
+      if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
+        setShowSubmenu(false);
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setShowSubmenu(false);
+      }
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showSubmenu]);
 
   const handleShowCart = () => {
     setMiniCartOpen(!isMiniCartOpen);
   };
+
   return (
-    <div>
+    <div className="relative" ref={accountMenuRef}>
       <div className="flex gap-2">
         <ThemeToggle className="border border-border bg-background text-foreground focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background" />
         <button
@@ -330,22 +355,18 @@ const HeaderAccountMobile = () => {
             </Badge>
           )}
         </button>
-        {isLoggedIn && avatarSrc ? (
-          <Link
-            href={accountLink}
-            aria-label="Open account"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        {isLoggedIn ? (
+          <button
+            type="button"
+            aria-label="Open account menu"
+            aria-expanded={showSubmenu}
+            onClick={() => setShowSubmenu((isOpen) => !isOpen)}
+            className={`flex h-11 w-11 items-center justify-center rounded-full border border-border ${
+              avatarSrc ? 'bg-background overflow-hidden' : 'bg-weelp-sage-deep text-white font-semibold'
+            } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background`}
           >
-            <img src={avatarSrc} alt={name || 'user'} className="h-full w-full object-cover" />
-          </Link>
-        ) : isLoggedIn ? (
-          <Link
-            href={accountLink}
-            aria-label="Open account"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-weelp-sage-deep text-white font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          >
-            {userInitials}
-          </Link>
+            {avatarSrc ? <img src={avatarSrc} alt={name || 'user'} className="h-full w-full object-cover" /> : userInitials}
+          </button>
         ) : (
           <Link
             href="/user/login"
@@ -356,6 +377,7 @@ const HeaderAccountMobile = () => {
           </Link>
         )}
       </div>
+      {showSubmenu && <SubmenuAccount showSubmenu={showSubmenu} setShowSubmenu={setShowSubmenu} />}
     </div>
   );
 };
