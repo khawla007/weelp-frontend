@@ -1,11 +1,18 @@
 import { fireEvent, render } from '@testing-library/react';
 import path from 'path';
+import { getTransferFeaturedReviews } from '@/lib/services/reviews';
 
 const srcPath = (...segments) => path.join(process.cwd(), 'src', ...segments);
+const mockUseSWR = jest.fn();
 const mockComponent = (testId) =>
   function ComponentMock() {
     return <div data-testid={testId} />;
   };
+
+jest.mock('swr', () => ({
+  __esModule: true,
+  default: (...args) => mockUseSWR(...args),
+}));
 
 jest.doMock(srcPath('app/components/Pages/FRONT_END/transfer/TransferSearchForm.jsx'), () => ({
   __esModule: true,
@@ -25,7 +32,9 @@ jest.doMock(srcPath('app/components/Pages/FRONT_END/transfer/TransferResultsDrop
 
 jest.doMock(srcPath('app/components/sliders/ReviewSlider.jsx'), () => ({
   __esModule: true,
-  default: mockComponent('review-slider'),
+  default: function ReviewSliderMock({ reviews = [] }) {
+    return <div data-testid="review-slider">{reviews.map((review) => review.id).join(',')}</div>;
+  },
 }));
 
 jest.mock('swiper/react', () => ({
@@ -65,6 +74,11 @@ jest.doMock(
 );
 
 describe('TransfersPage', () => {
+  beforeEach(() => {
+    mockUseSWR.mockReset();
+    mockUseSWR.mockReturnValue({ data: [] });
+  });
+
   it('renders the shared animated globe in the desktop background slot', () => {
     const TransfersPage = require('../page').default;
     const { container, getByText, getByTestId } = render(<TransfersPage />);
@@ -113,5 +127,28 @@ describe('TransfersPage', () => {
       'md:-translate-x-1/2',
     );
     expect(getByTestId('transfer-results-dropdown')).toBeInTheDocument();
+  });
+
+  it('hides the complete featured review block when there are no transfer reviews', () => {
+    const TransfersPage = require('../page').default;
+    const { queryByRole, queryByTestId, getByTestId } = render(<TransfersPage />);
+
+    expect(queryByRole('heading', { name: 'Featured Reviews' })).not.toBeInTheDocument();
+    expect(queryByTestId('review-slider')).not.toBeInTheDocument();
+    expect(getByTestId('faq-accordion')).toBeInTheDocument();
+    expect(mockUseSWR).toHaveBeenCalledWith('transfer-featured-reviews', getTransferFeaturedReviews, {
+      revalidateOnFocus: false,
+    });
+  });
+
+  it('shows the heading and passes populated transfer reviews to the slider', () => {
+    mockUseSWR.mockReturnValue({
+      data: [{ id: 17, review_text: 'Easy airport pickup.' }],
+    });
+    const TransfersPage = require('../page').default;
+    const { getByRole, getByTestId } = render(<TransfersPage />);
+
+    expect(getByRole('heading', { name: 'Featured Reviews' })).toBeInTheDocument();
+    expect(getByTestId('review-slider')).toHaveTextContent('17');
   });
 });

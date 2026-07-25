@@ -13,7 +13,7 @@ function Accordion({ items }) {
 
   return (
     <div className="accordion">
-      {!pathName === '/booking' && <h2 className="text-lg md:text-2xl lg:text-[28px] font-extrabold tracking-[-0.04em] text-[var(--weelp-home-ink)] py-6">FAQs</h2>}
+      {pathName !== '/booking' ? <h2 className="text-lg md:text-2xl lg:text-[28px] font-extrabold tracking-[-0.04em] text-[var(--weelp-home-ink)] py-6">FAQs</h2> : null}
 
       {items.map((item, index) => (
         <div key={index} className="mb-3 md:mb-4 border border-[var(--weelp-home-border)] bg-background rounded-2xl shadow-sm">

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import useSWR from 'swr';
 import Accordion from '@/app/components/Faq';
 import TransferSearchForm from '@/app/components/Pages/FRONT_END/transfer/TransferSearchForm';
 import TransferResultsDropdown from '@/app/components/Pages/FRONT_END/transfer/TransferResultsDropdown';
@@ -8,6 +9,7 @@ import ReviewSlider from '@/app/components/sliders/ReviewSlider';
 import AnimatedGlobe from '@/app/components/ui/AnimatedGlobe';
 import Reveal from '@/app/components/ui/Reveal';
 import { faqItems } from '@/app/Data/ShopData';
+import { getTransferFeaturedReviews } from '@/lib/services/reviews';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 
 const TransfersPage = () => {
@@ -17,6 +19,10 @@ const TransfersPage = () => {
   const [meta, setMeta] = useState(null);
   const addItem = useMiniCartStore((s) => s.addItem);
   const setMiniCartOpen = useMiniCartStore((s) => s.setMiniCartOpen);
+  const { data: featuredReviews = [] } = useSWR('transfer-featured-reviews', getTransferFeaturedReviews, {
+    revalidateOnFocus: false,
+  });
+  const hasFeaturedReviews = featuredReviews.length > 0;
 
   const handleSelect = (transfer, extras = {}) => {
     const originName = transfer?.origin_name ?? transfer?.route?.origin?.name ?? null;
@@ -113,19 +119,22 @@ const TransfersPage = () => {
         </div>
       </section>
 
-      <Reveal as="section" initialHidden className="relative">
-        <div className="container-page productSlider space-y-8 pb-10 md:pb-16 lg:pb-24">
-          <Reveal as="h2" variant="lift" className="text-3xl font-semibold text-foreground">
-            Featured Review
+      <div className="container-page productSlider space-y-8 pb-10 md:pb-16 lg:pb-24">
+        {hasFeaturedReviews ? (
+          <Reveal as="section" initialHidden className="relative space-y-8">
+            <Reveal as="h2" variant="lift" className="text-3xl font-semibold text-foreground">
+              Featured Reviews
+            </Reveal>
+            <Reveal variant="lift" delay={120}>
+              <ReviewSlider reviews={featuredReviews} />
+            </Reveal>
           </Reveal>
-          <Reveal variant="lift" delay={120}>
-            <ReviewSlider />
-          </Reveal>
-          <Reveal variant="lift" delay={200}>
-            <Accordion items={faqItems} />
-          </Reveal>
-        </div>
-      </Reveal>
+        ) : null}
+
+        <Reveal as="section" initialHidden variant="lift" delay={hasFeaturedReviews ? 200 : 0}>
+          <Accordion items={faqItems} />
+        </Reveal>
+      </div>
     </>
   );
 };

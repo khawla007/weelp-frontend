@@ -61,8 +61,9 @@ The seeder will:
 - Mark a small subset as featured so `/transfers` has carousel content.
 - Store transfer name and slug snapshots.
 - Use deterministic timestamps and stable review text.
-- Use `updateOrCreate` with a stable transfer/user/text identity so rerunning
-  the seeder does not create duplicates.
+- Use `firstOrCreate` with a stable transfer/user/text identity so rerunning
+  the seeder does not create duplicates and an existing matching customer
+  review is never mutated.
 - Avoid truncating the shared `reviews` table or deleting activity, package,
   or itinerary reviews.
 

@@ -38,6 +38,27 @@ export async function getFeaturedReviews(city) {
 }
 
 /**
+ * Get featured approved transfer reviews.
+ * Used on: Transfers page featured review slider.
+ * @returns {Promise<any[]>} Transfer reviews or an empty array
+ */
+export async function getTransferFeaturedReviews() {
+  try {
+    const response = await publicApi.get('/api/reviews/featured-reviews?item_type=transfer', {
+      headers: { Accept: 'application/json' },
+    });
+
+    if (response?.data?.success !== true || !Array.isArray(response.data.data)) {
+      return [];
+    }
+
+    return response.data.data;
+  } catch (error) {
+    return [];
+  }
+}
+
+/**
  * Get All Reviews Admin
  * @param {string} [search] - Optional search query
  * @returns {Promise<any[]>} - Array of reviews or empty array on error
