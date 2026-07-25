@@ -123,7 +123,7 @@ export default function UserLayout({ children }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <div className="sticky top-0 z-[90] lg:contents">
+      <div className="sticky top-0 z-[96] lg:contents">
         <Header />
       </div>
       <div className="flex flex-1 min-w-0 flex-col bg-muted/40 dark:bg-background">

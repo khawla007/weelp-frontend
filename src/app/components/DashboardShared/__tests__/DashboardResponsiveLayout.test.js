@@ -4,6 +4,15 @@ import { join } from 'node:path';
 const readSource = (path) => readFileSync(join(process.cwd(), path), 'utf8');
 
 describe('dashboard mobile overflow contracts', () => {
+  it('keeps the customer header dropdown above the mobile welcome bar and below the sidebar', () => {
+    const layoutSource = readSource('src/app/(dashboard)/dashboard/customer/layout.js');
+    const sidebarSource = readSource('src/app/components/Layout/DashboardSidebar.jsx');
+
+    expect(layoutSource).toContain('className="sticky top-0 z-[96] lg:contents"');
+    expect(layoutSource).toContain('className="fixed inset-x-0 z-[95]');
+    expect(sidebarSource).toContain('fixed bottom-0 left-0 z-[100]');
+  });
+
   it('makes the admin shell and header shrink beside the desktop sidebar', () => {
     const layoutSource = readSource('src/app/(dashboard)/dashboard/admin/layout.js');
     const headerSource = readSource('src/app/components/Pages/DASHBOARD/admin/header.jsx');
