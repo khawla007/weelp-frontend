@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 import throttle from 'lodash/throttle';
-import { OverViewPanel, WhatIncludedPanel, ReviewPanel, FaqPanel, normalizeInclusionItems } from './TabSection__modules';
+import { OverViewPanel, WhatIncludedPanel, ReviewPanel, FaqPanel, normalizeFaqItems, normalizeInclusionItems } from './TabSection__modules';
 import SimilarExperiences from './SimilarExperiences';
 import ProductSidebar from './ProductSidebar';
 import ItineraryPanel from './ItineraryPanel';
@@ -67,6 +67,7 @@ const SingleProductTabSection = ({
   const isActivityProduct = productType === 'activity';
   const usesDynamicInclusions = productType === 'activity' || productType === 'itinerary';
   const isScheduleType = productType === 'itinerary' || productType === 'package';
+  const firstSectionSpacing = productType === 'itinerary' ? 'pt-8 md:pt-[70px]' : 'pt-[70px]';
   const scheduleCount = productData?.schedules?.length || 0;
   const inclusionItems = usesDynamicInclusions ? productData?.inclusions_exclusions || [] : undefined;
   const hasInclusionRows = usesDynamicInclusions ? normalizeInclusionItems(inclusionItems).length > 0 : true;
@@ -94,6 +95,7 @@ const SingleProductTabSection = ({
   // Check if reviews exist
   const hasReviews = productData?.review_summary?.total_reviews > 0;
   const faqs = productData?.faqs || [];
+  const hasFaqs = normalizeFaqItems(faqs).length > 0;
 
   // Build tabs
   const tabs = useMemo(
@@ -101,9 +103,9 @@ const SingleProductTabSection = ({
       { id: 'tab_1', label: TAB_1_LABELS[productType] },
       ...(hasInclusionRows ? [{ id: 'tab_2', label: "What's Included" }] : []),
       ...(hasReviews ? [{ id: 'tab_3', label: 'Reviews' }] : []),
-      { id: 'tab_4', label: 'FAQs' },
+      ...(hasFaqs ? [{ id: 'tab_4', label: 'FAQs' }] : []),
     ],
-    [productType, hasInclusionRows, hasReviews],
+    [productType, hasInclusionRows, hasReviews, hasFaqs],
   );
 
   useEffect(() => {
@@ -236,7 +238,7 @@ const SingleProductTabSection = ({
             <div className="xl:pr-[15px]">
               {/* Tab 1: varies by productType */}
               <Reveal variant="lift">
-                <div id="tab_1" ref={(el) => (sectionRefs.current['tab_1'] = el)} className="pt-[70px] lg:mb-[35px]">
+                <div id="tab_1" ref={(el) => (sectionRefs.current['tab_1'] = el)} className={`${firstSectionSpacing} lg:mb-[35px]`}>
                   {productType === 'activity' ? (
                     <OverViewPanel description={productData?.description} />
                   ) : (
@@ -266,11 +268,13 @@ const SingleProductTabSection = ({
               )}
 
               {/* Tab 4: FAQs */}
-              <Reveal variant="lift">
-                <div id="tab_4" ref={(el) => (sectionRefs.current['tab_4'] = el)} className="pt-[35px] lg:mb-[35px]">
-                  <FaqPanel faqs={faqs} />
-                </div>
-              </Reveal>
+              {hasFaqs ? (
+                <Reveal variant="lift">
+                  <div id="tab_4" ref={(el) => (sectionRefs.current['tab_4'] = el)} className="pt-[35px] lg:mb-[35px]">
+                    <FaqPanel faqs={faqs} />
+                  </div>
+                </Reveal>
+              ) : null}
 
               {/* Similar Experiences */}
               <Reveal variant="lift" className="hidden md:block lg:mb-[70px]">

@@ -43,6 +43,14 @@ export const normalizeInclusionItems = (items) =>
     })
     .filter((item) => item.title);
 
+export const normalizeFaqItems = (faqs) =>
+  (Array.isArray(faqs) ? faqs : [])
+    .map((faq) => ({
+      question: faq?.question || faq?.title,
+      answer: faq?.answer || faq?.content,
+    }))
+    .filter((faq) => faq.question || faq.answer);
+
 // What's Included
 export const WhatIncludedPanel = ({ items, useStaticFallback = false }) => {
   const [expanded, setExpanded] = useState(false);
@@ -109,12 +117,11 @@ export const ReviewPanel = ({ productData, productType, activitySlug, itineraryS
 
 // FAQ Panel
 export const FaqPanel = ({ faqs = [] }) => {
-  const dynamicFaqs = (Array.isArray(faqs) ? faqs : [])
-    .map((faq) => ({
-      question: faq?.question || faq?.title,
-      answer: faq?.answer || faq?.content,
-    }))
-    .filter((faq) => faq.question || faq.answer);
+  const dynamicFaqs = normalizeFaqItems(faqs);
+
+  if (dynamicFaqs.length === 0) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col border-t border-border pt-6">

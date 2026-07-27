@@ -95,10 +95,10 @@ describe('FaqPanel', () => {
     expect(screen.queryByText('Pick-up and drop off at your selected hotel/location by air-conditioned vehicle')).not.toBeInTheDocument();
   });
 
-  it('does not render static FAQs when backend FAQs are empty', () => {
+  it('does not render the FAQ section when backend FAQs are empty', () => {
     render(<FaqPanel faqs={[]} />);
 
-    expect(screen.getByRole('heading', { name: 'FAQs' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'FAQs' })).not.toBeInTheDocument();
     expect(screen.queryByText('Pick-up and drop off at your selected hotel/location by air-conditioned vehicle')).not.toBeInTheDocument();
     expect(screen.queryByText('Tipping')).not.toBeInTheDocument();
   });

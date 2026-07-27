@@ -183,6 +183,64 @@ describe('SingleProductTabSection activity inclusions', () => {
     expect(screen.queryByText('Pick-up and drop off at your selected hotel/location by air-conditioned vehicle')).not.toBeInTheDocument();
   });
 
+  it('hides the FAQ tab and section when the itinerary has no FAQs', () => {
+    render(
+      <SingleProductTabSection
+        productType="itinerary"
+        productId={2}
+        productData={{
+          schedules: [{ day: 1, title: 'Day 1', activities: [], transfers: [] }],
+          inclusions_exclusions: [],
+          review_summary: { total_reviews: 0 },
+          faqs: [],
+        }}
+      />,
+    );
+
+    expect(screen.queryByRole('button', { name: 'FAQs' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'FAQs' })).not.toBeInTheDocument();
+    expect(document.getElementById('tab_4')).not.toBeInTheDocument();
+  });
+
+  it('uses compact mobile spacing before itinerary details without changing larger breakpoints', () => {
+    const { unmount } = render(
+      <SingleProductTabSection
+        productType="itinerary"
+        productId={2}
+        productData={{
+          schedules: [{ day: 1, title: 'Day 1', activities: [], transfers: [] }],
+          inclusions_exclusions: [],
+          review_summary: { total_reviews: 0 },
+          faqs: [],
+        }}
+      />,
+    );
+
+    const itinerarySection = document.getElementById('tab_1');
+    expect(itinerarySection).toHaveClass('pt-8', 'md:pt-[70px]');
+    expect(itinerarySection).not.toHaveClass('pt-[70px]');
+
+    unmount();
+
+    render(
+      <SingleProductTabSection
+        productType="activity"
+        productId={1}
+        productData={{
+          description: 'Activity description',
+          inclusions_exclusions: [],
+          review_summary: { total_reviews: 0 },
+          faqs: [],
+        }}
+      />,
+    );
+
+    const activitySection = document.getElementById('tab_1');
+    expect(activitySection).toHaveClass('pt-[70px]');
+    expect(activitySection).not.toHaveClass('pt-8');
+    expect(activitySection).not.toHaveClass('md:pt-[70px]');
+  });
+
   it("observes the What's Included section when rows are added after initial render", () => {
     const { rerender } = render(
       <SingleProductTabSection

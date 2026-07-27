@@ -5,6 +5,7 @@ jest.mock('../TabSection__modules', () => ({
   WhatIncludedPanel: () => <div />,
   ReviewPanel: () => <div />,
   FaqPanel: () => <div />,
+  normalizeFaqItems: () => [],
   normalizeInclusionItems: () => [],
 }));
 
