@@ -13,6 +13,7 @@
 ### Task 1: Lock the section ownership and spacing into tests
 
 **Files:**
+
 - Modify: `src/app/(frontend)/transfers/__tests__/page.test.jsx:134-155`
 
 - [ ] **Step 1: Add failing assertions for the FAQ-only state**
@@ -25,9 +26,7 @@ const { container, queryByRole, queryByTestId, getByTestId } = render(<Transfers
 const faqSection = getByTestId('faq-accordion').closest('section');
 
 expect(faqSection).toHaveClass('container-page', 'pb-10', 'md:pb-16', 'lg:pb-24');
-expect([...faqSection.classList]).not.toEqual(
-  expect.arrayContaining([expect.stringMatching(/^(-?mt-)|:-?mt-/)]),
-);
+expect([...faqSection.classList]).not.toEqual(expect.arrayContaining([expect.stringMatching(/^(-?mt-)|:-?mt-/)]));
 expect(faqSection.parentElement).toBe(container);
 ```
 
@@ -42,19 +41,11 @@ const reviewHeading = getByRole('heading', { name: 'Featured Reviews' });
 const reviewSection = reviewHeading.closest('section');
 const faqSection = getByTestId('faq-accordion').closest('section');
 
-expect(reviewSection).toHaveClass(
-  'container-page',
-  'productSlider',
-  'pb-10',
-  'md:pb-16',
-  'lg:pb-24',
-);
+expect(reviewSection).toHaveClass('container-page', 'productSlider', 'pb-10', 'md:pb-16', 'lg:pb-24');
 expect(reviewSection).toHaveClass('relative');
 expect(reviewSection).not.toHaveClass('space-y-8');
 expect(faqSection).toHaveClass('container-page', 'pb-10', 'md:pb-16', 'lg:pb-24');
-expect([...faqSection.classList]).not.toEqual(
-  expect.arrayContaining([expect.stringMatching(/^(-?mt-)|:-?mt-/)]),
-);
+expect([...faqSection.classList]).not.toEqual(expect.arrayContaining([expect.stringMatching(/^(-?mt-)|:-?mt-/)]));
 expect(reviewSection.parentElement).toBe(container);
 expect(faqSection.parentElement).toBe(container);
 expect(reviewSection.nextElementSibling).toBe(faqSection);
@@ -74,6 +65,7 @@ still belong to the shared parent `div`, not the two semantic sections.
 ### Task 2: Move layout ownership to the semantic sections
 
 **Files:**
+
 - Modify: `src/app/(frontend)/transfers/page.js:122-137`
 
 - [ ] **Step 1: Load the required Next.js implementation guidance**
@@ -89,33 +81,22 @@ Before modifying the page, invoke and follow:
 Replace the current wrapper block with:
 
 ```jsx
-{hasFeaturedReviews ? (
-  <Reveal
-    as="section"
-    initialHidden
-    className="container-page productSlider relative pb-10 md:pb-16 lg:pb-24"
-  >
-    <Reveal as="h2" variant="lift" className="text-2xl font-semibold text-foreground sm:text-3xl">
-      Featured Reviews
+<>
+  {hasFeaturedReviews ? (
+    <Reveal as="section" initialHidden className="container-page productSlider relative pb-10 md:pb-16 lg:pb-24">
+      <Reveal as="h2" variant="lift" className="text-2xl font-semibold text-foreground sm:text-3xl">
+        Featured Reviews
+      </Reveal>
+      <Reveal variant="lift" delay={120}>
+        <ReviewSlider reviews={featuredReviews} />
+      </Reveal>
     </Reveal>
-    <Reveal variant="lift" delay={120}>
-      <ReviewSlider reviews={featuredReviews} />
-    </Reveal>
-  </Reveal>
-) : null}
+  ) : null}
 
-<Reveal
-  as="section"
-  initialHidden
-  variant="lift"
-  delay={hasFeaturedReviews ? 200 : 0}
-  className="container-page pb-10 md:pb-16 lg:pb-24"
->
-  <Accordion
-    items={faqItems}
-    headingClassName="py-6 text-2xl font-semibold text-[var(--weelp-home-ink)] sm:text-3xl"
-  />
-</Reveal>
+  <Reveal as="section" initialHidden variant="lift" delay={hasFeaturedReviews ? 200 : 0} className="container-page pb-10 md:pb-16 lg:pb-24">
+    <Accordion items={faqItems} headingClassName="py-6 text-2xl font-semibold text-[var(--weelp-home-ink)] sm:text-3xl" />
+  </Reveal>
+</>
 ```
 
 Do not add `mt-*`, `space-y-*`, or another wrapper around both sections.
@@ -135,6 +116,7 @@ Expected: PASS.
 ### Task 3: Validate, review, and commit
 
 **Files:**
+
 - Verify: `src/app/(frontend)/transfers/page.js`
 - Verify: `src/app/(frontend)/transfers/__tests__/page.test.jsx`
 
