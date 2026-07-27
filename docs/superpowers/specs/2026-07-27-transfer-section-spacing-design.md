@@ -60,3 +60,20 @@ containers, and no horizontal overflow.
 - Typography changes.
 - Slider behavior changes.
 - Backend or production changes.
+
+## Approved FAQ spacing follow-up
+
+The FAQ heading will keep 24px of bottom padding but no top padding. Its
+page-specific heading classes change from `py-6` to `pb-6`.
+
+The FAQ section will keep `container-page` but remove `pb-10 md:pb-16
+lg:pb-24`, leaving no section-owned bottom padding at any viewport. Featured
+Reviews spacing remains unchanged.
+
+Tests and visible-browser checks will verify:
+
+- The FAQ heading computes to `padding-top: 0px` and `padding-bottom: 24px`.
+- The FAQ section computes to `padding-bottom: 0px`.
+- The FAQ section still has no top margin.
+- Mobile, tablet, and desktop layouts remain aligned without horizontal
+  overflow.
