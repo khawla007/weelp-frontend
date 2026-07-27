@@ -10,7 +10,7 @@ const BannerSection = () => {
 
   return (
     <>
-      <div className={`weelp-hero-rise bg-weelp-sage-deep shop_banner ${styles.shop_banner} `}>
+      <div className={`weelp-hero-rise relative z-10 bg-weelp-sage-deep shop_banner ${styles.shop_banner} `}>
         <BookingForm variant="searchPage" />
       </div>
       {location && (
