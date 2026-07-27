@@ -1,5 +1,5 @@
 import AnimatedGlobe from '@/app/components/ui/AnimatedGlobe';
-import BookingForm from '@/app/components/Form/Form';
+import { CompactActivityItinerarySearch } from '../shared/ActivityItinerarySearch';
 import React from 'react';
 const BannerSection = () => {
   return (
@@ -29,7 +29,7 @@ const BannerSection = () => {
           </span>
         </p>
         <div className="weelp-hero-ui-rise mt-2 w-full [&_.bannerForm]:pt-0 [&_.bannerForm]:sm:pt-0" style={{ '--weelp-motion-delay': '360ms' }}>
-          <BookingForm />
+          <CompactActivityItinerarySearch />
         </div>
       </div>
     </section>

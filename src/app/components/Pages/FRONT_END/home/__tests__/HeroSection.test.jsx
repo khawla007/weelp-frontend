@@ -2,6 +2,10 @@ import { render } from '@testing-library/react';
 
 import HeroSection from '../HeroSection';
 
+jest.mock('../../shared/ActivityItinerarySearch', () => ({
+  HomeActivityItinerarySearch: () => <div data-testid="home-discovery-search" />,
+}));
+
 describe('HeroSection', () => {
   it('uses tighter mobile spacing while preserving the desktop hero hierarchy', () => {
     const { container } = render(<HeroSection />);
@@ -11,6 +15,12 @@ describe('HeroSection', () => {
 
     expect(hero).toHaveClass('mb-10', 'sm:mb-16', 'md:h-[100svh]', 'lg:mb-24');
     expect(content).toHaveClass('pt-[135px]', 'pb-10', 'sm:pb-16', 'md:h-full', 'md:pb-20', 'lg:pb-32');
+  });
+
+  it('renders the shared home discovery presentation', () => {
+    const { getByTestId } = render(<HeroSection />);
+
+    expect(getByTestId('home-discovery-search')).toBeInTheDocument();
   });
 
   it('places a 10 percent white overlay over the background image', () => {

@@ -11,7 +11,7 @@ const fetchCitiesRegions = async () => {
 
 /**
  * Fetch the shared cities/regions list. SWR dedupes across consumers so
- * Form, FilterBar, and ToursFilterBar share one in-flight request and cache.
+ * Search forms share one in-flight request and cache.
  * @returns {{ data: Array, loading: boolean }}
  */
 export function useCitiesRegions() {

@@ -12,6 +12,7 @@ import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCar
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { formatDiscoveryDate, parseDiscoverySearchParams } from '@/app/components/Pages/FRONT_END/shared/discoverySearchParams';
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -21,6 +22,8 @@ const CATEGORIES_API = '/api/public/taxonomies/categories';
 
 export const SearchPage = () => {
   const searchParams = useSearchParams();
+  const searchQuery = searchParams.toString();
+  const parsedSearch = useMemo(() => parseDiscoverySearchParams(searchQuery), [searchQuery]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -35,27 +38,41 @@ export const SearchPage = () => {
   const [sortby, setSortby] = useState('');
   const [categorySearch, setCategorySearch] = useState('');
   const [locationSearch, setLocationSearch] = useState('');
+  const fetchProductsRef = useRef(null);
+  const productRequestIdRef = useRef(0);
 
-  // Extract values from query params
   useEffect(() => {
-    const defaultLocation = searchParams.get('location') || '';
+    productRequestIdRef.current += 1;
+    if (fetchProductsRef.current) clearTimeout(fetchProductsRef.current);
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setStartDate(searchParams.get('start_date') || '2025-03-26');
-    setEndDate(searchParams.get('end_date') || '2025-03-28');
-    setQuantity(parseInt(searchParams.get('quantity')) || 1);
+    setSelectedLocation(null);
+    setProducts([]);
+    setIsLoading(false);
+    setStartDate(formatDiscoveryDate(parsedSearch.dateRange.from) || '');
+    setEndDate(formatDiscoveryDate(parsedSearch.dateRange.to) || '');
+    setQuantity(parsedSearch.guests.adults);
+  }, [parsedSearch]);
 
+  useEffect(() => {
+    let active = true;
     axios
       .get(LOCATIONS_API)
       .then((res) => {
-        const allLocations = res.data?.data ?? [];
-        setLocations(allLocations);
-
-        // Set the default location from query params
-        const foundLocation = allLocations.find((loc) => loc.name.toLowerCase() === defaultLocation.toLowerCase());
-        setSelectedLocation(foundLocation || allLocations[0]);
+        if (active) setLocations(res.data?.data ?? []);
       })
       .catch((err) => console.log('Error fetching locations:', err));
-  }, [searchParams]);
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    const foundLocation = locations.find((location) => location.slug?.toLowerCase() === parsedSearch.location || location.name?.toLowerCase() === parsedSearch.location);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSelectedLocation(foundLocation || null);
+    if (!foundLocation) setProducts([]);
+  }, [locations, parsedSearch.location]);
 
   useEffect(() => {
     axios
@@ -64,17 +81,18 @@ export const SearchPage = () => {
       .catch((err) => console.log('Error fetching categories:', err));
   }, []);
 
-  const fetchProductsRef = useRef(null);
   const fetchProducts = useCallback(() => {
     if (!selectedLocation || !startDate || !endDate) return;
 
     if (fetchProductsRef.current) {
       clearTimeout(fetchProductsRef.current);
     }
+    const requestId = productRequestIdRef.current + 1;
+    productRequestIdRef.current = requestId;
     fetchProductsRef.current = setTimeout(() => {
       setIsLoading(true);
       const queryParams = new URLSearchParams({
-        location: String(selectedLocation.name).toLowerCase(),
+        location: String(selectedLocation.slug || selectedLocation.name).toLowerCase(),
         start_date: startDate,
         end_date: endDate,
         quantity: quantity.toString(),
@@ -91,21 +109,27 @@ export const SearchPage = () => {
       axios
         .get(`${PRODUCTS_API}?${queryParams.toString()}`)
         .then((res) => {
+          if (productRequestIdRef.current !== requestId) return;
           setProducts(res.status === 200 && Array.isArray(res.data?.data) ? res.data.data : []);
         })
         .catch((err) => console.log('Error fetching products:', err))
-        .finally(() => setIsLoading(false));
+        .finally(() => {
+          if (productRequestIdRef.current === requestId) setIsLoading(false);
+        });
     }, 500);
   }, [priceRange, selectedCategories, ratingFilter, selectedLocation, startDate, endDate, quantity, sortby]);
 
   useEffect(() => {
     if (selectedLocation) {
       fetchProducts();
+    } else {
+      productRequestIdRef.current += 1;
     }
     return () => {
       if (fetchProductsRef.current) {
         clearTimeout(fetchProductsRef.current);
       }
+      productRequestIdRef.current += 1;
     };
   }, [fetchProducts]);
 

@@ -1,13 +1,12 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { useSearchParams } from 'next/navigation';
 
 jest.mock('next/navigation', () => ({
   useSearchParams: jest.fn(),
 }));
 
-jest.mock('@/app/components/Form/Form', () => ({
-  __esModule: true,
-  default: () => <div data-testid="booking-form" />,
+jest.mock('@/app/components/Pages/FRONT_END/shared/ActivityItinerarySearch', () => ({
+  ResultsActivityItinerarySearch: ({ initialQuery }) => <div data-testid="results-discovery-search" data-initial-query={initialQuery} />,
 }));
 
 describe('Search BannerSection', () => {
@@ -20,5 +19,6 @@ describe('Search BannerSection', () => {
 
     expect(getByText(/You Searched for/)).toBeInTheDocument();
     expect(searchPanel).toHaveClass('relative', 'z-10');
+    expect(screen.getByTestId('results-discovery-search')).toHaveAttribute('data-initial-query', 'location=dubai');
   });
 });

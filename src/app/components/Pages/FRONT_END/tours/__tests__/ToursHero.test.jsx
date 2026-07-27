@@ -2,20 +2,18 @@ import { render } from '@testing-library/react';
 
 import ToursHero from '../ToursHero';
 
-jest.mock(
-  '../ToursFilterBar',
-  () =>
-    function ToursFilterBarMock() {
-      return <div data-testid="tours-filter-bar" />;
-    },
-);
+jest.mock('../../shared/ActivityItinerarySearch', () => ({
+  CompactActivityItinerarySearch: function CompactActivityItinerarySearchMock() {
+    return <div data-testid="compact-discovery-search" />;
+  },
+}));
 
 describe('ToursHero', () => {
   it('renders heading, filter bar, Memphis decor, and the desktop globe', () => {
     const { container, getByText, getByTestId } = render(<ToursHero />);
 
     expect(getByText('Plan your Holiday.')).toBeInTheDocument();
-    expect(getByTestId('tours-filter-bar')).toBeInTheDocument();
+    expect(getByTestId('compact-discovery-search')).toBeInTheDocument();
 
     const section = container.querySelector('section');
     expect(section).toHaveClass('overflow-visible', 'bg-surface-tint');

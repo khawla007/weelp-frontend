@@ -3,10 +3,10 @@ import path from 'path';
 
 const srcPath = (...segments) => path.join(process.cwd(), 'src', ...segments);
 
-jest.doMock(srcPath('app/components/Form/Form.jsx'), () => ({
+jest.doMock(srcPath('app/components/Pages/FRONT_END/shared/ActivityItinerarySearch.jsx'), () => ({
   __esModule: true,
-  default: function BookingFormMock() {
-    return <div data-testid="booking-form" />;
+  CompactActivityItinerarySearch: function CompactActivityItinerarySearchMock() {
+    return <div data-testid="compact-discovery-search" />;
   },
 }));
 
@@ -16,13 +16,13 @@ describe('BannerSection', () => {
     const { container, getByText, getByTestId } = render(<BannerSection />);
 
     expect(getByText('Plan your Holiday.')).toBeInTheDocument();
-    expect(getByTestId('booking-form')).toBeInTheDocument();
+    expect(getByTestId('compact-discovery-search')).toBeInTheDocument();
 
     const hero = container.querySelector('section');
     const background = container.querySelector('[data-holiday-globe-background]');
     const stage = container.querySelector('[data-animated-globe]');
     const shell = container.querySelector('[data-personalised-cobe-shell]');
-    const formSlot = getByTestId('booking-form').parentElement;
+    const formSlot = getByTestId('compact-discovery-search').parentElement;
 
     expect(hero).toHaveClass('relative', 'min-h-[320px]', 'sm:min-h-[420px]', 'h-full', 'flex', 'justify-center', 'items-center', 'bg-surface-tint', 'p-6');
     expect(hero).toHaveClass('mb-10', 'sm:mb-16', 'lg:mb-24');

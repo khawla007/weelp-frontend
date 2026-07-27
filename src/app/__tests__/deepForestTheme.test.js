@@ -497,7 +497,7 @@ describe('Deep Forest semantic theme', () => {
   });
 
   it('keeps readable copy and interactive accents on the sage-text role', () => {
-    const controls = readFileSync(join(process.cwd(), 'src/app/components/Pages/FRONT_END/home/FilterBar.jsx'), 'utf8');
+    const controls = readFileSync(join(process.cwd(), 'src/app/components/Pages/FRONT_END/shared/ActivityItinerarySearch.jsx'), 'utf8');
     const themeToggle = readFileSync(join(process.cwd(), 'src/components/ui/theme-toggle.jsx'), 'utf8');
 
     expect(controls).toContain('text-weelp-sage-text">Where to?</span>');

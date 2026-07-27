@@ -3,8 +3,8 @@
 import React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { usePathname } from 'next/navigation';
-import BookingForm from '../Form/Form';
 import { X } from 'lucide-react';
+import { ModalActivityItinerarySearch } from '../Pages/FRONT_END/shared/ActivityItinerarySearch';
 
 const ModalForm = ({ showForm, setShowForm, handleShowForm }) => {
   const contentRef = React.useRef(null);
@@ -108,8 +108,7 @@ const ModalForm = ({ showForm, setShowForm, handleShowForm }) => {
           <DialogPrimitive.Title className="sr-only">Search trips</DialogPrimitive.Title>
           <DialogPrimitive.Description className="sr-only">Choose a destination, travel dates, and guest count to search Weelp trips.</DialogPrimitive.Description>
 
-          <BookingForm
-            variant="modal"
+          <ModalActivityItinerarySearch
             isSearching={isSearching}
             onSearchStart={() => setIsSearching(true)}
             controlsSlot={

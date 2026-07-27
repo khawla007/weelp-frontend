@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { useSearchParams } from 'next/navigation';
-import BookingForm from '@/app/components/Form/Form';
+import { ResultsActivityItinerarySearch } from '@/app/components/Pages/FRONT_END/shared/ActivityItinerarySearch';
 import styles from './BannerSection.module.css';
 
 const BannerSection = () => {
@@ -11,7 +11,7 @@ const BannerSection = () => {
   return (
     <>
       <div className={`weelp-hero-rise relative z-10 bg-weelp-sage-deep shop_banner ${styles.shop_banner} `}>
-        <BookingForm variant="searchPage" />
+        <ResultsActivityItinerarySearch initialQuery={searchParams.toString()} />
       </div>
       {location && (
         <div className="flex items-center justify-center  bg-surface-tint h-full min-h-20 sm:min-h-36">

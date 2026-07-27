@@ -1,5 +1,5 @@
 import AnimatedGlobe from '@/app/components/ui/AnimatedGlobe';
-import ToursFilterBar from './ToursFilterBar';
+import { CompactActivityItinerarySearch } from '../shared/ActivityItinerarySearch';
 import ToursHeroDecor from './ToursHeroDecor';
 
 export default function ToursHero() {
@@ -31,7 +31,7 @@ export default function ToursHero() {
           </span>
         </p>
         <div className="weelp-hero-ui-rise mt-2 w-full" style={{ '--weelp-motion-delay': '360ms' }}>
-          <ToursFilterBar />
+          <CompactActivityItinerarySearch />
         </div>
       </div>
     </section>

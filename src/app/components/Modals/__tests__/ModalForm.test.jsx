@@ -3,8 +3,8 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import ModalForm from '../ModalForm';
 
-jest.mock('../../Form/Form', () => {
-  const BookingFormMock = ({ controlsSlot, isSearching, onSearchStart }) => (
+jest.mock('../../Pages/FRONT_END/shared/ActivityItinerarySearch', () => {
+  const ModalActivityItinerarySearchMock = ({ controlsSlot, isSearching, onSearchStart }) => (
     <form
       aria-label="Booking search form"
       onSubmit={(event) => {
@@ -21,8 +21,8 @@ jest.mock('../../Form/Form', () => {
       </button>
     </form>
   );
-  BookingFormMock.displayName = 'BookingFormMock';
-  return BookingFormMock;
+  ModalActivityItinerarySearchMock.displayName = 'ModalActivityItinerarySearchMock';
+  return { ModalActivityItinerarySearch: ModalActivityItinerarySearchMock };
 });
 
 const mockPathState = {
