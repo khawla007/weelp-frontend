@@ -17,7 +17,7 @@ export default async function ToursExperiencesPage() {
   return (
     <main>
       <ToursHero />
-      <BrowseDestinationsSection cities={cities} title="Trending Spots" subtitleMode="price" navigationPrefix="trending-spots" />
+      <BrowseDestinationsSection cities={cities} title="Trending Spots" subtitleMode="price" navigationPrefix="trending-spots" className="!pb-0" />
     </main>
   );
 }

@@ -33,6 +33,7 @@ describe('ToursExperiencesPage', () => {
       title: 'Trending Spots',
       subtitleMode: 'price',
       navigationPrefix: 'trending-spots',
+      className: '!pb-0',
     });
   });
 
