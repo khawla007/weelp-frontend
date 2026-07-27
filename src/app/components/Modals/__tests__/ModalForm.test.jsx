@@ -63,6 +63,7 @@ describe('ModalForm', () => {
     expect(screen.getByTestId('search-modal-panel')).toHaveAttribute('data-state', 'open');
     expect(screen.getByTestId('search-modal-panel').className).toEqual(expect.stringContaining('data-[state=open]:[--tw-enter-scale:0.98]'));
     expect(screen.getByTestId('search-modal-panel').className).toEqual(expect.stringContaining('data-[state=closed]:[--tw-exit-scale:0.98]'));
+    expect(screen.getByRole('button', { name: /close search/i }).className).not.toContain('hover:');
 
     await waitFor(() => {
       expect(dialog).toContainElement(document.activeElement);

@@ -118,7 +118,7 @@ const ModalForm = ({ showForm, setShowForm, handleShowForm }) => {
                   ref={closeButtonRef}
                   type="button"
                   aria-label="Close search"
-                  className="absolute -right-2.5 -top-2.5 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-destructive/20 bg-background text-destructive shadow-md shadow-foreground/10 transition-[background-color,color,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:bg-destructive/10 hover:text-destructive hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none"
+                  className="absolute -right-2.5 -top-2.5 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-destructive/20 bg-background text-destructive shadow-md shadow-foreground/10 transition-[background-color,color,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none"
                   onClick={handleShowForm}
                 >
                   <X size={14} strokeWidth={2.5} />
