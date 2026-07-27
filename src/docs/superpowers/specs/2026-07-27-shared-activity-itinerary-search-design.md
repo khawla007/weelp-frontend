@@ -18,11 +18,10 @@ This design covers the public activity-and-itinerary discovery panels used by:
 - The home hero
 - `/tours-experiences`
 - `/holiday`
-- `/booking`
 - The global header search modal
 - `/search`
 
-It does not cover blog search, creator search, transfer search, dashboard filters, or the booking controls on individual product pages.
+It does not cover blog search, creator search, transfer or taxi search (including `/booking`), dashboard filters, or the booking controls on individual product pages.
 
 ## Search contract
 
@@ -54,7 +53,7 @@ The existing home `FilterBar` behavior will become the shared foundation because
 The component will move from its home-specific folder into the shared public frontend area. Its state and event handling will remain centralized. Pages will select an explicit presentation component instead of maintaining separate search implementations:
 
 - A home pill presentation keeps the current home layout and “Search escapes” action.
-- A compact presentation serves `/tours-experiences`, `/holiday`, and `/booking`.
+- A compact presentation serves `/tours-experiences` and `/holiday`.
 - A search-page presentation adds the inline Search button.
 - A modal presentation adds the modal submit behavior and supports the existing close control.
 
@@ -125,6 +124,6 @@ Component tests will cover:
 - Location matching works after asynchronous city/region loading.
 - Preview calls use `/homesearch` parameters and stale responses remain ignored.
 
-Integration tests will confirm the home, tours, holiday, booking, modal, and search-page call sites use the shared component without changing unrelated searches.
+Integration tests will confirm the home, tours, holiday, modal, and search-page call sites use the shared component without changing unrelated searches.
 
 After type-check, lint, and targeted tests pass, a visible headed browser will verify the main flow from home and `/tours-experiences` into `/search`. The search page must display the same selected destination, dates, and guest total present in its URL. The in-scope routes will also be checked at 320px, 768px, and 1280px for layout, popover placement, focus behavior, and horizontal overflow.
