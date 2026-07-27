@@ -13,6 +13,7 @@
 ### Task 1: Add responsive itinerary first-section spacing
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/singleproduct/SingleProductTabSection.jsx:238-248`
 - Test: `src/app/components/Pages/FRONT_END/singleproduct/__tests__/SingleProductTabSectionInclusions.test.jsx`
 
