@@ -200,3 +200,138 @@ git push origin main
 
 Expected: the remote `main` branch receives the approved specification,
 implementation plan, and verified implementation commits.
+
+### Task 4: Remove FAQ top and section-bottom padding
+
+**Files:**
+
+- Modify: `src/app/(frontend)/transfers/__tests__/page.test.jsx:134-169`
+- Modify: `src/app/(frontend)/transfers/page.js:133-135`
+
+- [ ] **Step 1: Add failing FAQ spacing assertions**
+
+In both transfer-page review states, change the expected page-specific heading
+classes from `py-6` to `pb-6`. Assert that the FAQ section keeps only its
+container class and has no responsive bottom-padding utility:
+
+```jsx
+expect(getByTestId('faq-accordion')).toHaveAttribute('data-heading-class-name', 'pb-6 text-2xl font-semibold text-[var(--weelp-home-ink)] sm:text-3xl');
+expect(faqSection).toHaveClass('container-page');
+expect([...faqSection.classList]).not.toEqual(expect.arrayContaining([expect.stringMatching(/^(-?pb-)|:-?pb-/)]));
+```
+
+Keep the existing assertions for zero top-margin utilities, direct section
+ownership, review visibility, and sibling order.
+
+- [ ] **Step 2: Run the focused test and confirm it fails**
+
+Run:
+
+```bash
+npm run test:ci -- --runTestsByPath 'src/app/(frontend)/transfers/__tests__/page.test.jsx' --runInBand
+```
+
+Expected: FAIL because the page still passes `py-6` to the FAQ heading and
+still gives the FAQ section `pb-10 md:pb-16 lg:pb-24`.
+
+- [ ] **Step 3: Load the required Next.js implementation guidance**
+
+Before modifying the page, invoke and follow:
+
+- `next-best-practices`
+- `vercel-react-best-practices`
+- `vercel-composition-patterns`
+
+- [ ] **Step 4: Apply the minimal class changes**
+
+Update the FAQ section and accordion call to:
+
+```jsx
+<Reveal as="section" initialHidden variant="lift" delay={hasFeaturedReviews ? 200 : 0} className="container-page">
+  <Accordion items={faqItems} headingClassName="pb-6 text-2xl font-semibold text-[var(--weelp-home-ink)] sm:text-3xl" />
+</Reveal>
+```
+
+Do not change Featured Reviews classes, FAQ behavior, data fetching, or shared
+accordion defaults.
+
+- [ ] **Step 5: Run the focused test and confirm it passes**
+
+Run:
+
+```bash
+npm run test:ci -- --runTestsByPath 'src/app/(frontend)/transfers/__tests__/page.test.jsx' --runInBand
+```
+
+Expected: PASS.
+
+### Task 5: Validate, review, commit, and push the follow-up
+
+**Files:**
+
+- Verify: `src/app/(frontend)/transfers/page.js`
+- Verify: `src/app/(frontend)/transfers/__tests__/page.test.jsx`
+
+- [ ] **Step 1: Apply the post-change error-handling review**
+
+Invoke `error-handling-patterns` and confirm this class-only change does not
+introduce or alter an error path.
+
+- [ ] **Step 2: Run static checks and focused tests**
+
+Run:
+
+```bash
+npm run type-check
+npm run lint
+npm run test:ci -- --runTestsByPath 'src/app/(frontend)/transfers/__tests__/page.test.jsx' --runInBand
+git diff --check
+```
+
+Expected: all commands exit successfully; the focused suite reports 4/4 tests
+passing.
+
+- [ ] **Step 3: Verify computed spacing in a named visible browser**
+
+Open:
+
+```bash
+agent-browser --session weelp-transfer-faq-spacing-visible --headed open http://localhost:3000/transfers
+```
+
+At 320px, 768px, and 1280px, verify:
+
+- Seeded transfer reviews are visible before measuring Featured Reviews.
+- FAQ heading `padding-top` is `0px`.
+- FAQ heading `padding-bottom` is `24px`.
+- FAQ section `padding-bottom` is `0px`.
+- FAQ section `margin-top` is `0px`.
+- Featured Reviews padding remains 40px, 64px, and 96px.
+- Both sections remain aligned and the page has no horizontal overflow.
+
+- [ ] **Step 4: Complete code-review and simplification gates**
+
+Dispatch the code-reviewer agent against the follow-up diff. Address critical
+findings and request re-review if code changes are required. Run the available
+simplification workflow, or the equivalent focused manual pass when that skill
+is unavailable.
+
+If either gate changes code, repeat Steps 1–4.
+
+- [ ] **Step 5: Run verification-before-completion**
+
+Invoke `verification-before-completion`, inspect the final diff, and rerun the
+static checks, focused test, and visible-browser measurements against the final
+source state.
+
+- [ ] **Step 6: Commit and push frontend main**
+
+```bash
+git add 'src/app/(frontend)/transfers/page.js' \
+  'src/app/(frontend)/transfers/__tests__/page.test.jsx' \
+  'docs/superpowers/plans/2026-07-27-transfer-section-spacing.md'
+git commit -m "fix: tighten transfer faq spacing"
+git push origin main
+```
+
+Expected: the verified follow-up commit is present on remote `main`.

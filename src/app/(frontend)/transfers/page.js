@@ -130,8 +130,8 @@ const TransfersPage = () => {
         </Reveal>
       ) : null}
 
-      <Reveal as="section" initialHidden variant="lift" delay={hasFeaturedReviews ? 200 : 0} className="container-page pb-10 md:pb-16 lg:pb-24">
-        <Accordion items={faqItems} headingClassName="py-6 text-2xl font-semibold text-[var(--weelp-home-ink)] sm:text-3xl" />
+      <Reveal as="section" initialHidden variant="lift" delay={hasFeaturedReviews ? 200 : 0} className="container-page">
+        <Accordion items={faqItems} headingClassName="pb-6 text-2xl font-semibold text-[var(--weelp-home-ink)] sm:text-3xl" />
       </Reveal>
     </>
   );

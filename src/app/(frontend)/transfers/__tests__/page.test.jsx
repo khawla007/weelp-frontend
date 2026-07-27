@@ -138,8 +138,9 @@ describe('TransfersPage', () => {
 
     expect(queryByRole('heading', { name: 'Featured Reviews' })).not.toBeInTheDocument();
     expect(queryByTestId('review-slider')).not.toBeInTheDocument();
-    expect(getByTestId('faq-accordion')).toHaveAttribute('data-heading-class-name', 'py-6 text-2xl font-semibold text-[var(--weelp-home-ink)] sm:text-3xl');
-    expect(faqSection).toHaveClass('container-page', 'pb-10', 'md:pb-16', 'lg:pb-24');
+    expect(getByTestId('faq-accordion')).toHaveAttribute('data-heading-class-name', 'pb-6 text-2xl font-semibold text-[var(--weelp-home-ink)] sm:text-3xl');
+    expect(faqSection).toHaveClass('container-page');
+    expect([...faqSection.classList]).not.toEqual(expect.arrayContaining([expect.stringMatching(/^(-?pb-)|:-?pb-/)]));
     expect([...faqSection.classList]).not.toEqual(expect.arrayContaining([expect.stringMatching(/^(-?mt-)|:-?mt-/)]));
     expect(faqSection.parentElement).toBe(container);
     expect(mockUseSWR).toHaveBeenCalledWith('transfer-featured-reviews', getTransferFeaturedReviews, {
@@ -162,7 +163,9 @@ describe('TransfersPage', () => {
     expect(reviewSection).toHaveClass('container-page', 'productSlider', 'pb-10', 'md:pb-16', 'lg:pb-24');
     expect(reviewSection).toHaveClass('relative');
     expect(reviewSection).not.toHaveClass('space-y-8');
-    expect(faqSection).toHaveClass('container-page', 'pb-10', 'md:pb-16', 'lg:pb-24');
+    expect(getByTestId('faq-accordion')).toHaveAttribute('data-heading-class-name', 'pb-6 text-2xl font-semibold text-[var(--weelp-home-ink)] sm:text-3xl');
+    expect(faqSection).toHaveClass('container-page');
+    expect([...faqSection.classList]).not.toEqual(expect.arrayContaining([expect.stringMatching(/^(-?pb-)|:-?pb-/)]));
     expect([...faqSection.classList]).not.toEqual(expect.arrayContaining([expect.stringMatching(/^(-?mt-)|:-?mt-/)]));
     expect(reviewSection.parentElement).toBe(container);
     expect(faqSection.parentElement).toBe(container);
