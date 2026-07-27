@@ -19,7 +19,7 @@ describe('ToursHero', () => {
 
     const section = container.querySelector('section');
     expect(section).toHaveClass('overflow-visible', 'bg-surface-tint');
-    expect(section).not.toHaveClass('mb-10', 'md:mb-16', 'lg:mb-24');
+    expect(section).toHaveClass('mb-10', 'sm:mb-16', 'lg:mb-24');
 
     const decorSvgs = container.querySelectorAll('svg[role="presentation"]');
     expect(decorSvgs.length).toBeGreaterThanOrEqual(1);

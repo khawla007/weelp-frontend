@@ -1,7 +1,6 @@
+import BrowseDestinationsSection from '@/app/components/Pages/FRONT_END/home/BrowseDestinationsSection';
 import BannerSection from '@/app/components/Pages/FRONT_END/holiday/BannerSection';
-import TrendingSection from '@/app/components/Pages/FRONT_END/holiday/TrendingSection';
 import { getAllFeaturedCities } from '@/lib/services/cities';
-import React from 'react';
 
 export const revalidate = 60;
 
@@ -12,7 +11,7 @@ const HolidayPage = async () => {
   return (
     <>
       <BannerSection />
-      <TrendingSection cities={featuredCities} />
+      <BrowseDestinationsSection cities={featuredCities} title="Trending Spots" subtitleMode="count" navigationPrefix="holiday-trending-spots" />
     </>
   );
 };

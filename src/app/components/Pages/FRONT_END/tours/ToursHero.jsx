@@ -4,7 +4,7 @@ import ToursHeroDecor from './ToursHeroDecor';
 
 export default function ToursHero() {
   return (
-    <section className="weelp-hero-rise relative z-[80] min-h-[320px] sm:min-h-[420px] flex justify-center items-center overflow-visible bg-surface-tint p-6">
+    <section className="weelp-hero-rise relative z-[80] mb-10 min-h-[320px] sm:mb-16 sm:min-h-[420px] lg:mb-24 flex justify-center items-center overflow-visible bg-surface-tint p-6">
       <ToursHeroDecor />
       <div data-tours-globe-background className="hidden 2xl:block absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <AnimatedGlobe

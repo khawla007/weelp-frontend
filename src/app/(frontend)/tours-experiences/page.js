@@ -1,5 +1,5 @@
+import BrowseDestinationsSection from '@/app/components/Pages/FRONT_END/home/BrowseDestinationsSection';
 import ToursHero from '@/app/components/Pages/FRONT_END/tours/ToursHero';
-import TrendingSpots from '@/app/components/Pages/FRONT_END/tours/TrendingSpots';
 import { getFeaturedCitiesWithStartingPrice } from '@/lib/services/tours';
 
 export const metadata = {
@@ -17,7 +17,7 @@ export default async function ToursExperiencesPage() {
   return (
     <main>
       <ToursHero />
-      <TrendingSpots cities={cities} />
+      <BrowseDestinationsSection cities={cities} title="Trending Spots" subtitleMode="price" navigationPrefix="trending-spots" />
     </main>
   );
 }
