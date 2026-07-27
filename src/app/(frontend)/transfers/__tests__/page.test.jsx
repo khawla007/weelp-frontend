@@ -133,11 +133,15 @@ describe('TransfersPage', () => {
 
   it('hides the complete featured review block when there are no transfer reviews', () => {
     const TransfersPage = require('../page').default;
-    const { queryByRole, queryByTestId, getByTestId } = render(<TransfersPage />);
+    const { container, queryByRole, queryByTestId, getByTestId } = render(<TransfersPage />);
+    const faqSection = getByTestId('faq-accordion').closest('section');
 
     expect(queryByRole('heading', { name: 'Featured Reviews' })).not.toBeInTheDocument();
     expect(queryByTestId('review-slider')).not.toBeInTheDocument();
     expect(getByTestId('faq-accordion')).toHaveAttribute('data-heading-class-name', 'py-6 text-2xl font-semibold text-[var(--weelp-home-ink)] sm:text-3xl');
+    expect(faqSection).toHaveClass('container-page', 'pb-10', 'md:pb-16', 'lg:pb-24');
+    expect([...faqSection.classList]).not.toEqual(expect.arrayContaining([expect.stringMatching(/^(-?mt-)|:-?mt-/)]));
+    expect(faqSection.parentElement).toBe(container);
     expect(mockUseSWR).toHaveBeenCalledWith('transfer-featured-reviews', getTransferFeaturedReviews, {
       revalidateOnFocus: false,
     });
@@ -148,9 +152,20 @@ describe('TransfersPage', () => {
       data: [{ id: 17, review_text: 'Easy airport pickup.' }],
     });
     const TransfersPage = require('../page').default;
-    const { getByRole, getByTestId } = render(<TransfersPage />);
+    const { container, getByRole, getByTestId } = render(<TransfersPage />);
+    const reviewHeading = getByRole('heading', { name: 'Featured Reviews' });
+    const reviewSection = reviewHeading.closest('section');
+    const faqSection = getByTestId('faq-accordion').closest('section');
 
-    expect(getByRole('heading', { name: 'Featured Reviews' })).toHaveClass('text-2xl', 'font-semibold', 'sm:text-3xl');
+    expect(reviewHeading).toHaveClass('text-2xl', 'font-semibold', 'sm:text-3xl');
     expect(getByTestId('review-slider')).toHaveTextContent('17');
+    expect(reviewSection).toHaveClass('container-page', 'productSlider', 'pb-10', 'md:pb-16', 'lg:pb-24');
+    expect(reviewSection).toHaveClass('relative');
+    expect(reviewSection).not.toHaveClass('space-y-8');
+    expect(faqSection).toHaveClass('container-page', 'pb-10', 'md:pb-16', 'lg:pb-24');
+    expect([...faqSection.classList]).not.toEqual(expect.arrayContaining([expect.stringMatching(/^(-?mt-)|:-?mt-/)]));
+    expect(reviewSection.parentElement).toBe(container);
+    expect(faqSection.parentElement).toBe(container);
+    expect(reviewSection.nextElementSibling).toBe(faqSection);
   });
 });
