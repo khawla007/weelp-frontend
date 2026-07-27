@@ -10,8 +10,10 @@ const BannerSection = () => {
 
   return (
     <>
-      <div className={`weelp-hero-rise relative z-10 bg-weelp-sage-deep shop_banner ${styles.shop_banner} `}>
-        <ResultsActivityItinerarySearch initialQuery={searchParams.toString()} />
+      <div className={`weelp-hero-rise relative z-10 bg-weelp-sage-deep shop_banner py-6 sm:py-10 ${styles.shop_banner} `}>
+        <div data-testid="search-panel-rail" className="container-page flex justify-center">
+          <ResultsActivityItinerarySearch initialQuery={searchParams.toString()} />
+        </div>
       </div>
       {location && (
         <div className="flex items-center justify-center  bg-surface-tint h-full min-h-20 sm:min-h-36">

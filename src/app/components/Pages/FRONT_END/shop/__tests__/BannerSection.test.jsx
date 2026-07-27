@@ -21,4 +21,17 @@ describe('Search BannerSection', () => {
     expect(searchPanel).toHaveClass('relative', 'z-10');
     expect(screen.getByTestId('results-discovery-search')).toHaveAttribute('data-initial-query', 'location=dubai');
   });
+
+  it('uses responsive banner spacing and centers the search panel on the canonical page rail', () => {
+    useSearchParams.mockReturnValue(new URLSearchParams());
+
+    const BannerSection = require('../BannerSection').default;
+    const { container } = render(<BannerSection />);
+    const searchPanel = container.querySelector('.shop_banner');
+    const searchPanelRail = screen.getByTestId('search-panel-rail');
+
+    expect(searchPanel).toHaveClass('py-6', 'sm:py-10');
+    expect(searchPanelRail).toHaveClass('container-page', 'flex', 'justify-center');
+    expect(searchPanelRail).toContainElement(screen.getByTestId('results-discovery-search'));
+  });
 });
