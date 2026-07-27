@@ -76,4 +76,3 @@ Automated tests will confirm:
 - `BrowseDestinationsSection` receives the correct data and display props.
 
 Visible-browser checks will cover both routes at 320px, 768px, and 1280px. They will confirm the normal page background begins immediately after the hero, spacing matches the home pattern, the carousel still works, and no horizontal overflow is introduced.
-
