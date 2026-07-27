@@ -64,4 +64,3 @@ toggle, its ARIA state, and preservation of existing search behavior. Visible
 headed-browser checks will cover the four target widths, confirm that the first
 result is visible before the expanded filter form on mobile, and verify that
 opening and closing filters does not disturb the search state.
-
