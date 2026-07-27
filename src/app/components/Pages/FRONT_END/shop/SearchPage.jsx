@@ -7,7 +7,7 @@ import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import '@/app/styles/range-slider.css';
 import { GlobalCard } from '@/app/components/SingleProductCard';
-import { Search, Star } from 'lucide-react';
+import { Search, SlidersHorizontal, Star } from 'lucide-react';
 import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -38,6 +38,7 @@ export const SearchPage = () => {
   const [sortby, setSortby] = useState('');
   const [categorySearch, setCategorySearch] = useState('');
   const [locationSearch, setLocationSearch] = useState('');
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const fetchProductsRef = useRef(null);
   const productRequestIdRef = useRef(0);
 
@@ -162,9 +163,20 @@ export const SearchPage = () => {
   return (
     <section className="flex flex-col w-full">
       {/* Top Bar Filter */}
-      <div className="w-full flex justify-end p-4 sm:px-12 sm:py-4 mx-auto">
+      <div data-testid="search-results-toolbar" className="container-page flex items-center gap-3 py-4 sm:py-6">
+        <Button
+          type="button"
+          variant="outline"
+          aria-controls="search-results-filters"
+          aria-expanded={mobileFiltersOpen}
+          onClick={() => setMobileFiltersOpen((open) => !open)}
+          className="h-11 flex-1 justify-center gap-2 md:hidden"
+        >
+          <SlidersHorizontal className="size-4" aria-hidden="true" />
+          Filters
+        </Button>
         <Select value={sortby} onValueChange={setSortby}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger aria-label="Sort results" className="ml-auto h-11 w-full max-w-[180px]">
             <SelectValue placeholder="Sort" />
           </SelectTrigger>
           <SelectContent>
@@ -180,9 +192,13 @@ export const SearchPage = () => {
           </SelectContent>
         </Select>
       </div>
-      <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-8 p-4 sm:px-12 sm:py-4 mx-auto">
+      <div data-testid="search-results-layout" className="container-page flex flex-col gap-6 pb-10 md:flex-row md:items-start md:gap-4 lg:gap-8">
         {/* Sidebar Filters */}
-        <div className="w-full sm:max-w-xs p-4 bg-background shadow-md dark:shadow-none rounded-lg">
+        <aside
+          id="search-results-filters"
+          data-testid="search-filters"
+          className={`w-full rounded-lg bg-background p-4 shadow-none md:block md:max-w-xs md:flex-none md:shadow-md dark:md:shadow-none ${mobileFiltersOpen ? 'block' : 'hidden'}`}
+        >
           <h2 className="text-lg font-medium text-foreground my-4">Category</h2>
           <div className="relative mb-3">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -259,10 +275,10 @@ export const SearchPage = () => {
               <p className="rounded-md border border-dashed border-border px-3 py-4 text-sm text-muted-foreground">No locations found.</p>
             )}
           </div>
-        </div>
+        </aside>
 
         {/* Product Display */}
-        <div className="flex-1 flex items-center justify-center h-full w-full">
+        <div data-testid="search-results" className="flex min-w-0 w-full flex-1 items-center justify-center">
           {isLoading ? (
             <ListingCardSkeleton count={6} className="w-full" />
           ) : (

@@ -35,6 +35,13 @@ const categories = [
 ];
 
 describe('SearchPage filters', () => {
+  beforeAll(() => {
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+      configurable: true,
+      value: jest.fn(),
+    });
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
     useSearchParams.mockReturnValue(new URLSearchParams('location=dubai&start_date=2026-07-01&end_date=2026-07-03&quantity=2'));
@@ -80,6 +87,94 @@ describe('SearchPage filters', () => {
 
     await waitFor(() => {
       expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('/api/public/search?'));
+    });
+  });
+
+  it('toggles the single mobile filter panel with accessible native button behavior', async () => {
+    const { SearchPage } = await import('../SearchPage');
+
+    render(<SearchPage />);
+    await screen.findByRole('checkbox', { name: 'Adventure' });
+
+    const filtersButton = screen.getByRole('button', { name: 'Filters' });
+    const filters = screen.getByTestId('search-filters');
+
+    expect(filtersButton).toHaveAttribute('type', 'button');
+    expect(filtersButton).toHaveAttribute('aria-controls', 'search-results-filters');
+    expect(filtersButton).toHaveAttribute('aria-expanded', 'false');
+    expect(filtersButton).toHaveClass('h-11', 'md:hidden');
+    expect(filters).toHaveAttribute('id', 'search-results-filters');
+    expect(filters).toHaveClass('hidden');
+    expect(screen.getAllByTestId('search-filters')).toHaveLength(1);
+
+    filtersButton.focus();
+    expect(filtersButton).toHaveFocus();
+    fireEvent.click(filtersButton, { detail: 0 });
+
+    expect(filtersButton).toHaveAttribute('aria-expanded', 'true');
+    expect(filtersButton).toHaveFocus();
+    expect(filters).toHaveClass('block');
+    expect(filters).not.toHaveClass('hidden');
+
+    fireEvent.click(filtersButton);
+
+    expect(filtersButton).toHaveAttribute('aria-expanded', 'false');
+    expect(filters).toHaveClass('hidden');
+  });
+
+  it('uses the responsive toolbar, sidebar, and results layout class contracts', async () => {
+    const { SearchPage } = await import('../SearchPage');
+
+    render(<SearchPage />);
+    await screen.findByRole('checkbox', { name: 'Adventure' });
+
+    const toolbar = screen.getByTestId('search-results-toolbar');
+    const layout = screen.getByTestId('search-results-layout');
+    const filters = screen.getByTestId('search-filters');
+    const results = screen.getByTestId('search-results');
+    const filtersButton = within(toolbar).getByRole('button', { name: 'Filters' });
+    const sortTrigger = within(toolbar).getByRole('combobox', { name: 'Sort results' });
+
+    expect(toolbar).toHaveClass('container-page', 'flex', 'items-center', 'gap-3', 'py-4', 'sm:py-6');
+    expect(filtersButton).toHaveClass('h-11', 'flex-1', 'justify-center', 'gap-2', 'md:hidden');
+    expect(filtersButton).toHaveClass('border', 'bg-background', 'hover:bg-accent', 'hover:text-accent-foreground');
+    expect(sortTrigger).toHaveClass('ml-auto', 'h-11', 'w-full', 'max-w-[180px]');
+    expect(layout).toHaveClass('container-page', 'flex', 'flex-col', 'gap-6', 'pb-10', 'md:flex-row', 'md:items-start', 'md:gap-4', 'lg:gap-8');
+    expect(filters).toHaveClass('w-full', 'rounded-lg', 'bg-background', 'p-4', 'shadow-none', 'md:block', 'md:max-w-xs', 'md:flex-none', 'md:shadow-md', 'dark:md:shadow-none', 'hidden');
+    expect(results).toHaveClass('flex', 'min-w-0', 'w-full', 'flex-1', 'items-center', 'justify-center');
+  });
+
+  it('preserves filter, sort, and result state after closing and reopening mobile filters', async () => {
+    axios.get.mockImplementation((url) => {
+      if (url === '/api/public/regions-cities') return Promise.resolve({ data: { data: locations } });
+      if (url === '/api/public/taxonomies/categories') return Promise.resolve({ data: { data: categories } });
+      if (url.startsWith('/api/public/search')) return Promise.resolve({ status: 200, data: { data: [{ id: 1, name: 'Dubai Walk' }] } });
+      return Promise.reject(new Error(`Unhandled URL: ${url}`));
+    });
+    const { SearchPage } = await import('../SearchPage');
+
+    render(<SearchPage />);
+
+    expect(await screen.findByText('Dubai Walk')).toBeInTheDocument();
+
+    const filtersButton = screen.getByRole('button', { name: 'Filters' });
+    fireEvent.click(filtersButton);
+    fireEvent.click(await screen.findByRole('checkbox', { name: 'Adventure' }));
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search locations' }), { target: { value: 'dub' } });
+
+    const sortTrigger = screen.getByRole('combobox', { name: 'Sort results' });
+    fireEvent.keyDown(sortTrigger, { key: 'ArrowDown' });
+    fireEvent.click(await screen.findByRole('option', { name: 'Price Low to High' }));
+
+    fireEvent.click(filtersButton);
+    fireEvent.click(filtersButton);
+
+    expect(screen.getByRole('checkbox', { name: 'Adventure' })).toBeChecked();
+    expect(screen.getByRole('searchbox', { name: 'Search locations' })).toHaveValue('dub');
+    expect(sortTrigger).toHaveTextContent('Price Low to High');
+    expect(screen.getByText('Dubai Walk')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('sort_by=price_asc'));
     });
   });
 
