@@ -131,7 +131,7 @@ Change the non-home Search button class to remove only
 `sm:rounded-l-none`:
 
 ```jsx
-'inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-6 py-[18px] text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-colors hover:bg-weelp-sage-wash hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none'
+'inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-6 py-[18px] text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-colors hover:bg-weelp-sage-wash hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none';
 ```
 
 Do not change the home grid, home button, modal button, form submission, URL
@@ -213,15 +213,8 @@ const style = getComputedStyle(button);
 
 ({
   gap: buttonRect.left - guestsRect.right,
-  radii: [
-    style.borderTopLeftRadius,
-    style.borderTopRightRadius,
-    style.borderBottomRightRadius,
-    style.borderBottomLeftRadius,
-  ],
-  overflow:
-    document.documentElement.scrollWidth >
-    document.documentElement.clientWidth,
+  radii: [style.borderTopLeftRadius, style.borderTopRightRadius, style.borderBottomRightRadius, style.borderBottomLeftRadius],
+  overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
 });
 ```
 
@@ -275,15 +268,8 @@ const style = getComputedStyle(button);
 ({
   gap: buttonRect.top - guestsRect.bottom,
   height: buttonRect.height,
-  radii: [
-    style.borderTopLeftRadius,
-    style.borderTopRightRadius,
-    style.borderBottomRightRadius,
-    style.borderBottomLeftRadius,
-  ],
-  overflow:
-    document.documentElement.scrollWidth >
-    document.documentElement.clientWidth,
+  radii: [style.borderTopLeftRadius, style.borderTopRightRadius, style.borderBottomRightRadius, style.borderBottomLeftRadius],
+  overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
 });
 ```
 

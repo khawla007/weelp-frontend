@@ -61,6 +61,44 @@ describe('ActivityItinerarySearch', () => {
     expect(screen.queryByPlaceholderText(/from/i)).not.toBeInTheDocument();
   });
 
+  it.each([
+    ['compact', <CompactActivityItinerarySearch key="compact-spacing" />],
+    ['results', <ResultsActivityItinerarySearch key="results-spacing" />],
+  ])('%s separates the desktop Search action from the Guests field', (_name, panel) => {
+    renderSearch(panel);
+
+    expect(screen.getByRole('button', { name: /search trips/i }).parentElement).toHaveClass('sm:pl-2');
+  });
+
+  it.each([
+    ['compact', <CompactActivityItinerarySearch key="compact-radius" />],
+    ['results', <ResultsActivityItinerarySearch key="results-radius" />],
+  ])('%s keeps all four Search button corners rounded on desktop', (_name, panel) => {
+    renderSearch(panel);
+
+    const searchButton = screen.getByRole('button', { name: /search trips/i });
+    expect(searchButton).toHaveClass('rounded-xl');
+    expect(searchButton).not.toHaveClass('sm:rounded-l-none');
+  });
+
+  it('preserves the Home Search action spacing and radius', () => {
+    renderSearch(<HomeActivityItinerarySearch />);
+
+    const searchButton = screen.getByRole('button', { name: /search trips/i });
+    expect(searchButton.parentElement).toHaveClass('sm:pr-5');
+    expect(searchButton.parentElement).not.toHaveClass('sm:pl-2');
+    expect(searchButton).toHaveClass('rounded-2xl');
+  });
+
+  it('preserves the Modal Search action spacing and radius', () => {
+    renderSearch(<ModalActivityItinerarySearch />);
+
+    const searchButton = screen.getByRole('button', { name: /search trips/i });
+    expect(searchButton.parentElement).not.toHaveClass('sm:pl-2');
+    expect(searchButton).toHaveClass('mx-auto', 'mt-4', 'rounded-full');
+    expect(searchButton).not.toHaveClass('rounded-xl');
+  });
+
   it('hydrates location, dates, and guest quantity from the results query', async () => {
     renderSearch(<ResultsActivityItinerarySearch initialQuery="location=dubai&start_date=2026-08-10&end_date=2026-08-14&quantity=3" />);
 

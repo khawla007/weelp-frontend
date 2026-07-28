@@ -537,14 +537,14 @@ function ActivityItinerarySearch({ presentation, initialQuery = '', controlsSlot
           </Popover>
 
           {!isModal && (
-            <div className={`flex items-center justify-stretch sm:justify-end ${isPill ? 'sm:pr-5' : ''}`}>
+            <div className={`flex items-center justify-stretch sm:justify-end ${isPill ? 'sm:pr-5' : 'sm:pl-2'}`}>
               <button
                 type="submit"
                 aria-label="Search trips"
                 className={
                   isPill
                     ? 'inline-flex h-[52px] min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-weelp-sage-deep px-8 text-sm font-semibold text-white transition-colors duration-200 ease-out hover:bg-weelp-sage-deep/85 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none sm:h-16 sm:w-auto sm:min-w-[200px] sm:px-10'
-                    : 'inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-6 py-[18px] text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-colors hover:bg-weelp-sage-wash hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none sm:rounded-l-none'
+                    : 'inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-6 py-[18px] text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-colors hover:bg-weelp-sage-wash hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none'
                 }
               >
                 <Search className="size-4" strokeWidth={2} />
