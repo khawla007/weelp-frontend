@@ -56,7 +56,7 @@ export const CountryCards = ({ countries = [], selectedCountryId, onSelect }) =>
           className="group relative block h-[96px] w-[154px] shrink-0 overflow-hidden rounded-[6px] transition-opacity duration-150 motion-reduce:transition-none hover:opacity-95 focus:outline-none"
         >
           {country.featured_image ? <img src={country.featured_image} alt={country.name} className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-muted" />}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-foreground/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
           {isSelected && (
             <span
               aria-hidden="true"
@@ -65,9 +65,8 @@ export const CountryCards = ({ countries = [], selectedCountryId, onSelect }) =>
           )}
           <div className="absolute inset-x-[13px] bottom-[13px] flex flex-col items-start gap-[1px] text-left">
             <span
-              className="leading-tight"
+              className="leading-tight text-white"
               style={{
-                color: 'hsl(var(--background))',
                 fontFamily: FONT_FAMILY,
                 fontSize: '16px',
                 fontWeight: 600,
@@ -76,9 +75,8 @@ export const CountryCards = ({ countries = [], selectedCountryId, onSelect }) =>
               {idx + 1}. {shortenCountryName(country.name)}
             </span>
             <span
-              className="leading-tight"
+              className="leading-tight text-white"
               style={{
-                color: 'hsl(var(--background))',
                 fontFamily: FONT_FAMILY,
                 fontSize: '10px',
                 fontWeight: 500,
