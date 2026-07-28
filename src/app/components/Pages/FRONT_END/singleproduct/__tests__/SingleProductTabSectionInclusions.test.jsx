@@ -81,7 +81,7 @@ describe('SingleProductTabSection activity inclusions', () => {
     const tabList = screen.getByRole('button', { name: 'Overview' }).parentElement;
 
     expect(tabList).toHaveClass('overflow-x-auto', 'justify-start', 'sm:justify-center');
-    expect(screen.getByRole('button', { name: 'Overview' })).toHaveClass('shrink-0');
+    expect(screen.getByRole('button', { name: 'Overview' })).toHaveClass('shrink-0', 'weelp-single-product-tab');
     expect(screen.getByRole('button', { name: 'Overview' })).not.toHaveStyle({ marginRight: '44px' });
   });
 

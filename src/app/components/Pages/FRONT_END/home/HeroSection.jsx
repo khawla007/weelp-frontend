@@ -18,7 +18,7 @@ const HeroSection = () => {
 
       <div className="container-page relative z-0 flex flex-col items-start gap-5 pb-10 pt-[135px] sm:pb-16 sm:pt-[170px] md:h-full md:gap-6 md:pb-20 md:pt-[180px] lg:pb-32 lg:pt-[214px]">
         <span
-          className="weelp-hero-ui-rise inline-flex items-center gap-2 rounded-full border border-weelp-sage-deep/30 bg-transparent px-4 py-2 text-xs font-bold text-weelp-sage-text"
+          className="weelp-hero-ui-rise inline-flex items-center gap-2 rounded-full border border-weelp-sage-deep/30 bg-transparent px-4 py-2 text-xs font-bold text-[var(--weelp-home-hero-accent)]"
           style={{ '--weelp-motion-delay': '80ms' }}
         >
           <Leaf className="size-[14px]" strokeWidth={2} />
@@ -45,7 +45,7 @@ const HeroSection = () => {
         >
           <span className="weelp-rise-mask weelp-rise-mask--block">
             <span
-              className="weelp-rise-item block italic font-medium text-weelp-sage-text"
+              className="weelp-rise-item block italic font-medium text-[var(--weelp-home-hero-accent)]"
               style={{
                 '--weelp-rise-delay': '240ms',
                 fontFamily: 'var(--font-cormorant), "Cormorant Garamond", serif',

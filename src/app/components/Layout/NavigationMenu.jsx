@@ -278,7 +278,7 @@ const NavMenuDesktop = ({ overHero = false }) => {
                 <button
                   ref={megaTriggerRef}
                   type="button"
-                  className={linkClass(active)}
+                  className={`${linkClass(active)} weelp-header-nav-item`}
                   onClick={() => (megaOpen ? closeMega() : openMega())}
                   onFocus={scheduleOpen}
                   onBlur={handleMegaBlur}

@@ -30,6 +30,18 @@ describe('HeroSection', () => {
     expect(getByTestId('home-hero-overlay')).toHaveClass('absolute', 'inset-0', '-z-10', 'bg-white/10');
   });
 
+  it('keeps the hero badge and escape accent on the light-mode color in both themes', () => {
+    const { getByText } = render(<HeroSection />);
+
+    const badge = getByText('Plan calmer escapes');
+    const escapeAccent = getByText('escape');
+
+    expect(badge).toHaveClass('text-[var(--weelp-home-hero-accent)]');
+    expect(escapeAccent).toHaveClass('text-[var(--weelp-home-hero-accent)]');
+    expect(badge).not.toHaveClass('text-weelp-sage-text');
+    expect(escapeAccent).not.toHaveClass('text-weelp-sage-text');
+  });
+
   it('keeps the hero subtitle on a soft blurred mobile shade', () => {
     const { getByText } = render(<HeroSection />);
 

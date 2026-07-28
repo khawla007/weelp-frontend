@@ -214,7 +214,7 @@ const SingleProductTabSection = ({
               type="button"
               onClick={() => toggleTab(tab.id)}
               aria-current={activeTab === tab.id ? 'true' : undefined}
-              className={`relative shrink-0 px-4 sm:px-6 lg:px-8 py-4 text-sm cursor-pointer transition-colors rounded-sm ${FOCUS_RING} ${
+              className={`weelp-single-product-tab relative shrink-0 px-4 sm:px-6 lg:px-8 py-4 text-sm cursor-pointer transition-colors rounded-sm ${FOCUS_RING} ${
                 activeTab === tab.id ? 'font-semibold text-foreground' : 'font-normal text-muted-foreground hover:text-foreground'
               }`}
             >

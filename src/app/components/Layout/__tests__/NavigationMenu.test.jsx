@@ -87,6 +87,13 @@ describe('DesktopMenu', () => {
     expect(screen.getByRole('link', { name: /^trips$/i })).toBeInTheDocument();
   });
 
+  it('marks the destinations trigger as an unfilled header navigation item', () => {
+    render(<DesktopMenu stickyHeader={false} />);
+
+    expect(screen.getByRole('button', { name: /explore destinations/i })).toHaveClass('weelp-header-nav-item');
+    expect(screen.getByRole('link', { name: /tours & experiences/i })).not.toHaveClass('weelp-header-nav-item');
+  });
+
   it('keeps over-hero desktop top strip spacing aligned with solid pages', () => {
     render(<DesktopTopStrip topStripVisible topStripOverHero collapsible />);
 

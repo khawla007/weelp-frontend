@@ -107,6 +107,7 @@ body {
     --weelp-home-accent: #f59e0b;
     --weelp-home-brand: #123347;
     --weelp-home-muted: #6a7d88;
+    --weelp-home-hero-accent: #426c59;
     --weelp-home-hero-ink: #18181b;
     --weelp-home-hero-copy: rgba(24, 24, 27, 0.8);
     --weelp-home-hero-muted: rgba(24, 24, 27, 0.72);
@@ -174,7 +175,7 @@ body {
 
   .dark {
     color-scheme: dark;
-    --weelp-hero-foreground: 153.33 10.35% 65.88%;
+    --weelp-hero-foreground: 0 0% 0%;
     --background: 160 36% 5%;
     --foreground: 153.33 10.35% 65.88%;
     --card: 159 30% 9%;
@@ -305,7 +306,7 @@ body {
     @apply mx-auto w-full max-w-pen px-4 sm:px-6 lg:px-8;
   }
 
-  .dark button,
+  .dark button:not(.weelp-header-nav-item):not(.weelp-single-product-tab),
   .dark a[role='button'],
   .dark [role='button'],
   .dark a[class~='bg-weelp-sage-deep'],
@@ -317,6 +318,16 @@ body {
 
   .dark button.bg-card {
     background-color: var(--weelp-home-surface) !important;
+  }
+
+  .dark button.weelp-header-nav-item {
+    border: 0 !important;
+    background-color: transparent !important;
+  }
+
+  .dark button.weelp-single-product-tab {
+    border: 0 !important;
+    background-color: transparent !important;
   }
 }
 

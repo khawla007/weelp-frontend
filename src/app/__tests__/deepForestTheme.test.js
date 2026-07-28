@@ -377,16 +377,18 @@ describe('Deep Forest semantic theme', () => {
       '--weelp-home-search-border': '#304b40',
     });
     expect(rootTokens).toMatchObject({
+      '--weelp-home-hero-accent': '#426c59',
       '--weelp-home-hero-ink': '#18181b',
       '--weelp-home-hero-copy': 'rgba(24, 24, 27, 0.8)',
       '--weelp-home-hero-muted': 'rgba(24, 24, 27, 0.72)',
     });
+    expect(darkTokens).not.toHaveProperty('--weelp-home-hero-accent');
     expect(darkTokens).not.toHaveProperty('--weelp-home-hero-ink');
     expect(darkTokens).not.toHaveProperty('--weelp-home-hero-copy');
     expect(darkTokens).not.toHaveProperty('--weelp-home-hero-muted');
   });
 
-  it('keeps over-hero header contrast on a theme-independent semantic role', () => {
+  it('keeps the unscrolled over-hero header black in both themes', () => {
     const headerSources = ['MobileMenu.jsx', 'NavigationMenu.jsx'].map((filename) => readFileSync(join(process.cwd(), 'src/app/components/Layout', filename), 'utf8'));
 
     expect({
@@ -394,7 +396,7 @@ describe('Deep Forest semantic theme', () => {
       light: rootTokens['--weelp-hero-foreground'],
       mapping: tailwindConfig.theme.extend.colors.weelp['hero-foreground'],
     }).toEqual({
-      dark: '153.33 10.35% 65.88%',
+      dark: '0 0% 0%',
       light: '0 0% 0%',
       mapping: 'hsl(var(--weelp-hero-foreground) / <alpha-value>)',
     });
@@ -559,7 +561,13 @@ describe('Deep Forest semantic theme', () => {
   });
 
   it('sets the dark site-wide button surface and border to the requested tokens', () => {
-    const buttonRule = extractSelectorContract(['.dark button', ".dark a[role='button']", ".dark [role='button']", ".dark a[class~='bg-weelp-sage-deep']", ".dark a[class~='bg-primary']"]);
+    const buttonRule = extractSelectorContract([
+      '.dark button:not(.weelp-header-nav-item):not(.weelp-single-product-tab)',
+      ".dark a[role='button']",
+      ".dark [role='button']",
+      ".dark a[class~='bg-weelp-sage-deep']",
+      ".dark a[class~='bg-primary']",
+    ]);
     const fieldButtonRule = extractSelectorContract('.dark button.bg-card');
 
     expect(buttonRule.declarations).toMatchObject({
@@ -574,6 +582,26 @@ describe('Deep Forest semantic theme', () => {
     expect(darkTokens['--weelp-home-surface']).toBe('#101e19');
     expect(darkTokens['--border']).toBe('157 22% 19%');
     expect(darkTokens['--weelp-home-muted']).toBe('#9fb1a9');
+  });
+
+  it('keeps header navigation buttons transparent and borderless in dark mode', () => {
+    const headerNavigationRule = extractSelectorContract('.dark button.weelp-header-nav-item');
+
+    expect(headerNavigationRule.declarations).toMatchObject({
+      border: { important: true, value: '0' },
+      'background-color': { important: true, value: 'transparent' },
+    });
+    expect(headerNavigationRule.declarations.color).toBeUndefined();
+  });
+
+  it('keeps single-product tabs transparent and borderless in dark mode', () => {
+    const tabRule = extractSelectorContract('.dark button.weelp-single-product-tab');
+
+    expect(tabRule.declarations).toMatchObject({
+      border: { important: true, value: '0' },
+      'background-color': { important: true, value: 'transparent' },
+    });
+    expect(tabRule.declarations.color).toBeUndefined();
   });
 
   it('keeps copy readable on the translucent search shell', () => {
