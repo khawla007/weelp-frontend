@@ -170,20 +170,8 @@ it('uses the canonical results rail and a compact mobile toolbar', async () => {
   render(<SearchPage />);
 
   expect(await screen.findByTestId('search-results-toolbar')).toHaveClass('container-page');
-  expect(screen.getByTestId('search-results-layout')).toHaveClass(
-    'container-page',
-    'flex-col',
-    'md:flex-row',
-    'md:gap-4',
-    'lg:gap-8',
-  );
-  expect(screen.getByTestId('search-filters')).toHaveClass(
-    'md:block',
-    'md:max-w-xs',
-    'md:flex-none',
-    'md:shadow-md',
-    'dark:md:shadow-none',
-  );
+  expect(screen.getByTestId('search-results-layout')).toHaveClass('container-page', 'flex-col', 'md:flex-row', 'md:gap-4', 'lg:gap-8');
+  expect(screen.getByTestId('search-filters')).toHaveClass('md:block', 'md:max-w-xs', 'md:flex-none', 'md:shadow-md', 'dark:md:shadow-none');
   expect(screen.getByRole('combobox', { name: /sort/i })).toHaveClass('h-11');
   expect(screen.getByTestId('search-results')).toHaveClass('min-w-0', 'flex-1');
 });
@@ -227,9 +215,7 @@ it('preserves filter, sort, and result state when mobile filters close and reope
 
   expect(screen.getByRole('checkbox', { name: 'Adventure' })).toBeChecked();
   expect(screen.getByLabelText('Search locations')).toHaveValue('dub');
-  expect(screen.getByRole('combobox', { name: /sort/i })).toHaveTextContent(
-    'Price Low to High',
-  );
+  expect(screen.getByRole('combobox', { name: /sort/i })).toHaveTextContent('Price Low to High');
   expect(screen.getByText('Dubai Walk')).toBeInTheDocument();
 });
 ```
@@ -255,10 +241,7 @@ const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 Replace the current sort wrapper with:
 
 ```jsx
-<div
-  data-testid="search-results-toolbar"
-  className="container-page flex items-center gap-3 py-4 sm:py-6"
->
+<div data-testid="search-results-toolbar" className="container-page flex items-center gap-3 py-4 sm:py-6">
   <Button
     type="button"
     variant="outline"
@@ -293,24 +276,16 @@ Replace the current sort wrapper with:
 Change the outer content layout and filter wrapper to:
 
 ```jsx
-<div
-  data-testid="search-results-layout"
-  className="container-page flex flex-col gap-6 pb-10 md:flex-row md:items-start md:gap-4 lg:gap-8"
->
+<div data-testid="search-results-layout" className="container-page flex flex-col gap-6 pb-10 md:flex-row md:items-start md:gap-4 lg:gap-8">
   <aside
     id="search-results-filters"
     data-testid="search-filters"
-    className={`w-full rounded-lg bg-background p-4 shadow-none md:block md:max-w-xs md:flex-none md:shadow-md dark:md:shadow-none ${
-      mobileFiltersOpen ? 'block' : 'hidden'
-    }`}
+    className={`w-full rounded-lg bg-background p-4 shadow-none md:block md:max-w-xs md:flex-none md:shadow-md dark:md:shadow-none ${mobileFiltersOpen ? 'block' : 'hidden'}`}
   >
     {/* keep the existing filter controls and handlers unchanged */}
   </aside>
 
-  <div
-    data-testid="search-results"
-    className="flex min-w-0 w-full flex-1 items-center justify-center"
-  >
+  <div data-testid="search-results" className="flex min-w-0 w-full flex-1 items-center justify-center">
     {/* keep the existing loading, cards, and empty state unchanged */}
   </div>
 </div>
@@ -438,7 +413,7 @@ agent-browser --session weelp-visible set viewport 1280 900
 At each width, measure:
 
 ```js
-document.documentElement.scrollWidth <= document.documentElement.clientWidth
+document.documentElement.scrollWidth <= document.documentElement.clientWidth;
 ```
 
 Expected: `true` at all four widths.
