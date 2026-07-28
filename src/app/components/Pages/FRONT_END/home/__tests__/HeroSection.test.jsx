@@ -37,7 +37,7 @@ describe('HeroSection', () => {
 
     expect(subtitle).toHaveClass('relative', 'isolate', 'text-white');
     expect(subtitle).toHaveClass('[text-shadow:0_1px_8px_rgba(0,0,0,0.5)]');
-    expect(subtitle).toHaveClass("before:-inset-x-5", "before:-inset-y-3", "before:rounded-full", "before:bg-[var(--weelp-hero-subtitle-shade)]", "before:blur-2xl", "before:content-['']");
+    expect(subtitle).toHaveClass('before:-inset-x-5', 'before:-inset-y-3', 'before:rounded-full', 'before:bg-[var(--weelp-hero-subtitle-shade)]', 'before:blur-2xl', "before:content-['']");
     expect(subtitle).toHaveStyle({ '--weelp-hero-subtitle-shade': 'rgba(0, 0, 0, 0.35)' });
     expect(subtitle).toHaveClass('sm:text-[var(--weelp-home-hero-copy)]');
     expect(subtitle).toHaveClass('sm:[background:radial-gradient(ellipse_at_center,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0.25)_45%,rgba(255,255,255,0)_75%)]');
