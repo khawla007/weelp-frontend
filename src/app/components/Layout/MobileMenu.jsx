@@ -36,8 +36,8 @@ const MobileMenu = ({ stickyHeader, variant = 'solid' }) => {
   const topStripLocalePillClass = topStripTransparent
     ? 'border-transparent bg-background/85 text-foreground backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:shadow-none'
     : 'border-border bg-background text-foreground';
-  const topStripSpacingClass = topStripTransparent ? 'px-3 pb-1.5 pt-[18px] sm:px-4' : 'px-3 py-2.5 sm:px-4 sm:py-3';
-  const topStripInnerPaddingClass = topStripTransparent ? 'py-0.5' : 'py-1 sm:py-1.5';
+  const topStripSpacingClass = 'px-3 py-2.5 sm:px-4 sm:py-3';
+  const topStripInnerPaddingClass = 'py-1 sm:py-1.5';
 
   return (
     <div data-weelp-mobile-menu="true" className={`lg:hidden w-full ${fixedToViewport ? 'fixed top-0 left-0 right-0 z-40 shadow-md dark:shadow-none' : ''}`}>

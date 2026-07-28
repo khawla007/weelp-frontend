@@ -292,7 +292,7 @@ function ActivityItinerarySearch({ presentation, initialQuery = '', controlsSlot
                   onClick={handleInputClick}
                   className={
                     isPill
-                      ? 'relative flex min-h-16 items-center gap-3 rounded-2xl bg-muted/45 px-4 py-3 cursor-pointer sm:h-24 sm:rounded-none sm:bg-transparent sm:px-7 sm:py-0 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border sm:first:before:hidden'
+                      ? 'relative flex min-h-16 items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer sm:h-24 sm:rounded-l-[28px] sm:rounded-r-none sm:border-y sm:border-l sm:border-r-0 sm:px-7 sm:py-0 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border sm:first:before:hidden'
                       : 'flex items-center gap-3 rounded-xl border border-border bg-card px-6 py-[18px] shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer sm:rounded-r-none'
                   }
                   style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
@@ -401,7 +401,7 @@ function ActivityItinerarySearch({ presentation, initialQuery = '', controlsSlot
                   aria-label="Choose dates"
                   className={
                     isPill
-                      ? 'relative flex w-full min-h-16 items-center gap-3 rounded-2xl bg-muted/45 px-4 py-3 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:h-24 sm:rounded-none sm:bg-transparent sm:px-7 sm:py-0 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border'
+                      ? 'relative flex w-full min-h-16 items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-left shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:h-24 sm:rounded-none sm:border-y sm:border-l sm:border-r-0 sm:px-7 sm:py-0 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border'
                       : `${FIELD_TRIGGER_CLASS} sm:rounded-none`
                   }
                   style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
@@ -472,7 +472,7 @@ function ActivityItinerarySearch({ presentation, initialQuery = '', controlsSlot
                   aria-label="Choose guests"
                   className={
                     isPill
-                      ? 'relative flex w-full min-h-16 items-center gap-3 rounded-2xl bg-muted/45 px-4 py-3 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:h-24 sm:rounded-none sm:bg-transparent sm:px-7 sm:py-0 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border'
+                      ? 'relative flex w-full min-h-16 items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-left shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 sm:h-24 sm:rounded-none sm:border-y sm:border-l sm:border-r-0 sm:px-7 sm:py-0 sm:before:absolute sm:before:left-0 sm:before:top-1/2 sm:before:-translate-y-1/2 sm:before:h-8 sm:before:w-px sm:before:bg-border'
                       : `${FIELD_TRIGGER_CLASS} sm:rounded-l-none`
                   }
                   style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
@@ -537,13 +537,19 @@ function ActivityItinerarySearch({ presentation, initialQuery = '', controlsSlot
           </Popover>
 
           {!isModal && (
-            <div className={`flex items-center justify-stretch sm:justify-end ${isPill ? 'sm:pr-5' : 'sm:pl-2'}`}>
+            <div
+              className={`flex items-center justify-stretch sm:justify-end ${
+                isPill
+                  ? 'rounded-2xl border border-border bg-card p-3 shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none sm:h-24 sm:rounded-l-none sm:rounded-r-[28px] sm:border-y sm:border-l sm:border-r sm:py-0 sm:pl-2 sm:pr-5'
+                  : 'sm:pl-2'
+              }`}
+            >
               <button
                 type="submit"
                 aria-label="Search trips"
                 className={
                   isPill
-                    ? 'inline-flex h-[52px] min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-weelp-sage-deep px-8 text-sm font-semibold text-white transition-colors duration-200 ease-out hover:bg-weelp-sage-deep/85 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none sm:h-16 sm:w-auto sm:min-w-[200px] sm:px-10'
+                    ? 'inline-flex h-[52px] min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border border-border bg-background px-8 text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-colors duration-200 ease-out hover:bg-weelp-sage-wash hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none sm:h-16 sm:w-auto sm:min-w-[200px] sm:px-10'
                     : 'inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-6 py-[18px] text-sm font-semibold text-Bluewhale shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-colors hover:bg-weelp-sage-wash hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none'
                 }
               >

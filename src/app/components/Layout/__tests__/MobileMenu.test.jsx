@@ -85,6 +85,17 @@ describe('MobileMenu', () => {
     expect(topStrip).not.toHaveClass('bg-surface-tint');
   });
 
+  it('keeps over-hero top strip spacing aligned with solid mobile pages', () => {
+    render(<MobileMenu stickyHeader={false} variant="over-hero" />);
+
+    const topStripGrid = screen.getByText('Get Exclusive offer on the App').closest('.grid');
+    const offerPill = screen.getByText('Get Exclusive offer on the App').closest('.inline-flex');
+
+    expect(topStripGrid).toHaveClass('px-3', 'py-2.5', 'sm:px-4', 'sm:py-3');
+    expect(offerPill).toHaveClass('py-1', 'sm:py-1.5');
+    expect(topStripGrid).not.toHaveClass('pt-[18px]', 'pb-1.5');
+  });
+
   it('gives both mobile brand links a minimum 44px touch target', () => {
     render(<MobileMenu stickyHeader={false} />);
 

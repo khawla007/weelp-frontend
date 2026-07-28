@@ -84,10 +84,13 @@ describe('ActivityItinerarySearch', () => {
   it('preserves the Home Search action spacing and radius', () => {
     renderSearch(<HomeActivityItinerarySearch />);
 
+    const whereInput = screen.getByRole('combobox', { name: /where to/i });
     const searchButton = screen.getByRole('button', { name: /search trips/i });
+    expect(whereInput.closest('.cursor-pointer')).toHaveClass('sm:rounded-l-[28px]', 'sm:rounded-r-none');
     expect(searchButton.parentElement).toHaveClass('sm:pr-5');
-    expect(searchButton.parentElement).not.toHaveClass('sm:pl-2');
+    expect(searchButton.parentElement).toHaveClass('bg-card', 'sm:pl-2');
     expect(searchButton).toHaveClass('rounded-2xl');
+    expect(searchButton).toHaveClass('bg-background', 'text-Bluewhale');
   });
 
   it('preserves the Modal Search action spacing and radius', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 
-import DesktopMenu from '../NavigationMenu';
+import DesktopMenu, { DesktopTopStrip } from '../NavigationMenu';
 
 jest.mock('next/navigation', () => ({
   usePathname: () => '/',
@@ -85,6 +85,17 @@ describe('DesktopMenu', () => {
     expect(screen.getByRole('link', { name: /tours & experiences/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^transfers$/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^trips$/i })).toBeInTheDocument();
+  });
+
+  it('keeps over-hero desktop top strip spacing aligned with solid pages', () => {
+    render(<DesktopTopStrip topStripVisible topStripOverHero collapsible />);
+
+    const topStrip = screen.getByText(/get exclusive offer on the app/i).closest('.hidden');
+    const topStripInner = screen.getByText(/get exclusive offer on the app/i).closest('.mx-auto');
+
+    expect(topStrip).toHaveClass('max-h-[46px]');
+    expect(topStrip).not.toHaveClass('max-h-[52px]');
+    expect(topStripInner).toHaveClass('h-[46px]', 'px-4', 'md:px-8', 'xl:px-[60px]');
   });
 
   it('keeps the desktop mega menu mounted in a closing state before unmounting', () => {

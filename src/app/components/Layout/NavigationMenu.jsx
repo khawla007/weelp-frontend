@@ -34,10 +34,10 @@ const getInitials = (name) => {
 export const DesktopTopStrip = ({ topStripVisible, topStripOverHero, collapsible = true }) => {
   // collapsible=false: strip keeps constant 46px height; visibility controlled by parent rendering it conditionally
   // collapsible=true: strip animates max-height/opacity for the in-flow over-hero case (no doc-height oscillation since parent is fixed)
-  const topStripHeightClass = topStripOverHero ? 'h-[52px]' : 'h-[46px]';
+  const topStripHeightClass = 'h-[46px]';
   const collapseClass = collapsible
     ? `overflow-hidden transition-[max-height,opacity,background-color,border-color] duration-200 ease-out motion-reduce:transition-none ${
-        topStripVisible ? `${topStripOverHero ? 'max-h-[52px]' : 'max-h-[46px]'} opacity-100` : 'max-h-0 opacity-0 pointer-events-none'
+        topStripVisible ? 'max-h-[46px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
       }`
     : 'h-[46px]';
   const surfaceClass = topStripVisible ? (topStripOverHero ? 'border-b border-transparent bg-transparent' : 'border-b border-border bg-card') : 'border-b-0 bg-transparent';
