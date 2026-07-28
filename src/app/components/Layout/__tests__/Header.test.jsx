@@ -31,9 +31,19 @@ jest.mock('../NavigationMenu', () => {
 });
 
 jest.mock('../MobileMenu', () => {
-  const MobileMenuMock = ({ stickyHeader, variant }) => <div data-testid="mobile-menu" data-sticky={stickyHeader ? 'true' : 'false'} data-variant={variant} />;
+  const MobileMenuMock = ({ stickyHeader, variant, showTopStrip = true }) => (
+    <div data-testid="mobile-menu" data-sticky={stickyHeader ? 'true' : 'false'} data-variant={variant} data-show-top-strip={showTopStrip ? 'true' : 'false'} />
+  );
   MobileMenuMock.displayName = 'MobileMenuMock';
-  return MobileMenuMock;
+  const MobileTopStripMock = ({ topStripVisible, collapsible }) => (
+    <div data-testid="mobile-top-strip" data-visible={topStripVisible ? 'true' : 'false'} data-collapsible={collapsible ? 'true' : 'false'} />
+  );
+  MobileTopStripMock.displayName = 'MobileTopStripMock';
+  return {
+    __esModule: true,
+    default: MobileMenuMock,
+    MobileTopStrip: MobileTopStripMock,
+  };
 });
 
 jest.mock('../../Modals/MiniCartNew', () => {
@@ -88,6 +98,8 @@ describe('Header', () => {
     // the sticky element owns the scroll behavior across mobile, tablet, and desktop.
     expect(screen.queryByTestId('desktop-menu')).not.toBeInTheDocument();
     expect(screen.getByTestId('desktop-top-strip')).toHaveAttribute('data-collapsible', 'false');
+    expect(screen.getByTestId('mobile-top-strip')).toHaveAttribute('data-collapsible', 'false');
+    expect(screen.getByTestId('mobile-menu')).toHaveAttribute('data-show-top-strip', 'false');
     expect(screen.getByTestId('desktop-main-bar')).toHaveAttribute('data-sticky', 'false');
   });
 

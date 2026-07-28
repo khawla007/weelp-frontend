@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
-import { formatCurrency } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
 export default function CityCard({ city, className = '', subtitleMode = 'count' }) {
@@ -22,7 +22,10 @@ export default function CityCard({ city, className = '', subtitleMode = 'count' 
   return (
     <NavigationLink
       href={`/cities/${city.slug}`}
-      className={`group relative block h-[360px] overflow-hidden rounded-lg border border-white/80 bg-background ring-1 ring-white/80 transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:border-white/10 dark:ring-white/10 ${className}`}
+      className={cn(
+        'group relative block h-[280px] overflow-hidden rounded-lg border border-white/80 bg-background ring-1 ring-white/80 transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:border-white/10 dark:ring-white/10 sm:h-[320px] xl:h-[360px]',
+        className,
+      )}
     >
       <Image
         src={image}

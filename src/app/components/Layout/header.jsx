@@ -4,7 +4,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import DesktopMenu, { DesktopTopStrip, DesktopMainBar } from './NavigationMenu';
-import MobileMenu from './MobileMenu';
+import MobileMenu, { MobileTopStrip } from './MobileMenu';
 import MiniCartNew from '../Modals/MiniCartNew';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 
@@ -56,16 +56,19 @@ const Header = () => {
   }
 
   // Solid (non-home) variant:
-  // The desktop top strip is rendered as a sibling above <header> so it sits in
-  // normal flow and scrolls off naturally. <header> itself is the sticky element
-  // across mobile, tablet, and desktop, so child menus do not switch between
-  // in-flow and fixed positioning around the scroll threshold.
+  // The top strips are rendered as siblings above <header> so they sit in normal
+  // flow and scroll off naturally. <header> itself is the sticky element across
+  // mobile, tablet, and desktop, so child menus do not switch height or position
+  // around the scroll threshold.
   return (
     <>
       <DesktopTopStrip topStripVisible topStripOverHero={false} collapsible={false} />
+      <div className="lg:hidden">
+        <MobileTopStrip topStripVisible topStripOverHero={false} collapsible={false} />
+      </div>
       <header className="sticky top-0 z-[99999] block w-full" data-weelp-header-variant={variant}>
         <DesktopMainBar stickyHeader={isScrolled} mainBarTransparent={false} />
-        <MobileMenu stickyHeader={isScrolled} variant={variant} />
+        <MobileMenu stickyHeader={isScrolled} variant={variant} showTopStrip={false} />
         {miniCartPortalTarget && isMiniCartOpen ? createPortal(<MiniCartNew />, miniCartPortalTarget) : null}
       </header>
     </>

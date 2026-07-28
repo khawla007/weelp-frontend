@@ -77,6 +77,8 @@ describe('CitiesPage', () => {
       sort_by: 'activities_desc',
     });
     expect(screen.getByRole('heading', { name: 'All Cities' })).toBeInTheDocument();
+    expect(screen.getByTestId('cities-heading-stack')).toHaveClass('pt-6', 'md:pt-[70px]');
+    expect(screen.getByTestId('cities-heading-stack')).not.toHaveClass('pt-[70px]');
     expect(screen.getByText('22 cities')).toBeInTheDocument();
     expect(screen.getByTestId('cities-toolbar')).toBeInTheDocument();
     expect(screen.getByTestId('cities-listing-layout')).toHaveClass('lg:grid-cols-[224px_minmax(0,1fr)]');
@@ -84,6 +86,7 @@ describe('CitiesPage', () => {
     expect(screen.getByTestId('cities-listing-results')).toHaveClass('lg:col-start-2', 'lg:row-start-1');
     expect(screen.getByTestId('cities-controls')).toHaveAttribute('data-countries', 'united-arab-emirates');
     expect(screen.getByTestId('cities-controls')).toHaveAttribute('data-seasons', 'winter');
+    expect(screen.getByText('Abu Dhabi').closest('section')).toHaveClass('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-2', 'xl:grid-cols-3', '2xl:grid-cols-4');
     expect(screen.getByLabelText('Previous page')).toHaveAttribute('data-query', 'search=abu&country=united-arab-emirates&season=winter&sort_by=activities_desc&page=1');
     expect(screen.getByLabelText('Next page')).toHaveAttribute('data-query', 'search=abu&country=united-arab-emirates&season=winter&sort_by=activities_desc&page=3');
   });

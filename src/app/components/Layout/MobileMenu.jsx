@@ -25,42 +25,47 @@ const getInitials = (name) => {
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 };
 
-const MobileMenu = ({ stickyHeader, variant = 'solid' }) => {
-  const isOverHero = variant === 'over-hero';
-  const fixedToViewport = isOverHero && stickyHeader;
-  const topStripVisible = !stickyHeader;
-  const mainBarTransparent = isOverHero && !stickyHeader;
-  const topStripTransparent = isOverHero && topStripVisible;
-  const topStripSurfaceClass = topStripTransparent ? 'border-transparent bg-transparent text-weelp-hero-foreground' : 'border-border bg-card text-foreground';
-  const topStripOfferPillClass = topStripTransparent ? 'border-weelp-hero-foreground/10 bg-transparent text-weelp-hero-foreground' : 'border-border bg-background/80';
-  const topStripLocalePillClass = topStripTransparent
-    ? 'border-transparent bg-background/85 text-foreground backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:shadow-none'
-    : 'border-border bg-background text-foreground';
+export const MobileTopStrip = ({ topStripVisible, topStripOverHero, collapsible = true }) => {
+  const topStripSurfaceClass = topStripOverHero && topStripVisible ? 'border-transparent bg-transparent text-weelp-hero-foreground' : 'border-border bg-card text-foreground';
+  const topStripOfferPillClass = topStripOverHero && topStripVisible ? 'border-weelp-hero-foreground/10 bg-transparent text-weelp-hero-foreground' : 'border-border bg-background/80';
+  const topStripLocalePillClass =
+    topStripOverHero && topStripVisible
+      ? 'border-transparent bg-background/85 text-foreground backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:shadow-none'
+      : 'border-border bg-background text-foreground';
   const topStripSpacingClass = 'px-3 py-2.5 sm:px-4 sm:py-3';
   const topStripInnerPaddingClass = 'py-1 sm:py-1.5';
+  const collapseClass = collapsible
+    ? `${topStripVisible ? 'max-h-24' : 'max-h-0 pointer-events-none'} overflow-hidden transition-[max-height,padding] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none`
+    : 'h-[46px] overflow-hidden';
+
+  return (
+    <div aria-hidden={topStripVisible ? undefined : true} className={`${topStripVisible ? 'border-b' : 'border-b-0'} ${collapseClass} ${topStripSurfaceClass}`}>
+      <div className={`grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] sm:text-[11px] sm:tracking-[0.14em] ${topStripSpacingClass}`}>
+        <div className={`inline-flex min-w-0 items-center gap-1.5 rounded-full border px-2.5 sm:gap-2 sm:px-3 ${topStripInnerPaddingClass} ${topStripOfferPillClass}`}>
+          <Smartphone className="size-3.5 shrink-0" />
+          <span className="truncate">Get Exclusive offer on the App</span>
+        </div>
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <div className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 sm:px-3 ${topStripInnerPaddingClass} ${topStripLocalePillClass}`}>
+            <Globe className="size-3.5 shrink-0" />
+            <span>{HEADER_SECONDARY_META[0]}</span>
+          </div>
+          <div className={`rounded-full border px-2.5 sm:px-3 ${topStripInnerPaddingClass} ${topStripLocalePillClass}`}>{HEADER_SECONDARY_META[1]}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const MobileMenu = ({ stickyHeader, variant = 'solid', showTopStrip = true }) => {
+  const isOverHero = variant === 'over-hero';
+  const fixedToViewport = isOverHero && stickyHeader;
+  const topStripVisible = showTopStrip && !stickyHeader;
+  const mainBarTransparent = isOverHero && !stickyHeader;
 
   return (
     <div data-weelp-mobile-menu="true" className={`lg:hidden w-full ${fixedToViewport ? 'fixed top-0 left-0 right-0 z-40 shadow-md dark:shadow-none' : ''}`}>
-      <div
-        aria-hidden={topStripVisible ? undefined : true}
-        className={`${topStripVisible ? 'border-b' : 'border-b-0'} overflow-hidden transition-[max-height,padding] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${topStripSurfaceClass} ${
-          topStripVisible ? 'max-h-24' : 'max-h-0 pointer-events-none'
-        }`}
-      >
-        <div className={`grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] sm:text-[11px] sm:tracking-[0.14em] ${topStripSpacingClass}`}>
-          <div className={`inline-flex min-w-0 items-center gap-1.5 rounded-full border px-2.5 sm:gap-2 sm:px-3 ${topStripInnerPaddingClass} ${topStripOfferPillClass}`}>
-            <Smartphone className="size-3.5 shrink-0" />
-            <span className="truncate">Get Exclusive offer on the App</span>
-          </div>
-          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-            <div className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 sm:px-3 ${topStripInnerPaddingClass} ${topStripLocalePillClass}`}>
-              <Globe className="size-3.5 shrink-0" />
-              <span>{HEADER_SECONDARY_META[0]}</span>
-            </div>
-            <div className={`rounded-full border px-2.5 sm:px-3 ${topStripInnerPaddingClass} ${topStripLocalePillClass}`}>{HEADER_SECONDARY_META[1]}</div>
-          </div>
-        </div>
-      </div>
+      {showTopStrip && <MobileTopStrip topStripVisible={topStripVisible} topStripOverHero={isOverHero && topStripVisible} collapsible />}
 
       <div
         className={`${

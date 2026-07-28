@@ -1,6 +1,7 @@
 'use client';
 
-import { X } from 'lucide-react';
+import { useState } from 'react';
+import { SlidersHorizontal, X } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
@@ -23,6 +24,7 @@ export default function CitiesListingControls({ countries = [], seasons = [] }) 
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const selectedCountry = searchParams.get('country') || '';
   const selectedSeason = searchParams.get('season') || '';
   const searchValue = searchParams.get('search') || '';
@@ -44,9 +46,14 @@ export default function CitiesListingControls({ countries = [], seasons = [] }) 
     update({ [key]: currentValue === nextValue ? '' : nextValue });
   };
 
+  const submitSheetSearch = (value) => {
+    update({ search: value });
+    setIsFilterOpen(false);
+  };
+
   return (
     <div className="flex flex-col gap-4" aria-label="City listing controls">
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 lg:hidden">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2 sm:gap-3 lg:hidden">
         <ListingSearchSortControls
           searchParams={searchParams}
           sortOptions={SORT_OPTIONS}
@@ -60,13 +67,14 @@ export default function CitiesListingControls({ countries = [], seasons = [] }) 
           onSort={(value) => update({ sort_by: value })}
         />
         <div data-testid="mobile-city-filters" className="lg:hidden">
-          <Sheet>
+          <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
             <SheetTrigger asChild>
-              <Button type="button" variant="outline" className="min-h-11 w-full rounded-[11.5px]" aria-label="Open city filters">
-                Filters
+              <Button type="button" variant="outline" className="min-h-11 w-full rounded-[11.5px] px-3" aria-label="Open city filters">
+                <SlidersHorizontal className="size-4" />
+                <span>Filters</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[320px] max-w-[85vw] overflow-y-auto p-4 sm:w-[360px] sm:p-5">
+            <SheetContent side="left" className="w-[320px] max-w-[90vw] overflow-y-auto p-4 sm:w-[360px] sm:p-5">
               <SheetHeader>
                 <SheetTitle>Filters</SheetTitle>
                 <SheetDescription>Narrow the city list.</SheetDescription>
@@ -78,10 +86,10 @@ export default function CitiesListingControls({ countries = [], seasons = [] }) 
                   selectedCountry={selectedCountry}
                   selectedSeason={selectedSeason}
                   searchParams={searchParams}
-                  onSearch={(value) => update({ search: value })}
+                  onSearch={submitSheetSearch}
                   onCountryChange={(value) => setSingleFilter('country', selectedCountry, value)}
                   onSeasonChange={(value) => setSingleFilter('season', selectedSeason, value)}
-                  className="p-0 shadow-none sm:p-0"
+                  className="p-4 shadow-none sm:p-5"
                 />
               </div>
               <SheetClose asChild>

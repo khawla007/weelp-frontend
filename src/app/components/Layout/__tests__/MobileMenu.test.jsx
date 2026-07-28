@@ -69,6 +69,13 @@ describe('MobileMenu', () => {
     expect(mobileMenu).not.toHaveClass('fixed', 'top-0', 'left-0', 'right-0');
   });
 
+  it('can render only the sticky mobile main bar for solid page headers', () => {
+    render(<MobileMenu stickyHeader variant="solid" showTopStrip={false} />);
+
+    expect(screen.queryByText('Get Exclusive offer on the App')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Open main navigation' })).toBeInTheDocument();
+  });
+
   it('keeps the over-hero mobile menu fixed after scroll', () => {
     const { container } = render(<MobileMenu stickyHeader variant="over-hero" />);
 

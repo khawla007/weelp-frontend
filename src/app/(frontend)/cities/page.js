@@ -25,15 +25,15 @@ export default async function CitiesPage({ searchParams }) {
   const hasActiveFilters = Object.keys(filters).length > 0;
 
   return (
-    <section className="container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24">
-      <div className="flex flex-col gap-4 pt-[70px]">
+    <section className="container-page flex flex-col gap-6 pb-10 md:gap-8 md:pb-16 lg:pb-24">
+      <div data-testid="cities-heading-stack" className="flex flex-col gap-4 pt-6 md:pt-[70px]">
         <BreadCrumb />
         <div className="weelp-rise-mask weelp-rise-mask--block -mt-0.5 w-full">
           <div className="weelp-rise-item w-full" style={{ '--weelp-rise-delay': '200ms' }}>
             <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
               <div className="flex flex-col gap-2">
                 <span className="text-[14px] font-semibold tracking-[0.2px] text-muted-foreground">Explore destinations</span>
-                <h1 className="text-lg text-foreground sm:text-[36px]">All Cities</h1>
+                <h1 className="text-[28px] leading-tight text-foreground sm:text-[36px]">All Cities</h1>
                 <p className="max-w-[520px] text-sm font-medium leading-[1.5] text-muted-foreground sm:text-base">Find cities by country, season, activity count, or name.</p>
               </div>
               {!isError && (
@@ -66,15 +66,15 @@ export default async function CitiesPage({ searchParams }) {
           )}
         </div>
       ) : (
-        <div data-testid="cities-listing-layout" className="grid items-start gap-6 lg:grid-cols-[224px_minmax(0,1fr)] lg:gap-6">
+        <div data-testid="cities-listing-layout" className="grid items-start gap-5 md:gap-6 lg:grid-cols-[224px_minmax(0,1fr)] lg:gap-6">
           <aside data-testid="cities-listing-sidebar" className="min-w-0 lg:col-start-1 lg:row-start-1">
             <CitiesListingControls countries={response?.available_countries || []} seasons={response?.available_seasons || []} />
           </aside>
-          <div data-testid="cities-listing-results" className="flex min-w-0 flex-col gap-6 lg:col-start-2 lg:row-start-1">
+          <div data-testid="cities-listing-results" className="flex min-w-0 flex-col gap-5 md:gap-6 lg:col-start-2 lg:row-start-1">
             <h2 className="sr-only">All cities</h2>
-            <Reveal as="section" initialHidden stagger={60} variant="lift" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+            <Reveal as="section" initialHidden stagger={60} variant="lift" className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
               {cities.map((city) => (
-                <CityCard key={city.id} city={city} />
+                <CityCard key={city.id} city={city} className="h-[300px] sm:h-[320px] lg:h-[300px] xl:h-[340px]" />
               ))}
             </Reveal>
 
