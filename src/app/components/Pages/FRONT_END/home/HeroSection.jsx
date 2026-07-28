@@ -56,7 +56,10 @@ const HeroSection = () => {
           </span>
         </span>
 
-        <p className="-mt-2 w-fit max-w-[30ch] px-0 py-2 text-sm leading-[1.4] text-[var(--weelp-home-hero-copy)] [background:radial-gradient(ellipse_at_center,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0.25)_45%,rgba(255,255,255,0)_75%)] sm:py-3 sm:text-lg">
+        <p
+          className="-mt-2 relative isolate w-fit max-w-[30ch] px-0 py-2 text-sm leading-[1.4] text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] before:absolute before:-inset-x-5 before:-inset-y-3 before:-z-10 before:rounded-full before:bg-[var(--weelp-hero-subtitle-shade)] before:blur-2xl before:content-[''] sm:py-3 sm:text-lg sm:text-[var(--weelp-home-hero-copy)] sm:[background:radial-gradient(ellipse_at_center,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0.25)_45%,rgba(255,255,255,0)_75%)] sm:[text-shadow:none] sm:before:hidden"
+          style={{ '--weelp-hero-subtitle-shade': 'rgba(0, 0, 0, 0.35)' }}
+        >
           <span className="weelp-rise-mask weelp-rise-mask--block">
             <span className="weelp-rise-item block" style={{ '--weelp-rise-delay': '320ms' }}>
               Beach stays, marina views, and easy city plans in one place.
