@@ -1,10 +1,11 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import { Check, X, ChevronRight } from 'lucide-react';
 import SectionHeader from '@/app/components/ui/SectionHeader';
 import { SingleProductReview } from './SingleProductReview';
 import { activityHighlights, inclusionsList } from '@/app/Data/SingleActivityData';
+import { createAccordionItemKeys, useAnchoredAccordion } from '@/hooks/useAnchoredAccordion';
 
 const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
 const INITIAL_VISIBLE_INCLUDED_ROWS = 6;
@@ -46,6 +47,7 @@ export const normalizeInclusionItems = (items) =>
 export const normalizeFaqItems = (faqs) =>
   (Array.isArray(faqs) ? faqs : [])
     .map((faq) => ({
+      id: faq?.id,
       question: faq?.question || faq?.title,
       answer: faq?.answer || faq?.content,
     }))
@@ -118,6 +120,8 @@ export const ReviewPanel = ({ productData, productType, activitySlug, itineraryS
 // FAQ Panel
 export const FaqPanel = ({ faqs = [] }) => {
   const dynamicFaqs = normalizeFaqItems(faqs);
+  const itemKeys = createAccordionItemKeys(dynamicFaqs, (faq) => faq.id ?? faq.question);
+  const [openIndex, handleToggle] = useAnchoredAccordion(itemKeys, dynamicFaqs.length > 0 ? 0 : null);
 
   if (dynamicFaqs.length === 0) {
     return null;
@@ -130,28 +134,44 @@ export const FaqPanel = ({ faqs = [] }) => {
       {/* Accordion FAQ items */}
       <div className="flex flex-col gap-3">
         {dynamicFaqs.map((faq, index) => (
-          <FaqAccordionItem key={index} question={faq.question} answer={faq.answer} defaultOpen={index === 0} />
+          <FaqAccordionItem key={itemKeys[index]} question={faq.question} answer={faq.answer} isOpen={openIndex === index} onToggle={(event) => handleToggle(index, event.currentTarget)} />
         ))}
       </div>
     </div>
   );
 };
 
-const FaqAccordionItem = ({ question, answer, defaultOpen = false }) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+const FaqAccordionItem = ({ question, answer, isOpen, onToggle }) => {
+  const itemId = useId();
+  const triggerId = `${itemId}-trigger`;
+  const panelId = `${itemId}-panel`;
+
   return (
     <div className="border border-border rounded-xl overflow-hidden">
       <button
+        id={triggerId}
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={onToggle}
         aria-expanded={isOpen}
+        aria-controls={panelId}
         className={`w-full flex items-center justify-between p-5 text-left hover:bg-surface-tint transition-colors ${FOCUS_RING}`}
       >
         <span className="text-base font-semibold text-foreground">{question}</span>
-        <ChevronRight className={`transition-transform duration-300 flex-shrink-0 text-copy ${isOpen ? 'rotate-90' : ''}`} size={16} aria-hidden="true" />
+        <ChevronRight className={`transition-transform duration-300 motion-reduce:transition-none flex-shrink-0 text-copy ${isOpen ? 'rotate-90' : ''}`} size={16} aria-hidden="true" />
       </button>
-      <div className={`overflow-hidden transition-opacity duration-300 ease-[var(--weelp-ease-panel)] motion-reduce:transition-none ${isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-        <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">{answer}</p>
+      <div
+        id={panelId}
+        role="region"
+        aria-labelledby={triggerId}
+        aria-hidden={!isOpen}
+        inert={!isOpen}
+        className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 ease-[var(--weelp-ease-panel)] motion-reduce:transition-none ${
+          isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+        }`}
+      >
+        <div className="min-h-0">
+          <p className="px-5 pt-2 pb-5 text-sm text-muted-foreground leading-relaxed">{answer}</p>
+        </div>
       </div>
     </div>
   );
