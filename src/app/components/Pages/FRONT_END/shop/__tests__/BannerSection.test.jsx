@@ -16,9 +16,11 @@ describe('Search BannerSection', () => {
     const BannerSection = require('../BannerSection').default;
     const { container, getByText } = render(<BannerSection />);
     const searchPanel = container.querySelector('.shop_banner');
+    const resultsHeadingPanel = getByText(/You Searched for/).closest('.bg-surface-tint');
 
     expect(getByText(/You Searched for/)).toBeInTheDocument();
     expect(searchPanel).toHaveClass('relative', 'z-10');
+    expect(resultsHeadingPanel).toHaveClass('mb-10', 'md:mb-16', 'lg:mb-24');
     expect(screen.getByTestId('results-discovery-search')).toHaveAttribute('data-initial-query', 'location=dubai');
   });
 
@@ -30,6 +32,9 @@ describe('Search BannerSection', () => {
     const searchPanel = container.querySelector('.shop_banner');
     const searchPanelRail = screen.getByTestId('search-panel-rail');
 
+    expect(searchPanel).toHaveClass('bg-background');
+    expect(searchPanel).not.toHaveClass('bg-weelp-sage-deep');
+    expect(searchPanel).toHaveClass('border-b', 'border-border');
     expect(searchPanel).toHaveClass('py-6', 'sm:py-10');
     expect(searchPanelRail).toHaveClass('container-page', 'flex', 'justify-center');
     expect(searchPanelRail).toContainElement(screen.getByTestId('results-discovery-search'));

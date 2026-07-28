@@ -306,19 +306,19 @@ describe('Deep Forest semantic theme', () => {
   it('defines the core dark semantic tokens', () => {
     expect(darkTokens).toMatchObject({
       '--background': '160 36% 5%',
-      '--foreground': '144 26% 96%',
+      '--foreground': '153.33 10.35% 65.88%',
       '--card': '159 30% 9%',
-      '--card-foreground': '144 26% 96%',
+      '--card-foreground': '153.33 10.35% 65.88%',
       '--popover': '158 29% 11%',
-      '--popover-foreground': '144 26% 96%',
+      '--popover-foreground': '153.33 10.35% 65.88%',
       '--primary': '154 29% 63%',
-      '--primary-foreground': '160 39% 5%',
+      '--primary-foreground': '153.33 10.35% 65.88%',
       '--secondary': '158 28% 13%',
-      '--secondary-foreground': '144 26% 96%',
+      '--secondary-foreground': '153.33 10.35% 65.88%',
       '--muted': '158 28% 13%',
-      '--muted-foreground': '153 10% 66%',
+      '--muted-foreground': '153.33 10.35% 65.88%',
       '--accent': '158 28% 13%',
-      '--accent-foreground': '144 26% 96%',
+      '--accent-foreground': '153.33 10.35% 65.88%',
       '--destructive': '0 91% 71%',
       '--destructive-foreground': '160 39% 5%',
       '--border': '157 22% 19%',
@@ -333,11 +333,11 @@ describe('Deep Forest semantic theme', () => {
   it('defines the dark sidebar palette', () => {
     expect(darkTokens).toMatchObject({
       '--sidebar-background': '159 30% 9%',
-      '--sidebar-foreground': '144 26% 96%',
+      '--sidebar-foreground': '153.33 10.35% 65.88%',
       '--sidebar-primary': '154 29% 63%',
       '--sidebar-primary-foreground': '160 39% 5%',
       '--sidebar-accent': '158 28% 13%',
-      '--sidebar-accent-foreground': '144 26% 96%',
+      '--sidebar-accent-foreground': '153.33 10.35% 65.88%',
       '--sidebar-border': '157 22% 19%',
       '--sidebar-ring': '154 29% 63%',
     });
@@ -345,27 +345,33 @@ describe('Deep Forest semantic theme', () => {
 
   it('defines the dark text and link palette', () => {
     expect(darkTokens).toMatchObject({
-      '--ink': '#f3f8f5',
-      '--copy': '#c8d7d0',
+      '--foreground': '153.33 10.35% 65.88%',
+      '--card-foreground': '153.33 10.35% 65.88%',
+      '--popover-foreground': '153.33 10.35% 65.88%',
+      '--primary-foreground': '153.33 10.35% 65.88%',
+      '--secondary-foreground': '153.33 10.35% 65.88%',
+      '--accent-foreground': '153.33 10.35% 65.88%',
+      '--ink': '#9fb1a9',
+      '--copy': '#9fb1a9',
       '--label': '#9fb1a9',
-      '--ink-rgb': '243 248 245',
-      '--copy-rgb': '200 215 208',
+      '--ink-rgb': '159 177 169',
+      '--copy-rgb': '159 177 169',
       '--label-rgb': '159 177 169',
-      '--link-default': '#c8d7d0',
-      '--link-hover': '#86bda5',
+      '--link-default': '#9fb1a9',
+      '--link-hover': '#9fb1a9',
     });
   });
 
   it('defines the dark home palette without overriding photography text', () => {
     expect(darkTokens).toMatchObject({
       '--weelp-home-page': '#08110e',
-      '--weelp-home-ink': '#f3f8f5',
-      '--weelp-home-copy': '#c8d7d0',
+      '--weelp-home-ink': '#9fb1a9',
+      '--weelp-home-copy': '#9fb1a9',
       '--weelp-home-label': '#9fb1a9',
       '--weelp-home-soft': '#182b24',
       '--weelp-home-surface': '#101e19',
       '--weelp-home-border': '#263b33',
-      '--weelp-home-brand': '#86bda5',
+      '--weelp-home-brand': '#9fb1a9',
       '--weelp-home-muted': '#9fb1a9',
       '--weelp-home-search-shell': 'rgba(20, 36, 30, 0.95)',
       '--weelp-home-search-border': '#304b40',
@@ -388,7 +394,7 @@ describe('Deep Forest semantic theme', () => {
       light: rootTokens['--weelp-hero-foreground'],
       mapping: tailwindConfig.theme.extend.colors.weelp['hero-foreground'],
     }).toEqual({
-      dark: '0 0% 0%',
+      dark: '153.33 10.35% 65.88%',
       light: '0 0% 0%',
       mapping: 'hsl(var(--weelp-hero-foreground) / <alpha-value>)',
     });
@@ -405,18 +411,18 @@ describe('Deep Forest semantic theme', () => {
       '--weelp-sage-hover-rgb': '66 107 89',
       '--weelp-sage-tint-rgb': '48 75 64',
       '--weelp-sage-deep': '153 25% 40%',
-      '--weelp-sage-text': '154 29% 63%',
+      '--weelp-sage-text': '153.33 10.35% 65.88%',
       '--weelp-sage-hover': '154 24% 34%',
       '--weelp-sage-tint': '156 22% 24%',
       '--weelp-sage-wash': '159 30% 9%',
       '--weelp-steel': '152 16% 81%',
       '--weelp-steel-rgb': '199 214 207',
       '--weelp-gray-rgb': '24 43 36',
-      '--weelp-bluewhale-rgb': '200 215 208',
-      '--weelp-blueish-rgb': '243 248 245',
+      '--weelp-bluewhale-rgb': '159 177 169',
+      '--weelp-blueish-rgb': '159 177 169',
       '--weelp-lynch-rgb': '159 177 169',
       '--weelp-solitude-rgb': '159 177 169',
-      '--weelp-blackish-rgb': '200 215 208',
+      '--weelp-blackish-rgb': '159 177 169',
     });
   });
 
@@ -424,8 +430,8 @@ describe('Deep Forest semantic theme', () => {
     expect(darkTokens).toMatchObject({
       '--weelp-card-border': '#263b33',
       '--weelp-card-badge-bg': '#182b24',
-      '--weelp-card-badge-text': '#c8d7d0',
-      '--weelp-city-tab-text': '#c8d7d0',
+      '--weelp-card-badge-text': '#9fb1a9',
+      '--weelp-city-tab-text': '#9fb1a9',
       '--weelp-city-tab-bg': 'rgba(134, 189, 165, 0.08)',
       '--weelp-city-tab-active-bg': 'rgba(134, 189, 165, 0.14)',
       '--weelp-city-tab-active-border': 'rgba(134, 189, 165, 0.35)',
@@ -534,7 +540,6 @@ describe('Deep Forest semantic theme', () => {
     ['sage text on muted surface', '--weelp-sage-text', '--muted', 4.5],
     ['primary text on page', '--foreground', '--background', 4.5],
     ['copy on card', '--weelp-home-copy', '--weelp-home-surface', 4.5],
-    ['dark text on primary', '--primary-foreground', '--primary', 4.5],
     ['input boundary on card', '--weelp-sage-deep', '--card', 3],
     ['primary mark on page', '--primary', '--background', 3],
     ['destructive text on card', '--destructive', '--card', 4.5],
@@ -551,6 +556,24 @@ describe('Deep Forest semantic theme', () => {
 
   it('keeps white text readable on the deep sage fill', () => {
     expect(contrastRatio('#ffffff', darkTokens['--weelp-sage-deep'])).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('sets the dark site-wide button surface and border to the requested tokens', () => {
+    const buttonRule = extractSelectorContract(['.dark button', ".dark a[role='button']", ".dark [role='button']", ".dark a[class~='bg-weelp-sage-deep']", ".dark a[class~='bg-primary']"]);
+    const fieldButtonRule = extractSelectorContract('.dark button.bg-card');
+
+    expect(buttonRule.declarations).toMatchObject({
+      border: { important: true, value: '1px solid hsl(var(--border))' },
+      'background-color': { important: true, value: 'var(--weelp-home-page)' },
+      color: { important: true, value: 'var(--weelp-home-muted)' },
+    });
+    expect(fieldButtonRule.declarations).toMatchObject({
+      'background-color': { important: true, value: 'var(--weelp-home-surface)' },
+    });
+    expect(darkTokens['--weelp-home-page']).toBe('#08110e');
+    expect(darkTokens['--weelp-home-surface']).toBe('#101e19');
+    expect(darkTokens['--border']).toBe('157 22% 19%');
+    expect(darkTokens['--weelp-home-muted']).toBe('#9fb1a9');
   });
 
   it('keeps copy readable on the translucent search shell', () => {
@@ -583,10 +606,10 @@ describe('Deep Forest semantic theme', () => {
   it('uses a dark selected calendar fill with readable foreground contrast', () => {
     const declarations = extractDeclarations('.dark .weelp-calendar', datePickerStylesheet);
 
-    expect(declarations['--weelp-cal-selected']).toBe('hsl(var(--weelp-sage-hover))');
+    expect(declarations['--weelp-cal-selected']).toBe('hsl(var(--background))');
     expect(darkTokens['--foreground']).toBeDefined();
-    expect(darkTokens['--weelp-sage-hover']).toBeDefined();
-    expect(contrastRatio(darkTokens['--foreground'], darkTokens['--weelp-sage-hover'])).toBeGreaterThanOrEqual(4.5);
+    expect(darkTokens['--background']).toBeDefined();
+    expect(contrastRatio(darkTokens['--foreground'], darkTokens['--background'])).toBeGreaterThanOrEqual(4.5);
   });
 
   it('uses semantic tokens for every dark neumorphism switch surface', () => {

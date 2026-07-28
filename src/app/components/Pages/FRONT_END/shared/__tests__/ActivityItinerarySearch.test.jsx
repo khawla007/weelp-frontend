@@ -71,13 +71,30 @@ describe('ActivityItinerarySearch', () => {
   });
 
   it.each([
+    ['home', <HomeActivityItinerarySearch key="home-focus" />],
+    ['compact', <CompactActivityItinerarySearch key="compact-focus" />],
+    ['results', <ResultsActivityItinerarySearch key="results-focus" />],
+  ])('%s focuses the location input when the field padding is clicked', (_name, panel) => {
+    renderSearch(panel);
+
+    const whereInput = screen.getByRole('combobox', { name: /where to/i });
+    fireEvent.click(whereInput.closest('.cursor-pointer'));
+
+    expect(whereInput).toHaveFocus();
+  });
+
+  it.each([
     ['compact', <CompactActivityItinerarySearch key="compact-radius" />],
     ['results', <ResultsActivityItinerarySearch key="results-radius" />],
   ])('%s keeps all four Search button corners rounded on desktop', (_name, panel) => {
     renderSearch(panel);
 
+    const whereInput = screen.getByRole('combobox', { name: /where to/i });
     const searchButton = screen.getByRole('button', { name: /search trips/i });
+    expect(whereInput.closest('.cursor-pointer')).toHaveClass('bg-card', 'dark:bg-[var(--weelp-home-surface)]');
     expect(searchButton).toHaveClass('rounded-xl');
+    expect(searchButton).toHaveClass('border-weelp-sage-deep', 'bg-weelp-sage-deep', 'text-white', 'hover:bg-weelp-sage-deep/85');
+    expect(searchButton).toHaveClass('dark:border-border', 'dark:bg-[var(--weelp-home-page)]', 'dark:hover:bg-[var(--weelp-home-page)]', 'dark:hover:opacity-90');
     expect(searchButton).not.toHaveClass('sm:rounded-l-none');
   });
 
@@ -87,10 +104,12 @@ describe('ActivityItinerarySearch', () => {
     const whereInput = screen.getByRole('combobox', { name: /where to/i });
     const searchButton = screen.getByRole('button', { name: /search trips/i });
     expect(whereInput.closest('.cursor-pointer')).toHaveClass('sm:rounded-l-[28px]', 'sm:rounded-r-none');
+    expect(whereInput.closest('.cursor-pointer')).toHaveClass('bg-card', 'dark:bg-[var(--weelp-home-surface)]');
     expect(searchButton.parentElement).toHaveClass('sm:pr-5');
-    expect(searchButton.parentElement).toHaveClass('bg-card', 'sm:pl-2');
+    expect(searchButton.parentElement).toHaveClass('bg-card', 'dark:bg-[var(--weelp-home-surface)]', 'sm:pl-2');
     expect(searchButton).toHaveClass('rounded-2xl');
-    expect(searchButton).toHaveClass('bg-background', 'text-Bluewhale');
+    expect(searchButton).toHaveClass('border-weelp-sage-deep', 'bg-weelp-sage-deep', 'text-white', 'hover:bg-weelp-sage-deep/85');
+    expect(searchButton).toHaveClass('dark:border-border', 'dark:bg-[var(--weelp-home-page)]', 'dark:hover:bg-[var(--weelp-home-page)]', 'dark:hover:opacity-90');
   });
 
   it('preserves the Modal Search action spacing and radius', () => {
@@ -99,6 +118,7 @@ describe('ActivityItinerarySearch', () => {
     const searchButton = screen.getByRole('button', { name: /search trips/i });
     expect(searchButton.parentElement).not.toHaveClass('sm:pl-2');
     expect(searchButton).toHaveClass('mx-auto', 'mt-4', 'rounded-full');
+    expect(searchButton).toHaveClass('border', 'border-weelp-sage-deep', 'bg-weelp-sage-deep', 'dark:border-border', 'dark:bg-[var(--weelp-home-page)]');
     expect(searchButton).not.toHaveClass('rounded-xl');
   });
 

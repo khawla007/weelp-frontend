@@ -14,7 +14,11 @@ jest.mock('react-range-slider-input', () => ({
 }));
 
 jest.mock('@/app/components/SingleProductCard', () => ({
-  GlobalCard: ({ productTitle }) => <article>{productTitle}</article>,
+  GlobalCard: ({ productTitle, stretch }) => (
+    <article data-testid="global-card" data-stretch={stretch ? 'true' : 'false'}>
+      {productTitle}
+    </article>
+  ),
 }));
 
 jest.mock('@/app/components/DashboardShared/ListingCard/ListingCardSkeleton', () => ({
@@ -133,14 +137,31 @@ describe('SearchPage filters', () => {
     const filters = screen.getByTestId('search-filters');
     const results = screen.getByTestId('search-results');
     const filtersButton = within(toolbar).getByRole('button', { name: 'Filters' });
-    const sortTrigger = within(toolbar).getByRole('combobox', { name: 'Sort results' });
+    const sortTrigger = within(filters).getByRole('combobox', { name: 'Sort results' });
+    const categoryHeading = within(filters).getByRole('heading', { name: 'Category' });
 
-    expect(toolbar).toHaveClass('container-page', 'flex', 'items-center', 'gap-3', 'py-4', 'sm:py-6');
+    expect(toolbar).toHaveClass('container-page', 'flex', 'items-center', 'gap-3', 'py-4', 'sm:py-6', 'md:hidden');
     expect(filtersButton).toHaveClass('h-11', 'flex-1', 'justify-center', 'gap-2', 'md:hidden');
     expect(filtersButton).toHaveClass('border', 'bg-background', 'hover:bg-accent', 'hover:text-accent-foreground');
-    expect(sortTrigger).toHaveClass('ml-auto', 'h-11', 'w-full', 'max-w-[180px]');
+    expect(within(toolbar).queryByRole('combobox', { name: 'Sort results' })).not.toBeInTheDocument();
+    expect(sortTrigger).toHaveClass('h-11', 'w-full');
+    expect(sortTrigger.compareDocumentPosition(categoryHeading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(layout).toHaveClass('container-page', 'flex', 'flex-col', 'gap-6', 'pb-10', 'md:flex-row', 'md:items-start', 'md:gap-4', 'lg:gap-8');
-    expect(filters).toHaveClass('w-full', 'rounded-lg', 'bg-background', 'p-4', 'shadow-none', 'md:block', 'md:max-w-xs', 'md:flex-none', 'md:shadow-md', 'dark:md:shadow-none', 'hidden');
+    expect(filters).toHaveClass(
+      'w-full',
+      'rounded-lg',
+      'border',
+      'border-border',
+      'bg-background',
+      'p-4',
+      'shadow-none',
+      'md:block',
+      'md:max-w-xs',
+      'md:flex-none',
+      'md:shadow-md',
+      'dark:md:shadow-none',
+      'hidden',
+    );
     expect(results).toHaveClass('flex', 'min-w-0', 'w-full', 'flex-1', 'items-center', 'justify-center');
   });
 
@@ -156,6 +177,9 @@ describe('SearchPage filters', () => {
     render(<SearchPage />);
 
     expect(await screen.findByText('Dubai Walk')).toBeInTheDocument();
+    const resultGrid = screen.getByTestId('global-card').parentElement;
+    expect(resultGrid).toHaveClass('grid', 'w-full', 'grid-cols-1', 'items-stretch', 'gap-6', 'sm:grid-cols-2', 'xl:grid-cols-3');
+    expect(screen.getByTestId('global-card')).toHaveAttribute('data-stretch', 'true');
 
     const filtersButton = screen.getByRole('button', { name: 'Filters' });
     fireEvent.click(filtersButton);

@@ -65,7 +65,7 @@
   --weelp-cal-fg: hsl(var(--foreground));
   --weelp-cal-muted: hsl(var(--muted-foreground));
   --weelp-cal-disabled: hsl(var(--muted-foreground) / 0.45);
-  --weelp-cal-selected: hsl(var(--weelp-sage-hover));
+  --weelp-cal-selected: hsl(var(--background));
   --weelp-cal-selected-soft: hsl(var(--weelp-sage-deep) / 0.32);
   --weelp-cal-single: hsl(var(--muted));
   --weelp-cal-single-hover: hsl(var(--accent));

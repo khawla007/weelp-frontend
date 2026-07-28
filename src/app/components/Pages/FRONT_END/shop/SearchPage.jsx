@@ -163,7 +163,7 @@ export const SearchPage = () => {
   return (
     <section className="flex flex-col w-full">
       {/* Top Bar Filter */}
-      <div data-testid="search-results-toolbar" className="container-page flex items-center gap-3 py-4 sm:py-6">
+      <div data-testid="search-results-toolbar" className="container-page flex items-center gap-3 py-4 sm:py-6 md:hidden">
         <Button
           type="button"
           variant="outline"
@@ -175,30 +175,32 @@ export const SearchPage = () => {
           <SlidersHorizontal className="size-4" aria-hidden="true" />
           Filters
         </Button>
-        <Select value={sortby} onValueChange={setSortby}>
-          <SelectTrigger aria-label="Sort results" className="ml-auto h-11 w-full max-w-[180px]">
-            <SelectValue placeholder="Sort" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel className="hidden">Sorting Options</SelectLabel>
-              {sortData &&
-                sortData.map((item) => (
-                  <SelectItem className="cursor-pointer" value={item.value} key={item.value}>
-                    {item.name}
-                  </SelectItem>
-                ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
       </div>
       <div data-testid="search-results-layout" className="container-page flex flex-col gap-6 pb-10 md:flex-row md:items-start md:gap-4 lg:gap-8">
         {/* Sidebar Filters */}
         <aside
           id="search-results-filters"
           data-testid="search-filters"
-          className={`w-full rounded-lg bg-background p-4 shadow-none md:block md:max-w-xs md:flex-none md:shadow-md dark:md:shadow-none ${mobileFiltersOpen ? 'block' : 'hidden'}`}
+          className={`w-full rounded-lg border border-border bg-background p-4 shadow-none md:block md:max-w-xs md:flex-none md:shadow-md dark:md:shadow-none ${mobileFiltersOpen ? 'block' : 'hidden'}`}
         >
+          <h2 className="mb-3 mt-4 text-lg font-medium text-foreground">Sort</h2>
+          <Select value={sortby} onValueChange={setSortby}>
+            <SelectTrigger aria-label="Sort results" className="h-11 w-full">
+              <SelectValue placeholder="Sort" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel className="hidden">Sorting Options</SelectLabel>
+                {sortData &&
+                  sortData.map((item) => (
+                    <SelectItem className="cursor-pointer" value={item.value} key={item.value}>
+                      {item.name}
+                    </SelectItem>
+                  ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
           <h2 className="text-lg font-medium text-foreground my-4">Category</h2>
           <div className="relative mb-3">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -282,7 +284,7 @@ export const SearchPage = () => {
           {isLoading ? (
             <ListingCardSkeleton count={6} className="w-full" />
           ) : (
-            <div className="w-full flex flex-wrap gap-6">
+            <div className="grid w-full grid-cols-1 items-stretch gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {products.length > 0 ? (
                 products.map((product, index) => {
                   const productPrice = product?.item_type === 'itinerary' ? product?.schedule_total_price : (product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price);
@@ -299,6 +301,7 @@ export const SearchPage = () => {
                       citySlug={product?.city_slug}
                       productRating={product?.average_rating ?? product?.rating_average ?? product?.review_summary?.average_rating ?? product?.rating}
                       reviewCount={product?.reviews_count ?? product?.review_count ?? product?.review_summary?.total_reviews}
+                      stretch
                     />
                   );
                 })

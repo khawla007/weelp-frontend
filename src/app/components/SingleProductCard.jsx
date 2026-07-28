@@ -59,15 +59,17 @@ export const GlobalCard = ({
   is_featured,
   citySlug: citySlugProp,
   as: TitleTag = 'h3',
+  stretch = false,
 }) => {
   const params = useParams();
   const citySlug = citySlugProp || params?.city;
   const pluralType = ITEM_TYPE_PLURAL[item_type] || item_type;
   const itemHref = citySlug ? `/cities/${citySlug}/${pluralType}/${productSlug}` : `/${item_type}/${productSlug}`;
+  const cardSizeClass = stretch ? 'h-full sm:max-w-none' : 'h-fit sm:max-w-fit';
 
   return (
     <div
-      className={`${'product_' + productId} bg-background rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-border sm:max-w-fit max-w-full h-fit w-full sm:mx-0 relative`}
+      className={`${'product_' + productId} bg-background rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border border-border ${cardSizeClass} max-w-full w-full sm:mx-0 relative`}
     >
       {is_featured && (
         <>
@@ -75,13 +77,13 @@ export const GlobalCard = ({
           <Star size={24} fill="currentColor" strokeWidth={2} className="absolute top-4 right-4 z-10 text-weelp-sage-deep drop-shadow-[0_2px_4px_rgba(86,143,124,0.3)]" />
         </>
       )}
-      <NavigationLink href={itemHref} className="block">
-        <img src={imgsrc ?? '/assets/Card.webp'} alt="productimage" className="w-full sm:w-72 h-52 object-cover" />
-        <div className="flex flex-col gap-[6px] justify-evenly p-4">
+      <NavigationLink href={itemHref} className={stretch ? 'flex h-full flex-col' : 'block'}>
+        <img src={imgsrc ?? '/assets/Card.webp'} alt="productimage" className={`${stretch ? 'w-full' : 'w-full sm:w-72'} h-52 object-cover`} />
+        <div className={`flex ${stretch ? 'flex-1' : ''} flex-col gap-[6px] justify-evenly p-4`}>
           <RatingSummary rating={productRating} reviewCount={reviewCount} />
           <TitleTag className="text-foreground text-lg font-semibold">{productTitle || 'Evening Dessert - Premium'}</TitleTag>
           <hr className=" border-t border-dashed border-border mb-3" />
-          <div className="flex justify-between flex-wrap gap-2">
+          <div className={`flex justify-between flex-wrap gap-2 ${stretch ? 'mt-auto' : ''}`}>
             <div className="flex flex-col  text-muted-foreground font-semibold space-y-4">
               {/* For activity */}
               {item_type === 'activity' && (

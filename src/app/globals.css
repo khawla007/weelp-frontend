@@ -174,21 +174,21 @@ body {
 
   .dark {
     color-scheme: dark;
-    --weelp-hero-foreground: 0 0% 0%;
+    --weelp-hero-foreground: 153.33 10.35% 65.88%;
     --background: 160 36% 5%;
-    --foreground: 144 26% 96%;
+    --foreground: 153.33 10.35% 65.88%;
     --card: 159 30% 9%;
-    --card-foreground: 144 26% 96%;
+    --card-foreground: 153.33 10.35% 65.88%;
     --popover: 158 29% 11%;
-    --popover-foreground: 144 26% 96%;
+    --popover-foreground: 153.33 10.35% 65.88%;
     --primary: 154 29% 63%;
-    --primary-foreground: 160 39% 5%;
+    --primary-foreground: 153.33 10.35% 65.88%;
     --secondary: 158 28% 13%;
-    --secondary-foreground: 144 26% 96%;
+    --secondary-foreground: 153.33 10.35% 65.88%;
     --muted: 158 28% 13%;
-    --muted-foreground: 153 10% 66%;
+    --muted-foreground: 153.33 10.35% 65.88%;
     --accent: 158 28% 13%;
-    --accent-foreground: 144 26% 96%;
+    --accent-foreground: 153.33 10.35% 65.88%;
     --destructive: 0 91% 71%;
     --destructive-foreground: 160 39% 5%;
     --border: 157 22% 19%;
@@ -206,34 +206,34 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --sidebar-background: 159 30% 9%;
-    --sidebar-foreground: 144 26% 96%;
+    --sidebar-foreground: 153.33 10.35% 65.88%;
     --sidebar-primary: 154 29% 63%;
     --sidebar-primary-foreground: 160 39% 5%;
     --sidebar-accent: 158 28% 13%;
-    --sidebar-accent-foreground: 144 26% 96%;
+    --sidebar-accent-foreground: 153.33 10.35% 65.88%;
     --sidebar-border: 157 22% 19%;
     --sidebar-ring: 154 29% 63%;
 
     /* Canonical text tokens — dark parity */
-    --ink: #f3f8f5;
-    --copy: #c8d7d0;
+    --ink: #9fb1a9;
+    --copy: #9fb1a9;
     --label: #9fb1a9;
-    --ink-rgb: 243 248 245;
-    --copy-rgb: 200 215 208;
+    --ink-rgb: 159 177 169;
+    --copy-rgb: 159 177 169;
     --label-rgb: 159 177 169;
-    --link-default: #c8d7d0;
-    --link-hover: #86bda5;
+    --link-default: #9fb1a9;
+    --link-hover: #9fb1a9;
 
     /* Weelp home surfaces — dark parity */
     --weelp-home-page: #08110e;
-    --weelp-home-ink: #f3f8f5;
-    --weelp-home-copy: #c8d7d0;
+    --weelp-home-ink: #9fb1a9;
+    --weelp-home-copy: #9fb1a9;
     --weelp-home-label: #9fb1a9;
     --weelp-home-soft: #182b24;
     --weelp-home-surface: #101e19;
     --weelp-home-border: #263b33;
     --weelp-home-accent: #f59e0b;
-    --weelp-home-brand: #86bda5;
+    --weelp-home-brand: #9fb1a9;
     --weelp-home-muted: #9fb1a9;
     --weelp-home-search-shell: rgba(20, 36, 30, 0.95);
     --weelp-home-search-border: #304b40;
@@ -241,7 +241,7 @@ body {
     --weelp-sage-hover-rgb: 66 107 89;
     --weelp-sage-tint-rgb: 48 75 64;
     --weelp-sage-deep: 153 25% 40%;
-    --weelp-sage-text: 154 29% 63%;
+    --weelp-sage-text: 153.33 10.35% 65.88%;
     --weelp-sage-hover: 154 24% 34%;
     --weelp-sage-tint: 156 22% 24%;
     --weelp-sage-wash: 159 30% 9%;
@@ -250,21 +250,21 @@ body {
     --weelp-steel-rgb: 199 214 207;
     --weelp-discount-rgb: 255 138 115;
     --weelp-gray-rgb: 24 43 36;
-    --weelp-bluewhale-rgb: 200 215 208;
-    --weelp-blueish-rgb: 243 248 245;
+    --weelp-bluewhale-rgb: 159 177 169;
+    --weelp-blueish-rgb: 159 177 169;
     --weelp-lynch-rgb: 159 177 169;
     --weelp-solitude-rgb: 159 177 169;
-    --weelp-blackish-rgb: 200 215 208;
+    --weelp-blackish-rgb: 159 177 169;
 
     /* Weelp card — dark parity */
     --weelp-card-border: #263b33;
     --weelp-card-hover-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.5);
     --weelp-card-badge-bg: #182b24;
-    --weelp-card-badge-text: #c8d7d0;
+    --weelp-card-badge-text: #9fb1a9;
     --weelp-card-category-text: #4ade80;
 
     /* Weelp city tabs — dark parity */
-    --weelp-city-tab-text: #c8d7d0;
+    --weelp-city-tab-text: #9fb1a9;
     --weelp-city-tab-bg: rgba(134, 189, 165, 0.08);
     --weelp-city-tab-active-bg: rgba(134, 189, 165, 0.14);
     --weelp-city-tab-active-border: rgba(134, 189, 165, 0.35);
@@ -303,6 +303,20 @@ body {
      exceptions. */
   .container-page {
     @apply mx-auto w-full max-w-pen px-4 sm:px-6 lg:px-8;
+  }
+
+  .dark button,
+  .dark a[role='button'],
+  .dark [role='button'],
+  .dark a[class~='bg-weelp-sage-deep'],
+  .dark a[class~='bg-primary'] {
+    border: 1px solid hsl(var(--border)) !important;
+    background-color: var(--weelp-home-page) !important;
+    color: var(--weelp-home-muted) !important;
+  }
+
+  .dark button.bg-card {
+    background-color: var(--weelp-home-surface) !important;
   }
 }
 
