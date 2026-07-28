@@ -10,6 +10,9 @@ import Link from 'next/link';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import MediaImage from '@/app/components/MediaImage';
 
+const CREATOR_SEARCH_FIELD_CLASS = 'bg-card dark:bg-[var(--weelp-home-surface)]';
+const CREATOR_SEARCH_ICON_CLASS = 'bg-weelp-sage-deep dark:bg-[var(--weelp-home-page)]';
+
 export const SearchFormCreator = () => {
   const [results, setResults] = useState([]);
   const [message, setMessage] = useState('');
@@ -105,7 +108,10 @@ export const SearchFormCreator = () => {
 
   return (
     <div className="flex flex-col max-w-[30rem] w-full mx-auto relative">
-      <form onKeyUp={debounce(handleSubmit(onSubmit), 600)} className="w-full bg-background flex items-center justify-evenly rounded shadow">
+      <form
+        onKeyUp={debounce(handleSubmit(onSubmit), 600)}
+        className={`flex min-h-14 w-full items-center gap-3 rounded-xl border border-border ${CREATOR_SEARCH_FIELD_CLASS} px-3 py-2 shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none`}
+      >
         <input
           id="search"
           autoComplete="off"
@@ -116,14 +122,16 @@ export const SearchFormCreator = () => {
             handleInputChange(e);
           }}
           placeholder="Search creator itineraries..."
-          className="w-10/12 p-4 focus-visible:outline-none placeholder:text-weelp-steel"
+          className="min-w-0 flex-1 bg-transparent px-2 py-3 text-sm font-medium text-foreground placeholder:text-muted-foreground focus-visible:outline-none"
         />
-        <div>{isSubmitting ? <LoaderCircle size={16} className="animate-spin duration-1000" /> : <Search size={16} />}</div>
+        <div className={`flex size-11 shrink-0 items-center justify-center rounded-lg ${CREATOR_SEARCH_ICON_CLASS} text-white shadow-[0_3px_9px_rgba(0,0,0,0.04)]`}>
+          {isSubmitting ? <LoaderCircle size={16} className="animate-spin duration-1000" /> : <Search size={16} />}
+        </div>
       </form>
 
-      {minLengthHint && <span className="absolute left-0 top-full mt-1 flex items-center gap-1 mx-4 p-1.5 text-[0.7em] text-red-400 z-10">{minLengthHint}</span>}
+      {minLengthHint && <span className="absolute left-0 top-full mt-1 flex items-center gap-1 mx-4 p-1.5 text-[0.7em] text-red-400 z-[90]">{minLengthHint}</span>}
 
-      <div className="absolute left-0 right-0 top-full mt-1 z-10">
+      <div className="absolute left-0 right-0 top-full mt-1 z-[90]">
         {showDropdown && (
           <div>
             {results.length > 0 ? (

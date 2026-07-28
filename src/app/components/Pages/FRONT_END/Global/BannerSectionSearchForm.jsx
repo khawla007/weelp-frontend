@@ -10,7 +10,7 @@ const BannerSectionSearchForm = ({ title, description }) => {
 
   if (title && description) {
     return (
-      <section className="weelp-hero-rise relative overflow-hidden min-h-[320px] sm:min-h-[420px] h-full flex justify-center items-center bg-surface-tint p-6 mb-10 md:mb-16 lg:mb-24">
+      <section className="weelp-hero-rise relative z-20 min-h-[320px] sm:min-h-[420px] h-full flex justify-center items-center overflow-visible bg-surface-tint p-6 mb-10 md:mb-16 lg:mb-24">
         <div data-banner-globe-background className="hidden 2xl:block absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
           <AnimatedGlobe
             activationMediaQuery="(min-width: 1536px)"
