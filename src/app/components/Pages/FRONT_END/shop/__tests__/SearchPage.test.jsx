@@ -212,7 +212,7 @@ describe('SearchPage filters', () => {
     const emptyMessage = await screen.findByText('Sorry No Items');
     const emptyState = emptyMessage.closest('[data-testid="search-empty-results"]');
 
-    expect(emptyState).toHaveClass('flex', 'min-h-[420px]', 'w-full', 'items-center', 'justify-center', 'text-center');
+    expect(emptyState).toHaveClass('col-span-full', 'flex', 'min-h-[420px]', 'w-full', 'items-center', 'justify-center', 'text-center');
   });
 
   it('matches a canonical location slug and sends that slug to the search API', async () => {

@@ -306,7 +306,7 @@ export const SearchPage = () => {
                   );
                 })
               ) : (
-                <div data-testid="search-empty-results" className="flex min-h-[420px] w-full flex-col items-center justify-center gap-4 text-center">
+                <div data-testid="search-empty-results" className="col-span-full flex min-h-[420px] w-full flex-col items-center justify-center gap-4 text-center">
                   <span className="text-muted-foreground">Sorry No Items</span>
                   <Button asChild>
                     <Link className={'bg-weelp-sage-deep'} href={'/cities'}>
