@@ -134,6 +134,7 @@ describe('SearchPage filters', () => {
 
     const toolbar = screen.getByTestId('search-results-toolbar');
     const layout = screen.getByTestId('search-results-layout');
+    const resultsSection = layout.closest('section');
     const filters = screen.getByTestId('search-filters');
     const results = screen.getByTestId('search-results');
     const filtersButton = within(toolbar).getByRole('button', { name: 'Filters' });
@@ -147,6 +148,7 @@ describe('SearchPage filters', () => {
     expect(sortTrigger).toHaveClass('h-11', 'w-full');
     expect(sortTrigger.compareDocumentPosition(categoryHeading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(layout).toHaveClass('container-page', 'flex', 'flex-col', 'gap-6', 'pb-10', 'md:flex-row', 'md:items-start', 'md:gap-4', 'lg:gap-8');
+    expect(resultsSection).toHaveClass('mt-10', 'md:mt-16', 'lg:mt-24');
     expect(filters).toHaveClass(
       'w-full',
       'rounded-lg',

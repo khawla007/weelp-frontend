@@ -161,7 +161,7 @@ export const SearchPage = () => {
   }, [locations, locationSearch]);
 
   return (
-    <section className="flex flex-col w-full">
+    <section className="mt-10 flex w-full flex-col md:mt-16 lg:mt-24">
       {/* Top Bar Filter */}
       <div data-testid="search-results-toolbar" className="container-page flex items-center gap-3 py-4 sm:py-6 md:hidden">
         <Button

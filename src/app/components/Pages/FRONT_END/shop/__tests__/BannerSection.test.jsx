@@ -20,7 +20,9 @@ describe('Search BannerSection', () => {
 
     expect(getByText(/You Searched for/)).toBeInTheDocument();
     expect(searchPanel).toHaveClass('relative', 'z-10');
-    expect(resultsHeadingPanel).toHaveClass('mb-10', 'md:mb-16', 'lg:mb-24');
+    expect(resultsHeadingPanel).not.toHaveClass('mb-10');
+    expect(resultsHeadingPanel).not.toHaveClass('md:mb-16');
+    expect(resultsHeadingPanel).not.toHaveClass('lg:mb-24');
     expect(screen.getByTestId('results-discovery-search')).toHaveAttribute('data-initial-query', 'location=dubai');
   });
 

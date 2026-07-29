@@ -16,7 +16,7 @@ const BannerSection = () => {
         </div>
       </div>
       {location && (
-        <div className="mb-10 flex h-full min-h-20 items-center justify-center bg-surface-tint sm:min-h-36 md:mb-16 lg:mb-24">
+        <div className="flex h-full min-h-20 items-center justify-center bg-surface-tint sm:min-h-36">
           {/* <Icon className={"hidden sm:block -translate-x-20 "} /> */}
           <div className="flex flex-col gap-2">
             <h1 className="font-semibold sm:text-3xl text-center text-foreground ">
