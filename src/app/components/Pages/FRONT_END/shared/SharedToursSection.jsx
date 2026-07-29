@@ -72,7 +72,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
       setFetchError(false);
       const query = new URLSearchParams();
       query.set('page', currentPage);
-      query.set('per_page', '8');
+      query.set('per_page', scope === 'city' ? '10' : '8');
       if (selectedTags.length > 0) query.set('tags', selectedTags.join(','));
       if (sortBy) query.set('sort_by', sortBy);
 
@@ -252,7 +252,7 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
       ) : cards.length > 0 && isMapView && canShowMapView ? (
         <ToursMapView cards={cards} markers={mapMarkers} cityName={title} />
       ) : cards.length > 0 ? (
-        <Reveal stagger={60} variant="lift" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-[18px]">
+        <Reveal stagger={60} variant="lift" className={`grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-[18px] ${scope === 'city' ? 'xl:grid-cols-5' : 'xl:grid-cols-4'}`}>
           {cards.map((card, index) => (
             <ItemCard
               key={card.id || `${card.href}-${index}`}

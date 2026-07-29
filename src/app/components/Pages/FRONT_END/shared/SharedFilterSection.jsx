@@ -21,6 +21,7 @@ const SECTION_CLASS_BY_VARIANT = {
 
 export default function SharedFilterSection({ scope, slug, variant = 'default', className = '' }) {
   const sectionRef = useRef(null);
+  const isCityScope = scope === 'city';
 
   const [products, setProducts] = useState([]);
   const [selectedItemType, setSelectedItemType] = useState('');
@@ -57,7 +58,8 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
     const timer = setTimeout(() => {
       setIsLoading(true);
       setFetchError(false);
-      let query = `?min_price=${priceRange[0]}&max_price=${priceRange[1]}&page=${currentPage}&per_page=8&min_rating=${ratingFilter}`;
+      const perPage = isCityScope ? 6 : 8;
+      let query = `?min_price=${priceRange[0]}&max_price=${priceRange[1]}&page=${currentPage}&per_page=${perPage}&min_rating=${ratingFilter}`;
       if (selectedItemType) query += `&item_type=${selectedItemType}`;
       if (selectedCategories.length > 0) query += `&categories=${selectedCategories.join(',')}`;
 
@@ -85,15 +87,18 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [priceRange, selectedItemType, selectedCategories, currentPage, slug, ratingFilter, scope, retryNonce]);
+  }, [priceRange, selectedItemType, selectedCategories, currentPage, slug, ratingFilter, scope, retryNonce, isCityScope]);
 
   const sectionClassName = `${SECTION_CLASS_BY_VARIANT[variant] || SECTION_CLASS_BY_VARIANT.default} ${className}`.trim();
 
   return (
     <div ref={sectionRef} className={sectionClassName}>
       {/* Sidebar + Grid */}
-      <div className="flex flex-col gap-4 lg:flex-row lg:gap-6">
-        <div className="hidden lg:block">
+      <div
+        data-testid="destination-listing-layout"
+        className={isCityScope ? 'grid items-start gap-4 lg:grid-cols-[minmax(280px,1fr)_minmax(0,3fr)] lg:gap-6' : 'flex flex-col gap-4 lg:flex-row lg:gap-6'}
+      >
+        <div data-testid="destination-listing-sidebar" className={`hidden lg:block ${isCityScope ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
           <FilterSidebar
             selectedItemType={selectedItemType}
             onItemTypeChange={(type) => {
@@ -116,7 +121,7 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
         </div>
 
         {/* Product Grid */}
-        <div className="flex-1">
+        <div data-testid="destination-listing-results" className={`min-w-0 ${isCityScope ? 'lg:col-start-2 lg:row-start-1' : 'flex-1'}`}>
           <div className="mb-3 lg:hidden">
             <FilterDrawer
               selectedItemType={selectedItemType}
@@ -149,9 +154,9 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
               key={revealKey}
               data-testid="result-grid"
               aria-busy={isLoading}
-              className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5 transition-opacity duration-200 motion-reduce:transition-none ${
-                isLoading ? 'opacity-60 pointer-events-none motion-reduce:opacity-100' : 'opacity-100'
-              }`}
+              className={`grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 ${
+                isCityScope ? 'lg:grid-cols-2 xl:grid-cols-3' : 'md:grid-cols-3 xl:grid-cols-4'
+              } transition-opacity duration-200 motion-reduce:transition-none ${isLoading ? 'opacity-60 pointer-events-none motion-reduce:opacity-100' : 'opacity-100'}`}
             >
               {fetchError ? (
                 <div data-testid="destination-listings-error" className="weelp-fade-up col-span-full flex min-h-[300px] flex-col items-center justify-center gap-4 text-center">

@@ -76,20 +76,40 @@ describe('CityItemsListing', () => {
 
     const pagination = screen.getByLabelText('Pagination');
     expect(screen.getByTestId('listing-heading')).toHaveClass('gap-4');
-    expect(screen.getByTestId('listing-layout')).toHaveClass('lg:grid-cols-[224px_minmax(0,1fr)]');
+    expect(screen.getByTestId('listing-layout')).toHaveClass('lg:grid-cols-[minmax(280px,1fr)_minmax(0,3fr)]');
     expect(screen.getByTestId('listing-sidebar')).toHaveClass('lg:col-start-1', 'lg:row-start-1');
     expect(screen.getByTestId('listing-results')).toHaveClass('lg:col-start-2', 'lg:row-start-1');
     expect(screen.getByTestId('listing-sidebar').compareDocumentPosition(screen.getByTestId('listing-results')) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(pagination).toHaveClass('max-w-full', 'flex-wrap');
     expect(screen.getByTestId('mobile-page-status')).toHaveClass('sm:hidden');
     expect(screen.getByTestId('desktop-page-links')).toHaveClass('hidden', 'sm:contents');
+    expect(screen.getByText('Dubai Desert Safari').parentElement).toHaveClass('grid-cols-1', 'sm:grid-cols-2', 'xl:grid-cols-3');
+    expect(screen.getByText('Dubai Desert Safari').parentElement).not.toHaveClass('xl:grid-cols-4');
     expect(getCityItemsByType).toHaveBeenCalledWith('dubai', 'activity', {
       page: 6,
-      per_page: 10,
+      per_page: 6,
     });
     expect(screen.getByLabelText('Previous page')).toHaveAttribute('data-query', 'page=5');
     expect(screen.getByLabelText('Next page')).toHaveAttribute('data-query', 'page=7');
     expect(screen.getByLabelText('Previous page')).toHaveClass('size-11');
+  });
+
+  it('uses the three-column six-item listing for itineraries', async () => {
+    const ui = await CityItemsListing({
+      citySlug: 'dubai',
+      itemType: 'itineraries',
+      searchParams: Promise.resolve({}),
+    });
+
+    render(ui);
+
+    expect(getCityItemsByType).toHaveBeenCalledWith('dubai', 'itinerary', {
+      page: 1,
+      per_page: 6,
+    });
+    expect(screen.getByTestId('listing-layout')).toHaveClass('lg:grid-cols-[minmax(280px,1fr)_minmax(0,3fr)]');
+    expect(screen.getByText('Dubai Desert Safari').parentElement).toHaveClass('xl:grid-cols-3');
+    expect(screen.getByText('Dubai Desert Safari').parentElement).not.toHaveClass('xl:grid-cols-4');
   });
 
   it('preserves active listing filters in pagination links', async () => {
@@ -108,6 +128,8 @@ describe('CityItemsListing', () => {
       tags: 'family',
       sort_by: 'price_desc',
     });
+    expect(screen.getByTestId('listing-layout')).toHaveClass('lg:grid-cols-[224px_minmax(0,1fr)]');
+    expect(screen.getByText('Dubai Desert Safari').parentElement).toHaveClass('xl:grid-cols-4');
     expect(screen.getByLabelText('Next page')).toHaveAttribute('data-query', 'search=beach&tags=family&sort_by=price_desc&page=3');
   });
 

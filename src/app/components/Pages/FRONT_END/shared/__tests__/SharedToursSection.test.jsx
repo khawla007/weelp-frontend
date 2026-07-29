@@ -63,10 +63,26 @@ const itineraryResponse = {
   },
 };
 
+const paginatedItineraryResponse = (count, lastPage = 1) => ({
+  data: {
+    success: true,
+    data: Array.from({ length: count }, (_, index) => ({
+      id: index + 1,
+      name: `Dubai itinerary ${index + 1}`,
+      slug: `dubai-itinerary-${index + 1}`,
+      city_slug: 'dubai',
+    })),
+    all_tags: [],
+    last_page: lastPage,
+    total: count * lastPage,
+  },
+});
+
 describe('SharedToursSection destination states', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
+    Element.prototype.scrollIntoView = jest.fn();
   });
 
   afterEach(() => {
@@ -93,6 +109,23 @@ describe('SharedToursSection destination states', () => {
     });
 
     expect(screen.getAllByTestId('tour-skeleton')).toHaveLength(6);
+  });
+
+  it('uses five columns, ten items per page, and API-driven pagination for city tours', async () => {
+    axios.get.mockResolvedValue(paginatedItineraryResponse(10, 3));
+    render(<SharedToursSection scope="city" slug="dubai" title="Dubai" />);
+    await flushFetch();
+
+    expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('page=1&per_page=10'));
+    expect(screen.getByRole('link', { name: 'Dubai itinerary 1' }).parentElement).toHaveClass('xl:grid-cols-5');
+    expect(screen.getByRole('link', { name: 'Dubai itinerary 1' }).parentElement).not.toHaveClass('xl:grid-cols-4');
+    expect(screen.getByText('Page 1 of 3')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: '2' }));
+    await flushFetch();
+
+    expect(axios.get).toHaveBeenLastCalledWith(expect.stringContaining('page=2&per_page=10'));
+    expect(screen.getByText('Page 2 of 3')).toBeInTheDocument();
   });
 
   it('separates API failures from empty tours and retries the destination tour request', async () => {
@@ -176,6 +209,8 @@ describe('SharedToursSection destination states', () => {
     render(<SharedToursSection scope="region" slug="middle-east" title="Middle East" />);
     await flushFetch();
 
+    expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('page=1&per_page=8'));
+    expect(screen.getByRole('link', { name: 'Middle East highlights' }).parentElement).toHaveClass('xl:grid-cols-4');
     expect(screen.getByRole('link', { name: 'Middle East highlights' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'View on Map' })).not.toBeInTheDocument();
   });

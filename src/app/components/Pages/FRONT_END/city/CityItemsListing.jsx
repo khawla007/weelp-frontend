@@ -34,10 +34,11 @@ export default async function CityItemsListing({ citySlug, itemType, searchParam
   const currentPage = Math.max(1, parseInt(pageParam, 10) || 1);
   const apiType = TYPE_MAP[itemType];
   const label = TYPE_LABELS[itemType];
+  const usesThreeColumnLayout = itemType === 'activities' || itemType === 'itineraries';
 
   // Fetch city info + items in parallel
   const filters = normalizeListingFilters(resolvedSearchParams);
-  const query = { page: currentPage, per_page: 10, ...filters };
+  const query = { page: currentPage, per_page: usesThreeColumnLayout ? 6 : 10, ...filters };
   const [cityResponse, itemsResponse] = await Promise.all([getCityData(citySlug), getCityItemsByType(citySlug, apiType, query)]);
 
   const cityName = cityResponse?.data?.name || citySlug;
@@ -66,7 +67,10 @@ export default async function CityItemsListing({ citySlug, itemType, searchParam
         </div>
       </div>
 
-      <div data-testid="listing-layout" className={`grid items-start gap-6 ${isError ? '' : 'lg:grid-cols-[224px_minmax(0,1fr)] lg:gap-6'}`}>
+      <div
+        data-testid="listing-layout"
+        className={`grid items-start gap-6 ${isError ? '' : usesThreeColumnLayout ? 'lg:grid-cols-[minmax(280px,1fr)_minmax(0,3fr)] lg:gap-6' : 'lg:grid-cols-[224px_minmax(0,1fr)] lg:gap-6'}`}
+      >
         {!isError && (
           <aside data-testid="listing-sidebar" className="min-w-0 lg:col-start-1 lg:row-start-1">
             <CityListingControls categories={itemsResponse?.available_categories || []} tags={itemsResponse?.available_tags || []} />
@@ -95,7 +99,12 @@ export default async function CityItemsListing({ citySlug, itemType, searchParam
             </div>
           ) : (
             <>
-              <Reveal initialHidden stagger={60} variant="lift" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+              <Reveal
+                initialHidden
+                stagger={60}
+                variant="lift"
+                className={`grid grid-cols-1 gap-6 sm:grid-cols-2 ${usesThreeColumnLayout ? 'lg:grid-cols-2 xl:grid-cols-3' : 'md:grid-cols-3 xl:grid-cols-4'}`}
+              >
                 {items.map((item) => {
                   const cardProps = mapProductToItemCard(item, citySlug);
                   return <ItemCard key={cardProps.id} {...cardProps} />;

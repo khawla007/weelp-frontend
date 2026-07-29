@@ -50,7 +50,7 @@ describe('CitiesPage', () => {
       ],
       current_page: 2,
       last_page: 3,
-      per_page: 10,
+      per_page: 6,
       total: 22,
       available_countries: [{ id: 1, name: 'United Arab Emirates', slug: 'united-arab-emirates' }],
       available_seasons: [{ name: 'Winter', slug: 'winter' }],
@@ -70,7 +70,7 @@ describe('CitiesPage', () => {
       }),
     );
 
-    expect(getAllCities).toHaveBeenCalledWith(2, 10, {
+    expect(getAllCities).toHaveBeenCalledWith(2, 6, {
       search: 'abu',
       country: 'united-arab-emirates',
       season: 'winter',
@@ -81,12 +81,13 @@ describe('CitiesPage', () => {
     expect(screen.getByTestId('cities-heading-stack')).not.toHaveClass('pt-[70px]');
     expect(screen.getByText('22 cities')).toBeInTheDocument();
     expect(screen.getByTestId('cities-toolbar')).toBeInTheDocument();
-    expect(screen.getByTestId('cities-listing-layout')).toHaveClass('lg:grid-cols-[224px_minmax(0,1fr)]');
+    expect(screen.getByTestId('cities-listing-layout')).toHaveClass('lg:grid-cols-[minmax(280px,1fr)_minmax(0,3fr)]');
     expect(screen.getByTestId('cities-listing-sidebar')).toHaveClass('lg:col-start-1', 'lg:row-start-1');
     expect(screen.getByTestId('cities-listing-results')).toHaveClass('lg:col-start-2', 'lg:row-start-1');
     expect(screen.getByTestId('cities-controls')).toHaveAttribute('data-countries', 'united-arab-emirates');
     expect(screen.getByTestId('cities-controls')).toHaveAttribute('data-seasons', 'winter');
-    expect(screen.getByText('Abu Dhabi').closest('section')).toHaveClass('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-2', 'xl:grid-cols-3', '2xl:grid-cols-4');
+    expect(screen.getByText('Abu Dhabi').closest('section')).toHaveClass('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-2', 'xl:grid-cols-3');
+    expect(screen.getByText('Abu Dhabi').closest('section')).not.toHaveClass('2xl:grid-cols-4');
     expect(screen.getByLabelText('Previous page')).toHaveAttribute('data-query', 'search=abu&country=united-arab-emirates&season=winter&sort_by=activities_desc&page=1');
     expect(screen.getByLabelText('Next page')).toHaveAttribute('data-query', 'search=abu&country=united-arab-emirates&season=winter&sort_by=activities_desc&page=3');
   });

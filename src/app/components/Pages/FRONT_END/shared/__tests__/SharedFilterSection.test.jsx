@@ -63,6 +63,25 @@ describe('SharedFilterSection grid refresh + reveal', () => {
     });
   };
 
+  const renderWithResponse = async (element, response) => {
+    let resolveFetch;
+    axios.get.mockReturnValue(
+      new Promise((resolve) => {
+        resolveFetch = resolve;
+      }),
+    );
+    render(element);
+    await act(async () => {
+      jest.advanceTimersByTime(500);
+    });
+    await act(async () => {
+      resolveFetch(response);
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+  };
+
   it('shows skeletons on the true first load, not real cards', async () => {
     let resolveFetch;
     axios.get.mockReturnValue(
@@ -88,6 +107,27 @@ describe('SharedFilterSection grid refresh + reveal', () => {
     });
 
     expect(screen.getByText('Item 1')).toBeInTheDocument();
+  });
+
+  it('uses the wider three-column layout and six-item request on city pages', async () => {
+    await renderWithResponse(<SharedFilterSection scope="city" slug="dubai" />, respond(6));
+
+    expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('/api/public/cities/dubai/all-items?'));
+    expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('per_page=6'));
+    expect(screen.getByTestId('destination-listing-layout')).toHaveClass('lg:grid-cols-[minmax(280px,1fr)_minmax(0,3fr)]');
+    expect(screen.getByTestId('destination-listing-sidebar')).toHaveClass('lg:col-start-1', 'lg:row-start-1');
+    expect(screen.getByTestId('destination-listing-results')).toHaveClass('lg:col-start-2', 'lg:row-start-1');
+    expect(screen.getByTestId('result-grid')).toHaveClass('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-2', 'xl:grid-cols-3');
+    expect(screen.getByTestId('result-grid')).not.toHaveClass('xl:grid-cols-4');
+  });
+
+  it('preserves the existing eight-item four-column layout on region pages', async () => {
+    await renderWithResponse(<SharedFilterSection scope="region" slug="dubai" />, respond(8));
+
+    expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('/api/public/region/dubai/all-items?'));
+    expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('per_page=8'));
+    expect(screen.getByTestId('destination-listing-layout')).toHaveClass('lg:flex-row');
+    expect(screen.getByTestId('result-grid')).toHaveClass('md:grid-cols-3', 'xl:grid-cols-4');
   });
 
   it('dims previous results during a refresh instead of showing skeletons', async () => {
@@ -231,7 +271,8 @@ describe('SharedFilterSection empty state + pagination scroll', () => {
 
     expect(screen.getByText('We could not load these destination listings.')).toBeInTheDocument();
     expect(screen.queryByText('No items match your filters.')).not.toBeInTheDocument();
-    expect(screen.getByTestId('result-grid')).toHaveClass('grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'xl:grid-cols-4');
+    expect(screen.getByTestId('result-grid')).toHaveClass('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-2', 'xl:grid-cols-3');
+    expect(screen.getByTestId('result-grid')).not.toHaveClass('xl:grid-cols-4');
 
     axios.get.mockResolvedValueOnce({ status: 200, data: { data: [makeProduct(1)], last_page: 1 } });
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
