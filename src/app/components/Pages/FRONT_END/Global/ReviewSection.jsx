@@ -11,13 +11,12 @@ import { COMPACT_SLIDER_NAV_BUTTON_CLASS } from '@/app/components/ui/sliderNavig
 
 const bgImage = '/assets/images/whatabout.webp';
 
-const bgStyle = {
+const destinationBgStyle = {
   backgroundImage: `url(${bgImage})`,
   backgroundSize: '100% 200px',
+  backgroundPosition: 'center bottom',
   backgroundRepeat: 'no-repeat',
 };
-const cityBgStyle = { ...bgStyle, backgroundPosition: 'center bottom' };
-const regionBgStyle = { ...bgStyle, backgroundPosition: 'bottom', backgroundPositionY: '70%' };
 
 // Review Section City Page
 export const ReviewSectionCity = ({ cityData, reviews = [], reviewSummary = null }) => {
@@ -27,7 +26,7 @@ export const ReviewSectionCity = ({ cityData, reviews = [], reviewSummary = null
     <section className="container-page flex flex-wrap pb-10 md:pb-16 lg:pb-24">
       {/* if values exist inoobjects */}
       {cityData?.location_details && Object.keys(cityData.location_details).length > 0 && (
-        <Reveal variant="lift" className="w-full self-start bg-muted pb-[200px] xl:w-1/3" style={cityBgStyle}>
+        <Reveal variant="lift" className="w-full self-start bg-muted pb-[200px] xl:w-1/3" style={destinationBgStyle}>
           <WhatAboutCity location_details={cityData.location_details} />
         </Reveal>
       )}
@@ -62,7 +61,7 @@ export const ReviewSectionCity = ({ cityData, reviews = [], reviewSummary = null
 export const ReviewSectionRegion = ({ cityData }) => {
   return (
     <section className="container-page flex flex-wrap pb-10 md:pb-16 lg:pb-24">
-      <Reveal variant="lift" className="w-full xl:w-1/3 bg-muted" style={regionBgStyle}>
+      <Reveal variant="lift" className="w-full self-start bg-muted pb-[200px] xl:w-1/3" style={destinationBgStyle}>
         <WhatAboutRegion destinationInfo={destinationInfo} />
       </Reveal>
 

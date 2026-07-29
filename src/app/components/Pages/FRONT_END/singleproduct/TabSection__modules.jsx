@@ -8,6 +8,7 @@ import { activityHighlights, inclusionsList } from '@/app/Data/SingleActivityDat
 import { createAccordionItemKeys, useAnchoredAccordion } from '@/hooks/useAnchoredAccordion';
 
 const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
+const FAQ_FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40';
 const INITIAL_VISIBLE_INCLUDED_ROWS = 6;
 
 // OverView Panel
@@ -147,14 +148,14 @@ const FaqAccordionItem = ({ question, answer, isOpen, onToggle }) => {
   const panelId = `${itemId}-panel`;
 
   return (
-    <div className="border border-border rounded-xl overflow-hidden">
+    <div className="overflow-hidden rounded-2xl border border-[var(--weelp-home-border)] bg-background shadow-sm">
       <button
         id={triggerId}
         type="button"
         onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls={panelId}
-        className={`w-full flex items-center justify-between p-5 text-left hover:bg-surface-tint transition-colors ${FOCUS_RING}`}
+        className={`flex w-full items-center justify-between rounded-t-2xl p-5 text-left transition-colors hover:bg-surface-tint ${FAQ_FOCUS_RING} ${isOpen ? '' : 'rounded-b-2xl'}`}
       >
         <span className="text-base font-semibold text-foreground">{question}</span>
         <ChevronRight className={`transition-transform duration-300 motion-reduce:transition-none flex-shrink-0 text-copy ${isOpen ? 'rotate-90' : ''}`} size={16} aria-hidden="true" />

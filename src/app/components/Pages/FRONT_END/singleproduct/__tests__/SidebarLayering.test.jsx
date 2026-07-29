@@ -65,6 +65,7 @@ describe('single product sidebar layering', () => {
     const decorativeImageLayer = [...container.querySelectorAll('[aria-hidden="true"]')].find((element) => element.className.includes('pointer-events-none'));
 
     expect(decorativeImageLayer).toHaveClass('z-0');
+    expect(decorativeImageLayer.parentElement).toHaveClass('xl:self-start');
     expect(screen.getByRole('heading', { name: 'Questions?' })).toBeInTheDocument();
   });
 

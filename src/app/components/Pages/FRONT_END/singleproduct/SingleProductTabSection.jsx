@@ -284,7 +284,7 @@ const SingleProductTabSection = ({
           </div>
 
           {/* Right Column — Booking Sidebar */}
-          <Reveal variant="lift" delay={120} className="w-full xl:w-[42%] relative bg-surface-tint">
+          <Reveal variant="lift" delay={120} className="relative w-full bg-surface-tint xl:w-[42%] xl:self-start">
             {/* Bottom decorative image */}
             <div className="absolute bottom-0 left-0 z-0 w-full pointer-events-none overflow-hidden" style={{ maxHeight: '150px' }} aria-hidden="true">
               <Image src={bottomImage} alt="" width={640} height={150} sizes="(max-width: 1280px) 100vw, 640px" className="w-full h-auto object-cover opacity-70" />

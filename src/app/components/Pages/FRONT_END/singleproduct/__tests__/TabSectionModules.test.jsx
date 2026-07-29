@@ -121,19 +121,29 @@ describe('FaqPanel', () => {
 
     const firstQuestion = screen.getByRole('button', { name: 'What should I bring?' });
     const secondQuestion = screen.getByRole('button', { name: 'Is this suitable for beginners?' });
+    const firstItem = firstQuestion.parentElement;
 
     expect(firstQuestion).toHaveAttribute('aria-expanded', 'true');
     expect(secondQuestion).toHaveAttribute('aria-expanded', 'false');
+    expect(firstItem).toHaveClass('overflow-hidden', 'rounded-2xl', 'bg-background', 'shadow-sm');
+    expect(firstQuestion).toHaveClass('rounded-t-2xl', 'focus-visible:ring-inset');
+    expect(firstQuestion).not.toHaveClass('rounded-b-2xl', 'focus-visible:ring-offset-2');
+    expect(secondQuestion).toHaveClass('rounded-t-2xl', 'rounded-b-2xl', 'focus-visible:ring-inset');
     expect(firstQuestion).toHaveAttribute('aria-controls');
     expect(document.getElementById(firstQuestion.getAttribute('aria-controls'))).toHaveAttribute('aria-hidden', 'false');
-    expect(document.getElementById(secondQuestion.getAttribute('aria-controls'))).toHaveAttribute('aria-hidden', 'true');
-    expect(document.getElementById(secondQuestion.getAttribute('aria-controls'))).toHaveAttribute('inert');
+    const secondPanel = document.getElementById(secondQuestion.getAttribute('aria-controls'));
+    expect(secondPanel).toHaveAttribute('aria-hidden', 'true');
+    expect(secondPanel).toHaveAttribute('inert');
+    expect(secondPanel).toHaveClass('grid-rows-[0fr]', 'opacity-0', 'overflow-hidden');
     expect(secondQuestion.querySelector('svg')).toHaveClass('motion-reduce:transition-none');
 
     fireEvent.click(secondQuestion);
 
     expect(firstQuestion).toHaveAttribute('aria-expanded', 'false');
     expect(secondQuestion).toHaveAttribute('aria-expanded', 'true');
+    expect(firstQuestion).toHaveClass('rounded-b-2xl');
+    expect(secondQuestion).not.toHaveClass('rounded-b-2xl');
+    expect(document.getElementById(firstQuestion.getAttribute('aria-controls'))).toHaveClass('grid-rows-[0fr]', 'opacity-0', 'overflow-hidden');
   });
 
   it('keeps the same FAQ open when backend items reorder', () => {

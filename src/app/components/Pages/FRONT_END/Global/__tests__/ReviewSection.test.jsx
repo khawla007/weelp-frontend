@@ -44,12 +44,12 @@ describe('ReviewSectionCity layout', () => {
 });
 
 describe('ReviewSectionRegion layout', () => {
-  it('preserves the existing region artwork position', () => {
+  it('keeps the destination panel self-sized and pins its image to the bottom', () => {
     render(<ReviewSectionRegion />);
 
     const destinationPanel = screen.getByTestId('what-about-region').parentElement;
 
-    expect(destinationPanel.style.backgroundPosition).toBe('bottom');
-    expect(destinationPanel.style.backgroundPositionY).toBe('70%');
+    expect(destinationPanel).toHaveClass('self-start', 'pb-[200px]');
+    expect(destinationPanel.style.backgroundPosition).toBe('center bottom');
   });
 });
