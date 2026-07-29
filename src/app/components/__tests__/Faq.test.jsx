@@ -59,14 +59,22 @@ describe('Accordion interaction', () => {
 
     const firstQuestion = screen.getByRole('button', { name: 'How does pickup work?' });
     const secondQuestion = screen.getByRole('button', { name: 'Can I change the date?' });
+    const firstItem = firstQuestion.parentElement;
 
     expect(firstQuestion).toHaveAttribute('aria-expanded', 'false');
     expect(secondQuestion).toHaveAttribute('aria-expanded', 'false');
+    expect(firstItem).toHaveClass('overflow-hidden', 'rounded-2xl');
+    expect(firstQuestion).toHaveClass('rounded-t-2xl', 'rounded-b-2xl');
+    expect(firstQuestion).toHaveClass('focus-visible:outline-none', 'focus-visible:ring-2', 'focus-visible:ring-inset');
     expect(firstQuestion).toHaveAttribute('aria-controls');
     expect(document.getElementById(firstQuestion.getAttribute('aria-controls'))).toHaveAttribute('aria-hidden', 'true');
     expect(document.getElementById(firstQuestion.getAttribute('aria-controls'))).toHaveAttribute('inert');
 
     fireEvent.click(firstQuestion);
+
+    expect(firstQuestion).toHaveClass('rounded-t-2xl');
+    expect(firstQuestion).not.toHaveClass('rounded-b-2xl');
+
     fireEvent.click(secondQuestion);
 
     expect(firstQuestion).toHaveAttribute('aria-expanded', 'false');

@@ -14,10 +14,10 @@ const bgImage = '/assets/images/whatabout.webp';
 const bgStyle = {
   backgroundImage: `url(${bgImage})`,
   backgroundSize: '100% 200px',
-  backgroundPosition: 'bottom',
   backgroundRepeat: 'no-repeat',
-  backgroundPositionY: '70%',
 };
+const cityBgStyle = { ...bgStyle, backgroundPosition: 'center bottom' };
+const regionBgStyle = { ...bgStyle, backgroundPosition: 'bottom', backgroundPositionY: '70%' };
 
 // Review Section City Page
 export const ReviewSectionCity = ({ cityData, reviews = [], reviewSummary = null }) => {
@@ -27,7 +27,7 @@ export const ReviewSectionCity = ({ cityData, reviews = [], reviewSummary = null
     <section className="container-page flex flex-wrap pb-10 md:pb-16 lg:pb-24">
       {/* if values exist inoobjects */}
       {cityData?.location_details && Object.keys(cityData.location_details).length > 0 && (
-        <Reveal variant="lift" className="w-full xl:w-1/3 bg-muted" style={bgStyle}>
+        <Reveal variant="lift" className="w-full self-start bg-muted pb-[200px] xl:w-1/3" style={cityBgStyle}>
           <WhatAboutCity location_details={cityData.location_details} />
         </Reveal>
       )}
@@ -62,7 +62,7 @@ export const ReviewSectionCity = ({ cityData, reviews = [], reviewSummary = null
 export const ReviewSectionRegion = ({ cityData }) => {
   return (
     <section className="container-page flex flex-wrap pb-10 md:pb-16 lg:pb-24">
-      <Reveal variant="lift" className="w-full xl:w-1/3 bg-muted" style={bgStyle}>
+      <Reveal variant="lift" className="w-full xl:w-1/3 bg-muted" style={regionBgStyle}>
         <WhatAboutRegion destinationInfo={destinationInfo} />
       </Reveal>
 

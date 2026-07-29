@@ -19,13 +19,15 @@ function Accordion({ items, headingClassName = 'py-6 text-lg font-extrabold trac
         const panelId = `${accordionId}-panel-${index}`;
 
         return (
-          <div key={itemKeys[index]} className="mb-3 md:mb-4 border border-[var(--weelp-home-border)] bg-background rounded-2xl shadow-sm">
+          <div key={itemKeys[index]} className="mb-3 overflow-hidden rounded-2xl border border-[var(--weelp-home-border)] bg-background shadow-sm md:mb-4">
             <button
               id={triggerId}
               type="button"
               aria-expanded={openIndex === index}
               aria-controls={panelId}
-              className="w-full flex items-center justify-between text-left p-3 md:p-4 font-bold text-[var(--weelp-home-ink)] cursor-pointer"
+              className={`flex w-full cursor-pointer items-center justify-between rounded-t-2xl p-3 text-left font-bold text-[var(--weelp-home-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40 md:p-4 ${
+                openIndex === index ? '' : 'rounded-b-2xl'
+              }`}
               onClick={(event) => handleToggle(index, event.currentTarget)}
             >
               {item.title}
