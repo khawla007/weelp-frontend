@@ -18,6 +18,7 @@ const originalScrollBy = window.scrollBy;
 afterEach(() => {
   window.requestAnimationFrame = originalRequestAnimationFrame;
   window.scrollBy = originalScrollBy;
+  jest.restoreAllMocks();
 });
 
 describe('Accordion heading', () => {
@@ -107,5 +108,42 @@ describe('Accordion interaction', () => {
     animationFrames.forEach((callback) => callback());
 
     expect(window.scrollBy).toHaveBeenCalledWith({ top: -60, left: 0, behavior: 'instant' });
+  });
+
+  it('reserves the tallest answer height when stable layout is requested', () => {
+    const rectSpy = jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function () {
+      return {
+        width: 600,
+        height: this.dataset.stableFaq === 'true' ? 200 : 0,
+        top: 0,
+        right: 600,
+        bottom: 0,
+        left: 0,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      };
+    });
+    const scrollHeightSpy = jest.spyOn(HTMLElement.prototype, 'scrollHeight', 'get').mockImplementation(function () {
+      if (this.dataset.faqAnswerContent === 'true') {
+        return this.textContent.includes('Contact support') ? 80 : 40;
+      }
+
+      return 0;
+    });
+
+    const { rerender } = render(<Accordion items={multipleItems} layout="stable" />);
+
+    const accordion = document.querySelector('[data-stable-faq="true"]');
+    expect(accordion).toHaveStyle({ minHeight: '280px' });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Can I change the date?' }));
+    expect(accordion).toHaveStyle({ minHeight: '280px' });
+
+    rerender(<Accordion items={multipleItems} layout="fluid" />);
+    expect(accordion.style.minHeight).toBe('');
+
+    rectSpy.mockRestore();
+    scrollHeightSpy.mockRestore();
   });
 });

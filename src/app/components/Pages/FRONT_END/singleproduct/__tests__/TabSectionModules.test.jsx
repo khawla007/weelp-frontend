@@ -12,6 +12,7 @@ const originalScrollBy = window.scrollBy;
 afterEach(() => {
   window.requestAnimationFrame = originalRequestAnimationFrame;
   window.scrollBy = originalScrollBy;
+  jest.restoreAllMocks();
 });
 
 describe('WhatIncludedPanel', () => {
@@ -67,6 +68,47 @@ describe('WhatIncludedPanel', () => {
 });
 
 describe('FaqPanel', () => {
+  it('reserves the tallest answer height so the following section stays fixed', () => {
+    const rectSpy = jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function () {
+      return {
+        width: 600,
+        height: this.dataset.stableFaq === 'true' ? 180 : 0,
+        top: 0,
+        right: 600,
+        bottom: 0,
+        left: 0,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      };
+    });
+    const scrollHeightSpy = jest.spyOn(HTMLElement.prototype, 'scrollHeight', 'get').mockImplementation(function () {
+      if (this.dataset.faqAnswerContent === 'true') {
+        return this.textContent.includes('longer answer') ? 90 : 50;
+      }
+
+      return 0;
+    });
+
+    render(
+      <FaqPanel
+        faqs={[
+          { question: 'Short answer?', answer: 'A short answer.' },
+          { question: 'Long answer?', answer: 'A longer answer that needs more reserved space.' },
+        ]}
+      />,
+    );
+
+    const faqPanel = document.querySelector('[data-stable-faq="true"]');
+    expect(faqPanel).toHaveStyle({ minHeight: '270px' });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Long answer?' }));
+    expect(faqPanel).toHaveStyle({ minHeight: '270px' });
+
+    rectSpy.mockRestore();
+    scrollHeightSpy.mockRestore();
+  });
+
   it("does not render What's Included items inside FAQs", () => {
     render(
       <FaqPanel

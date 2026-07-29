@@ -51,7 +51,7 @@ export const ReviewSectionCity = ({ cityData, reviews = [], reviewSummary = null
             </div>
           </div>
         )}
-        <Accordion items={faqItems} />
+        <Accordion items={faqItems} layout="stable" />
       </Reveal>
     </section>
   );

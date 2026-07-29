@@ -6,6 +6,7 @@ import SectionHeader from '@/app/components/ui/SectionHeader';
 import { SingleProductReview } from './SingleProductReview';
 import { activityHighlights, inclusionsList } from '@/app/Data/SingleActivityData';
 import { createAccordionItemKeys, useAnchoredAccordion } from '@/hooks/useAnchoredAccordion';
+import { useStableFaqHeight } from '@/hooks/useStableFaqHeight';
 
 const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
 const FAQ_FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40';
@@ -123,13 +124,17 @@ export const FaqPanel = ({ faqs = [] }) => {
   const dynamicFaqs = normalizeFaqItems(faqs);
   const itemKeys = createAccordionItemKeys(dynamicFaqs, (faq) => faq.id ?? faq.question);
   const [openIndex, handleToggle] = useAnchoredAccordion(itemKeys, dynamicFaqs.length > 0 ? 0 : null);
+  const faqPanelRef = useStableFaqHeight({
+    enabled: dynamicFaqs.length > 0,
+    contentSignature: JSON.stringify(dynamicFaqs.map((faq) => [faq.id, faq.question, faq.answer])),
+  });
 
   if (dynamicFaqs.length === 0) {
     return null;
   }
 
   return (
-    <div className="flex flex-col border-t border-border pt-6">
+    <div ref={faqPanelRef} className="flex flex-col border-t border-border pt-6" data-stable-faq="true">
       <SectionHeader title="FAQs" className="mb-4" />
 
       {/* Accordion FAQ items */}
@@ -166,12 +171,15 @@ const FaqAccordionItem = ({ question, answer, isOpen, onToggle }) => {
         aria-labelledby={triggerId}
         aria-hidden={!isOpen}
         inert={!isOpen}
+        data-faq-panel="true"
         className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 ease-[var(--weelp-ease-panel)] motion-reduce:transition-none ${
           isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
         }`}
       >
         <div className="min-h-0">
-          <p className="px-4 pt-2 pb-4 text-sm text-muted-foreground leading-relaxed">{answer}</p>
+          <p data-faq-answer-content="true" className="px-4 pt-2 pb-4 text-sm text-muted-foreground leading-relaxed">
+            {answer}
+          </p>
         </div>
       </div>
     </div>

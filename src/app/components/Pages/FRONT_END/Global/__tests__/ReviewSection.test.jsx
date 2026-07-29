@@ -19,7 +19,7 @@ jest.mock('../../../../TotalReviews', () => ({
 
 jest.mock('../../../../Faq', () => ({
   __esModule: true,
-  default: () => <div data-testid="faq" />,
+  default: ({ layout }) => <div data-testid="faq" data-layout={layout} />,
 }));
 
 describe('ReviewSectionCity layout', () => {
@@ -40,6 +40,7 @@ describe('ReviewSectionCity layout', () => {
 
     expect(destinationPanel).toHaveClass('self-start', 'pb-[200px]');
     expect(destinationPanel.style.backgroundPosition).toBe('center bottom');
+    expect(screen.getByTestId('faq')).toHaveAttribute('data-layout', 'stable');
   });
 });
 
@@ -51,5 +52,6 @@ describe('ReviewSectionRegion layout', () => {
 
     expect(destinationPanel).toHaveClass('self-start', 'pb-[200px]');
     expect(destinationPanel.style.backgroundPosition).toBe('center bottom');
+    expect(screen.getByTestId('faq')).not.toHaveAttribute('data-layout');
   });
 });
