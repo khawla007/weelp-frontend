@@ -562,7 +562,7 @@ describe('Deep Forest semantic theme', () => {
 
   it('sets the dark site-wide button surface and border to the requested tokens', () => {
     const buttonRule = extractSelectorContract([
-      '.dark button:not(.weelp-header-nav-item):not(.weelp-single-product-tab)',
+      '.dark button:not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.bg-card)',
       ".dark a[role='button']",
       ".dark [role='button']",
       ".dark a[class~='bg-weelp-sage-deep']",
