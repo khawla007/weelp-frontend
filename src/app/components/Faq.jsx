@@ -25,9 +25,7 @@ function Accordion({ items, headingClassName = 'py-6 text-lg font-extrabold trac
               type="button"
               aria-expanded={openIndex === index}
               aria-controls={panelId}
-              className={`flex w-full cursor-pointer items-center justify-between rounded-t-2xl p-3 text-left font-bold text-[var(--weelp-home-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40 md:p-4 ${
-                openIndex === index ? '' : 'rounded-b-2xl'
-              }`}
+              className="flex w-full cursor-pointer items-center justify-between rounded-2xl p-3 text-left font-bold text-[var(--weelp-home-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40 md:p-4"
               onClick={(event) => handleToggle(index, event.currentTarget)}
             >
               {item.title}

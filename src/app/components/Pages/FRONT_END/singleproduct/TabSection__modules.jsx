@@ -155,9 +155,9 @@ const FaqAccordionItem = ({ question, answer, isOpen, onToggle }) => {
         onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls={panelId}
-        className={`flex w-full items-center justify-between rounded-t-2xl p-5 text-left transition-colors hover:bg-surface-tint ${FAQ_FOCUS_RING} ${isOpen ? '' : 'rounded-b-2xl'}`}
+        className={`flex w-full items-center justify-between rounded-2xl p-3 text-left md:p-4 ${FAQ_FOCUS_RING}`}
       >
-        <span className="text-base font-semibold text-foreground">{question}</span>
+        <span className="text-sm font-bold leading-[1.2] text-foreground">{question}</span>
         <ChevronRight className={`transition-transform duration-300 motion-reduce:transition-none flex-shrink-0 text-copy ${isOpen ? 'rotate-90' : ''}`} size={16} aria-hidden="true" />
       </button>
       <div
@@ -171,7 +171,7 @@ const FaqAccordionItem = ({ question, answer, isOpen, onToggle }) => {
         }`}
       >
         <div className="min-h-0">
-          <p className="px-5 pt-2 pb-5 text-sm text-muted-foreground leading-relaxed">{answer}</p>
+          <p className="px-4 pt-2 pb-4 text-sm text-muted-foreground leading-relaxed">{answer}</p>
         </div>
       </div>
     </div>

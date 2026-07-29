@@ -126,9 +126,15 @@ describe('FaqPanel', () => {
     expect(firstQuestion).toHaveAttribute('aria-expanded', 'true');
     expect(secondQuestion).toHaveAttribute('aria-expanded', 'false');
     expect(firstItem).toHaveClass('overflow-hidden', 'rounded-2xl', 'bg-background', 'shadow-sm');
-    expect(firstQuestion).toHaveClass('rounded-t-2xl', 'focus-visible:ring-inset');
-    expect(firstQuestion).not.toHaveClass('rounded-b-2xl', 'focus-visible:ring-offset-2');
-    expect(secondQuestion).toHaveClass('rounded-t-2xl', 'rounded-b-2xl', 'focus-visible:ring-inset');
+    expect(firstQuestion).toHaveClass('rounded-2xl', 'p-3', 'md:p-4', 'focus-visible:ring-inset');
+    expect(firstQuestion.firstElementChild).toHaveClass('text-sm', 'font-bold', 'leading-[1.2]');
+    expect(firstQuestion).not.toHaveClass('rounded-t-2xl');
+    expect(firstQuestion).not.toHaveClass('rounded-b-2xl');
+    expect(firstQuestion).not.toHaveClass('p-5');
+    expect(firstQuestion).not.toHaveClass('hover:bg-surface-tint');
+    expect(firstQuestion).not.toHaveClass('focus-visible:ring-offset-2');
+    expect(secondQuestion).toHaveClass('rounded-2xl', 'focus-visible:ring-inset');
+    expect(screen.getByText('Bring comfortable shoes.')).toHaveClass('px-4', 'pb-4');
     expect(firstQuestion).toHaveAttribute('aria-controls');
     expect(document.getElementById(firstQuestion.getAttribute('aria-controls'))).toHaveAttribute('aria-hidden', 'false');
     const secondPanel = document.getElementById(secondQuestion.getAttribute('aria-controls'));
@@ -141,7 +147,11 @@ describe('FaqPanel', () => {
 
     expect(firstQuestion).toHaveAttribute('aria-expanded', 'false');
     expect(secondQuestion).toHaveAttribute('aria-expanded', 'true');
-    expect(firstQuestion).toHaveClass('rounded-b-2xl');
+    expect(firstQuestion).toHaveClass('rounded-2xl');
+    expect(secondQuestion).toHaveClass('rounded-2xl');
+    expect(firstQuestion).not.toHaveClass('rounded-t-2xl');
+    expect(firstQuestion).not.toHaveClass('rounded-b-2xl');
+    expect(secondQuestion).not.toHaveClass('rounded-t-2xl');
     expect(secondQuestion).not.toHaveClass('rounded-b-2xl');
     expect(document.getElementById(firstQuestion.getAttribute('aria-controls'))).toHaveClass('grid-rows-[0fr]', 'opacity-0', 'overflow-hidden');
   });

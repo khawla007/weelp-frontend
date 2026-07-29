@@ -64,7 +64,9 @@ describe('Accordion interaction', () => {
     expect(firstQuestion).toHaveAttribute('aria-expanded', 'false');
     expect(secondQuestion).toHaveAttribute('aria-expanded', 'false');
     expect(firstItem).toHaveClass('overflow-hidden', 'rounded-2xl');
-    expect(firstQuestion).toHaveClass('rounded-t-2xl', 'rounded-b-2xl');
+    expect(firstQuestion).toHaveClass('rounded-2xl');
+    expect(firstQuestion).not.toHaveClass('rounded-t-2xl');
+    expect(firstQuestion).not.toHaveClass('rounded-b-2xl');
     expect(firstQuestion).toHaveClass('focus-visible:outline-none', 'focus-visible:ring-2', 'focus-visible:ring-inset');
     expect(firstQuestion).toHaveAttribute('aria-controls');
     expect(document.getElementById(firstQuestion.getAttribute('aria-controls'))).toHaveAttribute('aria-hidden', 'true');
@@ -72,7 +74,8 @@ describe('Accordion interaction', () => {
 
     fireEvent.click(firstQuestion);
 
-    expect(firstQuestion).toHaveClass('rounded-t-2xl');
+    expect(firstQuestion).toHaveClass('rounded-2xl');
+    expect(firstQuestion).not.toHaveClass('rounded-t-2xl');
     expect(firstQuestion).not.toHaveClass('rounded-b-2xl');
 
     fireEvent.click(secondQuestion);
