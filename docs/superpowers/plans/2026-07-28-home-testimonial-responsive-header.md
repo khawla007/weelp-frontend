@@ -50,18 +50,12 @@ describe('Testimonial', () => {
     const travelerName = screen.getByRole('heading', {
       name: /Gurmeet Singh With A Long Traveler Name/i,
     });
-    const itemName = screen.getByText(
-      'Burj Khalifa At The Top Experience with Sky Views and Dinner',
-    );
-    const reviewText = screen.getByText(
-      'The entry timing was clear and the view was exactly what we hoped for.',
-    );
+    const itemName = screen.getByText('Burj Khalifa At The Top Experience with Sky Views and Dinner');
+    const reviewText = screen.getByText('The entry timing was clear and the view was exactly what we hoped for.');
 
     expect(metadataGroup).toHaveClass('justify-between');
     expect(metadataGroup).toContainElement(avatar);
-    expect(metadataGroup).toContainElement(
-      screen.getByRole('img', { name: '5 out of 5 stars' }),
-    );
+    expect(metadataGroup).toContainElement(screen.getByRole('img', { name: '5 out of 5 stars' }));
     expect(metadataGroup).toContainElement(screen.getByText('2026-07-04'));
     expect(metadataGroup).not.toContainElement(travelerName);
     expect(identityGroup).toContainElement(travelerName);
@@ -138,74 +132,36 @@ import { BadgeCheck, Star } from 'lucide-react';
 const Testimonial = ({ username, title, date, itemName, rating }) => {
   const displayName = username || 'Anonymous';
   const numericRating = Number(rating);
-  const safeRating = Number.isFinite(numericRating)
-    ? Math.max(0, Math.min(5, Math.round(numericRating)))
-    : 0;
+  const safeRating = Number.isFinite(numericRating) ? Math.max(0, Math.min(5, Math.round(numericRating))) : 0;
 
   return (
     <div className="flex h-full flex-col gap-4 rounded-lg border border-border bg-background p-4">
-      <div
-        role="group"
-        aria-label="Review metadata"
-        className="flex items-start justify-between gap-4"
-      >
-        <Image
-          src="/assets/testimonial.png"
-          alt={`${displayName} avatar`}
-          width={64}
-          height={64}
-          sizes="64px"
-          className="size-16 shrink-0 rounded-full object-cover"
-        />
+      <div role="group" aria-label="Review metadata" className="flex items-start justify-between gap-4">
+        <Image src="/assets/testimonial.png" alt={`${displayName} avatar`} width={64} height={64} sizes="64px" className="size-16 shrink-0 rounded-full object-cover" />
 
         {(safeRating > 0 || date) && (
           <div className="ml-auto flex shrink-0 flex-col items-end gap-1">
             {safeRating > 0 && (
-              <div
-                className="flex gap-0.5"
-                role="img"
-                aria-label={`${safeRating} out of 5 stars`}
-              >
+              <div className="flex gap-0.5" role="img" aria-label={`${safeRating} out of 5 stars`}>
                 {Array.from({ length: safeRating }).map((_, index) => (
-                  <Star
-                    key={index}
-                    aria-hidden="true"
-                    className="size-4 fill-yellow-400 stroke-none"
-                  />
+                  <Star key={index} aria-hidden="true" className="size-4 fill-yellow-400 stroke-none" />
                 ))}
               </div>
             )}
-            {date && (
-              <span className="whitespace-nowrap text-base font-normal uppercase text-muted-foreground">
-                {date}
-              </span>
-            )}
+            {date && <span className="whitespace-nowrap text-base font-normal uppercase text-muted-foreground">{date}</span>}
           </div>
         )}
       </div>
 
-      <div
-        role="group"
-        aria-label="Traveler and reviewed item"
-        className="w-full min-w-0"
-      >
+      <div role="group" aria-label="Traveler and reviewed item" className="w-full min-w-0">
         <h3 className="flex items-center gap-2 break-words text-xl font-semibold text-foreground">
           <span>{displayName}</span>
-          <BadgeCheck
-            aria-hidden="true"
-            className="size-5 shrink-0 fill-sky-500 text-white"
-          />
+          <BadgeCheck aria-hidden="true" className="size-5 shrink-0 fill-sky-500 text-white" />
         </h3>
-        {itemName && (
-          <span className="block break-words font-normal text-muted-foreground">
-            {itemName}
-          </span>
-        )}
+        {itemName && <span className="block break-words font-normal text-muted-foreground">{itemName}</span>}
       </div>
 
-      <p className="mb-3 line-clamp-3 text-base font-normal text-foreground">
-        {title || 'Great experience!'}
-      </p>
+      <p className="mb-3 line-clamp-3 text-base font-normal text-foreground">{title || 'Great experience!'}</p>
     </div>
   );
 };
