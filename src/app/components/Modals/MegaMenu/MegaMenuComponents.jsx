@@ -98,10 +98,11 @@ export const CityGrid = ({ cities = [] }) => {
   return (
     <ul className="grid grid-cols-4 gap-x-4 gap-y-[18px] px-[19px] pt-[18px] pb-4">
       {cities.map((city) => (
-        <li key={city.id}>
+        <li key={city.id} className="min-w-0">
           <Link
             href={`/cities/${city.slug}`}
-            className="text-foreground transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-popover"
+            title={city.name}
+            className="block w-full truncate text-foreground transition-colors duration-200 ease-out motion-reduce:transition-none hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-popover"
             style={{
               fontFamily: FONT_FAMILY,
               fontSize: '14px',
