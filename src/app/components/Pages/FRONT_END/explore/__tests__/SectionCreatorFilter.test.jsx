@@ -55,8 +55,8 @@ describe('CreatorFilter', () => {
     jest.clearAllMocks();
   });
 
-  it('wraps discovery tabs and actions within narrow mobile viewports', () => {
-    render(
+  it('wraps discovery tabs and actions without a separator within narrow mobile viewports', () => {
+    const { container } = render(
       <CreatorFilter
         initialItineraries={[]}
         lastPage={1}
@@ -77,6 +77,7 @@ describe('CreatorFilter', () => {
     expect(trending).toHaveClass('px-3', 'sm:px-[21px]');
     expect(trending).toHaveStyle({ borderRadius: '8.5px' });
     expect(screen.getByRole('button', { name: 'Join as Creator' })).toHaveClass('text-sm', 'sm:text-[18px]', 'px-3', 'sm:px-5');
+    expect(container.querySelector('.w-px.h-6')).not.toBeInTheDocument();
   });
 
   it('renders populated creator itineraries from initial server data', () => {

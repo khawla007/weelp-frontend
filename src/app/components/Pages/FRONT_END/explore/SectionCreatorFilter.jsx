@@ -222,19 +222,16 @@ const CreatorFilter = ({ initialItineraries, lastPage, initialError = false, act
             );
           })}
 
-          {/* Divider + Dynamic Action Button */}
+          {/* Dynamic Action Button */}
           {actionBtn && (
-            <>
-              <div className="w-px h-6 bg-weelp-steel/20" />
-              <button
-                onClick={onActionClick}
-                disabled={applicationStatus === 'pending'}
-                className="flex min-h-11 items-center gap-1.5 rounded-[8.5px] bg-weelp-sage-deep px-3 py-[7px] text-sm font-medium text-white transition-colors hover:bg-weelp-sage-deep/90 disabled:opacity-60 sm:px-5 sm:text-[18px]"
-              >
-                <ActionIcon size={16} />
-                {actionBtn.label}
-              </button>
-            </>
+            <button
+              onClick={onActionClick}
+              disabled={applicationStatus === 'pending'}
+              className="flex min-h-11 items-center gap-1.5 rounded-[8.5px] bg-weelp-sage-deep px-3 py-[7px] text-sm font-medium text-white transition-colors hover:bg-weelp-sage-deep/90 disabled:opacity-60 sm:px-5 sm:text-[18px]"
+            >
+              <ActionIcon size={16} />
+              {actionBtn.label}
+            </button>
           )}
         </div>
 
