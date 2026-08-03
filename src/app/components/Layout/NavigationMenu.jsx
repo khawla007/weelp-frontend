@@ -417,7 +417,7 @@ export const HeaderAccount = ({ overHero = false }) => {
             <span className="relative inline-flex">
               <ShoppingCart className="size-5" strokeWidth={1.5} />
               {cartItemCount > 0 && (
-                <Badge key={cartItemCount} className="absolute -right-3.5 -top-2.5 animate-badge-pulse">
+                <Badge key={cartItemCount} className="absolute -right-3.5 -top-2.5 animate-badge-pulse text-white dark:bg-weelp-sage-deep dark:hover:bg-weelp-sage-deep">
                   {cartItemCount}
                 </Badge>
               )}

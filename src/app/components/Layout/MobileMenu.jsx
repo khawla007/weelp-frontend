@@ -355,7 +355,7 @@ const HeaderAccountMobile = () => {
         >
           <ShoppingCart className="size-[18px]" />
           {cartItemCount > 0 && (
-            <Badge key={cartItemCount} className="absolute bottom-1/4 left-1/2 animate-badge-pulse">
+            <Badge key={cartItemCount} className="absolute bottom-1/4 left-1/2 animate-badge-pulse text-white dark:bg-weelp-sage-deep dark:hover:bg-weelp-sage-deep">
               {cartItemCount}
             </Badge>
           )}

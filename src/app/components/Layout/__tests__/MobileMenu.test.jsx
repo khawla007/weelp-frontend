@@ -4,6 +4,11 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import MobileMenu from '../MobileMenu';
 
 const mockUseSession = jest.fn();
+const mockMiniCartState = {
+  isMiniCartOpen: false,
+  setMiniCartOpen: jest.fn(),
+  cartItems: [],
+};
 
 jest.mock('next-auth/react', () => ({
   __esModule: true,
@@ -11,14 +16,9 @@ jest.mock('next-auth/react', () => ({
 }));
 
 jest.mock('@/lib/store/useMiniCartStore', () => {
-  const state = {
-    isMiniCartOpen: false,
-    setMiniCartOpen: jest.fn(),
-    cartItems: [],
-  };
   return {
     __esModule: true,
-    default: (selector) => selector(state),
+    default: (selector) => selector(mockMiniCartState),
   };
 });
 
@@ -42,6 +42,16 @@ const getTopStrip = () => screen.getByText('Get Exclusive offer on the App').clo
 describe('MobileMenu', () => {
   beforeEach(() => {
     mockUseSession.mockReturnValue({ data: null });
+    mockMiniCartState.cartItems = [];
+  });
+
+  it('keeps the mobile cart count white for dark-mode contrast', () => {
+    mockMiniCartState.cartItems = [{ id: 1 }];
+
+    render(<MobileMenu stickyHeader variant="solid" showTopStrip={false} />);
+
+    const cartButton = screen.getByRole('button', { name: 'Open cart, 1 item' });
+    expect(cartButton.querySelector('.animate-badge-pulse')).toHaveClass('text-white', 'dark:bg-weelp-sage-deep', 'dark:hover:bg-weelp-sage-deep');
   });
 
   it('shows the mobile top strip before the header becomes sticky', () => {

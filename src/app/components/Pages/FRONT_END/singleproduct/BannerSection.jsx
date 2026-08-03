@@ -142,7 +142,7 @@ const BannerSection = ({
               type="button"
               onClick={handleSaveClick}
               disabled={isSaveDisabled}
-              className={`hidden lg:flex items-center gap-2 text-copy hover:text-foreground font-medium text-base rounded-sm px-1 py-1 transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${focusRing}`}
+              className={`hidden min-h-11 px-4 py-2 lg:flex items-center gap-2 text-copy hover:text-foreground font-medium text-base rounded-lg transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${focusRing}`}
             >
               <Heart size={18} />
               Save to Wishlist

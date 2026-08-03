@@ -97,6 +97,15 @@ describe('BannerSection', () => {
     expect(headerStack).not.toHaveClass('pt-[70px]');
   });
 
+  it('gives the desktop wishlist action comfortable horizontal padding and touch height', () => {
+    render(<BannerSection activityName="Scuba Diving Tour" />);
+
+    const wishlistButton = screen.getByRole('button', { name: /save to wishlist/i });
+
+    expect(wishlistButton).toHaveClass('px-4', 'min-h-11', 'rounded-lg');
+    expect(wishlistButton).not.toHaveClass('px-1', 'rounded-sm');
+  });
+
   it('saves the normalized wishlist payload for an authenticated user', async () => {
     render(<BannerSection activityName="Scuba Diving Tour" itemId={42} itemType="activity" slug="scuba-diving-tour" citySlug="dubai" cityName="Dubai" price={120} currency="USD" />);
 

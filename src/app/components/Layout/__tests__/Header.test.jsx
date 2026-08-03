@@ -1,10 +1,10 @@
 import React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import Header from '../header';
 
 const usePathnameMock = jest.fn();
-let miniCartState;
+let mockMiniCartState;
 
 jest.mock('next/navigation', () => ({
   __esModule: true,
@@ -47,14 +47,22 @@ jest.mock('../MobileMenu', () => {
 });
 
 jest.mock('../../Modals/MiniCartNew', () => {
-  const MiniCartNewMock = () => <div data-testid="mini-cart">Mini cart</div>;
+  const { Sheet, SheetContent, SheetDescription, SheetTitle } = jest.requireActual('@/components/ui/sheet');
+  const MiniCartNewMock = () => (
+    <Sheet open={mockMiniCartState.isMiniCartOpen}>
+      <SheetContent data-testid="mini-cart">
+        <SheetTitle>Mini cart</SheetTitle>
+        <SheetDescription>Current booking</SheetDescription>
+      </SheetContent>
+    </Sheet>
+  );
   MiniCartNewMock.displayName = 'MiniCartNewMock';
   return MiniCartNewMock;
 });
 
 jest.mock('@/lib/store/useMiniCartStore', () => ({
   __esModule: true,
-  default: (selector) => selector(miniCartState),
+  default: (selector) => selector(mockMiniCartState),
 }));
 
 const setScroll = (y) => {
@@ -75,7 +83,7 @@ beforeAll(() => {
 
 beforeEach(() => {
   usePathnameMock.mockReset();
-  miniCartState = {
+  mockMiniCartState = {
     isMiniCartOpen: false,
   };
   setScroll(0);
@@ -135,9 +143,9 @@ describe('Header', () => {
     expect(screen.getByTestId('desktop-main-bar')).toHaveAttribute('data-sticky', 'true');
   });
 
-  it('mounts one shared mini cart portal when the cart store is open', async () => {
+  it('mounts one shared mini cart sheet when the cart store is open', async () => {
     usePathnameMock.mockReturnValue('/cities/dubai');
-    miniCartState.isMiniCartOpen = true;
+    mockMiniCartState.isMiniCartOpen = true;
 
     render(<Header />);
 
@@ -145,5 +153,44 @@ describe('Header', () => {
       expect(screen.getByTestId('mini-cart')).toBeInTheDocument();
     });
     expect(screen.getAllByTestId('mini-cart')).toHaveLength(1);
+  });
+
+  it('keeps the mini cart sheet mounted in its closed state so its exit animation can finish', async () => {
+    usePathnameMock.mockReturnValue('/cities/dubai');
+    mockMiniCartState.isMiniCartOpen = true;
+    const originalGetComputedStyle = window.getComputedStyle.bind(window);
+    const computedStyleSpy = jest.spyOn(window, 'getComputedStyle').mockImplementation((element) => {
+      const style = originalGetComputedStyle(element);
+
+      return new Proxy(style, {
+        get(target, property) {
+          if (property === 'animationName' && element.getAttribute('data-state') === 'closed') return 'mini-cart-slide-out';
+
+          const value = Reflect.get(target, property, target);
+          return typeof value === 'function' ? value.bind(target) : value;
+        },
+      });
+    });
+
+    const { rerender } = render(<Header />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('mini-cart')).toBeInTheDocument();
+    });
+
+    mockMiniCartState.isMiniCartOpen = false;
+    rerender(<Header />);
+
+    const closingSheet = screen.getByTestId('mini-cart');
+    expect(closingSheet).toHaveAttribute('data-state', 'closed');
+
+    const animationEnd = new Event('animationend', { bubbles: true });
+    Object.defineProperty(animationEnd, 'animationName', { value: 'mini-cart-slide-out' });
+    fireEvent(closingSheet, animationEnd);
+    await waitFor(() => {
+      expect(screen.queryByTestId('mini-cart')).not.toBeInTheDocument();
+    });
+
+    computedStyleSpy.mockRestore();
   });
 });

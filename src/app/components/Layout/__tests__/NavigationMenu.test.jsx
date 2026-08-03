@@ -1,7 +1,13 @@
 import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 
-import DesktopMenu, { DesktopTopStrip } from '../NavigationMenu';
+import DesktopMenu, { DesktopTopStrip, HeaderAccount } from '../NavigationMenu';
+
+const mockMiniCartState = {
+  isMiniCartOpen: false,
+  setMiniCartOpen: jest.fn(),
+  cartItems: [],
+};
 
 jest.mock('next/navigation', () => ({
   usePathname: () => '/',
@@ -55,15 +61,12 @@ jest.mock(
     },
 );
 
-jest.mock('../../../../lib/store/useMiniCartStore', () => () => ({
-  isMiniCartOpen: false,
-  setMiniCartOpen: jest.fn(),
-  cartItems: [],
-}));
+jest.mock('../../../../lib/store/useMiniCartStore', () => (selector) => selector(mockMiniCartState));
 
 describe('DesktopMenu', () => {
   beforeEach(() => {
     jest.useFakeTimers();
+    mockMiniCartState.cartItems = [];
   });
 
   afterEach(() => {
@@ -85,6 +88,15 @@ describe('DesktopMenu', () => {
     expect(screen.getByRole('link', { name: /tours & experiences/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^transfers$/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^trips$/i })).toBeInTheDocument();
+  });
+
+  it('keeps the desktop cart count white for dark-mode contrast', () => {
+    mockMiniCartState.cartItems = [{ id: 1 }];
+
+    render(<HeaderAccount />);
+
+    const cartButton = screen.getByRole('button', { name: 'Open cart, 1 item' });
+    expect(cartButton.querySelector('.animate-badge-pulse')).toHaveClass('text-white', 'dark:bg-weelp-sage-deep', 'dark:hover:bg-weelp-sage-deep');
   });
 
   it('marks the destinations trigger as an unfilled header navigation item', () => {
