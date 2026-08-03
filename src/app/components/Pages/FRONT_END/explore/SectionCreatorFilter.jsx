@@ -209,11 +209,11 @@ const CreatorFilter = ({ initialItineraries, lastPage, initialError = false, act
               <button
                 key={tab.value}
                 onClick={() => onTabChange(tab.value)}
-                className={`flex min-h-11 items-center gap-1.5 py-[7px] text-sm font-medium sm:text-[18px] ${activeTab === tab.value ? 'px-3 sm:px-[21px]' : 'px-0'}`}
+                className={`flex min-h-11 items-center gap-1.5 py-[7px] text-sm font-medium sm:text-[18px] ${activeTab === tab.value || tab.value === 'trending' ? 'px-3 sm:px-[21px]' : 'px-0'}`}
                 style={{
                   color: 'hsl(var(--weelp-steel))',
                   backgroundColor: activeTab === tab.value ? '#f2f7f5' : 'transparent',
-                  borderRadius: activeTab === tab.value ? '8.5px' : '0',
+                  borderRadius: activeTab === tab.value || tab.value === 'trending' ? '8.5px' : '0',
                 }}
               >
                 <TabIcon size={16} />

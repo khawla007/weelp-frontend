@@ -71,8 +71,11 @@ describe('CreatorFilter', () => {
     );
 
     const home = screen.getByRole('button', { name: 'Home' });
+    const trending = screen.getByRole('button', { name: 'Trending' });
     expect(home.parentElement).toHaveClass('w-full', 'flex-wrap', 'justify-center', 'gap-2', 'sm:w-auto', 'sm:flex-nowrap');
     expect(home).toHaveClass('text-sm', 'sm:text-[18px]', 'px-3', 'sm:px-[21px]');
+    expect(trending).toHaveClass('px-3', 'sm:px-[21px]');
+    expect(trending).toHaveStyle({ borderRadius: '8.5px' });
     expect(screen.getByRole('button', { name: 'Join as Creator' })).toHaveClass('text-sm', 'sm:text-[18px]', 'px-3', 'sm:px-5');
   });
 
