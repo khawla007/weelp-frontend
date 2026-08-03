@@ -60,13 +60,22 @@ describe('single product sidebar layering', () => {
   });
 
   it('keeps the decorative bottom image behind the sidebar column content', () => {
-    const { container } = render(<SingleProductTabSection productType="activity" productId={3} productData={{ id: 3, pricing: { regular_price: 244, currency: 'USD' }, addons: [], faqs: [] }} />);
+    const { container } = render(
+      <SingleProductTabSection
+        productType="activity"
+        productId={3}
+        productData={{ id: 3, name: 'Desert Safari', pricing: { regular_price: 244, currency: 'USD' }, addons: [], faqs: [] }}
+        citySlug="dubai"
+        activitySlug="desert-safari"
+      />,
+    );
 
     const decorativeImageLayer = [...container.querySelectorAll('[aria-hidden="true"]')].find((element) => element.className.includes('pointer-events-none'));
 
     expect(decorativeImageLayer).toHaveClass('z-0');
     expect(decorativeImageLayer.parentElement).toHaveClass('xl:self-start');
     expect(screen.getByRole('heading', { name: 'Questions?' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Help Center' })).toBeInTheDocument();
   });
 
   it('positions ProductSidebar content above decorative backgrounds', () => {
@@ -76,7 +85,7 @@ describe('single product sidebar layering', () => {
     expect(screen.getByRole('heading', { name: 'Questions?' })).toBeInTheDocument();
   });
 
-  it('places mobile similar experiences between the booking action and questions card', () => {
+  it('keeps the questions card after mobile similar experiences', () => {
     render(
       <ProductSidebar
         productId={3}

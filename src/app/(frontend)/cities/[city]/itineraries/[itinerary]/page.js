@@ -93,7 +93,16 @@ export default async function IterenaryPage({ params, searchParams }) {
         price={data?.price}
         currency={data?.currency}
       />
-      <SingleProductTabSection productType="itinerary" productId={id} productData={data} itinerarySlug={itinerary} similarActivities={similarItineraries} session={session} itinerary={data} />
+      <SingleProductTabSection
+        productType="itinerary"
+        productId={id}
+        productData={data}
+        citySlug={city}
+        itinerarySlug={itinerary}
+        similarActivities={similarItineraries}
+        session={session}
+        itinerary={data}
+      />
       <SeoFooterScripts seo={itinerarySeo} />
     </>
   );

@@ -1,12 +1,13 @@
 import { render } from '@testing-library/react';
 
 const BannerSection = jest.fn(() => <div data-testid="banner-section" />);
+const SingleProductTabSection = jest.fn(() => <div data-testid="single-product-tabs" />);
 const getSinglePackage = jest.fn();
 const getRandomSimilarPackages = jest.fn();
 
 jest.mock('next/dynamic', () => ({
   __esModule: true,
-  default: () => () => <div data-testid="single-product-tabs" />,
+  default: () => (props) => SingleProductTabSection(props),
 }));
 
 jest.mock('@/app/components/Pages/FRONT_END/singleproduct/BannerSection', () => ({
@@ -60,6 +61,12 @@ describe('PackagePage wishlist banner props', () => {
         slug: 'dubai-family-package',
         citySlug: 'dubai',
         cityName: 'Dubai',
+      }),
+    );
+    expect(SingleProductTabSection).toHaveBeenCalledWith(
+      expect.objectContaining({
+        packageSlug: 'dubai-family-package',
+        citySlug: 'dubai',
       }),
     );
   });

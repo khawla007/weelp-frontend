@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 
 const BannerSection = jest.fn(() => <div data-testid="banner-section" />);
+const SingleProductTabSection = jest.fn(() => <div data-testid="single-product-tabs" />);
 const CreatorItineraryViewRecorder = jest.fn(() => <div data-testid="creator-view-recorder" />);
 const getSingleItinerary = jest.fn();
 const getRandomSimilarItineraries = jest.fn();
@@ -8,7 +9,7 @@ const auth = jest.fn();
 
 jest.mock('next/dynamic', () => ({
   __esModule: true,
-  default: () => () => <div data-testid="single-product-tabs" />,
+  default: () => (props) => SingleProductTabSection(props),
 }));
 
 jest.mock('@/app/components/Pages/FRONT_END/singleproduct/BannerSection', () => ({
@@ -98,6 +99,12 @@ describe('IterenaryPage wishlist banner props', () => {
         slug: 'dubai-family-itinerary',
         citySlug: 'dubai',
         cityName: 'Dubai',
+      }),
+    );
+    expect(SingleProductTabSection).toHaveBeenCalledWith(
+      expect.objectContaining({
+        itinerarySlug: 'dubai-family-itinerary',
+        citySlug: 'dubai',
       }),
     );
   });

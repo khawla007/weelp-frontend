@@ -65,7 +65,7 @@ export default async function PackagePage({ params, searchParams }) {
         price={packageData?.price}
         currency={packageData?.currency}
       />
-      <SingleProductTabSection productType="package" productId={id} productData={packageData} packageSlug={pack} similarActivities={similarPackages} />
+      <SingleProductTabSection productType="package" productId={id} productData={packageData} citySlug={city} packageSlug={pack} similarActivities={similarPackages} />
     </>
   );
 }

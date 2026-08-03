@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 
 const BannerSection = jest.fn(() => <div data-testid="banner-section" />);
+const SingleProductTabSection = jest.fn(() => <div data-testid="single-product-tabs" />);
 const getSingleActivity = jest.fn();
 const getRandomSimilarActivities = jest.fn();
 
@@ -11,7 +12,7 @@ jest.mock('@/app/components/Pages/FRONT_END/singleproduct/BannerSection', () => 
 
 jest.mock('@/app/components/Pages/FRONT_END/singleproduct/SingleProductTabSection', () => ({
   __esModule: true,
-  default: () => <div data-testid="single-product-tabs" />,
+  default: (props) => SingleProductTabSection(props),
 }));
 
 jest.mock('@/lib/services/activites', () => ({
@@ -86,6 +87,12 @@ describe('SingleActivityPage wishlist banner props', () => {
         slug: 'scuba-diving-tour',
         citySlug: 'dubai',
         cityName: 'Dubai',
+      }),
+    );
+    expect(SingleProductTabSection).toHaveBeenCalledWith(
+      expect.objectContaining({
+        activitySlug: 'scuba-diving-tour',
+        citySlug: 'dubai',
       }),
     );
   });

@@ -44,6 +44,7 @@ const SingleProductTabSection = ({
   productId,
   productData,
   similarActivities = [],
+  citySlug,
   activitySlug,
   itinerarySlug,
   packageSlug,
@@ -293,6 +294,8 @@ const SingleProductTabSection = ({
               productId={productId}
               productData={productData}
               productType={productType}
+              citySlug={citySlug}
+              itemSlug={activitySlug || itinerarySlug || packageSlug}
               itinerarySlug={itinerarySlug}
               packageSlug={packageSlug}
               defaultDateRange={defaultDateRange}

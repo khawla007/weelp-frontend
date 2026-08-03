@@ -94,7 +94,7 @@ export default async function SingleActivityPage({ params, searchParams }) {
         price={activityData?.price}
         currency={activityData?.currency}
       />
-      <SingleProductTabSection productType="activity" productId={id} productData={activityData} similarActivities={similarActivities} activitySlug={slug} />
+      <SingleProductTabSection productType="activity" productId={id} productData={activityData} similarActivities={similarActivities} citySlug={city} activitySlug={slug} />
       <SeoFooterScripts seo={activitySeo} />
     </>
   );

@@ -1,12 +1,14 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Check } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useForm, FormProvider, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useSWR from 'swr';
 import SingleProductForm from '@/app/components/Form/SingleProductForm';
+import { ContextualHelpPanel } from '@/app/components/Help/ContextualHelpPanel';
+import { normalizeHelpContext } from '@/app/components/Help/normalizeHelpContext';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { getItineraryAddons, getPackageAddons } from '@/lib/services/addOn';
 import { bookingSchema } from '@/lib/validation/bookingSchema';
@@ -52,6 +54,8 @@ const ProductSidebar = ({
   productId,
   productData,
   productType = 'activity',
+  citySlug,
+  itemSlug,
   itinerarySlug,
   packageSlug,
   defaultDateRange = null,
@@ -60,6 +64,8 @@ const ProductSidebar = ({
   mobileSimilarActivities = [],
 }) => {
   const searchParams = useSearchParams();
+  const [helpOpen, setHelpOpen] = useState(false);
+  const helpTriggerRef = useRef(null);
   const [selectedAddons, setSelectedAddons] = useState([]);
   const [hasChangedAddons, setHasChangedAddons] = useState(false);
   const { cartItems, setMiniCartOpen } = useMiniCartStore();
@@ -71,6 +77,17 @@ const ProductSidebar = ({
   }, [cartItems, editCartItemId, productType]);
   const isEditingCartItem = Boolean(editingCartItem);
   const isInCart = cartItems.some((item) => item.id === productData?.id);
+  const helpContext = useMemo(
+    () =>
+      normalizeHelpContext({
+        productType,
+        productId,
+        productData,
+        citySlug,
+        itemSlug,
+      }),
+    [citySlug, itemSlug, productData, productId, productType],
+  );
 
   // Lift form state to sidebar for live pricing updates
   const methods = useForm({
@@ -502,15 +519,20 @@ const ProductSidebar = ({
               <p className="text-base text-muted-foreground">Visit the Weelp Help Centre for any further questions.</p>
               <span className="text-sm text-copy mt-2">Product ID : {productId ?? 451245}</span>
             </div>
-            <button
-              type="button"
-              className="px-6 py-3 border border-border rounded-lg text-sm font-medium text-foreground whitespace-nowrap hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-            >
-              Help Center
-            </button>
+            {helpContext ? (
+              <button
+                ref={helpTriggerRef}
+                type="button"
+                onClick={() => setHelpOpen(true)}
+                className="px-6 py-3 border border-border rounded-lg text-sm font-medium text-foreground whitespace-nowrap hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              >
+                Help Center
+              </button>
+            ) : null}
           </div>
         </div>
       </div>
+      {helpContext ? <ContextualHelpPanel open={helpOpen} onOpenChange={setHelpOpen} context={helpContext} triggerRef={helpTriggerRef} /> : null}
     </FormProvider>
   );
 };
