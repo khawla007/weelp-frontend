@@ -173,14 +173,10 @@ export function SupportRequestForm({ context, selectedTopic, session, onBack, on
 
   return (
     <div className="px-5 py-6 sm:px-7">
-      <button
-        type="button"
-        className="mb-5 inline-flex min-h-10 items-center gap-2 rounded-md text-sm font-medium text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        onClick={onBack}
-      >
+      <Button type="button" variant="outline" size="sm" className="mb-5 h-10 max-w-full px-3 text-muted-foreground" onClick={onBack}>
         <ArrowLeft aria-hidden="true" className="h-4 w-4" />
         Back to help
-      </button>
+      </Button>
 
       <div>
         <h2 ref={headingRef} tabIndex={-1} className="text-2xl font-semibold tracking-tight text-foreground focus:outline-none">

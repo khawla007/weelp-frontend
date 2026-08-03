@@ -46,6 +46,12 @@ describe('SupportRequestForm', () => {
     });
   });
 
+  it('keeps the back action inside a padded single-line button', () => {
+    renderForm();
+
+    expect(screen.getByRole('button', { name: 'Back to help' })).toHaveClass('h-10', 'max-w-full', 'px-3', 'whitespace-nowrap');
+  });
+
   it('prefills session identity while keeping guest fields editable', () => {
     renderForm({
       session: { user: { name: 'Aisha Traveller', email: 'aisha@example.com' } },
