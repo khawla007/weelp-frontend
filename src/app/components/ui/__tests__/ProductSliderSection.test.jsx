@@ -42,3 +42,18 @@ test('renders product carousel navigation on mobile-sized layouts', () => {
   expect(screen.getByRole('button', { name: 'Next Top activities item' })).toBeInTheDocument();
   expect(container.querySelector('.top-activities-next')?.parentElement).not.toHaveClass('hidden');
 });
+
+test('marks the supported header CTA as a button-shaped link', () => {
+  render(
+    <ProductSliderSection
+      items={items}
+      title="Top activities"
+      navigationId="top-activities"
+      headerAction="cta"
+      ctaHref="/cities"
+      ctaLabel="Explore cities"
+    />,
+  );
+
+  expect(screen.getByRole('link', { name: 'Explore cities' })).toHaveAttribute('data-weelp-button-link');
+});

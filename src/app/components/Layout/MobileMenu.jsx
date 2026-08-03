@@ -217,11 +217,12 @@ const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error, isCurrent }
     </div>
 
     <div className="mt-5 flex gap-2.5">
-      <Link href="/user/login" className="flex flex-1 items-center justify-center gap-2 rounded-full border border-border bg-background px-4 py-3 text-sm font-semibold text-foreground">
+      <Link data-weelp-button-link href="/user/login" className="flex flex-1 items-center justify-center gap-2 rounded-full border border-border bg-background px-4 py-3 text-sm font-semibold text-foreground">
         <UserRound className="size-4" />
         Account
       </Link>
       <Link
+        data-weelp-button-link
         href="/explore-creators"
         className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         aria-label="Search trips"
@@ -374,6 +375,7 @@ const HeaderAccountMobile = () => {
           </button>
         ) : (
           <Link
+            data-weelp-button-link
             href="/user/login"
             aria-label="Sign in"
             className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"

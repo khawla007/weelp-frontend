@@ -125,6 +125,7 @@ export default function CitiesListingControls({ countries = [], seasons = [] }) 
             <FilterChip label={SORT_OPTIONS.find((option) => option.value === selectedSort)?.label || selectedSort} onRemove={() => update({ sort_by: DEFAULT_SORT })} />
           )}
           <NavigationLink
+            data-weelp-button-link
             href={pathname}
             className="inline-flex min-h-11 items-center rounded-[11.5px] border border-border bg-background px-3 text-sm font-medium text-muted-foreground transition hover:border-weelp-sage-deep hover:text-weelp-sage-text"
           >

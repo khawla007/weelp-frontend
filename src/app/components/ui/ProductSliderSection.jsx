@@ -48,6 +48,7 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
 
         {headerAction === 'cta' && ctaHref && ctaLabel && (
           <Link
+            data-weelp-button-link
             href={ctaHref}
             className="weelp-city-cta-button rounded-[10px] px-4 py-[10px] transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none hover:opacity-95"
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600, fontSize: '14px' }}

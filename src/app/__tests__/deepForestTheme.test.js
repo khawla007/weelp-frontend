@@ -560,6 +560,82 @@ describe('Deep Forest semantic theme', () => {
     expect(contrastRatio('#ffffff', darkTokens['--weelp-sage-deep'])).toBeGreaterThanOrEqual(4.5);
   });
 
+  const darkInteractiveControlSelectors = [
+    ".dark button:not(:disabled):not([aria-disabled='true'])",
+    ".dark a[role='button']:not([aria-disabled='true'])",
+    ".dark a[data-weelp-button-link]:not([aria-disabled='true'])",
+    ".dark a[class~='bg-weelp-sage-deep']:not([aria-disabled='true'])",
+    ".dark a[class~='bg-primary']:not([aria-disabled='true'])",
+  ];
+  const darkInteractiveControlHoverSelectors = darkInteractiveControlSelectors.map((selector) => `${selector}:hover`);
+
+  it('gives enabled dark buttons and button-shaped anchors the Dubai Tours hover shadow', () => {
+    const restingRule = extractSelectorContract(darkInteractiveControlSelectors);
+    const hoverRule = extractSelectorContract(darkInteractiveControlHoverSelectors);
+    const { rule: reducedMotionRule } = findExactRule(['*', '*::before', '*::after']);
+
+    expect(restingRule.declarations).toMatchObject({
+      'transition-property': { important: true, value: 'color, background-color, border-color, box-shadow, opacity, transform' },
+      'transition-duration': { important: true, value: '200ms' },
+      'transition-timing-function': { important: true, value: 'cubic-bezier(0.4, 0, 0.2, 1)' },
+    });
+    expect(hoverRule.declarations).toMatchObject({
+      'box-shadow': {
+        important: true,
+        value: 'var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), 4px 4px 15px rgba(88, 143, 122, 0.3)',
+      },
+    });
+    expect(hoverRule.order).toBeGreaterThan(restingRule.order);
+    expect(reducedMotionRule.parent.type).toBe('atrule');
+    expect(reducedMotionRule.parent.name).toBe('media');
+    expect(reducedMotionRule.parent.params).toBe('(prefers-reduced-motion: reduce)');
+    expect(reducedMotionRule.nodes.find((node) => node.type === 'decl' && node.prop === 'transition-duration')).toMatchObject({
+      important: true,
+      value: '0.01ms',
+    });
+
+    darkInteractiveControlSelectors.forEach((selector) => {
+      expect(selector.startsWith('.dark ')).toBe(true);
+      expect(selector).toContain(":not([aria-disabled='true'])");
+    });
+    expect(darkInteractiveControlSelectors[0]).toContain(':not(:disabled)');
+    expect(darkInteractiveControlSelectors).not.toContain('.dark a');
+    expect(extractRulesContainingSelector(stylesheet, '.dark a:hover')).toHaveLength(0);
+
+    const fixture = document.createElement('div');
+    fixture.className = 'dark';
+    fixture.innerHTML = `
+      <button data-testid="enabled-button">Continue</button>
+      <a data-testid="marked-anchor" data-weelp-button-link href="/continue">Continue</a>
+      <a data-testid="filled-anchor" class="bg-weelp-sage-deep" href="/book">Book</a>
+      <a data-testid="card-anchor" class="group block border" href="/tour">Tour card</a>
+      <a data-testid="nav-anchor" class="border" href="/destinations">Destinations</a>
+      <a data-testid="text-anchor" href="/about">About</a>
+      <a data-testid="disabled-anchor" data-weelp-button-link aria-disabled="true" href="/unavailable">Unavailable</a>
+      <button data-testid="disabled-button" disabled>Unavailable</button>
+    `;
+
+    const selectedControls = Array.from(fixture.querySelectorAll(darkInteractiveControlSelectors.join(','))).map((element) => element.dataset.testid);
+
+    expect(selectedControls).toEqual(['enabled-button', 'marked-anchor', 'filled-anchor']);
+  });
+
+  it.each([
+    ['src/app/(frontend)/cms-page-template.js', 2],
+    ['src/app/(frontend)/cities/page.js', 5],
+    ['src/app/components/Pages/FRONT_END/city/CityItemsListing.jsx', 5],
+    ['src/app/components/Pages/FRONT_END/cities/CitiesListingControls.jsx', 1],
+    ['src/app/(dashboard)/dashboard/customer/wishlist/WishlistClient.jsx', 1],
+    ['src/app/components/Pages/FRONT_END/checkout/CheckoutResultState.jsx', 1],
+    ['src/app/components/ui/ProductSliderSection.jsx', 1],
+    ['src/app/components/Form/FormResetPassword.jsx', 2],
+    ['src/app/components/Layout/MobileMenu.jsx', 3],
+  ])('marks every audited direct button-shaped anchor for the dark hover contract', (relativePath, expectedCount) => {
+    const source = readFileSync(join(process.cwd(), relativePath), 'utf8');
+
+    expect(source.match(/\bdata-weelp-button-link\b/g)?.length ?? 0).toBe(expectedCount);
+  });
+
   it('sets the dark site-wide button surface and border to the requested tokens', () => {
     const buttonRule = extractSelectorContract([
       '.dark button:not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.bg-card)',

@@ -105,6 +105,7 @@ function Pagination({ currentPage, lastPage, query }) {
     <nav className="flex max-w-full flex-wrap items-center justify-center gap-2 pt-4" aria-label="Pagination">
       {currentPage > 1 ? (
         <NavigationLink
+          data-weelp-button-link
           href={pageHref(currentPage - 1)}
           className="flex size-11 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition hover:bg-muted dark:shadow-none"
           aria-label="Previous page"
@@ -120,6 +121,7 @@ function Pagination({ currentPage, lastPage, query }) {
       {start > 1 && (
         <>
           <NavigationLink
+            data-weelp-button-link
             href={pageHref(1)}
             className="flex size-11 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted dark:shadow-none"
           >
@@ -132,6 +134,7 @@ function Pagination({ currentPage, lastPage, query }) {
       {pages.map((page) => (
         <NavigationLink
           key={page}
+          data-weelp-button-link
           href={pageHref(page)}
           aria-current={page === currentPage ? 'page' : undefined}
           className={`flex size-11 items-center justify-center rounded-full border text-sm shadow-sm transition dark:shadow-none ${
@@ -146,6 +149,7 @@ function Pagination({ currentPage, lastPage, query }) {
         <>
           {end < lastPage - 1 && <span className="px-1 text-muted-foreground">...</span>}
           <NavigationLink
+            data-weelp-button-link
             href={pageHref(lastPage)}
             className="flex size-11 items-center justify-center rounded-full border border-border bg-background text-sm text-foreground shadow-sm transition hover:bg-muted dark:shadow-none"
           >
@@ -156,6 +160,7 @@ function Pagination({ currentPage, lastPage, query }) {
 
       {currentPage < lastPage ? (
         <NavigationLink
+          data-weelp-button-link
           href={pageHref(currentPage + 1)}
           className="flex size-11 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition hover:bg-muted dark:shadow-none"
           aria-label="Next page"

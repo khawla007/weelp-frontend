@@ -15,6 +15,7 @@ export function ResultActionLink({ href, children, emphasis = 'secondary' }) {
 
   return (
     <NavigationLink
+      data-weelp-button-link
       href={href}
       className={`inline-flex min-h-11 w-full items-center justify-center rounded-xl border px-4 py-2 text-center text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2 sm:w-auto ${emphasisClass}`}
     >

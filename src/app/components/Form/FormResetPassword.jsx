@@ -69,10 +69,10 @@ export const FormResetPassword = () => {
         <h2 className="text-xl font-semibold">Reset link is missing or invalid</h2>
         <p className="text-sm text-copy">Request a new password reset link to continue, or return to login.</p>
         <div className="flex flex-col gap-2 sm:flex-row">
-          <NavigationLink href="/user/forgot-password" className="inline-flex min-h-11 items-center justify-center rounded-md bg-weelp-sage-deep px-4 text-sm font-medium text-white">
+          <NavigationLink data-weelp-button-link href="/user/forgot-password" className="inline-flex min-h-11 items-center justify-center rounded-md bg-weelp-sage-deep px-4 text-sm font-medium text-white">
             Request a new reset link
           </NavigationLink>
-          <NavigationLink href="/user/login" className="inline-flex min-h-11 items-center justify-center rounded-md border px-4 text-sm font-medium">
+          <NavigationLink data-weelp-button-link href="/user/login" className="inline-flex min-h-11 items-center justify-center rounded-md border px-4 text-sm font-medium">
             Back to login
           </NavigationLink>
         </div>

@@ -185,6 +185,7 @@ export async function CmsPageTemplate({ slug }) {
                 <div className="flex" style={buttonWrapStyle}>
                   {heroButtonUrl.startsWith('/') || heroButtonUrl.startsWith('#') ? (
                     <NavigationLink
+                      data-weelp-button-link
                       href={heroButtonUrl}
                       className="inline-flex min-h-11 items-center justify-center rounded-md border border-transparent bg-background px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-background/90"
                       style={buttonStyle}
@@ -193,6 +194,7 @@ export async function CmsPageTemplate({ slug }) {
                     </NavigationLink>
                   ) : (
                     <a
+                      data-weelp-button-link
                       href={heroButtonUrl}
                       className="inline-flex min-h-11 items-center justify-center rounded-md border border-transparent bg-background px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-background/90"
                       style={buttonStyle}
