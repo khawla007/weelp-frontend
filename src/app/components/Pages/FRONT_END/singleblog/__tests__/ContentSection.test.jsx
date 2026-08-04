@@ -3,7 +3,11 @@ import { render, screen } from '@testing-library/react';
 jest.mock('@/app/components/singleproductguide', () => ({ BlogAuthorInfo: () => null }));
 jest.mock('@/app/components/ui/Reveal', () => ({
   __esModule: true,
-  default: ({ children, className = '' }) => <div className={className}>{children}</div>,
+  default: ({ children, className = '', 'data-testid': testId }) => (
+    <div className={className} data-testid={testId}>
+      {children}
+    </div>
+  ),
 }));
 jest.mock('@/app/components/Navigation/NavigationLink', () => ({
   __esModule: true,
@@ -48,6 +52,35 @@ describe('ContentSection', () => {
     expect(screen.getByRole('link', { name: 'Family' })).toHaveAttribute('href', '/blogs?tag=family');
     expect(screen.getByRole('heading', { name: 'Categories' })).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Tags' })).toBeVisible();
+  });
+
+  it('uses inline taxonomy text and one full-width mobile sidebar', () => {
+    const { container } = render(
+      <ContentSection
+        content="A sufficiently long article body that should render in the public content surface."
+        categories={[{ name: 'Travel Tips', slug: 'travel-tips' }]}
+        tags={[{ name: 'Family', slug: 'family' }]}
+      />,
+    );
+
+    const sidebar = container.querySelector('[data-testid="blog-sidebar"]');
+    const categoryLink = screen.getByRole('link', { name: 'Travel Tips' });
+    const tagLink = screen.getByRole('link', { name: 'Family' });
+    const categoryList = categoryLink.closest('ul');
+    const tagList = tagLink.closest('ul');
+
+    expect(container.querySelectorAll('[data-testid="blog-sidebar"]')).toHaveLength(1);
+    expect(sidebar).toHaveClass('w-full', 'px-0', 'lg:px-8');
+    expect(categoryList).toHaveClass('flex', 'flex-wrap', 'max-w-none');
+    expect(tagList).toHaveClass('flex', 'flex-wrap', 'max-w-none');
+
+    [categoryLink, tagLink].forEach((link) => {
+      expect(link).not.toHaveClass('border');
+      expect(link).not.toHaveClass('rounded-md');
+      expect(link).not.toHaveClass('px-6');
+      expect(link).not.toHaveClass('py-4');
+      expect(link).toHaveClass('text-base', 'hover:text-weelp-sage-text');
+    });
   });
 
   it('renders taxonomy labels without links when the backend does not provide slugs', () => {

@@ -21,7 +21,13 @@ const ContentSection = ({ content = '', categories = [], tags = [] }) => {
         )}
       </Reveal>
 
-      <Reveal variant="lift" initialHidden delay={120} className="flex flex-col gap-4 lg:gap-12 flex-1 p-6 px-8">
+      <Reveal
+        variant="lift"
+        initialHidden
+        delay={120}
+        data-testid="blog-sidebar"
+        className="flex w-full flex-1 flex-col gap-6 px-0 pt-8 sm:gap-8 lg:gap-12 lg:px-8 lg:py-6"
+      >
         <RelatedLinks categories={categories || []} tags={tags || []} />
         <FollowUs />
       </Reveal>

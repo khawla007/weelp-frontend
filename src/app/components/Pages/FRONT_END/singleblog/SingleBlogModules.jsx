@@ -1,8 +1,8 @@
 import React from 'react';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 
-const taxonomyLabelClasses = 'font-medium capitalize px-6 py-4 text-Lynchcolor text-base border rounded-md w-fit max-w-full break-words';
-const taxonomyLinkClasses = `${taxonomyLabelClasses} hover:text-weelp-sage-text hover:border-weelp-sage-deep hover:bg-surface-tint`;
+const taxonomyLabelClasses = 'text-base font-medium capitalize text-Lynchcolor break-words';
+const taxonomyLinkClasses = `${taxonomyLabelClasses} transition-colors hover:text-weelp-sage-text`;
 
 const buildBlogFilterHref = (type, slug) => {
   const params = new URLSearchParams({ [type]: slug });
@@ -40,7 +40,7 @@ export const RelatedLinks = ({ categories = [], tags = [] }) => {
         {categories.length > 0 && (
           <div className="flex flex-col gap-3">
             <h3 className="text-lg sm:text-[28px] lg:mt-4 font-semibold text-foreground capitalize">Categories</h3>
-            <ul className="flex flex-wrap max-w-52 gap-2 sm:gap-4">
+            <ul className="flex max-w-none flex-wrap gap-x-4 gap-y-2">
               {categories.map((category, index) => (
                 <li key={`category-${category?.slug || category?.id || index}`} className="contents">
                   <TaxonomyItem item={category} type="category" fallbackKey="category_name" />
@@ -52,7 +52,7 @@ export const RelatedLinks = ({ categories = [], tags = [] }) => {
         {tags.length > 0 && (
           <div className="flex flex-col gap-3">
             <h3 className="text-lg sm:text-[28px] font-semibold text-foreground capitalize">Tags</h3>
-            <ul className="flex flex-wrap max-w-52 gap-2 sm:gap-4">
+            <ul className="flex max-w-none flex-wrap gap-x-4 gap-y-2">
               {tags.map((tag, index) => (
                 <li key={`tag-${tag?.slug || tag?.id || index}`} className="contents">
                   <TaxonomyItem item={tag} type="tag" fallbackKey="tag_name" />
