@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useReactTable } from '@tanstack/react-table';
 
 import { useToast } from '@/hooks/use-toast';
 import { deleteOrder, permanentlyDeleteOrder, restoreOrder, updateOrderStatus } from '@/lib/actions/orders';
@@ -6,6 +7,14 @@ import { deleteOrder, permanentlyDeleteOrder, restoreOrder, updateOrderStatus } 
 import { FilterOrdersPage } from '../FilterOrdersPage';
 
 jest.mock('@/hooks/use-toast', () => ({ useToast: jest.fn() }));
+jest.mock('@tanstack/react-table', () => {
+  const actual = jest.requireActual('@tanstack/react-table');
+
+  return {
+    ...actual,
+    useReactTable: jest.fn((options) => actual.useReactTable(options)),
+  };
+});
 jest.mock('@/lib/actions/orders', () => ({
   deleteOrder: jest.fn(),
   permanentlyDeleteOrder: jest.fn(),
@@ -55,6 +64,17 @@ describe('FilterOrdersPage trash actions', () => {
     restoreOrder.mockResolvedValue({ success: true, message: 'Order restored successfully.' });
     permanentlyDeleteOrder.mockResolvedValue({ success: true, message: 'Order permanently deleted.' });
     updateOrderStatus.mockResolvedValue({ success: true, message: 'Order status updated.' });
+  });
+
+  it('keeps table inputs stable while a Trash response is loading', () => {
+    const { rerender } = render(<FilterOrdersPage data={{}} view="trash" />);
+    const firstOptions = useReactTable.mock.calls.at(-1)[0];
+
+    rerender(<FilterOrdersPage data={{}} view="trash" />);
+    const secondOptions = useReactTable.mock.calls.at(-1)[0];
+
+    expect(secondOptions.data).toBe(firstOptions.data);
+    expect(secondOptions.columns).toBe(firstOptions.columns);
   });
 
   it('refreshes the table after a successful status update', async () => {
