@@ -46,6 +46,12 @@ describe('OrdersPage', () => {
     }));
   });
 
+  it('adds top spacing that matches the table toolbar spacing below the order views', () => {
+    render(<OrdersPage />);
+
+    expect(screen.getByLabelText('Order views')).toHaveClass('pt-4');
+  });
+
   it('uses numeric page-one defaults when API metadata is absent', () => {
     backendResponse = { data: [], summary: {} };
 

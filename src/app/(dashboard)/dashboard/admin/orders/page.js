@@ -51,7 +51,7 @@ const OrdersPage = () => {
       <NavigationOrder title="Orders" desciption="Manage your orders and track their status" url="/dashboard/admin/orders/new" labelUrl="Order" />
       <StatsOrdersCards summary={data.summary ?? {}} />
 
-      <div aria-label="Order views" className="flex items-center gap-2">
+      <div aria-label="Order views" className="flex items-center gap-2 pt-4">
         <Button type="button" variant={listQuery.view === 'active' ? 'default' : 'outline'} aria-pressed={listQuery.view === 'active'} onClick={() => handleViewChange('active')}>
           All
         </Button>
