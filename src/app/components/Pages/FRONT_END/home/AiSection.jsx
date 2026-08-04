@@ -49,8 +49,8 @@ const AiSection = async () => {
           <PersonalisedGlobe />
           {/* Text — bottom-left inside the card, slides down + fades on hover */}
           <div data-overlay className="pointer-events-none absolute bottom-0 left-0 z-10 p-4 opacity-100 md:p-6">
-            <h3 className="text-[18px] font-semibold text-foreground">Personalised for you</h3>
-            <p className="text-[16px] font-medium text-foreground/70">Tailored recommendations.</p>
+            <h3 className="text-[18px] font-semibold text-weelp-hero-foreground">Personalised for you</h3>
+            <p className="text-[16px] font-medium text-weelp-hero-foreground/75">Tailored recommendations.</p>
           </div>
         </article>
       </div>

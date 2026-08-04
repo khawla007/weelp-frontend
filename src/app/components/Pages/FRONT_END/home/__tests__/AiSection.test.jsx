@@ -96,11 +96,11 @@ describe('AiSection', () => {
     expect(moneyImg.className).toContain('motion-reduce:group-hover:scale-100');
   });
 
-  it('uses black copy on the light personalised globe card', async () => {
+  it('uses artwork-safe dark copy on the personalised globe card in both themes', async () => {
     const ui = await AiSection();
     const { getByText } = render(ui);
 
-    expect(getByText('Personalised for you')).toHaveClass('text-foreground');
-    expect(getByText('Tailored recommendations.')).toHaveClass('text-foreground/70');
+    expect(getByText('Personalised for you')).toHaveClass('text-weelp-hero-foreground');
+    expect(getByText('Tailored recommendations.')).toHaveClass('text-weelp-hero-foreground/75');
   });
 });
