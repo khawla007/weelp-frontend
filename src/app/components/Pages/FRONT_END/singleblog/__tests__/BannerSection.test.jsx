@@ -25,6 +25,12 @@ describe('BannerSectionBlog', () => {
     gallerySliderMock.mockClear();
   });
 
+  it('keeps the standard 40px mobile hero handoff', () => {
+    const { container } = render(<BannerSectionBlog name="Story" />);
+
+    expect(container.querySelector('section')).toHaveClass('mb-10', 'md:mb-16', 'lg:mb-24');
+  });
+
   it('uses the public API name as the responsive page heading', () => {
     const { container } = render(<BannerSectionBlog name="A published travel story" excerpt="Story summary" />);
 

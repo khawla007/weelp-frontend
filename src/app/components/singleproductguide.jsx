@@ -41,7 +41,7 @@ export const BlogCard2 = ({ imageSrc = '', created_at = '', slug = '' }) => {
 // component about Author Information information
 export const BlogAuthorInfo = ({ authorName, authorImage, views, rating }) => {
   return (
-    <div className="max-w-4xl mx-auto p-6 lg:px-6 ">
+    <div className="mx-auto max-w-4xl pb-6">
       <div className="flex justify-between flex-wrap gap-2">
         <div className="flex gap-4">
           <img alt="sitelogo" src={authorImage ? authorImage : '/assets/Card.webp'} className=" size-12 rounded-full" />
