@@ -202,7 +202,7 @@ describe('SingleProductTabSection activity inclusions', () => {
     expect(document.getElementById('tab_4')).not.toBeInTheDocument();
   });
 
-  it('uses compact mobile spacing before itinerary details without changing larger breakpoints', () => {
+  it('uses compact mobile spacing before itinerary and activity details without changing larger breakpoints', () => {
     const { unmount } = render(
       <SingleProductTabSection
         productType="itinerary"
@@ -236,9 +236,8 @@ describe('SingleProductTabSection activity inclusions', () => {
     );
 
     const activitySection = document.getElementById('tab_1');
-    expect(activitySection).toHaveClass('pt-[70px]');
-    expect(activitySection).not.toHaveClass('pt-8');
-    expect(activitySection).not.toHaveClass('md:pt-[70px]');
+    expect(activitySection).toHaveClass('pt-8', 'md:pt-[70px]');
+    expect(activitySection).not.toHaveClass('pt-[70px]');
   });
 
   it("observes the What's Included section when rows are added after initial render", () => {

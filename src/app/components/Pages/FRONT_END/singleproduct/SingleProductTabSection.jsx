@@ -68,7 +68,7 @@ const SingleProductTabSection = ({
   const isActivityProduct = productType === 'activity';
   const usesDynamicInclusions = productType === 'activity' || productType === 'itinerary';
   const isScheduleType = productType === 'itinerary' || productType === 'package';
-  const firstSectionSpacing = productType === 'itinerary' ? 'pt-8 md:pt-[70px]' : 'pt-[70px]';
+  const firstSectionSpacing = productType === 'activity' || productType === 'itinerary' ? 'pt-8 md:pt-[70px]' : 'pt-[70px]';
   const scheduleCount = productData?.schedules?.length || 0;
   const inclusionItems = usesDynamicInclusions ? productData?.inclusions_exclusions || [] : undefined;
   const hasInclusionRows = usesDynamicInclusions ? normalizeInclusionItems(inclusionItems).length > 0 : true;
