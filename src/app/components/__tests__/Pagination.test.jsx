@@ -3,6 +3,13 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { CustomPagination } from '../Pagination';
 
 describe('CustomPagination', () => {
+  it('shows page one for an empty first-page result', () => {
+    render(<CustomPagination totalItems={0} itemsPerPage={3} currentPage={1} onPageChange={jest.fn()} />);
+
+    expect(screen.getByRole('textbox', { name: 'Page number' })).toHaveValue('1');
+    expect(screen.getByText('of 1')).toBeInTheDocument();
+  });
+
   it('provides named controls and keeps touch sizing and layout composition opt-in', () => {
     const onPageChange = jest.fn();
     const { container } = render(

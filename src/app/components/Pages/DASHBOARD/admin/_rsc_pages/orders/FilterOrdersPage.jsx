@@ -1,21 +1,36 @@
 'use client';
-import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { ChevronDown, Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
-import { deleteOrder, updateOrderStatus } from '@/lib/actions/orders';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { TypeBadge, TYPE_ICONS } from '@/app/components/Shared/TypeBadge';
 
-export function FilterOrdersPage({ data = {}, mutateOrders }) {
+import { useState } from 'react';
+
+import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { ChevronDown, RotateCcw, Trash2 } from 'lucide-react';
+
+import { TypeBadge } from '@/app/components/Shared/TypeBadge';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useToast } from '@/hooks/use-toast';
+import { deleteOrder, permanentlyDeleteOrder, restoreOrder, updateOrderStatus } from '@/lib/actions/orders';
+
+export function FilterOrdersPage({ data = {}, view = 'active', onOrdersChanged }) {
   const [sorting, setSorting] = useState('');
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
+  const [pendingAction, setPendingAction] = useState(null);
+  const [isMutating, setIsMutating] = useState(false);
 
   const { data: orders = [] } = data;
   const { toast } = useToast(); // show notification
@@ -23,20 +38,37 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
   // Order status options
   const orderStatuses = ['pending', 'processing', 'completed', 'cancelled'];
 
-  // handle for order delete
-  const handleDeleteOrder = async (id) => {
-    try {
-      const { success, message } = await deleteOrder(id);
+  const runOrderAction = async (action, fallback) => {
+    setIsMutating(true);
 
-      if (success) {
-        toast({ title: message || 'Order deleted successfully.' });
-        mutateOrders(); // Refetch updated data
-      } else {
-        toast({ title: message || 'Failed to delete order.' });
+    try {
+      const result = await action();
+
+      if (!result.success) {
+        toast({ title: result.message || 'Order action failed.', variant: 'destructive' });
+        return;
       }
+
+      toast({ title: result.message || fallback });
+      setPendingAction(null);
+      await onOrdersChanged?.();
     } catch (error) {
-      toast({ title: 'Something went wrong.', variant: 'destructive' });
+      toast({ title: error?.message || 'Order action failed.', variant: 'destructive' });
+    } finally {
+      setIsMutating(false);
     }
+  };
+
+  const handleRestoreOrder = (id) => runOrderAction(() => restoreOrder(id), 'Order restored successfully.');
+
+  const handleConfirmAction = () => {
+    if (!pendingAction) return;
+
+    if (pendingAction.type === 'force') {
+      return runOrderAction(() => permanentlyDeleteOrder(pendingAction.order.id), 'Order permanently deleted.');
+    }
+
+    return runOrderAction(() => deleteOrder(pendingAction.order.id), 'Order moved to Trash.');
   };
 
   // handle for order status update
@@ -46,7 +78,7 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
 
       if (success) {
         toast({ title: message || 'Order status updated successfully.' });
-        mutateOrders(); // Refetch updated data
+        await onOrdersChanged?.();
       } else {
         toast({ title: message || 'Failed to update order status.', variant: 'destructive' });
       }
@@ -72,6 +104,11 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
       header: 'STATUS',
       cell: ({ row }) => {
         const item = row.original;
+
+        if (view === 'trash') {
+          return <span className="capitalize">{item.status}</span>;
+        }
+
         return (
           <div className="flex justify-start">
             <Select value={item.status} onValueChange={(newStatus) => handleStatusChange(item.id, newStatus)}>
@@ -101,7 +138,6 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
       cell: ({ row }) => {
         const itemType = row.original.orderable?.item_type;
         if (!itemType) return 'Unknown';
-        const Icon = TYPE_ICONS[itemType?.toLowerCase()];
         return <TypeBadge type={itemType} />;
       },
     },
@@ -122,13 +158,47 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
       enableHiding: false,
       cell: ({ row }) => {
         const item = row.original;
-        return <Trash2 size={16} onClick={() => handleDeleteOrder(item.id)} className="text-destructive cursor-pointer hover:text-destructive" />;
+
+        if (view === 'trash') {
+          return (
+            <div className="flex flex-wrap items-center gap-2">
+              <Button type="button" variant="outline" size="sm" disabled={isMutating} aria-label={`Restore order ${item.id}`} onClick={() => handleRestoreOrder(item.id)}>
+                <RotateCcw className="h-4 w-4" />
+                Restore
+              </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                size="sm"
+                disabled={isMutating}
+                aria-label={`Delete order ${item.id} permanently`}
+                onClick={() => setPendingAction({ type: 'force', order: item })}
+              >
+                <Trash2 className="h-4 w-4" />
+                Delete permanently
+              </Button>
+            </div>
+          );
+        }
+
+        return (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            disabled={isMutating}
+            aria-label={`Move order ${item.id} to Trash`}
+            onClick={() => setPendingAction({ type: 'trash', order: item })}
+            className="text-destructive hover:text-destructive"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        );
       },
     },
   ];
 
   // table instance
-  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: orders,
     columns,
@@ -216,6 +286,37 @@ export function FilterOrdersPage({ data = {}, mutateOrders }) {
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
       </div>
+
+      <AlertDialog
+        open={Boolean(pendingAction)}
+        onOpenChange={(open) => {
+          if (!open && !isMutating) setPendingAction(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{pendingAction?.type === 'force' ? 'Delete order permanently?' : 'Move order to Trash?'}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {pendingAction?.type === 'force'
+                ? 'This permanently deletes the order and cannot be undone.'
+                : 'The order will move to Trash, where it can be restored later.'}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isMutating}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              disabled={isMutating}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={(event) => {
+                event.preventDefault();
+                void handleConfirmAction();
+              }}
+            >
+              {pendingAction?.type === 'force' ? 'Delete permanently' : 'Move to Trash'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -1,73 +1,68 @@
 'use client';
-import React, { useEffect, useMemo, useState } from 'react';
+
+import { useState } from 'react';
+
+import { CustomPagination } from '@/app/components/Pagination';
 import { FilterOrdersPage } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/FilterOrdersPage';
 import { NavigationOrder, StatsOrdersCards } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/orders_shared';
+import { Button } from '@/components/ui/button';
 import { useAllOrdersAdmin } from '@/hooks/api/admin/orders';
-import { useForm, FormProvider, useFormContext, useWatch } from 'react-hook-form';
-import { CustomPagination } from '@/app/components/Pagination';
-import { debounce } from 'lodash';
-import { editVendorStatusbyIdAdmin } from '@/lib/actions/vendor';
 
 const OrdersPage = () => {
-  // initialize form
-  const methods = useForm({
-    defaultValues: {
-      page: 1,
-    },
-  });
+  const [listQuery, setListQuery] = useState({ page: 1, view: 'active' });
+  const queryParams = new URLSearchParams({
+    page: String(listQuery.page),
+    view: listQuery.view,
+  }).toString();
 
-  const { register, reset, setValue, control } = methods; // desctructure
-  const filters = useWatch({ control: control }); // intialize watching
-  const [debouncedFilters, setDebouncedFilters] = useState(filters); // intialize filter
+  const { orders = {}, isLoading: isLoadingOrders, mutate: mutateOrders } = useAllOrdersAdmin(`?${queryParams}`);
+  const { data = {} } = orders;
+  const currentPage = Number(data.current_page) || 1;
+  const itemsPerPage = Number(data.per_page) || 3;
+  const totalItems = Number(data.total) || 0;
+  const trashCount = Number(data.trash_count) || 0;
 
-  // on submt
-  const handleOnchange = (page) => {
-    // set value manually
-    setValue('page', page);
+  const handlePageChange = (page) => {
+    setListQuery((current) => ({ ...current, page }));
   };
 
-  const debouncedUpdate = useMemo(
-    () =>
-      debounce((newFilters) => {
-        setDebouncedFilters(newFilters);
-      }, 500),
-    [],
-  );
+  const handleViewChange = (view) => {
+    setListQuery({ page: 1, view });
+  };
 
-  // side effect for if fiilter change
-  useEffect(() => {
-    debouncedUpdate(filters);
-    return () => debouncedUpdate.cancel();
-  }, [filters, debouncedUpdate]);
+  const handleOrdersChanged = async () => {
+    const requestedQuery = listQuery;
+    const refreshed = await mutateOrders();
+    const refreshedOrders = refreshed?.data?.data;
 
-  // Memoized query string
-  const queryParams = useMemo(() => {
-    const params = new URLSearchParams();
-    if (debouncedFilters.page) params.append('page', debouncedFilters.page);
+    if (requestedQuery.page > 1 && Array.isArray(refreshedOrders) && refreshedOrders.length === 0) {
+      setListQuery((current) => {
+        if (current.page !== requestedQuery.page || current.view !== requestedQuery.view) {
+          return current;
+        }
 
-    return params.toString();
-  }, [debouncedFilters]);
-
-  // fetch orders
-  const { orders = {}, isLoading: isLoadingOrders, isValidating: isValidatingOrders, mutate: mutateOrders, error: errorOrders } = useAllOrdersAdmin(`?${queryParams}`);
-
-  console.log(orders);
-  // safely extract data
-  const { data = {} } = orders;
-  const { current_page = '', per_page = '', total = '' } = data;
+        return { ...current, page: Math.max(1, current.page - 1) };
+      });
+    }
+  };
 
   return (
-    <div className="spacye-y-4">
-      <NavigationOrder title={'Orders'} desciption={'Manage your orders and track their status'} url={'/dashboard/admin/orders/new'} labelUrl={'Order'} />
-      <StatsOrdersCards summary={data?.summary ?? {}} />
+    <div className="space-y-4">
+      <NavigationOrder title="Orders" desciption="Manage your orders and track their status" url="/dashboard/admin/orders/new" labelUrl="Order" />
+      <StatsOrdersCards summary={data.summary ?? {}} />
 
-      {/* Provider for Filter */}
-      <FormProvider {...methods}>
-        <FilterOrdersPage data={data} mutateOrders={mutateOrders} />
+      <div aria-label="Order views" className="flex items-center gap-2">
+        <Button type="button" variant={listQuery.view === 'active' ? 'default' : 'outline'} aria-pressed={listQuery.view === 'active'} onClick={() => handleViewChange('active')}>
+          All
+        </Button>
+        <Button type="button" variant={listQuery.view === 'trash' ? 'default' : 'outline'} aria-pressed={listQuery.view === 'trash'} onClick={() => handleViewChange('trash')}>
+          Trash ({trashCount})
+        </Button>
+      </div>
 
-        {/* Pagination */}
-        {!isLoadingOrders && <CustomPagination totalItems={total} currentPage={current_page} itemsPerPage={per_page} onPageChange={handleOnchange} />}
-      </FormProvider>
+      <FilterOrdersPage data={data} view={listQuery.view} onOrdersChanged={handleOrdersChanged} />
+
+      {!isLoadingOrders && <CustomPagination totalItems={totalItems} currentPage={currentPage} itemsPerPage={itemsPerPage} onPageChange={handlePageChange} />}
     </div>
   );
 };

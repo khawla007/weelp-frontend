@@ -55,29 +55,45 @@ export const createOrder = async (data) => {
 };
 
 /**
- * Action to delete Order
- * @param {number} orderId
- * @returns [{}]
+ * Run an authenticated order mutation and normalize its result for the UI.
+ * @param {(api: import('axios').AxiosInstance) => Promise<import('axios').AxiosResponse>} request
+ * @returns {Promise<{success: boolean, message: string}>}
  */
-export async function deleteOrder(orderId) {
+async function mutateOrder(request) {
   try {
     const api = await getAuthApi();
-    const res = await api.delete(`/api/admin/orders/${orderId}`);
+    const res = await request(api);
 
-    // On successful
-    if (res.data?.success) {
-      revalidatePath('/dashboard/admin/orders'); // Revalidating Orders
-      return { success: true, message: res.data.message };
+    if (!res.data?.success) {
+      return {
+        success: false,
+        message: res.data?.message || 'Order action failed.',
+      };
     }
 
-    // Return server response in case of known error
+    revalidatePath('/dashboard/admin/orders');
+    return { success: true, message: res.data.message };
+  } catch (error) {
     return {
       success: false,
-      message: res.data?.message || 'Failed to delete order.',
+      message: error?.response?.data?.message || error?.message || 'Order action failed.',
     };
-  } catch (error) {
-    return { success: false, error: error.message };
   }
+}
+
+/** Move an active order to Trash. */
+export async function deleteOrder(orderId) {
+  return mutateOrder((api) => api.delete(`/api/admin/orders/${orderId}`));
+}
+
+/** Restore an order from Trash. */
+export async function restoreOrder(orderId) {
+  return mutateOrder((api) => api.post(`/api/admin/orders/${orderId}/restore`));
+}
+
+/** Permanently delete an order that is already in Trash. */
+export async function permanentlyDeleteOrder(orderId) {
+  return mutateOrder((api) => api.delete(`/api/admin/orders/${orderId}/force`));
 }
 
 /**
