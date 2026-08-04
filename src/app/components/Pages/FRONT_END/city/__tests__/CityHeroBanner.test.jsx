@@ -38,4 +38,15 @@ describe('CityHeroBanner', () => {
     expect(copyPanel).toHaveClass('dark:bg-background/45', 'dark:backdrop-blur-md');
     expect(galleryPanel).toHaveClass('dark:bg-card/60', 'dark:ring-white/10');
   });
+
+  it('matches the dark-mode arrow to the solid teal bottom vector', () => {
+    const { getByTestId } = render(<CityHeroBanner city={{ name: 'Dubai' }} />);
+
+    const bottomVector = getByTestId('vector-2');
+    const arrow = getByTestId('vector-arrow');
+
+    expect(bottomVector).toHaveClass('dark:text-white/10');
+    expect(arrow).toHaveClass('dark:text-[var(--weelp-city-brand)]');
+    expect(arrow).not.toHaveClass('dark:text-white/10');
+  });
 });
