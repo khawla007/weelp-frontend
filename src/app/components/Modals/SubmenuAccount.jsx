@@ -69,7 +69,7 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
             </li>
             <li className="p-4 px-8 border-b border-border text-copy">
               <button
-                className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
+                className="weelp-header-nav-item border-0 bg-transparent text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
                 onClick={() => {
                   closeDropdown();
                   openAuthModal({ redirectTo: '/dashboard' });
@@ -81,7 +81,7 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
             </li>
             <li className="p-4 px-8 border-b border-border text-copy">
               <button
-                className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
+                className="weelp-header-nav-item border-0 bg-transparent text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
                 onClick={() => {
                   closeDropdown();
                   openAuthModal({ redirectTo: '/dashboard/customer/wishlist' });
