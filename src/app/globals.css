@@ -306,7 +306,7 @@ body {
     @apply mx-auto w-full max-w-pen px-4 sm:px-6 lg:px-8;
   }
 
-  .dark button:not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.bg-card),
+  .dark button:not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.bg-card):not([data-sidebar='menu-button']),
   .dark a[role='button'],
   .dark [role='button'],
   .dark a[class~='bg-weelp-sage-deep'],
@@ -316,7 +316,7 @@ body {
     color: var(--weelp-home-muted) !important;
   }
 
-  .dark button:not(:disabled):not([aria-disabled='true']),
+  .dark button:not(:disabled):not([aria-disabled='true']):not([data-sidebar='menu-button']),
   .dark a[role='button']:not([aria-disabled='true']),
   .dark a[data-weelp-button-link]:not([aria-disabled='true']),
   .dark a[class~='bg-weelp-sage-deep']:not([aria-disabled='true']),
@@ -326,7 +326,7 @@ body {
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
-  .dark button:not(:disabled):not([aria-disabled='true']):hover,
+  .dark button:not(:disabled):not([aria-disabled='true']):not([data-sidebar='menu-button']):hover,
   .dark a[role='button']:not([aria-disabled='true']):hover,
   .dark a[data-weelp-button-link]:not([aria-disabled='true']):hover,
   .dark a[class~='bg-weelp-sage-deep']:not([aria-disabled='true']):hover,
@@ -339,6 +339,11 @@ body {
   }
 
   .dark button.weelp-header-nav-item {
+    border: 0 !important;
+    background-color: transparent !important;
+  }
+
+  .dark button[data-sidebar='menu-button'] {
     border: 0 !important;
     background-color: transparent !important;
   }

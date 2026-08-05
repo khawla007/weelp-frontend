@@ -561,7 +561,7 @@ describe('Deep Forest semantic theme', () => {
   });
 
   const darkInteractiveControlSelectors = [
-    ".dark button:not(:disabled):not([aria-disabled='true'])",
+    ".dark button:not(:disabled):not([aria-disabled='true']):not([data-sidebar='menu-button'])",
     ".dark a[role='button']:not([aria-disabled='true'])",
     ".dark a[data-weelp-button-link]:not([aria-disabled='true'])",
     ".dark a[class~='bg-weelp-sage-deep']:not([aria-disabled='true'])",
@@ -606,6 +606,7 @@ describe('Deep Forest semantic theme', () => {
     fixture.className = 'dark';
     fixture.innerHTML = `
       <button data-testid="enabled-button">Continue</button>
+      <button data-testid="sidebar-button" data-sidebar="menu-button">Creators</button>
       <a data-testid="marked-anchor" data-weelp-button-link href="/continue">Continue</a>
       <a data-testid="filled-anchor" class="bg-weelp-sage-deep" href="/book">Book</a>
       <a data-testid="card-anchor" class="group block border" href="/tour">Tour card</a>
@@ -638,7 +639,7 @@ describe('Deep Forest semantic theme', () => {
 
   it('sets the dark site-wide button surface and border to the requested tokens', () => {
     const buttonRule = extractSelectorContract([
-      '.dark button:not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.bg-card)',
+      ".dark button:not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.bg-card):not([data-sidebar='menu-button'])",
       ".dark a[role='button']",
       ".dark [role='button']",
       ".dark a[class~='bg-weelp-sage-deep']",
@@ -668,6 +669,16 @@ describe('Deep Forest semantic theme', () => {
       'background-color': { important: true, value: 'transparent' },
     });
     expect(headerNavigationRule.declarations.color).toBeUndefined();
+  });
+
+  it('keeps sidebar menu buttons transparent and borderless in dark mode', () => {
+    const sidebarMenuButtonRule = extractSelectorContract(".dark button[data-sidebar='menu-button']");
+
+    expect(sidebarMenuButtonRule.declarations).toMatchObject({
+      border: { important: true, value: '0' },
+      'background-color': { important: true, value: 'transparent' },
+    });
+    expect(sidebarMenuButtonRule.declarations.color).toBeUndefined();
   });
 
   it('keeps single-product tabs transparent and borderless in dark mode', () => {
