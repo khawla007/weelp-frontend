@@ -84,7 +84,13 @@ const OrdersPage = () => {
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button type="button" variant={listQuery.status ? 'default' : 'outline'} aria-label={`Filter orders by status: ${selectedStatus.label}`} aria-pressed={Boolean(listQuery.status)}>
+            <Button
+              type="button"
+              variant={listQuery.status ? 'default' : 'outline'}
+              className="data-[state=open]:ring-0 data-[state=open]:ring-offset-0"
+              aria-label={`Filter orders by status: ${selectedStatus.label}`}
+              aria-pressed={Boolean(listQuery.status)}
+            >
               {selectedStatus.label}
               <ChevronDown className="h-4 w-4" />
             </Button>

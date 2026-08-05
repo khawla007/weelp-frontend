@@ -88,6 +88,15 @@ describe('OrdersPage', () => {
     expect(screen.getByRole('button', { name: 'Filter orders by status: Processing' })).toHaveAttribute('aria-pressed', 'true');
   });
 
+  it('hides the open-state ring without removing keyboard focus visibility', () => {
+    render(<OrdersPage />);
+
+    const statusTrigger = screen.getByRole('button', { name: 'Filter orders by status: All Status' });
+
+    expect(statusTrigger).toHaveClass('data-[state=open]:ring-0', 'data-[state=open]:ring-offset-0');
+    expect(statusTrigger).toHaveClass('focus-visible:ring-2', 'focus-visible:ring-offset-2');
+  });
+
   it('uses numeric page-one defaults when API metadata is absent', () => {
     backendResponse = { data: [], summary: {} };
 
