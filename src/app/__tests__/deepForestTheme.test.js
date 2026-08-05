@@ -332,7 +332,7 @@ describe('Deep Forest semantic theme', () => {
 
   it('defines the dark sidebar palette', () => {
     expect(darkTokens).toMatchObject({
-      '--sidebar-background': '159 30% 9%',
+      '--sidebar-background': '160 36% 5%',
       '--sidebar-foreground': '153.33 10.35% 65.88%',
       '--sidebar-primary': '154 29% 63%',
       '--sidebar-primary-foreground': '160 39% 5%',
@@ -341,6 +341,8 @@ describe('Deep Forest semantic theme', () => {
       '--sidebar-border': '157 22% 19%',
       '--sidebar-ring': '154 29% 63%',
     });
+
+    expect(darkTokens['--sidebar-background']).toBe(darkTokens['--background']);
   });
 
   it('defines the dark text and link palette', () => {
