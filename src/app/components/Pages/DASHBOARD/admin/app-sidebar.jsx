@@ -24,7 +24,7 @@ export function AppSidebar({ session, ...props }) {
         <NavMain items={adminRoutes} />
       </SidebarContent>
 
-      <SidebarRail />
+      <SidebarRail className="after:hidden" />
     </Sidebar>
   );
 }

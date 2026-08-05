@@ -93,4 +93,12 @@ describe('dashboard surface hierarchy', () => {
 
     expect(layoutSource).toContain('className="flex min-h-screen w-full min-w-0 bg-muted dark:bg-background"');
   });
+
+  it('keeps one admin sidebar divider without a second rail line', () => {
+    const appSidebarSource = readSource('src/app/components/Pages/DASHBOARD/admin/app-sidebar.jsx');
+    const sharedSidebarSource = readSource('src/components/ui/sidebar.jsx');
+
+    expect(sharedSidebarSource).toContain('group-data-[side=left]:border-r');
+    expect(appSidebarSource).toContain('<SidebarRail className="after:hidden" />');
+  });
 });
