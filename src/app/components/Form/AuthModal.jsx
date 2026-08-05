@@ -45,7 +45,7 @@ export function AuthModal({ customUrl, onCloseDialog }) {
                 <button
                   type="button"
                   onClick={switchToSignup}
-                  className="inline-flex min-h-11 items-center rounded-sm underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2"
+                  className="weelp-auth-mode-switch inline-flex min-h-11 items-center rounded-sm border-0 bg-transparent underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2"
                 >
                   Sign Up
                 </button>
@@ -59,7 +59,7 @@ export function AuthModal({ customUrl, onCloseDialog }) {
                 <button
                   type="button"
                   onClick={switchToLogin}
-                  className="inline-flex min-h-11 items-center rounded-sm underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2"
+                  className="weelp-auth-mode-switch inline-flex min-h-11 items-center rounded-sm border-0 bg-transparent underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep focus-visible:ring-offset-2"
                 >
                   Back to Login
                 </button>

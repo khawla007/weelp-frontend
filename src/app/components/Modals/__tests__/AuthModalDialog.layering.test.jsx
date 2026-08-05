@@ -43,7 +43,7 @@ describe('AuthModalDialog layering', () => {
     const dialog = screen.getByRole('dialog', { name: /authentication/i });
     const overlay = document.querySelector('.fixed.inset-0');
 
-    expect(overlay).toHaveClass('z-[100020]');
+    expect(overlay).toHaveClass('z-[100020]', 'dark:bg-background/80');
     expect(dialog).toHaveClass('z-[100021]');
   });
 });

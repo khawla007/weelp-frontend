@@ -48,6 +48,7 @@ describe('AuthModal mobile containment', () => {
     const signUpSwitch = screen.getByRole('button', { name: /sign up/i });
     expect(signUpSwitch).toHaveAttribute('type', 'button');
     expect(signUpSwitch).toHaveClass('min-h-11', 'inline-flex', 'items-center');
+    expect(signUpSwitch).toHaveClass('weelp-auth-mode-switch', 'border-0', 'bg-transparent');
 
     fireEvent.click(signUpSwitch);
 
@@ -56,5 +57,6 @@ describe('AuthModal mobile containment', () => {
     const loginSwitch = screen.getByRole('button', { name: /back to login/i });
     expect(loginSwitch).toHaveAttribute('type', 'button');
     expect(loginSwitch).toHaveClass('min-h-11', 'inline-flex', 'items-center');
+    expect(loginSwitch).toHaveClass('weelp-auth-mode-switch', 'border-0', 'bg-transparent');
   });
 });

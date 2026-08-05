@@ -52,7 +52,7 @@ export default function AuthModalDialog() {
     >
       <DialogContent
         showClose={false}
-        overlayClassName="z-[100020]"
+        overlayClassName="z-[100020] dark:bg-background/80"
         className="z-[100021] bg-transparent border-none p-0 shadow-none"
         aria-describedby={undefined}
         onPointerDownOutside={(e) => e.preventDefault()}

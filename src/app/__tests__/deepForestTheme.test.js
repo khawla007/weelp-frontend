@@ -563,7 +563,7 @@ describe('Deep Forest semantic theme', () => {
   });
 
   const darkInteractiveControlSelectors = [
-    ".dark button:not(:disabled):not([aria-disabled='true']):not([data-sidebar='menu-button'])",
+    ".dark button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not([data-sidebar='menu-button'])",
     ".dark a[role='button']:not([aria-disabled='true'])",
     ".dark a[data-weelp-button-link]:not([aria-disabled='true'])",
     ".dark a[class~='bg-weelp-sage-deep']:not([aria-disabled='true'])",
@@ -608,6 +608,7 @@ describe('Deep Forest semantic theme', () => {
     fixture.className = 'dark';
     fixture.innerHTML = `
       <button data-testid="enabled-button">Continue</button>
+      <button data-testid="auth-mode-switch" class="weelp-auth-mode-switch">Sign Up</button>
       <button data-testid="sidebar-button" data-sidebar="menu-button">Creators</button>
       <a data-testid="marked-anchor" data-weelp-button-link href="/continue">Continue</a>
       <a data-testid="filled-anchor" class="bg-weelp-sage-deep" href="/book">Book</a>
@@ -641,7 +642,7 @@ describe('Deep Forest semantic theme', () => {
 
   it('sets the dark site-wide button surface and border to the requested tokens', () => {
     const buttonRule = extractSelectorContract([
-      ".dark button:not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.bg-card):not([data-sidebar='menu-button'])",
+      ".dark button:not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.bg-card):not([data-sidebar='menu-button'])",
       ".dark a[role='button']",
       ".dark [role='button']",
       ".dark a[class~='bg-weelp-sage-deep']",
