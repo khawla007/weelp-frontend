@@ -14,7 +14,7 @@ import { useAllOrdersAdmin } from '@/hooks/api/admin/orders';
 const ORDER_STATUS_OPTIONS = [
   { value: 'all', label: 'All Status' },
   { value: 'pending', label: 'Pending' },
-  { value: 'confirmed', label: 'Confirmed' },
+  { value: 'processing', label: 'Processing' },
   { value: 'completed', label: 'Completed' },
   { value: 'cancelled', label: 'Cancelled' },
 ];

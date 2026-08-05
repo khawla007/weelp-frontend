@@ -75,6 +75,17 @@ describe('OrdersPage', () => {
 
     expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=1&view=active');
     expect(screen.getByRole('button', { name: 'Filter orders by status: All Status' })).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByRole('option', { name: 'Processing' })).toBeInTheDocument();
+    expect(screen.queryByRole('option', { name: 'Confirmed' })).not.toBeInTheDocument();
+  });
+
+  it('filters processing orders', async () => {
+    render(<OrdersPage />);
+
+    chooseStatus('processing');
+
+    await waitFor(() => expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=1&view=active&status=processing'));
+    expect(screen.getByRole('button', { name: 'Filter orders by status: Processing' })).toHaveAttribute('aria-pressed', 'true');
   });
 
   it('uses numeric page-one defaults when API metadata is absent', () => {
