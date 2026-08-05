@@ -86,3 +86,11 @@ describe('dashboard mobile overflow contracts', () => {
     expect(source).not.toContain('className="flex justify-between items-center gap-4"');
   });
 });
+
+describe('dashboard surface hierarchy', () => {
+  it('uses the public dark canvas while preserving the muted light canvas', () => {
+    const layoutSource = readSource('src/app/(dashboard)/dashboard/admin/layout.js');
+
+    expect(layoutSource).toContain('className="flex min-h-screen w-full min-w-0 bg-muted dark:bg-background"');
+  });
+});

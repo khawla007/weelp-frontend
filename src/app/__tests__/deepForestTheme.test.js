@@ -460,6 +460,8 @@ describe('Deep Forest semantic theme', () => {
   it('uses the deep-sage text utility only as an audited artwork color carrier', () => {
     const expectedCarrierCounts = {
       'src/app/components/DashboardShared/Card/CardBadge.jsx': 1,
+      'src/app/components/Help/HelpOverview.jsx': 1,
+      'src/app/components/Help/SupportRequestSuccess.jsx': 1,
       'src/app/components/Pages/FRONT_END/city/CityHeroBanner.jsx': 2,
       'src/app/components/Pages/FRONT_END/home/WanderersBanner.jsx': 2,
       'src/app/components/Pages/FRONT_END/shop/BannerSection.jsx': 1,

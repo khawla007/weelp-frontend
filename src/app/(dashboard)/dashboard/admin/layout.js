@@ -12,7 +12,7 @@ const AdminLayout = async ({ children }) => {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full min-w-0 bg-muted">
+      <div className="flex min-h-screen w-full min-w-0 bg-muted dark:bg-background">
         <div>
           <AppSidebar session={session} />
         </div>
