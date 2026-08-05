@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useReactTable } from '@tanstack/react-table';
 
 import { useToast } from '@/hooks/use-toast';
@@ -49,9 +49,9 @@ const order = {
   emergency_contact: { contact_name: 'Test Contact', relationship: 'Friend' },
 };
 
-function renderTable({ view = 'active', onOrdersChanged = jest.fn() } = {}) {
-  render(<FilterOrdersPage data={{ data: [order] }} view={view} onOrdersChanged={onOrdersChanged} />);
-  return { onOrdersChanged };
+function renderTable({ view = 'active', search = '', onSearchChange = jest.fn(), onOrdersChanged = jest.fn() } = {}) {
+  render(<FilterOrdersPage data={{ data: [order] }} view={view} search={search} onSearchChange={onSearchChange} onOrdersChanged={onOrdersChanged} />);
+  return { onSearchChange, onOrdersChanged };
 }
 
 describe('FilterOrdersPage trash actions', () => {
@@ -64,6 +64,43 @@ describe('FilterOrdersPage trash actions', () => {
     restoreOrder.mockResolvedValue({ success: true, message: 'Order restored successfully.' });
     permanentlyDeleteOrder.mockResolvedValue({ success: true, message: 'Order permanently deleted.' });
     updateOrderStatus.mockResolvedValue({ success: true, message: 'Order status updated.' });
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it('debounces search changes and trims the applied query', () => {
+    jest.useFakeTimers();
+    const onSearchChange = jest.fn();
+    renderTable({ onSearchChange });
+
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search orders by order number, customer, or item' }), {
+      target: { value: '  Desert Safari  ' },
+    });
+
+    act(() => jest.advanceTimersByTime(299));
+    expect(onSearchChange).not.toHaveBeenCalled();
+
+    act(() => jest.advanceTimersByTime(1));
+    expect(onSearchChange).toHaveBeenCalledTimes(1);
+    expect(onSearchChange).toHaveBeenCalledWith('Desert Safari');
+  });
+
+  it('renders the replacement search field instead of the old status text field', () => {
+    renderTable({ search: 'Safari' });
+
+    expect(screen.getByRole('searchbox', { name: 'Search orders by order number, customer, or item' })).toHaveValue('Safari');
+    expect(screen.queryByPlaceholderText('Filter By status...')).not.toBeInTheDocument();
+  });
+
+  it('does not configure a page-local filtered row model', () => {
+    renderTable();
+
+    const options = useReactTable.mock.calls.at(-1)[0];
+    expect(options.onColumnFiltersChange).toBeUndefined();
+    expect(options.getFilteredRowModel).toBeUndefined();
+    expect(options.state).not.toHaveProperty('columnFilters');
   });
 
   it('keeps table inputs stable while a Trash response is loading', () => {

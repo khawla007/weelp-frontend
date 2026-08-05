@@ -1,8 +1,8 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { ChevronDown, RotateCcw, Trash2 } from 'lucide-react';
 
 import { TypeBadge } from '@/app/components/Shared/TypeBadge';
@@ -18,9 +18,9 @@ import { deleteOrder, permanentlyDeleteOrder, restoreOrder, updateOrderStatus } 
 const EMPTY_ORDERS = [];
 const ORDER_STATUSES = ['pending', 'processing', 'completed', 'cancelled'];
 
-export function FilterOrdersPage({ data = {}, view = 'active', onOrdersChanged }) {
+export function FilterOrdersPage({ data = {}, view = 'active', search = '', onSearchChange, onOrdersChanged }) {
   const [sorting, setSorting] = useState('');
-  const [columnFilters, setColumnFilters] = useState([]);
+  const [searchValue, setSearchValue] = useState(search);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const [pendingAction, setPendingAction] = useState(null);
@@ -28,6 +28,18 @@ export function FilterOrdersPage({ data = {}, view = 'active', onOrdersChanged }
 
   const orders = Array.isArray(data.data) ? data.data : EMPTY_ORDERS;
   const { toast } = useToast(); // show notification
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      const nextSearch = searchValue.trim();
+
+      if (nextSearch !== search) {
+        onSearchChange?.(nextSearch);
+      }
+    }, 300);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [onSearchChange, search, searchValue]);
 
   const runOrderAction = useCallback(
     async (action, fallback) => {
@@ -203,16 +215,13 @@ export function FilterOrdersPage({ data = {}, view = 'active', onOrdersChanged }
     data: orders,
     columns,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
       sorting,
-      columnFilters,
       columnVisibility,
       rowSelection,
     },
@@ -222,9 +231,11 @@ export function FilterOrdersPage({ data = {}, view = 'active', onOrdersChanged }
     <div className="w-full">
       <div className="flex items-center py-4 flex-wrap gap-2">
         <Input
-          placeholder="Filter By status..."
-          value={table.getColumn('status')?.getFilterValue() ?? ''}
-          onChange={(event) => table.getColumn('status')?.setFilterValue(event.target.value)}
+          type="search"
+          aria-label="Search orders by order number, customer, or item"
+          placeholder="Search by order number, customer, or item"
+          value={searchValue}
+          onChange={(event) => setSearchValue(event.target.value)}
           className="max-w-sm"
         />
 
@@ -283,7 +294,7 @@ export function FilterOrdersPage({ data = {}, view = 'active', onOrdersChanged }
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-xs  text-copy">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getSelectedRowModel().rows.length} of {table.getRowModel().rows.length} row(s) selected.
         </div>
       </div>
 

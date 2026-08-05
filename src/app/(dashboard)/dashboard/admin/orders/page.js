@@ -1,21 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+
+import { ChevronDown } from 'lucide-react';
 
 import { CustomPagination } from '@/app/components/Pagination';
 import { FilterOrdersPage } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/FilterOrdersPage';
 import { NavigationOrder, StatsOrdersCards } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/orders_shared';
 import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useAllOrdersAdmin } from '@/hooks/api/admin/orders';
 
+const ORDER_STATUS_OPTIONS = [
+  { value: 'all', label: 'All Status' },
+  { value: 'pending', label: 'Pending' },
+  { value: 'confirmed', label: 'Confirmed' },
+  { value: 'completed', label: 'Completed' },
+  { value: 'cancelled', label: 'Cancelled' },
+];
+
 const OrdersPage = () => {
-  const [listQuery, setListQuery] = useState({ page: 1, view: 'active' });
+  const [listQuery, setListQuery] = useState({ page: 1, view: 'active', status: '', search: '' });
   const queryParams = new URLSearchParams({
     page: String(listQuery.page),
     view: listQuery.view,
-  }).toString();
+  });
 
-  const { orders = {}, isLoading: isLoadingOrders, mutate: mutateOrders } = useAllOrdersAdmin(`?${queryParams}`);
+  if (listQuery.status) queryParams.set('status', listQuery.status);
+  if (listQuery.search) queryParams.set('search', listQuery.search);
+
+  const { orders = {}, isLoading: isLoadingOrders, mutate: mutateOrders } = useAllOrdersAdmin(`?${queryParams.toString()}`);
   const { data = {} } = orders;
   const currentPage = Number(data.current_page) || 1;
   const itemsPerPage = Number(data.per_page) || 3;
@@ -27,8 +41,16 @@ const OrdersPage = () => {
   };
 
   const handleViewChange = (view) => {
-    setListQuery({ page: 1, view });
+    setListQuery((current) => ({ ...current, page: 1, view }));
   };
+
+  const handleStatusChange = (status) => {
+    setListQuery((current) => ({ ...current, page: 1, status: status === 'all' ? '' : status }));
+  };
+
+  const handleSearchChange = useCallback((search) => {
+    setListQuery((current) => ({ ...current, page: 1, search }));
+  }, []);
 
   const handleOrdersChanged = async () => {
     const requestedQuery = listQuery;
@@ -37,7 +59,7 @@ const OrdersPage = () => {
 
     if (requestedQuery.page > 1 && Array.isArray(refreshedOrders) && refreshedOrders.length === 0) {
       setListQuery((current) => {
-        if (current.page !== requestedQuery.page || current.view !== requestedQuery.view) {
+        if (current.page !== requestedQuery.page || current.view !== requestedQuery.view || current.status !== requestedQuery.status || current.search !== requestedQuery.search) {
           return current;
         }
 
@@ -45,6 +67,8 @@ const OrdersPage = () => {
       });
     }
   };
+
+  const selectedStatus = ORDER_STATUS_OPTIONS.find((option) => option.value === (listQuery.status || 'all')) ?? ORDER_STATUS_OPTIONS[0];
 
   return (
     <div className="space-y-4">
@@ -58,9 +82,26 @@ const OrdersPage = () => {
         <Button type="button" variant={listQuery.view === 'trash' ? 'default' : 'outline'} aria-pressed={listQuery.view === 'trash'} onClick={() => handleViewChange('trash')}>
           Trash ({trashCount})
         </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button type="button" variant={listQuery.status ? 'default' : 'outline'} aria-label={`Filter orders by status: ${selectedStatus.label}`} aria-pressed={Boolean(listQuery.status)}>
+              {selectedStatus.label}
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuRadioGroup value={listQuery.status || 'all'} onValueChange={handleStatusChange}>
+              {ORDER_STATUS_OPTIONS.map((option) => (
+                <DropdownMenuRadioItem key={option.value} value={option.value}>
+                  {option.label}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
-      <FilterOrdersPage data={data} view={listQuery.view} onOrdersChanged={handleOrdersChanged} />
+      <FilterOrdersPage data={data} view={listQuery.view} search={listQuery.search} onSearchChange={handleSearchChange} onOrdersChanged={handleOrdersChanged} />
 
       {!isLoadingOrders && <CustomPagination totalItems={totalItems} currentPage={currentPage} itemsPerPage={itemsPerPage} onPageChange={handlePageChange} />}
     </div>
