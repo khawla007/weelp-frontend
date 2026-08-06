@@ -68,12 +68,7 @@ const MediaComponent = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="hidden">
-        <Controller
-          control={control}
-          name="media_gallery"
-          defaultValue={[]}
-          render={() => ''}
-        />
+        <Controller control={control} name="media_gallery" defaultValue={[]} render={() => ''} />
       </div>
 
       {/**Uploaded Media As Dialog */}

@@ -102,7 +102,7 @@ const taxonomyLinkClasses = `${taxonomyLabelClasses} transition-colors hover:tex
 For both taxonomy lists, replace the list classes with:
 
 ```jsx
-className="flex max-w-none flex-wrap gap-x-4 gap-y-2"
+className = 'flex max-w-none flex-wrap gap-x-4 gap-y-2';
 ```
 
 Keep both headings, filter destinations, fallback labels, and the share section unchanged.

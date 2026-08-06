@@ -13,6 +13,7 @@
 ### Task 1: Lock the city-only dark arrow color with a regression test
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/city/__tests__/CityHeroBanner.test.jsx`
 
 - [ ] **Step 1: Add the failing regression test**
@@ -45,6 +46,7 @@ Expected: FAIL because the arrow still has `dark:text-white/10` instead of the e
 ### Task 2: Apply the scoped arrow color change
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/city/CityHeroBanner.jsx:49`
 
 - [ ] **Step 1: Replace only the arrow's dark-mode utility**
@@ -58,7 +60,10 @@ Change the decorative arrow from:
 to:
 
 ```jsx
-<Icons.VectorArrow aria-hidden="true" className="pointer-events-none absolute bottom-[125px] left-[167.1px] z-0 hidden -rotate-[27.247deg] text-weelp-sage-deep/70 dark:text-[var(--weelp-city-brand)] lg:block" />
+<Icons.VectorArrow
+  aria-hidden="true"
+  className="pointer-events-none absolute bottom-[125px] left-[167.1px] z-0 hidden -rotate-[27.247deg] text-weelp-sage-deep/70 dark:text-[var(--weelp-city-brand)] lg:block"
+/>
 ```
 
 The existing `--weelp-city-brand` variable resolves to the same fixed `#588f7a` used by `Vector2`, without introducing a new hardcoded-color guard exemption. Do not edit `VectorArrow` in `public/assets/Icons/Icons.jsx` or the `Vector2` instance immediately above it.
@@ -76,6 +81,7 @@ Expected: PASS with both `CityHeroBanner` tests passing.
 ### Task 3: Verify quality and the local dark-mode result
 
 **Files:**
+
 - Verify: `src/app/components/Pages/FRONT_END/city/CityHeroBanner.jsx`
 - Verify: `src/app/components/Pages/FRONT_END/city/__tests__/CityHeroBanner.test.jsx`
 

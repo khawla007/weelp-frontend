@@ -27,7 +27,12 @@ describe('AppSidebar', () => {
   it('uses the same theme-readable brand treatment as the public frontend', () => {
     render(<AppSidebar session={null} />);
 
-    expect(screen.getByRole('img', { name: 'Weelp' })).toHaveAttribute('src', getLogoUrl());
+    const logo = screen.getByRole('img', { name: 'Weelp' });
+
+    expect(logo).toHaveAttribute('src', getLogoUrl());
+    expect(logo.closest('a')).toHaveAttribute('href', '/');
+    expect(logo.closest('a')).toHaveAttribute('target', '_blank');
+    expect(logo.closest('a')).toHaveAttribute('rel', 'noopener noreferrer');
     expect(screen.getByText('Weelp.')).toHaveClass('text-foreground');
   });
 });

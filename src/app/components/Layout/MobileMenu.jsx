@@ -241,7 +241,11 @@ const PanelRegions = ({ onOpenRegion, onOpenSearch, regionItems, isLoading, erro
     </div>
 
     <div className="mt-5 flex gap-2.5">
-      <Link data-weelp-button-link href="/user/login" className="flex flex-1 items-center justify-center gap-2 rounded-full border border-border bg-background px-4 py-3 text-sm font-semibold text-foreground">
+      <Link
+        data-weelp-button-link
+        href="/user/login"
+        className="flex flex-1 items-center justify-center gap-2 rounded-full border border-border bg-background px-4 py-3 text-sm font-semibold text-foreground"
+      >
         <UserRound className="size-4" />
         Account
       </Link>

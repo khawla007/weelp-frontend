@@ -7,6 +7,11 @@ import { useSession } from 'next-auth/react';
 import { logout } from '@/lib/auth/logout';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
 
+const accountMenuItemClass =
+  'text-base leading-5 flex w-full items-center gap-x-2 px-8 py-4 text-foreground transition-colors duration-200 ease-out hover:bg-accent hover:text-foreground/70 focus:bg-accent focus:text-foreground/70 focus-visible:outline-none';
+const accountMenuButtonClass = `${accountMenuItemClass} weelp-header-nav-item border-0 bg-transparent text-left`;
+const accountMenuRowClass = 'border-b border-border text-foreground transition-colors duration-200 ease-out hover:bg-accent focus-within:bg-accent';
+
 const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
   const { data: session, status } = useSession();
   const { openAuthModal } = useAuthModalStore();
@@ -62,14 +67,14 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
       <ul>
         {!session ? (
           <>
-            <li className="p-4 px-8 border-b border-border text-copy">
-              <Link href="/user/login" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text">
+            <li className={accountMenuRowClass}>
+              <Link href="/user/login" onClick={closeDropdown} className={accountMenuItemClass}>
                 <User className="size-5" /> SignUp / Login
               </Link>
             </li>
-            <li className="p-4 px-8 border-b border-border text-copy">
+            <li className={accountMenuRowClass}>
               <button
-                className="weelp-header-nav-item border-0 bg-transparent text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
+                className={accountMenuButtonClass}
                 onClick={() => {
                   closeDropdown();
                   openAuthModal({ redirectTo: '/dashboard' });
@@ -79,9 +84,9 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
                 Dashboard
               </button>
             </li>
-            <li className="p-4 px-8 border-b border-border text-copy">
+            <li className={accountMenuRowClass}>
               <button
-                className="weelp-header-nav-item border-0 bg-transparent text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
+                className={accountMenuButtonClass}
                 onClick={() => {
                   closeDropdown();
                   openAuthModal({ redirectTo: '/dashboard/customer/wishlist' });
@@ -107,27 +112,27 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
             <li className="border-b border-border" aria-hidden="true"></li>
             {session?.user?.role === 'super_admin' ? (
               <>
-                <li className="p-4 px-8 border-b border-border text-copy">
-                  <Link href="/dashboard/admin" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text">
+                <li className={accountMenuRowClass}>
+                  <Link href="/dashboard/admin" onClick={closeDropdown} className={accountMenuItemClass}>
                     <House className="size-5" />
                     Dashboard
                   </Link>
                 </li>
-                <li className="p-4 px-8 border-b border-border text-copy">
-                  <Link href="/dashboard/admin/settings" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text">
+                <li className={accountMenuRowClass}>
+                  <Link href="/dashboard/admin/settings" onClick={closeDropdown} className={accountMenuItemClass}>
                     <Settings className="size-5" />
                     Settings
                   </Link>
                 </li>
-                <li className="p-4 px-8 border-b border-border text-copy">
-                  <Link href="/dashboard/admin/settings" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text">
+                <li className={accountMenuRowClass}>
+                  <Link href="/dashboard/admin/settings" onClick={closeDropdown} className={accountMenuItemClass}>
                     <Tags className="size-5" />
                     Taxonomies
                   </Link>
                 </li>
-                <li className="p-4 px-8 border-b border-border text-copy">
+                <li className={accountMenuRowClass}>
                   <button
-                    className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
+                    className={accountMenuButtonClass}
                     onClick={() => {
                       closeDropdown();
                       logout({ callbackUrl: '/' });
@@ -140,25 +145,21 @@ const SubmenuAccount = ({ showSubmenu, setShowSubmenu }) => {
               </>
             ) : (
               <>
-                <li className="p-4 px-8 border-b border-border text-copy">
-                  <Link
-                    href={is_creator ? '/dashboard/customer/overview' : '/dashboard/customer'}
-                    onClick={closeDropdown}
-                    className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
-                  >
+                <li className={accountMenuRowClass}>
+                  <Link href={is_creator ? '/dashboard/customer/overview' : '/dashboard/customer'} onClick={closeDropdown} className={accountMenuItemClass}>
                     <House className="size-5" />
                     Dashboard
                   </Link>
                 </li>
-                <li className="p-4 px-8 border-b border-border text-copy">
-                  <Link href="/dashboard/customer/wishlist" onClick={closeDropdown} className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text">
+                <li className={accountMenuRowClass}>
+                  <Link href="/dashboard/customer/wishlist" onClick={closeDropdown} className={accountMenuItemClass}>
                     <Heart className="size-5" />
                     Wishlist
                   </Link>
                 </li>
-                <li className="p-4 px-8 border-b border-border text-copy">
+                <li className={accountMenuRowClass}>
                   <button
-                    className="text-base leading-5 flex gap-x-2 text-copy transition-colors hover:text-weelp-sage-text"
+                    className={accountMenuButtonClass}
                     onClick={() => {
                       closeDropdown();
                       logout({ callbackUrl: '/' });

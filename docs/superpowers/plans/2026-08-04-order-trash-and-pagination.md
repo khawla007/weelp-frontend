@@ -321,8 +321,8 @@ Invoke `error-handling-patterns`, run Pint on all touched backend files, rerun t
 Mock `getAuthApi()` and `revalidatePath()`. Verify:
 
 ```js
-await deleteOrder(12);             // api.delete('/api/admin/orders/12')
-await restoreOrder(12);            // api.post('/api/admin/orders/12/restore')
+await deleteOrder(12); // api.delete('/api/admin/orders/12')
+await restoreOrder(12); // api.post('/api/admin/orders/12/restore')
 await permanentlyDeleteOrder(12); // api.delete('/api/admin/orders/12/force')
 ```
 

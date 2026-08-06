@@ -13,6 +13,7 @@
 ### Task 1: Increase padding on the mobile search panel
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/home/__tests__/HeroSection.test.jsx`
 - Modify: `src/app/components/Pages/FRONT_END/home/HeroSearchPill.jsx:8`
 - Revert: `src/app/components/Pages/FRONT_END/home/HeroSection.jsx:70`
