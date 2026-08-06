@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { ArrowLeft, ChevronRight, Globe, MenuIcon, Search, ShoppingCart, Smartphone, UserRound, X } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { Badge } from '@/components/ui/badge';
@@ -11,6 +12,7 @@ import { HEADER_NAV_ITEMS, HEADER_SECONDARY_META } from './shellContent';
 import { getLogoUrl } from '@/lib/config/brand';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import SubmenuAccount from '../Modals/SubmenuAccount';
+import ModalForm from '../Modals/ModalForm';
 
 const brandFont = 'var(--font-interTight), Inter Tight, sans-serif';
 const HOME_HEADER_TEXT_CLASS = 'text-weelp-hero-foreground';
@@ -80,11 +82,25 @@ const MobileMenu = ({ stickyHeader, variant = 'solid', showTopStrip = true }) =>
 
 const MobileMenuSlider = ({ brandTextClass = 'text-foreground' }) => {
   const [mounted, setMounted] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMenuOpen(false);
+  }, [pathname]);
+
+  const handleMenuContentClick = (event) => {
+    if (event.target.closest?.('a[href]')) {
+      setIsMenuOpen(false);
+    }
+  };
 
   // Render a matching skeleton during SSR to avoid Radix Dialog hydration mismatch
   // (Radix generates different aria-controls IDs on server vs client)
@@ -104,42 +120,50 @@ const MobileMenuSlider = ({ brandTextClass = 'text-foreground' }) => {
   }
 
   return (
-    <Sheet>
-      <div className="flex justify-between items-center">
-        <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            aria-label="Open main navigation"
-            className="h-11 w-11 rounded-full border border-border bg-background p-0 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          >
-            <MenuIcon className="size-5" />
-          </Button>
-        </SheetTrigger>
+    <>
+      <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+        <div className="flex justify-between items-center">
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              aria-label="Open main navigation"
+              className="h-11 w-11 rounded-full border border-border bg-background p-0 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              <MenuIcon className="size-5" />
+            </Button>
+          </SheetTrigger>
 
-        <Link href="/" className={`flex min-h-11 items-center gap-2 ${brandTextClass}`}>
-          <img src={getLogoUrl()} alt="Weelp" className="h-8 w-auto" />
-          <span className="text-[18px] font-semibold" style={{ fontFamily: brandFont }}>
-            Weelp.
-          </span>
-        </Link>
+          <Link href="/" className={`flex min-h-11 items-center gap-2 ${brandTextClass}`}>
+            <img src={getLogoUrl()} alt="Weelp" className="h-8 w-auto" />
+            <span className="text-[18px] font-semibold" style={{ fontFamily: brandFont }}>
+              Weelp.
+            </span>
+          </Link>
 
-        <HeaderAccountMobile />
-      </div>
+          <HeaderAccountMobile />
+        </div>
 
-      <SheetContent side="left" className="flex w-full max-w-[360px] flex-col gap-0 overflow-hidden border-r border-border bg-card p-0">
-        <SheetHeader>
-          <SheetTitle className="sr-only">Main navigation</SheetTitle>
-          <SheetDescription className="sr-only">Browse the modern Weelp navigation.</SheetDescription>
-        </SheetHeader>
-        <NavigationMenuMobile />
-      </SheetContent>
-    </Sheet>
+        <SheetContent side="left" className="flex w-full max-w-[360px] flex-col gap-0 overflow-hidden border-r border-border bg-card p-0" onClick={handleMenuContentClick}>
+          <SheetHeader>
+            <SheetTitle className="sr-only">Main navigation</SheetTitle>
+            <SheetDescription className="sr-only">Browse the modern Weelp navigation.</SheetDescription>
+          </SheetHeader>
+          <NavigationMenuMobile
+            onOpenSearch={() => {
+              setIsMenuOpen(false);
+              setShowSearch(true);
+            }}
+          />
+        </SheetContent>
+      </Sheet>
+      <ModalForm showForm={showSearch} setShowForm={setShowSearch} handleShowForm={() => setShowSearch((isOpen) => !isOpen)} />
+    </>
   );
 };
 
 const TRENDING_REGION_ID = 'trending';
 
-const NavigationMenuMobile = () => {
+const NavigationMenuMobile = ({ onOpenSearch }) => {
   const { regions, trending, isLoading, error } = useMegaMenu();
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -190,7 +214,7 @@ const NavigationMenuMobile = () => {
 
       <div className="relative flex-1 overflow-hidden">
         <div className="flex h-full w-[300%] transition-transform duration-300 ease-out motion-reduce:transition-none" style={{ transform: `translateX(-${level * (100 / 3)}%)` }}>
-          <PanelRegions onOpenRegion={setSelectedRegion} regionItems={regionItems} isLoading={isLoading} error={error} isCurrent={level === 0} />
+          <PanelRegions onOpenRegion={setSelectedRegion} onOpenSearch={onOpenSearch} regionItems={regionItems} isLoading={isLoading} error={error} isCurrent={level === 0} />
           <PanelCountries region={selectedRegion} onOpenCountry={setSelectedCountry} isCurrent={level === 1} />
           <PanelCities country={selectedCountry} isCurrent={level === 2} />
         </div>
@@ -199,7 +223,7 @@ const NavigationMenuMobile = () => {
   );
 };
 
-const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error, isCurrent }) => (
+const PanelRegions = ({ onOpenRegion, onOpenSearch, regionItems, isLoading, error, isCurrent }) => (
   <div className={`h-full w-1/3 overflow-y-auto px-4 py-5 transition-opacity duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${isCurrent ? 'opacity-100' : 'opacity-0'}`}>
     <div className="flex flex-col gap-2">
       {HEADER_NAV_ITEMS.map(({ title, href, hasMegaMenu }) => {
@@ -221,14 +245,15 @@ const PanelRegions = ({ onOpenRegion, regionItems, isLoading, error, isCurrent }
         <UserRound className="size-4" />
         Account
       </Link>
-      <Link
+      <button
+        type="button"
         data-weelp-button-link
-        href="/explore-creators"
+        onClick={onOpenSearch}
         className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         aria-label="Search trips"
       >
         <Search className="size-4" />
-      </Link>
+      </button>
     </div>
 
     <div className="mt-7">

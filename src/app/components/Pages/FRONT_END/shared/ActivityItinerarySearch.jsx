@@ -33,6 +33,7 @@ function ActivityItinerarySearch({ presentation, initialQuery = '', controlsSlot
   const { data: allLocations, loading: locationsLoading } = useCitiesRegions();
   const isPill = presentation === 'home';
   const isModal = presentation === 'modal';
+  const popoverLayerClass = isModal ? '!z-[100002]' : '';
   const instanceId = useId();
   const locationPanelId = `${instanceId}-discovery-locations`;
   const parsedInitialQuery = useMemo(() => parseDiscoverySearchParams(initialQuery), [initialQuery]);
@@ -357,7 +358,7 @@ function ActivityItinerarySearch({ presentation, initialQuery = '', controlsSlot
               sideOffset={4}
               collisionPadding={16}
               onOpenAutoFocus={(event) => event.preventDefault()}
-              className={`${PANEL_BASE_CLASS} w-[var(--radix-popover-trigger-width)] min-w-[260px] max-h-[min(18rem,var(--radix-popover-content-available-height,18rem))] overflow-y-auto p-0 text-foreground`}
+              className={`${PANEL_BASE_CLASS} ${popoverLayerClass} w-[var(--radix-popover-trigger-width)] min-w-[260px] max-h-[min(18rem,var(--radix-popover-content-available-height,18rem))] overflow-y-auto p-0 text-foreground`}
             >
               {filteredLocations.length > 0 ? (
                 filteredLocations.map((loc, index) => (
@@ -434,7 +435,7 @@ function ActivityItinerarySearch({ presentation, initialQuery = '', controlsSlot
               align="center"
               sideOffset={4}
               collisionPadding={16}
-              className={`${PANEL_BASE_CLASS} w-auto max-w-[min(640px,calc(100vw-2rem))] p-2 text-foreground`}
+              className={`${PANEL_BASE_CLASS} ${popoverLayerClass} w-auto max-w-[min(640px,calc(100vw-2rem))] p-2 text-foreground`}
             >
               <Controller
                 name="dateRange"
@@ -512,7 +513,7 @@ function ActivityItinerarySearch({ presentation, initialQuery = '', controlsSlot
               align="end"
               sideOffset={4}
               collisionPadding={16}
-              className={`${PANEL_BASE_CLASS} w-64 p-4 text-foreground`}
+              className={`${PANEL_BASE_CLASS} ${popoverLayerClass} w-64 p-4 text-foreground`}
             >
               <p className="text-[12px] text-copy mb-3 pb-2 border-b border-border leading-snug">Adults 13+, children 2 to 12, infants under 2.</p>
               {['adults', 'children', 'infants'].map((type) => (

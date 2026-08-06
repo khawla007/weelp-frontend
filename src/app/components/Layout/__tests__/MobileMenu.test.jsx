@@ -1,9 +1,10 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import MobileMenu from '../MobileMenu';
 
 const mockUseSession = jest.fn();
+let mockPathname = '/';
 const mockMiniCartState = {
   isMiniCartOpen: false,
   setMiniCartOpen: jest.fn(),
@@ -13,6 +14,15 @@ const mockMiniCartState = {
 jest.mock('next-auth/react', () => ({
   __esModule: true,
   useSession: () => mockUseSession(),
+}));
+
+jest.mock('next/navigation', () => ({
+  usePathname: () => mockPathname,
+}));
+
+jest.mock('../../Modals/ModalForm', () => ({
+  __esModule: true,
+  default: ({ showForm }) => (showForm ? <div role="dialog" aria-label="Search trips" /> : null),
 }));
 
 jest.mock('@/lib/store/useMiniCartStore', () => {
@@ -41,6 +51,7 @@ const getTopStrip = () => screen.getByText('Get Exclusive offer on the App').clo
 
 describe('MobileMenu', () => {
   beforeEach(() => {
+    mockPathname = '/';
     mockUseSession.mockReturnValue({ data: null });
     mockMiniCartState.cartItems = [];
   });
@@ -121,6 +132,44 @@ describe('MobileMenu', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Open main navigation' }));
 
     expect(screen.getByRole('link', { name: /weelp weelp\./i })).toHaveClass('min-h-11');
+  });
+
+  it('opens the booking search modal and closes the navigation sheet from the mobile search action', async () => {
+    render(<MobileMenu stickyHeader={false} />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open main navigation' }));
+    const searchAction = screen.getByRole('button', { name: 'Search trips' });
+
+    expect(searchAction).not.toHaveAttribute('href');
+    fireEvent.click(searchAction);
+
+    await waitFor(() => expect(screen.queryByRole('heading', { name: 'Main navigation' })).not.toBeInTheDocument());
+    expect(screen.getByRole('dialog', { name: 'Search trips' })).toBeInTheDocument();
+  });
+
+  it('closes the navigation sheet when the route changes', async () => {
+    mockPathname = '/explore-creators';
+    const { rerender } = render(<MobileMenu stickyHeader variant="solid" />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open main navigation' }));
+    expect(screen.getByRole('heading', { name: 'Main navigation' })).toBeInTheDocument();
+
+    mockPathname = '/tours-experiences';
+    rerender(<MobileMenu stickyHeader variant="solid" />);
+
+    await waitFor(() => expect(screen.queryByRole('heading', { name: 'Main navigation' })).not.toBeInTheDocument());
+  });
+
+  it('closes the navigation sheet immediately when the current-route link is clicked', async () => {
+    mockPathname = '/tours-experiences';
+    render(<MobileMenu stickyHeader variant="solid" />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open main navigation' }));
+    const currentRouteLink = screen.getByRole('link', { name: 'Tours & Experiences' });
+    currentRouteLink.addEventListener('click', (event) => event.preventDefault());
+    fireEvent.click(currentRouteLink);
+
+    await waitFor(() => expect(screen.queryByRole('heading', { name: 'Main navigation' })).not.toBeInTheDocument());
   });
 
   it('opens the account dropdown instead of navigating when an authenticated user taps their initials', () => {

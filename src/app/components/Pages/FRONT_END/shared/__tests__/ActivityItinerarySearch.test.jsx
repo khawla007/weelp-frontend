@@ -122,6 +122,14 @@ describe('ActivityItinerarySearch', () => {
     expect(searchButton).not.toHaveClass('rounded-xl');
   });
 
+  it('layers modal filter popovers above the search overlay', async () => {
+    renderSearch(<ModalActivityItinerarySearch />);
+
+    fireEvent.click(screen.getByRole('combobox', { name: /where to/i }));
+
+    expect(await screen.findByRole('listbox', { name: /location suggestions/i })).toHaveClass('!z-[100002]');
+  });
+
   it('hydrates location, dates, and guest quantity from the results query', async () => {
     renderSearch(<ResultsActivityItinerarySearch initialQuery="location=dubai&start_date=2026-08-10&end_date=2026-08-14&quantity=3" />);
 

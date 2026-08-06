@@ -17,10 +17,17 @@ describe('HeroSection', () => {
     expect(content).toHaveClass('pt-[135px]', 'pb-10', 'sm:pb-16', 'md:h-full', 'md:pb-20', 'lg:pb-32');
   });
 
-  it('renders the shared home discovery presentation', () => {
+  it('applies mobile-only padding to the panel around the search controls', () => {
     const { getByTestId } = render(<HeroSection />);
 
-    expect(getByTestId('home-discovery-search')).toBeInTheDocument();
+    const search = getByTestId('home-discovery-search');
+    const searchPanel = search.parentElement;
+    const heroSearchWrapper = search.closest('.weelp-hero-ui-rise');
+
+    expect(search).toBeInTheDocument();
+    expect(searchPanel).toHaveClass('p-[0.9rem]', 'sm:p-0');
+    expect(heroSearchWrapper).not.toHaveClass('p-[0.9rem]');
+    expect(heroSearchWrapper).not.toHaveClass('sm:p-0');
   });
 
   it('places a 10 percent white overlay over the background image', () => {
