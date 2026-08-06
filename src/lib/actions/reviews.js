@@ -122,7 +122,7 @@ export const updateReview = async (id, data) => {
     // Fallback
     return {
       success: false,
-      message: 'Something went wrong while creating the review',
+      message: 'Something went wrong while updating the review',
     };
   }
 };

@@ -72,9 +72,6 @@ const MediaComponent = () => {
           control={control}
           name="media_gallery"
           defaultValue={[]}
-          rules={{
-            validate: (val) => val?.length > 0 || 'Please upload at least 1 image.',
-          }}
           render={() => ''}
         />
       </div>

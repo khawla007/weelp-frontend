@@ -306,7 +306,7 @@ body {
     @apply mx-auto w-full max-w-pen px-4 sm:px-6 lg:px-8;
   }
 
-  .dark button:not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.bg-card):not([data-sidebar='menu-button']):not([data-sidebar='rail']),
+  .dark button:not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.review-featured-switch):not(.bg-card):not([data-sidebar='menu-button']):not([data-sidebar='rail']),
   .dark a[role='button'],
   .dark [role='button'],
   .dark a[class~='bg-weelp-sage-deep'],
@@ -316,7 +316,7 @@ body {
     color: var(--weelp-home-muted) !important;
   }
 
-  .dark button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not([data-sidebar='menu-button']):not([data-sidebar='rail']),
+  .dark button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not(.review-featured-switch):not([data-sidebar='menu-button']):not([data-sidebar='rail']),
   .dark a[role='button']:not([aria-disabled='true']),
   .dark a[data-weelp-button-link]:not([aria-disabled='true']),
   .dark a[class~='bg-weelp-sage-deep']:not([aria-disabled='true']),
@@ -326,7 +326,7 @@ body {
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
-  .dark button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not([data-sidebar='menu-button']):not([data-sidebar='rail']):hover,
+  .dark button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not(.review-featured-switch):not([data-sidebar='menu-button']):not([data-sidebar='rail']):hover,
   .dark a[role='button']:not([aria-disabled='true']):hover,
   .dark a[data-weelp-button-link]:not([aria-disabled='true']):hover,
   .dark a[class~='bg-weelp-sage-deep']:not([aria-disabled='true']):hover,
@@ -1118,6 +1118,25 @@ body {
   box-shadow:
     -2px -2px 6px hsl(var(--border)),
     2px 2px 6px hsl(var(--background));
+}
+
+.review-featured-switch:hover .neumorphism-switch-toggle {
+  box-shadow:
+    -2px -2px 4px #ffffff,
+    2px 2px 4px #b0b0b0;
+}
+
+.review-featured-switch[data-state='checked']:hover .neumorphism-switch-toggle {
+  box-shadow:
+    -2px -2px 4px #ffffff,
+    2px 2px 4px #8a8a8a;
+}
+
+.dark .review-featured-switch:hover .neumorphism-switch-toggle,
+.dark .review-featured-switch[data-state='checked']:hover .neumorphism-switch-toggle {
+  box-shadow:
+    -2px -2px 4px hsl(var(--border)),
+    2px 2px 4px hsl(var(--background));
 }
 
 /* Range slider + city-price-slider extracted to src/app/styles/range-slider.css */

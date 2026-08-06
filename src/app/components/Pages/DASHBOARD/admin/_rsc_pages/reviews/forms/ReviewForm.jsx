@@ -80,6 +80,11 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
 
         // close route
         router.back();
+      } else {
+        toast({
+          title: response.message || 'Unable to save review',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       toast({ title: 'Something went wrong', variant: 'destructive' });
@@ -220,7 +225,7 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
                       <p className="text-sm text-muted-foreground">Show this review in the featured reviews section on public pages.</p>
                     </div>
                     <FormControl>
-                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                      <Switch className="review-featured-switch" checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -231,9 +236,10 @@ const ReviewForm = ({ reviewData = {}, id = '' }) => {
 
               <FormActionButtons
                 mode={id ? 'update' : 'create'}
-                cancelHref="/dashboard/admin/reviews"
+                onCancel={() => router.back()}
                 isSubmitting={isSubmitting}
                 isDisabled={id ? !isValid || !isDirty || isErrorItems || isErrorUser : !isValid || isErrorItems || isErrorUser}
+                cancelAlwaysEnabled
                 containerType="div"
                 className="justify-end"
               />
