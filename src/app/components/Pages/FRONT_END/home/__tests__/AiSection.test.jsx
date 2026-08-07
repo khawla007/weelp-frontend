@@ -30,6 +30,15 @@ describe('AiSection', () => {
     expect(getByText('Your AI Travel Buddy')).toBeInTheDocument();
   });
 
+  it('keeps the Buddy conversation inside a fixed-height scroll viewport', async () => {
+    const ui = await AiSection();
+    const { getByRole } = render(ui);
+    const chatViewport = getByRole('log', { name: 'Conversation with Buddy' }).parentElement.parentElement;
+
+    expect(chatViewport).toHaveClass('h-[300px]', 'md:h-[360px]', 'shrink-0');
+    expect(chatViewport).not.toHaveClass('flex-1', 'min-h-[300px]', 'md:min-h-[360px]');
+  });
+
   it('owns the next-section gap with bottom padding only, per the public section spacing contract', async () => {
     const ui = await AiSection();
     const { container } = render(ui);

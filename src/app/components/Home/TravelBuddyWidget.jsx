@@ -22,7 +22,7 @@ const TravelBuddyWidget = ({ items = [] }) => {
   return (
     <>
       <article className={`${SHARED_CARD} lg:row-span-2`}>
-        <div className="flex min-h-[300px] flex-1 flex-col md:min-h-[360px]">
+        <div className="flex h-[300px] shrink-0 flex-col md:h-[360px]">
           <BuddyChat messages={messages} isThinking={isThinking} sendMessage={sendMessage} presets={presets} />
         </div>
 
