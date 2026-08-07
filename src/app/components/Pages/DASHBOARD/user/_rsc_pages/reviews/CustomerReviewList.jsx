@@ -4,16 +4,7 @@ import React, { useState } from 'react';
 import { UserDashboardReviewCard } from '@/app/components/ReviewCard';
 import { deleteReviewCustomer } from '@/lib/actions/customer/reviews';
 import { useToast } from '@/hooks/use-toast';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 
 export const CustomerReviewList = ({ reviews = [], mutate }) => {
   const { toast } = useToast();
