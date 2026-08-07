@@ -2,52 +2,39 @@
 
 ## What this change fixes
 
-Saving an activity, itinerary, or package currently writes to the wishlist API without updating the state used by the rest of the frontend. The detail-page action therefore keeps its unsaved appearance, existing wishlist membership is not shown, and other card or dashboard views do not react until their data is fetched again.
+The single-item page currently writes to the wishlist API without reading or updating the state used by the customer dashboard. Its heart therefore stays neutral after a successful save and cannot show that an item was already saved.
 
-The fix will make the authenticated customer's server-backed wishlist the single source of truth for wishlist hearts. A successful save will paint the heart red immediately, previously saved items will start red, and every mounted consumer will observe the same state without a page refresh. Guests will continue through the existing login/signup modal instead of calling the wishlist API.
+The authenticated customer's server-backed wishlist will become the shared source of truth for the single-item action and dashboard. A successful save will immediately paint the detail-page heart red, previously saved items will start red, and the dashboard will observe the same cache without a page refresh. Guests will continue through the existing login/signup modal instead of calling the wishlist API.
+
+Wishlist hearts will not appear on public item cards. The shared card component, product mapper, and listing sections remain unchanged.
 
 ## State and data flow
 
-The existing SWR wishlist hook will own reads and mutations. It will expose item-identity helpers and optimistic add/remove operations around the canonical unfiltered wishlist cache. Components will identify an item by `item_type` and `item_id`, matching the backend's existing unique wishlist identity.
+The existing SWR wishlist hook will own reads and mutations through the canonical unfiltered wishlist key. It will identify entries by `item_type` and `item_id`, matching the backend's unique identity.
 
-When an authenticated customer clicks an unsaved heart, SWR will optimistically add the normalized item to the cache before the POST completes. Every mounted detail action, item-card heart, and dashboard wishlist consumer using that key will rerender from the same cache. If the request fails, SWR will restore the previous cache and the destructive toast will explain the failure. Revalidation after success will replace the optimistic entry with the backend response.
+When an authenticated customer saves an item, the hook adds a temporary entry to the cache before the POST settles. The single-item action turns red immediately and the dashboard sees the same entry. The successful API row replaces that temporary entry. A failure removes only that optimistic identity, preserving unrelated concurrent wishlist changes.
 
-The control will also support removal because a red saved heart must remain an honest interactive state. Removal will optimistically delete the matching entry, call the existing identity-based DELETE endpoint, roll back on failure, and revalidate after success.
+Removing a saved item follows the inverse flow: the identity disappears immediately, the existing DELETE endpoint runs, and only that identity is restored if the request fails.
 
-## UI boundaries
+## Single-item control
 
-A focused client component will render the wishlist control in two explicit variants:
+A focused client component renders the detail-page action with a heart and `Save to Wishlist` or `Saved to Wishlist`. Unsaved hearts use the current neutral treatment. Saved hearts use the existing destructive/red token for stroke and fill.
 
-- `icon`: a circular heart overlay for shared public item cards.
-- `label`: the detail-page action with a heart and saved/unsaved text.
+The control exposes an accurate accessible name (`Save ... to wishlist` or `Remove ... from wishlist`) and `aria-pressed`. It stays visible at mobile and desktop sizes. Rapid repeat clicks are ignored while a mutation is pending.
 
-Keeping this behavior in a client leaf lets the shared `ItemCard` retain its current rendering responsibilities. The card mapper will supply the normalized identity and display snapshot needed by the wishlist API. The card control will prevent its click from activating the surrounding item link.
+## Authentication and failures
 
-Unsaved hearts will use the current neutral treatment. Saved hearts will use the existing destructive/red color token for both stroke and fill. The control will have an accurate accessible name (`Save ... to wishlist` or `Remove ... from wishlist`) and an `aria-pressed` state. The detail-page action will be available at mobile and desktop sizes rather than remaining desktop-only.
+Wishlist data is not requested while NextAuth reports an unauthenticated session. A guest click opens the existing authentication modal with a callback that performs the same save action after successful login or signup.
 
-The creator itinerary like counter is intentionally excluded. It represents social likes through a separate API and is not a customer wishlist control.
-
-## Authentication behavior
-
-Wishlist data will not be requested while the NextAuth session is unauthenticated. Clicking as a guest opens the existing auth modal with a callback that performs the original wishlist action after successful authentication. No POST or DELETE request is made before authentication.
-
-## Failure paths worth knowing
-
-- Missing or unsupported item identity leaves the control disabled and avoids a malformed API call.
-- A failed optimistic save or removal restores the prior shared state and shows the backend message when available.
-- Rapid repeat clicks are ignored while the current mutation is pending.
-- An empty or unavailable wishlist response is treated as no saved items without breaking card rendering.
+Service failures roll back only the affected identity and show the backend message when available. The post-login callback handles its own rejection because the modal does not await callback promises. Pending state always clears in `finally`.
 
 ## Verification
 
-Tests will be written before implementation and will cover:
+Tests cover disabled guest fetching, shared optimistic state, identity-scoped rollback, overlapping mutations, initial saved/red state, immediate red state after save, removal, post-login success/failure, and detail-banner integration. The customer dashboard's existing tests remain in place.
 
-- the wishlist hook's shared optimistic add/remove behavior and rollback contract;
-- initial red state for an item already returned by the wishlist endpoint;
-- immediate red state after an authenticated save;
-- guest clicks opening the login/signup modal without an API call;
-- card clicks not navigating when the nested wishlist control is used;
-- detail-page saved/unsaved labels and accessible pressed state;
-- mapper output containing the item identity required by cards.
+After focused tests, type-check, and lint pass, the visible local browser will confirm:
 
-After focused tests pass, the frontend type check and lint will run. The final verification will use the named visible browser session against `http://localhost:3000` for both guest and authenticated flows, checking the detail page, shared item cards, and customer dashboard without refreshing.
+- public item cards contain no wishlist hearts;
+- the guest detail-page action opens login/signup;
+- an authenticated save turns the detail heart red without refresh;
+- the saved item appears in the customer dashboard from the shared state.
