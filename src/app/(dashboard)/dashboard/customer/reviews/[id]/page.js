@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 const ReviewPage = async ({ params }) => {
-  const { id } = params;
+  const { id } = await params;
 
   const { success, status, data } = await getSingleReviewByCustomer(id);
 

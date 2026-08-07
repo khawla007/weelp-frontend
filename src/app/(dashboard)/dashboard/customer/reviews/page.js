@@ -5,6 +5,9 @@ import { CustomerReviewList } from '@/app/components/Pages/DASHBOARD/user/_rsc_p
 import useAllReviewsCustomer from '@/hooks/api/customer/reviews';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Pagination from '@/app/components/ui/Pagination';
+import ReviewCardSkeleton from '@/app/components/ReviewCardSkeleton';
+
+const REVIEW_SKELETON_SLOTS = Array.from({ length: 6 }, (_, index) => index);
 
 const ReviewsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,12 +27,16 @@ const ReviewsPage = () => {
   if (isLoading) {
     return (
       <Card className="shadow-none border-none bg-inherit bg-background">
-        <CardHeader className={'px-8'}>
+        <CardHeader className="px-4 md:px-6 xl:px-8">
           <CardTitle className="text-xl text-foreground font-semibold">Your Reviews</CardTitle>
-          <CardDescription className="text-lg text-muted-foreground">See your reviews, thoughts.</CardDescription>
+          <CardDescription className="text-lg text-muted-foreground">Manage your Reviews, Create New.</CardDescription>
         </CardHeader>
-        <div className="bg-weelp-sage-wash p-8 min-h-[320px] flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-weelp-sage-deep"></div>
+        <div className="bg-weelp-sage-wash p-4 md:p-6 lg:min-h-screen xl:p-8">
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+            {REVIEW_SKELETON_SLOTS.map((slot) => (
+              <ReviewCardSkeleton key={slot} />
+            ))}
+          </div>
         </div>
       </Card>
     );

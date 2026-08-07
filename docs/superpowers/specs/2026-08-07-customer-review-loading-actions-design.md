@@ -4,7 +4,7 @@
 
 The customer reviews page currently replaces its content with a centered spinner during the first request. This differs from the customer bookings page, where card-shaped skeletons keep the layout stable and communicate what is loading. Review deletion also happens immediately when the trash icon is selected, leaving no chance to cancel an accidental action.
 
-The edit link reaches the correct route, but the dynamic review page reads `params` synchronously. Next.js 16 supplies route parameters asynchronously, so the page requests a review with an undefined ID and falls through to the customer not-found screen.
+The edit link reaches the correct route, but two server-side boundaries are wrong. The dynamic review page reads `params` synchronously even though Next.js 16 supplies route parameters asynchronously, and the single-review service uses the browser `authApi` instance from a Server Component. Together these produce an undefined ID first and then an unauthenticated Laravel request, both of which fall through to the customer not-found screen.
 
 ## What the customer sees
 
@@ -22,7 +22,7 @@ A focused `ReviewCardSkeleton` component mirrors `UserDashboardReviewCard` and u
 
 `CustomerReviewList` owns the confirmation dialog state: the selected review ID and whether deletion is pending. Each review card continues to report its ID through `onDelete`; the list opens one shared dialog and calls `deleteReviewCustomer` only from the confirmed action. Closing or cancelling clears the selected ID. A failed deletion leaves the review visible and keeps the existing destructive toast behavior.
 
-The dynamic edit page awaits `params` before reading `id`, matching the other Next.js 16 dynamic dashboard pages. The existing customer review service and edit form remain the source of data and mutation behavior.
+The dynamic edit page awaits `params` before reading `id`, matching the other Next.js 16 dynamic dashboard pages. Its single-review service obtains the existing environment-aware authenticated API through `getAuthApi()`, which attaches the NextAuth bearer token during server rendering while preserving the browser path for client callers. The edit form and mutation behavior remain unchanged.
 
 ## Failure paths worth knowing
 
@@ -30,11 +30,11 @@ The dynamic edit page awaits `params` before reading `id`, matching the other Ne
 - Repeated clicks cannot start concurrent deletion requests because **Remove** is disabled while pending.
 - A failed delete keeps the card in the list and shows an error toast.
 - A missing review ID still reaches the existing not-found state.
-- A valid review ID is passed unchanged to the customer review service.
+- A valid review ID is passed unchanged to the customer review service, and the service uses the authenticated server API rather than issuing an anonymous Laravel request.
 - Empty and failed review-list states retain their current messages and do not render loading skeletons.
 
 ## Verification
 
-Focused component tests cover the six review-shaped skeletons, opening and cancelling the confirmation dialog, confirming one deletion, the pending button state, successful list revalidation, and failed deletion behavior. A route regression test verifies that the awaited dynamic ID is passed to `getSingleReviewByCustomer` and that valid data renders the edit form.
+Focused component tests cover the six review-shaped skeletons, opening and cancelling the confirmation dialog, confirming one deletion, the pending button state, successful list revalidation, and failed deletion behavior. Route and service regression tests verify that the awaited dynamic ID reaches `getSingleReviewByCustomer`, that the single-review request uses the environment-aware authenticated API, and that valid data renders the edit form.
 
 After the focused tests pass, run the frontend type-check and lint commands. Finish with a visible local browser check of the customer reviews page in light and dark modes, confirming the loading layout, confirmation dialog, cancellation, and edit navigation.

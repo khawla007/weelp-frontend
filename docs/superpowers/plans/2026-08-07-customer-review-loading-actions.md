@@ -13,6 +13,7 @@
 ### Task 0: Load the required implementation guidance
 
 **Files:**
+
 - Review only; no source changes
 
 - [ ] **Step 1: Load the required Next.js and React skills**
@@ -26,6 +27,7 @@ Load `test-driven-development`. For each task below, write the focused test firs
 ### Task 1: Add review-card loading coverage and skeleton component
 
 **Files:**
+
 - Create: `src/app/components/ReviewCardSkeleton.jsx`
 - Create: `src/app/components/__tests__/ReviewCardSkeleton.test.jsx`
 - Modify: `src/app/(dashboard)/dashboard/customer/reviews/page.js`
@@ -120,9 +122,9 @@ const REVIEW_SKELETON_SLOTS = Array.from({ length: 6 }, (_, index) => index);
 Use the same success-state heading and sage content wrapper for loading. Inside a `grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3`, render:
 
 ```jsx
-{REVIEW_SKELETON_SLOTS.map((slot) => (
-  <ReviewCardSkeleton key={slot} />
-))}
+{
+  REVIEW_SKELETON_SLOTS.map((slot) => <ReviewCardSkeleton key={slot} />);
+}
 ```
 
 Remove the spinner markup. Preserve the existing error, loaded-list, and pagination behavior.
@@ -136,6 +138,7 @@ Expected: PASS.
 ### Task 2: Confirm review removal before mutation
 
 **Files:**
+
 - Modify: `src/app/components/Pages/DASHBOARD/user/_rsc_pages/reviews/CustomerReviewList.jsx`
 - Create: `src/app/components/Pages/DASHBOARD/user/_rsc_pages/reviews/__tests__/CustomerReviewList.test.jsx`
 
@@ -224,8 +227,11 @@ Expected: PASS.
 ### Task 3: Repair the Next.js 16 customer review edit route
 
 **Files:**
+
 - Modify: `src/app/(dashboard)/dashboard/customer/reviews/[id]/page.js`
 - Create: `src/app/(dashboard)/dashboard/customer/reviews/[id]/__tests__/page.test.jsx`
+- Modify: `src/lib/services/customer/reviews.js`
+- Create: `src/lib/services/customer/__tests__/reviews.test.js`
 
 - [ ] **Step 1: Write a failing route regression test**
 
@@ -274,9 +280,14 @@ Run the Step 2 command again.
 
 Expected: PASS.
 
+- [ ] **Step 5: Reproduce and fix the authenticated server request**
+
+Verify the route in the visible authenticated browser. If the valid review still reaches Not Found, add a service regression test that mocks `getAuthApi()` and asserts the single-review request uses the returned authenticated API instance. Run the test to observe that the current browser-only `authApi` path fails, then update only `getSingleReviewByCustomer` to await `getAuthApi()` before its request. Re-run the service and route tests and confirm both pass.
+
 ### Task 4: Complete verification and visible UI checks
 
 **Files:**
+
 - Verify only; no planned source changes
 
 - [ ] **Step 1: Run all focused review tests together**

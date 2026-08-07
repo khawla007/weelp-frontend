@@ -1,5 +1,5 @@
 import { ApiError } from '@/dto/Error';
-import { authApi } from '@/lib/axiosInstance';
+import { authApi, getAuthApi } from '@/lib/axiosInstance';
 import { ApiResponse } from '@/dto/Success';
 
 /**
@@ -9,7 +9,8 @@ import { ApiResponse } from '@/dto/Success';
  */
 export async function getSingleReviewByCustomer(reviewId) {
   try {
-    const response = await authApi.get(`/api/customer/review/${reviewId}`, {
+    const api = await getAuthApi();
+    const response = await api.get(`/api/customer/review/${reviewId}`, {
       headers: { Accept: 'application/json' },
     });
 
