@@ -3,10 +3,10 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import BookingCard from '@/app/components/BookingCard';
+import BookingCardSkeleton from '@/app/components/BookingCardSkeleton';
 import CustomerBookingDetail from '@/app/components/Pages/DASHBOARD/user/_rsc_pages/booking/CustomerBookingDetail';
-import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAllOrdersCustomer } from '@/hooks/api/customer/orders';
+import { CUSTOMER_ORDERS_PER_PAGE, useAllOrdersCustomer } from '@/hooks/api/customer/orders';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import Pagination from '@/app/components/ui/Pagination';
@@ -36,6 +36,8 @@ const ITEM_TYPE = [
   { name: 'Package', value: 'package' },
 ];
 
+const BOOKING_SKELETON_SLOTS = Array.from({ length: CUSTOMER_ORDERS_PER_PAGE }, (_, index) => index);
+
 export const CustomerBookingsList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [status, setStatus] = useState('all');
@@ -45,7 +47,7 @@ export const CustomerBookingsList = () => {
   const { orders, isLoading: isloadingOrders, isValidating: isValidatingOrders, error: isOrderError, mutate: mutateOrders } = useAllOrdersCustomer(currentPage);
 
   // Get pagination data
-  const pagination = orders?.pagination || { total: 0, per_page: 6, current_page: 1, last_page: 1 };
+  const pagination = orders?.pagination || { total: 0, per_page: CUSTOMER_ORDERS_PER_PAGE, current_page: 1, last_page: 1 };
   const totalPages = pagination.last_page;
 
   // Safely extract orders array with fallback
@@ -140,7 +142,7 @@ export const CustomerBookingsList = () => {
       {/* Filtered Orders */}
       <div className="bg-weelp-sage-wash p-4 md:p-6 lg:min-h-screen xl:p-8">
         <div className="flex flex-col bg-weelp-sage-wash gap-4">
-          <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+          <div data-testid="booking-card-grid" className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
             {filteredOrders.length > 0 ? (
               filteredOrders.map((order) => <BookingCard key={order.id} bookingItem={order} onViewBooking={setSelectedBookingId} onReviewSaved={mutateOrders} />)
             ) : !isloadingOrders && !isOrderError ? (
@@ -150,7 +152,7 @@ export const CustomerBookingsList = () => {
             ) : null}
 
             {/* isloading */}
-            {isloadingOrders && <ListingCardSkeleton count={6} className="w-full" />}
+            {isloadingOrders ? BOOKING_SKELETON_SLOTS.map((slot) => <BookingCardSkeleton key={slot} />) : null}
 
             {/* If Error Exist */}
             {isOrderError && <span className="text-destructive">Something Went Wrong</span>}

@@ -19,6 +19,7 @@ jest.mock('next/dynamic', () => {
 });
 
 jest.mock('@/hooks/api/customer/orders', () => ({
+  CUSTOMER_ORDERS_PER_PAGE: 6,
   useAllOrdersCustomer: jest.fn(),
 }));
 
@@ -117,6 +118,24 @@ describe('CustomerBookingsList', () => {
 
     expect(screen.getByText('Something Went Wrong')).toBeInTheDocument();
     expect(screen.queryByText('No bookings found')).not.toBeInTheDocument();
+  });
+
+  it('renders one booking-card skeleton per order slot in the booking grid', () => {
+    useAllOrdersCustomer.mockReturnValue({
+      orders: { orders: [], pagination: { total: 0, per_page: 6, current_page: 1, last_page: 1 } },
+      isLoading: true,
+      isValidating: false,
+      error: undefined,
+      mutate: mutateOrders,
+    });
+
+    render(<CustomerBookingsList />);
+
+    const bookingGrid = screen.getByTestId('booking-card-grid');
+    const skeletons = screen.getAllByTestId('booking-card-skeleton');
+
+    expect(skeletons).toHaveLength(6);
+    skeletons.forEach((skeleton) => expect(skeleton.parentElement).toBe(bookingGrid));
   });
 
   it('restores page 2 and its active filter after returning from booking detail', () => {

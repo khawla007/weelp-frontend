@@ -8,12 +8,16 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCustomerOrder } from '@/hooks/api/customer/orders';
-import { formatCurrency } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 
 const NOT_PROVIDED = 'Not provided';
 
 function displayValue(value) {
   return value === undefined || value === null || value === '' ? NOT_PROVIDED : value;
+}
+
+function displayReviewText(value) {
+  return typeof value === 'string' && value.trim() === '' ? NOT_PROVIDED : displayValue(value);
 }
 
 function formatTravelDate(value) {
@@ -90,7 +94,7 @@ function travelerName(user) {
 
 function DetailSection({ icon: Icon, title, children, className = '' }) {
   return (
-    <section className={`min-w-0 border-t border-border py-5 ${className}`}>
+    <section className={cn('min-w-0 border-t border-border py-5', className)}>
       <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-foreground">
         <Icon className="size-4 shrink-0 text-weelp-sage-deep" aria-hidden="true" />
         {title}
@@ -169,13 +173,13 @@ const CustomerBookingDetail = ({ orderId, onBack, onReviewSaved }) => {
           <h1 className="break-words text-2xl font-semibold text-foreground">{displayValue(item.name)}</h1>
           <p className="mt-1 text-sm text-muted-foreground">Booking ID: {order.id}</p>
         </div>
-        <Badge variant="outline" className="w-fit capitalize">
+        <Badge variant="outline" className="w-fit px-3 py-1.5 text-sm font-semibold capitalize">
           {displayValue(order.status)}
         </Badge>
       </header>
 
-      <div className="grid grid-cols-1 gap-x-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)]">
-        <div className="min-w-0">
+      <div data-testid="booking-detail-grid" className="grid grid-cols-1 gap-x-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)]">
+        <div data-testid="booking-detail-media" className="min-w-0 lg:col-start-1 lg:row-start-1">
           <div className="relative mt-6 aspect-[16/9] w-full overflow-hidden rounded-md bg-muted">
             <Image src={image.src} alt={image.alt} fill sizes="(max-width: 1024px) calc(100vw - 2rem), 58vw" className="object-cover" />
           </div>
@@ -187,7 +191,9 @@ const CustomerBookingDetail = ({ orderId, onBack, onReviewSaved }) => {
             </span>
             <span className="min-w-0 break-words">{displayValue(item.region)}</span>
           </div>
+        </div>
 
+        <div data-testid="booking-detail-travel" className="min-w-0 lg:col-start-1 lg:row-start-2">
           <DetailSection icon={CalendarDays} title="Travel details">
             <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <DetailField label="Travel date" value={formatTravelDate(order.travel_date)} />
@@ -202,8 +208,8 @@ const CustomerBookingDetail = ({ orderId, onBack, onReviewSaved }) => {
           </DetailSection>
         </div>
 
-        <div className="min-w-0">
-          <DetailSection icon={CreditCard} title="Payment" className="lg:mt-1">
+        <div data-testid="booking-detail-primary" className="min-w-0 lg:col-start-2 lg:row-start-1">
+          <DetailSection icon={CreditCard} title="Payment" className="lg:mt-1 lg:border-t-0">
             <dl className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
               <DetailField label="Amount" value={paymentAmount(payment)} />
               <DetailField label="Status" value={payment?.payment_status} />
@@ -226,12 +232,17 @@ const CustomerBookingDetail = ({ orderId, onBack, onReviewSaved }) => {
               <DetailField label="Relationship" value={emergencyContact?.relationship} />
             </dl>
           </DetailSection>
+        </div>
 
+        <div data-testid="booking-detail-review" className="min-w-0 lg:col-start-2 lg:row-start-2">
           <DetailSection icon={MessageSquare} title="Review">
-            <div className="flex min-w-0 flex-wrap items-center justify-between gap-3">
-              <p className="break-words text-sm text-muted-foreground">
-                {order.review ? `${order.review.rating} out of 5 stars` : item.has_live_item === false ? 'Reviews are unavailable for archived bookings.' : 'No review added yet.'}
-              </p>
+            <div className="flex min-w-0 items-start justify-between gap-3">
+              <div className="min-w-0 flex-1 space-y-2">
+                <p className="break-words text-sm text-muted-foreground">
+                  {order.review ? `${order.review.rating} out of 5 stars` : item.has_live_item === false ? 'Reviews are unavailable for archived bookings.' : 'No review added yet.'}
+                </p>
+                {order.review ? <p className="whitespace-pre-wrap break-words text-sm text-foreground">{displayReviewText(order.review.review_text)}</p> : null}
+              </div>
               {item.has_live_item !== false ? <BookingReviewDialog booking={order} onSaved={handleReviewSaved} /> : null}
             </div>
           </DetailSection>

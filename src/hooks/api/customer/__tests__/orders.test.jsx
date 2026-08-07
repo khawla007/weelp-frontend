@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { SWRConfig } from 'swr';
 
-import { useAllOrdersCustomer, useCustomerOrder } from '../orders';
+import { CUSTOMER_ORDERS_PER_PAGE, useAllOrdersCustomer, useCustomerOrder } from '../orders';
 import { authApi } from '@/lib/axiosInstance';
 
 jest.mock('@/lib/axiosInstance', () => ({
@@ -95,6 +95,8 @@ describe('useAllOrdersCustomer', () => {
 
     await waitFor(() => expect(result.current.orders.orders).toEqual([]));
     expect(result.current.error).toBeUndefined();
+    expect(result.current.orders.pagination.per_page).toBe(CUSTOMER_ORDERS_PER_PAGE);
     expect(authApi.get).toHaveBeenCalledTimes(1);
+    expect(authApi.get).toHaveBeenCalledWith(`/api/customer/userorders?page=2&per_page=${CUSTOMER_ORDERS_PER_PAGE}`);
   });
 });

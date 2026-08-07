@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 
 import CustomerBookingDetail from '../CustomerBookingDetail';
 import { useCustomerOrder } from '@/hooks/api/customer/orders';
@@ -84,6 +84,34 @@ describe('CustomerBookingDetail', () => {
     ['Travel details', 'Payment', 'Traveler', 'Emergency contact', 'Special requirements', 'Review'].forEach((heading) => {
       expect(screen.getByRole('heading', { name: heading })).toBeInTheDocument();
     });
+
+    expect(screen.getByRole('heading', { name: 'Payment' }).closest('section')).toHaveClass('lg:border-t-0');
+    expect(screen.getByText('confirmed')).toHaveClass('px-3', 'py-1.5', 'text-sm', 'font-semibold');
+  });
+
+  it('aligns Travel details and Review in a shared desktop grid row without changing source order', () => {
+    useCustomerOrder.mockReturnValue({ order: completeOrder, isLoading: false, error: undefined, mutate: jest.fn() });
+
+    render(<CustomerBookingDetail orderId={42} onBack={jest.fn()} />);
+
+    const grid = screen.getByTestId('booking-detail-grid');
+    const media = screen.getByTestId('booking-detail-media');
+    const travel = screen.getByTestId('booking-detail-travel');
+    const primary = screen.getByTestId('booking-detail-primary');
+    const review = screen.getByTestId('booking-detail-review');
+
+    expect(Array.from(grid.children)).toEqual([media, travel, primary, review]);
+    expect(media).toHaveClass('lg:col-start-1', 'lg:row-start-1');
+    expect(primary).toHaveClass('lg:col-start-2', 'lg:row-start-1');
+    expect(travel).toHaveClass('lg:col-start-1', 'lg:row-start-2');
+    expect(review).toHaveClass('lg:col-start-2', 'lg:row-start-2');
+    expect(
+      within(grid)
+        .getAllByRole('heading', { level: 2 })
+        .map((heading) => heading.textContent),
+    ).toEqual(['Travel details', 'Special requirements', 'Payment', 'Traveler', 'Emergency contact', 'Review']);
+    expect(within(travel).getByRole('heading', { name: 'Travel details' })).toBeInTheDocument();
+    expect(within(review).getByRole('heading', { name: 'Review' })).toBeInTheDocument();
   });
 
   it('renders a stable loading state with Back available', () => {
@@ -139,6 +167,40 @@ describe('CustomerBookingDetail', () => {
     fireEvent.click(screen.getByRole('button', { name: /add review/i }));
     expect(mutate).toHaveBeenCalledTimes(1);
     expect(onReviewSaved).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows the saved review text with wrapping alongside its rating', () => {
+    const reviewText = `A memorable trip.\n${'Excellent'.repeat(24)}`;
+    useCustomerOrder.mockReturnValue({
+      order: { ...completeOrder, review: { rating: 5, review_text: reviewText } },
+      isLoading: false,
+      error: undefined,
+      mutate: jest.fn(),
+    });
+
+    render(<CustomerBookingDetail orderId={42} onBack={jest.fn()} />);
+
+    const reviewSection = screen.getByRole('heading', { name: 'Review' }).closest('section');
+    const reviewParagraph = reviewSection.querySelector('p.whitespace-pre-wrap');
+    expect(within(reviewSection).getByText('5 out of 5 stars')).toBeInTheDocument();
+    expect(reviewParagraph).toHaveTextContent('A memorable trip.');
+    expect(reviewParagraph.textContent).toBe(reviewText);
+    expect(reviewParagraph).toHaveClass('whitespace-pre-wrap', 'break-words');
+  });
+
+  it('shows the established fallback for a review with blank text', () => {
+    useCustomerOrder.mockReturnValue({
+      order: { ...completeOrder, review: { rating: 4, review_text: '   ' } },
+      isLoading: false,
+      error: undefined,
+      mutate: jest.fn(),
+    });
+
+    render(<CustomerBookingDetail orderId={42} onBack={jest.fn()} />);
+
+    const reviewSection = screen.getByRole('heading', { name: 'Review' }).closest('section');
+    expect(within(reviewSection).getByText('4 out of 5 stars')).toBeInTheDocument();
+    expect(within(reviewSection).getByText('Not provided')).toBeInTheDocument();
   });
 
   it('rejects untrusted image URLs when no proxy media ID is available', () => {

@@ -3,7 +3,8 @@ import { authApi } from '@/lib/axiosInstance';
 
 // Static SWR key base
 const ORDERS_KEY = '/api/customer/userorders';
-const EMPTY_ORDERS_RESPONSE = { success: true, orders: [], pagination: { total: 0, per_page: 6, current_page: 1, last_page: 1 } };
+export const CUSTOMER_ORDERS_PER_PAGE = 6;
+const EMPTY_ORDERS_RESPONSE = { success: true, orders: [], pagination: { total: 0, per_page: CUSTOMER_ORDERS_PER_PAGE, current_page: 1, last_page: 1 } };
 
 // Custom fetcher defined inline to avoid import issues
 const ordersFetcher = async (url) => {
@@ -25,7 +26,7 @@ const orderDetailFetcher = async (url) => {
 
 export function useAllOrdersCustomer(page = 1) {
   // Build query string with pagination
-  const query = `?page=${page}&per_page=6`;
+  const query = `?page=${page}&per_page=${CUSTOMER_ORDERS_PER_PAGE}`;
   const key = `${ORDERS_KEY}${query}`;
 
   const { data, error, isValidating, isLoading, mutate } = useSWR(key, ordersFetcher, {
