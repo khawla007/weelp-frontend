@@ -40,7 +40,10 @@ describe('CustomerReviewList', () => {
     expect(screen.getByRole('alertdialog')).toBeInTheDocument();
     expect(deleteReviewCustomer).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
+    const cancelButton = screen.getByRole('button', { name: /cancel/i });
+    expect(cancelButton).toHaveClass('border-foreground/50', 'dark:border-border');
+
+    fireEvent.click(cancelButton);
 
     expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
     expect(deleteReviewCustomer).not.toHaveBeenCalled();

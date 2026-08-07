@@ -78,7 +78,9 @@ export const CustomerReviewList = ({ reviews = [], mutate }) => {
             <AlertDialogDescription>Are you sure you want to remove this review? This action cannot be undone.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting} className="border-foreground/50 dark:border-border">
+              Cancel
+            </AlertDialogCancel>
             <AlertDialogAction
               disabled={isDeleting}
               onClick={(event) => {
