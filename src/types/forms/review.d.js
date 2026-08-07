@@ -40,6 +40,7 @@
  * @typedef {Object} ReviewFormCustomer
  * @property {ItemType} item_type - Type of item being reviewed (e.g., "activity", "package", "itinerary")
  * @property {number} item_id - ID of the item being reviewed
+ * @property {number} [order_id] - ID of the booking associated with the review
  * @property {string|number} rating - Rating value (e.g., 1-5)
  * @property {string} review_text - The review content
  * @property {number[]} existing_media_ids

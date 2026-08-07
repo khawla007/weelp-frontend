@@ -3,6 +3,7 @@ import { authApi } from '@/lib/axiosInstance';
 
 // Static SWR key base
 const ORDERS_KEY = '/api/customer/userorders';
+const EMPTY_ORDERS_RESPONSE = { success: true, orders: [], pagination: { total: 0, per_page: 6, current_page: 1, last_page: 1 } };
 
 // Custom fetcher defined inline to avoid import issues
 const ordersFetcher = async (url) => {
@@ -10,12 +11,16 @@ const ordersFetcher = async (url) => {
     const res = await authApi.get(url);
     return res.data;
   } catch (error) {
-    // Return null on error to prevent infinite retries
-    if (error.response?.status === 401 || error.response?.status === 404) {
-      return { success: true, orders: [], pagination: { total: 0, per_page: 6, current_page: 1, last_page: 1 } };
+    if (error.response?.status === 404) {
+      return EMPTY_ORDERS_RESPONSE;
     }
     throw error;
   }
+};
+
+const orderDetailFetcher = async (url) => {
+  const response = await authApi.get(url);
+  return response.data;
 };
 
 export function useAllOrdersCustomer(page = 1) {
@@ -32,9 +37,26 @@ export function useAllOrdersCustomer(page = 1) {
     refreshInterval: 0,
   });
   return {
-    orders: data || { success: true, orders: [], pagination: { total: 0, per_page: 6, current_page: 1, last_page: 1 } },
+    orders: error ? null : data || EMPTY_ORDERS_RESPONSE,
     isLoading,
     isValidating,
+    error,
+    mutate,
+  };
+}
+
+export function useCustomerOrder(orderId) {
+  const key = orderId ? `${ORDERS_KEY}/${orderId}` : null;
+  const { data, error, isLoading, mutate } = useSWR(key, orderDetailFetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    shouldRetryOnError: false,
+    errorRetryCount: 0,
+  });
+
+  return {
+    order: data?.order ?? null,
+    isLoading,
     error,
     mutate,
   };

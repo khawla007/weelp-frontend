@@ -9,7 +9,7 @@ import { ApiResponse } from '@/dto/Success';
 
 /**
  * Action for Create a  review by Customer.
- * @param {ReviewFormCustomer} data - Review form data
+ * @param {ReviewFormCustomer & {order_id?: number}} data - Review form data
  * @returns {Promise<{ success: boolean, message: string, errors?: any }>}
  */
 export const createReviewByCustomer = async (data) => {
@@ -19,6 +19,9 @@ export const createReviewByCustomer = async (data) => {
     // Basic fields
     formData.append('item_type', data.item_type);
     formData.append('item_id', String(data.item_id));
+    if (data.order_id !== undefined && data.order_id !== null) {
+      formData.append('order_id', String(data.order_id));
+    }
     formData.append('rating', String(data.rating));
     formData.append('review_text', data.review_text);
 
@@ -75,6 +78,7 @@ export const createReviewByCustomer = async (data) => {
         return ApiError({
           message: serverData.message || 'Cannot process review',
           status,
+          errors: serverData.errors,
         });
 
       default:
@@ -88,7 +92,7 @@ export const createReviewByCustomer = async (data) => {
 
 /**
  * Action for Edit Review.
- * @param {ReviewFormCustomer} data - Review form data
+ * @param {ReviewFormCustomer & {order_id?: number}} data - Review form data
  * @param {number|string} id -  Id of the Customer
  * @returns {Promise<{ success: boolean, message: string, errors?: any }>}
  */
@@ -99,6 +103,9 @@ export const editReviewByCustomer = async (data, id) => {
     // Basic fields
     formData.append('item_type', data.item_type);
     formData.append('item_id', String(data.item_id));
+    if (data.order_id !== undefined && data.order_id !== null) {
+      formData.append('order_id', String(data.order_id));
+    }
     formData.append('rating', String(data.rating));
     formData.append('review_text', data.review_text);
 
@@ -159,6 +166,7 @@ export const editReviewByCustomer = async (data, id) => {
       return {
         success: false,
         message: err?.response?.data?.message || 'Cannot process review',
+        errors: err?.response?.data?.errors,
       };
     }
 

@@ -1,27 +1,63 @@
 'use client';
 
 import React from 'react';
+import { Star } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
-import { Rating } from '@/app/components/Ratings';
 import { useToast } from '@/hooks/use-toast';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import SmartDropzone from '../../../../admin/_rsc_pages/media/SmartDropZone';
 import SmartGallery from '../../../../admin/_rsc_pages/media/SmartGallery';
 import { CUSTOMER_REVIEW_VALUES_DEFAULT } from '@/constants/forms/review';
-import { useSWRConfig } from 'swr';
 import { useRouter } from 'next/navigation';
 import { createReviewByCustomer, editReviewByCustomer } from '@/lib/actions/customer/reviews'; // actions
 
-const CustomerReviewForm = ({ reviewData = {}, onClose }) => {
-  const { mutate } = useSWRConfig(); // intialize swr
-  const { toast } = useToast(); // intialize toaster
+const RATING_VALUES = [1, 2, 3, 4, 5];
+
+function ReviewRatingInput({ field, ...props }) {
+  const selectedRating = Number(field.value);
+
+  return (
+    <div role="radiogroup" aria-label="Select rating" className="flex gap-1" {...props}>
+      {RATING_VALUES.map((ratingValue) => (
+        <label key={ratingValue} className="cursor-pointer rounded-sm focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+          <input
+            type="radio"
+            className="sr-only"
+            name={field.name}
+            value={ratingValue}
+            checked={selectedRating === ratingValue}
+            onBlur={field.onBlur}
+            onChange={() => field.onChange(ratingValue)}
+            aria-label={`${ratingValue} ${ratingValue === 1 ? 'star' : 'stars'}`}
+          />
+          <Star className={`size-7 ${ratingValue <= selectedRating ? 'fill-yellow-300 text-yellow-300' : 'text-muted-foreground'}`} aria-hidden="true" />
+        </label>
+      ))}
+    </div>
+  );
+}
+
+function showResponseErrors(form, response, toast) {
+  Object.entries(response?.errors || {}).forEach(([fieldName, messages]) => {
+    const message = Array.isArray(messages) ? messages[0] : messages;
+    form.setError(fieldName, { type: 'server', message: String(message) });
+  });
+
+  toast({
+    title: response?.message || 'Something went wrong',
+    variant: 'destructive',
+  });
+}
+
+const CustomerReviewForm = ({ reviewData = {}, onClose, onSaved }) => {
+  const { toast } = useToast();
 
   const review = reviewData?.review ?? false; // check review for action
 
   // destructure data
-  const { item_id } = reviewData;
+  const { id: order_id, item_id } = reviewData;
   const media_gallery = reviewData?.review?.media_gallery ?? []; // get existing images
   const item_type = reviewData?.item?.item_type ?? '';
   const rating = reviewData?.review?.rating ?? '';
@@ -34,6 +70,7 @@ const CustomerReviewForm = ({ reviewData = {}, onClose }) => {
       ...CUSTOMER_REVIEW_VALUES_DEFAULT,
       item_type,
       item_id,
+      order_id,
       existing_media_ids: media_gallery,
       rating,
       review_text,
@@ -58,12 +95,10 @@ const CustomerReviewForm = ({ reviewData = {}, onClose }) => {
     };
 
     try {
-      // intialize response
       let response;
 
       // check is edit or create action
       if (review) {
-        console.log(payload);
         response = await editReviewByCustomer(payload, reviewId); // action
       } else {
         response = await createReviewByCustomer(payload); // action
@@ -72,12 +107,16 @@ const CustomerReviewForm = ({ reviewData = {}, onClose }) => {
       // handle Reponse
       if (response.success) {
         toast({
-          title: response.message || 'Submited Succesfully',
+          title: response.message || 'Submitted successfully',
           variant: 'default',
         });
 
-        mutate('/api/customer/orders');
-        onClose(false); // dialog close
+        onClose?.(false);
+        Promise.resolve()
+          .then(() => onSaved?.())
+          .catch(() => undefined);
+      } else {
+        showResponseErrors(form, response, toast);
       }
     } catch (error) {
       toast({ title: 'Something went wrong', variant: 'destructive' });
@@ -97,7 +136,7 @@ const CustomerReviewForm = ({ reviewData = {}, onClose }) => {
               <FormItem>
                 <FormLabel>Select Rating</FormLabel>
                 <FormControl>
-                  <Rating value={field.value} max={5} onChange={field.onChange} />
+                  <ReviewRatingInput field={field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -134,7 +173,7 @@ const CustomerReviewForm = ({ reviewData = {}, onClose }) => {
 };
 
 export const CustomerEditReviewForm = ({ reviewData = {} }) => {
-  const { toast } = useToast(); // intialize toaster
+  const { toast } = useToast();
   const router = useRouter();
 
   // destructure data
@@ -175,11 +214,12 @@ export const CustomerEditReviewForm = ({ reviewData = {} }) => {
       // handle Reponse
       if (response.success) {
         toast({
-          title: response.message || 'Submited Succesfully',
+          title: response.message || 'Submitted successfully',
           variant: 'default',
         });
         return;
       }
+      showResponseErrors(form, response, toast);
     } catch (error) {
       toast({ title: 'Something went wrong', variant: 'destructive' });
     }
@@ -198,7 +238,7 @@ export const CustomerEditReviewForm = ({ reviewData = {} }) => {
               <FormItem>
                 <FormLabel>Select Rating</FormLabel>
                 <FormControl>
-                  <Rating value={field.value} max={5} onChange={field.onChange} />
+                  <ReviewRatingInput field={field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

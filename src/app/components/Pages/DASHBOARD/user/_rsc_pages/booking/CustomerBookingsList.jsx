@@ -3,6 +3,7 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import BookingCard from '@/app/components/BookingCard';
+import CustomerBookingDetail from '@/app/components/Pages/DASHBOARD/user/_rsc_pages/booking/CustomerBookingDetail';
 import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAllOrdersCustomer } from '@/hooks/api/customer/orders';
@@ -39,6 +40,7 @@ export const CustomerBookingsList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [status, setStatus] = useState('all');
   const [sortBy, setSortBy] = useState('all');
+  const [selectedBookingId, setSelectedBookingId] = useState(null);
 
   const { orders, isLoading: isloadingOrders, isValidating: isValidatingOrders, error: isOrderError, mutate: mutateOrders } = useAllOrdersCustomer(currentPage);
 
@@ -75,6 +77,10 @@ export const CustomerBookingsList = () => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
+
+  if (selectedBookingId !== null) {
+    return <CustomerBookingDetail orderId={selectedBookingId} onBack={() => setSelectedBookingId(null)} onReviewSaved={mutateOrders} />;
+  }
 
   return (
     <Card className="shadow-none border-none bg-inherit  bg-background ">
@@ -136,12 +142,12 @@ export const CustomerBookingsList = () => {
         <div className="flex flex-col bg-weelp-sage-wash gap-4">
           <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
             {filteredOrders.length > 0 ? (
-              filteredOrders.map((order) => <BookingCard key={order.id} bookingItem={order} />)
-            ) : (
+              filteredOrders.map((order) => <BookingCard key={order.id} bookingItem={order} onViewBooking={setSelectedBookingId} onReviewSaved={mutateOrders} />)
+            ) : !isloadingOrders && !isOrderError ? (
               <div className="col-span-full flex min-h-[320px] items-center justify-center text-center">
                 <p className="text-lg text-muted-foreground">No bookings found</p>
               </div>
-            )}
+            ) : null}
 
             {/* isloading */}
             {isloadingOrders && <ListingCardSkeleton count={6} className="w-full" />}
