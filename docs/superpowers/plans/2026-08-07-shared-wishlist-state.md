@@ -13,6 +13,7 @@
 ### Task 1: Make the wishlist hook an authenticated shared cache
 
 **Files:**
+
 - Create: `src/hooks/api/customer/__tests__/wishlist.test.jsx`
 - Modify: `src/hooks/api/customer/wishlist.js`
 
@@ -43,6 +44,7 @@ Run the focused hook test. Expected: five tests pass without warnings.
 ### Task 2: Build the single-item wishlist control
 
 **Files:**
+
 - Create: `src/app/components/Wishlist/WishlistButton.jsx`
 - Create: `src/app/components/Wishlist/__tests__/WishlistButton.test.jsx`
 
@@ -75,6 +77,7 @@ Expected: seven tests pass and no circular icon-only variant remains.
 ### Task 3: Connect only the single-item banner
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/singleproduct/BannerSection.jsx`
 - Modify: `src/app/components/Pages/FRONT_END/singleproduct/__tests__/BannerSection.test.jsx`
 - Verify unchanged: `src/app/components/ui/item-card.jsx`

@@ -63,9 +63,7 @@ async function wishlistFetcher(key) {
 
   if (lastPage === 1) return firstPage;
 
-  const remainingPages = await Promise.all(
-    Array.from({ length: lastPage - 1 }, (_, index) => getWishlistItems({ ...params, page: index + 2, per_page: 50 })),
-  );
+  const remainingPages = await Promise.all(Array.from({ length: lastPage - 1 }, (_, index) => getWishlistItems({ ...params, page: index + 2, per_page: 50 })));
   const allItems = remainingPages.reduce((items, page) => [...items, ...unwrapWishlistResponse(page).items], firstPageItems);
 
   return replaceWishlistItems(firstPage, allItems);
