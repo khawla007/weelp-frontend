@@ -471,6 +471,7 @@ describe('Deep Forest semantic theme', () => {
       'src/app/components/DashboardShared/Card/CardBadge.jsx': 1,
       'src/app/components/Help/HelpOverview.jsx': 1,
       'src/app/components/Help/SupportRequestSuccess.jsx': 1,
+      'src/app/components/Pages/DASHBOARD/user/_rsc_pages/booking/CustomerBookingDetail.jsx': 1,
       'src/app/components/Pages/FRONT_END/city/CityHeroBanner.jsx': 2,
       'src/app/components/Pages/FRONT_END/home/WanderersBanner.jsx': 2,
       'src/app/components/Pages/FRONT_END/shop/BannerSection.jsx': 1,
@@ -719,6 +720,30 @@ describe('Deep Forest semantic theme', () => {
 
   it('keeps copy readable on the translucent search shell', () => {
     expect(contrastRatio(darkTokens['--weelp-home-copy'], darkTokens['--weelp-home-search-shell'], darkTokens['--weelp-home-page'])).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('keeps autofilled auth inputs on the auth surface', () => {
+    const lightAutofillRule = extractSelectorContract([
+      '.weelp-auth-input:-webkit-autofill',
+      '.weelp-auth-input:-webkit-autofill:hover',
+      '.weelp-auth-input:-webkit-autofill:focus',
+      '.weelp-auth-input:-webkit-autofill:active',
+    ]);
+    const darkAutofillRule = extractSelectorContract([
+      '.dark .weelp-auth-input:-webkit-autofill',
+      '.dark .weelp-auth-input:-webkit-autofill:hover',
+      '.dark .weelp-auth-input:-webkit-autofill:focus',
+      '.dark .weelp-auth-input:-webkit-autofill:active',
+    ]);
+
+    expect(lightAutofillRule.declarations['-webkit-box-shadow']).toEqual({
+      important: true,
+      value: '0 0 0 30px hsl(var(--weelp-auth-neu-surface)) inset',
+    });
+    expect(darkAutofillRule.declarations['-webkit-box-shadow']).toEqual({
+      important: true,
+      value: '0 0 0 30px hsl(var(--weelp-auth-neu-surface)) inset',
+    });
   });
 
   it.each([

@@ -158,7 +158,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
                 aria-invalid={Boolean(errors.email)}
                 aria-describedby={errors.email ? 'login-email-error' : undefined}
                 autoComplete="email"
-                className="mt-1 min-w-0 w-full !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
+                className="weelp-auth-input mt-1 min-w-0 w-full !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
               />
             </label>
             {errors.email && (
@@ -184,7 +184,7 @@ export function LoginForm({ customUrl, onCloseDialog, onSwitchToSignup, showClos
                 aria-invalid={Boolean(errors.password)}
                 aria-describedby={errors.password ? 'login-password-error' : undefined}
                 autoComplete="current-password"
-                className="mt-1 min-w-0 w-full !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
+                className="weelp-auth-input mt-1 min-w-0 w-full !bg-weelp-auth-neu-surface px-3 py-2 text-base placeholder:!bg-weelp-auth-neu-surface focus:outline-none"
               />
               <button
                 type="button"

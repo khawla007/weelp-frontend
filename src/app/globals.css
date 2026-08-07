@@ -938,6 +938,22 @@ body {
     -webkit-text-fill-color: inherit !important;
   }
 
+  /* Auth fields sit on an elevated surface in dark mode. Keep Chrome's
+     autofill paint aligned with that field instead of the page canvas. */
+  .weelp-auth-input:-webkit-autofill,
+  .weelp-auth-input:-webkit-autofill:hover,
+  .weelp-auth-input:-webkit-autofill:focus,
+  .weelp-auth-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px hsl(var(--weelp-auth-neu-surface)) inset !important;
+  }
+
+  .dark .weelp-auth-input:-webkit-autofill,
+  .dark .weelp-auth-input:-webkit-autofill:hover,
+  .dark .weelp-auth-input:-webkit-autofill:focus,
+  .dark .weelp-auth-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px hsl(var(--weelp-auth-neu-surface)) inset !important;
+  }
+
   /* Remove spin buttons from number inputs */
   input[type='number']::-webkit-inner-spin-button,
   input[type='number']::-webkit-outer-spin-button {

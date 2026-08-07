@@ -118,12 +118,17 @@ describe('LoginForm', () => {
   it('uses password-manager-friendly autocomplete values', () => {
     render(<LoginForm showCloseButton={false} />);
 
-    expect(screen.getByPlaceholderText(/email id/i)).toHaveAccessibleName('Email address');
-    expect(screen.getByPlaceholderText(/email id/i)).toHaveAttribute('autocomplete', 'email');
-    expect(screen.getByPlaceholderText(/password/i)).toHaveAccessibleName('Password');
-    expect(screen.getByPlaceholderText(/password/i)).toHaveAttribute('autocomplete', 'current-password');
-    expect(screen.getByPlaceholderText(/email id/i).closest('label')).toHaveClass('min-h-11');
-    expect(screen.getByPlaceholderText(/password/i).closest('label')).toHaveClass('min-h-11');
+    const email = screen.getByPlaceholderText(/email id/i);
+    const password = screen.getByPlaceholderText(/password/i);
+
+    expect(email).toHaveAccessibleName('Email address');
+    expect(email).toHaveAttribute('autocomplete', 'email');
+    expect(email).toHaveClass('weelp-auth-input');
+    expect(password).toHaveAccessibleName('Password');
+    expect(password).toHaveAttribute('autocomplete', 'current-password');
+    expect(password).toHaveClass('weelp-auth-input');
+    expect(email.closest('label')).toHaveClass('min-h-11');
+    expect(password.closest('label')).toHaveClass('min-h-11');
   });
 
   it('provides a semantic 44px password visibility control', () => {
