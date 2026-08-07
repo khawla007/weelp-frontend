@@ -13,6 +13,7 @@
 ### Task 1: Reorder and rebalance the shared single-item layout
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/singleproduct/SingleProductTabSection.jsx:234-306`
 - Modify: `src/app/components/Pages/FRONT_END/singleproduct/__tests__/SingleProductTabSectionInclusions.test.jsx`
 
@@ -117,6 +118,7 @@ Run `git diff --check` and `git status --short`. Expected: only the Task 1 files
 ### Task 2: Extract one reusable booking action
 
 **Files:**
+
 - Create: `src/app/components/Pages/FRONT_END/singleproduct/BookingAction.jsx`
 - Create: `src/app/components/Pages/FRONT_END/singleproduct/__tests__/BookingAction.test.jsx`
 - Modify: `src/app/components/Pages/FRONT_END/singleproduct/ProductSidebar.jsx:451-506`
@@ -149,7 +151,7 @@ describe('BookingAction', () => {
   });
 
   it('supports the compact mobile presentation', () => {
-    render(<BookingAction formId="booking-form-41" primaryPrice="$475.00" secondaryPrice="Total" compact />);
+    render(<BookingAction formId="booking-form-41" primaryPrice="$475.00" secondaryPrice="Total" variant="mobile" />);
     expect(screen.getByTestId('booking-action')).toHaveClass('rounded-none', 'sm:rounded-xl');
   });
 
@@ -181,12 +183,12 @@ Create `BookingAction.jsx` with one semantic price/action surface:
 
 import React from 'react';
 
-const BookingAction = React.forwardRef(
-  ({ formId, primaryPrice, secondaryPrice, isEditing = false, isInCart = false, onShowCart, compact = false }, ref) => (
+function BookingAction({ ref, formId, primaryPrice, secondaryPrice, isEditing = false, isInCart = false, onShowCart, variant = 'inline' }) {
+  return (
     <div
       ref={ref}
       data-testid="booking-action"
-      className={`flex flex-col items-stretch justify-between gap-4 border border-border bg-background p-5 min-[360px]:flex-row min-[360px]:items-center ${compact ? 'rounded-none sm:rounded-xl' : 'rounded-xl'}`}
+      className={`flex flex-col items-stretch justify-between gap-4 border border-border bg-background p-5 min-[360px]:flex-row min-[360px]:items-center ${variant === 'mobile' ? 'rounded-none sm:rounded-xl' : 'rounded-xl'}`}
     >
       <div className="min-w-0 break-words">
         {secondaryPrice ? <p className="text-sm font-medium text-weelp-copy">{secondaryPrice}</p> : null}
@@ -202,10 +204,8 @@ const BookingAction = React.forwardRef(
         </button>
       )}
     </div>
-  ),
-);
-
-BookingAction.displayName = 'BookingAction';
+  );
+}
 
 export default BookingAction;
 ```
@@ -217,15 +217,17 @@ Rely on the project-wide focus ring, but preserve the existing disabled and expl
 In `ProductSidebar`, derive stable text values from the calculations already present:
 
 ```jsx
-const actionPrimaryPrice = productType === 'activity' && pricing?.headcount >= 1
+const actionPrimaryPrice =
+  productType === 'activity' && pricing?.headcount >= 1
     ? formatCurrency(pricing.final, pricing.currency)
     : formatCurrency(basePrice + addonsTotal, productData?.pricing?.currency ?? productData?.schedule_total_currency ?? 'USD');
 
-const actionSecondaryPrice = isInCart && !isEditingCartItem
-  ? 'Item in cart'
-  : activeSelectedAddons.length > 0
-    ? `Includes ${formatCurrency(addonsTotal, productData?.pricing?.currency ?? productData?.schedule_total_currency ?? 'USD')} in add-ons`
-    : 'Total';
+const actionSecondaryPrice =
+  isInCart && !isEditingCartItem
+    ? 'Item in cart'
+    : activeSelectedAddons.length > 0
+      ? `Includes ${formatCurrency(addonsTotal, productData?.pricing?.currency ?? productData?.schedule_total_currency ?? 'USD')} in add-ons`
+      : 'Total';
 ```
 
 Render `BookingAction` with `formId`, `isEditingCartItem`, `isInCart`, and `setMiniCartOpen`. Remove only the replaced action markup; do not change pricing formulas.
@@ -247,6 +249,7 @@ Run `git diff --check` and inspect `git diff --stat`. Expected: the new componen
 ### Task 3: Build the compact sticky card and disclosures
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/singleproduct/ProductSidebar.jsx:1-540`
 - Modify: `src/app/globals.css`
 - Modify: `src/app/components/Pages/FRONT_END/singleproduct/__tests__/SidebarLayering.test.jsx`
@@ -375,6 +378,7 @@ Run `git diff --check` and the focused tests once more. Expected: clean diff and
 ### Task 4: Add the mobile action and validation return path
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/singleproduct/ProductSidebar.jsx`
 - Modify: `src/app/components/Form/SingleProductForm.jsx:114-127,228-270`
 - Modify: `src/app/components/Form/__tests__/SingleProductFormResponsive.test.jsx`
@@ -529,18 +533,21 @@ useEffect(() => {
 Attach the ref to the inline `BookingAction`. When visibility is known, the action is not visible, no selector is open, and `document` exists, portal another `BookingAction` outside the transformed `Reveal` ancestor:
 
 ```jsx
-{actionVisibilityKnown && !inlineActionVisible && !selectorOpen && typeof document !== 'undefined'
-  ? createPortal(
-  <div
-    data-testid="mobile-booking-bar"
-    className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-3 shadow-[0_-4px_16px_rgba(24,24,27,0.08)] xl:hidden"
-  >
-    <div className="container-page">
-      <BookingAction {...sharedActionProps} compact />
-    </div>
-  </div>,
-  document.body,
-) : null}
+{
+  actionVisibilityKnown && !inlineActionVisible && !selectorOpen && typeof document !== 'undefined'
+    ? createPortal(
+        <div
+          data-testid="mobile-booking-bar"
+          className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-3 shadow-[0_-4px_16px_rgba(24,24,27,0.08)] xl:hidden"
+        >
+          <div className="container-page">
+            <BookingAction {...sharedActionProps} variant="mobile" />
+          </div>
+        </div>,
+        document.body,
+      )
+    : null;
+}
 ```
 
 Add `pb-28 xl:pb-0` to the single-product section while the mobile enhancement is eligible so final controls remain reachable, and assert the responsive padding class in the layout test. Suppressing the portal while a selector is open prevents it from covering the form layer; `z-40` stays below the site header, mini cart, contextual help, and toast layers.
@@ -588,6 +595,7 @@ Run `git diff --check`, the mobile integration suite, and the responsive form su
 ### Task 5: Harden and verify the complete single-item flow
 
 **Files:**
+
 - Modify if a failure requires it: files changed in Tasks 1-4
 
 - [ ] **Step 1: Run focused single-item tests together**
