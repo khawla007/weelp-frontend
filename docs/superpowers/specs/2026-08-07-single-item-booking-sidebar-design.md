@@ -26,13 +26,19 @@ problem.
 
 The right column is divided into two responsibilities:
 
-- a compact booking card that can remain sticky within the two-column region;
-- supporting content, such as Questions and decorative artwork, that stays in
-  normal document flow.
+- a dedicated upper region where the compact booking card can remain sticky;
+- a Questions card anchored by normal document flow at the bottom of the full
+  right column, alongside the decorative artwork.
 
-The sticky card sits below both the 66px site header and the 60px product tab
-bar, with a small breathing gap. It releases at the end of its parent region so
-it never overlaps Similar Experiences or the footer.
+The sticky region ends before the Questions card. The booking card sits below
+both the 66px site header and the 60px product tab bar, with a small breathing
+gap, then releases at the bottom of that region. This prevents it from covering
+Questions, Similar Experiences, or the footer.
+
+Questions is not part of the sticky element and is not fixed or absolutely
+positioned. It stays out of the initial sticky viewport and naturally becomes
+visible when the page reaches the end of the longer left content column. Its
+content remains above the right column's decorative background layer.
 
 The card keeps the price, date and traveler controls, total, and primary cart
 action visible. Detailed price calculations and available add-ons use inline
@@ -69,18 +75,19 @@ React Hook Form state, one validation path, and one cart submission.
 and the space reserved for the mobile booking bar. Its existing product tabs
 and section observation continue to work.
 
-`ProductSidebar` owns the compact card, disclosure state, action visibility,
-and the mobile booking bar. The existing price calculation, add-on selection,
-cart editing, help context, and form provider stay in this component unless a
-small presentational extraction makes the action summary easier to reuse.
+`ProductSidebar` owns the dedicated sticky region, compact card, bottom-aligned
+Questions card, disclosure state, action visibility, and the mobile booking
+bar. The existing price calculation, add-on selection, cart editing, help
+context, and form provider stay in this component unless a small presentational
+extraction makes the action summary easier to reuse.
 
 `SingleProductForm` remains the source of date and traveler controls and keeps
 its current form ID contract. Any new focus or scroll hook must expose behavior
 without duplicating form state.
 
-The Questions panel moves outside the sticky card. Similar Experiences keeps
-its current responsive visibility and ordering after the primary product
-content.
+The Questions panel is a sibling after the sticky region, not a descendant of
+the sticky card. Similar Experiences keeps its current responsive visibility
+and ordering after the primary product content.
 
 ## Interaction and accessibility details
 
@@ -130,6 +137,7 @@ valid submission, cart editing, and Show Cart state.
 The finished pages will be checked in the visible local browser for activity,
 itinerary, and package routes at 320px, 390px, 768px, 1280px, and 1440px. The
 desktop pass will scroll from Overview through Similar Experiences and confirm
-that the action remains available without covering the footer. The mobile pass
-will exercise date selection, travelers, add-ons, validation, mini-cart opening,
-and safe-area spacing.
+that the action remains available, Questions appears only near the bottom of
+the two-column region, and neither element overlaps the other or the footer.
+The mobile pass will exercise date selection, travelers, add-ons, validation,
+mini-cart opening, and safe-area spacing.
