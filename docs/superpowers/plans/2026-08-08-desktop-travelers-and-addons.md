@@ -19,6 +19,7 @@ Before editing JSX, read and apply `next-best-practices`, `vercel-react-best-pra
 ### Task 1: Lock traveler typography with a failing test
 
 **Files:**
+
 - Modify: `src/app/components/Form/__tests__/SingleProductFormResponsive.test.jsx:27-53`
 - Modify: `src/app/components/Form/SingleProductForm.jsx:383-423`
 
@@ -65,6 +66,7 @@ Expected: the complete `SingleProductFormResponsive` suite passes.
 ### Task 2: Default Add-ons open only on desktop
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/singleproduct/__tests__/SidebarLayering.test.jsx:1-145`
 - Modify: `src/app/components/Pages/FRONT_END/singleproduct/ProductSidebar.jsx:1-120,429-477`
 
@@ -215,6 +217,7 @@ Expected: both suites pass, including desktop open, manual collapse, mobile/tabl
 ### Task 3: Review, simplify, and verify the complete change
 
 **Files:**
+
 - Verify: `src/app/components/Form/SingleProductForm.jsx`
 - Verify: `src/app/components/Form/__tests__/SingleProductFormResponsive.test.jsx`
 - Verify: `src/app/components/Pages/FRONT_END/singleproduct/ProductSidebar.jsx`
