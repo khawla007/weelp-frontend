@@ -46,6 +46,12 @@ it('renders responsive keyboard-operable date and traveler controls', async () =
   fireEvent.click(travelerButton);
   expect(travelerButton).toHaveAttribute('aria-expanded', 'true');
   expect(screen.getByRole('dialog', { name: 'Traveler selector' })).toBeInTheDocument();
+  expect(screen.getByText('adults', { selector: 'h3' })).toHaveClass('text-base');
+  expect(screen.getByText('children', { selector: 'h3' })).toHaveClass('text-base');
+  expect(screen.getByText('infants', { selector: 'h3' })).toHaveClass('text-base');
+  expect(screen.getByText('Above 13 or above')).toHaveClass('text-sm');
+  expect(screen.getByText('Age 2-12')).toHaveClass('text-sm');
+  expect(screen.getByText('Under 2')).toHaveClass('text-sm');
   expect(screen.getByRole('button', { name: /decrease adults/i })).toHaveClass('size-11');
   expect(screen.getByRole('button', { name: /increase children/i })).toHaveClass('size-11');
 

@@ -395,7 +395,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
                     {['adults', 'children', 'infants'].map((type, index) => (
                       <div key={index} className="flex justify-between items-center w-full gap-6">
                         <div>
-                          <h3 className="font-semibold capitalize">{type}</h3>
+                          <h3 className="text-base font-semibold capitalize">{type}</h3>
                           <span className="text-sm">{type == 'adults' ? 'Above 13 or above' : type == 'children' ? 'Age 2-12' : type == 'infants' ? 'Under 2' : null}</span>
                         </div>
                         <div className="flex items-center gap-4">
