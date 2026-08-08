@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import path from 'path';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 jest.mock('../TabSection__modules', () => ({
   OverViewPanel: () => <div />,
@@ -54,15 +54,66 @@ import SingleProductTabSection from '../SingleProductTabSection';
 import ProductSidebar from '../ProductSidebar';
 
 let actionObserverCallback;
+let desktopMediaQueryList;
+const desktopChangeListeners = new Set();
+const originalMatchMedia = window.matchMedia;
+
+const setDesktopViewport = (isDesktop) => {
+  desktopChangeListeners.clear();
+  desktopMediaQueryList = {
+    matches: isDesktop,
+    media: '(min-width: 1280px)',
+    onchange: null,
+    addListener: jest.fn((listener) => desktopChangeListeners.add(listener)),
+    removeListener: jest.fn((listener) => desktopChangeListeners.delete(listener)),
+    addEventListener: jest.fn((type, listener) => {
+      if (type === 'change') desktopChangeListeners.add(listener);
+    }),
+    removeEventListener: jest.fn((type, listener) => {
+      if (type === 'change') desktopChangeListeners.delete(listener);
+    }),
+    dispatchEvent: jest.fn((event) => {
+      desktopChangeListeners.forEach((listener) => listener(event));
+      return true;
+    }),
+    dispatchChange(matches) {
+      this.matches = matches;
+      const event = { matches, media: this.media };
+      this.onchange?.(event);
+      this.dispatchEvent(event);
+    },
+  };
+  window.matchMedia = jest.fn(() => desktopMediaQueryList);
+};
+
+const activitySidebarProps = {
+  productId: 3,
+  productType: 'activity',
+  productData: {
+    id: 3,
+    pricing: { regular_price: 244, currency: 'USD' },
+    addons: [{ addon_id: 7, addon_name: 'Photography Package', addon_price: 40 }],
+  },
+};
 
 describe('single product sidebar layering', () => {
   beforeEach(() => {
     actionObserverCallback = undefined;
+    setDesktopViewport(false);
     window.IntersectionObserver = jest.fn((callback) => ({
       observe: jest.fn(),
       disconnect: jest.fn(),
       callback: (actionObserverCallback = callback),
     }));
+  });
+
+  afterEach(() => {
+    desktopChangeListeners.clear();
+    if (originalMatchMedia) {
+      window.matchMedia = originalMatchMedia;
+    } else {
+      delete window.matchMedia;
+    }
   });
 
   it('keeps the decorative bottom image behind the sidebar column content', () => {
@@ -115,18 +166,8 @@ describe('single product sidebar layering', () => {
     expect(css).not.toMatch(/\.weelp-booking-sticky\s*{[^}]*overflow-y:\s*(auto|scroll)/s);
   });
 
-  it('starts optional price details and add-ons collapsed with useful summaries', () => {
-    render(
-      <ProductSidebar
-        productId={3}
-        productType="activity"
-        productData={{
-          id: 3,
-          pricing: { regular_price: 244, currency: 'USD' },
-          addons: [{ addon_id: 7, addon_name: 'Photography Package', addon_price: 40 }],
-        }}
-      />,
-    );
+  it('keeps optional price details and mobile add-ons collapsed with useful summaries', () => {
+    render(<ProductSidebar {...activitySidebarProps} />);
 
     const priceTrigger = screen.getByRole('button', { name: /price details/i });
     const addonTrigger = screen.getByRole('button', { name: /add-ons.*none selected/i });
@@ -140,6 +181,36 @@ describe('single product sidebar layering', () => {
     fireEvent.click(addonTrigger);
     fireEvent.click(screen.getByRole('checkbox', { name: /photography package/i }));
     expect(screen.getByRole('button', { name: /add-ons.*1 selected/i })).toBeInTheDocument();
+  });
+
+  it('opens add-ons after mounting on desktop and preserves a manual collapse across viewport changes', async () => {
+    setDesktopViewport(true);
+    render(<ProductSidebar {...activitySidebarProps} />);
+
+    const addonTrigger = screen.getByRole('button', { name: /add-ons.*none selected/i });
+    await waitFor(() => expect(addonTrigger).toHaveAttribute('aria-expanded', 'true'));
+
+    fireEvent.click(addonTrigger);
+    expect(addonTrigger).toHaveAttribute('aria-expanded', 'false');
+
+    act(() => {
+      desktopMediaQueryList.dispatchChange(false);
+      desktopMediaQueryList.dispatchChange(true);
+    });
+    expect(addonTrigger).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('starts add-ons closed below the desktop breakpoint', () => {
+    render(<ProductSidebar {...activitySidebarProps} />);
+
+    expect(screen.getByRole('button', { name: /add-ons.*none selected/i })).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('starts add-ons closed when matchMedia is unavailable', () => {
+    delete window.matchMedia;
+    render(<ProductSidebar {...activitySidebarProps} />);
+
+    expect(screen.getByRole('button', { name: /add-ons.*none selected/i })).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('removes the forced dark border only from unselected calendar dates', () => {

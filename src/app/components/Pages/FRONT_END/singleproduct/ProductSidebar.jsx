@@ -63,6 +63,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
   const [inlineActionVisible, setInlineActionVisible] = useState(true);
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [selectedAddons, setSelectedAddons] = useState([]);
+  const [openAddonSections, setOpenAddonSections] = useState([]);
   const [hasChangedAddons, setHasChangedAddons] = useState(false);
   const { cartItems, setMiniCartOpen } = useMiniCartStore();
   const hasPendingItineraryEdits = useItineraryEditStore((state) => productType === 'itinerary' && String(state.itineraryId) === String(productId) && hasItineraryEditChanges(state));
@@ -112,6 +113,21 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
 
   // Use addons from API response (activity) or fetched data (itinerary/package)
   const addons = productType === 'activity' ? productData?.addons || [] : addonsResponse?.data || [];
+
+  useEffect(() => {
+    if (typeof window.matchMedia !== 'function') return;
+
+    if (!window.matchMedia('(min-width: 1280px)').matches) return;
+
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (!cancelled) setOpenAddonSections(['add-ons']);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!editingCartItem) return;
@@ -427,7 +443,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
 
               {/* Select Addon */}
               {addons.length > 0 && (
-                <Accordion type="multiple" className="mt-2">
+                <Accordion type="multiple" value={openAddonSections} onValueChange={setOpenAddonSections} className="mt-2">
                   <AccordionItem value="add-ons" className="border-b-0">
                     <AccordionTrigger className="rounded-xl border border-border bg-background px-4 text-left text-foreground">
                       Add-ons · {activeSelectedAddons.length === 0 ? 'None selected' : `${activeSelectedAddons.length} selected`}
