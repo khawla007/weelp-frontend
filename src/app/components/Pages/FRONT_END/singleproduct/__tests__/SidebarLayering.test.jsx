@@ -138,9 +138,7 @@ describe('single product sidebar layering', () => {
   it('removes the forced dark border only from unselected calendar dates', () => {
     const css = readFileSync(path.join(process.cwd(), 'src/app/styles/date-picker.css'), 'utf8');
 
-    expect(css).toMatch(
-      /\.dark\s+\.weelp-calendar\s+\.rdp-day:not\(\.rdp-selected\):not\(#weelp-calendar-selected-date\)\s+\.rdp-day_button\s*{[^}]*border:\s*0\s*!important;/s,
-    );
+    expect(css).toMatch(/\.dark\s+\.weelp-calendar\s+\.rdp-day:not\(\.rdp-selected\):not\(#weelp-calendar-selected-date\)\s+\.rdp-day_button\s*{[^}]*border:\s*0\s*!important;/s);
   });
 
   it('keeps package headline pricing synchronized with the booking total', () => {
