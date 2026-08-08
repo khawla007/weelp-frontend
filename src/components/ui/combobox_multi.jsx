@@ -129,7 +129,7 @@ export function ComboboxMultiple({ items, type, value = [], onChange }) {
           <Command>
             <CommandInput placeholder={`Search ${type}... `} className="h-9" />
             <CommandList>
-              <CommandEmpty>No tags found.</CommandEmpty>
+              <CommandEmpty>No {type} found.</CommandEmpty>
               <CommandGroup>
                 {items.map((item) => {
                   const isSelected = value.includes(item.id);

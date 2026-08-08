@@ -1,5 +1,6 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
 import { getAuthApi, publicApi } from '../axiosInstance';
 
 /**
@@ -476,6 +477,7 @@ export const submitCreatorItineraryDraft = async (data) => {
   try {
     const api = await getAuthApi();
     const res = await api.post('/api/creator/itineraries/create', data);
+    revalidatePath('/dashboard/customer/my-itineraries');
     return { success: true, message: res.data?.message, data: res.data?.data };
   } catch (err) {
     const message = err?.response?.data?.message || 'Failed to submit itinerary.';

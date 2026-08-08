@@ -196,10 +196,29 @@ export async function getAllCitiesListClient() {
  */
 export async function getAllCitiesListPublic() {
   try {
-    const response = await publicApi.get(`/api/cities?per_page=100`, {
-      headers: { Accept: 'application/json' },
+    const headers = { Accept: 'application/json' };
+    const response = await publicApi.get(`/api/cities?per_page=50&page=1`, {
+      headers,
     });
-    return response?.data;
+    const firstPage = response?.data;
+    const lastPage = Number(firstPage?.last_page) || 1;
+
+    if (lastPage <= 1) {
+      return firstPage;
+    }
+
+    const remainingPages = await Promise.all(
+      Array.from({ length: lastPage - 1 }, (_, index) =>
+        publicApi.get(`/api/cities?per_page=50&page=${index + 2}`, {
+          headers,
+        }),
+      ),
+    );
+
+    return {
+      ...firstPage,
+      data: [...(firstPage?.data || []), ...remainingPages.flatMap((page) => page.data?.data || [])],
+    };
   } catch (error) {
     console.error('Service Error (getAllCitiesListPublic):', error);
     return { success: false, data: [] };
