@@ -91,7 +91,7 @@ describe('single product sidebar layering', () => {
     expect(screen.getByRole('heading', { name: 'Questions?' })).toBeInTheDocument();
   });
 
-  it('sticks only the compact booking card below the header and tabs', () => {
+  it('keeps the Questions card directly below the booking card in the sticky group', () => {
     render(<ProductSidebar productId={3} productType="activity" productData={{ id: 3, pricing: { regular_price: 244, currency: 'USD' }, addons: [] }} />);
 
     const layout = screen.getByTestId('product-sidebar-layout');
@@ -100,7 +100,7 @@ describe('single product sidebar layering', () => {
 
     expect(layout).toHaveClass('h-full', 'px-6', 'xl:px-10');
     expect(stickyCard).toHaveClass('weelp-booking-sticky');
-    expect(stickyCard).not.toContainElement(questions);
+    expect(stickyCard).toContainElement(questions);
   });
 
   it('defines a width-and-height-gated sticky boundary without nested scrolling', () => {
@@ -125,12 +125,22 @@ describe('single product sidebar layering', () => {
 
     const priceTrigger = screen.getByRole('button', { name: /price details/i });
     const addonTrigger = screen.getByRole('button', { name: /add-ons.*none selected/i });
+    expect(priceTrigger).toHaveClass('px-4');
+    expect(addonTrigger).toHaveClass('px-4');
     expect(priceTrigger).toHaveAttribute('aria-expanded', 'false');
     expect(addonTrigger).toHaveAttribute('aria-expanded', 'false');
 
     fireEvent.click(addonTrigger);
     fireEvent.click(screen.getByRole('checkbox', { name: /photography package/i }));
     expect(screen.getByRole('button', { name: /add-ons.*1 selected/i })).toBeInTheDocument();
+  });
+
+  it('removes the forced dark border only from unselected calendar dates', () => {
+    const css = readFileSync(path.join(process.cwd(), 'src/app/styles/date-picker.css'), 'utf8');
+
+    expect(css).toMatch(
+      /\.dark\s+\.weelp-calendar\s+\.rdp-day:not\(\.rdp-selected\):not\(#weelp-calendar-selected-date\)\s+\.rdp-day_button\s*{[^}]*border:\s*0\s*!important;/s,
+    );
   });
 
   it('keeps package headline pricing synchronized with the booking total', () => {

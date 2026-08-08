@@ -276,7 +276,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
             {productType === 'activity' && pricing && pricing.headcount >= 1 ? (
               <Accordion type="multiple" className="mt-2">
                 <AccordionItem value="price-details">
-                  <AccordionTrigger className="text-left text-foreground">Price details</AccordionTrigger>
+                  <AccordionTrigger className="px-4 text-left text-foreground">Price details</AccordionTrigger>
                   <AccordionContent>
                     {(() => {
                       const regularPrice = pricing.season?.regularPrice ?? pricing.pricePerHead;
@@ -428,7 +428,9 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
             {addons.length > 0 && (
               <Accordion type="multiple" className="mt-2">
                 <AccordionItem value="add-ons">
-                  <AccordionTrigger className="text-left text-foreground">Add-ons · {activeSelectedAddons.length === 0 ? 'None selected' : `${activeSelectedAddons.length} selected`}</AccordionTrigger>
+                  <AccordionTrigger className="px-4 text-left text-foreground">
+                    Add-ons · {activeSelectedAddons.length === 0 ? 'None selected' : `${activeSelectedAddons.length} selected`}
+                  </AccordionTrigger>
                   <AccordionContent className="flex flex-col gap-3 rounded-xl border border-border bg-background p-4">
                     {addons.map((addon) => {
                       const isChecked = activeSelectedAddons.some((a) => a.addon_id === addon.addon_id);
@@ -491,26 +493,26 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
               <BookingAction ref={inlineActionRef} {...sharedActionProps} />
             </div>
           </div>
-        </div>
 
-        {/* Questions Card */}
-        <div data-testid="booking-support" className="relative z-[1] mt-6 border border-border rounded-xl p-7 bg-background">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex flex-col gap-2">
-              <h4 className="text-foreground font-semibold text-lg">Questions?</h4>
-              <p className="text-base text-muted-foreground">Visit the Weelp Help Centre for any further questions.</p>
-              <span className="text-sm text-copy mt-2">Product ID : {productId ?? 451245}</span>
+          {/* Questions Card */}
+          <div data-testid="booking-support" className="relative z-[1] mt-6 border border-border rounded-xl p-7 bg-background">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex flex-col gap-2">
+                <h4 className="text-foreground font-semibold text-lg">Questions?</h4>
+                <p className="text-base text-muted-foreground">Visit the Weelp Help Centre for any further questions.</p>
+                <span className="text-sm text-copy mt-2">Product ID : {productId ?? 451245}</span>
+              </div>
+              {helpContext ? (
+                <button
+                  ref={helpTriggerRef}
+                  type="button"
+                  onClick={() => setHelpOpen(true)}
+                  className="px-6 py-3 border border-border rounded-lg text-sm font-medium text-foreground whitespace-nowrap hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                >
+                  Help Center
+                </button>
+              ) : null}
             </div>
-            {helpContext ? (
-              <button
-                ref={helpTriggerRef}
-                type="button"
-                onClick={() => setHelpOpen(true)}
-                className="px-6 py-3 border border-border rounded-lg text-sm font-medium text-foreground whitespace-nowrap hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-              >
-                Help Center
-              </button>
-            ) : null}
           </div>
         </div>
       </div>
