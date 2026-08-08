@@ -10,6 +10,7 @@ import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { log } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { calculateActivityPrice } from '@/lib/pricing/calculateActivityPrice';
+import { resolvePackageBasePricing } from '@/lib/pricing/resolvePackageBasePricing';
 
 const PANEL_MOTION_CLASS = 'transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none motion-reduce:transform-none';
 const OPEN_PANEL_MOTION_CLASS = 'opacity-100 translate-y-0 scale-100 animate-in fade-in-0 slide-in-from-top-1';
@@ -25,12 +26,14 @@ const getPrimaryCitySlug = (productData) => {
 };
 
 // activity
-export default function SingleProductForm({ productId, productData, selectedAddons = [], formId, defaultDateRange = null, onDateChange = null, scheduleCount = 0 }) {
+export default function SingleProductForm({ productId, productData, selectedAddons = [], formId, defaultDateRange = null, onDateChange = null, scheduleCount = 0, onSelectorOpenChange = null }) {
   const [initform] = useState(() => true);
   const [showCalendar, setShowCalendar] = useState(false); // date & howmany
   const [showHowMany, setShowHowMany] = useState(false); // date & howmany
   const [showResponse, setShowResponse] = useState(false);
   const panelTimersRef = useRef({});
+  const travelerButtonRef = useRef(null);
+  const dateButtonRef = useRef(null);
   const [calendarPresence, setCalendarPresence] = useState({ isMounted: false, state: 'closed' });
   const { setMiniCartOpen, addItem } = useMiniCartStore();
   const { toast } = useToast();
@@ -98,6 +101,11 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     };
   }, []);
 
+  useEffect(() => {
+    onSelectorOpenChange?.(showCalendar || showHowMany);
+    return () => onSelectorOpenChange?.(false);
+  }, [onSelectorOpenChange, showCalendar, showHowMany]);
+
   // For itinerary/package: compute end date from start date + schedule days
   const computeEndDate = (startDate) => {
     const end = new Date(startDate);
@@ -113,6 +121,8 @@ export default function SingleProductForm({ productId, productData, selectedAddo
 
   // Handle validation errors — toast limit is 1, so show only the first error
   const onError = (formErrors) => {
+    const target = formErrors.dateRange ? dateButtonRef.current : formErrors.howMany ? travelerButtonRef.current : null;
+
     if (formErrors.dateRange) {
       toast({
         title: 'Please select a date',
@@ -122,6 +132,14 @@ export default function SingleProductForm({ productId, productData, selectedAddo
       toast({
         title: 'Please select at least one adult',
         variant: 'destructive',
+      });
+    }
+
+    if (target) {
+      requestAnimationFrame(() => {
+        const reduceMotion = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+        target.focus();
       });
     }
   };
@@ -168,10 +186,10 @@ export default function SingleProductForm({ productId, productData, selectedAddo
       cartItemExtras.slug = productData?.slug;
       cartItemExtras.city_slug = productData?.city_slug;
     } else {
-      // Package fallback — same legacy behavior as before.
-      basePrice = Number(productData?.schedule_total_price ?? 0);
+      const packagePricing = resolvePackageBasePricing(productData);
+      basePrice = packagePricing.price;
       price = basePrice + addonsTotal;
-      currency = productData?.schedule_total_currency || 'usd';
+      currency = packagePricing.currency;
     }
 
     // add item to cart
@@ -254,11 +272,15 @@ export default function SingleProductForm({ productId, productData, selectedAddo
     setShowResponse(false);
   };
 
+  const handleFormSubmit = (event) => {
+    void handleSubmit(onSubmit, onError)(event);
+  };
+
   if (initform) {
     return (
       <div className="p-4 sm:p-6 sm:px-0 w-full relative singleProducform">
         {/* Form with Inputs */}
-        <form id={formId} onSubmit={handleSubmit(onSubmit, onError)} className="flex flex-col justify-around items-center gap-4 w-full">
+        <form id={formId} onSubmit={handleFormSubmit} className="flex flex-col justify-around items-center gap-4 w-full">
           <span className="hidden" id={productId} />
           {/* For Date & Travelers */}
           <div className="w-full flex flex-col gap-4">
@@ -266,6 +288,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
             <div className="flex flex-col sm:flex-row gap-3 w-full">
               {/* Travelers Card */}
               <button
+                ref={travelerButtonRef}
                 type="button"
                 aria-expanded={showHowMany}
                 aria-controls={`traveler-selector-${selectorIdBase}`}
@@ -280,6 +303,7 @@ export default function SingleProductForm({ productId, productData, selectedAddo
 
               {/* Date Card */}
               <button
+                ref={dateButtonRef}
                 type="button"
                 aria-expanded={showCalendar}
                 aria-controls={`date-selector-${selectorIdBase}`}

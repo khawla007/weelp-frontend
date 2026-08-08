@@ -62,6 +62,7 @@ describe('ProductSidebar contextual help', () => {
     expect(screen.getByRole('button', { name: '1 Travelers' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Select' })).toBeInTheDocument();
 
+    fireEvent.click(screen.getByRole('button', { name: /add-ons.*none selected/i }));
     const addon = screen.getByRole('checkbox', { name: /photography package/i });
     fireEvent.click(addon);
     expect(addon).toHaveAttribute('aria-checked', 'true');

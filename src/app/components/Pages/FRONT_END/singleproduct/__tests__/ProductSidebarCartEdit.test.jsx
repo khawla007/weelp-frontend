@@ -69,6 +69,7 @@ describe('ProductSidebar cart editing', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: /3 travelers/i })).toBeInTheDocument());
 
     expect(screen.getByRole('button', { name: /jul 20 - jul 20/i })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /add-ons.*1 selected/i }));
     expect(screen.getByRole('checkbox', { name: /photography package/i })).toHaveAttribute('aria-checked', 'true');
     expect(screen.getByRole('checkbox', { name: /adventure kit/i })).toHaveAttribute('aria-checked', 'false');
     expect(screen.getByRole('button', { name: /update booking/i })).toBeInTheDocument();

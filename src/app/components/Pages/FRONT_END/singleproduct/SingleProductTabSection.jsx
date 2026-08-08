@@ -200,7 +200,7 @@ const SingleProductTabSection = ({
   const bottomImage = sidebarBottomImage || SIDEBAR_IMAGES[productType];
 
   return (
-    <section className="w-full bg-background">
+    <section className="w-full bg-background pb-28 xl:pb-0">
       {/* Sticky Tab Bar */}
       <div
         className={`sticky z-[11] w-full bg-card border-b border-border transition-[opacity,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
@@ -233,10 +233,30 @@ const SingleProductTabSection = ({
 
       {/* Two-Column Content */}
       <div className="max-w-pen mx-auto px-4">
-        <div className="flex flex-col xl:flex-row">
-          {/* Left Column — Content */}
-          <div className="w-full xl:w-[58%]">
-            <div className="xl:pr-[15px]">
+        <div className="flex flex-col xl:flex-row" data-testid="single-product-layout">
+          {/* Booking controls come first in the DOM for narrow screens. */}
+          <Reveal variant="lift" delay={120} className="relative order-1 w-full bg-surface-tint xl:order-2 xl:w-[40%] xl:self-stretch" data-testid="single-product-booking-column">
+            {/* Bottom decorative image */}
+            <div className="absolute bottom-0 left-0 z-0 w-full pointer-events-none overflow-hidden" style={{ maxHeight: '150px' }} aria-hidden="true">
+              <Image src={bottomImage} alt="" width={640} height={150} sizes="(max-width: 1280px) 100vw, 640px" className="w-full h-auto object-cover opacity-70" />
+            </div>
+            <ProductSidebar
+              productId={productId}
+              productData={productData}
+              productType={productType}
+              citySlug={citySlug}
+              itemSlug={activitySlug || itinerarySlug || packageSlug}
+              itinerarySlug={itinerarySlug}
+              packageSlug={packageSlug}
+              defaultDateRange={defaultDateRange}
+              onDateChange={isScheduleType ? handleDateChange : null}
+              scheduleCount={isScheduleType ? scheduleCount : 0}
+            />
+          </Reveal>
+
+          {/* Main item details remain first visually on wide screens. */}
+          <div className="order-2 w-full xl:order-1 xl:w-[60%]" data-testid="single-product-content">
+            <div className="xl:pr-6">
               {/* Tab 1: varies by productType */}
               <Reveal variant="lift">
                 <div id="tab_1" ref={(el) => (sectionRefs.current['tab_1'] = el)} className={`${firstSectionSpacing} lg:mb-[35px]`}>
@@ -283,28 +303,11 @@ const SingleProductTabSection = ({
               </Reveal>
             </div>
           </div>
-
-          {/* Right Column — Booking Sidebar */}
-          <Reveal variant="lift" delay={120} className="relative w-full bg-surface-tint xl:w-[42%] xl:self-start">
-            {/* Bottom decorative image */}
-            <div className="absolute bottom-0 left-0 z-0 w-full pointer-events-none overflow-hidden" style={{ maxHeight: '150px' }} aria-hidden="true">
-              <Image src={bottomImage} alt="" width={640} height={150} sizes="(max-width: 1280px) 100vw, 640px" className="w-full h-auto object-cover opacity-70" />
-            </div>
-            <ProductSidebar
-              productId={productId}
-              productData={productData}
-              productType={productType}
-              citySlug={citySlug}
-              itemSlug={activitySlug || itinerarySlug || packageSlug}
-              itinerarySlug={itinerarySlug}
-              packageSlug={packageSlug}
-              defaultDateRange={defaultDateRange}
-              onDateChange={isScheduleType ? handleDateChange : null}
-              scheduleCount={isScheduleType ? scheduleCount : 0}
-              mobileSimilarActivities={similarActivities}
-            />
-          </Reveal>
         </div>
+
+        <Reveal variant="lift" className="md:hidden" data-testid="mobile-similar-experiences">
+          <SimilarExperiences activities={similarActivities} />
+        </Reveal>
       </div>
 
       {/* Edit Action Bar for logged-in users on itinerary pages */}

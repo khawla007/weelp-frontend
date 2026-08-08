@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { RotateCcw, ShoppingCart, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { useItineraryEditStore } from '@/lib/store/useItineraryEditStore';
+import { hasItineraryEditChanges, useItineraryEditStore } from '@/lib/store/useItineraryEditStore';
 import { saveCustomerItinerary } from '@/lib/actions/customerItineraries';
 import useAuthModalStore from '@/lib/store/useAuthModalStore';
 
@@ -17,7 +17,7 @@ export default function ItineraryEditActionBar({ session }) {
 
   const { modifiedSchedules, originalSchedules, itineraryId, resetChanges } = useItineraryEditStore();
 
-  const hasChanges = JSON.stringify(originalSchedules) !== JSON.stringify(modifiedSchedules);
+  const hasChanges = hasItineraryEditChanges({ originalSchedules, modifiedSchedules });
 
   if (!hasChanges) return null;
 

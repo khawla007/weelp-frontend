@@ -1169,3 +1169,10 @@ body {
 /* tfc_admin_activitiesmultiselect rules removed — dead code, no JSX consumer */
 
 /* AI Travel Buddy map controls + popups extracted to src/app/styles/buddy-map.css */
+
+@media (min-width: 1280px) and (min-height: 760px) {
+  .weelp-booking-sticky {
+    position: sticky;
+    top: 142px;
+  }
+}

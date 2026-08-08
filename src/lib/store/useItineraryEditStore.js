@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+export const hasItineraryEditChanges = ({ originalSchedules, modifiedSchedules }) => JSON.stringify(originalSchedules) !== JSON.stringify(modifiedSchedules);
+
 export const useItineraryEditStore = create((set, get) => ({
   // State
   originalSchedules: [],

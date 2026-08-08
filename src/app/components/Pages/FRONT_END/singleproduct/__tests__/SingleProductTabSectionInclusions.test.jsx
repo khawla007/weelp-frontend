@@ -13,7 +13,7 @@ jest.mock('../SimilarExperiences', () => {
 });
 
 jest.mock('../ProductSidebar', () => {
-  const MockProductSidebar = () => null;
+  const MockProductSidebar = () => <aside data-testid="product-sidebar">Booking controls</aside>;
   MockProductSidebar.displayName = 'MockProductSidebar';
   return MockProductSidebar;
 });
@@ -40,7 +40,7 @@ jest.mock('../SingleProductReview', () => ({
 }));
 
 jest.mock('@/app/components/ui/Reveal', () => {
-  const MockReveal = ({ children }) => <>{children}</>;
+  const MockReveal = ({ children, variant: _variant, delay: _delay, ...props }) => <div {...props}>{children}</div>;
   MockReveal.displayName = 'MockReveal';
   return MockReveal;
 });
@@ -64,6 +64,52 @@ beforeEach(() => {
 });
 
 describe('SingleProductTabSection activity inclusions', () => {
+  it('places booking controls before long content on narrow screens and keeps the desktop 60/40 split', () => {
+    render(
+      <SingleProductTabSection
+        productType="activity"
+        productId={1}
+        productData={{
+          description: 'Activity description',
+          inclusions_exclusions: [],
+          review_summary: { total_reviews: 0 },
+          faqs: [],
+        }}
+      />,
+    );
+
+    const layout = screen.getByTestId('single-product-layout');
+    const content = screen.getByTestId('single-product-content');
+    const booking = screen.getByTestId('single-product-booking-column');
+
+    expect(layout).toHaveClass('flex-col', 'xl:flex-row');
+    expect(layout.closest('section')).toHaveClass('pb-28', 'xl:pb-0');
+    expect(content).toHaveClass('order-2', 'xl:order-1', 'xl:w-[60%]');
+    expect(booking).toHaveClass('order-1', 'xl:order-2', 'xl:w-[40%]', 'xl:self-stretch');
+    expect(booking.compareDocumentPosition(content)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+
+  it('keeps mobile Similar Experiences after primary content', () => {
+    render(
+      <SingleProductTabSection
+        productType="activity"
+        productId={1}
+        productData={{
+          description: 'Activity description',
+          inclusions_exclusions: [],
+          review_summary: { total_reviews: 0 },
+          faqs: [],
+        }}
+        similarActivities={[{ id: 10, name: 'Desert Safari' }]}
+      />,
+    );
+
+    const content = screen.getByTestId('single-product-content');
+    const mobileSimilar = screen.getByTestId('mobile-similar-experiences');
+
+    expect(content.compareDocumentPosition(mobileSimilar)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+
   it('contains the detail tabs in a horizontally scrollable mobile strip', () => {
     render(
       <SingleProductTabSection
