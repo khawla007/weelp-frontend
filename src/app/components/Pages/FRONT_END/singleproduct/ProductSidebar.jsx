@@ -223,296 +223,298 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
 
   return (
     <FormProvider {...methods}>
-      <div data-testid="product-sidebar-layout" className="relative z-[1] h-full px-6 py-8 xl:px-10 xl:pb-12 xl:pt-10">
-        <div data-testid="booking-sticky-card" className="weelp-booking-sticky relative z-[2]">
-          <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
-            {/* Base Price */}
-            {productType === 'itinerary' ? (
-              (() => {
-                const guests = Math.max(1, (Number(howMany?.adults) || 1) + (Number(howMany?.children) || 0));
-                const currency = productData?.schedule_total_currency ?? '';
-                return (
-                  <div>
-                    {itineraryTotal > 0 ? (
-                      <h3 className="text-foreground font-bold text-2xl lg:text-[28px]">
-                        <span key={`${currency}-${itineraryTotal}`} className="inline-block animate-price-fade">
-                          {currency} {itineraryTotal.toFixed(2)}
-                        </span>{' '}
-                        <span className="text-base font-medium text-muted-foreground">
-                          total for {guests} guest{guests === 1 ? '' : 's'}
-                        </span>
-                      </h3>
-                    ) : (
-                      <h3 className="text-foreground font-bold text-2xl lg:text-[28px]">
-                        From{' '}
-                        <span key={`${currency}-${itineraryDisplayPrice}`} className="inline-block animate-price-fade">
-                          {currency} {itineraryDisplayPrice}
-                        </span>{' '}
-                        <span className="text-base font-medium text-muted-foreground">/ person</span>
-                      </h3>
-                    )}
-                    {itineraryTotal > 0 && (
-                      <p className="text-sm text-muted-foreground mt-1">
-                        <span key={`${currency}-${itineraryDisplayPrice}-pp`} className="inline-block animate-price-fade">
-                          {currency} {itineraryDisplayPrice}
-                        </span>{' '}
-                        / person
-                      </p>
-                    )}
-                  </div>
-                );
-              })()
-            ) : (
-              <h3 className="text-foreground font-bold text-2xl lg:text-[28px]">
-                From{' '}
-                <span key={`fallback-${basePrice}-${actionCurrency}`} className="inline-block animate-price-fade">
-                  {formatCurrency(basePrice, actionCurrency)}
-                </span>{' '}
-                / person
-              </h3>
-            )}
+      <div data-testid="product-sidebar-layout" className="relative z-[1] flex h-full flex-col px-6 py-8 xl:px-10 xl:pb-12 xl:pt-10">
+        <div data-testid="booking-sticky-region" className="flex-1">
+          <div data-testid="booking-sticky-card" className="weelp-booking-sticky relative z-[2]">
+            <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
+              {/* Base Price */}
+              {productType === 'itinerary' ? (
+                (() => {
+                  const guests = Math.max(1, (Number(howMany?.adults) || 1) + (Number(howMany?.children) || 0));
+                  const currency = productData?.schedule_total_currency ?? '';
+                  return (
+                    <div>
+                      {itineraryTotal > 0 ? (
+                        <h3 className="text-foreground font-bold text-2xl lg:text-[28px]">
+                          <span key={`${currency}-${itineraryTotal}`} className="inline-block animate-price-fade">
+                            {currency} {itineraryTotal.toFixed(2)}
+                          </span>{' '}
+                          <span className="text-base font-medium text-muted-foreground">
+                            total for {guests} guest{guests === 1 ? '' : 's'}
+                          </span>
+                        </h3>
+                      ) : (
+                        <h3 className="text-foreground font-bold text-2xl lg:text-[28px]">
+                          From{' '}
+                          <span key={`${currency}-${itineraryDisplayPrice}`} className="inline-block animate-price-fade">
+                            {currency} {itineraryDisplayPrice}
+                          </span>{' '}
+                          <span className="text-base font-medium text-muted-foreground">/ person</span>
+                        </h3>
+                      )}
+                      {itineraryTotal > 0 && (
+                        <p className="text-sm text-muted-foreground mt-1">
+                          <span key={`${currency}-${itineraryDisplayPrice}-pp`} className="inline-block animate-price-fade">
+                            {currency} {itineraryDisplayPrice}
+                          </span>{' '}
+                          / person
+                        </p>
+                      )}
+                    </div>
+                  );
+                })()
+              ) : (
+                <h3 className="text-foreground font-bold text-2xl lg:text-[28px]">
+                  From{' '}
+                  <span key={`fallback-${basePrice}-${actionCurrency}`} className="inline-block animate-price-fade">
+                    {formatCurrency(basePrice, actionCurrency)}
+                  </span>{' '}
+                  / person
+                </h3>
+              )}
 
-            {/* Pricing Breakdown for Activities — renders as soon as headcount >= 1 */}
-            {productType === 'activity' && pricing && pricing.headcount >= 1 ? (
-              <Accordion type="multiple" className="mt-2">
-                <AccordionItem value="price-details" className="border-b-0">
-                  <AccordionTrigger className="rounded-xl border border-border bg-background px-4 text-left text-foreground">Price details</AccordionTrigger>
-                  <AccordionContent>
-                    {(() => {
-                      const regularPrice = pricing.season?.regularPrice ?? pricing.pricePerHead;
-                      const regularSubtotal = regularPrice * pricing.headcount;
-                      return (
-                        <div className="rounded-xl border border-border bg-background p-4 text-sm text-muted-foreground">
-                          <div className="space-y-2">
-                            <RowPulse value={regularSubtotal} className="flex justify-between">
-                              <span>
-                                <span key={`reg-${regularPrice}`} className="inline-block animate-price-fade">
-                                  {formatCurrency(regularPrice, pricing.currency)}
-                                </span>{' '}
-                                ×{' '}
-                                <span key={`head-${pricing.headcount}`} className="inline-block animate-price-fade">
-                                  {pricing.headcount}
-                                </span>
-                              </span>
-                              <span className="text-foreground">
-                                <span key={`sub-${regularSubtotal}`} className="inline-block animate-price-fade">
-                                  {formatCurrency(regularSubtotal, pricing.currency)}
-                                </span>
-                              </span>
-                            </RowPulse>
-                            {pricing.season && pricing.season.savings > 0 && (
-                              <RowPulse value={pricing.season.savings} className="flex justify-between text-green-700">
-                                <span>Seasonal rate{pricing.season.name ? ` (${pricing.season.name})` : ''} applied</span>
+              {/* Pricing Breakdown for Activities — renders as soon as headcount >= 1 */}
+              {productType === 'activity' && pricing && pricing.headcount >= 1 ? (
+                <Accordion type="multiple" className="mt-2">
+                  <AccordionItem value="price-details" className="border-b-0">
+                    <AccordionTrigger className="rounded-xl border border-border bg-background px-4 text-left text-foreground">Price details</AccordionTrigger>
+                    <AccordionContent>
+                      {(() => {
+                        const regularPrice = pricing.season?.regularPrice ?? pricing.pricePerHead;
+                        const regularSubtotal = regularPrice * pricing.headcount;
+                        return (
+                          <div className="rounded-xl border border-border bg-background p-4 text-sm text-muted-foreground">
+                            <div className="space-y-2">
+                              <RowPulse value={regularSubtotal} className="flex justify-between">
                                 <span>
-                                  -
-                                  <span key={`season-${pricing.season.savings}`} className="inline-block animate-price-fade">
-                                    {formatCurrency(pricing.season.savings, pricing.currency)}
+                                  <span key={`reg-${regularPrice}`} className="inline-block animate-price-fade">
+                                    {formatCurrency(regularPrice, pricing.currency)}
+                                  </span>{' '}
+                                  ×{' '}
+                                  <span key={`head-${pricing.headcount}`} className="inline-block animate-price-fade">
+                                    {pricing.headcount}
+                                  </span>
+                                </span>
+                                <span className="text-foreground">
+                                  <span key={`sub-${regularSubtotal}`} className="inline-block animate-price-fade">
+                                    {formatCurrency(regularSubtotal, pricing.currency)}
                                   </span>
                                 </span>
                               </RowPulse>
-                            )}
-                            {pricing.groupDiscount &&
-                              (() => {
-                                const rule = pricing.groupDiscount.rule;
-                                const discountLabel =
-                                  rule.discount_type === 'percentage'
-                                    ? `${Number(rule.discount_amount)}% off ${pricing.groupDiscount.discountedQty} travelers`
-                                    : `flat ${formatCurrency(Number(rule.discount_amount), pricing.currency)} × ${pricing.groupDiscount.bundles} bundle${pricing.groupDiscount.bundles === 1 ? '' : 's'}`;
-                                return (
-                                  <RowPulse value={pricing.groupDiscount.amount} className="flex justify-between text-green-700">
-                                    <span>Group discount ({discountLabel})</span>
-                                    <span>
-                                      -
-                                      <span key={`grp-${pricing.groupDiscount.amount}`} className="inline-block animate-price-fade">
-                                        {formatCurrency(pricing.groupDiscount.amount, pricing.currency)}
-                                      </span>
+                              {pricing.season && pricing.season.savings > 0 && (
+                                <RowPulse value={pricing.season.savings} className="flex justify-between text-green-700">
+                                  <span>Seasonal rate{pricing.season.name ? ` (${pricing.season.name})` : ''} applied</span>
+                                  <span>
+                                    -
+                                    <span key={`season-${pricing.season.savings}`} className="inline-block animate-price-fade">
+                                      {formatCurrency(pricing.season.savings, pricing.currency)}
                                     </span>
-                                  </RowPulse>
-                                );
-                              })()}
-                            {pricing.groupHint &&
-                              (() => {
-                                const needed = pricing.groupHint.needed;
-                                const min = Number(pricing.groupHint.rule.min_people);
-                                const discountLabel =
-                                  pricing.groupHint.rule.discount_type === 'percentage'
-                                    ? `${Number(pricing.groupHint.rule.discount_amount)}% off`
-                                    : `flat ${formatCurrency(Number(pricing.groupHint.rule.discount_amount), pricing.currency)} off the group`;
-                                const hintText =
-                                  pricing.groupHint.type === 'upgrade'
-                                    ? `Add ${needed} more to unlock ${min}-person group discount (${discountLabel}).`
-                                    : `Add ${needed} more to bundle another ${min}-person group discount.`;
-                                return <div className="text-xs text-weelp-copy">{hintText}</div>;
-                              })()}
-                            {pricing.earlyBirdDiscount && (
-                              <RowPulse value={pricing.earlyBirdDiscount.amount} className="flex justify-between text-green-700">
-                                <span>Early bird discount</span>
+                                  </span>
+                                </RowPulse>
+                              )}
+                              {pricing.groupDiscount &&
+                                (() => {
+                                  const rule = pricing.groupDiscount.rule;
+                                  const discountLabel =
+                                    rule.discount_type === 'percentage'
+                                      ? `${Number(rule.discount_amount)}% off ${pricing.groupDiscount.discountedQty} travelers`
+                                      : `flat ${formatCurrency(Number(rule.discount_amount), pricing.currency)} × ${pricing.groupDiscount.bundles} bundle${pricing.groupDiscount.bundles === 1 ? '' : 's'}`;
+                                  return (
+                                    <RowPulse value={pricing.groupDiscount.amount} className="flex justify-between text-green-700">
+                                      <span>Group discount ({discountLabel})</span>
+                                      <span>
+                                        -
+                                        <span key={`grp-${pricing.groupDiscount.amount}`} className="inline-block animate-price-fade">
+                                          {formatCurrency(pricing.groupDiscount.amount, pricing.currency)}
+                                        </span>
+                                      </span>
+                                    </RowPulse>
+                                  );
+                                })()}
+                              {pricing.groupHint &&
+                                (() => {
+                                  const needed = pricing.groupHint.needed;
+                                  const min = Number(pricing.groupHint.rule.min_people);
+                                  const discountLabel =
+                                    pricing.groupHint.rule.discount_type === 'percentage'
+                                      ? `${Number(pricing.groupHint.rule.discount_amount)}% off`
+                                      : `flat ${formatCurrency(Number(pricing.groupHint.rule.discount_amount), pricing.currency)} off the group`;
+                                  const hintText =
+                                    pricing.groupHint.type === 'upgrade'
+                                      ? `Add ${needed} more to unlock ${min}-person group discount (${discountLabel}).`
+                                      : `Add ${needed} more to bundle another ${min}-person group discount.`;
+                                  return <div className="text-xs text-weelp-copy">{hintText}</div>;
+                                })()}
+                              {pricing.earlyBirdDiscount && (
+                                <RowPulse value={pricing.earlyBirdDiscount.amount} className="flex justify-between text-green-700">
+                                  <span>Early bird discount</span>
+                                  <span>
+                                    -
+                                    <span key={`eb-${pricing.earlyBirdDiscount.amount}`} className="inline-block animate-price-fade">
+                                      {formatCurrency(pricing.earlyBirdDiscount.amount, pricing.currency)}
+                                    </span>
+                                  </span>
+                                </RowPulse>
+                              )}
+                              {pricing.lastMinuteDiscount && (
+                                <RowPulse value={pricing.lastMinuteDiscount.amount} className="flex justify-between text-green-700">
+                                  <span>Last minute discount</span>
+                                  <span>
+                                    -
+                                    <span key={`lm-${pricing.lastMinuteDiscount.amount}`} className="inline-block animate-price-fade">
+                                      {formatCurrency(pricing.lastMinuteDiscount.amount, pricing.currency)}
+                                    </span>
+                                  </span>
+                                </RowPulse>
+                              )}
+                              {pricing.addonsTotal > 0 && (
+                                <RowPulse value={pricing.addonsTotal} className="flex justify-between">
+                                  <span>Add-ons</span>
+                                  <span>
+                                    +
+                                    <span key={`ad-${pricing.addonsTotal}`} className="inline-block animate-price-fade">
+                                      {formatCurrency(pricing.addonsTotal, pricing.currency)}
+                                    </span>
+                                  </span>
+                                </RowPulse>
+                              )}
+                              <RowPulse value={pricing.final} className="border-t border-border pt-2 flex justify-between text-foreground">
+                                <span>Total</span>
                                 <span>
-                                  -
-                                  <span key={`eb-${pricing.earlyBirdDiscount.amount}`} className="inline-block animate-price-fade">
-                                    {formatCurrency(pricing.earlyBirdDiscount.amount, pricing.currency)}
+                                  <span key={`final-${pricing.final}`} className="inline-block animate-price-fade">
+                                    {formatCurrency(pricing.final, pricing.currency)}
                                   </span>
                                 </span>
                               </RowPulse>
-                            )}
-                            {pricing.lastMinuteDiscount && (
-                              <RowPulse value={pricing.lastMinuteDiscount.amount} className="flex justify-between text-green-700">
-                                <span>Last minute discount</span>
-                                <span>
-                                  -
-                                  <span key={`lm-${pricing.lastMinuteDiscount.amount}`} className="inline-block animate-price-fade">
-                                    {formatCurrency(pricing.lastMinuteDiscount.amount, pricing.currency)}
-                                  </span>
-                                </span>
-                              </RowPulse>
-                            )}
-                            {pricing.addonsTotal > 0 && (
-                              <RowPulse value={pricing.addonsTotal} className="flex justify-between">
-                                <span>Add-ons</span>
-                                <span>
-                                  +
-                                  <span key={`ad-${pricing.addonsTotal}`} className="inline-block animate-price-fade">
-                                    {formatCurrency(pricing.addonsTotal, pricing.currency)}
-                                  </span>
-                                </span>
-                              </RowPulse>
-                            )}
-                            <RowPulse value={pricing.final} className="border-t border-border pt-2 flex justify-between text-foreground">
-                              <span>Total</span>
-                              <span>
-                                <span key={`final-${pricing.final}`} className="inline-block animate-price-fade">
-                                  {formatCurrency(pricing.final, pricing.currency)}
-                                </span>
-                              </span>
-                            </RowPulse>
+                            </div>
                           </div>
+                        );
+                      })()}
+
+                      {/* Discount rule hints for activities */}
+                      {(showEbHint || showLmHint) && (
+                        <div className="mt-3 flex flex-col gap-1 text-xs text-weelp-copy">
+                          {showEbHint && (
+                            <span>
+                              Early bird: book {Number(eb.days_before_start)}+ days ahead for{' '}
+                              {eb.discount_type === 'percentage' ? `${Number(eb.discount_amount)}% off` : `${formatCurrency(Number(eb.discount_amount), pricing?.currency ?? 'USD')} off per person`}.
+                            </span>
+                          )}
+                          {showLmHint && (
+                            <span>
+                              Last minute: book within {Number(lm.days_before_start)} days for{' '}
+                              {lm.discount_type === 'percentage' ? `${Number(lm.discount_amount)}% off` : `${formatCurrency(Number(lm.discount_amount), pricing?.currency ?? 'USD')} off`}.
+                            </span>
+                          )}
                         </div>
-                      );
-                    })()}
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              ) : null}
 
-                    {/* Discount rule hints for activities */}
-                    {(showEbHint || showLmHint) && (
-                      <div className="mt-3 flex flex-col gap-1 text-xs text-weelp-copy">
-                        {showEbHint && (
-                          <span>
-                            Early bird: book {Number(eb.days_before_start)}+ days ahead for{' '}
-                            {eb.discount_type === 'percentage' ? `${Number(eb.discount_amount)}% off` : `${formatCurrency(Number(eb.discount_amount), pricing?.currency ?? 'USD')} off per person`}.
-                          </span>
-                        )}
-                        {showLmHint && (
-                          <span>
-                            Last minute: book within {Number(lm.days_before_start)} days for{' '}
-                            {lm.discount_type === 'percentage' ? `${Number(lm.discount_amount)}% off` : `${formatCurrency(Number(lm.discount_amount), pricing?.currency ?? 'USD')} off`}.
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            ) : null}
+              {/* Actual Form with Inputs */}
+              <SingleProductForm
+                productId={productId}
+                productData={productData}
+                selectedAddons={activeSelectedAddons}
+                formId={`booking-form-${productId}`}
+                defaultDateRange={defaultDateRange}
+                onDateChange={onDateChange}
+                scheduleCount={scheduleCount}
+                onSelectorOpenChange={setSelectorOpen}
+              />
 
-            {/* Actual Form with Inputs */}
-            <SingleProductForm
-              productId={productId}
-              productData={productData}
-              selectedAddons={activeSelectedAddons}
-              formId={`booking-form-${productId}`}
-              defaultDateRange={defaultDateRange}
-              onDateChange={onDateChange}
-              scheduleCount={scheduleCount}
-              onSelectorOpenChange={setSelectorOpen}
-            />
-
-            {/* Select Addon */}
-            {addons.length > 0 && (
-              <Accordion type="multiple" className="mt-2">
-                <AccordionItem value="add-ons" className="border-b-0">
-                  <AccordionTrigger className="rounded-xl border border-border bg-background px-4 text-left text-foreground">
-                    Add-ons · {activeSelectedAddons.length === 0 ? 'None selected' : `${activeSelectedAddons.length} selected`}
-                  </AccordionTrigger>
-                  <AccordionContent className="flex flex-col gap-3 rounded-xl border border-border bg-background p-4">
-                    {addons.map((addon) => {
-                      const isChecked = activeSelectedAddons.some((a) => a.addon_id === addon.addon_id);
-                      return (
-                        <div
-                          key={addon.addon_id}
-                          role="checkbox"
-                          aria-checked={isChecked}
-                          tabIndex={0}
-                          className={`flex items-center gap-3 cursor-pointer group rounded-md px-2 -mx-2 transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-                            isChecked ? 'bg-surface-tint' : 'bg-transparent'
-                          }`}
-                          onClick={() => toggleAddon(addon)}
-                          onKeyDown={(e) => {
-                            if (e.key === ' ' || e.key === 'Enter') {
-                              e.preventDefault();
-                              toggleAddon(addon);
-                            }
-                          }}
-                        >
-                          <span
-                            className={`w-5 h-5 rounded-[4px] flex items-center justify-center flex-shrink-0 transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
-                              isChecked ? 'bg-weelp-sage-deep' : 'border-2 border-border bg-card'
+              {/* Select Addon */}
+              {addons.length > 0 && (
+                <Accordion type="multiple" className="mt-2">
+                  <AccordionItem value="add-ons" className="border-b-0">
+                    <AccordionTrigger className="rounded-xl border border-border bg-background px-4 text-left text-foreground">
+                      Add-ons · {activeSelectedAddons.length === 0 ? 'None selected' : `${activeSelectedAddons.length} selected`}
+                    </AccordionTrigger>
+                    <AccordionContent className="flex flex-col gap-3 rounded-xl border border-border bg-background p-4">
+                      {addons.map((addon) => {
+                        const isChecked = activeSelectedAddons.some((a) => a.addon_id === addon.addon_id);
+                        return (
+                          <div
+                            key={addon.addon_id}
+                            role="checkbox"
+                            aria-checked={isChecked}
+                            tabIndex={0}
+                            className={`flex items-center gap-3 cursor-pointer group rounded-md px-2 -mx-2 transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+                              isChecked ? 'bg-surface-tint' : 'bg-transparent'
                             }`}
+                            onClick={() => toggleAddon(addon)}
+                            onKeyDown={(e) => {
+                              if (e.key === ' ' || e.key === 'Enter') {
+                                e.preventDefault();
+                                toggleAddon(addon);
+                              }
+                            }}
                           >
-                            <Check
-                              size={14}
-                              className={`text-white transition-transform duration-[120ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${isChecked ? 'scale-100' : 'scale-0'}`}
-                            />
-                          </span>
-                          <div className="flex-1 min-w-0">
-                            <span className="text-base font-medium text-foreground">{addon.addon_name}</span>
-                            {addon.addon_description && <p className="text-sm text-muted-foreground truncate">{addon.addon_description}</p>}
-                          </div>
-                          <div className="flex items-center gap-2 flex-shrink-0">
-                            {addon.addon_sale_price != null ? (
-                              <>
-                                <span className="text-sm text-muted-foreground line-through">
+                            <span
+                              className={`w-5 h-5 rounded-[4px] flex items-center justify-center flex-shrink-0 transition-colors duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
+                                isChecked ? 'bg-weelp-sage-deep' : 'border-2 border-border bg-card'
+                              }`}
+                            >
+                              <Check
+                                size={14}
+                                className={`text-white transition-transform duration-[120ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${isChecked ? 'scale-100' : 'scale-0'}`}
+                              />
+                            </span>
+                            <div className="flex-1 min-w-0">
+                              <span className="text-base font-medium text-foreground">{addon.addon_name}</span>
+                              {addon.addon_description && <p className="text-sm text-muted-foreground truncate">{addon.addon_description}</p>}
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                              {addon.addon_sale_price != null ? (
+                                <>
+                                  <span className="text-sm text-muted-foreground line-through">
+                                    ${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                  </span>
+                                  <span className="text-base font-semibold text-foreground">
+                                    ${Number(addon.addon_sale_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                  </span>
+                                </>
+                              ) : (
+                                <span className="text-base font-semibold text-foreground">
                                   ${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                 </span>
-                                <span className="text-base font-semibold text-foreground">
-                                  ${Number(addon.addon_sale_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                </span>
-                              </>
-                            ) : (
-                              <span className="text-base font-semibold text-foreground">
-                                ${Number(addon.addon_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                              </span>
-                            )}
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            )}
+                        );
+                      })}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              )}
 
-            <div className="mt-4">
-              <BookingAction ref={inlineActionRef} {...sharedActionProps} />
+              <div className="mt-4">
+                <BookingAction ref={inlineActionRef} {...sharedActionProps} />
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* Questions Card */}
-          <div data-testid="booking-support" className="relative z-[1] mt-6 border border-border rounded-xl p-7 bg-background">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex flex-col gap-2">
-                <h4 className="text-foreground font-semibold text-lg">Questions?</h4>
-                <p className="text-base text-muted-foreground">Visit the Weelp Help Centre for any further questions.</p>
-                <span className="text-sm text-copy mt-2">Product ID : {productId ?? 451245}</span>
-              </div>
-              {helpContext ? (
-                <button
-                  ref={helpTriggerRef}
-                  type="button"
-                  onClick={() => setHelpOpen(true)}
-                  className="px-6 py-3 border border-border rounded-lg text-sm font-medium text-foreground whitespace-nowrap hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                >
-                  Help Center
-                </button>
-              ) : null}
+        {/* Questions Card */}
+        <div data-testid="booking-support" className="relative z-[1] mt-6 border border-border rounded-xl p-7 bg-background">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col gap-2">
+              <h4 className="text-foreground font-semibold text-lg">Questions?</h4>
+              <p className="text-base text-muted-foreground">Visit the Weelp Help Centre for any further questions.</p>
+              <span className="text-sm text-copy mt-2">Product ID : {productId ?? 451245}</span>
             </div>
+            {helpContext ? (
+              <button
+                ref={helpTriggerRef}
+                type="button"
+                onClick={() => setHelpOpen(true)}
+                className="px-6 py-3 border border-border rounded-lg text-sm font-medium text-foreground whitespace-nowrap hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              >
+                Help Center
+              </button>
+            ) : null}
           </div>
         </div>
       </div>

@@ -91,16 +91,21 @@ describe('single product sidebar layering', () => {
     expect(screen.getByRole('heading', { name: 'Questions?' })).toBeInTheDocument();
   });
 
-  it('keeps the Questions card directly below the booking card in the sticky group', () => {
+  it('keeps Questions at the bottom outside the dedicated sticky region', () => {
     render(<ProductSidebar productId={3} productType="activity" productData={{ id: 3, pricing: { regular_price: 244, currency: 'USD' }, addons: [] }} />);
 
     const layout = screen.getByTestId('product-sidebar-layout');
+    const stickyRegion = screen.getByTestId('booking-sticky-region');
     const stickyCard = screen.getByTestId('booking-sticky-card');
     const questions = screen.getByRole('heading', { name: 'Questions?' }).closest('[data-testid="booking-support"]');
 
-    expect(layout).toHaveClass('h-full', 'px-6', 'xl:px-10');
+    expect(layout).toHaveClass('flex', 'h-full', 'flex-col', 'px-6', 'xl:px-10');
+    expect(stickyRegion).toHaveClass('flex-1');
     expect(stickyCard).toHaveClass('weelp-booking-sticky');
-    expect(stickyCard).toContainElement(questions);
+    expect(stickyRegion).toContainElement(stickyCard);
+    expect(stickyRegion).not.toContainElement(questions);
+    expect(stickyCard).not.toContainElement(questions);
+    expect(layout.lastElementChild).toBe(questions);
   });
 
   it('defines a width-and-height-gated sticky boundary without nested scrolling', () => {
