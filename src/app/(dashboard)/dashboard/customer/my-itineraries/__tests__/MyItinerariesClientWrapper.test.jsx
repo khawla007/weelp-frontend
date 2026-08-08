@@ -43,14 +43,7 @@ describe('MyItinerariesClientWrapper lifecycle views', () => {
 
   it('renders Trash as a private restore-only view with remaining days', async () => {
     restoreCreatorItinerary.mockResolvedValue({ success: true, message: 'Restored' });
-    render(
-      <MyItinerariesClientWrapper
-        initialItineraries={[{ ...base, status: 'deleted', days_until_purge: 18, deleted_at: '2026-08-08T12:00:00Z' }]}
-        isCreator
-        activeView="trash"
-        activeStatus=""
-      />,
-    );
+    render(<MyItinerariesClientWrapper initialItineraries={[{ ...base, status: 'deleted', days_until_purge: 18, deleted_at: '2026-08-08T12:00:00Z' }]} isCreator activeView="trash" activeStatus="" />);
 
     expect(screen.getByRole('link', { name: 'All Itineraries' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Drafts' })).toBeInTheDocument();
@@ -66,11 +59,7 @@ describe('MyItinerariesClientWrapper lifecycle views', () => {
 
   it('uses singular countdown copy and syncs rows after URL-filter navigation', () => {
     const { rerender } = render(
-      <MyItinerariesClientWrapper
-        initialItineraries={[{ ...base, status: 'deleted', days_until_purge: 1, deleted_at: '2026-08-08T12:00:00Z' }]}
-        isCreator
-        activeView="trash"
-      />,
+      <MyItinerariesClientWrapper initialItineraries={[{ ...base, status: 'deleted', days_until_purge: 1, deleted_at: '2026-08-08T12:00:00Z' }]} isCreator activeView="trash" />,
     );
     expect(screen.getByText('Permanently removed in 1 day')).toBeInTheDocument();
 

@@ -37,9 +37,7 @@ describe('admin creator itinerary Trash view', () => {
     adminPermanentlyDeleteCreatorItinerary.mockResolvedValue({ success: true, message: 'Deleted' });
     render(
       <CreatorItinerariesClientWrapper
-        initialItineraries={[
-          { id: 12, name: 'Desert Weekend', status: 'deleted', days_until_purge: 12, deleted_at: '2026-08-08T12:00:00Z', purge_at: '2026-09-07T12:00:00Z' },
-        ]}
+        initialItineraries={[{ id: 12, name: 'Desert Weekend', status: 'deleted', days_until_purge: 12, deleted_at: '2026-08-08T12:00:00Z', purge_at: '2026-09-07T12:00:00Z' }]}
         activeView="trash"
         activeStatus=""
       />,

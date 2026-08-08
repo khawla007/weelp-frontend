@@ -268,9 +268,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
                   <div className="space-y-3">
                     <p className="text-xs text-muted-foreground">Removed {formatTrashDate(item.deleted_at)}</p>
                     <p className="text-sm font-medium text-destructive">
-                      {item.days_until_purge === 0
-                        ? 'Scheduled for permanent removal today'
-                        : `Permanently removed in ${item.days_until_purge} ${item.days_until_purge === 1 ? 'day' : 'days'}`}
+                      {item.days_until_purge === 0 ? 'Scheduled for permanent removal today' : `Permanently removed in ${item.days_until_purge} ${item.days_until_purge === 1 ? 'day' : 'days'}`}
                     </p>
                     <p className="text-xs text-muted-foreground">Restore returns this itinerary to a private Draft.</p>
                     <Button className="w-full" variant="outline" onClick={() => handleRestore(item.id)} disabled={processingId === item.id}>
