@@ -30,7 +30,7 @@ const STEPS = [
 // Single source for the directional slide classes so forward/back can't drift apart.
 const STEP_SLIDE = { forward: 'slide-in-from-right-2', back: 'slide-in-from-left-2' };
 
-export default function CreatorItineraryFormShell({ mode = 'create', draftId = null, initialData = null, locations = [], alltransfers = [] }) {
+export default function CreatorItineraryFormShell({ mode = 'create', draftMode = 'edit', draftId = null, initialData = null, locations = [], alltransfers = [] }) {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -134,6 +134,12 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
       setSubmitting(false);
       return;
     }
+    if (draftMode === 'standalone') {
+      setSubmitting(false);
+      toast({ title: 'Draft saved', description: saveResult.message });
+      router.push('/dashboard/customer/my-itineraries?status=draft');
+      return;
+    }
     const submitResult = await submitDraft(draftId);
     setSubmitting(false);
     if (submitResult.success) {
@@ -192,7 +198,12 @@ export default function CreatorItineraryFormShell({ mode = 'create', draftId = n
                   the directional slide (STEP_SLIDE) is added by the effect on real step changes. */}
               <div ref={stepContentRef} className={cn('animate-in', 'fade-in-0', 'duration-200', 'motion-reduce:animate-none')}>
                 <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>
-                  <Step2Schedule alltransfers={alltransfers} onSubmit={onStep2Submit} submitLabel={mode === 'edit' ? 'Save & Submit for Review' : 'Submit for Review'} submitting={submitting} />
+                  <Step2Schedule
+                    alltransfers={alltransfers}
+                    onSubmit={onStep2Submit}
+                    submitLabel={mode === 'edit' ? (draftMode === 'standalone' ? 'Save draft' : 'Save & Submit for Review') : 'Submit for Review'}
+                    submitting={submitting}
+                  />
                 </div>
                 {currentStep === 1 && <Step1BasicInfo locations={locations} />}
               </div>

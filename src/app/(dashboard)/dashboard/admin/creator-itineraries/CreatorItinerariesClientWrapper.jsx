@@ -1,14 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CheckCircle, XCircle, ExternalLink, Pencil, Trash2, FileEdit, Ban, Eye } from 'lucide-react';
+import { CheckCircle, XCircle, ExternalLink, Pencil, Trash2, FileEdit, Ban, Eye, RotateCcw, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
 import { approveCreatorItinerary, rejectCreatorItinerary } from '@/lib/actions/creatorItineraries';
 import { adminDeleteCreatorItinerary, adminApproveEdit, adminRejectEdit, adminApproveRemoval, adminRejectRemoval } from '@/lib/actions/creatorItineraries';
+import { adminPermanentlyDeleteCreatorItinerary, adminPublishCreatorItinerary, adminRestoreCreatorItinerary } from '@/lib/actions/creatorItineraries';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,7 +24,14 @@ import {
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { getItineraryDisplayImage } from '@/lib/utils/itineraryImages';
 
-const STATUS_TABS = ['all', 'pending', 'approved', 'rejected', 'deleted'];
+const STATUS_TABS = [
+  { key: 'all', label: 'All', href: '/dashboard/admin/creator-itineraries' },
+  { key: 'pending', label: 'Pending', href: '/dashboard/admin/creator-itineraries?status=pending' },
+  { key: 'approved', label: 'Approved', href: '/dashboard/admin/creator-itineraries?status=approved' },
+  { key: 'rejected', label: 'Rejected', href: '/dashboard/admin/creator-itineraries?status=rejected' },
+  { key: 'draft', label: 'Draft', href: '/dashboard/admin/creator-itineraries?status=draft' },
+  { key: 'trash', label: 'Trash', href: '/dashboard/admin/creator-itineraries?view=trash' },
+];
 
 const statusBadgeVariant = (status) => {
   switch (status) {
@@ -45,14 +53,25 @@ const formatStatus = (status) => {
   return status ? status.charAt(0).toUpperCase() + status.slice(1) : '-';
 };
 
-export default function CreatorItinerariesClientWrapper({ initialItineraries, initialLastPage }) {
+export default function CreatorItinerariesClientWrapper({ initialItineraries, initialLastPage, currentPage = 1, activeView = 'active', activeStatus = '' }) {
   const router = useRouter();
   const { toast } = useToast();
   const [itineraries, setItineraries] = useState(initialItineraries);
-  const [activeTab, setActiveTab] = useState('all');
   const [processingId, setProcessingId] = useState(null);
-
-  const filtered = activeTab === 'all' ? itineraries : itineraries.filter((i) => i.status === activeTab);
+  const activeTab = activeView === 'trash' ? 'trash' : activeStatus || 'all';
+  const filtered = itineraries;
+  const isTrash = activeView === 'trash';
+  useEffect(() => {
+    setItineraries(initialItineraries);
+  }, [initialItineraries]);
+  const paginationHref = (page) => {
+    const params = new URLSearchParams();
+    if (activeView === 'trash') params.set('view', 'trash');
+    if (activeStatus) params.set('status', activeStatus);
+    if (page > 1) params.set('page', String(page));
+    const query = params.toString();
+    return `/dashboard/admin/creator-itineraries${query ? `?${query}` : ''}`;
+  };
 
   const formatDate = (dateString) => {
     if (!dateString) return '-';
@@ -95,6 +114,44 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
     if (result.success) {
       toast({ title: 'Itinerary removed', description: result.message });
       setItineraries((prev) => prev.filter((i) => i.id !== id));
+      router.refresh();
+    } else {
+      toast({ title: 'Error', description: result.message, variant: 'destructive' });
+    }
+    setProcessingId(null);
+  };
+
+  const handleRestore = async (id) => {
+    setProcessingId(id);
+    const result = await adminRestoreCreatorItinerary(id);
+    if (result.success) {
+      setItineraries((prev) => prev.filter((item) => item.id !== id));
+      toast({ title: 'Restored to Draft', description: result.message });
+      router.refresh();
+    } else {
+      toast({ title: 'Error', description: result.message, variant: 'destructive' });
+    }
+    setProcessingId(null);
+  };
+
+  const handlePublish = async (id) => {
+    setProcessingId(id);
+    const result = await adminPublishCreatorItinerary(id);
+    if (result.success) {
+      toast({ title: 'Itinerary published', description: result.message });
+      router.refresh();
+    } else {
+      toast({ title: 'Error', description: result.message, variant: 'destructive' });
+    }
+    setProcessingId(null);
+  };
+
+  const handlePermanentDelete = async (id) => {
+    setProcessingId(id);
+    const result = await adminPermanentlyDeleteCreatorItinerary(id);
+    if (result.success) {
+      setItineraries((prev) => prev.filter((item) => item.id !== id));
+      toast({ title: 'Itinerary permanently deleted', description: result.message });
       router.refresh();
     } else {
       toast({ title: 'Error', description: result.message, variant: 'destructive' });
@@ -157,17 +214,13 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
   return (
     <>
       {/* Filter Tabs */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         {STATUS_TABS.map((tab) => (
-          <Button
-            key={tab}
-            variant={activeTab === tab ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setActiveTab(tab)}
-            className={activeTab === tab ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-border text-copy'}
-          >
-            {formatStatus(tab)}
-          </Button>
+          <NavigationLink key={tab.key} href={tab.href}>
+            <Button variant={activeTab === tab.key ? 'default' : 'outline'} size="sm" className={activeTab === tab.key ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-border text-copy'}>
+              {tab.label}
+            </Button>
+          </NavigationLink>
         ))}
       </div>
 
@@ -186,8 +239,8 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                 <TableHead>Creator</TableHead>
                 <TableHead>Itinerary Name</TableHead>
                 <TableHead>Original</TableHead>
-                <TableHead>Preview</TableHead>
-                <TableHead>Date</TableHead>
+                {!isTrash && <TableHead>Preview</TableHead>}
+                <TableHead>{isTrash ? 'Retention' : 'Date'}</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -196,6 +249,9 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
               {filtered.map((item) => {
                 const thumbnail = getItineraryDisplayImage(item);
                 const parentSlug = item.parent_itinerary?.slug;
+                const parentCitySlug = item.parent_itinerary?.locations?.[0]?.city?.slug;
+                const parentHref = parentSlug && parentCitySlug ? `/cities/${parentCitySlug}/itineraries/${parentSlug}` : null;
+                const hasWorkflowConflict = item.removal_status === 'requested' || Boolean(item.draft_itinerary_id) || ['pending', 'edit_pending'].includes(item.status);
                 return (
                   <TableRow key={item.id}>
                     <TableCell>
@@ -208,8 +264,8 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     <TableCell className="font-medium">{item.creator?.name || item.user?.name || '-'}</TableCell>
                     <TableCell>{item.name || item.title || '-'}</TableCell>
                     <TableCell>
-                      {parentSlug ? (
-                        <a href={`/itineraries/${parentSlug}`} target="_blank" rel="noopener noreferrer" className="text-weelp-sage-text hover:underline inline-flex items-center gap-1">
+                      {parentHref ? (
+                        <a href={parentHref} target="_blank" rel="noopener noreferrer" className="text-weelp-sage-text hover:underline inline-flex items-center gap-1">
                           {item.parent_itinerary?.name || 'View'}
                           <ExternalLink className="size-3" />
                         </a>
@@ -217,13 +273,24 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                         '-'
                       )}
                     </TableCell>
+                    {!isTrash && (
+                      <TableCell>
+                        <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer" className="text-weelp-sage-text hover:underline inline-flex items-center gap-1">
+                          Preview
+                          <ExternalLink className="size-3" />
+                        </a>
+                      </TableCell>
+                    )}
                     <TableCell>
-                      <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer" className="text-weelp-sage-text hover:underline inline-flex items-center gap-1">
-                        Preview
-                        <ExternalLink className="size-3" />
-                      </a>
+                      {isTrash ? (
+                        <div className="space-y-1 text-xs">
+                          <p>Removed {formatDate(item.deleted_at)}</p>
+                          <p className="text-muted-foreground">Purges {formatDate(item.purge_at)}</p>
+                        </div>
+                      ) : (
+                        formatDate(item.created_at)
+                      )}
                     </TableCell>
-                    <TableCell>{formatDate(item.created_at)}</TableCell>
                     <TableCell>
                       <div className="flex flex-col gap-1">
                         <Badge variant={statusBadgeVariant(item.status)} className="justify-center">
@@ -235,14 +302,52 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-2 justify-end flex-wrap">
-                        <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer">
-                          <Button variant="outline" size="sm" className="border-border text-copy" title="View itinerary">
-                            <Eye className="size-4 mr-1" />
-                            View
-                          </Button>
-                        </a>
+                        {!isTrash && (
+                          <a href={`/preview/itinerary/${item.id}`} target="_blank" rel="noopener noreferrer">
+                            <Button variant="outline" size="sm" className="border-border text-copy" title="View itinerary">
+                              <Eye className="size-4 mr-1" />
+                              View
+                            </Button>
+                          </a>
+                        )}
 
-                        {item.status === 'pending' && (
+                        {isTrash && (
+                          <>
+                            <Button variant="outline" size="sm" onClick={() => handleRestore(item.id)} disabled={processingId === item.id}>
+                              <RotateCcw className="size-4 mr-1" />
+                              Restore to Draft
+                            </Button>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button variant="outline" size="sm" className="border-destructive/40 text-destructive">
+                                  <Trash2 className="size-4 mr-1" />
+                                  Delete permanently
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Delete permanently?</AlertDialogTitle>
+                                  <AlertDialogDescription>This itinerary and its owned content cannot be recovered.</AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction onClick={() => handlePermanentDelete(item.id)} className="bg-destructive hover:bg-destructive/90">
+                                    Confirm permanent deletion
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          </>
+                        )}
+
+                        {!isTrash && item.status === 'draft' && item.removal_status !== 'requested' && !item.draft_itinerary_id && (
+                          <Button size="sm" onClick={() => handlePublish(item.id)} disabled={processingId === item.id} className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90">
+                            <Send className="size-4 mr-1" />
+                            Publish
+                          </Button>
+                        )}
+
+                        {!isTrash && item.status === 'pending' && (
                           <>
                             <Button
                               variant="outline"
@@ -261,7 +366,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                           </>
                         )}
 
-                        {item.draft_itinerary_id && (
+                        {!isTrash && item.draft_itinerary_id && (
                           <>
                             <NavigationLink href={`/dashboard/admin/creator-itineraries/${item.id}/diff`}>
                               <Button variant="outline" size="sm" className="border-info/40 text-info hover:bg-info/10">
@@ -286,7 +391,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                           </>
                         )}
 
-                        {item.removal_status === 'requested' && (
+                        {!isTrash && item.removal_status === 'requested' && (
                           <>
                             <Button
                               variant="outline"
@@ -305,7 +410,7 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                           </>
                         )}
 
-                        {item.status !== 'deleted' && (
+                        {!isTrash && (
                           <>
                             <NavigationLink href={`/dashboard/admin/creator-itineraries/${item.id}`}>
                               <Button variant="outline" size="sm" className="border-border text-copy">
@@ -313,51 +418,31 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
                                 Edit
                               </Button>
                             </NavigationLink>
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <Button variant="outline" size="sm" disabled={processingId === item.id} className="border-destructive/40 text-destructive hover:bg-destructive/10">
-                                  <Trash2 className="size-4 mr-1" />
-                                  Remove
-                                </Button>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent className="bg-background">
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Remove Itinerary</AlertDialogTitle>
-                                  <AlertDialogDescription>This will permanently remove &quot;{item.name}&quot; and all related data. This action cannot be undone.</AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction onClick={() => handleDelete(item.id)} className="bg-destructive hover:bg-destructive/90">
+                            {!hasWorkflowConflict && (
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button variant="outline" size="sm" disabled={processingId === item.id} className="border-destructive/40 text-destructive hover:bg-destructive/10">
+                                    <Trash2 className="size-4 mr-1" />
                                     Remove
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent className="bg-background">
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Remove Itinerary</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      This moves &quot;{item.name}&quot; to Trash, hides it from public pages, and notifies the creator. An admin can restore it before permanent deletion.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={() => handleDelete(item.id)} className="bg-destructive hover:bg-destructive/90">
+                                      Remove
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            )}
                           </>
-                        )}
-
-                        {item.status === 'deleted' && (
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button variant="outline" size="icon" disabled={processingId === item.id} className="border-destructive text-destructive hover:bg-destructive/10 size-8">
-                                <Trash2 className="size-4" />
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent className="bg-background">
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>Delete Permanently?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Are you sure you want to permanently delete &quot;{item.name}&quot;? All related data will be erased from the database. This action cannot be undone.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel className="border-weelp-sage-deep text-foreground hover:bg-weelp-sage-deep hover:text-white">Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => handleDelete(item.id)} className="border-destructive text-foreground bg-background hover:bg-destructive hover:text-white">
-                                  Delete
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
                         )}
                       </div>
                     </TableCell>
@@ -367,6 +452,24 @@ export default function CreatorItinerariesClientWrapper({ initialItineraries, in
             </TableBody>
           </Table>
         </div>
+      )}
+
+      {initialLastPage > 1 && (
+        <nav className="mt-6 flex items-center justify-center gap-3" aria-label="Creator itinerary pages">
+          <NavigationLink href={paginationHref(currentPage - 1)} aria-disabled={currentPage <= 1}>
+            <Button variant="outline" size="sm" disabled={currentPage <= 1}>
+              Previous
+            </Button>
+          </NavigationLink>
+          <span className="text-sm text-muted-foreground">
+            Page {currentPage} of {initialLastPage}
+          </span>
+          <NavigationLink href={paginationHref(currentPage + 1)} aria-disabled={currentPage >= initialLastPage}>
+            <Button variant="outline" size="sm" disabled={currentPage >= initialLastPage}>
+              Next
+            </Button>
+          </NavigationLink>
+        </nav>
       )}
     </>
   );

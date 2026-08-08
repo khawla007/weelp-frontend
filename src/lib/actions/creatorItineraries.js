@@ -203,15 +203,16 @@ export const rejectCreatorItinerary = async (id) => {
  * @param {number} page - Page number
  * @returns {object} { success, data }
  */
-export const getAdminCreatorItineraries = async (status = '', page = 1) => {
+export const getAdminCreatorItineraries = async ({ view = 'active', status = '', page = 1 } = {}) => {
   try {
     const api = await getAuthApi();
     const params = new URLSearchParams();
+    if (view && view !== 'active') params.append('view', view);
     if (status) params.append('status', status);
     if (page) params.append('page', page);
     const query = params.toString() ? `?${params.toString()}` : '';
     const res = await api.get(`/api/admin/creator-itineraries${query}`);
-    return { success: true, data: res.data?.data };
+    return { success: true, data: res.data?.data, trashCount: res.data?.trash_count || 0 };
   } catch (err) {
     return { success: false, message: 'Failed to fetch creator itineraries.' };
   }
@@ -380,6 +381,29 @@ export const adminDeleteCreatorItinerary = async (id) => {
     return { success: false, message };
   }
 };
+
+const runLifecycleMutation = async (request, fallbackMessage) => {
+  try {
+    const api = await getAuthApi();
+    const res = await request(api);
+    revalidatePath('/dashboard/customer/my-itineraries');
+    revalidatePath('/dashboard/admin/creator-itineraries');
+    return { success: true, message: res.data?.message, data: res.data?.data };
+  } catch (err) {
+    const message = err?.response?.data?.message || fallbackMessage;
+    return { success: false, message };
+  }
+};
+
+export const restoreCreatorItinerary = async (id) => runLifecycleMutation((api) => api.post(`/api/creator/itineraries/${id}/restore`), 'Failed to restore itinerary.');
+
+export const requestCreatorItineraryPublish = async (id) => runLifecycleMutation((api) => api.post(`/api/creator/itineraries/${id}/request-publish`), 'Failed to request publication.');
+
+export const adminRestoreCreatorItinerary = async (id) => runLifecycleMutation((api) => api.post(`/api/admin/creator-itineraries/${id}/restore`), 'Failed to restore itinerary.');
+
+export const adminPublishCreatorItinerary = async (id) => runLifecycleMutation((api) => api.put(`/api/admin/creator-itineraries/${id}/publish`), 'Failed to publish itinerary.');
+
+export const adminPermanentlyDeleteCreatorItinerary = async (id) => runLifecycleMutation((api) => api.delete(`/api/admin/creator-itineraries/${id}/force`), 'Failed to permanently delete itinerary.');
 
 /**
  * Admin: approve an edit draft

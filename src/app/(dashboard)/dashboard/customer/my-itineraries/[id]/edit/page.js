@@ -36,5 +36,5 @@ export default async function EditItineraryDraftPage({ params }) {
   const initialData = reshapeDraftForForm(draftResult.data);
   const locations = citiesRes?.data || [];
 
-  return <CreatorItineraryFormShell mode="edit" draftId={id} initialData={initialData} locations={locations} alltransfers={transfers} />;
+  return <CreatorItineraryFormShell mode="edit" draftMode={draftResult.data.draft_mode || 'edit'} draftId={id} initialData={initialData} locations={locations} alltransfers={transfers} />;
 }

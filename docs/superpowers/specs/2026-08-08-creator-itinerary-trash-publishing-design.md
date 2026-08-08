@@ -12,18 +12,22 @@ This design applies only to creator-owned itineraries. Customer-saved itinerary 
 
 The itinerary record will use Laravel soft deletion as the Trash boundary. Its delegated metadata status remains the workflow state used by dashboards and approval actions.
 
-| Action | Allowed actor | Starting state | Result |
-|---|---|---|---|
-| Request removal | Owning creator | Draft, Rejected, or Approved | State remains active; `removal_status` becomes `requested` |
-| Approve removal | Admin | Removal requested | Itinerary is soft-deleted and enters Trash |
-| Remove directly | Admin | Any active creator itinerary without an approval conflict | Itinerary is soft-deleted and enters Trash |
-| Restore | Owning creator or admin | Trash | Soft deletion is cleared; status becomes Draft |
-| Request publish | Owning creator | Standalone Draft | Status becomes Pending and admin review is created |
-| Publish | Admin | Draft or Pending | Status becomes Approved and public access resumes |
-| Reject publish request | Admin | Pending | Status returns to Draft with an optional rejection reason |
-| Delete permanently | Admin or scheduled purge | Trash | Itinerary and dependent data are physically removed |
+Because `Itinerary` is shared with admin-authored catalog records and temporary edit drafts, enabling the trait must not change those deletion contracts. Catalog deletion and internal edit-draft cleanup remain immediate physical deletions. Only top-level creator itineraries enter recoverable Trash.
+
+| Action                 | Allowed actor            | Starting state                                            | Result                                                     |
+| ---------------------- | ------------------------ | --------------------------------------------------------- | ---------------------------------------------------------- |
+| Request removal        | Owning creator           | Draft, Rejected, or Approved                              | State remains active; `removal_status` becomes `requested` |
+| Approve removal        | Admin                    | Removal requested                                         | Itinerary is soft-deleted and enters Trash                 |
+| Remove directly        | Admin                    | Any active creator itinerary without an approval conflict | Itinerary is soft-deleted and enters Trash                 |
+| Restore                | Owning creator or admin  | Trash                                                     | Soft deletion is cleared; status becomes Draft             |
+| Request publish        | Owning creator           | Standalone Draft                                          | Status becomes Pending and admin review is created         |
+| Publish                | Admin                    | Draft or Pending                                          | Status becomes Approved and public access resumes          |
+| Reject publish request | Admin                    | Pending                                                   | Status returns to Draft with an optional rejection reason  |
+| Delete permanently     | Admin or scheduled purge | Trash                                                     | Itinerary and dependent data are physically removed        |
 
 Removal and publication cannot be requested at the same time. A creator cannot request removal while an edit or publication review is pending. An admin must resolve that review before using the normal removal action. Existing edit drafts keep their current edit-approval workflow and never display the standalone `Request publish` action.
+
+A standalone Draft is a top-level creator itinerary that is not referenced by another itinerary's `draft_itinerary_id`. Backend list and mutation queries enforce that predicate under lock; frontend labels are not an authorization boundary.
 
 When an itinerary enters Trash, its previous public status does not survive restoration. Restore always clears removal metadata and produces a Draft. A second deletion starts a new 30-day retention window.
 
@@ -35,9 +39,9 @@ Creator Trash responses expose `purge_at` and `days_until_purge`. Remaining days
 
 Only admins receive a `Delete permanently` action. The confirmation explains that the itinerary, schedule, transfer/activity selections, pricing, media associations, SEO, and related records cannot be recovered.
 
-A Laravel command permanently deletes creator itineraries whose `deleted_at` is at least 30 days old. The command is idempotent, supports a dry run for operational checks, and is scheduled once daily. Production must run Laravel's scheduler through its deployment configuration; application code alone must not imply that the scheduler is active.
+A Laravel command permanently deletes creator itineraries whose `deleted_at` is at least 30 days old. The command is idempotent, supports a dry run for operational checks, and is scheduled once daily. Production requires a Render Cron Job running `php artisan itineraries:prune-trash --execute --days=30` with the backend service environment. Creating that external resource is a separate deployment approval because it may add provider cost; automatic deletion is not considered live until the cron job is confirmed.
 
-Permanent deletion reuses one backend service for both the admin action and scheduled purge so relationship cleanup cannot diverge.
+Permanent deletion reuses one backend service for both the admin action and scheduled purge so relationship cleanup cannot diverge. It removes itinerary-owned content, pricing, taxonomy links, media associations, likes, wishlist entries, metadata, and non-order itinerary reviews. Historical orders, payments, commissions, emergency contacts, and reviews carrying a historical order ID remain for accounting and customer booking history; they render from stored order snapshots and are never returned by public itinerary/review queries after the itinerary is gone.
 
 ## Creator dashboard
 
@@ -84,7 +88,7 @@ Automatic permanent deletion does not send another email. The 30-day countdown o
 
 ## Access and public visibility
 
-Soft-deleted itineraries are excluded by Eloquent's global scope from public explore, city listing, search, wishlist, booking lookup, and slug-detail queries. Public detail requests for a trashed slug return `404` even when the itinerary was previously Approved.
+Soft-deleted itineraries are excluded from Eloquent-backed public itinerary queries by the global scope. Raw joins, wishlist snapshots, booking validation, and review aggregation add explicit active-and-Approved itinerary filtering before pagination or mutation. Public detail requests for a trashed slug return `404` even when the itinerary was previously Approved.
 
 Creator and admin preview routes also reject trashed itineraries. Trash management endpoints use `onlyTrashed()` and explicit role or ownership scopes; public controllers never use `withTrashed()`.
 

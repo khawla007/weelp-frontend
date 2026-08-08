@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import { MapPin, Calendar, Clock, FileEdit, MoreHorizontal, Pencil, Trash2, Sparkles } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { MapPin, Calendar, Clock, FileEdit, MoreHorizontal, Pencil, Trash2, Sparkles, RotateCcw, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import { requestEdit, requestRemoval } from '@/lib/actions/creatorItineraries';
+import { requestCreatorItineraryPublish, requestEdit, requestRemoval, restoreCreatorItinerary } from '@/lib/actions/creatorItineraries';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,27 +13,36 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { DashboardMotionFrame } from '@/app/components/DashboardShared';
 
-export default function MyItinerariesClientWrapper({ initialItineraries, lastPage, isCreator = false }) {
+export default function MyItinerariesClientWrapper({ initialItineraries, lastPage, currentPage = 1, isCreator = false, activeView = 'active', activeStatus = '' }) {
   const [itineraries, setItineraries] = useState(initialItineraries);
   const [processingId, setProcessingId] = useState(null);
   const [removalReason, setRemovalReason] = useState('');
   const [removalDialogOpen, setRemovalDialogOpen] = useState(false);
   const [removalTargetId, setRemovalTargetId] = useState(null);
-  const [activeTab, setActiveTab] = useState('all');
   const { toast } = useToast();
   const router = useRouter();
+  const activeTab = activeView === 'trash' ? 'trash' : activeStatus === 'draft' ? 'drafts' : 'all';
+  const filtered = itineraries;
+  useEffect(() => {
+    setItineraries(initialItineraries);
+  }, [initialItineraries]);
 
-  const filtered = (() => {
-    if (!isCreator || activeTab === 'all') return itineraries;
-    if (activeTab === 'drafts') {
-      return itineraries.filter((item) => {
-        const meta = item.meta || {};
-        const draftId = item.draft_itinerary_id ?? meta.draft_itinerary_id;
-        return draftId != null;
-      });
-    }
-    return itineraries;
-  })();
+  const formatTrashDate = (value) =>
+    value
+      ? new Date(value).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        })
+      : 'Unknown';
+  const paginationHref = (page) => {
+    const params = new URLSearchParams();
+    if (activeView === 'trash') params.set('view', 'trash');
+    if (activeStatus) params.set('status', activeStatus);
+    if (page > 1) params.set('page', String(page));
+    const query = params.toString();
+    return `/dashboard/customer/my-itineraries${query ? `?${query}` : ''}`;
+  };
 
   const handleRequestEdit = async (id) => {
     setProcessingId(id);
@@ -70,6 +79,32 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
     setRemovalTargetId(null);
   };
 
+  const handleRestore = async (id) => {
+    setProcessingId(id);
+    const result = await restoreCreatorItinerary(id);
+    if (result.success) {
+      toast({ title: 'Restored to Draft', description: result.message });
+      router.push('/dashboard/customer/my-itineraries?status=draft');
+      router.refresh();
+    } else {
+      toast({ title: 'Error', description: result.message, variant: 'destructive' });
+    }
+    setProcessingId(null);
+  };
+
+  const handleRequestPublish = async (id) => {
+    setProcessingId(id);
+    const result = await requestCreatorItineraryPublish(id);
+    if (result.success) {
+      toast({ title: 'Publication requested', description: result.message });
+      router.push('/dashboard/customer/my-itineraries');
+      router.refresh();
+    } else {
+      toast({ title: 'Error', description: result.message, variant: 'destructive' });
+    }
+    setProcessingId(null);
+  };
+
   // Header — creator-only Create button
   const headerButton = isCreator ? (
     <NavigationLink href="/dashboard/customer/my-itineraries/new">
@@ -81,26 +116,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
   ) : null;
 
   // Empty state — role-aware
-  if (itineraries.length === 0) {
-    if (isCreator) {
-      return (
-        <div className="space-y-6">
-          {headerButton && <div className="flex justify-end">{headerButton}</div>}
-          <div className="weelp-fade-up text-center py-16">
-            <p className="text-lg font-semibold text-foreground">No itineraries yet</p>
-            <p className="text-muted-foreground mt-2">Create your first itinerary and submit it for approval.</p>
-            <div className="mt-4 flex justify-center">
-              <NavigationLink href="/dashboard/customer/my-itineraries/new">
-                <Button className="bg-weelp-sage-deep hover:bg-weelp-sage-deep/90 text-white">
-                  <Sparkles className="size-4 mr-2" />
-                  Create Itinerary
-                </Button>
-              </NavigationLink>
-            </div>
-          </div>
-        </div>
-      );
-    }
+  if (itineraries.length === 0 && !isCreator) {
     return (
       <div className="weelp-fade-up text-center py-16">
         <p className="text-lg font-semibold text-foreground">No itineraries yet</p>
@@ -117,25 +133,35 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
       {headerButton && <div className="flex justify-end">{headerButton}</div>}
 
       {isCreator && (
-        <div className="flex gap-2">
-          {['all', 'drafts'].map((tab) => (
-            <Button
-              key={tab}
-              size="sm"
-              variant={activeTab === tab ? 'default' : 'outline'}
-              onClick={() => setActiveTab(tab)}
-              className={activeTab === tab ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-border text-copy'}
-            >
-              {tab === 'all' ? 'All Itineraries' : 'Drafts'}
-            </Button>
+        <div className="flex flex-wrap gap-2">
+          {[
+            { key: 'all', label: 'All Itineraries', href: '/dashboard/customer/my-itineraries' },
+            { key: 'drafts', label: 'Drafts', href: '/dashboard/customer/my-itineraries?status=draft' },
+            { key: 'trash', label: 'Trash', href: '/dashboard/customer/my-itineraries?view=trash' },
+          ].map((tab) => (
+            <NavigationLink key={tab.key} href={tab.href}>
+              <Button
+                size="sm"
+                variant={activeTab === tab.key ? 'default' : 'outline'}
+                className={activeTab === tab.key ? 'bg-weelp-sage-deep hover:bg-weelp-sage-deep/90' : 'border-border text-copy'}
+              >
+                {tab.label}
+              </Button>
+            </NavigationLink>
           ))}
         </div>
       )}
 
-      {filtered.length === 0 && isCreator && activeTab === 'drafts' ? (
+      {filtered.length === 0 && isCreator ? (
         <div className="weelp-fade-up text-center py-12 bg-background rounded-lg border border-border">
-          <p className="text-lg font-semibold text-foreground">No drafts</p>
-          <p className="text-muted-foreground mt-2">Edits you&apos;ve submitted for review will appear here.</p>
+          <p className="text-lg font-semibold text-foreground">{activeTab === 'trash' ? 'Trash is empty' : activeTab === 'drafts' ? 'No drafts' : 'No itineraries yet'}</p>
+          <p className="text-muted-foreground mt-2">
+            {activeTab === 'trash'
+              ? 'Removed itineraries will remain here for 30 days.'
+              : activeTab === 'drafts'
+                ? 'Restored and unpublished itineraries will appear here.'
+                : 'Create your first itinerary and submit it for approval.'}
+          </p>
         </div>
       ) : null}
 
@@ -156,9 +182,11 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
           const draftItineraryId = item.draft_itinerary_id ?? meta.draft_itinerary_id;
           const removalStatus = item.removal_status ?? meta.removal_status;
           const isCreatorCopy = !!creatorId;
+          const isTrashItem = activeView === 'trash';
+          const isStandaloneDraft = isCreatorCopy && approvalStatus === 'draft' && !draftItineraryId;
 
           const canRequestEdit = isCreatorCopy && approvalStatus === 'approved' && !draftItineraryId && removalStatus !== 'requested';
-          const canRequestRemoval = canRequestEdit;
+          const canRequestRemoval = isCreatorCopy && ['draft', 'rejected', 'approved'].includes(approvalStatus) && !draftItineraryId && removalStatus !== 'requested' && !isTrashItem;
           const showDropdown = canRequestEdit || canRequestRemoval;
 
           return (
@@ -224,16 +252,47 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
                     </span>
                   )}
                 </div>
-                {slug && citySlug ? (
+                {!isTrashItem && approvalStatus !== 'draft' && slug && citySlug ? (
                   <NavigationLink href={`/cities/${citySlug}/itineraries/${slug}`} className="block">
                     <Button variant="outline" size="sm" className="w-full border-border text-copy hover:bg-muted">
                       View & Book
                     </Button>
                   </NavigationLink>
-                ) : (
+                ) : !isTrashItem && approvalStatus !== 'draft' ? (
                   <Button variant="outline" size="sm" disabled className="w-full border-border text-copy">
                     View & Book
                   </Button>
+                ) : null}
+
+                {isTrashItem && (
+                  <div className="space-y-3">
+                    <p className="text-xs text-muted-foreground">Removed {formatTrashDate(item.deleted_at)}</p>
+                    <p className="text-sm font-medium text-destructive">
+                      {item.days_until_purge === 0
+                        ? 'Scheduled for permanent removal today'
+                        : `Permanently removed in ${item.days_until_purge} ${item.days_until_purge === 1 ? 'day' : 'days'}`}
+                    </p>
+                    <p className="text-xs text-muted-foreground">Restore returns this itinerary to a private Draft.</p>
+                    <Button className="w-full" variant="outline" onClick={() => handleRestore(item.id)} disabled={processingId === item.id}>
+                      <RotateCcw className="size-4 mr-2" />
+                      Restore to Draft
+                    </Button>
+                  </div>
+                )}
+
+                {isStandaloneDraft && (
+                  <div className="mt-3 grid gap-2">
+                    <NavigationLink href={`/dashboard/customer/my-itineraries/${item.id}/edit`} className="block">
+                      <Button variant="outline" size="sm" className="w-full">
+                        <Pencil className="size-4 mr-2" />
+                        Continue editing
+                      </Button>
+                    </NavigationLink>
+                    <Button size="sm" onClick={() => handleRequestPublish(item.id)} disabled={processingId === item.id} className="w-full bg-weelp-sage-deep hover:bg-weelp-sage-deep/90">
+                      <Send className="size-4 mr-2" />
+                      Request publish
+                    </Button>
+                  </div>
                 )}
 
                 {isCreatorCopy && draftItineraryId && (
@@ -259,6 +318,24 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
           );
         })}
       </div>
+
+      {lastPage > 1 && (
+        <nav className="flex items-center justify-center gap-3" aria-label="Itinerary pages">
+          <NavigationLink href={paginationHref(currentPage - 1)} aria-disabled={currentPage <= 1}>
+            <Button variant="outline" size="sm" disabled={currentPage <= 1}>
+              Previous
+            </Button>
+          </NavigationLink>
+          <span className="text-sm text-muted-foreground">
+            Page {currentPage} of {lastPage}
+          </span>
+          <NavigationLink href={paginationHref(currentPage + 1)} aria-disabled={currentPage >= lastPage}>
+            <Button variant="outline" size="sm" disabled={currentPage >= lastPage}>
+              Next
+            </Button>
+          </NavigationLink>
+        </nav>
+      )}
 
       <Dialog
         open={removalDialogOpen}

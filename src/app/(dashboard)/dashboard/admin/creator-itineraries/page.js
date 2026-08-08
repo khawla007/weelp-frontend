@@ -8,14 +8,19 @@ export const metadata = {
   description: 'Review and manage creator itineraries',
 };
 
-export default async function CreatorItinerariesPage() {
+export default async function CreatorItinerariesPage({ searchParams = Promise.resolve({}) } = {}) {
   const session = await auth();
 
   if (!session?.user?.role || !['admin', 'super_admin'].includes(session.user.role)) {
     redirect('/dashboard/admin');
   }
 
-  const result = await getAdminCreatorItineraries();
+  const params = await searchParams;
+  const view = params?.view === 'trash' ? 'trash' : 'active';
+  const allowedStatuses = new Set(['pending', 'approved', 'rejected', 'draft']);
+  const status = view === 'active' && allowedStatuses.has(params?.status) ? params.status : '';
+  const page = Math.max(1, Number.parseInt(params?.page ?? '1', 10) || 1);
+  const result = await getAdminCreatorItineraries({ view, status, page });
   const itineraries = result.success ? result.data?.data || [] : [];
   const lastPage = result.success ? result.data?.last_page || 1 : 1;
 
@@ -28,7 +33,7 @@ export default async function CreatorItinerariesPage() {
         </div>
       </div>
 
-      <CreatorItinerariesClientWrapper initialItineraries={itineraries} initialLastPage={lastPage} />
+      <CreatorItinerariesClientWrapper initialItineraries={itineraries} initialLastPage={lastPage} currentPage={page} activeView={view} activeStatus={status} />
     </div>
   );
 }

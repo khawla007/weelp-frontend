@@ -8,14 +8,18 @@ export const metadata = {
   description: 'View your saved and customized itineraries',
 };
 
-export default async function MyItinerariesPage() {
+export default async function MyItinerariesPage({ searchParams = Promise.resolve({}) } = {}) {
   const session = await auth();
 
   if (!session?.user) {
     redirect('/user/login');
   }
 
-  const result = await getMyItineraries();
+  const params = await searchParams;
+  const view = params?.view === 'trash' ? 'trash' : 'active';
+  const status = view === 'active' && params?.status === 'draft' ? 'draft' : '';
+  const page = Math.max(1, Number.parseInt(params?.page ?? '1', 10) || 1);
+  const result = await getMyItineraries({ view, status, page });
   const itineraries = result.success ? result.data?.data || [] : [];
   const lastPage = result.success ? result.data?.last_page || 1 : 1;
 
@@ -30,7 +34,7 @@ export default async function MyItinerariesPage() {
         </div>
       </div>
 
-      <MyItinerariesClientWrapper initialItineraries={itineraries} lastPage={lastPage} isCreator={isCreator} />
+      <MyItinerariesClientWrapper initialItineraries={itineraries} lastPage={lastPage} isCreator={isCreator} activeView={view} activeStatus={status} currentPage={page} />
     </div>
   );
 }

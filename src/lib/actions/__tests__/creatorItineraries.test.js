@@ -2,7 +2,14 @@ import { revalidatePath } from 'next/cache';
 
 import { getAuthApi } from '@/lib/axiosInstance';
 
-import { submitCreatorItineraryDraft } from '../creatorItineraries';
+import {
+  adminPermanentlyDeleteCreatorItinerary,
+  adminPublishCreatorItinerary,
+  adminRestoreCreatorItinerary,
+  requestCreatorItineraryPublish,
+  restoreCreatorItinerary,
+  submitCreatorItineraryDraft,
+} from '../creatorItineraries';
 
 jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
 jest.mock('@/lib/axiosInstance', () => ({
@@ -10,8 +17,8 @@ jest.mock('@/lib/axiosInstance', () => ({
   publicApi: {},
 }));
 
-describe('submitCreatorItineraryDraft', () => {
-  const api = { post: jest.fn() };
+describe('creator itinerary lifecycle actions', () => {
+  const api = { post: jest.fn(), put: jest.fn(), delete: jest.fn() };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -35,5 +42,21 @@ describe('submitCreatorItineraryDraft', () => {
 
     expect(api.post).toHaveBeenCalledWith('/api/creator/itineraries/create', payload);
     expect(revalidatePath).toHaveBeenCalledWith('/dashboard/customer/my-itineraries');
+  });
+
+  it.each([
+    ['restoreCreatorItinerary', () => restoreCreatorItinerary(12), 'post', '/api/creator/itineraries/12/restore'],
+    ['requestCreatorItineraryPublish', () => requestCreatorItineraryPublish(12), 'post', '/api/creator/itineraries/12/request-publish'],
+    ['adminRestoreCreatorItinerary', () => adminRestoreCreatorItinerary(12), 'post', '/api/admin/creator-itineraries/12/restore'],
+    ['adminPublishCreatorItinerary', () => adminPublishCreatorItinerary(12), 'put', '/api/admin/creator-itineraries/12/publish'],
+    ['adminPermanentlyDeleteCreatorItinerary', () => adminPermanentlyDeleteCreatorItinerary(12), 'delete', '/api/admin/creator-itineraries/12/force'],
+  ])('%s calls its lifecycle endpoint and revalidates both dashboards', async (_name, action, method, endpoint) => {
+    api[method].mockResolvedValue({ data: { success: true, message: 'Done', data: { id: 12 } } });
+
+    await expect(action()).resolves.toEqual({ success: true, message: 'Done', data: { id: 12 } });
+
+    expect(api[method]).toHaveBeenCalledWith(endpoint);
+    expect(revalidatePath).toHaveBeenCalledWith('/dashboard/customer/my-itineraries');
+    expect(revalidatePath).toHaveBeenCalledWith('/dashboard/admin/creator-itineraries');
   });
 });
