@@ -275,8 +275,8 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
             {/* Pricing Breakdown for Activities — renders as soon as headcount >= 1 */}
             {productType === 'activity' && pricing && pricing.headcount >= 1 ? (
               <Accordion type="multiple" className="mt-2">
-                <AccordionItem value="price-details">
-                  <AccordionTrigger className="px-4 text-left text-foreground">Price details</AccordionTrigger>
+                <AccordionItem value="price-details" className="border-b-0">
+                  <AccordionTrigger className="rounded-xl border border-border bg-background px-4 text-left text-foreground">Price details</AccordionTrigger>
                   <AccordionContent>
                     {(() => {
                       const regularPrice = pricing.season?.regularPrice ?? pricing.pricePerHead;
@@ -427,8 +427,8 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
             {/* Select Addon */}
             {addons.length > 0 && (
               <Accordion type="multiple" className="mt-2">
-                <AccordionItem value="add-ons">
-                  <AccordionTrigger className="px-4 text-left text-foreground">
+                <AccordionItem value="add-ons" className="border-b-0">
+                  <AccordionTrigger className="rounded-xl border border-border bg-background px-4 text-left text-foreground">
                     Add-ons · {activeSelectedAddons.length === 0 ? 'None selected' : `${activeSelectedAddons.length} selected`}
                   </AccordionTrigger>
                   <AccordionContent className="flex flex-col gap-3 rounded-xl border border-border bg-background p-4">

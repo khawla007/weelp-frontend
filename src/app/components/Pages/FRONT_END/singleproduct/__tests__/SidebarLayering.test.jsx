@@ -125,8 +125,10 @@ describe('single product sidebar layering', () => {
 
     const priceTrigger = screen.getByRole('button', { name: /price details/i });
     const addonTrigger = screen.getByRole('button', { name: /add-ons.*none selected/i });
-    expect(priceTrigger).toHaveClass('px-4');
-    expect(addonTrigger).toHaveClass('px-4');
+    expect(priceTrigger).toHaveClass('rounded-xl', 'border', 'border-border', 'bg-background', 'px-4');
+    expect(addonTrigger).toHaveClass('rounded-xl', 'border', 'border-border', 'bg-background', 'px-4');
+    expect(priceTrigger.parentElement.parentElement).toHaveClass('border-b-0');
+    expect(addonTrigger.parentElement.parentElement).toHaveClass('border-b-0');
     expect(priceTrigger).toHaveAttribute('aria-expanded', 'false');
     expect(addonTrigger).toHaveAttribute('aria-expanded', 'false');
 
