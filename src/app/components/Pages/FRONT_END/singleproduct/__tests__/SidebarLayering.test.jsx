@@ -58,6 +58,17 @@ let desktopMediaQueryList;
 const desktopChangeListeners = new Set();
 const originalMatchMedia = window.matchMedia;
 
+const createNonmatchingMediaQueryList = (query) => ({
+  matches: false,
+  media: query,
+  onchange: null,
+  addListener: jest.fn(),
+  removeListener: jest.fn(),
+  addEventListener: jest.fn(),
+  removeEventListener: jest.fn(),
+  dispatchEvent: jest.fn(() => true),
+});
+
 const setDesktopViewport = (isDesktop) => {
   desktopChangeListeners.clear();
   desktopMediaQueryList = {
@@ -83,7 +94,7 @@ const setDesktopViewport = (isDesktop) => {
       this.dispatchEvent(event);
     },
   };
-  window.matchMedia = jest.fn(() => desktopMediaQueryList);
+  window.matchMedia = jest.fn((query) => (query === '(min-width: 1280px)' ? desktopMediaQueryList : createNonmatchingMediaQueryList(query)));
 };
 
 const activitySidebarProps = {
@@ -189,6 +200,7 @@ describe('single product sidebar layering', () => {
 
     const addonTrigger = screen.getByRole('button', { name: /add-ons.*none selected/i });
     await waitFor(() => expect(addonTrigger).toHaveAttribute('aria-expanded', 'true'));
+    expect(window.matchMedia).toHaveBeenCalledWith('(min-width: 1280px)');
 
     fireEvent.click(addonTrigger);
     expect(addonTrigger).toHaveAttribute('aria-expanded', 'false');
