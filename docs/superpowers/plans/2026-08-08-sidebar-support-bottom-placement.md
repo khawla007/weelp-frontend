@@ -20,6 +20,7 @@ No new component, hook, stylesheet, or runtime state is needed.
 ### Task 1: Separate the sticky and support regions
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/singleproduct/__tests__/SidebarLayering.test.jsx:94-104`
 - Modify: `src/app/components/Pages/FRONT_END/singleproduct/ProductSidebar.jsx:226-522`
 
