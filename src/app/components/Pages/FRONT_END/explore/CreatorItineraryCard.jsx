@@ -66,10 +66,10 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
   };
 
   return (
-    <div className="w-full max-w-full">
+    <div className="flex h-full w-full max-w-full flex-col overflow-hidden rounded-xl border border-border bg-background transition-[transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] hover:-translate-y-0.5 hover:shadow-[var(--weelp-card-hover-shadow)] focus-within:-translate-y-0.5 focus-within:shadow-[var(--weelp-card-hover-shadow)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:focus-within:translate-y-0">
       {/* Image with price overlay */}
-      <NavigationLink href={href}>
-        <div className="group relative w-full aspect-[93/100] overflow-hidden rounded-lg">
+      <NavigationLink href={href} className="block">
+        <div className="group/image relative aspect-[4/3] w-full overflow-hidden sm:aspect-[93/100]">
           <MediaImage
             src={coverSrc}
             alt={title}
@@ -81,7 +81,7 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
 
           {/* Price overlay - slides up on hover */}
           {price && (
-            <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/70 to-transparent px-3 py-2">
+            <div className="absolute inset-x-0 bottom-0 translate-y-full bg-gradient-to-t from-black/70 to-transparent px-3 py-2 transition-transform duration-300 group-hover/image:translate-y-0">
               <span className="text-white text-sm font-semibold">
                 {currency} {Number(price).toFixed(2)}
               </span>
@@ -90,36 +90,42 @@ export default function CreatorItineraryCard({ itinerary, isLoggedIn, as: TitleT
         </div>
       </NavigationLink>
 
-      {/* Engagement row */}
-      <div className="px-2 pt-2 flex items-center gap-4">
-        <button onClick={handleLike} aria-label={`${liked ? 'Unlike' : 'Like'} ${title}. ${formatCount(likesCount)} likes`} className="text-muted-foreground flex items-center gap-1.5 text-sm">
-          <Heart className={`size-4 ${liked ? 'text-weelp-discount fill-weelp-discount' : 'text-weelp-discount'}`} />
-          {formatCount(likesCount)}
-        </button>
-        <span className="text-muted-foreground flex items-center gap-1.5 text-sm">
-          <Eye className="size-4 text-muted-foreground" />
-          {formatCount(itinerary?.views_count || 0)}
-        </span>
-      </div>
-
-      {/* Title + creator avatar row */}
-      <div className="px-2 pt-1 flex items-center justify-between">
-        <TitleTag className="text-foreground text-lg font-medium line-clamp-1 flex-1 mr-2">{title}</TitleTag>
-        {creatorAvatar && !avatarBroken ? (
-          <MediaImage
-            src={creatorAvatar}
-            alt={creatorName || 'creator'}
-            width={36}
-            height={36}
-            sizes="36px"
-            className="size-9 rounded-full object-cover flex-shrink-0"
-            onError={() => setAvatarBroken(true)}
-          />
-        ) : (
-          <span className="size-9 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0" style={{ backgroundColor: 'hsl(var(--weelp-sage-deep))' }}>
-            {creatorInitials}
+      <div className="flex flex-1 flex-col gap-2 px-3 pb-3 pt-2.5">
+        {/* Engagement row */}
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleLike}
+            aria-label={`${liked ? 'Unlike' : 'Like'} ${title}. ${formatCount(likesCount)} likes`}
+            className="weelp-creator-like-button -m-1 flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-md border-0 bg-transparent p-1 text-sm text-muted-foreground shadow-none transition-[color,box-shadow,transform] duration-200 hover:shadow-[0_4px_14px_hsl(var(--weelp-discount)/0.32)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-discount/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-95 motion-reduce:transition-none motion-reduce:active:scale-100"
+          >
+            <Heart className={`size-4 ${liked ? 'text-weelp-discount fill-weelp-discount' : 'text-weelp-discount'}`} />
+            {formatCount(likesCount)}
+          </button>
+          <span className="text-muted-foreground flex items-center gap-1.5 text-sm">
+            <Eye className="size-4 text-muted-foreground" />
+            {formatCount(itinerary?.views_count || 0)}
           </span>
-        )}
+        </div>
+
+        {/* Title + creator avatar row */}
+        <div className="flex min-w-0 items-center justify-between gap-3">
+          <TitleTag className="line-clamp-2 min-w-0 flex-1 text-base font-medium leading-snug text-foreground sm:text-lg">{title}</TitleTag>
+          {creatorAvatar && !avatarBroken ? (
+            <MediaImage
+              src={creatorAvatar}
+              alt={creatorName || 'creator'}
+              width={36}
+              height={36}
+              sizes="36px"
+              className="size-9 rounded-full object-cover flex-shrink-0"
+              onError={() => setAvatarBroken(true)}
+            />
+          ) : (
+            <span className="size-9 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0" style={{ backgroundColor: 'hsl(var(--weelp-sage-deep))' }}>
+              {creatorInitials}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

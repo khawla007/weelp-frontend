@@ -475,6 +475,7 @@ describe('Deep Forest semantic theme', () => {
       'src/app/components/Pages/FRONT_END/city/CityHeroBanner.jsx': 2,
       'src/app/components/Pages/FRONT_END/home/WanderersBanner.jsx': 2,
       'src/app/components/Pages/FRONT_END/shop/BannerSection.jsx': 1,
+      'src/app/components/Pages/FRONT_END/singleproduct/ReviewHelpfulButton.jsx': 1,
       'src/app/components/Pages/FRONT_END/tours/ToursHeroDecor.jsx': 3,
       'src/app/components/SingleProductCard.jsx': 4,
     };
@@ -573,7 +574,7 @@ describe('Deep Forest semantic theme', () => {
   });
 
   const darkInteractiveControlSelectors = [
-    ".dark button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.review-featured-switch):not([data-sidebar='menu-button']):not([data-sidebar='rail'])",
+    ".dark button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.review-featured-switch):not(.weelp-creator-like-button):not([data-sidebar='menu-button']):not([data-sidebar='rail'])",
     ".dark a[role='button']:not([aria-disabled='true'])",
     ".dark a[data-weelp-button-link]:not([aria-disabled='true'])",
     ".dark a[class~='bg-weelp-sage-deep']:not([aria-disabled='true'])",
@@ -621,6 +622,7 @@ describe('Deep Forest semantic theme', () => {
       <button data-testid="auth-mode-switch" class="weelp-auth-mode-switch">Sign Up</button>
       <button data-testid="header-nav-button" class="weelp-header-nav-item">Dashboard</button>
       <button data-testid="review-featured-switch" class="review-featured-switch">Featured Review</button>
+      <button data-testid="creator-like-button" class="weelp-creator-like-button">Like itinerary</button>
       <button data-testid="sidebar-button" data-sidebar="menu-button">Creators</button>
       <button data-testid="sidebar-rail" data-sidebar="rail">Toggle Sidebar</button>
       <a data-testid="marked-anchor" data-weelp-button-link href="/continue">Continue</a>
@@ -655,7 +657,7 @@ describe('Deep Forest semantic theme', () => {
 
   it('sets the dark site-wide button surface and border to the requested tokens', () => {
     const buttonRule = extractSelectorContract([
-      ".dark button:not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.review-featured-switch):not(.bg-card):not([data-sidebar='menu-button']):not([data-sidebar='rail'])",
+      ".dark button:not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.review-featured-switch):not(.weelp-creator-like-button):not(.bg-card):not([data-sidebar='menu-button']):not([data-sidebar='rail'])",
       ".dark a[role='button']",
       ".dark [role='button']",
       ".dark a[class~='bg-weelp-sage-deep']",

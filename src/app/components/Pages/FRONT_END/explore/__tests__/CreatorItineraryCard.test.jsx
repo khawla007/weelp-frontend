@@ -7,9 +7,10 @@ const openAuthModal = jest.fn();
 
 jest.mock('@/app/components/Navigation/NavigationLink', () => ({
   __esModule: true,
-  default: ({ href, children, onClick }) => (
+  default: ({ href, children, onClick, className }) => (
     <a
       href={href}
+      className={className}
       onClick={(event) => {
         event.preventDefault();
         onClick?.(event);
@@ -40,6 +41,37 @@ beforeEach(() => {
 });
 
 describe('CreatorItineraryCard', () => {
+  it('renders a complete responsive card with a borderless coral heart control', () => {
+    const { container } = render(
+      <CreatorItineraryCard
+        isLoggedIn={false}
+        itinerary={{
+          id: 12,
+          name: 'A long creator itinerary title for mobile travelers',
+          slug: 'long-creator-route',
+          views_count: 21,
+          likes_count: 4,
+          locations: [{ city: { name: 'Dubai', slug: 'dubai' } }],
+          creator: { name: 'Nora Field Notes' },
+        }}
+      />,
+    );
+
+    const card = container.firstElementChild;
+    const link = screen.getByRole('link');
+    const likeButton = screen.getByRole('button', {
+      name: 'Like A long creator itinerary title for mobile travelers. 4 likes',
+    });
+
+    expect(card).toHaveClass('overflow-hidden', 'rounded-xl', 'border', 'border-border', 'bg-background');
+    expect(card).toHaveClass('hover:-translate-y-0.5', 'focus-within:-translate-y-0.5', 'motion-reduce:hover:translate-y-0');
+    expect(link).toHaveClass('block');
+    expect(link.firstElementChild).toHaveClass('aspect-[4/3]', 'sm:aspect-[93/100]');
+    expect(likeButton).toHaveClass('weelp-creator-like-button', 'min-h-11', 'min-w-11', 'justify-center', 'border-0', 'bg-transparent');
+    expect(likeButton.className).toContain('hover:shadow-[0_4px_14px_hsl(var(--weelp-discount)/0.32)]');
+    expect(screen.getByRole('heading', { name: 'A long creator itinerary title for mobile travelers' })).toHaveClass('line-clamp-2');
+  });
+
   it('uses city slug from the API for public itinerary links', () => {
     render(
       <CreatorItineraryCard

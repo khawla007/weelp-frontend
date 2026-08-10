@@ -72,11 +72,23 @@ describe('CreatorFilter', () => {
 
     const home = screen.getByRole('button', { name: 'Home' });
     const trending = screen.getByRole('button', { name: 'Trending' });
-    expect(home.parentElement).toHaveClass('w-full', 'flex-wrap', 'justify-center', 'gap-2', 'sm:w-auto', 'sm:flex-nowrap');
-    expect(home).toHaveClass('text-sm', 'sm:text-[18px]', 'px-3', 'sm:px-[21px]');
-    expect(trending).toHaveClass('px-3', 'sm:px-[21px]');
-    expect(trending).toHaveStyle({ borderRadius: '8.5px' });
-    expect(screen.getByRole('button', { name: 'Join as Creator' })).toHaveClass('text-sm', 'sm:text-[18px]', 'px-3', 'sm:px-5');
+    const join = screen.getByRole('button', { name: 'Join as Creator' });
+    const sort = screen.getAllByRole('button', { name: 'Latest First' })[0];
+    const source = screen.getAllByRole('button', { name: 'All Itineraries' })[0];
+    const actionRow = home.parentElement;
+    const topBar = actionRow.parentElement;
+    const sortWrapper = topBar.children[0];
+    const sourceWrapper = topBar.children[2];
+
+    expect(topBar).toHaveClass('grid', 'grid-cols-1', 'gap-3', 'min-[360px]:grid-cols-2', 'lg:grid-cols-[minmax(160px,1fr)_auto_minmax(160px,1fr)]');
+    expect(actionRow).toHaveClass('col-span-1', 'row-start-1', 'w-full', 'flex-wrap', 'justify-center', 'min-[360px]:col-span-2', 'lg:col-auto');
+    expect(sortWrapper).toHaveClass('row-start-2', 'lg:row-auto');
+    expect(sourceWrapper).toHaveClass('row-start-3', 'min-[360px]:row-start-2', 'lg:row-auto');
+    expect(sort).toHaveClass('min-h-11', 'w-full', 'lg:w-auto', 'lg:min-w-[160px]');
+    expect(source).toHaveClass('min-h-11', 'w-full', 'lg:w-auto', 'lg:min-w-[160px]');
+    expect(home).toHaveClass('min-h-11');
+    expect(trending).toHaveClass('min-h-11');
+    expect(join).toHaveClass('min-h-11');
     expect(container.querySelector('.w-px.h-6')).not.toBeInTheDocument();
   });
 

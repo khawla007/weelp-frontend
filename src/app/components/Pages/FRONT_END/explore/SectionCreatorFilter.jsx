@@ -175,13 +175,13 @@ const CreatorFilter = ({ initialItineraries, lastPage, initialError = false, act
     <section className="container-page relative flex flex-col gap-6 pb-10 md:gap-8 md:pb-16 lg:pb-24">
       <SectionHeader className="sr-only" title="Creator itineraries" />
       {/* Top Bar */}
-      <Reveal variant="lift" className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+      <Reveal variant="lift" className="grid grid-cols-1 items-center gap-3 pt-6 min-[360px]:grid-cols-2 lg:grid-cols-[minmax(160px,1fr)_auto_minmax(160px,1fr)] lg:gap-4 lg:pt-4">
         {/* Sort Dropdown — hidden on Trending tab */}
-        <div className="mt-[1.5rem]">
+        <div className="row-start-2 min-w-0 lg:row-auto lg:justify-self-start">
           {activeTab === 'home' ? (
             <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center justify-between gap-2 bg-transparent border border-border rounded-[8px] px-4 py-2 text-[16px] font-medium text-weelp-steel outline-none min-w-[160px]">
+                <button className="flex min-h-11 w-full items-center justify-between gap-2 rounded-[8px] border border-border bg-transparent px-3 py-2 text-sm font-medium text-weelp-steel outline-none lg:w-auto lg:min-w-[160px] lg:px-4 lg:text-[16px]">
                   {activeSortLabel}
                   <ChevronDown size={16} className="shrink-0" />
                 </button>
@@ -196,12 +196,12 @@ const CreatorFilter = ({ initialItineraries, lastPage, initialError = false, act
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className="min-w-[160px]" />
+            <div className="h-11 w-full lg:min-w-[160px]" />
           )}
         </div>
 
         {/* Content Tabs + Action Button */}
-        <div className="mt-4 flex w-full flex-wrap items-center justify-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-[22px]">
+        <div className="col-span-1 row-start-1 flex w-full flex-wrap items-center justify-center gap-2 min-[360px]:col-span-2 lg:col-auto lg:row-auto lg:w-auto lg:flex-nowrap lg:gap-[22px]">
           {/* Home / Trending tabs */}
           {CONTENT_TABS.map((tab) => {
             const TabIcon = tab.icon;
@@ -236,10 +236,10 @@ const CreatorFilter = ({ initialItineraries, lastPage, initialError = false, act
         </div>
 
         {/* Source Filter Dropdown */}
-        <div className="mt-4">
+        <div className="row-start-3 min-w-0 min-[360px]:row-start-2 lg:row-auto lg:justify-self-end">
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center justify-between gap-2 bg-transparent border border-border rounded-[7.86px] px-4 py-2 text-[16px] font-medium text-weelp-steel outline-none min-w-[160px]">
+              <button className="flex min-h-11 w-full items-center justify-between gap-2 rounded-[7.86px] border border-border bg-transparent px-3 py-2 text-sm font-medium text-weelp-steel outline-none lg:w-auto lg:min-w-[160px] lg:px-4 lg:text-[16px]">
                 {activeSourceLabel}
                 <ChevronDown size={16} className="shrink-0" />
               </button>
