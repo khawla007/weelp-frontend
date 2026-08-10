@@ -7,7 +7,7 @@ jest.mock('next/image', () => {
 });
 
 jest.mock('../SimilarExperiences', () => {
-  const MockSimilarExperiences = () => null;
+  const MockSimilarExperiences = () => <div data-testid="similar-experiences" />;
   MockSimilarExperiences.displayName = 'MockSimilarExperiences';
   return MockSimilarExperiences;
 });
@@ -83,10 +83,64 @@ describe('SingleProductTabSection activity inclusions', () => {
     const booking = screen.getByTestId('single-product-booking-column');
 
     expect(layout).toHaveClass('flex-col', 'xl:flex-row');
-    expect(layout.closest('section')).toHaveClass('pb-28', 'xl:pb-0');
+    expect(layout.closest('section')).toHaveClass('pb-4', 'md:pb-6', 'lg:pb-8', 'xl:pb-0');
+    expect(layout.closest('section')).not.toHaveClass('pb-28');
     expect(content).toHaveClass('order-2', 'xl:order-1', 'xl:w-[60%]');
     expect(booking).toHaveClass('order-1', 'xl:order-2', 'xl:w-[40%]', 'xl:self-stretch');
     expect(booking.compareDocumentPosition(content)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+
+  it('uses compact activity spacing around FAQs and desktop Similar Experiences', () => {
+    render(
+      <SingleProductTabSection
+        productType="activity"
+        productId={1}
+        productData={{
+          description: 'Activity description',
+          inclusions_exclusions: [],
+          review_summary: { total_reviews: 0 },
+          faqs: [{ question: 'What should I bring?', answer: 'Comfortable clothing.' }],
+        }}
+        similarActivities={[{ id: 10, name: 'Desert Safari' }]}
+      />,
+    );
+
+    const faqSection = document.getElementById('tab_4');
+    const desktopSimilar = screen.getAllByTestId('similar-experiences')[0].parentElement;
+
+    expect(faqSection).toHaveClass('pb-4', 'pt-[35px]', 'md:pb-6', 'lg:pb-8', 'xl:pb-0', 'xl:mb-[35px]');
+    expect(faqSection).not.toHaveClass('lg:mb-[35px]');
+    expect(desktopSimilar).toHaveClass('hidden', 'md:block', 'xl:mb-[70px]');
+    expect(desktopSimilar).not.toHaveClass('lg:mb-[70px]');
+  });
+
+  it.each(['itinerary', 'package'])('retains existing spacing for %s products', (productType) => {
+    render(
+      <SingleProductTabSection
+        productType={productType}
+        productId={2}
+        productData={{
+          schedules: [{ day: 1, title: 'Day 1', activities: [], transfers: [] }],
+          inclusions_exclusions: [],
+          review_summary: { total_reviews: 0 },
+          faqs: [{ question: 'What should I bring?', answer: 'Comfortable clothing.' }],
+        }}
+        similarActivities={[{ id: 10, name: 'Desert Safari' }]}
+      />,
+    );
+
+    const rootSection = screen.getByTestId('single-product-layout').closest('section');
+    const faqSection = document.getElementById('tab_4');
+    const desktopSimilar = screen.getAllByTestId('similar-experiences')[0].parentElement;
+
+    expect(rootSection).toHaveClass('pb-28', 'xl:pb-0');
+    expect(faqSection).toHaveClass('pt-[35px]', 'lg:mb-[35px]');
+    expect(faqSection).not.toHaveClass('pb-4');
+    expect(faqSection).not.toHaveClass('md:pb-6');
+    expect(faqSection).not.toHaveClass('lg:pb-8');
+    expect(faqSection).not.toHaveClass('xl:mb-[35px]');
+    expect(faqSection).not.toHaveClass('xl:pb-0');
+    expect(desktopSimilar).toHaveClass('hidden', 'md:block', 'lg:mb-[70px]');
   });
 
   it('keeps mobile Similar Experiences after primary content', () => {

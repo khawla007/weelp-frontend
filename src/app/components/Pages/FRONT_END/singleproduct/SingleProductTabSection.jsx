@@ -198,9 +198,12 @@ const SingleProductTabSection = ({
   };
 
   const bottomImage = sidebarBottomImage || SIDEBAR_IMAGES[productType];
+  const sectionBottomSpacing = isActivityProduct ? 'pb-4 md:pb-6 lg:pb-8 xl:pb-0' : 'pb-28 xl:pb-0';
+  const faqSectionSpacing = isActivityProduct ? 'pb-4 pt-[35px] md:pb-6 lg:pb-8 xl:mb-[35px] xl:pb-0' : 'pt-[35px] lg:mb-[35px]';
+  const desktopSimilarSpacing = isActivityProduct ? 'hidden md:block xl:mb-[70px]' : 'hidden md:block lg:mb-[70px]';
 
   return (
-    <section className="w-full bg-background pb-28 xl:pb-0">
+    <section className={`w-full bg-background ${sectionBottomSpacing}`}>
       {/* Sticky Tab Bar */}
       <div
         className={`sticky z-[11] w-full bg-card border-b border-border transition-[opacity,transform,box-shadow] duration-200 ease-[var(--weelp-ease-out)] motion-reduce:transition-none ${
@@ -291,14 +294,14 @@ const SingleProductTabSection = ({
               {/* Tab 4: FAQs */}
               {hasFaqs ? (
                 <Reveal variant="lift">
-                  <div id="tab_4" ref={(el) => (sectionRefs.current['tab_4'] = el)} className="pt-[35px] lg:mb-[35px]">
+                  <div id="tab_4" ref={(el) => (sectionRefs.current['tab_4'] = el)} className={faqSectionSpacing}>
                     <FaqPanel faqs={faqs} />
                   </div>
                 </Reveal>
               ) : null}
 
               {/* Similar Experiences */}
-              <Reveal variant="lift" className="hidden md:block lg:mb-[70px]">
+              <Reveal variant="lift" className={desktopSimilarSpacing}>
                 <SimilarExperiences activities={similarActivities} />
               </Reveal>
             </div>
