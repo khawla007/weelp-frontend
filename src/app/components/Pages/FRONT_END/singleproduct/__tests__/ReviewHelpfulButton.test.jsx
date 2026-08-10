@@ -39,6 +39,7 @@ describe('ReviewHelpfulButton', () => {
     expect(screen.getByRole('button', { name: 'Mark review as helpful' })).toHaveAttribute('aria-pressed', 'false');
     expect(screen.getByRole('button')).toHaveAttribute('data-review-id', '8');
     expect(screen.getByRole('button')).not.toHaveAttribute('id');
+    expect(screen.getByRole('button')).toHaveClass('px-3');
     expect(screen.getByText('Helpful · 3')).toBeVisible();
   });
 

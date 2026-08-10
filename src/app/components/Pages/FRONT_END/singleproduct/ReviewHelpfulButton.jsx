@@ -57,7 +57,7 @@ export default function ReviewHelpfulButton({ reviewId, count, isMarked, isPendi
       aria-pressed={isMarked}
       disabled={isDisabled}
       onClick={handleClick}
-      className="inline-flex min-h-11 items-center gap-2 rounded-lg text-sm text-muted-foreground transition-colors hover:text-copy disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm text-muted-foreground transition-colors hover:text-copy disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
       <ThumbsUp data-testid="helpful-thumb" aria-hidden="true" className={`size-4 ${isMarked ? 'fill-weelp-sage-deep text-weelp-sage-deep' : ''}`} />
       <span>{count > 0 ? `Helpful · ${count}` : 'Helpful'}</span>
