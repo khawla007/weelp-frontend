@@ -121,6 +121,98 @@ the purple-gradient SaaS dashboard cliché on the operator side.
 - Cards used sparingly. The default answer is whitespace and rhythm, not a card grid.
 - Imagery is destination-led; chrome and decoration recede when a strong photo is present.
 
+### Global responsive sizing contract
+
+This section is the source of truth for new public-facing responsive work. It
+records the shared values that must be reused instead of choosing new numbers
+page by page. Existing intentional exceptions remain valid only when their
+component or design spec documents the reason.
+
+#### Spacing rhythms
+
+Weelp uses two responsive spacing rhythms. They solve different layout
+problems and must not be substituted for one another.
+
+| Rhythm        | Mobile `<768px` | Tablet `≥768px` | Large tablet `≥1024px` | Tailwind contract         | Use                                                                                            |
+| ------------- | --------------: | --------------: | ---------------------: | ------------------------- | ---------------------------------------------------------------------------------------------- |
+| Compact       |            16px |            24px |                   32px | `p-4 md:p-6 lg:p-8`       | Page-edge refinements, component groups, FAQ handoffs, and short gaps between adjacent content |
+| Major section |            40px |            64px |                   96px | `py-10 md:py-16 lg:py-24` | Hero handoffs, full-width bands, listing-page endings, and major public sections               |
+
+The Compact Responsive Rule is `16 → 24 → 32`. When a mobile or tablet page
+needs ordinary padding or a short section handoff, start with this sequence.
+Do not introduce a new `20/28/36` or arbitrary pixel sequence without an
+approved component-specific reason.
+
+The Major Section Rule is `40 → 64 → 96`. Its reusable implementation lives in
+`src/lib/publicSectionSpacing.js`. Major editorial whitespace must not be
+reduced to the compact rhythm merely because both are called “section
+spacing.”
+
+At `xl` (`1280px`) and above, preserve a component's approved desktop layout.
+If desktop requires a different value, express that override explicitly, such
+as `xl:pb-0` or `xl:mb-[70px]`, and cover it with a regression test.
+
+#### Type and shell sizes
+
+These are the canonical element and public-shell sizes. Page-specific hero
+art direction may opt into a documented display size; ordinary content must
+use the global tier.
+
+| Role                          |                     Mobile |        Tablet |                    Desktop | Weight / line height | Canonical implementation                             |
+| ----------------------------- | -------------------------: | ------------: | -------------------------: | -------------------- | ---------------------------------------------------- |
+| `h1` hero heading             | `clamp(28px, 3.2vw, 38px)` |    same clamp |                 same clamp | 600 / 1.05           | Global `h1` in `src/app/globals.css`                 |
+| `h2` section heading          |                       28px |          28px |                       28px | 600 / 1.1            | Global `h2`                                          |
+| `h3` sub-heading              |                       24px |          24px |                       24px | 600 / 1.2            | Global `h3`                                          |
+| `h4` card title               |                       18px |          18px |                       18px | 600 / 1.3            | Global `h4`                                          |
+| `h5` compact heading          |                       16px |          16px |                       16px | 600 / 1.4            | Global `h5`                                          |
+| `h6` small heading            |                       14px |          14px |                       14px | 600 / 1.4            | Global `h6`                                          |
+| Paragraph                     |                       16px |          16px |                       16px | 400 / 1.5            | Global `p`                                           |
+| Lead paragraph                |              20–24px fluid | 20–24px fluid |              20–24px fluid | 500 / 1.4            | `p.lead`                                             |
+| Default button label          |                       14px |          14px |                       14px | 500 / 1.2            | Global `button` and `Button` primitive               |
+| Body/content anchor           |  16px or inherited context |     inherited |                  inherited | 500                  | Global `a`; links do not create a separate text tier |
+| Header primary navigation     |                          — |             — | 15px at `lg`, 16px at `xl` | 500 / inherited      | `Layout/NavigationMenu.jsx`                          |
+| Mobile navigation drawer      |                       15px |          15px |                          — | 500 / inherited      | `Layout/MobileMenu.jsx`                              |
+| Footer column heading         |                       15px |          16px |                       18px | 700 / 1.2            | `Layout/footer.jsx`                                  |
+| Footer navigation anchor      |                       14px |          15px |                       18px | 500 / 1.5            | `Layout/footer.jsx`                                  |
+| Footer legal anchor/copyright |                       13px |          15px |                       18px | 500 / 1.5            | `Layout/footer.jsx`                                  |
+
+Inline anchors inherit the size of their surrounding paragraph, heading, or
+label. A standalone content link therefore uses the 16px body tier. Header,
+footer, drawer, legal, chip, and button-links use the explicit component tier
+listed above. Never add a blanket font size to every `<a>` because that would
+break contextual links inside headings and small labels.
+
+#### Button dimensions
+
+| Button size |    Height | Horizontal padding |           Label | Icon |
+| ----------- | --------: | -----------------: | --------------: | ---: |
+| Small       |      36px |               12px |            14px | 16px |
+| Default     |      40px |               16px |            14px | 16px |
+| Large       |      44px |               32px | 14px by default | 16px |
+| Icon-only   | 40 × 40px |                  0 |               — | 16px |
+
+Public navigation controls and important mobile actions must expose at least a
+44 × 44px interaction target even when their visible icon or text is smaller.
+The primitive dimensions above come from `src/components/ui/button.jsx`;
+component-specific CTA sizing must be explicit rather than silently changing
+the primitive.
+
+#### Header, footer, and logo
+
+| Element                  |                                                            Mobile |       Tablet |               Desktop |
+| ------------------------ | ----------------------------------------------------------------: | -----------: | --------------------: |
+| Public logo image        |                                             32px high, auto width |    32px high | 36px high, auto width |
+| Public logo wordmark     |                                                              18px |         18px |                  18px |
+| Mobile drawer wordmark   |                                                              16px |         16px |                     — |
+| Header main bar          | 69px rendered height: 12px vertical padding around ≥44px controls |         same |     66px fixed height |
+| Header top strip         |                                                 46px when present |         46px |                  46px |
+| Footer navigation target |                                                 minimum 44px high | minimum 44px |          minimum 44px |
+
+The logo asset path remains centralized in `src/lib/config/brand.js`. Sizing
+belongs to the shell components because the same asset has a 32px mobile and
+36px desktop presentation. Do not embed a new logo path or choose a new logo
+height inside individual pages.
+
 ## 2. Colors
 
 A restrained palette built around a sage-green accent and a warm-leaning neutral stack. The accent appears with intent; the neutrals carry the surface.
