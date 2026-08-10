@@ -22,12 +22,12 @@ Keeping voter IDs in a JSON column on `reviews` would move uniqueness and concur
 
 The backend adds a `review_helpful_votes` table.
 
-| Field | Type | Notes |
-| --- | --- | --- |
-| `id` | unsigned bigint | Primary key. |
-| `review_id` | foreign key | References `reviews.id`; cascades on deletion. |
-| `user_id` | foreign key | References `users.id`; cascades on deletion. |
-| `created_at`, `updated_at` | timestamps | Retained for audit and future ranking work. |
+| Field                      | Type            | Notes                                          |
+| -------------------------- | --------------- | ---------------------------------------------- |
+| `id`                       | unsigned bigint | Primary key.                                   |
+| `review_id`                | foreign key     | References `reviews.id`; cascades on deletion. |
+| `user_id`                  | foreign key     | References `users.id`; cascades on deletion.   |
+| `created_at`, `updated_at` | timestamps      | Retained for audit and future ranking work.    |
 
 A unique index on `(review_id, user_id)` is the final duplicate-vote boundary. `Review` exposes a `helpfulVotes` relationship, and the new vote model belongs to both its review and user.
 
@@ -39,11 +39,11 @@ Public activity and itinerary review payloads gain `helpful_count`. The value co
 
 Authenticated endpoints provide the current user's state and mutations:
 
-| Method | Path | Purpose |
-| --- | --- | --- |
-| `GET` | `/api/reviews/helpful-status?review_ids=1,2,3` | Return the approved, public review IDs marked helpful by the current user. |
-| `PUT` | `/api/reviews/{review}/helpful` | Add the current user's helpful vote. |
-| `DELETE` | `/api/reviews/{review}/helpful` | Remove the current user's helpful vote. |
+| Method   | Path                                           | Purpose                                                                    |
+| -------- | ---------------------------------------------- | -------------------------------------------------------------------------- |
+| `GET`    | `/api/reviews/helpful-status?review_ids=1,2,3` | Return the approved, public review IDs marked helpful by the current user. |
+| `PUT`    | `/api/reviews/{review}/helpful`                | Add the current user's helpful vote.                                       |
+| `DELETE` | `/api/reviews/{review}/helpful`                | Remove the current user's helpful vote.                                    |
 
 Adding and removing are idempotent. Repeating `PUT` leaves one vote; repeating `DELETE` leaves none. Each mutation returns `review_id`, `helpful_count`, and `viewer_has_marked_helpful`, allowing the frontend to reconcile its optimistic state with the database.
 
