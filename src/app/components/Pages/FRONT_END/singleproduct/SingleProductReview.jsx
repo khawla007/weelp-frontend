@@ -8,6 +8,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import SectionHeader from '@/app/components/ui/SectionHeader';
 import { COMPACT_SLIDER_NAV_BUTTON_CLASS } from '@/app/components/ui/sliderNavigationClasses';
+import { useReviewHelpfulVotes } from '@/hooks/api/public/useReviewHelpfulVotes';
+import ReviewHelpfulButton from './ReviewHelpfulButton';
 import '@/app/styles/swiper.css';
 
 const REVIEW_FILTER_LOADING_MS = 350;
@@ -80,6 +82,8 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
     const images = review.media_gallery && review.media_gallery.length > 0 ? review.media_gallery.map((m) => m.url) : [];
 
     return {
+      id: review.id,
+      helpfulCount: Number(review.helpful_count) || 0,
       userName,
       date: formattedDate,
       sortDate: review.created_at, // Keep original date for sorting
@@ -102,6 +106,7 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
     featuredData?.data && featuredData.data.length > 0 ? featuredData.data.map(transformReview) : transformedReviews.filter((r) => r.images && r.images.length > 0).slice(0, 4);
 
   const allReviewsDataFinal = transformedReviews;
+  const { stateFor, setHelpful } = useReviewHelpfulVotes(allReviewsDataFinal);
 
   // Get all reviews with photos
   const allReviewsWithPhotos = allReviewsDataFinal.filter((review) => review.images && review.images.length > 0);
@@ -185,7 +190,7 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
             className="w-full"
           >
             {allReviewsWithPhotos.map((review, index) => (
-              <SwiperSlide key={index}>
+              <SwiperSlide key={review.id ?? index}>
                 <div className="h-[248px] rounded-xl overflow-hidden bg-muted cursor-pointer hover:opacity-90 transition-opacity">
                   <img src={review.image} alt={`Review photo ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
@@ -257,7 +262,7 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
             }}
           >
             {featuredReviewsData.map((review, index) => (
-              <SwiperSlide key={index} style={{ height: 'auto', display: 'flex' }}>
+              <SwiperSlide key={review.id ?? index} style={{ height: 'auto', display: 'flex' }}>
                 <div className="bg-background p-8 rounded-xl border border-border hover:border-transparent hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:hover:shadow-none transition-[border-color,box-shadow] duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-[17px] w-full">
                   <h5 className="text-foreground font-medium text-base">{review.userName}</h5>
                   <div className="flex gap-[7px]">
@@ -285,6 +290,8 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
         showSortDropdown={showSortDropdown}
         setShowSortDropdown={setShowSortDropdown}
         sortDropdownRef={sortDropdownRef}
+        stateFor={stateFor}
+        setHelpful={setHelpful}
         onFilterChange={() => {
           // Reset slider state when filter changes (handled internally by AllReviewsList)
         }}
@@ -293,7 +300,7 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
   );
 };
 
-const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOrder, setSortOrder, showSortDropdown, setShowSortDropdown, sortDropdownRef, onFilterChange }) => {
+const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOrder, setSortOrder, showSortDropdown, setShowSortDropdown, sortDropdownRef, stateFor, setHelpful, onFilterChange }) => {
   // Custom vertical slider state - groups of 3 reviews
   const REVIEWS_PER_GROUP = 3;
   const totalGroups = Math.ceil(filteredReviews.length / REVIEWS_PER_GROUP);
@@ -457,108 +464,114 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
           ) : filteredReviews.length === 0 ? (
             <div className="rounded-xl border border-border bg-background p-6 text-sm text-muted-foreground">No reviews match this filter yet.</div>
           ) : (
-            getCurrentReviews().map((review, index) => (
-              <div key={index} className="p-6 bg-background rounded-xl border border-border">
-                {/* First Row: Avatar + Name/Date */}
-                <div className="flex items-center gap-3">
-                  {/* Left: Avatar */}
-                  <div className="w-[44px] h-[44px] rounded-full overflow-hidden bg-muted border border-border flex-shrink-0">
-                    {review.avatar ? (
-                      <img src={review.avatar} alt={review.userName} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-sm font-bold text-copy">{review.userName.charAt(0)}</div>
-                    )}
-                  </div>
+            getCurrentReviews().map((review, index) => {
+              const voteState = stateFor(review);
 
-                  {/* Right: 2 divs - Name above, Date below */}
-                  <div className="flex flex-col justify-center">
-                    <p className="text-base font-semibold text-foreground">{review.userName}</p>
-                    <p className="text-sm font-semibold text-foreground">{review.date}</p>
-                  </div>
-                </div>
-
-                {/* Stars - increased spacing */}
-                <div className="flex gap-[7px] mt-4">
-                  {Array(review.rating)
-                    .fill(0)
-                    .map((_, i) => (
-                      <Star key={i} className="fill-warning stroke-none" size={16} />
-                    ))}
-                </div>
-
-                {/* Review Images - Single image or Slider - increased spacing */}
-                {review.images &&
-                  review.images.length > 0 &&
-                  (review.images.length > 1 ? (
-                    <div className="relative w-full mt-4">
-                      <Swiper
-                        key={`review-slider-${index}`}
-                        modules={[Navigation]}
-                        spaceBetween={12}
-                        navigation={{
-                          prevEl: `.review-img-prev-${index}`,
-                          nextEl: `.review-img-next-${index}`,
-                        }}
-                        loop={false}
-                        rewind={false}
-                        watchOverflow={true}
-                        slidesPerView={1.2}
-                        breakpoints={{
-                          640: { slidesPerView: 2 },
-                          768: { slidesPerView: 2.5 },
-                          1024: { slidesPerView: 3 },
-                        }}
-                        className="w-full"
-                      >
-                        {review.images.map((img, imgIndex) => (
-                          <SwiperSlide key={`${index}-${imgIndex}`}>
-                            <div className="h-[280px] rounded-xl overflow-hidden bg-muted cursor-pointer hover:opacity-90 transition-opacity">
-                              <img src={img} alt={`Review ${imgIndex + 1}`} className="w-full h-full object-cover" />
-                            </div>
-                          </SwiperSlide>
-                        ))}
-                      </Swiper>
-                      {review.images.length > 1 && (
-                        <div className="absolute bottom-[10px] right-[10px] flex gap-3 z-10">
-                          <button
-                            type="button"
-                            className={`review-img-prev-${index} ${COMPACT_SLIDER_NAV_BUTTON_CLASS} disabled:cursor-not-allowed disabled:opacity-50`}
-                            aria-label={`Previous image for ${review.userName}'s review`}
-                          >
-                            <ChevronLeft size={16} />
-                          </button>
-                          <button
-                            type="button"
-                            className={`review-img-next-${index} ${COMPACT_SLIDER_NAV_BUTTON_CLASS} disabled:cursor-not-allowed disabled:opacity-50`}
-                            aria-label={`Next image for ${review.userName}'s review`}
-                          >
-                            <ChevronRight size={16} />
-                          </button>
-                        </div>
+              return (
+                <div key={review.id ?? index} className="p-6 bg-background rounded-xl border border-border">
+                  {/* First Row: Avatar + Name/Date */}
+                  <div className="flex items-center gap-3">
+                    {/* Left: Avatar */}
+                    <div className="w-[44px] h-[44px] rounded-full overflow-hidden bg-muted border border-border flex-shrink-0">
+                      {review.avatar ? (
+                        <img src={review.avatar} alt={review.userName} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-sm font-bold text-copy">{review.userName.charAt(0)}</div>
                       )}
                     </div>
-                  ) : (
-                    <div className="w-full h-[280px] rounded-xl overflow-hidden bg-muted mt-4">
-                      <img src={review.images[0]} alt="Review" className="w-full h-full object-cover" />
+
+                    {/* Right: 2 divs - Name above, Date below */}
+                    <div className="flex flex-col justify-center">
+                      <p className="text-base font-semibold text-foreground">{review.userName}</p>
+                      <p className="text-sm font-semibold text-foreground">{review.date}</p>
                     </div>
-                  ))}
+                  </div>
 
-                {/* Review Content - increased spacing */}
-                <p className="text-base text-foreground leading-[1.5] my-6">{review.comment}</p>
+                  {/* Stars - increased spacing */}
+                  <div className="flex gap-[7px] mt-4">
+                    {Array(review.rating)
+                      .fill(0)
+                      .map((_, i) => (
+                        <Star key={i} className="fill-warning stroke-none" size={16} />
+                      ))}
+                  </div>
 
-                {/* Separator Line + Helpful Section - increased spacing */}
-                <div className="border-t border-border pt-4 mt-6">
-                  <div className="flex items-center gap-2 py-2">
-                    <button type="button" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-copy transition-colors">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
-                      </svg>
-                      Helpful
-                    </button>
+                  {/* Review Images - Single image or Slider - increased spacing */}
+                  {review.images &&
+                    review.images.length > 0 &&
+                    (review.images.length > 1 ? (
+                      <div className="relative w-full mt-4">
+                        <Swiper
+                          key={`review-slider-${review.id ?? index}`}
+                          modules={[Navigation]}
+                          spaceBetween={12}
+                          navigation={{
+                            prevEl: `.review-img-prev-${index}`,
+                            nextEl: `.review-img-next-${index}`,
+                          }}
+                          loop={false}
+                          rewind={false}
+                          watchOverflow={true}
+                          slidesPerView={1.2}
+                          breakpoints={{
+                            640: { slidesPerView: 2 },
+                            768: { slidesPerView: 2.5 },
+                            1024: { slidesPerView: 3 },
+                          }}
+                          className="w-full"
+                        >
+                          {review.images.map((img, imgIndex) => (
+                            <SwiperSlide key={`${review.id ?? index}-${imgIndex}`}>
+                              <div className="h-[280px] rounded-xl overflow-hidden bg-muted cursor-pointer hover:opacity-90 transition-opacity">
+                                <img src={img} alt={`Review ${imgIndex + 1}`} className="w-full h-full object-cover" />
+                              </div>
+                            </SwiperSlide>
+                          ))}
+                        </Swiper>
+                        {review.images.length > 1 && (
+                          <div className="absolute bottom-[10px] right-[10px] flex gap-3 z-10">
+                            <button
+                              type="button"
+                              className={`review-img-prev-${index} ${COMPACT_SLIDER_NAV_BUTTON_CLASS} disabled:cursor-not-allowed disabled:opacity-50`}
+                              aria-label={`Previous image for ${review.userName}'s review`}
+                            >
+                              <ChevronLeft size={16} />
+                            </button>
+                            <button
+                              type="button"
+                              className={`review-img-next-${index} ${COMPACT_SLIDER_NAV_BUTTON_CLASS} disabled:cursor-not-allowed disabled:opacity-50`}
+                              aria-label={`Next image for ${review.userName}'s review`}
+                            >
+                              <ChevronRight size={16} />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="w-full h-[280px] rounded-xl overflow-hidden bg-muted mt-4">
+                        <img src={review.images[0]} alt="Review" className="w-full h-full object-cover" />
+                      </div>
+                    ))}
+
+                  {/* Review Content - increased spacing */}
+                  <p className="text-base text-foreground leading-[1.5] my-6">{review.comment}</p>
+
+                  {/* Separator Line + Helpful Section - increased spacing */}
+                  <div className="border-t border-border pt-4 mt-6">
+                    <div className="flex items-center gap-2 py-2">
+                      <ReviewHelpfulButton
+                        reviewId={review.id}
+                        count={voteState.count}
+                        isMarked={voteState.isMarked}
+                        isPending={voteState.isPending}
+                        isStatusReady={voteState.isStatusReady}
+                        onChange={(nextMarked) => setHelpful(review.id, nextMarked)}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
 

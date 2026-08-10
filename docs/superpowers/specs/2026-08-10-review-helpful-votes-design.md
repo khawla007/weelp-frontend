@@ -39,11 +39,11 @@ Public activity and itinerary review payloads gain `helpful_count`. The value co
 
 Authenticated endpoints provide the current user's state and mutations:
 
-| Method   | Path                                           | Purpose                                                                    |
-| -------- | ---------------------------------------------- | -------------------------------------------------------------------------- |
-| `GET`    | `/api/reviews/helpful-status?review_ids=1,2,3` | Return the approved, public review IDs marked helpful by the current user. |
-| `PUT`    | `/api/reviews/{review}/helpful`                | Add the current user's helpful vote.                                       |
-| `DELETE` | `/api/reviews/{review}/helpful`                | Remove the current user's helpful vote.                                    |
+| Method   | Path                                                        | Purpose                                                                    |
+| -------- | ----------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `GET`    | `/api/reviews/helpful-status?review_ids[]=1&review_ids[]=2` | Return the approved, public review IDs marked helpful by the current user. |
+| `PUT`    | `/api/reviews/{review}/helpful`                             | Add the current user's helpful vote.                                       |
+| `DELETE` | `/api/reviews/{review}/helpful`                             | Remove the current user's helpful vote.                                    |
 
 Adding and removing are idempotent. Repeating `PUT` leaves one vote; repeating `DELETE` leaves none. Each mutation returns `review_id`, `helpful_count`, and `viewer_has_marked_helpful`, allowing the frontend to reconcile its optimistic state with the database.
 
@@ -55,7 +55,9 @@ The mutation service checks public eligibility inside the request. For an activi
 
 The existing shared `SingleProductReview` component continues to power both product types. Review transformation retains each API review's ID and helpful count. A focused Helpful button component owns the interaction state so pagination, filtering, image sliders, and review rendering do not absorb authentication and request logic.
 
-On initial render, every visitor sees the persisted count. When a session is authenticated, one batched status request resolves the selected state for the review IDs already fetched. The status cache key includes those IDs and the current account context so one user's choices do not appear for another user.
+On initial render, every visitor sees the persisted count. When a session is authenticated, one batched status request resolves the selected state for the review IDs already fetched. The request uses repeated `review_ids[]` query parameters, matching Laravel's array validation. The status cache key and local override state include the current account context so one user's choices do not appear for another user.
+
+For an authenticated viewer, Helpful controls remain briefly disabled until the initial status request either succeeds or fails. This prevents a returning voter from accidentally sending an add request before the page learns that the vote already exists. A failed status request enables the controls with their public counts; a later mutation response establishes the clicked review's selected state.
 
 The control renders as `Helpful` when the count is zero and `Helpful · N` when votes exist. `aria-pressed` exposes whether the current user voted, and the accessible label describes adding or removing the vote. The selected thumb uses the existing sage accent and a filled icon; the unselected state keeps the current muted treatment. A pending request disables only that review's control.
 

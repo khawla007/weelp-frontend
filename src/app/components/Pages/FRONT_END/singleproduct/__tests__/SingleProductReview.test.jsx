@@ -11,6 +11,25 @@ jest.mock('@/lib/services/reviews', () => ({
   getItineraryFeaturedReviews: jest.fn(),
 }));
 
+const mockSetHelpful = jest.fn();
+const mockUseReviewHelpfulVotes = jest.fn((reviews) => ({
+  stateFor: (review) => ({
+    count: review.helpfulCount,
+    isMarked: false,
+    isPending: false,
+    isStatusReady: true,
+  }),
+  setHelpful: mockSetHelpful,
+}));
+
+jest.mock('@/hooks/api/public/useReviewHelpfulVotes', () => ({
+  useReviewHelpfulVotes: (...args) => mockUseReviewHelpfulVotes(...args),
+}));
+
+jest.mock('next-auth/react', () => ({
+  useSession: () => ({ data: { user: { id: 7 } }, status: 'authenticated' }),
+}));
+
 let mockSwiperProps;
 
 jest.mock('swiper/react', () => ({
@@ -64,6 +83,7 @@ describe('SingleProductReview', () => {
       data: [
         {
           id: 8,
+          helpful_count: 4,
           rating: 5,
           review_text: 'The itinerary balanced activities and breaks well.',
           is_featured: false,
@@ -85,6 +105,34 @@ describe('SingleProductReview', () => {
     expect(screen.getByRole('button', { name: /sort reviews by/i })).toHaveClass('w-full', 'sm:w-auto');
     expect(screen.getAllByText('Atul Sharma')).toHaveLength(2);
     expect(screen.getAllByAltText(/review/i)).toEqual(expect.arrayContaining([expect.objectContaining({ src: expect.stringContaining('/api/media/8') })]));
+    expect(mockUseReviewHelpfulVotes).toHaveBeenLastCalledWith(expect.arrayContaining([expect.objectContaining({ id: 8, helpfulCount: 4 })]));
+    expect(screen.getAllByText('Helpful · 4')).toHaveLength(1);
+  });
+
+  it('preserves activity review vote fields and renders the persisted helpful count', async () => {
+    getActivityReviews.mockResolvedValue({
+      success: true,
+      summary: { average_rating: 4.9, total_reviews: 1, total_photos: 0 },
+      data: [
+        {
+          id: 18,
+          helpful_count: 4,
+          rating: 5,
+          review_text: 'The guide made the activity easy to follow.',
+          user: { id: 5, name: 'Activity Guest' },
+          media_gallery: [],
+          created_at: '2026-06-30',
+        },
+      ],
+    });
+
+    renderWithSWR(<SingleProductReview productType="activity" activitySlug="desert-safari" productData={{ review_summary: { average_rating: 4.9, total_reviews: 1 } }} />);
+
+    await waitFor(() => expect(screen.getByText('Helpful · 4')).toBeInTheDocument());
+
+    expect(mockUseReviewHelpfulVotes).toHaveBeenLastCalledWith(expect.arrayContaining([expect.objectContaining({ id: 18, helpfulCount: 4 })]));
+    fireEvent.click(screen.getByRole('button', { name: 'Mark review as helpful' }));
+    expect(mockSetHelpful).toHaveBeenCalledWith(18, true);
   });
 
   it('shows skeleton feedback when changing all review filters', async () => {
