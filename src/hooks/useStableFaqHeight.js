@@ -21,8 +21,14 @@ export const useStableFaqHeight = ({ enabled, contentSignature }) => {
 
     let resizeFrame = null;
     let active = true;
+    const desktopLayout = window.matchMedia?.('(min-width: 768px)');
 
     const measure = () => {
+      if (desktopLayout && !desktopLayout.matches) {
+        container.style.minHeight = '';
+        return;
+      }
+
       const panels = Array.from(container.querySelectorAll('[data-faq-panel="true"]'));
       const answerHeights = panels.map((panel) => panel.querySelector('[data-faq-answer-content="true"]')?.scrollHeight ?? 0);
       const previousMinHeight = container.style.minHeight;

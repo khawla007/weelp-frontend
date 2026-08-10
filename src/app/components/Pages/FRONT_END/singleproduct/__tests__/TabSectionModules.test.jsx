@@ -8,10 +8,12 @@ import { FaqPanel, WhatIncludedPanel } from '../TabSection__modules';
 
 const originalRequestAnimationFrame = window.requestAnimationFrame;
 const originalScrollBy = window.scrollBy;
+const originalMatchMedia = window.matchMedia;
 
 afterEach(() => {
   window.requestAnimationFrame = originalRequestAnimationFrame;
   window.scrollBy = originalScrollBy;
+  window.matchMedia = originalMatchMedia;
   jest.restoreAllMocks();
 });
 
@@ -69,6 +71,7 @@ describe('WhatIncludedPanel', () => {
 
 describe('FaqPanel', () => {
   it('reserves the tallest answer height so the following section stays fixed', () => {
+    window.matchMedia = jest.fn().mockReturnValue({ matches: true });
     const rectSpy = jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function () {
       return {
         width: 600,

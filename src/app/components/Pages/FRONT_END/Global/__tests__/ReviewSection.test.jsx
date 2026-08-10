@@ -37,9 +37,12 @@ describe('ReviewSectionCity layout', () => {
     );
 
     const destinationPanel = screen.getByTestId('what-about-city').parentElement;
+    const contentPanel = screen.getByTestId('faq').parentElement;
 
     expect(destinationPanel).toHaveClass('self-start', 'pb-[200px]');
     expect(destinationPanel.style.backgroundPosition).toBe('center bottom');
+    expect(contentPanel).not.toHaveClass('p-4');
+    expect(contentPanel).toHaveClass('md:p-6');
     expect(screen.getByTestId('faq')).toHaveAttribute('data-layout', 'stable');
   });
 });

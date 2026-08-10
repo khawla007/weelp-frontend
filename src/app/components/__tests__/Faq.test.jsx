@@ -14,10 +14,12 @@ const multipleItems = [
 ];
 const originalRequestAnimationFrame = window.requestAnimationFrame;
 const originalScrollBy = window.scrollBy;
+const originalMatchMedia = window.matchMedia;
 
 afterEach(() => {
   window.requestAnimationFrame = originalRequestAnimationFrame;
   window.scrollBy = originalScrollBy;
+  window.matchMedia = originalMatchMedia;
   jest.restoreAllMocks();
 });
 
@@ -111,6 +113,7 @@ describe('Accordion interaction', () => {
   });
 
   it('reserves the tallest answer height when stable layout is requested', () => {
+    window.matchMedia = jest.fn().mockReturnValue({ matches: true });
     const rectSpy = jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function () {
       return {
         width: 600,
@@ -145,5 +148,29 @@ describe('Accordion interaction', () => {
 
     rectSpy.mockRestore();
     scrollHeightSpy.mockRestore();
+  });
+
+  it('does not reserve empty answer space on mobile', () => {
+    window.matchMedia = jest.fn().mockReturnValue({ matches: false });
+    jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function () {
+      return {
+        width: 390,
+        height: this.dataset.stableFaq === 'true' ? 200 : 0,
+        top: 0,
+        right: 390,
+        bottom: 0,
+        left: 0,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      };
+    });
+    jest.spyOn(HTMLElement.prototype, 'scrollHeight', 'get').mockImplementation(function () {
+      return this.dataset.faqAnswerContent === 'true' ? 240 : 0;
+    });
+
+    render(<Accordion items={multipleItems} layout="stable" />);
+
+    expect(document.querySelector('[data-stable-faq="true"]').style.minHeight).toBe('');
   });
 });

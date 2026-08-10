@@ -31,7 +31,7 @@ export const ReviewSectionCity = ({ cityData, reviews = [], reviewSummary = null
         </Reveal>
       )}
 
-      <Reveal variant="lift" delay={120} className="w-full xl:w-2/3 p-4 md:p-6 space-y-6">
+      <Reveal variant="lift" delay={120} className="w-full space-y-6 md:p-6 xl:w-2/3">
         {hasReviews && <TotalReviews rating={reviewSummary?.average_rating} totalReviews={reviewSummary?.total_reviews} />}
         {hasReviews && (
           <div className="border border-[var(--weelp-home-border)] rounded-2xl p-4 sm:p-6 md:p-8 bg-background shadow-[8px_8px_20px_rgba(0,0,0,0.05)] dark:shadow-none">
