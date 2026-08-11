@@ -36,8 +36,8 @@ const AiSection = async () => {
             data-overlay
             className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-0 bg-gradient-to-t from-black/65 via-black/35 to-transparent p-4 opacity-100 transition-[transform,opacity] duration-[420ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-y-full group-hover:opacity-0 md:p-6"
           >
-            <h3 className="text-[18px] font-semibold text-white">Save Money</h3>
-            <p className="text-[16px] font-medium text-white/85">Find exclusive travel deals.</p>
+            <h3 className="text-[18px] font-semibold text-foreground">Save Money</h3>
+            <p className="text-[16px] font-medium text-foreground">Find exclusive travel deals.</p>
           </div>
         </article>
 

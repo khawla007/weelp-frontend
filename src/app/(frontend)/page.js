@@ -50,7 +50,7 @@ const HomePage = async () => {
       )}
 
       {featuredCities.length > 0 ? (
-        <BrowseDestinationsSection cities={featuredCities} className="pb-12 md:pb-16 lg:pb-24" />
+        <BrowseDestinationsSection cities={featuredCities} cardTextTone="foreground" className="pb-12 md:pb-16 lg:pb-24" />
       ) : (
         <SectionFallback
           eyebrow="Top destinations"

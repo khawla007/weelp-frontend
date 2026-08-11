@@ -3,7 +3,7 @@ import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { cn, formatCurrency } from '@/lib/utils';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
-export default function CityCard({ city, className = '', subtitleMode = 'count' }) {
+export default function CityCard({ city, className = '', subtitleMode = 'count', textTone = 'overlay' }) {
   const image = city.featured_image || city.feature_image || city.image || '/assets/Card.webp';
   const activitiesCount = city.activities_count ?? city.activitiesCount ?? 0;
   const hasPrice = city.starting_price != null;
@@ -18,6 +18,8 @@ export default function CityCard({ city, className = '', subtitleMode = 'count' 
   } else {
     subtitle = `${activitiesCount} Activities`;
   }
+
+  const usesForegroundText = textTone === 'foreground';
 
   return (
     <NavigationLink
@@ -37,11 +39,17 @@ export default function CityCard({ city, className = '', subtitleMode = 'count' 
         className="object-cover transition-transform duration-300 group-hover:scale-105 motion-reduce:group-hover:scale-100"
       />
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 pt-16">
-        <span className="block text-[18px] leading-[1.59] text-white drop-shadow-md" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
+        <span
+          className={cn('block text-[18px] leading-[1.59] drop-shadow-md', usesForegroundText ? 'text-foreground' : 'text-white')}
+          style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}
+        >
           {city.name}
         </span>
         {subtitle && (
-          <span className="text-[14px] text-white/95 drop-shadow-md" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 400 }}>
+          <span
+            className={cn('text-[14px] drop-shadow-md', usesForegroundText ? 'text-foreground' : 'text-white/95')}
+            style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 400 }}
+          >
             {subtitle}
           </span>
         )}

@@ -30,6 +30,19 @@ describe('AiSection', () => {
     expect(getByText('Your AI Travel Buddy')).toBeInTheDocument();
   });
 
+  it('matches the two small card overlays to the heading and keeps the globe-card copy dark', async () => {
+    const ui = await AiSection();
+    const { getByText } = render(ui);
+
+    expect(getByText('Your AI Travel Buddy')).toHaveClass('text-foreground');
+    expect(getByText('Suggestions on Map')).toHaveClass('text-foreground');
+    expect(getByText('See your trip mapped out.')).toHaveClass('text-foreground');
+    expect(getByText('Save Money')).toHaveClass('text-foreground');
+    expect(getByText('Find exclusive travel deals.')).toHaveClass('text-foreground');
+    expect(getByText('Personalised for you')).toHaveClass('text-weelp-hero-foreground');
+    expect(getByText('Tailored recommendations.')).toHaveClass('text-weelp-hero-foreground/75');
+  });
+
   it('keeps the Buddy conversation inside a fixed-height scroll viewport', async () => {
     const ui = await AiSection();
     const { getByRole } = render(ui);
@@ -103,13 +116,5 @@ describe('AiSection', () => {
     expect(moneyImg).toBeTruthy();
     expect(moneyImg.className).toContain('group-hover:scale-[1.02]');
     expect(moneyImg.className).toContain('motion-reduce:group-hover:scale-100');
-  });
-
-  it('uses artwork-safe dark copy on the personalised globe card in both themes', async () => {
-    const ui = await AiSection();
-    const { getByText } = render(ui);
-
-    expect(getByText('Personalised for you')).toHaveClass('text-weelp-hero-foreground');
-    expect(getByText('Tailored recommendations.')).toHaveClass('text-weelp-hero-foreground/75');
   });
 });

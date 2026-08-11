@@ -15,7 +15,14 @@ const DESTINATION_BREAKPOINTS = {
   1440: { slidesPerView: 5, spaceBetween: 22 },
 };
 
-export default function BrowseDestinationsSection({ cities = [], title = 'Top Destinations', subtitleMode = 'count', navigationPrefix = 'browse-destinations', className = '' }) {
+export default function BrowseDestinationsSection({
+  cities = [],
+  title = 'Top Destinations',
+  subtitleMode = 'count',
+  navigationPrefix = 'browse-destinations',
+  className = '',
+  cardTextTone = 'overlay',
+}) {
   const items = cities.map((c) => ({
     id: c.id,
     name: c.name,
@@ -47,7 +54,7 @@ export default function BrowseDestinationsSection({ cities = [], title = 'Top De
         breakpoints={DESTINATION_BREAKPOINTS}
         slideClassName="!h-auto"
         showMobilePagination
-        renderSlide={(city) => <CityCard city={city} subtitleMode={subtitleMode} />}
+        renderSlide={(city) => <CityCard city={city} subtitleMode={subtitleMode} textTone={cardTextTone} />}
       />
     </Reveal>
   );
