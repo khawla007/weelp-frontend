@@ -307,9 +307,9 @@ body {
   }
 
   .dark
-    button:not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.review-featured-switch):not(.weelp-creator-like-button):not(.bg-card):not(
-      [data-sidebar='menu-button']
-    ):not([data-sidebar='rail']),
+    button:not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.review-featured-switch):not(.weelp-creator-like-button):not(.weelp-search-control):not(
+      .bg-card
+    ):not([data-sidebar='menu-button']):not([data-sidebar='rail']),
   .dark a[role='button'],
   .dark [role='button'],
   .dark a[class~='bg-weelp-sage-deep'],
@@ -321,8 +321,8 @@ body {
 
   .dark
     button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.review-featured-switch):not(.weelp-creator-like-button):not(
-      [data-sidebar='menu-button']
-    ):not([data-sidebar='rail']),
+      .weelp-search-control
+    ):not([data-sidebar='menu-button']):not([data-sidebar='rail']),
   .dark a[role='button']:not([aria-disabled='true']),
   .dark a[data-weelp-button-link]:not([aria-disabled='true']),
   .dark a[class~='bg-weelp-sage-deep']:not([aria-disabled='true']),
@@ -334,8 +334,8 @@ body {
 
   .dark
     button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.review-featured-switch):not(.weelp-creator-like-button):not(
-      [data-sidebar='menu-button']
-    ):not([data-sidebar='rail']):hover,
+      .weelp-search-control
+    ):not([data-sidebar='menu-button']):not([data-sidebar='rail']):hover,
   .dark a[role='button']:not([aria-disabled='true']):hover,
   .dark a[data-weelp-button-link]:not([aria-disabled='true']):hover,
   .dark a[class~='bg-weelp-sage-deep']:not([aria-disabled='true']):hover,

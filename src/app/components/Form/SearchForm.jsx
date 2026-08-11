@@ -208,7 +208,10 @@ export const SearchFormBlogs = () => {
 
   return (
     <div className="flex flex-col max-w-[30rem] w-full mx-auto">
-      <form onSubmit={handleSubmit(onSubmit)} className={`w-full bg-background border  flex items-center justify-evenly rounded-xl shadow ${errors?.search?.message ? 'border-red-400 border' : null}`}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className={`flex min-h-14 w-full items-center gap-3 rounded-xl border ${errors?.search?.message ? 'border-red-400' : 'border-border'} ${CREATOR_SEARCH_FIELD_CLASS} px-3 py-2 shadow-[0_3px_9px_rgba(0,0,0,0.04)] dark:shadow-none`}
+      >
         <input
           id="search"
           aria-label="Search blogs"
@@ -222,14 +225,18 @@ export const SearchFormBlogs = () => {
             },
           })}
           placeholder={'What`s your want to read ?'}
-          className="min-w-0 flex-1 p-4 focus-visible:outline-none placeholder:text-weelp-steel"
+          className="min-w-0 flex-1 bg-transparent px-2 py-3 text-sm font-medium text-foreground placeholder:text-muted-foreground focus-visible:outline-none"
         />
         {searchValue && (
-          <button type="button" aria-label="Clear blog search" onClick={clearSearch} className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg">
+          <button type="button" aria-label="Clear blog search" onClick={clearSearch} className="weelp-search-control inline-flex size-11 shrink-0 items-center justify-center rounded-lg">
             <X size={16} />
           </button>
         )}
-        <button type="submit" aria-label="Search blogs" className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg">
+        <button
+          type="submit"
+          aria-label="Search blogs"
+          className={`weelp-search-control inline-flex size-11 shrink-0 items-center justify-center rounded-lg ${CREATOR_SEARCH_ICON_CLASS} text-white shadow-[0_3px_9px_rgba(0,0,0,0.04)]`}
+        >
           {isSubmitting || isValidating ? <LoaderCircle size={16} className="animate-spin duration-1000" /> : <Search size={16} />}
         </button>
       </form>

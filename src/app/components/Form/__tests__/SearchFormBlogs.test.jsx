@@ -21,6 +21,23 @@ jest.mock('@/app/components/MediaImage', () => ({
 import { SearchFormBlogs } from '../SearchForm';
 
 describe('SearchFormBlogs', () => {
+  it('uses the Explore Creators search field styling in light and dark themes', () => {
+    useBlogs.mockReturnValue({ blogs: { data: [] }, isValidating: false, error: null });
+
+    render(<SearchFormBlogs />);
+
+    const input = screen.getByRole('textbox', { name: 'Search blogs' });
+    const form = input.closest('form');
+    const submitButton = screen.getByRole('button', { name: 'Search blogs' });
+
+    expect(form).toHaveClass('min-h-14', 'gap-3', 'border-border', 'bg-card', 'dark:bg-[var(--weelp-home-surface)]', 'px-3', 'py-2', 'dark:shadow-none');
+    expect(input).toHaveClass('bg-transparent', 'px-2', 'py-3', 'text-sm', 'font-medium', 'text-foreground', 'placeholder:text-muted-foreground');
+    expect(submitButton).toHaveClass('weelp-search-control', 'bg-weelp-sage-deep', 'dark:bg-[var(--weelp-home-page)]', 'text-white', 'shadow-[0_3px_9px_rgba(0,0,0,0.04)]');
+
+    fireEvent.change(input, { target: { value: 'Story' } });
+    expect(screen.getByRole('button', { name: 'Clear blog search' })).toHaveClass('weelp-search-control');
+  });
+
   it('submits a structured search query and renders internal results with NavigationLink semantics', async () => {
     useBlogs.mockImplementation((params) => ({
       blogs: params?.search ? { data: [{ id: 10, slug: 'sit-qui-temporibus-10', name: 'Sit qui temporibus.', media_gallery: [] }] } : { data: [] },
