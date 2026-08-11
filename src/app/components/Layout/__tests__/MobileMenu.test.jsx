@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import MobileMenu from '../MobileMenu';
+import MobileMenu, { MobileTopStrip } from '../MobileMenu';
 
 const mockUseSession = jest.fn();
 let mockPathname = '/';
@@ -113,15 +113,26 @@ describe('MobileMenu', () => {
     expect(topStrip).not.toHaveClass('bg-surface-tint');
   });
 
-  it('keeps over-hero top strip spacing aligned with solid mobile pages', () => {
+  it('uses 8px vertical padding for the mobile top strip at every viewport', () => {
     render(<MobileMenu stickyHeader={false} variant="over-hero" />);
 
     const topStripGrid = screen.getByText('Get Exclusive offer on the App').closest('.grid');
     const offerPill = screen.getByText('Get Exclusive offer on the App').closest('.inline-flex');
 
-    expect(topStripGrid).toHaveClass('px-3', 'py-2.5', 'sm:px-4', 'sm:py-3');
+    expect(topStripGrid).toHaveClass('px-3', 'py-2', 'sm:px-4');
     expect(offerPill).toHaveClass('py-1', 'sm:py-1.5');
-    expect(topStripGrid).not.toHaveClass('pt-[18px]', 'pb-1.5');
+    expect(topStripGrid).not.toHaveClass('py-2.5', 'sm:h-[46px]', 'sm:py-0');
+  });
+
+  it('uses content-driven height for the solid mobile and tablet top strip', () => {
+    render(<MobileTopStrip topStripVisible topStripOverHero={false} collapsible={false} />);
+
+    const topStrip = getTopStrip();
+    const topStripGrid = screen.getByText('Get Exclusive offer on the App').closest('.grid');
+
+    expect(topStrip).not.toHaveClass('h-[46px]', 'sm:h-[55px]');
+    expect(topStripGrid).toHaveClass('py-2');
+    expect(topStripGrid).not.toHaveClass('sm:h-[46px]', 'sm:py-0');
   });
 
   it('gives both mobile brand links a minimum 44px touch target', () => {

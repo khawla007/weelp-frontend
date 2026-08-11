@@ -106,15 +106,23 @@ describe('DesktopMenu', () => {
     expect(screen.getByRole('link', { name: /tours & experiences/i })).not.toHaveClass('weelp-header-nav-item');
   });
 
-  it('keeps over-hero desktop top strip spacing aligned with solid pages', () => {
-    render(<DesktopTopStrip topStripVisible topStripOverHero collapsible />);
+  it('uses content-driven height and 8px vertical padding for the desktop top strip', () => {
+    const { rerender } = render(<DesktopTopStrip topStripVisible topStripOverHero collapsible />);
 
-    const topStrip = screen.getByText(/get exclusive offer on the app/i).closest('.hidden');
-    const topStripInner = screen.getByText(/get exclusive offer on the app/i).closest('.mx-auto');
+    let topStrip = screen.getByText(/get exclusive offer on the app/i).closest('.hidden');
+    let topStripInner = screen.getByText(/get exclusive offer on the app/i).closest('.mx-auto');
 
-    expect(topStrip).toHaveClass('max-h-[46px]');
-    expect(topStrip).not.toHaveClass('max-h-[52px]');
-    expect(topStripInner).toHaveClass('h-[46px]', 'px-4', 'md:px-8', 'xl:px-[60px]');
+    expect(topStrip).toHaveClass('max-h-16');
+    expect(topStrip).not.toHaveClass('max-h-[46px]');
+    expect(topStripInner).toHaveClass('py-2', 'px-4', 'md:px-8', 'xl:px-[60px]');
+    expect(topStripInner).not.toHaveClass('h-[46px]');
+
+    rerender(<DesktopTopStrip topStripVisible topStripOverHero={false} collapsible={false} />);
+    topStrip = screen.getByText(/get exclusive offer on the app/i).closest('.hidden');
+    topStripInner = screen.getByText(/get exclusive offer on the app/i).closest('.mx-auto');
+
+    expect(topStrip).not.toHaveClass('h-[46px]');
+    expect(topStripInner).toHaveClass('py-2');
   });
 
   it('keeps the desktop mega menu mounted in a closing state before unmounting', () => {

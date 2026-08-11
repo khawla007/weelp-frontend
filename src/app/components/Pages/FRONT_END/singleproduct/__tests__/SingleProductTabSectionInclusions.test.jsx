@@ -108,7 +108,7 @@ describe('SingleProductTabSection activity inclusions', () => {
     const faqSection = document.getElementById('tab_4');
     const desktopSimilar = screen.getAllByTestId('similar-experiences')[0].parentElement;
 
-    expect(faqSection).toHaveClass('pb-4', 'pt-[35px]', 'md:pb-6', 'lg:pb-8', 'xl:pb-0', 'xl:mb-[35px]');
+    expect(faqSection).toHaveClass('pb-6', 'pt-[35px]', 'lg:pb-8', 'xl:pb-0', 'xl:mb-[35px]');
     expect(faqSection).not.toHaveClass('lg:mb-[35px]');
     expect(desktopSimilar).toHaveClass('hidden', 'md:block', 'xl:mb-[70px]');
     expect(desktopSimilar).not.toHaveClass('lg:mb-[70px]');

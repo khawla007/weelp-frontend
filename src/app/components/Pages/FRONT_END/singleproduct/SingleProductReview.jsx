@@ -454,8 +454,8 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
 
       {/* Review Cards Slider - Custom Vertical Slider (3 cards stacked) */}
       <div className="mt-4" aria-busy={isReviewListLoading}>
-        {/* Reviews Container - Fixed height for 3 cards */}
-        <div className="flex flex-col gap-4 min-h-[600px]">
+        {/* Keep filter transitions stable without reserving space after reviews load. */}
+        <div className={`flex flex-col gap-4 ${isReviewListLoading ? 'min-h-[600px]' : ''}`}>
           {isReviewListLoading ? (
             <div className="flex flex-col gap-4" role="status" aria-label="Loading reviews">
               <span className="sr-only">Loading reviews</span>

@@ -130,6 +130,9 @@ describe('SingleProductReview', () => {
 
     await waitFor(() => expect(screen.getByText('Helpful · 4')).toBeInTheDocument());
 
+    const reviewCard = screen.getByText('The guide made the activity easy to follow.').parentElement;
+
+    expect(reviewCard.parentElement).not.toHaveClass('min-h-[600px]');
     expect(mockUseReviewHelpfulVotes).toHaveBeenLastCalledWith(expect.arrayContaining([expect.objectContaining({ id: 18, helpfulCount: 4 })]));
     fireEvent.click(screen.getByRole('button', { name: 'Mark review as helpful' }));
     expect(mockSetHelpful).toHaveBeenCalledWith(18, true);

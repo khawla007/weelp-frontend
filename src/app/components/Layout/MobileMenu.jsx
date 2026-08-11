@@ -34,11 +34,11 @@ export const MobileTopStrip = ({ topStripVisible, topStripOverHero, collapsible 
     topStripOverHero && topStripVisible
       ? 'border-transparent bg-background/85 text-foreground backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.12)] dark:shadow-none'
       : 'border-border bg-background text-foreground';
-  const topStripSpacingClass = 'px-3 py-2.5 sm:px-4 sm:py-3';
+  const topStripSpacingClass = 'px-3 py-2 sm:px-4';
   const topStripInnerPaddingClass = 'py-1 sm:py-1.5';
   const collapseClass = collapsible
     ? `${topStripVisible ? 'max-h-24' : 'max-h-0 pointer-events-none'} overflow-hidden transition-[max-height,padding] duration-[220ms] ease-[var(--weelp-ease-out)] motion-reduce:transition-none`
-    : 'h-[46px] overflow-hidden';
+    : 'overflow-hidden';
 
   return (
     <div aria-hidden={topStripVisible ? undefined : true} className={`${topStripVisible ? 'border-b' : 'border-b-0'} ${collapseClass} ${topStripSurfaceClass}`}>

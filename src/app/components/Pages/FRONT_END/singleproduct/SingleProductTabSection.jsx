@@ -199,7 +199,7 @@ const SingleProductTabSection = ({
 
   const bottomImage = sidebarBottomImage || SIDEBAR_IMAGES[productType];
   const sectionBottomSpacing = isActivityProduct ? 'pb-4 md:pb-6 lg:pb-8 xl:pb-0' : 'pb-28 xl:pb-0';
-  const faqSectionSpacing = isActivityProduct ? 'pb-4 pt-[35px] md:pb-6 lg:pb-8 xl:mb-[35px] xl:pb-0' : 'pt-[35px] lg:mb-[35px]';
+  const faqSectionSpacing = isActivityProduct ? 'pb-6 pt-[35px] lg:pb-8 xl:mb-[35px] xl:pb-0' : 'pt-[35px] lg:mb-[35px]';
   const desktopSimilarSpacing = isActivityProduct ? 'hidden md:block xl:mb-[70px]' : 'hidden md:block lg:mb-[70px]';
 
   return (
