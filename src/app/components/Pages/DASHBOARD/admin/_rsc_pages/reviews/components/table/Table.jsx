@@ -57,7 +57,7 @@ export function ReviewTable({ reviews = [], onDelete, selectedItems = [], onSele
       header: 'Date',
       cell: ({ row }) => {
         const created_date = row?.original?.created_at;
-        return <span className="text-nowrap">{created_date}</span>;
+        return <span className="text-nowrap">{created_date?.slice(0, 10) ?? ''}</span>;
       },
     },
     {

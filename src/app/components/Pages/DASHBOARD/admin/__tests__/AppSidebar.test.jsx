@@ -2,8 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { getLogoUrl } from '@/lib/config/brand';
 import { AppSidebar } from '../app-sidebar';
 
+const mockNavMain = jest.fn(() => <nav aria-label="Admin navigation" />);
+
 jest.mock('../nav-main', () => ({
-  NavMain: () => <nav aria-label="Admin navigation" />,
+  NavMain: (props) => mockNavMain(props),
+}));
+
+jest.mock('@/hooks/api/admin/navigationUnseen', () => ({
+  useAdminNavigationUnseen: () => ({ counts: { orders: 4, reviews: 2 } }),
 }));
 
 jest.mock('@/constants/navigations/AdminNavigation', () => ({
@@ -24,6 +30,10 @@ jest.mock('@/components/ui/sidebar', () => ({
 }));
 
 describe('AppSidebar', () => {
+  beforeEach(() => {
+    mockNavMain.mockClear();
+  });
+
   it('uses the same theme-readable brand treatment as the public frontend', () => {
     render(<AppSidebar session={null} />);
 
@@ -34,5 +44,14 @@ describe('AppSidebar', () => {
     expect(logo.closest('a')).toHaveAttribute('target', '_blank');
     expect(logo.closest('a')).toHaveAttribute('rel', 'noopener noreferrer');
     expect(screen.getByText('Weelp.')).toHaveClass('text-foreground');
+  });
+
+  it('passes unseen navigation counts to the main navigation', () => {
+    render(<AppSidebar session={null} />);
+
+    expect(mockNavMain).toHaveBeenCalledWith({
+      items: [],
+      counts: { orders: 4, reviews: 2 },
+    });
   });
 });

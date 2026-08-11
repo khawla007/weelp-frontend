@@ -1,10 +1,15 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { useAllOrdersAdmin } from '@/hooks/api/admin/orders';
+import { useMarkAdminNavigationSeen } from '@/hooks/api/admin/navigationUnseen';
 
 import OrdersPage from '../page';
 
 jest.mock('@/hooks/api/admin/orders', () => ({ useAllOrdersAdmin: jest.fn() }));
+jest.mock('@/hooks/api/admin/navigationUnseen', () => ({
+  newestCreatedAt: jest.requireActual('@/hooks/api/admin/navigationUnseen').newestCreatedAt,
+  useMarkAdminNavigationSeen: jest.fn(),
+}));
 jest.mock('@/lib/actions/vendor', () => ({ editVendorStatusbyIdAdmin: jest.fn() }));
 jest.mock('@/components/ui/dropdown-menu', () => ({
   DropdownMenu: ({ children }) => children,
@@ -247,5 +252,78 @@ describe('OrdersPage', () => {
     const callsAfterResolution = useAllOrdersAdmin.mock.calls.slice(callsBeforeResolution).map(([query]) => query);
     expect(callsAfterResolution).not.toContain('?page=1&view=active&search=Safari');
     expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=2&view=active&search=Safari');
+  });
+
+  it('clears unseen orders through the newest timestamp after the current response settles', () => {
+    backendResponse.data = [
+      { id: 1, created_at: '2026-08-10T08:00:00.000000Z' },
+      { id: 2, created_at: '2026-08-11T10:05:00.000000Z' },
+      { id: 3, created_at: 'invalid' },
+    ];
+
+    render(<OrdersPage />);
+
+    expect(useMarkAdminNavigationSeen).toHaveBeenLastCalledWith('orders', {
+      enabled: true,
+      seenThrough: '2026-08-11T10:05:00.000Z',
+    });
+  });
+
+  it('clears an empty settled orders response without a timestamp boundary', () => {
+    render(<OrdersPage />);
+
+    expect(useMarkAdminNavigationSeen).toHaveBeenLastCalledWith('orders', {
+      enabled: true,
+      seenThrough: undefined,
+    });
+  });
+
+  it.each([
+    ['loading', { isLoading: true, isValidating: false, error: null }],
+    ['validating', { isLoading: false, isValidating: true, error: null }],
+    ['failed', { isLoading: false, isValidating: false, error: new Error('Orders failed') }],
+  ])('does not clear unseen orders while the response is %s', (_state, requestState) => {
+    useAllOrdersAdmin.mockImplementation(() => ({
+      orders: { data: backendResponse },
+      mutate: mutateOrders,
+      ...requestState,
+    }));
+
+    render(<OrdersPage />);
+
+    expect(useMarkAdminNavigationSeen).toHaveBeenLastCalledWith('orders', {
+      enabled: false,
+      seenThrough: undefined,
+    });
+  });
+
+  it('waits for a fresh response before advancing a stale cached boundary', () => {
+    let hookState = {
+      orders: { data: { ...backendResponse, data: [{ id: 1, created_at: '2026-08-10T08:00:00.000000Z' }] } },
+      isLoading: false,
+      isValidating: true,
+      mutate: mutateOrders,
+      error: null,
+    };
+    useAllOrdersAdmin.mockImplementation(() => hookState);
+
+    const { rerender } = render(<OrdersPage />);
+
+    expect(useMarkAdminNavigationSeen).toHaveBeenLastCalledWith('orders', {
+      enabled: false,
+      seenThrough: '2026-08-10T08:00:00.000Z',
+    });
+
+    hookState = {
+      ...hookState,
+      orders: { data: { ...backendResponse, data: [{ id: 2, created_at: '2026-08-12T09:30:00.456789Z' }] } },
+      isValidating: false,
+    };
+    rerender(<OrdersPage />);
+
+    expect(useMarkAdminNavigationSeen).toHaveBeenLastCalledWith('orders', {
+      enabled: true,
+      seenThrough: '2026-08-12T09:30:00.456Z',
+    });
   });
 });

@@ -9,6 +9,7 @@ import { FilterOrdersPage } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pa
 import { NavigationOrder, StatsOrdersCards } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/orders_shared';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { newestCreatedAt, useMarkAdminNavigationSeen } from '@/hooks/api/admin/navigationUnseen';
 import { useAllOrdersAdmin } from '@/hooks/api/admin/orders';
 
 const ORDER_STATUS_OPTIONS = [
@@ -29,8 +30,12 @@ const OrdersPage = () => {
   if (listQuery.status) queryParams.set('status', listQuery.status);
   if (listQuery.search) queryParams.set('search', listQuery.search);
 
-  const { orders = {}, isLoading: isLoadingOrders, mutate: mutateOrders } = useAllOrdersAdmin(`?${queryParams.toString()}`);
+  const { orders = {}, isLoading: isLoadingOrders, isValidating: isValidatingOrders, error: ordersError, mutate: mutateOrders } = useAllOrdersAdmin(`?${queryParams.toString()}`);
   const { data = {} } = orders;
+  useMarkAdminNavigationSeen('orders', {
+    enabled: !isLoadingOrders && !isValidatingOrders && !ordersError && Array.isArray(data.data),
+    seenThrough: newestCreatedAt(data.data),
+  });
   const currentPage = Number(data.current_page) || 1;
   const itemsPerPage = Number(data.per_page) || 3;
   const totalItems = Number(data.total) || 0;

@@ -37,6 +37,7 @@ import {
  * @property {string} url
  * @property {NavItem[]} [children]
  * @property {boolean} [comingSoon]
+ * @property {string} [notificationKey]
  */
 
 /**
@@ -83,8 +84,8 @@ const adminRoutes = [
   {
     section: 'BOOKINGS',
     items: [
-      { title: 'Orders', icon: ShoppingCart, url: '/dashboard/admin/orders' },
-      { title: 'Reviews', icon: MessageSquare, url: '/dashboard/admin/reviews' },
+      { title: 'Orders', icon: ShoppingCart, url: '/dashboard/admin/orders', notificationKey: 'orders' },
+      { title: 'Reviews', icon: MessageSquare, url: '/dashboard/admin/reviews', notificationKey: 'reviews' },
     ],
   },
   {

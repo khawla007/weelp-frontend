@@ -10,7 +10,7 @@ The badges represent newly created records, not pending workflow status. Updatin
 
 ## Data model and baseline
 
-The `users` table gains two nullable timestamps:
+The `users` table gains two timestamps:
 
 - `admin_orders_last_seen_at`
 - `admin_reviews_last_seen_at`
@@ -63,7 +63,7 @@ The server timestamp is authoritative. When a list opens, the PUT request record
 
 There is a narrow case where a record can be created after the page's list request but before the seen request. The seen request could then classify that record as seen even though it was not in the first list response. To avoid this, the page sends the newest visible record's `created_at` as `seen_through` when available; the backend advances the timestamp only to that validated server-issued record timestamp. If the list is empty, the page sends no value and the backend uses the request time. The order and review list APIs must therefore expose full ISO-8601 `created_at` values for visible records.
 
-The backend clamps `seen_through` to the current server time and never moves a last-seen timestamp backwards. A newly arriving record cannot be cleared by an older page response.
+The backend accepts the millisecond UTC ISO-8601 format emitted by JavaScript `toISOString()`, clamps `seen_through` to the current server time, and uses an atomic conditional update so concurrent requests never move a last-seen timestamp backwards. A newly arriving record cannot be cleared by an older page response.
 
 ## Failure paths worth knowing
 

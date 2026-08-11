@@ -9,6 +9,7 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
@@ -19,6 +20,8 @@ import {
 
 const COMING_SOON_LABEL = 'Soon';
 const COMING_SOON_BADGE_CLASS = 'rounded-md bg-weelp-sage-deep px-1.5 py-0.5 text-[8px] font-semibold leading-none text-white';
+const UNSEEN_BADGE_CLASS =
+  'bg-weelp-sage-deep !text-white peer-hover/menu-button:!text-white peer-data-[active=true]/menu-button:!text-white group-data-[collapsible=icon]:!flex group-data-[collapsible=icon]:right-0.5 group-data-[collapsible=icon]:top-0.5 group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:min-w-4 group-data-[collapsible=icon]:px-1 group-data-[collapsible=icon]:text-[9px]';
 
 function ComingSoonBadge() {
   return <span className={COMING_SOON_BADGE_CLASS}>{COMING_SOON_LABEL}</span>;
@@ -27,7 +30,14 @@ function ComingSoonBadge() {
 const isLeafActive = (pathname, url) => pathname === url;
 const isParentActive = (pathname, item) => item.children?.some((c) => pathname === c.url || pathname.startsWith(c.url + '/'));
 
-export function NavMain({ items: sections }) {
+function getNotificationCount(item, counts) {
+  if (!item.notificationKey) return 0;
+
+  const count = Number(counts?.[item.notificationKey]);
+  return Number.isFinite(count) && count > 0 ? Math.floor(count) : 0;
+}
+
+export function NavMain({ items: sections, counts = {} }) {
   const pathname = usePathname();
   const activeParentKey =
     sections.flatMap((section) => section.items.map((item) => ({ key: `${section.section}:${item.title}`, item }))).find(({ item }) => isParentActive(pathname, item))?.key ?? null;
@@ -37,13 +47,21 @@ export function NavMain({ items: sections }) {
   return (
     <>
       {sections.map((section) => (
-        <SectionGroup key={section.section} section={section} pathname={pathname} showSeparator={section.section === 'COMING SOON'} openItem={visibleOpenItem} setOpenItem={setOpenItem} />
+        <SectionGroup
+          key={section.section}
+          section={section}
+          pathname={pathname}
+          showSeparator={section.section === 'COMING SOON'}
+          openItem={visibleOpenItem}
+          setOpenItem={setOpenItem}
+          counts={counts}
+        />
       ))}
     </>
   );
 }
 
-function SectionGroup({ section, pathname, showSeparator, openItem, setOpenItem }) {
+function SectionGroup({ section, pathname, showSeparator, openItem, setOpenItem, counts }) {
   return (
     <>
       {showSeparator && <SidebarSeparator />}
@@ -55,7 +73,7 @@ function SectionGroup({ section, pathname, showSeparator, openItem, setOpenItem 
               item.children?.length ? (
                 <ParentItem key={item.title} item={item} itemKey={`${section.section}:${item.title}`} pathname={pathname} openItem={openItem} setOpenItem={setOpenItem} />
               ) : (
-                <LeafItem key={item.title} item={item} pathname={pathname} />
+                <LeafItem key={item.title} item={item} pathname={pathname} counts={counts} />
               ),
             )}
           </SidebarMenu>
@@ -65,8 +83,9 @@ function SectionGroup({ section, pathname, showSeparator, openItem, setOpenItem 
   );
 }
 
-function LeafItem({ item, pathname }) {
+function LeafItem({ item, pathname, counts }) {
   const Icon = item.icon;
+  const notificationCount = getNotificationCount(item, counts);
 
   if (item.comingSoon) {
     return (
@@ -85,11 +104,16 @@ function LeafItem({ item, pathname }) {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton asChild isActive={isLeafActive(pathname, item.url)} tooltip={item.title}>
-        <Link href={item.url}>
+        <Link href={item.url} aria-label={notificationCount > 0 ? `${item.title}, ${notificationCount} unseen` : undefined}>
           <Icon />
           <span>{item.title}</span>
         </Link>
       </SidebarMenuButton>
+      {notificationCount > 0 ? (
+        <SidebarMenuBadge aria-hidden="true" className={UNSEEN_BADGE_CLASS}>
+          {notificationCount > 99 ? '99+' : notificationCount}
+        </SidebarMenuBadge>
+      ) : null}
     </SidebarMenuItem>
   );
 }

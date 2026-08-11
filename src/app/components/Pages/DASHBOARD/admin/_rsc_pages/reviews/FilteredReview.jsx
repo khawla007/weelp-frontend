@@ -15,6 +15,7 @@ import { FORM_REVIEW_ITEM_TYPE } from '@/constants/forms/review';
 import { BulkActionButtons } from '@/app/components/BulkActions/BulkActionButtons';
 import { AddNewButton } from '@/app/components/Button/AddNewButton';
 import { FilterBar } from '@/app/components/DashboardShared/FilterBar';
+import { newestCreatedAt, useMarkAdminNavigationSeen } from '@/hooks/api/admin/navigationUnseen';
 
 const FilteredReview = () => {
   const { toast } = useToast();
@@ -69,10 +70,14 @@ const FilteredReview = () => {
   }, [debouncedFilters, filters]);
 
   // filter
-  const { data = {}, isValidating, error, mutate } = useSWR(`/api/admin/reviews/?${queryParams}`, fetcher); // get all reviews
+  const { data = {}, isLoading, isValidating, error, mutate } = useSWR(`/api/admin/reviews/?${queryParams}`, fetcher); // get all reviews
 
   const { data: responseData = {} } = data;
   const { current_page = 0, per_page = 0, data: reveiws = [], total = 0 } = responseData; // safely destructure
+  useMarkAdminNavigationSeen('reviews', {
+    enabled: !isLoading && !isValidating && !error && Array.isArray(responseData.data),
+    seenThrough: newestCreatedAt(reveiws),
+  });
 
   // handleDeleteReview
   const handleDeleteReview = async (reviewId) => {

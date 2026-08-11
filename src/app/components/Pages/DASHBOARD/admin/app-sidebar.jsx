@@ -6,12 +6,14 @@ import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { NavMain } from './nav-main';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail, useSidebar } from '@/components/ui/sidebar';
 import { DashboardAdminNav } from '@/constants/navigations/AdminNavigation';
+import { useAdminNavigationUnseen } from '@/hooks/api/admin/navigationUnseen';
 import { getLogoUrl } from '@/lib/config/brand';
 
 const { adminRoutes } = DashboardAdminNav;
 
 export function AppSidebar({ session, ...props }) {
   const { state, open, toggleSidebar, isMobile } = useSidebar();
+  const { counts } = useAdminNavigationUnseen();
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -30,7 +32,7 @@ export function AppSidebar({ session, ...props }) {
       </SidebarHeader>
 
       <SidebarContent className={isMobile ? '' : 'tfc_scroll'}>
-        <NavMain items={adminRoutes} />
+        <NavMain items={adminRoutes} counts={counts} />
       </SidebarContent>
 
       <SidebarRail className="after:hidden" />
