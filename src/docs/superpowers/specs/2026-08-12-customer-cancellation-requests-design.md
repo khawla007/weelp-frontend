@@ -10,13 +10,13 @@ This change gives customers a clear request flow while keeping the final decisio
 
 The suggestion is based on the time between `requested_at` and the booking's `travel_date` plus `preferred_time`. Both values are interpreted in the application's configured business timezone. Because `preferred_time` is stored on every checkout selection, the calculation can use the actual scheduled time rather than treating every booking as an all-day event.
 
-| Time remaining when requested | Suggested deduction | Suggested refund |
-| --- | ---: | ---: |
-| 30 days or more | 10% | 90% |
-| 15 days to less than 30 days | 25% | 75% |
-| 7 days to less than 15 days | 50% | 50% |
-| 48 hours to less than 7 days | 75% | 25% |
-| Less than 48 hours, or travel already started | 100% | 0% |
+| Time remaining when requested                 | Suggested deduction | Suggested refund |
+| --------------------------------------------- | ------------------: | ---------------: |
+| 30 days or more                               |                 10% |              90% |
+| 15 days to less than 30 days                  |                 25% |              75% |
+| 7 days to less than 15 days                   |                 50% |              50% |
+| 48 hours to less than 7 days                  |                 75% |              25% |
+| Less than 48 hours, or travel already started |                100% |               0% |
 
 Exact durations determine the band, so a request exactly 48 hours before travel receives the 25% suggestion and one exactly 7 days before travel receives the 50% suggestion. Percentages live in one backend cancellation-policy configuration rather than in React or controller conditionals. A later release can replace these defaults or introduce item-specific rules without changing the request lifecycle.
 
