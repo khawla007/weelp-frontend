@@ -3,10 +3,9 @@
 import { useEffect, useState, useMemo } from 'react';
 import { FieldSkeleton } from '@/app/components/Animation/Cards';
 import { useForm, Controller, useWatch } from 'react-hook-form';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Star, Tag } from 'lucide-react';
+import { Star, Tag } from 'lucide-react';
 import debounce from 'lodash.debounce';
 import { Badge } from '@/components/ui/badge';
 import 'react-range-slider-input/dist/style.css';
@@ -200,122 +199,33 @@ const FilterBlog = () => {
           <DashboardSearch control={control} placeholder="Search Blogs" />
         </div>
 
-        <Accordion type="single" collapsible>
-          {/* Category */}
+        {/* Category */}
+        <div className="space-y-2">
+          <p className="flex items-center gap-4 font-medium">
+            <Tag size={18} /> Categories
+          </p>
 
-          <AccordionItem value="category">
-            <AccordionTrigger>
-              <p className="flex items-center gap-4">
-                <Tag size={18} /> Categories
-              </p>
-            </AccordionTrigger>
-            <AccordionContent>
-              {/* STATUS MESSAGE */}
-              {isCategoriesLoading && <FieldSkeleton />}
+          {isCategoriesLoading && <FieldSkeleton />}
 
-              {!isCategoriesLoading && categoriesOptionError && (
-                <span className="text-sm text-destructive">{categoriesOptionError?.message || `Failed to load categories <br> ${JSON.stringify(categoriesOptionError)}`}</span>
-              )}
-              {!isCategoriesLoading && !categoriesOptionError && categoriesList.length === 0 && <span className="text-sm text-muted-foreground">No categories found</span>}
+          {!isCategoriesLoading && categoriesOptionError && (
+            <span className="text-sm text-destructive">{categoriesOptionError?.message || `Failed to load categories <br> ${JSON.stringify(categoriesOptionError)}`}</span>
+          )}
+          {!isCategoriesLoading && !categoriesOptionError && categoriesList.length === 0 && <span className="text-sm text-muted-foreground">No categories found</span>}
 
-              {!isCategoriesLoading && categoriesList.length > 0 && (
-                <Controller
-                  name="category"
-                  control={control}
-                  render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="focus:ring-0">
-                        <SelectValue placeholder="Select a category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {categoriesList.map((category, i) => (
-                            <SelectItem key={i} value={category.slug}>
-                              {category.name}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-              )}
-            </AccordionContent>
-          </AccordionItem>
-
-          {/* tags */}
-          <AccordionItem value="tags">
-            <AccordionTrigger>
-              <p className="flex items-center gap-4">
-                <Star size={18} /> Tags
-              </p>
-            </AccordionTrigger>
-            <AccordionContent>
-              {/* STATUS MESSAGE */}
-              {isTagLoading && <FieldSkeleton />}
-
-              {!isTagLoading && tagOptionsError && <span className="text-sm text-destructive">{tagOptionsError?.message || `Failed to load categories <br> ${JSON.stringify(tagOptionsError)}`}</span>}
-              {!isTagLoading && !tagOptionsError && categoriesList.length === 0 && <span className="text-sm text-muted-foreground">No categories found</span>}
-
-              {!isTagLoading && categoriesList.length > 0 && (
-                <Controller
-                  name="tag"
-                  control={control}
-                  render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="focus:ring-0">
-                        <SelectValue placeholder="Select a tags" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {tagList.map((tag, i) => (
-                            <SelectItem key={i} value={tag?.slug}>
-                              {tag?.name}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-              )}
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </div>
-
-      {/* Filtered Items Output */}
-      <div className="lg:w-3/4 p-4 space-y-4">
-        {/* Sidebar */}
-        <div className="flex justify-start lg:justify-between flex-wrap">
-          Recommended
-          <div className="space-y-4 flex flex-col ">
-            {selectedItems.length > 0 ? (
-              <BulkActionButtons
-                selectedCount={selectedItems.length}
-                totalCount={items.length}
-                isAllSelected={isAllSelected}
-                onSelectAllToggle={handleSelectAllToggle}
-                onDelete={handleMultpleDelete}
-              />
-            ) : (
-              <AddNewButton label="Add New" href="/dashboard/admin/blogs/new" className="!text-white hover:!text-white" />
-            )}
-
-            {/* Recommended */}
+          {!isCategoriesLoading && categoriesList.length > 0 && (
             <Controller
-              name="sort_by"
+              name="category"
               control={control}
               render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="w-64">
-                    <SelectValue placeholder="Recommended" />
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger aria-label="Filter blogs by category" className="focus:ring-0">
+                    <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      {BLOGSORT_OPTIONS.map(({ name, value }) => (
-                        <SelectItem key={value} value={value} className="cursor-pointer">
-                          {name}
+                      {categoriesList.map((category) => (
+                        <SelectItem key={category.slug} value={category.slug}>
+                          {category.name}
                         </SelectItem>
                       ))}
                     </SelectGroup>
@@ -323,7 +233,75 @@ const FilterBlog = () => {
                 </Select>
               )}
             />
-          </div>
+          )}
+        </div>
+
+        {/* Tags */}
+        <div className="space-y-2">
+          <p className="flex items-center gap-4 font-medium">
+            <Star size={18} /> Tags
+          </p>
+
+          {isTagLoading && <FieldSkeleton />}
+
+          {!isTagLoading && tagOptionsError && <span className="text-sm text-destructive">{tagOptionsError?.message || `Failed to load tags <br> ${JSON.stringify(tagOptionsError)}`}</span>}
+          {!isTagLoading && !tagOptionsError && tagList.length === 0 && <span className="text-sm text-muted-foreground">No tags found</span>}
+
+          {!isTagLoading && tagList.length > 0 && (
+            <Controller
+              name="tag"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger aria-label="Filter blogs by tag" className="focus:ring-0">
+                    <SelectValue placeholder="Select a tag" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {tagList.map((tag) => (
+                        <SelectItem key={tag.slug} value={tag.slug}>
+                          {tag.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          )}
+        </div>
+      </div>
+
+      {/* Filtered Items Output */}
+      <div className="lg:w-3/4 p-4 space-y-4">
+        {/* Sidebar */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <Controller
+            name="sort_by"
+            control={control}
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger aria-label="Sort blogs" className="w-full sm:w-64">
+                  <SelectValue placeholder="Sort blogs" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {BLOGSORT_OPTIONS.map(({ name, value }) => (
+                      <SelectItem key={value} value={value} className="cursor-pointer">
+                        {name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          />
+
+          {selectedItems.length > 0 ? (
+            <BulkActionButtons selectedCount={selectedItems.length} totalCount={items.length} isAllSelected={isAllSelected} onSelectAllToggle={handleSelectAllToggle} onDelete={handleMultpleDelete} />
+          ) : (
+            <AddNewButton label="Add New" href="/dashboard/admin/blogs/new" className="!text-white hover:!text-white" />
+          )}
         </div>
 
         {/* Result  Found  */}
