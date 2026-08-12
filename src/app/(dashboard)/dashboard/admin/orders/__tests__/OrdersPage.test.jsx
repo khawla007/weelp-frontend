@@ -27,12 +27,30 @@ jest.mock('@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/orders_share
   StatsOrdersCards: () => <div>Order stats</div>,
 }));
 jest.mock('@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/FilterOrdersPage', () => ({
-  FilterOrdersPage: ({ view, search, onSearchChange, onOrdersChanged }) => (
+  FilterOrdersPage: ({ view, searchDraft, onSearchDraftChange, onOrdersChanged, onViewOrder }) => (
     <div>
       <span data-testid="table-view">{view}</span>
-      <input aria-label="Mock order search" value={search} onChange={(event) => onSearchChange?.(event.target.value)} />
+      <input aria-label="Mock order search" value={searchDraft} onChange={(event) => onSearchDraftChange?.(event.target.value)} />
       <button type="button" onClick={onOrdersChanged}>
         Refresh orders
+      </button>
+      <button type="button" onClick={() => onViewOrder(42, { isTrashed: view === 'trash' })}>
+        Mock view order
+      </button>
+    </div>
+  ),
+}));
+jest.mock('@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/AdminOrderDetail', () => ({
+  __esModule: true,
+  default: ({ orderId, isTrashed, onBack, onStatusChanged }) => (
+    <div data-testid="mock-admin-order-detail">
+      <span>Detail order {orderId}</span>
+      <span>Detail trashed {String(isTrashed)}</span>
+      <button type="button" onClick={onBack}>
+        Back to list
+      </button>
+      <button type="button" onClick={() => onStatusChanged()}>
+        Detail status changed
       </button>
     </div>
   ),
@@ -40,6 +58,10 @@ jest.mock('@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/FilterOrders
 
 describe('OrdersPage', () => {
   const mutateOrders = jest.fn();
+  const originalScrollTo = window.scrollTo;
+  const originalScrollYDescriptor = Object.getOwnPropertyDescriptor(window, 'scrollY');
+  const originalRequestAnimationFrame = window.requestAnimationFrame;
+  const originalCancelAnimationFrame = window.cancelAnimationFrame;
   let backendResponse;
 
   beforeEach(() => {
@@ -48,14 +70,14 @@ describe('OrdersPage', () => {
       data: [],
       summary: {},
       current_page: 1,
-      per_page: 3,
+      per_page: 5,
       total: 6,
       last_page: 2,
       trash_count: 2,
     };
     mutateOrders.mockResolvedValue({ data: backendResponse });
-    useAllOrdersAdmin.mockImplementation(() => ({
-      orders: { data: backendResponse },
+    useAllOrdersAdmin.mockImplementation((query) => ({
+      orders: { data: { ...backendResponse, current_page: Number(new URLSearchParams(query).get('page')) || 1 } },
       isLoading: false,
       isValidating: false,
       mutate: mutateOrders,
@@ -63,9 +85,29 @@ describe('OrdersPage', () => {
     }));
   });
 
+  afterEach(() => {
+    jest.useRealTimers();
+    jest.restoreAllMocks();
+    window.scrollTo = originalScrollTo;
+    window.requestAnimationFrame = originalRequestAnimationFrame;
+    window.cancelAnimationFrame = originalCancelAnimationFrame;
+
+    if (originalScrollYDescriptor) {
+      Object.defineProperty(window, 'scrollY', originalScrollYDescriptor);
+    } else {
+      delete window.scrollY;
+    }
+  });
+
   const chooseStatus = (status) => {
     fireEvent.change(screen.getByRole('combobox', { name: 'Order status options' }), {
       target: { value: status },
+    });
+  };
+
+  const applySearchDebounce = async () => {
+    await act(async () => {
+      jest.advanceTimersByTime(300);
     });
   };
 
@@ -173,6 +215,7 @@ describe('OrdersPage', () => {
   });
 
   it('resets page atomically when applied search changes', async () => {
+    jest.useFakeTimers();
     render(<OrdersPage />);
 
     fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
@@ -182,10 +225,140 @@ describe('OrdersPage', () => {
     fireEvent.change(screen.getByRole('textbox', { name: 'Mock order search' }), {
       target: { value: 'Safari' },
     });
+    await applySearchDebounce();
 
     await waitFor(() => expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=1&view=active&search=Safari'));
     const filterCalls = useAllOrdersAdmin.mock.calls.slice(callsBeforeFilter).map(([query]) => query);
     expect(filterCalls).not.toContain('?page=2&view=active&search=Safari');
+  });
+
+  it('keeps the page-owned search debounce alive while detail replaces the list', async () => {
+    jest.useFakeTimers();
+    render(<OrdersPage />);
+
+    fireEvent.change(screen.getByRole('textbox', { name: 'Mock order search' }), {
+      target: { value: '  Safari  ' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Mock view order' }));
+
+    expect(screen.queryByRole('textbox', { name: 'Mock order search' })).not.toBeInTheDocument();
+    await applySearchDebounce();
+    expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=1&view=active&search=Safari');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Back to list' }));
+    expect(screen.getByRole('textbox', { name: 'Mock order search' })).toHaveValue('  Safari  ');
+  });
+
+  it('replaces all list-only UI with the selected active order detail', async () => {
+    jest.useFakeTimers();
+    render(<OrdersPage />);
+
+    chooseStatus('completed');
+    fireEvent.change(screen.getByRole('textbox', { name: 'Mock order search' }), { target: { value: 'Safari' } });
+    await applySearchDebounce();
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
+    await waitFor(() => expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=2&view=active&status=completed&search=Safari'));
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 480 });
+    fireEvent.click(screen.getByRole('button', { name: 'Mock view order' }));
+
+    expect(screen.getByText('Detail order 42')).toBeInTheDocument();
+    expect(screen.getByText('Detail trashed false')).toBeInTheDocument();
+    expect(screen.queryByText('Orders heading')).not.toBeInTheDocument();
+    expect(screen.queryByText('Order stats')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Order views')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('table-view')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Next page' })).not.toBeInTheDocument();
+  });
+
+  it('restores the active list query, filters, draft, page, and scroll position on Back', async () => {
+    jest.useFakeTimers();
+    const scrollTo = jest.fn();
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+      callback();
+      return 1;
+    });
+    window.scrollTo = scrollTo;
+    render(<OrdersPage />);
+
+    chooseStatus('completed');
+    fireEvent.change(screen.getByRole('textbox', { name: 'Mock order search' }), { target: { value: 'Safari' } });
+    await applySearchDebounce();
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
+    await waitFor(() => expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=2&view=active&status=completed&search=Safari'));
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 480 });
+    fireEvent.click(screen.getByRole('button', { name: 'Mock view order' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Back to list' }));
+
+    expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=2&view=active&status=completed&search=Safari');
+    expect(screen.getByRole('button', { name: 'Filter orders by status: Completed' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('textbox', { name: 'Mock order search' })).toHaveValue('Safari');
+    expect(screen.getByRole('textbox', { name: 'Page number' })).toHaveValue('2');
+    expect(scrollTo).toHaveBeenCalledWith({ top: 480, behavior: 'auto' });
+  });
+
+  it('restores the Trash list query and scroll position on Back', async () => {
+    jest.useFakeTimers();
+    const scrollTo = jest.fn();
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+      callback();
+      return 1;
+    });
+    window.scrollTo = scrollTo;
+    render(<OrdersPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Trash (2)' }));
+    chooseStatus('completed');
+    fireEvent.change(screen.getByRole('textbox', { name: 'Mock order search' }), { target: { value: 'Safari' } });
+    await applySearchDebounce();
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
+    await waitFor(() => expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=2&view=trash&status=completed&search=Safari'));
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 275 });
+    fireEvent.click(screen.getByRole('button', { name: 'Mock view order' }));
+    expect(screen.getByText('Detail trashed true')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Back to list' }));
+
+    expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=2&view=trash&status=completed&search=Safari');
+    expect(screen.getByRole('button', { name: 'Trash (2)' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Filter orders by status: Completed' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('textbox', { name: 'Mock order search' })).toHaveValue('Safari');
+    expect(screen.getByRole('textbox', { name: 'Page number' })).toHaveValue('2');
+    expect(scrollTo).toHaveBeenCalledWith({ top: 275, behavior: 'auto' });
+  });
+
+  it('cancels a queued scroll restoration when the page unmounts', () => {
+    let scheduledCallback;
+    const frameId = 73;
+    const cancelAnimationFrame = jest.fn();
+    window.requestAnimationFrame = jest.fn((callback) => {
+      scheduledCallback = callback;
+      return frameId;
+    });
+    window.cancelAnimationFrame = cancelAnimationFrame;
+    const { unmount } = render(<OrdersPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Mock view order' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Back to list' }));
+    expect(scheduledCallback).toEqual(expect.any(Function));
+
+    unmount();
+
+    expect(cancelAnimationFrame).toHaveBeenCalledWith(frameId);
+  });
+
+  it('refreshes detail status changes without applying the list page fallback', async () => {
+    render(<OrdersPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
+    await waitFor(() => expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=2&view=active'));
+    fireEvent.click(screen.getByRole('button', { name: 'Mock view order' }));
+    mutateOrders.mockResolvedValueOnce({ data: { ...backendResponse, data: [], current_page: 2 } });
+    fireEvent.click(screen.getByRole('button', { name: 'Detail status changed' }));
+
+    await waitFor(() => expect(mutateOrders).toHaveBeenCalledTimes(1));
+    expect(mutateOrders).toHaveBeenCalledWith();
+    expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=2&view=active');
+    fireEvent.click(screen.getByRole('button', { name: 'Back to list' }));
+    expect(screen.getByRole('textbox', { name: 'Page number' })).toHaveValue('2');
   });
 
   it('clears one filter without clearing the other', async () => {
@@ -226,6 +399,7 @@ describe('OrdersPage', () => {
   });
 
   it('does not apply an old page fallback after search changes', async () => {
+    jest.useFakeTimers();
     let resolveMutation;
     mutateOrders.mockReturnValueOnce(
       new Promise((resolve) => {
@@ -241,6 +415,7 @@ describe('OrdersPage', () => {
     fireEvent.change(screen.getByRole('textbox', { name: 'Mock order search' }), {
       target: { value: 'Safari' },
     });
+    await applySearchDebounce();
     fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
     await waitFor(() => expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=2&view=active&search=Safari'));
     const callsBeforeResolution = useAllOrdersAdmin.mock.calls.length;

@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ChevronDown } from 'lucide-react';
 
 import { CustomPagination } from '@/app/components/Pagination';
+import AdminOrderDetail from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/AdminOrderDetail';
 import { FilterOrdersPage } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/FilterOrdersPage';
 import { NavigationOrder, StatsOrdersCards } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/orders_shared';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,10 @@ const ORDER_STATUS_OPTIONS = [
 
 const OrdersPage = () => {
   const [listQuery, setListQuery] = useState({ page: 1, view: 'active', status: '', search: '' });
+  const [searchDraft, setSearchDraft] = useState('');
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const listScrollPosition = useRef(0);
+  const shouldRestoreScroll = useRef(false);
   const queryParams = new URLSearchParams({
     page: String(listQuery.page),
     view: listQuery.view,
@@ -37,27 +42,53 @@ const OrdersPage = () => {
     seenThrough: newestCreatedAt(data.data),
   });
   const currentPage = Number(data.current_page) || 1;
-  const itemsPerPage = Number(data.per_page) || 3;
+  const itemsPerPage = Number(data.per_page) || 5;
   const totalItems = Number(data.total) || 0;
   const trashCount = Number(data.trash_count) || 0;
 
-  const handlePageChange = (page) => {
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      const search = searchDraft.trim();
+      setListQuery((current) => (current.search === search ? current : { ...current, page: 1, search }));
+    }, 300);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [searchDraft]);
+
+  useEffect(() => {
+    if (selectedOrder || !shouldRestoreScroll.current) return undefined;
+
+    shouldRestoreScroll.current = false;
+    const animationFrameId = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: listScrollPosition.current, behavior: 'auto' });
+    });
+
+    return () => window.cancelAnimationFrame(animationFrameId);
+  }, [selectedOrder]);
+
+  const handlePageChange = useCallback((page) => {
     setListQuery((current) => ({ ...current, page }));
-  };
-
-  const handleViewChange = (view) => {
-    setListQuery((current) => ({ ...current, page: 1, view }));
-  };
-
-  const handleStatusChange = (status) => {
-    setListQuery((current) => ({ ...current, page: 1, status: status === 'all' ? '' : status }));
-  };
-
-  const handleSearchChange = useCallback((search) => {
-    setListQuery((current) => ({ ...current, page: 1, search }));
   }, []);
 
-  const handleOrdersChanged = async () => {
+  const handleViewChange = useCallback((view) => {
+    setListQuery((current) => ({ ...current, page: 1, view }));
+  }, []);
+
+  const handleStatusChange = useCallback((status) => {
+    setListQuery((current) => ({ ...current, page: 1, status: status === 'all' ? '' : status }));
+  }, []);
+
+  const handleViewOrder = useCallback((id, { isTrashed }) => {
+    listScrollPosition.current = window.scrollY;
+    setSelectedOrder({ id, isTrashed });
+  }, []);
+
+  const handleBack = useCallback(() => {
+    shouldRestoreScroll.current = true;
+    setSelectedOrder(null);
+  }, []);
+
+  const handleOrdersChanged = useCallback(async () => {
     const requestedQuery = listQuery;
     const refreshed = await mutateOrders();
     const refreshedOrders = refreshed?.data?.data;
@@ -71,9 +102,13 @@ const OrdersPage = () => {
         return { ...current, page: Math.max(1, current.page - 1) };
       });
     }
-  };
+  }, [listQuery, mutateOrders]);
 
   const selectedStatus = ORDER_STATUS_OPTIONS.find((option) => option.value === (listQuery.status || 'all')) ?? ORDER_STATUS_OPTIONS[0];
+
+  if (selectedOrder) {
+    return <AdminOrderDetail orderId={selectedOrder.id} isTrashed={selectedOrder.isTrashed} onBack={handleBack} onStatusChanged={mutateOrders} />;
+  }
 
   return (
     <div className="space-y-4">
@@ -112,7 +147,7 @@ const OrdersPage = () => {
         </DropdownMenu>
       </div>
 
-      <FilterOrdersPage data={data} view={listQuery.view} search={listQuery.search} onSearchChange={handleSearchChange} onOrdersChanged={handleOrdersChanged} />
+      <FilterOrdersPage data={data} view={listQuery.view} searchDraft={searchDraft} onSearchDraftChange={setSearchDraft} onOrdersChanged={handleOrdersChanged} onViewOrder={handleViewOrder} />
 
       {!isLoadingOrders && <CustomPagination totalItems={totalItems} currentPage={currentPage} itemsPerPage={itemsPerPage} onPageChange={handlePageChange} />}
     </div>

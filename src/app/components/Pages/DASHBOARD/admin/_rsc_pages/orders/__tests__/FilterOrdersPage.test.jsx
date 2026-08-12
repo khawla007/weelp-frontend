@@ -43,15 +43,16 @@ jest.mock('@/components/ui/select', () => ({
 const order = {
   id: 21,
   status: 'pending',
+  created_at: '2026-08-11T11:59:01.000Z',
   user: { name: 'Test Customer' },
   orderable: { name: 'Desert Safari', item_type: 'activity' },
   payment: { total_amount: 125 },
   emergency_contact: { contact_name: 'Test Contact', relationship: 'Friend' },
 };
 
-function renderTable({ view = 'active', search = '', onSearchChange = jest.fn(), onOrdersChanged = jest.fn() } = {}) {
-  render(<FilterOrdersPage data={{ data: [order] }} view={view} search={search} onSearchChange={onSearchChange} onOrdersChanged={onOrdersChanged} />);
-  return { onSearchChange, onOrdersChanged };
+function renderTable({ data = { data: [order] }, view = 'active', searchDraft = '', onSearchDraftChange = jest.fn(), onOrdersChanged = jest.fn(), onViewOrder = jest.fn() } = {}) {
+  render(<FilterOrdersPage data={data} view={view} searchDraft={searchDraft} onSearchDraftChange={onSearchDraftChange} onOrdersChanged={onOrdersChanged} onViewOrder={onViewOrder} />);
+  return { onSearchDraftChange, onOrdersChanged, onViewOrder };
 }
 
 describe('FilterOrdersPage trash actions', () => {
@@ -70,28 +71,77 @@ describe('FilterOrdersPage trash actions', () => {
     jest.useRealTimers();
   });
 
-  it('debounces search changes and trims the applied query', () => {
-    jest.useFakeTimers();
-    const onSearchChange = jest.fn();
-    renderTable({ onSearchChange });
+  it('reports raw search draft changes immediately', () => {
+    const onSearchDraftChange = jest.fn();
+    renderTable({ searchDraft: 'Safari', onSearchDraftChange });
 
     fireEvent.change(screen.getByRole('searchbox', { name: 'Search orders by order number, customer, or item' }), {
       target: { value: '  Desert Safari  ' },
     });
 
-    act(() => jest.advanceTimersByTime(299));
-    expect(onSearchChange).not.toHaveBeenCalled();
-
-    act(() => jest.advanceTimersByTime(1));
-    expect(onSearchChange).toHaveBeenCalledTimes(1);
-    expect(onSearchChange).toHaveBeenCalledWith('Desert Safari');
+    expect(onSearchDraftChange).toHaveBeenCalledTimes(1);
+    expect(onSearchDraftChange).toHaveBeenCalledWith('  Desert Safari  ');
   });
 
   it('renders the replacement search field instead of the old status text field', () => {
-    renderTable({ search: 'Safari' });
+    renderTable({ searchDraft: 'Safari' });
 
     expect(screen.getByRole('searchbox', { name: 'Search orders by order number, customer, or item' })).toHaveValue('Safari');
     expect(screen.queryByPlaceholderText('Filter By status...')).not.toBeInTheDocument();
+  });
+
+  it('shows a shared received-age clock instead of emergency contact details', () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2026-08-11T12:00:00.000Z'));
+    renderTable();
+
+    expect(screen.getByRole('columnheader', { name: 'ORDER RECEIVED' })).toBeInTheDocument();
+    expect(screen.queryByRole('columnheader', { name: 'EMERGENCY CONTACT' })).not.toBeInTheDocument();
+    expect(screen.getByText('59s ago')).toBeInTheDocument();
+
+    act(() => jest.advanceTimersByTime(1000));
+
+    expect(screen.getByText('1m ago')).toBeInTheDocument();
+  });
+
+  it.each([
+    ['invalid', 'invalid-date'],
+    ['missing', null],
+  ])('uses plain fallback text for an %s received date', (_label, createdAt) => {
+    renderTable({ data: { data: [{ ...order, created_at: createdAt }] } });
+
+    const fallback = screen.getByText('Not available');
+    expect(fallback.tagName).toBe('SPAN');
+    expect(fallback.closest('td')?.querySelector('time')).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['missing payment', null],
+    ['missing amount', {}],
+    ['invalid amount', { total_amount: 'not-a-number' }],
+  ])('shows a value fallback for %s', (_label, payment) => {
+    renderTable({ data: { data: [{ ...order, payment }] } });
+
+    expect(screen.getByText('Not provided')).toBeInTheDocument();
+    expect(screen.queryByText('$NaN')).not.toBeInTheDocument();
+  });
+
+  it('includes a valid custom amount while preserving compact list formatting', () => {
+    renderTable({ data: { data: [{ ...order, payment: { total_amount: 125, custom_amount: 25, is_custom_amount: true } }] } });
+
+    expect(screen.getByText('$150')).toBeInTheDocument();
+  });
+
+  it.each([
+    ['active', false],
+    ['trash', true],
+  ])('opens order details from the %s view', (view, isTrashed) => {
+    const onViewOrder = jest.fn();
+    renderTable({ view, onViewOrder });
+
+    fireEvent.click(screen.getByRole('button', { name: 'View order 21' }));
+
+    expect(onViewOrder).toHaveBeenCalledWith(21, { isTrashed });
   });
 
   it('does not configure a page-local filtered row model', () => {

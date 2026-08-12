@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { ChevronDown, RotateCcw, Trash2 } from 'lucide-react';
+import { ChevronDown, Eye, RotateCcw, Trash2 } from 'lucide-react';
 
 import { TypeBadge } from '@/app/components/Shared/TypeBadge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
@@ -15,31 +15,31 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useToast } from '@/hooks/use-toast';
 import { deleteOrder, permanentlyDeleteOrder, restoreOrder, updateOrderStatus } from '@/lib/actions/orders';
 
-const EMPTY_ORDERS = [];
-const ORDER_STATUSES = ['pending', 'processing', 'completed', 'cancelled'];
+import { ADMIN_ORDER_STATUSES, formatCompactTimeAgo, getOrderAmountValue, ORDER_VALUE_NOT_PROVIDED } from './orderDisplay';
 
-export function FilterOrdersPage({ data = {}, view = 'active', search = '', onSearchChange, onOrdersChanged }) {
+const EMPTY_ORDERS = [];
+
+function formatListOrderAmount(payment) {
+  const amount = getOrderAmountValue(payment);
+  return amount === null ? ORDER_VALUE_NOT_PROVIDED : `$${amount.toLocaleString()}`;
+}
+
+export function FilterOrdersPage({ data = {}, view = 'active', searchDraft = '', onSearchDraftChange, onOrdersChanged, onViewOrder }) {
   const [sorting, setSorting] = useState('');
-  const [searchValue, setSearchValue] = useState(search);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const [pendingAction, setPendingAction] = useState(null);
   const [isMutating, setIsMutating] = useState(false);
+  const [relativeNow, setRelativeNow] = useState(() => Date.now());
 
   const orders = Array.isArray(data.data) ? data.data : EMPTY_ORDERS;
   const { toast } = useToast(); // show notification
 
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
-      const nextSearch = searchValue.trim();
+    const intervalId = window.setInterval(() => setRelativeNow(Date.now()), 1000);
 
-      if (nextSearch !== search) {
-        onSearchChange?.(nextSearch);
-      }
-    }, 300);
-
-    return () => window.clearTimeout(timeoutId);
-  }, [onSearchChange, search, searchValue]);
+    return () => window.clearInterval(intervalId);
+  }, []);
 
   const runOrderAction = useCallback(
     async (action, fallback) => {
@@ -126,7 +126,7 @@ export function FilterOrdersPage({ data = {}, view = 'active', search = '', onSe
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
                 <SelectContent>
-                  {ORDER_STATUSES.map((status) => (
+                  {ADMIN_ORDER_STATUSES.map((status) => (
                     <SelectItem key={status} value={status} className="capitalize">
                       {status}
                     </SelectItem>
@@ -153,13 +153,25 @@ export function FilterOrdersPage({ data = {}, view = 'active', search = '', onSe
       },
       {
         header: 'TOTAL AMOUNT',
-        accessorFn: (row) => `$${Number(row.payment?.total_amount).toLocaleString()}`,
+        accessorFn: (row) => formatListOrderAmount(row.payment),
         id: 'totalAmount',
       },
       {
-        header: 'EMERGENCY CONTACT',
-        accessorFn: (row) => `${row.emergency_contact?.contact_name} (${row.emergency_contact?.relationship})`,
-        id: 'emergencyContact',
+        header: 'ORDER RECEIVED',
+        id: 'orderReceived',
+        cell: ({ row }) => {
+          const item = row.original;
+          const hasValidReceivedDate = Boolean(item.created_at) && Number.isFinite(new Date(item.created_at).getTime());
+          const receivedTime = formatCompactTimeAgo(item.created_at, relativeNow);
+
+          return hasValidReceivedDate ? (
+            <time className="normal-case" dateTime={item.created_at}>
+              {receivedTime}
+            </time>
+          ) : (
+            <span className="normal-case">{receivedTime}</span>
+          );
+        },
       },
 
       {
@@ -168,46 +180,51 @@ export function FilterOrdersPage({ data = {}, view = 'active', search = '', onSe
         enableHiding: false,
         cell: ({ row }) => {
           const item = row.original;
-
-          if (view === 'trash') {
-            return (
-              <div className="flex flex-wrap items-center gap-2">
-                <Button type="button" variant="outline" size="sm" disabled={isMutating} aria-label={`Restore order ${item.id}`} onClick={() => handleRestoreOrder(item.id)}>
-                  <RotateCcw className="h-4 w-4" />
-                  Restore
-                </Button>
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="sm"
-                  disabled={isMutating}
-                  aria-label={`Delete order ${item.id} permanently`}
-                  onClick={() => setPendingAction({ type: 'force', order: item })}
-                >
-                  <Trash2 className="h-4 w-4" />
-                  Delete permanently
-                </Button>
-              </div>
-            );
-          }
+          const isTrashed = view === 'trash';
 
           return (
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              disabled={isMutating}
-              aria-label={`Move order ${item.id} to Trash`}
-              onClick={() => setPendingAction({ type: 'trash', order: item })}
-              className="text-destructive hover:text-destructive"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button type="button" variant="outline" size="sm" aria-label={`View order ${item.id}`} onClick={() => onViewOrder?.(item.id, { isTrashed })}>
+                <Eye aria-hidden="true" className="h-4 w-4" />
+                View
+              </Button>
+              {isTrashed ? (
+                <>
+                  <Button type="button" variant="outline" size="sm" disabled={isMutating} aria-label={`Restore order ${item.id}`} onClick={() => handleRestoreOrder(item.id)}>
+                    <RotateCcw className="h-4 w-4" />
+                    Restore
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    disabled={isMutating}
+                    aria-label={`Delete order ${item.id} permanently`}
+                    onClick={() => setPendingAction({ type: 'force', order: item })}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Delete permanently
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  disabled={isMutating}
+                  aria-label={`Move order ${item.id} to Trash`}
+                  onClick={() => setPendingAction({ type: 'trash', order: item })}
+                  className="text-destructive hover:text-destructive"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
           );
         },
       },
     ],
-    [handleRestoreOrder, handleStatusChange, isMutating, view],
+    [handleRestoreOrder, handleStatusChange, isMutating, onViewOrder, relativeNow, view],
   );
 
   // table instance
@@ -234,8 +251,8 @@ export function FilterOrdersPage({ data = {}, view = 'active', search = '', onSe
           type="search"
           aria-label="Search orders by order number, customer, or item"
           placeholder="Search by order number, customer, or item"
-          value={searchValue}
-          onChange={(event) => setSearchValue(event.target.value)}
+          value={searchDraft}
+          onChange={(event) => onSearchDraftChange?.(event.target.value)}
           className="max-w-sm"
         />
 
