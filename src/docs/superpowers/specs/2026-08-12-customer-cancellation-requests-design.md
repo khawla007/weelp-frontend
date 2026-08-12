@@ -34,6 +34,8 @@ This first release does not provide self-service cancellation for unpaid or pend
 
 ## What the customer sees
 
+The action sits in the booking header immediately before the operational-status badge. The status badge keeps its existing neutral outline design. In light mode, the action matches that badge's compact height, rounded shape, typography, foreground, background, and border in its resting state. In dark mode, the action keeps the same compact geometry but follows the site's established interactive hierarchy: the dark page surface, muted sage text, standard border, and canonical hover/focus treatment used by home-page secondary actions. On narrow screens the action and status wrap together without horizontal overflow.
+
 An eligible customer booking detail includes a **Request cancellation** action. Selecting it opens a confirmation dialog containing:
 
 - booking name, travel date, and time remaining;
@@ -52,6 +54,10 @@ If the administrator rejects the request, the panel shows **Request declined**, 
 If the administrator approves it, the panel shows the final refund, deduction, decision explanation, and refund outcome. The booking status becomes `cancelled`. A partial refund is labelled as such rather than presented as a full refund.
 
 ## What the administrator sees
+
+The Orders navigation shows a red danger `!`, never a numeric cancellation count, whenever at least one cancellation needs attention. Attention includes `pending`, `refund_processing`, and `refund_failed` requests for which an administrator can retry or reject. The marker is derived from cancellation state rather than notification unread state: reading an alert does not remove it, and resolving the last actionable request does.
+
+On the Orders index, each affected booking uses a subtle semantic-danger background, a red leading edge, and a `!` beside its booking number. The operational status remains unchanged and readable because a cancellation request is not itself an order status. The treatment works in light and dark modes and does not replace the existing View Order action. Selecting the row action or its notification opens that exact order with the cancellation panel visible.
 
 The existing inline admin order detail gains a prominent cancellation panel when a request exists. A pending request shows:
 
@@ -121,19 +127,27 @@ Authenticated admin endpoints reject a pending or failed request, approve a pend
 
 The Next.js customer booking detail owns the dialog and pending/resolved presentation. A focused cancellation dialog receives a server quote and submits the reason. The existing customer order hook revalidates after submission.
 
-The existing admin order detail renders the review panel. A focused admin cancellation component owns the final amount, explanation, confirmation, decision actions, and request refresh. Existing order-list caches revalidate after resolution so returning to the list shows the cancelled status.
+The existing admin order detail renders the review panel. A focused admin cancellation component owns the final amount, explanation, confirmation, decision actions, and request refresh. Existing order-list caches revalidate after resolution so returning to the list shows the cancelled status and removes attention treatment when appropriate.
 
 ## Notifications
 
-Submitting a request emails the customer an acknowledgement and alerts administrators that a review is waiting. Rejection emails the customer the decision explanation. Successful approval emails the customer the final refund and deduction and identifies partial, full, or zero refund accurately.
+Cancellation alerts reuse `user_notifications`, the existing authenticated notification endpoints, and the current notification bell/list. They use the supported `custom` type plus structured data containing the cancellation request ID, order ID, lifecycle event, safe display status, and internal action URL. A nullable unique `deduplication_key` prevents one recipient from receiving the same lifecycle event more than once. A key is scoped to the request, event, and recipient, such as `cancellation:24:approved:user:8`.
 
-A failed Stripe attempt alerts administrators but does not send the customer an approval message. Customer-facing email is sent only after the approved outcome is recorded. Email delivery failures are logged and retried independently; they do not roll back a completed Stripe refund.
+Submitting a request creates an in-app acknowledgement for the customer and an in-app review alert for every active Admin and Super Admin. After commit, it queues the matching emails to the same recipients. The admin copy identifies the customer, booking number, item, travel date and time, and links to `/dashboard/admin/orders?order={id}`. The customer copy says the request was sent to customer care and is awaiting review, linking to `/dashboard/customer?order={id}`.
+
+Rejection creates one customer in-app notification and queues one email containing the customer-facing explanation. Approval creates one customer in-app notification and queues one email containing the stored final refund, deduction, currency, explanation, and accurate full, partial, or zero-refund outcome. Both notification links open the exact booking and its refreshed cancellation panel. Reading a notification changes only `read_at`; it never changes cancellation or order state.
+
+A refund failure that still needs administrator action creates a safe danger notification and queues a safe alert email for every active Admin and Super Admin. The customer sees the safe processing/failure state in the authoritative booking panel but does not receive a technical-failure email while retry or reconciliation is possible. Raw provider diagnostics, credentials, stack traces, and provider identifiers never enter notification records, API output, or email copy.
+
+In-app notification rows are inserted inside the same transaction as the lifecycle transition. A persistence failure therefore rolls back the transition instead of silently losing a required alert. Emails are queued through an outermost-commit callback. Queue failure is logged with allowlisted IDs, lifecycle event, safe failure code, and exception class; it cannot roll back a submitted request, decision, or completed refund. Recipient selection deduplicates active Admin and Super Admin users by user ID and email and excludes inactive accounts.
+
+The admin order-list response includes `cancellation_needs_attention` per order. The existing admin navigation-state response adds a boolean `has_actionable_cancellations`; it is not an unread count. Notification clicks first use the existing read endpoint, then follow an allowlisted internal action URL. Admin and customer order pages support the `order` query parameter as a deep link to their existing detail view.
 
 ## Failure paths worth knowing
 
 If the quote cannot be loaded, the dialog explains that the estimate is unavailable and does not allow submission. If request creation loses a race with another request or an order-state change, the customer sees the backend's current eligibility message and the detail refreshes.
 
-Invalid admin amounts, missing explanations, stale request states, and unauthorized access are rejected before Stripe is called. A Stripe decline, timeout, or malformed response leaves the order active and the request visibly retryable as `refund_failed`. Raw provider messages are logged for operators but replaced with safe UI copy.
+Invalid admin amounts, missing explanations, stale request states, and unauthorized access are rejected before Stripe is called. A Stripe decline, timeout, or malformed response leaves the order active and the request visibly retryable as `refund_failed`. Logs retain allowlisted operational identifiers and safe codes but omit raw provider messages and exception payloads.
 
 If Stripe succeeds but the final local update is interrupted, the stable refund ID and idempotency key allow the retry or webhook reconciliation path to finish the same request without issuing more money.
 
@@ -153,7 +167,13 @@ Backend unit and feature tests will verify:
 - zero, partial, and full refund outcomes update order and payment accurately;
 - Stripe failures remain retryable and never cancel the order;
 - idempotent retries and webhook reconciliation cannot duplicate a refund;
-- notification dispatch for request, rejection, success, and failure paths.
+- in-app and queued-email recipients for request, rejection, success, and failure paths;
+- active Admin and Super Admin fan-out excludes customers, creators, and inactive staff;
+- notification rows commit with lifecycle state and are suppressed on rollback;
+- email dispatch waits for the outermost commit and dispatch failure cannot undo state;
+- stable per-recipient lifecycle keys suppress duplicate notifications across retries and webhooks;
+- order-row and navigation attention flags cover pending, refund-processing, and actionable refund-failed states and clear after terminal resolution;
+- notification payloads and emails omit provider secrets and unsafe failure details.
 
 Frontend tests will verify:
 
@@ -161,6 +181,9 @@ Frontend tests will verify:
 - quote loading, every displayed calculation, reason validation, confirmation, and duplicate-submit protection;
 - pending, rejected, approved, partial-refund, and failure presentations;
 - admin suggested defaults, final-amount validation, explanation rules, confirmation, rejection, approval, retry, and disabled processing state;
+- the Orders `!` is boolean rather than numeric, affected rows use the approved danger treatment, and read notifications do not clear workflow attention;
+- notification clicks mark only that alert read and deep-link to the exact admin order or customer booking;
+- customer acknowledgement and decision notifications render safe copy and the booking panel remains the authoritative state;
 - customer detail, admin detail, and cached lists revalidate after mutations;
 - keyboard operation, focus return, accessible names, responsive stacking, long text, and currency formatting.
 
