@@ -36,9 +36,33 @@ jest.mock('@/app/components/SEO/SeoFooterScripts', () => ({
   default: () => null,
 }));
 
-import SingleBlogPage from '../page';
+import SingleBlogPage, { generateMetadata } from '../page';
 
 describe('SingleBlogPage', () => {
+  it('uses the publication timestamp in article metadata', async () => {
+    getSingleBlogMock.mockResolvedValue({
+      success: true,
+      data: {
+        name: 'A travel story',
+        excerpt: 'Story summary',
+        published_at: '2026-08-13T12:15:00.000000Z',
+        updated_at: '2026-08-13T13:00:00.000000Z',
+        media_gallery: [],
+        seo: {},
+      },
+    });
+
+    const metadata = await generateMetadata({ params: Promise.resolve({ slug: 'a-travel-story' }) });
+
+    expect(metadata.openGraph).toEqual(
+      expect.objectContaining({
+        type: 'article',
+        publishedTime: '2026-08-13T12:15:00.000000Z',
+        modifiedTime: '2026-08-13T13:00:00.000000Z',
+      }),
+    );
+  });
+
   it('leaves the footer as the only spacing owner after the recommended section', async () => {
     getSingleBlogMock.mockResolvedValue({
       success: true,

@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
+import BlogPublishedDate from '@/app/components/ui/BlogPublishedDate';
 
 /** Default static values applied when variant="full" and no discount data is provided. */
 const FULL_DEFAULTS = { discount: '40% OFF' };
@@ -14,7 +15,23 @@ const FULL_DEFAULTS = { discount: '40% OFF' };
  * For "full" variant, discount keeps its existing placeholder fallback.
  * Rating and review count are only rendered when API data is available.
  */
-export default function ItemCard({ href, image, title, category, excerpt, price, rating, reviewCount, discount, variant = 'full', className = '', imageClassName = '', style, LinkComponent = Link }) {
+export default function ItemCard({
+  href,
+  image,
+  title,
+  category,
+  publishedAt,
+  excerpt,
+  price,
+  rating,
+  reviewCount,
+  discount,
+  variant = 'full',
+  className = '',
+  imageClassName = '',
+  style,
+  LinkComponent = Link,
+}) {
   const isFull = variant === 'full';
 
   const displayRating = rating;
@@ -60,6 +77,8 @@ export default function ItemCard({ href, image, title, category, excerpt, price,
 
         {/* Category badge — compact variant */}
         {!isFull && category && <span className="w-fit rounded-md bg-weelp-sage-deep/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-weelp-copy">{category}</span>}
+
+        {!isFull && <BlogPublishedDate date={publishedAt} className="text-xs text-muted-foreground" />}
 
         {/* Title */}
         <h3 className="text-[15px] sm:text-base lg:text-[18px] leading-[1.59] text-foreground line-clamp-2" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>

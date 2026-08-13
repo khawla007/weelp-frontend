@@ -85,7 +85,7 @@ export function mapProductToItemCard(product, citySlug) {
 /**
  * Maps a raw blog object to ItemCard compact props.
  * @param {object} blog - Blog object (already transformed in page.js)
- * @returns {{ href: string, image: string, title: string, category: string }}
+ * @returns {{ href: string, image: string, title: string, category: string, publishedAt: string }}
  */
 export function mapBlogToItemCard(blog) {
   const featured = blog.media_gallery?.find((m) => m.is_featured === 1 || m.is_featured === true);
@@ -99,5 +99,6 @@ export function mapBlogToItemCard(blog) {
     image,
     title: blog.excerpt || blog.name || 'Untitled',
     category,
+    publishedAt: blog.published_at,
   };
 }

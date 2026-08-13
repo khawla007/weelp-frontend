@@ -31,6 +31,7 @@ import { deleteBlog, deleteMultipleBlogs } from '@/lib/actions/blogs';
 import { useAlltagsOptionsAdmin } from '@/hooks/api/admin/tags';
 import { useAllCategoriesOptionsAdmin } from '@/hooks/api/admin/categories';
 import { FALLBACK_IMAGE } from '@/constants/image';
+import BlogPublishedDate from '@/app/components/ui/BlogPublishedDate';
 
 export const BLOGSORT_OPTIONS = [
   { name: 'Latest', value: 'latest' }, // ?sort_by=latest
@@ -319,7 +320,7 @@ const FilterBlog = () => {
           {!isValidating && !error && items.length > 0 && (
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
-                {items.map(({ id: itemId, name, media_gallery = [], tags = [], categories = [], excerpt = '', publish = false, feature_image = null }, index) => (
+                {items.map(({ id: itemId, name, media_gallery = [], tags = [], categories = [], excerpt = '', publish = false, feature_image = null, published_at = '' }, index) => (
                   <ListingCard key={index}>
                     <ListingCardImage src={feature_image ?? media_gallery?.[0]?.url ?? FALLBACK_IMAGE.src} alt={`${name} image`} />
 
@@ -386,6 +387,8 @@ const FilterBlog = () => {
                         <b>Status:</b>
                         {publish ? <Badge className={'bg-weelp-sage-deep'}>Published</Badge> : <Badge className={'bg-warning'}>Draft</Badge>}
                       </div>
+
+                      {publish && <BlogPublishedDate date={published_at} className="text-sm text-muted-foreground" />}
 
                       {/* Excerpt */}
                       {excerpt && <p className="bg-card text-foreground text-sm text-wrap">{excerpt.concat('...')}</p>}

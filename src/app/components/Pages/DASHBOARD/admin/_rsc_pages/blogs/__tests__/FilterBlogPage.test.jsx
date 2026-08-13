@@ -49,11 +49,11 @@ jest.mock('@/components/ui/select', () => ({
   SelectValue: ({ placeholder }) => <span>{placeholder}</span>,
 }));
 
-function renderBlogFilters({ categories = [{ name: 'Adventure', slug: 'adventure' }], tags = [{ name: 'Dubai', slug: 'dubai' }] } = {}) {
+function renderBlogFilters({ categories = [{ name: 'Adventure', slug: 'adventure' }], tags = [{ name: 'Dubai', slug: 'dubai' }], blogs = [] } = {}) {
   useAllCategoriesOptionsAdmin.mockReturnValue({ categoriesList: categories, isLoading: false, error: null });
   useAlltagsOptionsAdmin.mockReturnValue({ tagList: tags, isLoading: false, error: null });
   useSWR.mockReturnValue({
-    data: { data: { data: [], current_page: 1, per_page: 10, total: 0 } },
+    data: { data: { data: blogs, current_page: 1, per_page: 10, total: blogs.length } },
     error: null,
     isValidating: false,
     mutate: jest.fn(),
@@ -98,5 +98,22 @@ describe('FilterBlog controls', () => {
     expect(screen.getByText('No categories found')).toBeInTheDocument();
     expect(screen.queryByRole('combobox', { name: 'Filter blogs by category' })).not.toBeInTheDocument();
     expect(screen.getByRole('combobox', { name: 'Filter blogs by tag' })).toBeInTheDocument();
+  });
+
+  it('shows the publication date for a published blog', () => {
+    renderBlogFilters({
+      blogs: [
+        {
+          id: 14,
+          name: 'Wildfire Safety',
+          publish: true,
+          published_at: '2026-08-04T06:58:08.000000Z',
+        },
+      ],
+    });
+
+    const publishedDate = screen.getByText('Published Aug 4, 2026');
+    expect(publishedDate.tagName).toBe('TIME');
+    expect(publishedDate).toHaveAttribute('datetime', '2026-08-04T06:58:08.000000Z');
   });
 });

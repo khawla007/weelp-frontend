@@ -67,7 +67,7 @@ export async function generateMetadata({ params }) {
       description: metadata.description,
       type: 'article',
       url: openGraphUrl,
-      publishedTime: data.created_at || undefined,
+      publishedTime: data.published_at || undefined,
       modifiedTime: data.updated_at || undefined,
     },
     twitter: {

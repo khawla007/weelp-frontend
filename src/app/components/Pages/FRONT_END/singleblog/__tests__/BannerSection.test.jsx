@@ -39,6 +39,14 @@ describe('BannerSectionBlog', () => {
     expect(container.querySelector('[data-blog-heading]')).not.toHaveClass('pt-[70px]');
   });
 
+  it('shows the blog publication date as semantic time', () => {
+    render(<BannerSectionBlog name="Story" published_at="2026-08-04T06:58:08.000000Z" />);
+
+    const publishedDate = screen.getByText('Published Aug 4, 2026');
+    expect(publishedDate.tagName).toBe('TIME');
+    expect(publishedDate).toHaveAttribute('datetime', '2026-08-04T06:58:08.000000Z');
+  });
+
   it('renders tags as wrapping labels rather than inert controls', () => {
     const { container } = render(
       <BannerSectionBlog

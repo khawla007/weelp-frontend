@@ -1,13 +1,14 @@
 import React from 'react';
 import BreadCrumb from '@/app/components/BreadCrumb';
 import GallerySlider from '@/app/components/sliders/GallerySlider';
+import BlogPublishedDate from '@/app/components/ui/BlogPublishedDate';
 
 /**
  *
  * @type {BlogPost}
  */
 
-const BannerSectionBlog = ({ name = '', title = '', excerpt = '', tags = [], media_gallery = [] }) => {
+const BannerSectionBlog = ({ name = '', title = '', excerpt = '', published_at = '', tags = [], media_gallery = [] }) => {
   const heading = name || title || '32 Best Places and Tours to See Autumn Leaves';
   const orderedMedia = (Array.isArray(media_gallery) ? media_gallery : [])
     .map((media) => {
@@ -53,6 +54,8 @@ const BannerSectionBlog = ({ name = '', title = '', excerpt = '', tags = [], med
                 </span>
               </p>
             )}
+
+            <BlogPublishedDate date={published_at} className="weelp-hero-ui-rise text-sm font-medium text-muted-foreground sm:text-base" />
 
             {tags.length > 0 && (
               <div className="weelp-hero-ui-rise flex flex-wrap gap-2 sm:gap-3" style={{ '--weelp-motion-delay': '320ms' }}>

@@ -49,7 +49,7 @@ export default function BlogSection({ blogs = [], title = 'Your Guide', navigati
           breakpoints={BLOG_BREAKPOINTS}
           slideClassName="!h-auto"
           showMobilePagination
-          renderSlide={(item) => <ItemCard href={item.href} image={item.image} title={item.title} category={item.category} variant="compact" />}
+          renderSlide={(item) => <ItemCard href={item.href} image={item.image} title={item.title} category={item.category} publishedAt={item.publishedAt} variant="compact" />}
         />
       </Reveal>
     </section>

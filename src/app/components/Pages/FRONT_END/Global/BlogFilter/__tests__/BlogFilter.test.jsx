@@ -18,7 +18,7 @@ jest.mock('@/app/components/Pages/DASHBOARD/admin/_rsc_pages/blogs/FilterBlogPag
 
 jest.mock('@/app/components/ui/Reveal', () => ({
   __esModule: true,
-  default: ({ as: Component = 'div', children, ...props }) => <Component {...props}>{children}</Component>,
+  default: ({ as: Component = 'div', children, className }) => <Component className={className}>{children}</Component>,
 }));
 
 describe('BlogFilterBar states', () => {
@@ -45,6 +45,35 @@ describe('BlogFilterBar states', () => {
     render(<BlogFilterBar />);
 
     expect(screen.getByText('Error loading blogs')).toBeVisible();
+  });
+
+  it('shows the publication date on every blog card', () => {
+    useBlogs.mockReturnValue({
+      blogs: {
+        data: [
+          {
+            id: 14,
+            name: 'Wildfire Safety',
+            slug: 'wildfire-safety',
+            excerpt: 'How to stay safe',
+            published_at: '2026-08-04T06:58:08.000000Z',
+            media_gallery: [],
+            categories: [{ category_name: 'Nature' }],
+          },
+        ],
+        total: 1,
+        current_page: 1,
+        per_page: 5,
+      },
+      isLoading: false,
+      error: null,
+    });
+
+    render(<BlogFilterBar />);
+
+    const publishedDate = screen.getByText('Published Aug 4, 2026');
+    expect(publishedDate.tagName).toBe('TIME');
+    expect(publishedDate).toHaveAttribute('datetime', '2026-08-04T06:58:08.000000Z');
   });
 
   it('passes initial category and tag filters to the public blog query', () => {

@@ -101,7 +101,7 @@ const BlogFilterBar = ({ title = 'Browse Blogs', initialFilters = {} }) => {
             const item = mapBlogToItemCard(blog);
             return (
               <li key={blog.id || blog.slug}>
-                <ItemCard href={item.href} image={item.image} title={item.title} category={item.category} variant="compact" LinkComponent={NavigationLink} />
+                <ItemCard href={item.href} image={item.image} title={item.title} category={item.category} publishedAt={item.publishedAt} variant="compact" LinkComponent={NavigationLink} />
               </li>
             );
           })}
