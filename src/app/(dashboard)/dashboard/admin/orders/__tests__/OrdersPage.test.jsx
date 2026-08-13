@@ -304,6 +304,15 @@ describe('OrdersPage', () => {
     expect(screen.getByRole('button', { name: 'Filter orders by status: Processing' })).toHaveAttribute('aria-pressed', 'true');
   });
 
+  it('filters refunded orders', async () => {
+    render(<OrdersPage />);
+
+    chooseStatus('refunded');
+
+    await waitFor(() => expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=1&view=active&status=refunded'));
+    expect(screen.getByRole('button', { name: 'Filter orders by status: Refunded' })).toHaveAttribute('aria-pressed', 'true');
+  });
+
   it('hides the open-state ring without removing keyboard focus visibility', () => {
     render(<OrdersPage />);
 
