@@ -85,7 +85,9 @@ export default function Step1BasicInfo({ locations = [] }) {
           name="locations"
           defaultValue={[]}
           rules={{ required: 'Locations Required' }}
-          render={({ field: { value, onChange } }) => <ComboboxMultiple id={'locations'} name="locations" type={'locations'} items={locations} value={value ?? []} onChange={onChange} />}
+          render={({ field: { value, onChange } }) => (
+            <ComboboxMultiple id={'locations'} name="locations" type={'locations'} items={locations} value={value ?? []} onChange={onChange} searchInputClassName="focus-visible:outline-none" />
+          )}
         />
         {errors?.locations && <span className="text-red-400 inline-block animate-in fade-in-0 slide-in-from-top-0.5 duration-200 motion-reduce:animate-none">{errors?.locations?.message}</span>}
       </div>

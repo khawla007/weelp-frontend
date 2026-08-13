@@ -94,7 +94,7 @@ export function ComboboxMultipleAttribute({ attributes, value = [], onChange }) 
 /**
  * Combobox Multiple Select **Same Pattern data**
  */
-export function ComboboxMultiple({ items, type, value = [], onChange }) {
+export function ComboboxMultiple({ items, type, value = [], onChange, searchInputClassName }) {
   const [open, setOpen] = React.useState(false);
 
   const handleSelect = (item) => {
@@ -127,7 +127,7 @@ export function ComboboxMultiple({ items, type, value = [], onChange }) {
         </PopoverTrigger>
         <PopoverContent className="w-[250px] p-0 max-h-[350px]">
           <Command>
-            <CommandInput placeholder={`Search ${type}... `} className="h-9" />
+            <CommandInput placeholder={`Search ${type}... `} className={cn('h-9', searchInputClassName)} />
             <CommandList>
               <CommandEmpty>No {type} found.</CommandEmpty>
               <CommandGroup>
