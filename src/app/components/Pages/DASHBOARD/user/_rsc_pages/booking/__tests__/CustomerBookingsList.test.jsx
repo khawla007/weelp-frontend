@@ -4,6 +4,29 @@ import { CustomerBookingsList } from '../CustomerBookingsList';
 import { useAllOrdersCustomer } from '@/hooks/api/customer/orders';
 
 const mutateOrders = jest.fn();
+let mockSearchParams;
+const mockNavigationListeners = new Set();
+const mockReplace = jest.fn((href) => {
+  mockSearchParams = new URLSearchParams(href.split('?')[1] ?? '');
+  mockNavigationListeners.forEach((listener) => listener());
+});
+
+jest.mock('next/navigation', () => ({
+  usePathname: () => '/dashboard/customer',
+  useRouter: () => ({ replace: mockReplace }),
+  useSearchParams: () => {
+    const React = jest.requireActual('react');
+    React.useSyncExternalStore(
+      (listener) => {
+        mockNavigationListeners.add(listener);
+        return () => mockNavigationListeners.delete(listener);
+      },
+      () => mockSearchParams,
+      () => mockSearchParams,
+    );
+    return mockSearchParams;
+  },
+}));
 
 jest.mock('next/dynamic', () => {
   const components = [
@@ -40,7 +63,7 @@ jest.mock('@/app/components/BookingCard', () => ({
 
 jest.mock('../CustomerBookingDetail', () => ({
   __esModule: true,
-  default: ({ orderId, onBack, onReviewSaved }) => (
+  default: ({ orderId, onBack, onReviewSaved, onCancellationChanged }) => (
     <section>
       <span>Detail booking {orderId}</span>
       <button type="button" onClick={onReviewSaved}>
@@ -48,6 +71,9 @@ jest.mock('../CustomerBookingDetail', () => ({
       </button>
       <button type="button" onClick={onBack}>
         Back to bookings
+      </button>
+      <button type="button" onClick={onCancellationChanged}>
+        Submit cancellation
       </button>
     </section>
   ),
@@ -62,6 +88,7 @@ describe('CustomerBookingsList', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     window.scrollTo = jest.fn();
+    mockSearchParams = new URLSearchParams();
     useAllOrdersCustomer.mockReturnValue({
       orders: { orders, pagination: { total: 2, per_page: 6, current_page: 1, last_page: 1 } },
       isLoading: false,
@@ -88,6 +115,103 @@ describe('CustomerBookingsList', () => {
     expect(screen.getByRole('radio', { name: 'Completed' }).closest('label')).toHaveClass('bg-background');
   });
 
+  it('opens an exact booking from the query and follows valid URL changes without a replace loop', () => {
+    mockSearchParams = new URLSearchParams('order=13');
+    const { rerender } = render(<CustomerBookingsList />);
+
+    expect(screen.getByText('Detail booking 13')).toBeInTheDocument();
+
+    mockSearchParams = new URLSearchParams('order=14');
+    rerender(<CustomerBookingsList />);
+
+    expect(screen.getByText('Detail booking 14')).toBeInTheDocument();
+    expect(mockReplace).not.toHaveBeenCalled();
+  });
+
+  it.each(['order=invalid', 'order=-1', 'order=13&order=14'])('ignores an invalid booking query: %s', (query) => {
+    mockSearchParams = new URLSearchParams(query);
+
+    render(<CustomerBookingsList />);
+
+    expect(screen.getByText('Your Bookings')).toBeInTheDocument();
+    expect(screen.queryByText(/Detail booking/)).not.toBeInTheDocument();
+  });
+
+  it('preserves unrelated query parameters when selecting and returning from a booking', () => {
+    mockSearchParams = new URLSearchParams('page=2&status=completed');
+    render(<CustomerBookingsList />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'View Booking 41' }));
+    expect(mockReplace).toHaveBeenLastCalledWith('/dashboard/customer?page=2&status=completed&order=41', { scroll: false });
+
+    fireEvent.click(screen.getByRole('button', { name: /back to bookings/i }));
+    expect(mockReplace).toHaveBeenLastCalledWith('/dashboard/customer?page=2&status=completed', { scroll: false });
+  });
+
+  it('returns to bookings when an externally removed query follows a UI selection', () => {
+    const { rerender } = render(<CustomerBookingsList />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'View Booking 41' }));
+    expect(screen.getByText('Detail booking 41')).toBeInTheDocument();
+
+    mockSearchParams = new URLSearchParams('status=completed');
+    rerender(<CustomerBookingsList />);
+
+    expect(screen.getByText('Your Bookings')).toBeInTheDocument();
+    expect(screen.queryByText('Detail booking 41')).not.toBeInTheDocument();
+  });
+
+  it('announces a pending booking navigation without rendering stale detail', () => {
+    mockReplace.mockImplementationOnce(() => {});
+    const { rerender } = render(<CustomerBookingsList />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'View Booking 41' }));
+
+    expect(screen.getByRole('status')).toHaveTextContent('Opening booking 41…');
+    expect(screen.getByText('Your Bookings')).toBeInTheDocument();
+    expect(screen.queryByText('Detail booking 41')).not.toBeInTheDocument();
+
+    mockSearchParams = new URLSearchParams('order=41');
+    rerender(<CustomerBookingsList />);
+
+    expect(screen.getByText('Detail booking 41')).toBeInTheDocument();
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(mockReplace).toHaveBeenCalledTimes(1);
+  });
+
+  it('expires pending booking feedback when navigation is removed, invalid, or superseded', () => {
+    mockReplace.mockImplementationOnce(() => {});
+    const { rerender } = render(<CustomerBookingsList />);
+    fireEvent.click(screen.getByRole('button', { name: 'View Booking 41' }));
+    expect(screen.getByRole('status')).toHaveTextContent('Opening booking 41…');
+
+    mockSearchParams = new URLSearchParams('order=invalid');
+    rerender(<CustomerBookingsList />);
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByText('Your Bookings')).toBeInTheDocument();
+
+    mockSearchParams = new URLSearchParams();
+    rerender(<CustomerBookingsList />);
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+
+    mockSearchParams = new URLSearchParams('order=99');
+    rerender(<CustomerBookingsList />);
+    expect(screen.getByText('Detail booking 99')).toBeInTheDocument();
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+
+  it('does not resurrect a booking after valid, invalid, duplicate, then absent order queries', () => {
+    mockSearchParams = new URLSearchParams('order=13');
+    const { rerender } = render(<CustomerBookingsList />);
+    expect(screen.getByText('Detail booking 13')).toBeInTheDocument();
+
+    for (const query of ['order=invalid', 'order=13&order=14', 'status=completed']) {
+      mockSearchParams = new URLSearchParams(query);
+      rerender(<CustomerBookingsList />);
+      expect(screen.getByText('Your Bookings')).toBeInTheDocument();
+    }
+  });
+
   it('refreshes the list when a card review is saved', () => {
     render(<CustomerBookingsList />);
 
@@ -101,6 +225,15 @@ describe('CustomerBookingsList', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'View Booking 41' }));
     fireEvent.click(screen.getByRole('button', { name: 'Save detail review' }));
+
+    expect(mutateOrders).toHaveBeenCalledTimes(1);
+  });
+
+  it('refreshes the list when a cancellation is submitted from inline detail', () => {
+    render(<CustomerBookingsList />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'View Booking 41' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Submit cancellation' }));
 
     expect(mutateOrders).toHaveBeenCalledTimes(1);
   });

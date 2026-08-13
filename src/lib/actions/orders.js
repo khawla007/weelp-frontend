@@ -57,9 +57,10 @@ export const createOrder = async (data) => {
 /**
  * Run an authenticated order mutation and normalize its result for the UI.
  * @param {(api: import('axios').AxiosInstance) => Promise<import('axios').AxiosResponse>} request
+ * @param {{ exposeErrorMessage?: boolean }} options
  * @returns {Promise<{success: boolean, message: string}>}
  */
-async function mutateOrder(request) {
+async function mutateOrder(request, { exposeErrorMessage = true } = {}) {
   try {
     const api = await getAuthApi();
     const res = await request(api);
@@ -72,13 +73,28 @@ async function mutateOrder(request) {
     }
 
     revalidatePath('/dashboard/admin/orders');
-    return { success: true, message: res.data.message };
+    return {
+      success: true,
+      message: res.data.message,
+      ...(res.data.cancellation ? { cancellation: res.data.cancellation } : {}),
+    };
   } catch (error) {
     return {
       success: false,
-      message: error?.response?.data?.message || error?.message || 'Order action failed.',
+      message: error?.response?.data?.message || (exposeErrorMessage ? error?.message : null) || 'Order action failed.',
     };
   }
+}
+
+async function mutateCancellation(request, successMessage) {
+  const result = await mutateOrder(request, { exposeErrorMessage: false });
+  if (!result.success) return result;
+
+  return {
+    success: true,
+    message: result.message || successMessage,
+    cancellation: result.cancellation,
+  };
 }
 
 /** Move an active order to Trash. */
@@ -94,6 +110,50 @@ export async function restoreOrder(orderId) {
 /** Permanently delete an order that is already in Trash. */
 export async function permanentlyDeleteOrder(orderId) {
   return mutateOrder((api) => api.delete(`/api/admin/orders/${orderId}/force`));
+}
+
+export async function rejectCancellationRequest(requestId, explanation) {
+  return mutateCancellation(async (api) => {
+    const response = await api.post(`/api/admin/cancellation-requests/${requestId}/reject`, {
+      explanation: explanation.trim(),
+    });
+    return {
+      data: {
+        success: true,
+        message: response.data?.message || 'Cancellation request declined.',
+        cancellation: response.data?.cancellation,
+      },
+    };
+  }, 'Cancellation request declined.');
+}
+
+export async function approveCancellationRequest(requestId, finalRefund, explanation) {
+  return mutateCancellation(async (api) => {
+    const response = await api.post(`/api/admin/cancellation-requests/${requestId}/approve`, {
+      final_refund: String(finalRefund).trim(),
+      explanation: explanation.trim(),
+    });
+    return {
+      data: {
+        success: true,
+        message: response.data?.message || 'Cancellation request approved.',
+        cancellation: response.data?.cancellation,
+      },
+    };
+  }, 'Cancellation request approved.');
+}
+
+export async function retryCancellationRequest(requestId) {
+  return mutateCancellation(async (api) => {
+    const response = await api.post(`/api/admin/cancellation-requests/${requestId}/retry`);
+    return {
+      data: {
+        success: true,
+        message: response.data?.message || 'Cancellation refund retried.',
+        cancellation: response.data?.cancellation,
+      },
+    };
+  }, 'Cancellation refund retried.');
 }
 
 /**

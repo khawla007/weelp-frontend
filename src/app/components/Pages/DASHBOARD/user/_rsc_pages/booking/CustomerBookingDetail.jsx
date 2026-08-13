@@ -4,13 +4,18 @@ import Image from 'next/image';
 import { ArrowLeft, CalendarDays, CreditCard, MapPin, MessageSquare, ShieldAlert, UserRound } from 'lucide-react';
 
 import BookingReviewDialog from '@/app/components/BookingReviewDialog';
+import CustomerCancellationDialog from '@/app/components/Pages/DASHBOARD/user/_rsc_pages/booking/CustomerCancellationDialog';
+import CustomerCancellationPanel from '@/app/components/Pages/DASHBOARD/user/_rsc_pages/booking/CustomerCancellationPanel';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCustomerOrder } from '@/hooks/api/customer/orders';
+import { useToast } from '@/hooks/use-toast';
 import { cn, formatCurrency } from '@/lib/utils';
 
 const NOT_PROVIDED = 'Not provided';
+const CANCELLATION_HEADER_BUTTON_CLASS =
+  'weelp-booking-status-action h-[34px] w-fit rounded-full border-border bg-transparent px-3 py-1.5 text-sm font-semibold text-foreground shadow-none hover:bg-accent hover:text-accent-foreground';
 
 function displayValue(value) {
   return value === undefined || value === null || value === '' ? NOT_PROVIDED : value;
@@ -18,6 +23,10 @@ function displayValue(value) {
 
 function displayReviewText(value) {
   return typeof value === 'string' && value.trim() === '' ? NOT_PROVIDED : displayValue(value);
+}
+
+function cancellationIneligibilityReason(value) {
+  return typeof value === 'string' && value.trim() ? value.trim() : 'Online cancellation is unavailable for this booking.';
 }
 
 function formatTravelDate(value) {
@@ -141,8 +150,9 @@ function LoadingState({ onBack }) {
   );
 }
 
-const CustomerBookingDetail = ({ orderId, onBack, onReviewSaved }) => {
+const CustomerBookingDetail = ({ orderId, onBack, onReviewSaved, onCancellationChanged }) => {
   const { order, isLoading, error, mutate } = useCustomerOrder(orderId);
+  const { toast } = useToast();
 
   if (isLoading) return <LoadingState onBack={onBack} />;
 
@@ -163,6 +173,11 @@ const CustomerBookingDetail = ({ orderId, onBack, onReviewSaved }) => {
   const { item = {}, payment, user, emergency_contact: emergencyContact } = order;
   const image = bookingImage(item);
   const handleReviewSaved = () => Promise.all([mutate(), onReviewSaved?.()]);
+  const refreshCancellationState = () => Promise.allSettled([Promise.resolve().then(() => mutate()), Promise.resolve().then(() => onCancellationChanged?.())]);
+  const handleCancellationSubmitted = async () => {
+    await refreshCancellationState();
+    toast({ title: 'Cancellation request submitted' });
+  };
 
   return (
     <div className="w-full min-w-0 bg-background p-4 md:p-8">
@@ -173,10 +188,36 @@ const CustomerBookingDetail = ({ orderId, onBack, onReviewSaved }) => {
           <h1 className="break-words text-2xl font-semibold text-foreground">{displayValue(item.name)}</h1>
           <p className="mt-1 text-sm text-muted-foreground">Booking ID: {order.id}</p>
         </div>
-        <Badge variant="outline" className="w-fit px-3 py-1.5 text-sm font-semibold capitalize">
-          {displayValue(order.status)}
-        </Badge>
+        <div data-testid="booking-header-actions" className="flex min-w-0 flex-wrap items-center gap-2 sm:flex-nowrap sm:justify-end">
+          {order.cancellation_eligible && !order.cancellation ? (
+            <CustomerCancellationDialog
+              orderId={order.id}
+              bookingName={item.name}
+              onSubmitted={handleCancellationSubmitted}
+              onStateChanged={refreshCancellationState}
+              triggerClassName={CANCELLATION_HEADER_BUTTON_CLASS}
+            />
+          ) : null}
+          <Badge variant="outline" className="w-fit px-3 py-1.5 text-sm font-semibold capitalize">
+            {displayValue(order.status)}
+          </Badge>
+        </div>
       </header>
+
+      {order.cancellation || typeof order.cancellation_eligible === 'boolean' ? (
+        <div className="mt-5 min-w-0">
+          {order.cancellation ? <CustomerCancellationPanel cancellation={order.cancellation} /> : null}
+          {order.cancellation_eligible === false && !order.cancellation ? (
+            <section className="min-w-0 rounded-md border bg-muted/40 p-4" aria-labelledby="cancellation-unavailable-title">
+              <h2 id="cancellation-unavailable-title" className="text-sm font-semibold text-foreground">
+                Online cancellation unavailable
+              </h2>
+              <p className="mt-1 whitespace-pre-wrap break-words text-sm text-muted-foreground">{cancellationIneligibilityReason(order.cancellation_ineligibility_reason)}</p>
+              <p className="mt-2 text-sm text-muted-foreground">Contact support if you need help with this booking.</p>
+            </section>
+          ) : null}
+        </div>
+      ) : null}
 
       <div data-testid="booking-detail-grid" className="grid grid-cols-1 gap-x-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)]">
         <div data-testid="booking-detail-media" className="min-w-0 lg:col-start-1 lg:row-start-1">

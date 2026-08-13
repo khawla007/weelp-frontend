@@ -14,9 +14,10 @@ function retryAfterInterval(_error, _key, config, revalidate, options) {
 }
 
 function beginMutation(cache, resource) {
-  const state = activeMutationsByCache.get(cache) ?? { active: 0, activeResources: new Set(), overlapped: false };
+  const state = activeMutationsByCache.get(cache) ?? { active: 0, activeResources: new Set(), clearedResources: new Set(), overlapped: false };
   state.active += 1;
   state.activeResources.add(resource);
+  state.clearedResources.add(resource);
   state.overlapped ||= state.active > 1;
   activeMutationsByCache.set(cache, state);
 
@@ -29,7 +30,7 @@ function finishMutation(cache, state, resource) {
 
   if (state.active !== 0) return false;
 
-  activeMutationsByCache.delete(cache);
+  if (!state.overlapped) activeMutationsByCache.delete(cache);
   return state.overlapped;
 }
 
@@ -41,8 +42,11 @@ export function useAdminNavigationUnseen() {
     shouldRetryOnError: true,
   });
 
+  const navigationState = normalizeAdminNavigationCounts(data);
+
   return {
-    counts: normalizeAdminNavigationCounts(data),
+    counts: navigationState.counts,
+    attention: navigationState.attention,
     error,
     isLoading,
     isValidating,
@@ -82,18 +86,24 @@ export function useMarkAdminNavigationSeen(resource, { enabled = true, seenThrou
         await mutate(ADMIN_NAVIGATION_UNSEEN_KEY, markAdminNavigationSeen(resource, seenThrough), {
           optimisticData: (_committed, displayed) => ({
             ...normalizeAdminNavigationCounts(displayed),
-            [resource]: 0,
+            counts: {
+              ...normalizeAdminNavigationCounts(displayed).counts,
+              [resource]: 0,
+            },
           }),
-          populateCache: (result) => {
-            const counts = normalizeAdminNavigationCounts(result);
+          populateCache: (result, displayed) => {
+            const resultState = normalizeAdminNavigationCounts(result);
+            const displayedState = normalizeAdminNavigationCounts(displayed);
+            const navigationState = {
+              counts: { ...displayedState.counts },
+              attention: resultState.attention,
+            };
 
-            for (const activeResource of mutationState.activeResources) {
-              if (activeResource !== resource) {
-                counts[activeResource] = 0;
-              }
+            for (const clearedResource of mutationState.clearedResources) {
+              navigationState.counts[clearedResource] = 0;
             }
 
-            return counts;
+            return navigationState;
           },
           revalidate: () => !mutationState.overlapped,
           rollbackOnError: () => !mutationState.overlapped,
@@ -102,7 +112,15 @@ export function useMarkAdminNavigationSeen(resource, { enabled = true, seenThrou
         // Isolated mutations let SWR recover; overlapped batches revalidate below.
       } finally {
         if (finishMutation(cache, mutationState, resource)) {
-          await mutate(ADMIN_NAVIGATION_UNSEEN_KEY).catch(() => undefined);
+          try {
+            await mutate(ADMIN_NAVIGATION_UNSEEN_KEY);
+          } catch {
+            // The optimistic cache already retains this generation's cleared counts.
+          } finally {
+            if (mutationState.active === 0 && activeMutationsByCache.get(cache) === mutationState) {
+              activeMutationsByCache.delete(cache);
+            }
+          }
         }
       }
     };

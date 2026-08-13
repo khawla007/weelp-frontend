@@ -573,8 +573,20 @@ describe('Deep Forest semantic theme', () => {
     expect(contrastRatio('#ffffff', darkTokens['--weelp-sage-deep'])).toBeGreaterThanOrEqual(4.5);
   });
 
+  it('keeps booking cancellation actions in the canonical dark button hierarchy', () => {
+    const excludedRules = [];
+
+    stylesheet.walkRules((rule) => {
+      if (rule.selector.includes(':not(.weelp-booking-status-action)')) {
+        excludedRules.push(rule.selector);
+      }
+    });
+
+    expect(excludedRules).toEqual([]);
+  });
+
   const darkInteractiveControlSelectors = [
-    ".dark button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.review-featured-switch):not(.weelp-creator-like-button):not([data-sidebar='menu-button']):not([data-sidebar='rail'])",
+    ".dark button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.review-featured-switch):not(.weelp-creator-like-button):not(.weelp-search-control):not([data-sidebar='menu-button']):not([data-sidebar='rail'])",
     ".dark a[role='button']:not([aria-disabled='true'])",
     ".dark a[data-weelp-button-link]:not([aria-disabled='true'])",
     ".dark a[class~='bg-weelp-sage-deep']:not([aria-disabled='true'])",
@@ -657,7 +669,7 @@ describe('Deep Forest semantic theme', () => {
 
   it('sets the dark site-wide button surface and border to the requested tokens', () => {
     const buttonRule = extractSelectorContract([
-      ".dark button:not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.review-featured-switch):not(.weelp-creator-like-button):not(.bg-card):not([data-sidebar='menu-button']):not([data-sidebar='rail'])",
+      ".dark button:not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.review-featured-switch):not(.weelp-creator-like-button):not(.weelp-search-control):not(.bg-card):not([data-sidebar='menu-button']):not([data-sidebar='rail'])",
       ".dark a[role='button']",
       ".dark [role='button']",
       ".dark a[class~='bg-weelp-sage-deep']",

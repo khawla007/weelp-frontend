@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import BookingCard from '@/app/components/BookingCard';
 import BookingCardSkeleton from '@/app/components/BookingCardSkeleton';
 import CustomerBookingDetail from '@/app/components/Pages/DASHBOARD/user/_rsc_pages/booking/CustomerBookingDetail';
@@ -10,6 +11,7 @@ import { CUSTOMER_ORDERS_PER_PAGE, useAllOrdersCustomer } from '@/hooks/api/cust
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import Pagination from '@/app/components/ui/Pagination';
+import { parseOrderQuery, replaceOrderQuery } from '@/lib/navigation/orderQuery';
 
 // Dynamically import Select to disable SSR and prevent hydration mismatch
 const Select = dynamic(() => import('@/components/ui/select').then((mod) => ({ default: mod.Select })), { ssr: false, loading: () => <div className="w-[120px] h-10" /> });
@@ -42,7 +44,10 @@ export const CustomerBookingsList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [status, setStatus] = useState('all');
   const [sortBy, setSortBy] = useState('all');
-  const [selectedBookingId, setSelectedBookingId] = useState(null);
+  const [pendingNavigation, setPendingNavigation] = useState(null);
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const { orders, isLoading: isloadingOrders, isValidating: isValidatingOrders, error: isOrderError, mutate: mutateOrders } = useAllOrdersCustomer(currentPage);
 
@@ -52,6 +57,11 @@ export const CustomerBookingsList = () => {
 
   // Safely extract orders array with fallback
   const allOrders = orders?.orders ?? [];
+  const orderQueryValues = searchParams.getAll('order');
+  const activeBookingId = parseOrderQuery(orderQueryValues);
+  const searchSnapshot = searchParams.toString();
+  const searchSnapshotToken = useMemo(() => ({}), [searchSnapshot]);
+  const isOpeningBooking = activeBookingId === null && pendingNavigation?.searchSnapshotToken === searchSnapshotToken;
 
   // Apply filters here using useMemo
   const filteredOrders = useMemo(() => {
@@ -80,8 +90,20 @@ export const CustomerBookingsList = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  if (selectedBookingId !== null) {
-    return <CustomerBookingDetail orderId={selectedBookingId} onBack={() => setSelectedBookingId(null)} onReviewSaved={mutateOrders} />;
+  const handleViewBooking = useCallback(
+    (orderId) => {
+      setPendingNavigation({ orderId, searchSnapshotToken });
+      router.replace(replaceOrderQuery(pathname, searchParams, orderId), { scroll: false });
+    },
+    [pathname, router, searchParams, searchSnapshotToken],
+  );
+
+  const handleBack = useCallback(() => {
+    router.replace(replaceOrderQuery(pathname, searchParams, null), { scroll: false });
+  }, [pathname, router, searchParams]);
+
+  if (activeBookingId !== null) {
+    return <CustomerBookingDetail orderId={activeBookingId} onBack={handleBack} onReviewSaved={mutateOrders} onCancellationChanged={mutateOrders} />;
   }
 
   return (
@@ -90,6 +112,11 @@ export const CustomerBookingsList = () => {
         <CardTitle className="text-xl text-Blueish font-medium">Your Bookings</CardTitle>
         <CardDescription className="text-lg text-weelp-steel">Manage your bookings, plans.</CardDescription>
       </CardHeader>
+      {isOpeningBooking ? (
+        <p role="status" aria-live="polite" className="px-4 text-sm text-muted-foreground md:px-8">
+          Opening booking {pendingNavigation.orderId}…
+        </p>
+      ) : null}
 
       <div className="p-4 md:p-8 pt-0 md:pt-0 flex justify-between flex-wrap gap-4">
         {/* Status pills (lg and up) */}
@@ -144,7 +171,7 @@ export const CustomerBookingsList = () => {
         <div className="flex flex-col bg-weelp-sage-wash gap-4">
           <div data-testid="booking-card-grid" className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
             {filteredOrders.length > 0 ? (
-              filteredOrders.map((order) => <BookingCard key={order.id} bookingItem={order} onViewBooking={setSelectedBookingId} onReviewSaved={mutateOrders} />)
+              filteredOrders.map((order) => <BookingCard key={order.id} bookingItem={order} onViewBooking={handleViewBooking} onReviewSaved={mutateOrders} />)
             ) : !isloadingOrders && !isOrderError ? (
               <div className="col-span-full flex min-h-[320px] items-center justify-center text-center">
                 <p className="text-lg text-muted-foreground">No bookings found</p>

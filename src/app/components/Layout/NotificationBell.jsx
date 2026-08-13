@@ -119,14 +119,18 @@ export default function NotificationBell({ overHero = false }) {
   }, []);
 
   const handleMarkAsRead = async (id) => {
-    await markAsRead(id);
-    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read_at: new Date().toISOString() } : n)));
-    mutateCount();
+    const result = await markAsRead(id);
+    if (result?.success === true) {
+      setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read_at: new Date().toISOString() } : n)));
+      mutateCount();
+    }
+    return result;
   };
 
-  const openNotif = (notif) => {
+  const openNotif = async (notif) => {
     if (notif.display_style === 'popup') setSelectedNotif(notif);
-    if (!notif.read_at) handleMarkAsRead(notif.id);
+    if (!notif.read_at) return handleMarkAsRead(notif.id);
+    return { success: true };
   };
 
   const toggleNotifRead = async (notif) => {
@@ -149,14 +153,15 @@ export default function NotificationBell({ overHero = false }) {
   const feed = mergeFeed({ announcements, personal: notifications });
   const showBadge = isClient && unreadCount > 0;
   const displayCount = unreadCount > 99 ? '99+' : unreadCount;
+  const notificationsHref = session?.user?.role === 'admin' || session?.user?.role === 'super_admin' ? '/dashboard/admin/notifications' : '/dashboard/customer/notifications';
 
   return (
     <div className="relative" ref={dropdownRef}>
       <button
         type="button"
         aria-label={showBadge ? `Notifications ${displayCount}` : 'Notifications'}
-        aria-haspopup="menu"
         aria-expanded={open}
+        aria-controls="notifications-popover"
         className={`relative flex h-11 w-11 items-center justify-center ${overHero ? 'text-foreground dark:text-white focus-visible:ring-offset-white' : 'text-foreground focus-visible:ring-offset-background'} rounded-full transition hover:text-weelp-sage-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2`}
         onClick={() => {
           const willOpen = !open;
@@ -173,7 +178,12 @@ export default function NotificationBell({ overHero = false }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-1 w-[360px] bg-popover text-popover-foreground rounded-xl shadow-[0_14px_30px_rgba(24,24,27,0.1)] dark:shadow-none border border-border z-[9999] overflow-hidden">
+        <div
+          id="notifications-popover"
+          role="region"
+          aria-label="Notifications"
+          className="absolute right-0 top-full mt-1 w-[360px] bg-popover text-popover-foreground rounded-xl shadow-[0_14px_30px_rgba(24,24,27,0.1)] dark:shadow-none border border-border z-[9999] overflow-hidden"
+        >
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border">
             <h3 className="text-sm font-semibold text-foreground">Notifications</h3>
@@ -198,7 +208,7 @@ export default function NotificationBell({ overHero = false }) {
                   );
                 }
 
-                return <NotificationRow key={`p-${item.id}`} notif={item} onOpen={openNotif} onToggleRead={toggleNotifRead} />;
+                return <NotificationRow key={`p-${item.id}`} notif={item} onOpen={openNotif} onToggleRead={toggleNotifRead} role={session?.user?.role} />;
               })
             )}
           </div>
@@ -207,7 +217,7 @@ export default function NotificationBell({ overHero = false }) {
           {userId && (
             <div className="px-4 py-2 border-t border-border text-center">
               <NavigationLink
-                href="/dashboard/customer/notifications"
+                href={notificationsHref}
                 className="text-xs text-weelp-copy hover:text-weelp-sage-text hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
                 onClick={() => setOpen(false)}
               >

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { ChevronDown, Eye, RotateCcw, Trash2 } from 'lucide-react';
+import { ChevronDown, CircleAlert, Eye, RotateCcw, Trash2 } from 'lucide-react';
 
 import { TypeBadge } from '@/app/components/Shared/TypeBadge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
@@ -18,6 +18,8 @@ import { deleteOrder, permanentlyDeleteOrder, restoreOrder, updateOrderStatus } 
 import { ADMIN_ORDER_STATUSES, formatCompactTimeAgo, getOrderAmountValue, ORDER_VALUE_NOT_PROVIDED } from './orderDisplay';
 
 const EMPTY_ORDERS = [];
+
+const cancellationNeedsAttention = (order) => order?.cancellation_needs_attention === true;
 
 function formatListOrderAmount(payment) {
   const amount = getOrderAmountValue(payment);
@@ -102,7 +104,12 @@ export function FilterOrdersPage({ data = {}, view = 'active', searchDraft = '',
       {
         accessorKey: 'id',
         header: 'ORDER',
-        cell: ({ row }) => <div className="capitalize">{row.getValue('id')}</div>,
+        cell: ({ row }) => (
+          <div className="flex items-center gap-2 capitalize">
+            {row.getValue('id')}
+            {cancellationNeedsAttention(row.original) ? <CircleAlert aria-label="Cancellation needs attention" className="size-4 text-destructive" /> : null}
+          </div>
+        ),
       },
       {
         header: 'CUSTOMER NAME',
@@ -291,7 +298,11 @@ export function FilterOrdersPage({ data = {}, view = 'active', searchDraft = '',
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  className={cancellationNeedsAttention(row.original) ? 'bg-destructive/10 shadow-[inset_4px_0_0_hsl(var(--destructive))] dark:bg-destructive/15' : undefined}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell className="capitalize text-muted-foreground" key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

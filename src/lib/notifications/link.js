@@ -14,13 +14,24 @@ export function notificationLink(type) {
 
 const SAFE_URL = /^(\/(?!\/)|https?:\/\/)/i;
 
-// Resolves the CTA for a notification: an explicit, scheme-safe action_url wins
-// (external when it isn't an internal path); otherwise fall back to the derived
-// per-type route. Returns { href, external } or null. Pure.
-export function resolveNotificationCta(notif) {
+// Resolves the CTA for a notification. Cancellation targets use a strict,
+// role-aware allowlist; other types retain the scheme-safe explicit/derived
+// behavior. Returns { href, external } or null. Pure.
+export function resolveNotificationCta(notif, role) {
   if (!notif) return null;
   const explicit = notif.action_url;
-  if (typeof explicit === 'string' && SAFE_URL.test(explicit)) {
+  const cancellationRequestId = notif.data?.cancellation_request_id;
+
+  if (Number.isInteger(cancellationRequestId) && cancellationRequestId > 0) {
+    if (typeof explicit !== 'string') return null;
+    const expectedPath = role === 'admin' || role === 'super_admin' ? '/dashboard/admin/orders' : role === 'customer' ? '/dashboard/customer' : null;
+    if (!expectedPath) return null;
+    const match = explicit.match(/^([^?#]+)\?order=([1-9]\d*)$/);
+    if (!match || match[1] !== expectedPath) return null;
+    return { href: explicit, external: false };
+  }
+
+  if (typeof explicit === 'string' && !explicit.includes('\\') && SAFE_URL.test(explicit)) {
     return { href: explicit, external: !explicit.startsWith('/') };
   }
   const derived = notificationLink(notif.type);

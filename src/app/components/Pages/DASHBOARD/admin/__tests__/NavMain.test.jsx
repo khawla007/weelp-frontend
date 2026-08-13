@@ -26,7 +26,7 @@ jest.mock('@/components/ui/sidebar', () => ({
         {children}
       </button>
     ),
-  SidebarMenuItem: ({ children }) => <li>{children}</li>,
+  SidebarMenuItem: ({ children, ...props }) => <li {...props}>{children}</li>,
   SidebarMenuSub: ({ children }) => <ul>{children}</ul>,
   SidebarMenuSubButton: ({ children }) => <div>{children}</div>,
   SidebarMenuSubItem: ({ children }) => <li>{children}</li>,
@@ -74,5 +74,40 @@ describe('NavMain unseen badges', () => {
     expect(badge).toHaveClass('group-data-[collapsible=icon]:min-w-4');
     expect(badge).toHaveClass('group-data-[collapsible=icon]:px-1');
     expect(badge).toHaveClass('group-data-[collapsible=icon]:text-[9px]');
+  });
+
+  it('shows cancellation attention independently from unseen orders with one accessible label', () => {
+    render(<NavMain items={sections} counts={{ orders: 4, reviews: 2 }} attention={{ cancellations: true }} />);
+
+    expect(screen.getByRole('link', { name: 'Orders, 4 unseen, cancellation needs attention' })).toBeInTheDocument();
+    expect(screen.getByText('!')).toHaveAttribute('aria-hidden', 'true');
+    expect(screen.getByText('!')).toHaveClass('bg-destructive', 'text-destructive-foreground');
+    expect(screen.getByText('4')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Reviews, 2 unseen' })).toBeInTheDocument();
+
+    const cluster = screen.getByTestId('orders-badge-cluster');
+    expect(cluster).toHaveClass('pointer-events-none', 'absolute', 'flex');
+    expect(cluster).toContainElement(screen.getByText('4'));
+    expect(cluster).toContainElement(screen.getByText('!'));
+    expect(screen.getByText('4')).not.toHaveClass('absolute');
+    expect(screen.getByText('!')).not.toHaveClass('absolute');
+  });
+
+  it('shows cancellation attention without turning it into a count', () => {
+    render(<NavMain items={sections} counts={{ orders: 0, reviews: 0 }} attention={{ cancellations: true }} />);
+
+    expect(screen.getByRole('link', { name: 'Orders, cancellation needs attention' })).toBeInTheDocument();
+    expect(screen.getByTestId('orders-badge-cluster')).toHaveClass('group-data-[collapsible=icon]:top-9');
+  });
+
+  it('keeps both Orders badges together without overlap in collapsed navigation', () => {
+    render(<NavMain items={sections} counts={{ orders: 4, reviews: 0 }} attention={{ cancellations: true }} />);
+
+    const cluster = screen.getByTestId('orders-badge-cluster');
+    expect(cluster).toHaveClass('gap-1', 'group-data-[collapsible=icon]:left-0', 'group-data-[collapsible=icon]:top-9', 'group-data-[collapsible=icon]:w-9');
+    expect(cluster).not.toHaveClass('group-data-[collapsible=icon]:right-0.5', 'group-data-[collapsible=icon]:top-0.5');
+    expect(cluster.closest('li')).toHaveClass('group-data-[collapsible=icon]:pb-5');
+    expect(screen.getByText('4')).toHaveClass('group-data-[collapsible=icon]:h-4', 'group-data-[collapsible=icon]:min-w-4');
+    expect(screen.getByText('!')).toHaveClass('group-data-[collapsible=icon]:size-4');
   });
 });

@@ -12,6 +12,18 @@ jest.mock('@/lib/actions/orders', () => ({ updateOrderStatus: jest.fn() }));
 jest.mock('@/app/components/Shared/TypeBadge', () => ({
   TypeBadge: ({ type }) => <span>{type}</span>,
 }));
+jest.mock('../AdminCancellationPanel', () => ({
+  __esModule: true,
+  default: ({ cancellation, requester, onResolved }) => (
+    <section data-testid="admin-cancellation-panel">
+      <span>{cancellation.status}</span>
+      <span>{requester?.email}</span>
+      <button type="button" onClick={() => onResolved?.({ ...cancellation, status: 'approved' })}>
+        Resolve cancellation
+      </button>
+    </section>
+  ),
+}));
 
 let mockSelectOnValueChange;
 let mockSelectValue;
@@ -180,6 +192,46 @@ describe('AdminOrderDetail', () => {
     expect(screen.getByTestId('admin-order-detail')).toHaveClass('min-w-0', 'break-words');
     expect(screen.getByTestId('admin-order-detail-grid')).toHaveClass('grid-cols-1', 'lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)]', 'min-w-0');
     screen.getAllByTestId('admin-order-detail-column').forEach((column) => expect(column).toHaveClass('min-w-0', 'break-words'));
+  });
+
+  it.each(['pending', 'refund_processing', 'refund_failed'])('renders the cancellation panel above details and blocks status changes for %s requests', (status) => {
+    setHookResult({ order: makeOrder({ cancellation: { id: 9, status } }) });
+
+    render(<AdminOrderDetail orderId={42} isTrashed={false} onBack={jest.fn()} />);
+
+    const panel = screen.getByTestId('admin-cancellation-panel');
+    expect(panel).toHaveTextContent(status);
+    expect(panel).toHaveTextContent('customer@example.test');
+    expect(panel.compareDocumentPosition(screen.getByTestId('admin-order-detail-grid')) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Change status for order 42' })).toBeDisabled();
+    expect(screen.getByText('Resolve the cancellation request before changing the order status.')).toBeInTheDocument();
+  });
+
+  it.each(['approved', 'rejected'])('keeps status mutations available after a %s cancellation decision', (status) => {
+    setHookResult({ order: makeOrder({ cancellation: { id: 9, status } }) });
+
+    render(<AdminOrderDetail orderId={42} isTrashed={false} onBack={jest.fn()} />);
+
+    expect(screen.getByTestId('admin-cancellation-panel')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Change status for order 42' })).toBeEnabled();
+    expect(screen.queryByText('Resolve the cancellation request before changing the order status.')).not.toBeInTheDocument();
+  });
+
+  it.each(['detail', 'list'])('refreshes both cancellation views after resolution even when the %s refresh rejects', async (failedRefresh) => {
+    const mutate = failedRefresh === 'detail' ? jest.fn().mockRejectedValue(new Error('detail failed')) : jest.fn().mockResolvedValue(undefined);
+    const onStatusChanged = failedRefresh === 'list' ? jest.fn().mockRejectedValue(new Error('list failed')) : jest.fn().mockResolvedValue(undefined);
+    setHookResult({ order: makeOrder({ cancellation: { id: 9, status: 'pending' } }), mutate });
+
+    render(<AdminOrderDetail orderId={42} isTrashed={false} onBack={jest.fn()} onStatusChanged={onStatusChanged} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Resolve cancellation' }));
+
+    await waitFor(() => expect(mutate).toHaveBeenCalledTimes(1));
+    expect(onStatusChanged).toHaveBeenCalledTimes(1);
+    expect(toast).toHaveBeenCalledWith({
+      title: 'Cancellation request updated.',
+      description: 'Decision saved, but the latest data could not be refreshed.',
+    });
+    expect(toast).not.toHaveBeenCalledWith(expect.objectContaining({ variant: 'destructive' }));
   });
 
   it('uses fallbacks for blank optional values and wraps long content', () => {

@@ -1,8 +1,10 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { ChevronDown } from 'lucide-react';
+import { useSWRConfig } from 'swr';
 
 import { CustomPagination } from '@/app/components/Pagination';
 import AdminOrderDetail from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/AdminOrderDetail';
@@ -12,6 +14,8 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { newestCreatedAt, useMarkAdminNavigationSeen } from '@/hooks/api/admin/navigationUnseen';
 import { useAllOrdersAdmin } from '@/hooks/api/admin/orders';
+import { ADMIN_NAVIGATION_UNSEEN_KEY } from '@/lib/services/adminNavigationUnseen';
+import { parseOrderQuery, replaceOrderQuery } from '@/lib/navigation/orderQuery';
 
 const ORDER_STATUS_OPTIONS = [
   { value: 'all', label: 'All Status' },
@@ -24,7 +28,11 @@ const ORDER_STATUS_OPTIONS = [
 const OrdersPage = () => {
   const [listQuery, setListQuery] = useState({ page: 1, view: 'active', status: '', search: '' });
   const [searchDraft, setSearchDraft] = useState('');
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [pendingNavigation, setPendingNavigation] = useState(null);
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { mutate } = useSWRConfig();
   const listScrollPosition = useRef(0);
   const shouldRestoreScroll = useRef(false);
   const queryParams = new URLSearchParams({
@@ -45,6 +53,11 @@ const OrdersPage = () => {
   const itemsPerPage = Number(data.per_page) || 5;
   const totalItems = Number(data.total) || 0;
   const trashCount = Number(data.trash_count) || 0;
+  const orderQueryValues = searchParams.getAll('order');
+  const selectedOrderId = parseOrderQuery(orderQueryValues);
+  const searchSnapshot = searchParams.toString();
+  const searchSnapshotToken = useMemo(() => ({}), [searchSnapshot]);
+  const isOpeningOrder = selectedOrderId === null && pendingNavigation?.searchSnapshotToken === searchSnapshotToken;
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -56,7 +69,7 @@ const OrdersPage = () => {
   }, [searchDraft]);
 
   useEffect(() => {
-    if (selectedOrder || !shouldRestoreScroll.current) return undefined;
+    if (selectedOrderId || !shouldRestoreScroll.current) return undefined;
 
     shouldRestoreScroll.current = false;
     const animationFrameId = window.requestAnimationFrame(() => {
@@ -64,7 +77,7 @@ const OrdersPage = () => {
     });
 
     return () => window.cancelAnimationFrame(animationFrameId);
-  }, [selectedOrder]);
+  }, [selectedOrderId]);
 
   const handlePageChange = useCallback((page) => {
     setListQuery((current) => ({ ...current, page }));
@@ -78,15 +91,19 @@ const OrdersPage = () => {
     setListQuery((current) => ({ ...current, page: 1, status: status === 'all' ? '' : status }));
   }, []);
 
-  const handleViewOrder = useCallback((id, { isTrashed }) => {
-    listScrollPosition.current = window.scrollY;
-    setSelectedOrder({ id, isTrashed });
-  }, []);
+  const handleViewOrder = useCallback(
+    (id) => {
+      listScrollPosition.current = window.scrollY;
+      setPendingNavigation({ orderId: id, searchSnapshotToken });
+      router.replace(replaceOrderQuery(pathname, searchParams, id), { scroll: false });
+    },
+    [pathname, router, searchParams, searchSnapshotToken],
+  );
 
   const handleBack = useCallback(() => {
     shouldRestoreScroll.current = true;
-    setSelectedOrder(null);
-  }, []);
+    router.replace(replaceOrderQuery(pathname, searchParams, null), { scroll: false });
+  }, [pathname, router, searchParams]);
 
   const handleOrdersChanged = useCallback(async () => {
     const requestedQuery = listQuery;
@@ -104,16 +121,29 @@ const OrdersPage = () => {
     }
   }, [listQuery, mutateOrders]);
 
+  const refreshCancellationState = useCallback(async () => {
+    const refreshResults = await Promise.allSettled([mutateOrders(), mutate(ADMIN_NAVIGATION_UNSEEN_KEY)]);
+
+    if (refreshResults.some((result) => result.status === 'rejected')) {
+      throw new Error('Cancellation updated, but the latest data could not be refreshed.');
+    }
+  }, [mutate, mutateOrders]);
+
   const selectedStatus = ORDER_STATUS_OPTIONS.find((option) => option.value === (listQuery.status || 'all')) ?? ORDER_STATUS_OPTIONS[0];
 
-  if (selectedOrder) {
-    return <AdminOrderDetail orderId={selectedOrder.id} isTrashed={selectedOrder.isTrashed} onBack={handleBack} onStatusChanged={mutateOrders} />;
+  if (selectedOrderId !== null && selectedOrderId !== undefined) {
+    return <AdminOrderDetail orderId={selectedOrderId} isTrashed={listQuery.view === 'trash'} onBack={handleBack} onStatusChanged={refreshCancellationState} />;
   }
 
   return (
     <div className="space-y-4">
       <NavigationOrder title="Orders" desciption="Manage your orders and track their status" url="/dashboard/admin/orders/new" labelUrl="Order" />
       <StatsOrdersCards summary={data.summary ?? {}} />
+      {isOpeningOrder ? (
+        <p role="status" aria-live="polite" className="text-sm text-muted-foreground">
+          Opening order {pendingNavigation.orderId}…
+        </p>
+      ) : null}
 
       <div aria-label="Order views" className="flex items-center gap-2 pt-4">
         <Button type="button" variant={listQuery.view === 'active' ? 'default' : 'outline'} aria-pressed={listQuery.view === 'active'} onClick={() => handleViewChange('active')}>

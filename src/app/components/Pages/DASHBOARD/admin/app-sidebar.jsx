@@ -13,7 +13,7 @@ const { adminRoutes } = DashboardAdminNav;
 
 export function AppSidebar({ session, ...props }) {
   const { state, open, toggleSidebar, isMobile } = useSidebar();
-  const { counts } = useAdminNavigationUnseen();
+  const { counts, attention } = useAdminNavigationUnseen();
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -32,7 +32,7 @@ export function AppSidebar({ session, ...props }) {
       </SidebarHeader>
 
       <SidebarContent className={isMobile ? '' : 'tfc_scroll'}>
-        <NavMain items={adminRoutes} counts={counts} />
+        <NavMain items={adminRoutes} counts={counts} attention={attention} />
       </SidebarContent>
 
       <SidebarRail className="after:hidden" />

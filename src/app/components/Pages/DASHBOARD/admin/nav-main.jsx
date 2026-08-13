@@ -22,6 +22,11 @@ const COMING_SOON_LABEL = 'Soon';
 const COMING_SOON_BADGE_CLASS = 'rounded-md bg-weelp-sage-deep px-1.5 py-0.5 text-[8px] font-semibold leading-none text-white';
 const UNSEEN_BADGE_CLASS =
   'bg-weelp-sage-deep !text-white peer-hover/menu-button:!text-white peer-data-[active=true]/menu-button:!text-white group-data-[collapsible=icon]:!flex group-data-[collapsible=icon]:right-0.5 group-data-[collapsible=icon]:top-0.5 group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:min-w-4 group-data-[collapsible=icon]:px-1 group-data-[collapsible=icon]:text-[9px]';
+const ORDERS_BADGE_CLUSTER_CLASS =
+  'pointer-events-none absolute right-1 top-1.5 flex items-center gap-1 group-data-[collapsible=icon]:left-0 group-data-[collapsible=icon]:right-auto group-data-[collapsible=icon]:top-9 group-data-[collapsible=icon]:w-9 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:gap-0.5';
+const CLUSTER_COUNT_BADGE_CLASS =
+  'flex h-5 min-w-5 items-center justify-center rounded-md bg-weelp-sage-deep px-1 text-xs font-medium tabular-nums !text-white group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:min-w-4 group-data-[collapsible=icon]:px-1 group-data-[collapsible=icon]:text-[9px]';
+const ATTENTION_BADGE_CLASS = 'flex size-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold leading-none text-destructive-foreground group-data-[collapsible=icon]:size-4';
 
 function ComingSoonBadge() {
   return <span className={COMING_SOON_BADGE_CLASS}>{COMING_SOON_LABEL}</span>;
@@ -37,7 +42,7 @@ function getNotificationCount(item, counts) {
   return Number.isFinite(count) && count > 0 ? Math.floor(count) : 0;
 }
 
-export function NavMain({ items: sections, counts = {} }) {
+export function NavMain({ items: sections, counts = {}, attention = {} }) {
   const pathname = usePathname();
   const activeParentKey =
     sections.flatMap((section) => section.items.map((item) => ({ key: `${section.section}:${item.title}`, item }))).find(({ item }) => isParentActive(pathname, item))?.key ?? null;
@@ -55,13 +60,14 @@ export function NavMain({ items: sections, counts = {} }) {
           openItem={visibleOpenItem}
           setOpenItem={setOpenItem}
           counts={counts}
+          attention={attention}
         />
       ))}
     </>
   );
 }
 
-function SectionGroup({ section, pathname, showSeparator, openItem, setOpenItem, counts }) {
+function SectionGroup({ section, pathname, showSeparator, openItem, setOpenItem, counts, attention }) {
   return (
     <>
       {showSeparator && <SidebarSeparator />}
@@ -73,7 +79,7 @@ function SectionGroup({ section, pathname, showSeparator, openItem, setOpenItem,
               item.children?.length ? (
                 <ParentItem key={item.title} item={item} itemKey={`${section.section}:${item.title}`} pathname={pathname} openItem={openItem} setOpenItem={setOpenItem} />
               ) : (
-                <LeafItem key={item.title} item={item} pathname={pathname} counts={counts} />
+                <LeafItem key={item.title} item={item} pathname={pathname} counts={counts} attention={attention} />
               ),
             )}
           </SidebarMenu>
@@ -83,9 +89,11 @@ function SectionGroup({ section, pathname, showSeparator, openItem, setOpenItem,
   );
 }
 
-function LeafItem({ item, pathname, counts }) {
+function LeafItem({ item, pathname, counts, attention }) {
   const Icon = item.icon;
   const notificationCount = getNotificationCount(item, counts);
+  const cancellationNeedsAttention = item.notificationKey === 'orders' && attention?.cancellations === true;
+  const accessibleStatus = [notificationCount > 0 ? `${notificationCount} unseen` : null, cancellationNeedsAttention ? 'cancellation needs attention' : null].filter(Boolean).join(', ');
 
   if (item.comingSoon) {
     return (
@@ -102,14 +110,25 @@ function LeafItem({ item, pathname, counts }) {
   }
 
   return (
-    <SidebarMenuItem>
+    <SidebarMenuItem className={cancellationNeedsAttention ? 'group-data-[collapsible=icon]:pb-5' : undefined}>
       <SidebarMenuButton asChild isActive={isLeafActive(pathname, item.url)} tooltip={item.title}>
-        <Link href={item.url} aria-label={notificationCount > 0 ? `${item.title}, ${notificationCount} unseen` : undefined}>
+        <Link href={item.url} aria-label={accessibleStatus ? `${item.title}, ${accessibleStatus}` : undefined}>
           <Icon />
           <span>{item.title}</span>
         </Link>
       </SidebarMenuButton>
-      {notificationCount > 0 ? (
+      {cancellationNeedsAttention ? (
+        <span data-testid="orders-badge-cluster" aria-hidden="true" className={ORDERS_BADGE_CLUSTER_CLASS}>
+          {notificationCount > 0 ? (
+            <span aria-hidden="true" className={CLUSTER_COUNT_BADGE_CLASS}>
+              {notificationCount > 99 ? '99+' : notificationCount}
+            </span>
+          ) : null}
+          <span aria-hidden="true" className={ATTENTION_BADGE_CLASS}>
+            !
+          </span>
+        </span>
+      ) : notificationCount > 0 ? (
         <SidebarMenuBadge aria-hidden="true" className={UNSEEN_BADGE_CLASS}>
           {notificationCount > 99 ? '99+' : notificationCount}
         </SidebarMenuBadge>

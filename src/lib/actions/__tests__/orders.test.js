@@ -2,7 +2,7 @@ import { revalidatePath } from 'next/cache';
 
 import { getAuthApi } from '@/lib/axiosInstance';
 
-import { deleteOrder, permanentlyDeleteOrder, restoreOrder } from '../orders';
+import { approveCancellationRequest, deleteOrder, permanentlyDeleteOrder, rejectCancellationRequest, restoreOrder, retryCancellationRequest } from '../orders';
 
 jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
 jest.mock('@/lib/axiosInstance', () => ({ getAuthApi: jest.fn() }));
@@ -49,5 +49,74 @@ describe('order trash actions', () => {
 
     await expect(action(12)).resolves.toEqual({ success: false, message: 'Order not found.' });
     expect(revalidatePath).not.toHaveBeenCalled();
+  });
+});
+
+describe('admin cancellation actions', () => {
+  const api = { post: jest.fn() };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    getAuthApi.mockResolvedValue(api);
+  });
+
+  it('rejects a cancellation with the exact customer-facing explanation', async () => {
+    const cancellation = { id: 9, status: 'rejected' };
+    api.post.mockResolvedValue({ data: { cancellation } });
+
+    await expect(rejectCancellationRequest(9, 'The booking is outside the refundable window.')).resolves.toEqual({
+      success: true,
+      message: 'Cancellation request declined.',
+      cancellation,
+    });
+    expect(api.post).toHaveBeenCalledWith('/api/admin/cancellation-requests/9/reject', {
+      explanation: 'The booking is outside the refundable window.',
+    });
+  });
+
+  it('approves a cancellation using normalized decimal strings', async () => {
+    const cancellation = { id: 9, status: 'approved' };
+    api.post.mockResolvedValue({ data: { cancellation } });
+
+    await expect(approveCancellationRequest(9, ' 75.00 ', 'Adjusted after supplier review.')).resolves.toEqual({
+      success: true,
+      message: 'Cancellation request approved.',
+      cancellation,
+    });
+    expect(api.post).toHaveBeenCalledWith('/api/admin/cancellation-requests/9/approve', {
+      final_refund: '75.00',
+      explanation: 'Adjusted after supplier review.',
+    });
+  });
+
+  it('retries without allowing the approved amount to be edited', async () => {
+    const cancellation = { id: 9, status: 'approved' };
+    api.post.mockResolvedValue({ data: { cancellation } });
+
+    await expect(retryCancellationRequest(9)).resolves.toEqual({
+      success: true,
+      message: 'Cancellation refund retried.',
+      cancellation,
+    });
+    expect(api.post).toHaveBeenCalledWith('/api/admin/cancellation-requests/9/retry');
+  });
+
+  it.each([
+    ['reject', rejectCancellationRequest, ['Explanation long enough.']],
+    ['approve', approveCancellationRequest, ['75.00', '']],
+    ['retry', retryCancellationRequest, []],
+  ])('preserves safe backend messages when %s fails', async (_label, action, args) => {
+    const error = new Error('Raw axios message');
+    error.response = { data: { message: 'This request changed. Refresh and try again.' } };
+    api.post.mockRejectedValue(error);
+
+    await expect(action(9, ...args)).resolves.toEqual({ success: false, message: 'This request changed. Refresh and try again.' });
+    expect(revalidatePath).not.toHaveBeenCalled();
+  });
+
+  it('uses safe fallback copy instead of exposing an unknown transport error', async () => {
+    api.post.mockRejectedValue(new Error('connect ECONNREFUSED 127.0.0.1'));
+
+    await expect(retryCancellationRequest(9)).resolves.toEqual({ success: false, message: 'Order action failed.' });
   });
 });

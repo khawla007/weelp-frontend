@@ -13,6 +13,7 @@ import { useAdminOrder } from '@/hooks/api/admin/orders';
 import { useToast } from '@/hooks/use-toast';
 import { updateOrderStatus } from '@/lib/actions/orders';
 
+import AdminCancellationPanel from './AdminCancellationPanel';
 import { ADMIN_ORDER_STATUSES, displayOrderValue, formatCompactTimeAgo, formatOrderAmount, formatOrderTravelDate, pluralizeOrderCount } from './orderDisplay';
 
 const DETAIL_GRID_CLASSES = 'grid min-w-0 grid-cols-1 gap-x-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)]';
@@ -111,7 +112,9 @@ export default function AdminOrderDetail({ orderId, isTrashed, onBack, onStatusC
     return <FailureState errorStatus={errorStatus} onBack={onBack} onRetry={handleRetry} />;
   }
 
+  const cancellationIsUnresolved = ['pending', 'refund_processing', 'refund_failed'].includes(order.cancellation?.status);
   const statusIsReadOnly = isTrashed || order.is_trashed;
+  const statusIsDisabled = isUpdatingStatus || cancellationIsUnresolved;
   const itemType = order.type || order.orderable?.item_type;
   const receivedTime = formatCompactTimeAgo(order.created_at, relativeNow);
   const hasValidReceivedDate = Boolean(order.created_at) && Number.isFinite(new Date(order.created_at).getTime());
@@ -121,7 +124,7 @@ export default function AdminOrderDetail({ orderId, isTrashed, onBack, onStatusC
   const customAmount = formatOrderAmount(showCustomAmount ? { total_amount: payment.custom_amount, currency: payment.currency } : null);
 
   const handleStatusChange = async (nextStatus) => {
-    if (statusRequestLock.current || statusIsReadOnly) return;
+    if (statusRequestLock.current || statusIsReadOnly || cancellationIsUnresolved) return;
     statusRequestLock.current = true;
     setIsUpdatingStatus(true);
 
@@ -149,6 +152,19 @@ export default function AdminOrderDetail({ orderId, isTrashed, onBack, onStatusC
     }
   };
 
+  const handleCancellationResolved = async () => {
+    const refreshes = [Promise.resolve().then(() => mutate())];
+    if (onStatusChanged) refreshes.push(Promise.resolve().then(() => onStatusChanged()));
+    const refreshResults = await Promise.allSettled(refreshes);
+
+    if (refreshResults.some((refreshResult) => refreshResult.status === 'rejected')) {
+      toast({
+        title: 'Cancellation request updated.',
+        description: 'Decision saved, but the latest data could not be refreshed.',
+      });
+    }
+  };
+
   return (
     <div data-testid="admin-order-detail" className="min-w-0 break-words">
       <BackButton onBack={onBack} />
@@ -172,7 +188,7 @@ export default function AdminOrderDetail({ orderId, isTrashed, onBack, onStatusC
               </Badge>
             ) : (
               <Select value={order.status} onValueChange={handleStatusChange}>
-                <SelectTrigger disabled={isUpdatingStatus} aria-label={`Change status for order ${order.id}`} className="h-9 capitalize">
+                <SelectTrigger disabled={statusIsDisabled} aria-label={`Change status for order ${order.id}`} className="h-9 capitalize">
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -184,9 +200,16 @@ export default function AdminOrderDetail({ orderId, isTrashed, onBack, onStatusC
                 </SelectContent>
               </Select>
             )}
+            {cancellationIsUnresolved ? <p className="mt-2 text-xs text-muted-foreground">Resolve the cancellation request before changing the order status.</p> : null}
           </div>
         </div>
       </header>
+
+      {order.cancellation ? (
+        <div className="mt-5">
+          <AdminCancellationPanel cancellation={order.cancellation} requester={order.user} onResolved={handleCancellationResolved} />
+        </div>
+      ) : null}
 
       <div data-testid="admin-order-detail-grid" className={DETAIL_GRID_CLASSES}>
         <div data-testid="admin-order-detail-column" className="min-w-0 break-words">

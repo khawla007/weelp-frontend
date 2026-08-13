@@ -484,6 +484,10 @@ Use existing `Dialog`, `Button`, `Textarea`, `Label`, and `formatCurrency`. Keep
 
 Render the dialog only when `order.cancellation_eligible` is true and there is no cancellation record. Render `CustomerCancellationPanel` whenever `order.cancellation` exists. On submission, run both detail `mutate()` and list `onCancellationChanged?.()` with `Promise.allSettled`, showing a success toast even if a cache refresh later fails.
 
+Keep the lifecycle panel and ineligibility guidance in the detail body. For an eligible booking without a request, render the dialog trigger in the header immediately before the status badge. Preserve the status badge's existing neutral outline classes. Match its compact geometry and light-mode resting colors on the trigger. In dark mode, let the trigger participate in the canonical site-wide button surface, border, text, transition, and hover rules already used by home-page secondary actions; do not apply those interactive rules to the status badge. Use a shared header-actions wrapper for responsive wrapping.
+
+Add a `CustomerBookingDetail` regression that asserts the trigger precedes the status badge in DOM order, matches the badge's neutral compact light-mode resting state without changing the badge, remains absent for ineligible/existing-request states, and retains a wrapping header-actions container at narrow widths. Reuse the existing dark-theme contract test to prove the trigger is not exempted from the canonical dark button hierarchy.
+
 - [ ] **Step 6: Run focused customer tests**
 
 ```bash

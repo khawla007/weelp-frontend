@@ -50,7 +50,7 @@ afterEach(() => {
 describe('useAdminNavigationUnseen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    fetchAdminNavigationUnseen.mockReset().mockResolvedValue({ orders: 7, reviews: 3 });
+    fetchAdminNavigationUnseen.mockReset().mockResolvedValue({ counts: { orders: 7, reviews: 3 }, attention: { cancellations: true } });
     markAdminNavigationSeen.mockReset();
   });
 
@@ -59,6 +59,7 @@ describe('useAdminNavigationUnseen', () => {
 
     await waitFor(() => expect(result.current.first.counts).toEqual({ orders: 7, reviews: 3 }));
     expect(result.current.second.counts).toEqual({ orders: 7, reviews: 3 });
+    expect(result.current.first.attention).toEqual({ cancellations: true });
     expect(fetchAdminNavigationUnseen).toHaveBeenCalledTimes(1);
   });
 
@@ -85,7 +86,7 @@ describe('useAdminNavigationUnseen', () => {
   it('retries a failed initial request after thirty seconds despite provider defaults', async () => {
     useTestFakeTimers();
     const requestError = new Error('Temporary failure');
-    fetchAdminNavigationUnseen.mockRejectedValueOnce(requestError).mockResolvedValueOnce({ orders: 9, reviews: 2 });
+    fetchAdminNavigationUnseen.mockRejectedValueOnce(requestError).mockResolvedValueOnce({ counts: { orders: 9, reviews: 2 }, attention: { cancellations: true } });
 
     const { result } = renderHook(() => useAdminNavigationUnseen(), { wrapper: createWrapper() });
     await act(async () => {});
@@ -138,7 +139,7 @@ describe('newestCreatedAt', () => {
 describe('useMarkAdminNavigationSeen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    fetchAdminNavigationUnseen.mockReset().mockResolvedValue({ orders: 6, reviews: 4 });
+    fetchAdminNavigationUnseen.mockReset().mockResolvedValue({ counts: { orders: 6, reviews: 4 }, attention: { cancellations: true } });
     markAdminNavigationSeen.mockReset();
   });
 
@@ -154,7 +155,7 @@ describe('useMarkAdminNavigationSeen', () => {
   });
 
   it('fires once after becoming enabled despite strict effects and rerenders', async () => {
-    markAdminNavigationSeen.mockResolvedValue({ orders: 0, reviews: 4 });
+    markAdminNavigationSeen.mockResolvedValue({ counts: { orders: 0, reviews: 4 }, attention: { cancellations: true } });
     const { rerender } = renderHook(({ enabled, seenThrough }) => useMarkAdminNavigationSeen('orders', { enabled, seenThrough }), {
       initialProps: { enabled: false, seenThrough: '2026-08-11T08:00:00.000Z' },
       wrapper: createWrapper({ strict: true }),
@@ -167,32 +168,43 @@ describe('useMarkAdminNavigationSeen', () => {
     expect(markAdminNavigationSeen).toHaveBeenCalledWith('orders', '2026-08-11T08:00:00.000Z');
   });
 
-  it('optimistically clears only the target, populates the PUT result, then revalidates', async () => {
+  it('optimistically clears only the target, preserves unrelated counts, then revalidates', async () => {
     const request = deferred();
     const revalidation = deferred();
     markAdminNavigationSeen.mockReturnValue(request.promise);
-    fetchAdminNavigationUnseen.mockResolvedValueOnce({ orders: 6, reviews: 4 }).mockReturnValueOnce(revalidation.promise);
-    const { result, rerender } = renderHook(({ enabled }) => ({ counts: useAdminNavigationUnseen().counts, mark: useMarkAdminNavigationSeen('orders', { enabled }) }), {
-      initialProps: { enabled: false },
-      wrapper: createWrapper(),
-    });
+    fetchAdminNavigationUnseen.mockResolvedValueOnce({ counts: { orders: 6, reviews: 4 }, attention: { cancellations: true } }).mockReturnValueOnce(revalidation.promise);
+    const { result, rerender } = renderHook(
+      ({ enabled }) => {
+        const navigation = useAdminNavigationUnseen();
+        return { counts: navigation.counts, attention: navigation.attention, mark: useMarkAdminNavigationSeen('orders', { enabled }) };
+      },
+      {
+        initialProps: { enabled: false },
+        wrapper: createWrapper(),
+      },
+    );
     await waitFor(() => expect(result.current.counts).toEqual({ orders: 6, reviews: 4 }));
 
     rerender({ enabled: true });
     await waitFor(() => expect(result.current.counts).toEqual({ orders: 0, reviews: 4 }));
+    expect(result.current.attention).toEqual({ cancellations: true });
 
-    request.resolve({ orders: 2, reviews: 9 });
-    await waitFor(() => expect(result.current.counts).toEqual({ orders: 2, reviews: 9 }));
+    request.resolve({ counts: { orders: 2, reviews: 9 }, attention: { cancellations: true } });
+    await waitFor(() => expect(result.current.counts).toEqual({ orders: 0, reviews: 4 }));
+    expect(result.current.attention).toEqual({ cancellations: true });
     expect(fetchAdminNavigationUnseen).toHaveBeenCalledTimes(2);
 
-    revalidation.resolve({ orders: 1, reviews: 8 });
+    revalidation.resolve({ counts: { orders: 1, reviews: 8 }, attention: { cancellations: true } });
     await waitFor(() => expect(result.current.counts).toEqual({ orders: 1, reviews: 8 }));
+    expect(result.current.attention).toEqual({ cancellations: true });
   });
 
   it('revalidates after rejection and handles the failure inside the effect', async () => {
     const request = deferred();
     markAdminNavigationSeen.mockReturnValue(request.promise);
-    fetchAdminNavigationUnseen.mockResolvedValueOnce({ orders: 6, reviews: 4 }).mockResolvedValueOnce({ orders: 8, reviews: 5 });
+    fetchAdminNavigationUnseen
+      .mockResolvedValueOnce({ counts: { orders: 6, reviews: 4 }, attention: { cancellations: true } })
+      .mockResolvedValueOnce({ counts: { orders: 8, reviews: 5 }, attention: { cancellations: true } });
     const { result, rerender } = renderHook(({ enabled }) => ({ counts: useAdminNavigationUnseen().counts, mark: useMarkAdminNavigationSeen('reviews', { enabled }) }), {
       initialProps: { enabled: false },
       wrapper: createWrapper(),
@@ -213,7 +225,10 @@ describe('useMarkAdminNavigationSeen', () => {
     const stalePoll = deferred();
     const finalRevalidation = deferred();
     markAdminNavigationSeen.mockReturnValue(markRequest.promise);
-    fetchAdminNavigationUnseen.mockResolvedValueOnce({ orders: 6, reviews: 4 }).mockReturnValueOnce(stalePoll.promise).mockReturnValueOnce(finalRevalidation.promise);
+    fetchAdminNavigationUnseen
+      .mockResolvedValueOnce({ counts: { orders: 6, reviews: 4 }, attention: { cancellations: true } })
+      .mockReturnValueOnce(stalePoll.promise)
+      .mockReturnValueOnce(finalRevalidation.promise);
     const { result, rerender } = renderHook(({ enabled }) => ({ counts: useAdminNavigationUnseen().counts, mark: useMarkAdminNavigationSeen('orders', { enabled }) }), {
       initialProps: { enabled: false },
       wrapper: createWrapper(),
@@ -230,15 +245,15 @@ describe('useMarkAdminNavigationSeen', () => {
     });
     expect(fetchAdminNavigationUnseen).toHaveBeenCalledTimes(2);
 
-    stalePoll.resolve({ orders: 7, reviews: 5 });
+    stalePoll.resolve({ counts: { orders: 7, reviews: 5 }, attention: { cancellations: true } });
     await act(async () => {});
     expect(result.current.counts).toEqual({ orders: 0, reviews: 4 });
 
-    markRequest.resolve({ orders: 0, reviews: 4 });
+    markRequest.resolve({ counts: { orders: 0, reviews: 4 }, attention: { cancellations: true } });
     await act(async () => {});
     expect(fetchAdminNavigationUnseen).toHaveBeenCalledTimes(3);
 
-    finalRevalidation.resolve({ orders: 0, reviews: 5 });
+    finalRevalidation.resolve({ counts: { orders: 0, reviews: 5 }, attention: { cancellations: true } });
     await act(async () => {});
     expect(result.current.counts).toEqual({ orders: 0, reviews: 5 });
   });
@@ -251,12 +266,12 @@ describe('useMarkAdminNavigationSeen', () => {
     const reviewsRequest = deferred();
     const requests = { orders: ordersRequest, reviews: reviewsRequest };
     const putResults = {
-      orders: { orders: 0, reviews: 4 },
-      reviews: { orders: 6, reviews: 0 },
+      orders: { counts: { orders: 0, reviews: 4 }, attention: { cancellations: true } },
+      reviews: { counts: { orders: 6, reviews: 0 }, attention: { cancellations: true } },
     };
     const finalRevalidation = deferred();
     markAdminNavigationSeen.mockImplementation((resource) => (resource === 'orders' ? ordersRequest.promise : reviewsRequest.promise));
-    fetchAdminNavigationUnseen.mockResolvedValueOnce({ orders: 6, reviews: 4 }).mockReturnValueOnce(finalRevalidation.promise);
+    fetchAdminNavigationUnseen.mockResolvedValueOnce({ counts: { orders: 6, reviews: 4 }, attention: { cancellations: true } }).mockReturnValueOnce(finalRevalidation.promise);
     const { result, rerender } = renderHook(
       ({ enabled }) => ({
         counts: useAdminNavigationUnseen().counts,
@@ -279,7 +294,7 @@ describe('useMarkAdminNavigationSeen', () => {
     requests[secondResource].resolve(putResults[secondResource]);
     await waitFor(() => expect(fetchAdminNavigationUnseen).toHaveBeenCalledTimes(2));
 
-    finalRevalidation.resolve({ orders: 0, reviews: 0 });
+    finalRevalidation.resolve({ counts: { orders: 0, reviews: 0 }, attention: { cancellations: true } });
     await waitFor(() => expect(result.current.counts).toEqual({ orders: 0, reviews: 0 }));
   });
 
@@ -291,12 +306,12 @@ describe('useMarkAdminNavigationSeen', () => {
     const reviewsRequest = deferred();
     const requests = { orders: ordersRequest, reviews: reviewsRequest };
     const putResults = {
-      orders: { orders: 0, reviews: 4 },
-      reviews: { orders: 6, reviews: 0 },
+      orders: { counts: { orders: 0, reviews: 4 }, attention: { cancellations: true } },
+      reviews: { counts: { orders: 6, reviews: 0 }, attention: { cancellations: true } },
     };
     const finalRevalidation = deferred();
     markAdminNavigationSeen.mockImplementation((resource) => (resource === 'orders' ? ordersRequest.promise : reviewsRequest.promise));
-    fetchAdminNavigationUnseen.mockResolvedValueOnce({ orders: 6, reviews: 4 }).mockReturnValueOnce(finalRevalidation.promise);
+    fetchAdminNavigationUnseen.mockResolvedValueOnce({ counts: { orders: 6, reviews: 4 }, attention: { cancellations: true } }).mockReturnValueOnce(finalRevalidation.promise);
     const { result, rerender } = renderHook(
       ({ enabled }) => ({
         counts: useAdminNavigationUnseen().counts,
@@ -317,14 +332,89 @@ describe('useMarkAdminNavigationSeen', () => {
 
     requests[remainingResource].resolve(putResults[remainingResource]);
     await waitFor(() => expect(fetchAdminNavigationUnseen).toHaveBeenCalledTimes(2));
-    finalRevalidation.resolve({ orders: 7, reviews: 5 });
+    finalRevalidation.resolve({ counts: { orders: 7, reviews: 5 }, attention: { cancellations: true } });
     await waitFor(() => expect(result.current.counts).toEqual({ orders: 7, reviews: 5 }));
+  });
+
+  it('keeps both resources cleared when the last overlapping PUT is stale and recovery fails', async () => {
+    const ordersRequest = deferred();
+    const reviewsRequest = deferred();
+    markAdminNavigationSeen.mockImplementation((resource) => (resource === 'orders' ? ordersRequest.promise : reviewsRequest.promise));
+    fetchAdminNavigationUnseen.mockResolvedValueOnce({ counts: { orders: 6, reviews: 4 }, attention: { cancellations: true } }).mockRejectedValueOnce(new Error('Recovery failed'));
+    const { result, rerender } = renderHook(
+      ({ enabled }) => {
+        const navigation = useAdminNavigationUnseen();
+        useMarkAdminNavigationSeen('orders', { enabled });
+        useMarkAdminNavigationSeen('reviews', { enabled });
+        return { counts: navigation.counts, attention: navigation.attention };
+      },
+      { initialProps: { enabled: false }, wrapper: createWrapper() },
+    );
+    await waitFor(() => expect(result.current.counts).toEqual({ orders: 6, reviews: 4 }));
+
+    rerender({ enabled: true });
+    await waitFor(() => expect(result.current.counts).toEqual({ orders: 0, reviews: 0 }));
+    ordersRequest.resolve({ counts: { orders: 0, reviews: 4 }, attention: { cancellations: true } });
+    await act(async () => {});
+    reviewsRequest.resolve({ counts: { orders: 6, reviews: 0 }, attention: { cancellations: true } });
+
+    await waitFor(() => expect(fetchAdminNavigationUnseen).toHaveBeenCalledTimes(2));
+    expect(result.current.counts).toEqual({ orders: 0, reviews: 0 });
+    expect(result.current.attention).toEqual({ cancellations: true });
+  });
+
+  it('retires a failed overlap generation before a later poll and isolated mark', async () => {
+    const ordersRequest = deferred();
+    const reviewsRequest = deferred();
+    const wrapper = createWrapper();
+    markAdminNavigationSeen.mockImplementationOnce(() => ordersRequest.promise).mockImplementationOnce(() => reviewsRequest.promise);
+    fetchAdminNavigationUnseen
+      .mockResolvedValueOnce({ counts: { orders: 6, reviews: 4 }, attention: { cancellations: true } })
+      .mockRejectedValueOnce(new Error('Overlap recovery failed'))
+      .mockResolvedValueOnce({ counts: { orders: 9, reviews: 8 }, attention: { cancellations: true } })
+      .mockRejectedValueOnce(new Error('Isolated recovery failed'));
+    const first = renderHook(
+      ({ enabled }) => {
+        const navigation = useAdminNavigationUnseen();
+        useMarkAdminNavigationSeen('orders', { enabled });
+        useMarkAdminNavigationSeen('reviews', { enabled });
+        return navigation;
+      },
+      { initialProps: { enabled: false }, wrapper },
+    );
+    await waitFor(() => expect(first.result.current.counts).toEqual({ orders: 6, reviews: 4 }));
+    first.rerender({ enabled: true });
+    await waitFor(() => expect(first.result.current.counts).toEqual({ orders: 0, reviews: 0 }));
+    ordersRequest.resolve({ counts: { orders: 0, reviews: 4 }, attention: { cancellations: true } });
+    reviewsRequest.resolve({ counts: { orders: 6, reviews: 0 }, attention: { cancellations: true } });
+    await waitFor(() => expect(fetchAdminNavigationUnseen).toHaveBeenCalledTimes(2));
+    expect(first.result.current.counts).toEqual({ orders: 0, reviews: 0 });
+
+    await act(async () => {
+      await first.result.current.mutate();
+    });
+    expect(first.result.current.counts).toEqual({ orders: 9, reviews: 8 });
+    first.unmount();
+
+    markAdminNavigationSeen.mockResolvedValueOnce({ counts: { orders: 0, reviews: 4 }, attention: { cancellations: true } });
+    const second = renderHook(
+      () => {
+        const navigation = useAdminNavigationUnseen();
+        useMarkAdminNavigationSeen('orders');
+        return navigation;
+      },
+      { wrapper },
+    );
+
+    await waitFor(() => expect(markAdminNavigationSeen).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(second.result.current.counts).toEqual({ orders: 0, reviews: 8 }));
+    expect(second.result.current.attention).toEqual({ cancellations: true });
   });
 
   it('rolls back committed counts when both the PUT and recovery GET reject', async () => {
     const request = deferred();
     markAdminNavigationSeen.mockReturnValue(request.promise);
-    fetchAdminNavigationUnseen.mockResolvedValueOnce({ orders: 6, reviews: 4 }).mockRejectedValue(new Error('Recovery failed'));
+    fetchAdminNavigationUnseen.mockResolvedValueOnce({ counts: { orders: 6, reviews: 4 }, attention: { cancellations: true } }).mockRejectedValue(new Error('Recovery failed'));
     const { result, rerender, unmount } = renderHook(({ enabled }) => ({ counts: useAdminNavigationUnseen().counts, mark: useMarkAdminNavigationSeen('reviews', { enabled }) }), {
       initialProps: { enabled: false },
       wrapper: createWrapper(),
@@ -341,7 +431,7 @@ describe('useMarkAdminNavigationSeen', () => {
   });
 
   it('marks each resource once when the same mounted hook changes resource', async () => {
-    markAdminNavigationSeen.mockResolvedValue({ orders: 0, reviews: 0 });
+    markAdminNavigationSeen.mockResolvedValue({ counts: { orders: 0, reviews: 0 }, attention: { cancellations: true } });
     const { rerender } = renderHook(({ resource }) => useMarkAdminNavigationSeen(resource, { enabled: true }), {
       initialProps: { resource: 'orders' },
       wrapper: createWrapper(),

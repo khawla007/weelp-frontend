@@ -10,7 +10,10 @@ jest.mock('../../../../hooks/useIsClient', () => ({ __esModule: true, useIsClien
 describe('NotificationBell (anonymous)', () => {
   test('renders the bell button when logged out', () => {
     render(<NotificationBell />);
-    expect(screen.getByRole('button', { name: /notifications/i })).toBeInTheDocument();
+    const trigger = screen.getByRole('button', { name: /notifications/i });
+    expect(trigger).toBeInTheDocument();
+    expect(trigger).not.toHaveAttribute('aria-haspopup', 'menu');
+    expect(trigger).toHaveAttribute('aria-controls', 'notifications-popover');
   });
 
   test('closes when another header dropdown opens', async () => {

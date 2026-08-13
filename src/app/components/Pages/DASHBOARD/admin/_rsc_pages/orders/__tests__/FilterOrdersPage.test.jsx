@@ -144,6 +144,29 @@ describe('FilterOrdersPage trash actions', () => {
     expect(onViewOrder).toHaveBeenCalledWith(21, { isTrashed });
   });
 
+  it('marks only actionable cancellation rows with semantic danger treatment and an icon beside the order ID', () => {
+    const attentionOrder = { ...order, id: 22, cancellation_needs_attention: true };
+    const ordinaryOrder = { ...order, id: 23, cancellation_needs_attention: false };
+    const truthyNonBooleanOrder = { ...order, id: 24, cancellation_needs_attention: 1 };
+
+    renderTable({ data: { data: [attentionOrder, ordinaryOrder, truthyNonBooleanOrder] } });
+
+    const alert = screen.getByLabelText('Cancellation needs attention');
+    const attentionRow = screen.getByText('22').closest('tr');
+    const ordinaryRow = screen.getByText('23').closest('tr');
+    const truthyNonBooleanRow = screen.getByText('24').closest('tr');
+
+    expect(alert).toHaveClass('size-4', 'text-destructive');
+    expect(alert.closest('td')).toContainElement(screen.getByText('22'));
+    expect(attentionRow).toHaveClass('bg-destructive/10', 'dark:bg-destructive/15', 'shadow-[inset_4px_0_0_hsl(var(--destructive))]');
+    expect(ordinaryRow).not.toHaveClass('bg-destructive/10', 'dark:bg-destructive/15', 'shadow-[inset_4px_0_0_hsl(var(--destructive))]');
+    expect(truthyNonBooleanRow).not.toHaveClass('bg-destructive/10', 'dark:bg-destructive/15', 'shadow-[inset_4px_0_0_hsl(var(--destructive))]');
+    expect(attentionRow.className).not.toMatch(/(?:red|rose)-\d+/);
+    expect(screen.getAllByRole('button', { name: /view order/i })).toHaveLength(3);
+    expect(screen.getAllByText('Select status')).toHaveLength(3);
+    expect(alert).not.toHaveTextContent(/\d/);
+  });
+
   it('does not configure a page-local filtered row model', () => {
     renderTable();
 

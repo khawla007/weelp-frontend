@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
 import { Medialibrary } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/media/MediaLibrary';
+import NotificationsList from '@/app/components/Pages/DASHBOARD/user/_rsc_pages/notifications/NotificationsList';
 import { useMediaStore } from '@/lib/store/useMediaStore';
 import { createNotification, searchUsers } from '@/lib/services/adminNotifications';
 
@@ -12,7 +13,7 @@ const ROLES = [
   { value: 'admin', label: 'Admins' },
 ];
 
-export default function NotificationsAdmin() {
+function NotificationComposer() {
   const { selectedMedia, resetMedia } = useMediaStore();
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
@@ -203,6 +204,80 @@ export default function NotificationsAdmin() {
           {saving ? 'Sending…' : 'Send notification'}
         </button>
       </form>
+    </div>
+  );
+}
+
+const TAB_TRIGGER_CLASS =
+  'rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm';
+
+export default function NotificationsAdmin() {
+  const [activeTab, setActiveTab] = useState('inbox');
+  const inboxTabRef = useRef(null);
+  const sendTabRef = useRef(null);
+
+  const selectTabFromKeyboard = (event, currentTab) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const nextTab = event.key === 'Home' ? 'inbox' : event.key === 'End' ? 'send' : currentTab === 'inbox' ? 'send' : 'inbox';
+    setActiveTab(nextTab);
+    (nextTab === 'inbox' ? inboxTabRef : sendTabRef).current?.focus();
+  };
+
+  return (
+    <div className="mx-auto max-w-2xl">
+      <div role="tablist" aria-label="Notification sections" className="mx-auto mt-6 flex w-fit gap-1 rounded-lg border border-border bg-muted p-1">
+        <button
+          ref={inboxTabRef}
+          type="button"
+          role="tab"
+          id="admin-notifications-inbox-tab"
+          aria-controls="admin-notifications-inbox-panel"
+          aria-selected={activeTab === 'inbox'}
+          tabIndex={activeTab === 'inbox' ? 0 : -1}
+          data-state={activeTab === 'inbox' ? 'active' : 'inactive'}
+          className={TAB_TRIGGER_CLASS}
+          onClick={() => setActiveTab('inbox')}
+          onKeyDown={(event) => selectTabFromKeyboard(event, 'inbox')}
+        >
+          Inbox
+        </button>
+        <button
+          ref={sendTabRef}
+          type="button"
+          role="tab"
+          id="admin-notifications-send-tab"
+          aria-controls="admin-notifications-send-panel"
+          aria-selected={activeTab === 'send'}
+          tabIndex={activeTab === 'send' ? 0 : -1}
+          data-state={activeTab === 'send' ? 'active' : 'inactive'}
+          className={TAB_TRIGGER_CLASS}
+          onClick={() => setActiveTab('send')}
+          onKeyDown={(event) => selectTabFromKeyboard(event, 'send')}
+        >
+          Send notification
+        </button>
+      </div>
+      <div
+        id="admin-notifications-inbox-panel"
+        role="tabpanel"
+        aria-labelledby="admin-notifications-inbox-tab"
+        hidden={activeTab !== 'inbox'}
+        inert={activeTab !== 'inbox'}
+        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
+      >
+        <NotificationsList />
+      </div>
+      <div
+        id="admin-notifications-send-panel"
+        role="tabpanel"
+        aria-labelledby="admin-notifications-send-tab"
+        hidden={activeTab !== 'send'}
+        inert={activeTab !== 'send'}
+        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40"
+      >
+        <NotificationComposer />
+      </div>
     </div>
   );
 }

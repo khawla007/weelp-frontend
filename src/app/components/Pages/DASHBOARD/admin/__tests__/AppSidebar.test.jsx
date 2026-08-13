@@ -9,7 +9,7 @@ jest.mock('../nav-main', () => ({
 }));
 
 jest.mock('@/hooks/api/admin/navigationUnseen', () => ({
-  useAdminNavigationUnseen: () => ({ counts: { orders: 4, reviews: 2 } }),
+  useAdminNavigationUnseen: () => ({ counts: { orders: 4, reviews: 2 }, attention: { cancellations: true } }),
 }));
 
 jest.mock('@/constants/navigations/AdminNavigation', () => ({
@@ -52,6 +52,7 @@ describe('AppSidebar', () => {
     expect(mockNavMain).toHaveBeenCalledWith({
       items: [],
       counts: { orders: 4, reviews: 2 },
+      attention: { cancellations: true },
     });
   });
 });

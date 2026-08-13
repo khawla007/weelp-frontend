@@ -9,11 +9,17 @@ function normalizeCount(value) {
 }
 
 export function normalizeAdminNavigationCounts(payload) {
-  const counts = payload?.data ?? payload;
+  const source = payload?.data ?? payload;
+  const counts = source?.counts ?? source;
 
   return {
-    orders: normalizeCount(counts?.orders),
-    reviews: normalizeCount(counts?.reviews),
+    counts: {
+      orders: normalizeCount(counts?.orders),
+      reviews: normalizeCount(counts?.reviews),
+    },
+    attention: {
+      cancellations: (source?.attention?.cancellations ?? source?.has_actionable_cancellations) === true,
+    },
   };
 }
 

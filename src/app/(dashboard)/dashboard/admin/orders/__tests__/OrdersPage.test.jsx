@@ -2,9 +2,41 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { useAllOrdersAdmin } from '@/hooks/api/admin/orders';
 import { useMarkAdminNavigationSeen } from '@/hooks/api/admin/navigationUnseen';
+import { parseOrderQuery, replaceOrderQuery } from '@/lib/navigation/orderQuery';
 
 import OrdersPage from '../page';
 
+const mockGlobalMutate = jest.fn();
+let mockDetailRefreshPromise;
+let navigationState;
+let nextNavigationState;
+let mockSearchParams;
+const mockNavigationListeners = new Set();
+const mockReplace = jest.fn((href) => {
+  mockSearchParams = new URLSearchParams(href.split('?')[1] ?? '');
+  mockNavigationListeners.forEach((listener) => listener());
+});
+
+jest.mock('next/navigation', () => ({
+  usePathname: () => '/dashboard/admin/orders',
+  useRouter: () => ({ replace: mockReplace }),
+  useSearchParams: () => {
+    const React = jest.requireActual('react');
+    React.useSyncExternalStore(
+      (listener) => {
+        mockNavigationListeners.add(listener);
+        return () => mockNavigationListeners.delete(listener);
+      },
+      () => mockSearchParams,
+      () => mockSearchParams,
+    );
+    return mockSearchParams;
+  },
+}));
+
+jest.mock('swr', () => ({
+  useSWRConfig: () => ({ mutate: mockGlobalMutate }),
+}));
 jest.mock('@/hooks/api/admin/orders', () => ({ useAllOrdersAdmin: jest.fn() }));
 jest.mock('@/hooks/api/admin/navigationUnseen', () => ({
   newestCreatedAt: jest.requireActual('@/hooks/api/admin/navigationUnseen').newestCreatedAt,
@@ -49,8 +81,21 @@ jest.mock('@/app/components/Pages/DASHBOARD/admin/_rsc_pages/orders/AdminOrderDe
       <button type="button" onClick={onBack}>
         Back to list
       </button>
-      <button type="button" onClick={() => onStatusChanged()}>
-        Detail status changed
+      <button
+        type="button"
+        onClick={() => {
+          mockDetailRefreshPromise = onStatusChanged({ cancellation: { status: 'approved' } });
+        }}
+      >
+        Resolve cancellation terminally
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          mockDetailRefreshPromise = onStatusChanged({ cancellation: { status: 'refund_failed' } });
+        }}
+      >
+        Retry cancellation nonterminally
       </button>
     </div>
   ),
@@ -76,6 +121,14 @@ describe('OrdersPage', () => {
       trash_count: 2,
     };
     mutateOrders.mockResolvedValue({ data: backendResponse });
+    mockDetailRefreshPromise = undefined;
+    navigationState = { counts: { orders: 4, reviews: 2 }, attention: { cancellations: true } };
+    nextNavigationState = navigationState;
+    mockSearchParams = new URLSearchParams();
+    mockGlobalMutate.mockImplementation(async (key) => {
+      if (key === '/api/admin/navigation-unseen-counts') navigationState = nextNavigationState;
+      return navigationState;
+    });
     useAllOrdersAdmin.mockImplementation((query) => ({
       orders: { data: { ...backendResponse, current_page: Number(new URLSearchParams(query).get('page')) || 1 } },
       isLoading: false,
@@ -115,6 +168,122 @@ describe('OrdersPage', () => {
     render(<OrdersPage />);
 
     expect(screen.getByLabelText('Order views')).toHaveClass('pt-4');
+  });
+
+  it.each([
+    [['1'], 1],
+    [[String(Number.MAX_SAFE_INTEGER)], Number.MAX_SAFE_INTEGER],
+    [[String(Number.MAX_SAFE_INTEGER + 1)], null],
+    [['0'], null],
+    [['1.5'], null],
+    [['16', '17'], null],
+  ])('parses a strict single safe positive order query %#', (value, expected) => {
+    expect(parseOrderQuery(value)).toBe(expected);
+  });
+
+  it('replaces only the order query and rejects an unsafe replacement ID', () => {
+    expect(replaceOrderQuery('/dashboard/admin/orders', 'page=3&status=pending&order=4', 16)).toBe('/dashboard/admin/orders?page=3&status=pending&order=16');
+    expect(replaceOrderQuery('/dashboard/admin/orders', 'page=3&order=4', Number.MAX_SAFE_INTEGER + 1)).toBe('/dashboard/admin/orders?page=3');
+  });
+
+  it('opens an exact order from the initial query and ignores invalid, non-positive, and duplicate values', () => {
+    mockSearchParams = new URLSearchParams('tab=all&order=16');
+    const { rerender } = render(<OrdersPage />);
+
+    expect(screen.getByText('Detail order 16')).toBeInTheDocument();
+
+    for (const query of ['tab=all&order=nope', 'tab=all&order=0', 'tab=all&order=16&order=17']) {
+      mockSearchParams = new URLSearchParams(query);
+      rerender(<OrdersPage />);
+      expect(screen.getByText('Orders heading')).toBeInTheDocument();
+    }
+  });
+
+  it('preserves unrelated query parameters when selecting and returning from an order', () => {
+    mockSearchParams = new URLSearchParams('page=3&status=pending');
+    render(<OrdersPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Mock view order' }));
+    expect(mockReplace).toHaveBeenLastCalledWith('/dashboard/admin/orders?page=3&status=pending&order=42', { scroll: false });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Back to list' }));
+    expect(mockReplace).toHaveBeenLastCalledWith('/dashboard/admin/orders?page=3&status=pending', { scroll: false });
+  });
+
+  it('follows a changed order query while detail is open without replacing the URL', () => {
+    mockSearchParams = new URLSearchParams('order=16');
+    const { rerender } = render(<OrdersPage />);
+    expect(screen.getByText('Detail order 16')).toBeInTheDocument();
+
+    mockSearchParams = new URLSearchParams('order=17');
+    rerender(<OrdersPage />);
+
+    expect(screen.getByText('Detail order 17')).toBeInTheDocument();
+    expect(mockReplace).not.toHaveBeenCalled();
+  });
+
+  it('returns to the list when an externally removed query follows a UI selection', () => {
+    const { rerender } = render(<OrdersPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Mock view order' }));
+    expect(screen.getByText('Detail order 42')).toBeInTheDocument();
+
+    mockSearchParams = new URLSearchParams('tab=all');
+    rerender(<OrdersPage />);
+
+    expect(screen.getByText('Orders heading')).toBeInTheDocument();
+    expect(screen.queryByText('Detail order 42')).not.toBeInTheDocument();
+  });
+
+  it('announces a pending order navigation without rendering stale detail', () => {
+    mockReplace.mockImplementationOnce(() => {});
+    const { rerender } = render(<OrdersPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Mock view order' }));
+
+    expect(screen.getByRole('status')).toHaveTextContent('Opening order 42…');
+    expect(screen.getByText('Orders heading')).toBeInTheDocument();
+    expect(screen.queryByText('Detail order 42')).not.toBeInTheDocument();
+
+    mockSearchParams = new URLSearchParams('order=42');
+    rerender(<OrdersPage />);
+
+    expect(screen.getByText('Detail order 42')).toBeInTheDocument();
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(mockReplace).toHaveBeenCalledTimes(1);
+  });
+
+  it('expires pending order feedback when navigation is removed, invalid, or superseded', () => {
+    mockReplace.mockImplementationOnce(() => {});
+    const { rerender } = render(<OrdersPage />);
+    fireEvent.click(screen.getByRole('button', { name: 'Mock view order' }));
+    expect(screen.getByRole('status')).toHaveTextContent('Opening order 42…');
+
+    mockSearchParams = new URLSearchParams('order=invalid');
+    rerender(<OrdersPage />);
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByText('Orders heading')).toBeInTheDocument();
+
+    mockSearchParams = new URLSearchParams();
+    rerender(<OrdersPage />);
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+
+    mockSearchParams = new URLSearchParams('order=99');
+    rerender(<OrdersPage />);
+    expect(screen.getByText('Detail order 99')).toBeInTheDocument();
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+
+  it('does not resurrect a detail after valid, invalid, duplicate, then absent order queries', () => {
+    mockSearchParams = new URLSearchParams('order=16');
+    const { rerender } = render(<OrdersPage />);
+    expect(screen.getByText('Detail order 16')).toBeInTheDocument();
+
+    for (const query of ['order=invalid', 'order=16&order=17', 'tab=all']) {
+      mockSearchParams = new URLSearchParams(query);
+      rerender(<OrdersPage />);
+      expect(screen.getByText('Orders heading')).toBeInTheDocument();
+    }
   });
 
   it('starts with All Status and omits empty filters from the request', () => {
@@ -352,7 +521,7 @@ describe('OrdersPage', () => {
     await waitFor(() => expect(useAllOrdersAdmin).toHaveBeenLastCalledWith('?page=2&view=active'));
     fireEvent.click(screen.getByRole('button', { name: 'Mock view order' }));
     mutateOrders.mockResolvedValueOnce({ data: { ...backendResponse, data: [], current_page: 2 } });
-    fireEvent.click(screen.getByRole('button', { name: 'Detail status changed' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Resolve cancellation terminally' }));
 
     await waitFor(() => expect(mutateOrders).toHaveBeenCalledTimes(1));
     expect(mutateOrders).toHaveBeenCalledWith();
@@ -442,6 +611,31 @@ describe('OrdersPage', () => {
       enabled: true,
       seenThrough: '2026-08-11T10:05:00.000Z',
     });
+  });
+
+  it('immediately clears terminal cancellation attention without changing unseen counts', async () => {
+    nextNavigationState = { counts: { orders: 4, reviews: 2 }, attention: { cancellations: false } };
+    render(<OrdersPage />);
+    fireEvent.click(screen.getByRole('button', { name: 'Mock view order' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Resolve cancellation terminally' }));
+
+    await waitFor(() => expect(mutateOrders).toHaveBeenCalledTimes(1));
+    expect(mockGlobalMutate).toHaveBeenCalledWith('/api/admin/navigation-unseen-counts');
+    await expect(mockDetailRefreshPromise).resolves.toBeUndefined();
+    expect(navigationState).toEqual({ counts: { orders: 4, reviews: 2 }, attention: { cancellations: false } });
+  });
+
+  it('keeps attention for a nonterminal retry result and surfaces a safe refresh warning without rolling back the decision', async () => {
+    nextNavigationState = { counts: { orders: 4, reviews: 2 }, attention: { cancellations: true } };
+    mutateOrders.mockRejectedValue(new Error('Orders refresh failed'));
+    render(<OrdersPage />);
+    fireEvent.click(screen.getByRole('button', { name: 'Mock view order' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Retry cancellation nonterminally' }));
+
+    await expect(mockDetailRefreshPromise).rejects.toThrow('Cancellation updated, but the latest data could not be refreshed.');
+    expect(mutateOrders).toHaveBeenCalledTimes(1);
+    expect(mockGlobalMutate).toHaveBeenCalledTimes(1);
+    expect(navigationState).toEqual({ counts: { orders: 4, reviews: 2 }, attention: { cancellations: true } });
   });
 
   it('clears an empty settled orders response without a timestamp boundary', () => {
