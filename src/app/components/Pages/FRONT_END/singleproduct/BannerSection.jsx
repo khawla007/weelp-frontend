@@ -85,7 +85,9 @@ const BannerSection = ({
               </li>
             </ul>
 
-            <WishlistButton item={wishlistItem} />
+            <div className="pt-6 md:pt-0">
+              <WishlistButton item={wishlistItem} />
+            </div>
           </div>
 
           {/* Separator */}

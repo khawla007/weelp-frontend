@@ -64,6 +64,12 @@ describe('WishlistButton', () => {
     });
   });
 
+  it('uses the outlined light-mode button treatment', () => {
+    render(<WishlistButton item={item} />);
+
+    expect(screen.getByRole('button', { name: /save desert safari to wishlist/i })).toHaveClass('border', 'border-border', 'bg-background');
+  });
+
   it('renders an existing wishlist item with a red filled heart', () => {
     initialItems = [{ id: 9, item_type: 'activity', item_id: 42, title: 'Desert Safari' }];
 

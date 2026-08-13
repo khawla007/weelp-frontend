@@ -87,7 +87,7 @@ export default function WishlistButton({ item, className = '' }) {
       aria-pressed={isSaved}
       onClick={handleClick}
       disabled={isDisabled}
-      className={`inline-flex min-h-11 items-center gap-2 rounded-lg px-4 py-2 text-base font-medium text-copy transition-colors hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60 ${focusRing} ${className}`}
+      className={`inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-base font-medium text-copy transition-colors hover:border-weelp-sage-deep hover:bg-weelp-sage-deep/5 hover:text-weelp-sage-text disabled:cursor-not-allowed disabled:opacity-60 ${focusRing} ${className}`}
     >
       <Heart data-testid="wishlist-heart" aria-hidden="true" className={`size-[18px] transition-colors ${heartClassName}`} />
       {isSaved ? 'Saved to Wishlist' : 'Save to Wishlist'}

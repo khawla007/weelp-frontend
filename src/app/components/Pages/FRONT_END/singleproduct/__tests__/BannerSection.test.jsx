@@ -66,4 +66,10 @@ describe('BannerSection', () => {
       currency: 'USD',
     });
   });
+
+  it('adds 24px of space above the wishlist control on mobile only', () => {
+    render(<BannerSection activityName="Scuba Diving Tour" />);
+
+    expect(screen.getByTestId('detail-wishlist').parentElement).toHaveClass('pt-6', 'md:pt-0');
+  });
 });
