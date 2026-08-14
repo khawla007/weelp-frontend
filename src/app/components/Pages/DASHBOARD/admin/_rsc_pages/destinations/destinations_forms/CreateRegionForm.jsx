@@ -178,7 +178,9 @@ export const CreateRegionForm = ({ apiFormData = {} }) => {
               <Controller
                 control={control}
                 name="countries"
-                render={({ field: { value, onChange } }) => <ComboboxMultiple id="countries" type="Countries" items={countries} value={value || []} onChange={onChange} />}
+                render={({ field: { value, onChange } }) => (
+                  <ComboboxMultiple id="countries" type="Countries" items={countries} value={value || []} onChange={onChange} searchInputClassName="focus-visible:outline-none" />
+                )}
               />
             </div>
 
