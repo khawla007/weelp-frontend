@@ -586,13 +586,16 @@ describe('Deep Forest semantic theme', () => {
   });
 
   const darkInteractiveControlSelectors = [
-    ".dark button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.review-featured-switch):not(.weelp-creator-like-button):not(.weelp-search-control):not([data-sidebar='menu-button']):not([data-sidebar='rail'])",
+    ".dark button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.review-featured-switch):not(.weelp-creator-like-button):not(.weelp-search-control):not(.weelp-plain-action):not([data-sidebar='menu-button']):not([data-sidebar='rail'])",
     ".dark a[role='button']:not([aria-disabled='true'])",
     ".dark a[data-weelp-button-link]:not([aria-disabled='true'])",
     ".dark a[class~='bg-weelp-sage-deep']:not([aria-disabled='true'])",
     ".dark a[class~='bg-primary']:not([aria-disabled='true'])",
   ];
-  const darkInteractiveControlHoverSelectors = darkInteractiveControlSelectors.map((selector) => `${selector}:hover`);
+  const darkInteractiveControlHoverSelectors = [
+    ".dark button:not(:disabled):not([aria-disabled='true']):not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.review-featured-switch):not(.weelp-creator-like-button):not(.weelp-search-control):not(.weelp-plain-action):not(.weelp-add-day-button):not([data-sidebar='menu-button']):not([data-sidebar='rail']):hover",
+    ...darkInteractiveControlSelectors.slice(1).map((selector) => `${selector}:hover`),
+  ];
 
   it('gives enabled dark buttons and button-shaped anchors the Dubai Tours hover shadow', () => {
     const restingRule = extractSelectorContract(darkInteractiveControlSelectors);
@@ -669,7 +672,7 @@ describe('Deep Forest semantic theme', () => {
 
   it('sets the dark site-wide button surface and border to the requested tokens', () => {
     const buttonRule = extractSelectorContract([
-      ".dark button:not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.review-featured-switch):not(.weelp-creator-like-button):not(.weelp-search-control):not(.bg-card):not([data-sidebar='menu-button']):not([data-sidebar='rail'])",
+      ".dark button:not(.weelp-auth-mode-switch):not(.weelp-header-nav-item):not(.weelp-single-product-tab):not(.review-featured-switch):not(.weelp-creator-like-button):not(.weelp-search-control):not(.weelp-plain-action):not(.weelp-add-day-button):not(.bg-card):not([data-sidebar='menu-button']):not([data-sidebar='rail'])",
       ".dark a[role='button']",
       ".dark [role='button']",
       ".dark a[class~='bg-weelp-sage-deep']",
@@ -701,8 +704,8 @@ describe('Deep Forest semantic theme', () => {
     expect(headerNavigationRule.declarations.color).toBeUndefined();
   });
 
-  it('keeps sidebar menu buttons transparent and borderless in dark mode', () => {
-    const sidebarMenuButtonRule = extractSelectorContract(".dark button[data-sidebar='menu-button']");
+  it('keeps inactive sidebar menu buttons transparent and borderless in dark mode', () => {
+    const sidebarMenuButtonRule = extractSelectorContract(".dark button[data-sidebar='menu-button']:not([data-active='true'])");
 
     expect(sidebarMenuButtonRule.declarations).toMatchObject({
       border: { important: true, value: '0' },

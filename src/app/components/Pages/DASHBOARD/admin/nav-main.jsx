@@ -32,8 +32,21 @@ function ComingSoonBadge() {
   return <span className={COMING_SOON_BADGE_CLASS}>{COMING_SOON_LABEL}</span>;
 }
 
-const isLeafActive = (pathname, url) => pathname === url;
-const isParentActive = (pathname, item) => item.children?.some((c) => pathname === c.url || pathname.startsWith(c.url + '/'));
+const ADMIN_DASHBOARD_URL = '/dashboard/admin';
+
+function getActiveUrl(pathname, sections) {
+  return (
+    sections
+      .flatMap((section) => section.items.flatMap((item) => (item.children?.length ? [item, ...item.children] : [item])))
+      .map((item) => item.url)
+      .filter((url) => url && (pathname === url || (url !== ADMIN_DASHBOARD_URL && pathname.startsWith(`${url}/`))))
+      .sort((a, b) => b.length - a.length)[0] ?? null
+  );
+}
+
+function isParentActive(item, activeUrl) {
+  return activeUrl === item.url || item.children?.some((child) => child.url === activeUrl);
+}
 
 function getNotificationCount(item, counts) {
   if (!item.notificationKey) return 0;
@@ -44,10 +57,14 @@ function getNotificationCount(item, counts) {
 
 export function NavMain({ items: sections, counts = {}, attention = {} }) {
   const pathname = usePathname();
+  const activeUrl = getActiveUrl(pathname, sections);
   const activeParentKey =
-    sections.flatMap((section) => section.items.map((item) => ({ key: `${section.section}:${item.title}`, item }))).find(({ item }) => isParentActive(pathname, item))?.key ?? null;
-  const [openItem, setOpenItem] = useState(null);
-  const visibleOpenItem = openItem ?? activeParentKey;
+    sections.flatMap((section) => section.items.map((item) => ({ key: `${section.section}:${item.title}`, item }))).find(({ item }) => isParentActive(item, activeUrl))?.key ?? null;
+  const [openPreference, setOpenPreference] = useState(null);
+  const visibleOpenItem = openPreference?.activeParentKey === activeParentKey ? openPreference.itemKey : activeParentKey;
+  const toggleOpenItem = (itemKey) => {
+    setOpenPreference({ activeParentKey, itemKey: visibleOpenItem === itemKey ? null : itemKey });
+  };
 
   return (
     <>
@@ -55,10 +72,10 @@ export function NavMain({ items: sections, counts = {}, attention = {} }) {
         <SectionGroup
           key={section.section}
           section={section}
-          pathname={pathname}
+          activeUrl={activeUrl}
           showSeparator={section.section === 'COMING SOON'}
           openItem={visibleOpenItem}
-          setOpenItem={setOpenItem}
+          toggleOpenItem={toggleOpenItem}
           counts={counts}
           attention={attention}
         />
@@ -67,7 +84,7 @@ export function NavMain({ items: sections, counts = {}, attention = {} }) {
   );
 }
 
-function SectionGroup({ section, pathname, showSeparator, openItem, setOpenItem, counts, attention }) {
+function SectionGroup({ section, activeUrl, showSeparator, openItem, toggleOpenItem, counts, attention }) {
   return (
     <>
       {showSeparator && <SidebarSeparator />}
@@ -77,9 +94,9 @@ function SectionGroup({ section, pathname, showSeparator, openItem, setOpenItem,
           <SidebarMenu>
             {section.items.map((item) =>
               item.children?.length ? (
-                <ParentItem key={item.title} item={item} itemKey={`${section.section}:${item.title}`} pathname={pathname} openItem={openItem} setOpenItem={setOpenItem} />
+                <ParentItem key={item.title} item={item} itemKey={`${section.section}:${item.title}`} activeUrl={activeUrl} openItem={openItem} toggleOpenItem={toggleOpenItem} />
               ) : (
-                <LeafItem key={item.title} item={item} pathname={pathname} counts={counts} attention={attention} />
+                <LeafItem key={item.title} item={item} activeUrl={activeUrl} counts={counts} attention={attention} />
               ),
             )}
           </SidebarMenu>
@@ -89,7 +106,7 @@ function SectionGroup({ section, pathname, showSeparator, openItem, setOpenItem,
   );
 }
 
-function LeafItem({ item, pathname, counts, attention }) {
+function LeafItem({ item, activeUrl, counts, attention }) {
   const Icon = item.icon;
   const notificationCount = getNotificationCount(item, counts);
   const cancellationNeedsAttention = item.notificationKey === 'orders' && attention?.cancellations === true;
@@ -98,7 +115,7 @@ function LeafItem({ item, pathname, counts, attention }) {
   if (item.comingSoon) {
     return (
       <SidebarMenuItem>
-        <SidebarMenuButton tooltip={item.title} disabled>
+        <SidebarMenuButton tooltip={item.title} isActive={activeUrl === item.url} disabled>
           <Icon />
           <span className="inline-flex min-w-0 items-center gap-2">
             <span className="truncate">{item.title}</span>
@@ -111,7 +128,7 @@ function LeafItem({ item, pathname, counts, attention }) {
 
   return (
     <SidebarMenuItem className={cancellationNeedsAttention ? 'group-data-[collapsible=icon]:pb-5' : undefined}>
-      <SidebarMenuButton asChild isActive={isLeafActive(pathname, item.url)} tooltip={item.title}>
+      <SidebarMenuButton asChild isActive={activeUrl === item.url} tooltip={item.title}>
         <Link href={item.url} aria-label={accessibleStatus ? `${item.title}, ${accessibleStatus}` : undefined}>
           <Icon />
           <span>{item.title}</span>
@@ -137,15 +154,15 @@ function LeafItem({ item, pathname, counts, attention }) {
   );
 }
 
-function ParentItem({ item, itemKey, pathname, openItem, setOpenItem }) {
-  const parentActive = isParentActive(pathname, item);
+function ParentItem({ item, itemKey, activeUrl, openItem, toggleOpenItem }) {
+  const parentActive = isParentActive(item, activeUrl);
   const open = openItem === itemKey;
 
   const Icon = item.icon;
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton onClick={() => setOpenItem((current) => (current === itemKey ? null : itemKey))} isActive={parentActive} tooltip={item.title}>
+      <SidebarMenuButton onClick={() => toggleOpenItem(itemKey)} isActive={parentActive} tooltip={item.title}>
         <Icon />
         <span>{item.title}</span>
         {!item.comingSoon && <ChevronDown className={`ml-auto size-4 transition-transform duration-200 ${open ? '-rotate-180' : ''}`} />}
@@ -158,7 +175,7 @@ function ParentItem({ item, itemKey, pathname, openItem, setOpenItem }) {
         <div className="overflow-hidden min-h-0">
           <SidebarMenuSub>
             {item.children.map((child) => (
-              <ChildItem key={child.title} child={child} pathname={pathname} />
+              <ChildItem key={child.title} child={child} activeUrl={activeUrl} />
             ))}
           </SidebarMenuSub>
         </div>
@@ -167,13 +184,13 @@ function ParentItem({ item, itemKey, pathname, openItem, setOpenItem }) {
   );
 }
 
-function ChildItem({ child, pathname }) {
+function ChildItem({ child, activeUrl }) {
   const Icon = child.icon;
 
   if (child.comingSoon) {
     return (
       <SidebarMenuSubItem>
-        <SidebarMenuSubButton aria-disabled="true" tabIndex={-1} className="opacity-60 pointer-events-none">
+        <SidebarMenuSubButton aria-disabled="true" tabIndex={-1} isActive={activeUrl === child.url} className="opacity-60 pointer-events-none">
           <Icon className="size-4" />
           <span className="inline-flex min-w-0 items-center gap-2">
             <span className="truncate">{child.title}</span>
@@ -186,7 +203,7 @@ function ChildItem({ child, pathname }) {
 
   return (
     <SidebarMenuSubItem>
-      <SidebarMenuSubButton asChild isActive={isLeafActive(pathname, child.url)}>
+      <SidebarMenuSubButton asChild isActive={activeUrl === child.url}>
         <Link href={child.url}>
           <Icon className="size-4" />
           <span>{child.title}</span>

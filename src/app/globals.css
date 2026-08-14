@@ -355,7 +355,7 @@ body {
     background-color: transparent !important;
   }
 
-  .dark button[data-sidebar='menu-button'] {
+  .dark button[data-sidebar='menu-button']:not([data-active='true']) {
     border: 0 !important;
     background-color: transparent !important;
   }
