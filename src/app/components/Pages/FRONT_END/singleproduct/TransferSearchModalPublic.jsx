@@ -100,7 +100,10 @@ export default function TransferSearchModalPublic({ open, onOpenChange, cityIds 
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-[500px] max-h-[80vh] flex flex-col">
+      <DialogContent
+        className="sm:max-w-[500px] max-h-[80vh] flex flex-col"
+        closeClassName="weelp-plain-action border-0 bg-transparent text-red-400 shadow-none hover:text-red-600 data-[state=open]:bg-transparent data-[state=open]:text-red-400 data-[state=open]:hover:text-red-600"
+      >
         <DialogHeader>
           <DialogTitle>{stage === 'search' ? 'Add Transfer' : 'Configure Transfer'}</DialogTitle>
           <DialogDescription className="sr-only">{stage === 'search' ? 'Search and select a transfer.' : 'Configure pickup and dropoff details.'}</DialogDescription>

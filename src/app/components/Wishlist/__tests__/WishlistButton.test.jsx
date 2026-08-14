@@ -8,7 +8,7 @@ const toast = jest.fn();
 const useWishlistItems = jest.fn();
 
 let initialItems = [];
-let sessionState = { data: { user: { id: 7 } }, status: 'authenticated' };
+let sessionState = { data: { user: { id: 7, role: 'customer' } }, status: 'authenticated' };
 
 jest.mock('next-auth/react', () => ({
   useSession: () => sessionState,
@@ -41,7 +41,7 @@ describe('WishlistButton', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     initialItems = [];
-    sessionState = { data: { user: { id: 7 } }, status: 'authenticated' };
+    sessionState = { data: { user: { id: 7, role: 'customer' } }, status: 'authenticated' };
     addItem.mockResolvedValue({ success: true, data: { id: 9, item_type: 'activity', item_id: 42 } });
     removeItemByIdentity.mockResolvedValue({ success: true });
     useWishlistItems.mockImplementation(() => {
@@ -68,6 +68,15 @@ describe('WishlistButton', () => {
     render(<WishlistButton item={item} />);
 
     expect(screen.getByRole('button', { name: /save desert safari to wishlist/i })).toHaveClass('border', 'border-border', 'bg-background');
+  });
+
+  it.each(['admin', 'super_admin'])('does not load or render customer wishlist controls for %s sessions', (role) => {
+    sessionState = { data: { user: { id: 7, role } }, status: 'authenticated' };
+
+    render(<WishlistButton item={item} />);
+
+    expect(useWishlistItems).toHaveBeenCalledWith({ enabled: false });
+    expect(screen.queryByRole('button', { name: /wishlist/i })).not.toBeInTheDocument();
   });
 
   it('renders an existing wishlist item with a red filled heart', () => {

@@ -25,7 +25,9 @@ export default function WishlistButton({ item, className = '' }) {
   const { toast } = useToast();
   const [isPending, setIsPending] = useState(false);
   const payload = useMemo(() => normalizeWishlistPayload(item), [item]);
-  const { items, isLoading, addItem, removeItemByIdentity } = useWishlistItems({ enabled: status === 'authenticated' });
+  const isCustomerSession = status === 'authenticated' && session?.user?.role === 'customer';
+  const isUnsupportedAuthenticatedRole = status === 'authenticated' && !isCustomerSession;
+  const { items, isLoading, addItem, removeItemByIdentity } = useWishlistItems({ enabled: isCustomerSession });
   const isSaved = useMemo(() => Boolean(payload && items.some((wishlistItem) => isSameWishlistItem(wishlistItem, payload))), [items, payload]);
 
   const runWishlistAction = useCallback(
@@ -79,6 +81,8 @@ export default function WishlistButton({ item, className = '' }) {
   const action = isSaved ? 'Remove' : 'Save';
   const isDisabled = !payload || status === 'loading' || isPending || (status === 'authenticated' && isLoading);
   const heartClassName = isSaved ? 'fill-destructive text-destructive' : 'fill-transparent text-copy';
+
+  if (isUnsupportedAuthenticatedRole) return null;
 
   return (
     <button
