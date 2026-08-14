@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getTransfersByCity, getPlacesByCity } from '@/lib/actions/creatorItineraries';
+import TransferPickupTimePicker from './TransferPickupTimePicker';
 
 export default function TransferSearchModalPublic({ open, onOpenChange, cityIds = [], onSelect }) {
   const [transfers, setTransfers] = useState([]);
@@ -232,12 +233,7 @@ export default function TransferSearchModalPublic({ open, onOpenChange, cityIds 
             </Label>
 
             {/* Pickup Time */}
-            <Label className="flex flex-col space-y-2">
-              <span className="text-sm font-medium">
-                Pickup Time <span className="text-red-500">*</span>
-              </span>
-              <Input type="time" value={pickupTime} onChange={(e) => setPickupTime(e.target.value)} className="focus-visible:ring-weelp-sage-deep focus-visible:ring-1" />
-            </Label>
+            <TransferPickupTimePicker value={pickupTime} onChange={setPickupTime} />
 
             {/* Actions */}
             <div className="flex gap-3 pt-2">
