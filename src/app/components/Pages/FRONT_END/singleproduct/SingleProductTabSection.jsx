@@ -7,7 +7,6 @@ import { OverViewPanel, WhatIncludedPanel, ReviewPanel, FaqPanel, normalizeFaqIt
 import SimilarExperiences from './SimilarExperiences';
 import ProductSidebar from './ProductSidebar';
 import ItineraryPanel from './ItineraryPanel';
-import ItineraryEditActionBar from './ItineraryEditActionBar';
 import Reveal from '@/app/components/ui/Reveal';
 
 const HEADER_HEIGHT = 66;
@@ -254,6 +253,7 @@ const SingleProductTabSection = ({
               defaultDateRange={defaultDateRange}
               onDateChange={isScheduleType ? handleDateChange : null}
               scheduleCount={isScheduleType ? scheduleCount : 0}
+              session={session}
             />
           </Reveal>
 
@@ -312,9 +312,6 @@ const SingleProductTabSection = ({
           <SimilarExperiences activities={similarActivities} />
         </Reveal>
       </div>
-
-      {/* Edit Action Bar for logged-in users on itinerary pages */}
-      {productType === 'itinerary' && !readOnly && <ItineraryEditActionBar session={session} />}
     </section>
   );
 };

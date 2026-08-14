@@ -10,7 +10,7 @@ import { getAuthApi } from '../axiosInstance';
 export const saveCustomerItinerary = async (data) => {
   try {
     const api = await getAuthApi();
-    const res = await api.post('/api/customer/itineraries', data);
+    const res = await api.post('/api/customer/itineraries/save', data);
     return { success: true, message: res.data?.message, data: res.data?.data };
   } catch (err) {
     const message = err?.response?.data?.message || 'Failed to save itinerary.';

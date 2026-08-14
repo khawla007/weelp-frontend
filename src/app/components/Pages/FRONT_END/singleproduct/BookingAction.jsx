@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-function BookingAction({ ref, formId, primaryPrice, secondaryPrice, isEditing = false, isInCart = false, onShowCart, variant = 'inline' }) {
+function BookingAction({ ref, formId, primaryPrice, secondaryPrice, isEditing = false, isInCart = false, onShowCart, disabled = false, variant = 'inline' }) {
   const buttonClassName =
     'min-h-11 w-full rounded-md bg-weelp-sage-deep px-6 py-3 text-center font-medium text-white transition-colors hover:bg-weelp-sage-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 min-[360px]:w-auto';
 
@@ -22,7 +22,7 @@ function BookingAction({ ref, formId, primaryPrice, secondaryPrice, isEditing = 
           Show Cart
         </button>
       ) : (
-        <button type="submit" form={formId} className={buttonClassName}>
+        <button type="submit" form={formId} className={buttonClassName} disabled={disabled}>
           {isEditing ? 'Update booking' : 'Select'}
         </button>
       )}

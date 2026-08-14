@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import ActivitySearchModalPublic from '../ActivitySearchModalPublic';
 import TransferSearchModalPublic from '../TransferSearchModalPublic';
+import { getActivitiesByCity } from '@/lib/actions/creatorItineraries';
 
 jest.mock('@/lib/actions/creatorItineraries', () => ({
   getActivitiesByCity: jest.fn(),
@@ -39,4 +40,18 @@ describe.each([
 
     expect(screen.getByRole('button', { name: /close/i })).toHaveClass('weelp-plain-action', 'border-0', 'bg-transparent', 'text-red-400', 'shadow-none', 'hover:text-red-600');
   });
+});
+
+it('keeps canonical activity pricing when an activity is added', async () => {
+  getActivitiesByCity.mockResolvedValue({
+    success: true,
+    data: [{ id: 7, name: 'Museum', pricing: { unit_price: 42, price_type: 'per_person', currency: 'USD' } }],
+  });
+  const onSelect = jest.fn();
+
+  render(<ActivitySearchModalPublic open cityIds={[1]} onSelect={onSelect} onOpenChange={jest.fn()} />);
+  await waitFor(() => expect(screen.getByText('Museum')).toBeInTheDocument());
+  fireEvent.click(screen.getByText('Museum'));
+
+  expect(onSelect).toHaveBeenCalledWith(expect.objectContaining({ activity_id: 7, pricing: { unit_price: 42, price_type: 'per_person', currency: 'USD' } }));
 });

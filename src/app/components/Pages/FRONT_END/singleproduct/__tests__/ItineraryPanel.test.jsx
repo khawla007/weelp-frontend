@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
@@ -66,6 +66,28 @@ describe('ItineraryPanel', () => {
     expect(headerRow).toHaveClass('md:sticky');
     expect(headerRow).toHaveClass('md:top-[121px]');
     expect(headerRow).toContainElement(actions[0]);
+  });
+
+  it('keeps edit mode active after an authenticated customer customizes', () => {
+    render(<ItineraryPanel schedules={schedules} startDate={new Date('2026-10-03T00:00:00')} session={{ user: { id: 1 } }} itinerary={{ id: 9, slug: 'sample', locations: [], schedules }} />);
+
+    fireEvent.click(screen.getByRole('button', { name: /customize this itinerary/i }));
+
+    expect(screen.getByRole('button', { name: /exit edit mode/i })).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /add activity/i })).toHaveLength(2);
+  });
+
+  it('does not submit a surrounding booking form when customization starts', () => {
+    const onSubmit = jest.fn((event) => event.preventDefault());
+    render(
+      <form onSubmit={onSubmit}>
+        <ItineraryPanel schedules={schedules} startDate={new Date('2026-10-03T00:00:00')} session={{ user: { id: 1 } }} itinerary={{ id: 9, slug: 'sample', locations: [], schedules }} />
+      </form>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /customize this itinerary/i }));
+
+    expect(onSubmit).not.toHaveBeenCalled();
   });
 
   it('uses the inactive date-button surface for Exit Edit Mode', () => {

@@ -2,6 +2,54 @@ import { create } from 'zustand';
 
 export const hasItineraryEditChanges = ({ originalSchedules, modifiedSchedules }) => JSON.stringify(originalSchedules) !== JSON.stringify(modifiedSchedules);
 
+export const calculateItineraryEditPricing = (schedules, headcount = 1, expectedCurrency = null) => {
+  let perPaxTotal = 0;
+  let flatTotal = 0;
+  let currency = typeof expectedCurrency === 'string' && expectedCurrency.trim() ? expectedCurrency.trim().toUpperCase() : null;
+  let pricedRows = 0;
+
+  const addCurrency = (nextCurrency) => {
+    if (typeof nextCurrency !== 'string' || !nextCurrency.trim()) return false;
+    const normalizedCurrency = nextCurrency.trim().toUpperCase();
+    if (currency && currency !== normalizedCurrency) return false;
+    currency = normalizedCurrency;
+    return true;
+  };
+
+  for (const schedule of schedules || []) {
+    for (const activity of schedule.activities || []) {
+      const pricing = activity.pricing;
+      const unitPrice = Number(pricing?.unit_price);
+      if (pricing?.unit_price == null || !Number.isFinite(unitPrice) || !addCurrency(pricing?.currency)) return null;
+      perPaxTotal += unitPrice;
+      pricedRows += 1;
+    }
+
+    for (const transfer of schedule.transfers || []) {
+      const pricing = transfer.pricing;
+      const unitPrice = Number(pricing?.unit_price);
+      if (pricing?.unit_price == null || !Number.isFinite(unitPrice) || !addCurrency(pricing?.currency)) return null;
+
+      if (pricing?.price_type === 'per_person') perPaxTotal += unitPrice;
+      else flatTotal += unitPrice;
+
+      flatTotal += (Number(transfer.bag_count) || 0) * (Number(pricing?.luggage_per_bag) || 0);
+      flatTotal += (Number(transfer.waiting_minutes) || 0) * (Number(pricing?.waiting_per_minute) || 0);
+      pricedRows += 1;
+    }
+  }
+
+  if (pricedRows === 0) return null;
+
+  const guests = Math.max(1, Number(headcount) || 1);
+  return {
+    perPaxTotal: Math.round(perPaxTotal * 100) / 100,
+    flatTotal: Math.round(flatTotal * 100) / 100,
+    total: Math.round((perPaxTotal * guests + flatTotal) * 100) / 100,
+    currency,
+  };
+};
+
 export const useItineraryEditStore = create((set, get) => ({
   // State
   originalSchedules: [],

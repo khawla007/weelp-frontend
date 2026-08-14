@@ -78,6 +78,7 @@ export default function TransferSearchModalPublic({ open, onOpenChange, cityIds 
       duration: selectedTransfer.duration,
       featured_image: selectedTransfer.featured_image,
       seating_capacity: selectedTransfer.seating_capacity,
+      pricing: selectedTransfer.pricing,
       pickup_location: pickupLocation,
       dropoff_location: dropoffLocation,
       start_time: pickupTime,

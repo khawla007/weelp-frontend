@@ -12,13 +12,14 @@ import { ContextualHelpPanel } from '@/app/components/Help/ContextualHelpPanel';
 import { normalizeHelpContext } from '@/app/components/Help/normalizeHelpContext';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
-import { hasItineraryEditChanges, useItineraryEditStore } from '@/lib/store/useItineraryEditStore';
+import { calculateItineraryEditPricing, hasItineraryEditChanges, useItineraryEditStore } from '@/lib/store/useItineraryEditStore';
 import { getItineraryAddons, getPackageAddons } from '@/lib/services/addOn';
 import { bookingSchema } from '@/lib/validation/bookingSchema';
 import { calculateActivityPrice } from '@/lib/pricing/calculateActivityPrice';
 import { resolvePackageBasePricing } from '@/lib/pricing/resolvePackageBasePricing';
 import { formatCurrency } from '@/lib/utils';
 import BookingAction from './BookingAction';
+import ItineraryEditActionBar from './ItineraryEditActionBar';
 
 const DEFAULT_TRAVELERS = { adults: 1, children: 0, infants: 0 };
 
@@ -54,7 +55,19 @@ function RowPulse({ value, className = '', children }) {
   );
 }
 
-const ProductSidebar = ({ productId, productData, productType = 'activity', citySlug, itemSlug, itinerarySlug, packageSlug, defaultDateRange = null, onDateChange = null, scheduleCount = 0 }) => {
+const ProductSidebar = ({
+  productId,
+  productData,
+  productType = 'activity',
+  citySlug,
+  itemSlug,
+  itinerarySlug,
+  packageSlug,
+  defaultDateRange = null,
+  onDateChange = null,
+  scheduleCount = 0,
+  session = null,
+}) => {
   const searchParams = useSearchParams();
   const [helpOpen, setHelpOpen] = useState(false);
   const helpTriggerRef = useRef(null);
@@ -67,6 +80,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
   const [hasChangedAddons, setHasChangedAddons] = useState(false);
   const { cartItems, setMiniCartOpen } = useMiniCartStore();
   const hasPendingItineraryEdits = useItineraryEditStore((state) => productType === 'itinerary' && String(state.itineraryId) === String(productId) && hasItineraryEditChanges(state));
+  const editedSchedules = useItineraryEditStore((state) => (productType === 'itinerary' && String(state.itineraryId) === String(productId) ? state.modifiedSchedules : null));
   const editCartItemId = searchParams?.get('editCartItem');
   const editingCartItem = useMemo(() => {
     if (!editCartItemId) return null;
@@ -199,18 +213,27 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
   let basePrice = 0;
   let itineraryDisplayPrice = '—';
   let itineraryTotal = 0;
+  let itineraryPricingUnavailable = false;
+  let itineraryCurrency = productData?.schedule_total_currency ?? '';
   const packagePricing = productType === 'package' ? resolvePackageBasePricing(productData) : null;
 
   if (productType === 'itinerary') {
     const headcount = Math.max(1, (Number(howMany?.adults) || 1) + (Number(howMany?.children) || 0));
+    const editedPricing = hasPendingItineraryEdits ? calculateItineraryEditPricing(editedSchedules, headcount, itineraryCurrency) : null;
     const breakdown = productData?.pricing_breakdown;
-    if (breakdown) {
+    if (editedPricing) {
+      itineraryTotal = editedPricing.total;
+      itineraryDisplayPrice = (editedPricing.perPaxTotal + editedPricing.flatTotal).toFixed(2);
+      itineraryCurrency = editedPricing.currency;
+    } else if (hasPendingItineraryEdits) {
+      itineraryPricingUnavailable = true;
+    } else if (breakdown) {
       itineraryTotal = Math.round(((Number(breakdown.per_pax_total) || 0) * headcount + (Number(breakdown.flat_total) || 0)) * 100) / 100;
     } else if (productData?.schedule_total_price != null) {
       itineraryTotal = Math.round(Number(productData.schedule_total_price) * headcount * 100) / 100;
     }
     basePrice = itineraryTotal;
-    if (productData?.schedule_total_price != null) {
+    if (!hasPendingItineraryEdits && productData?.schedule_total_price != null) {
       itineraryDisplayPrice = Number(productData.schedule_total_price).toFixed(2);
     }
   } else if (productType === 'package') {
@@ -225,8 +248,12 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
   const hasDate = Boolean(dateRange?.from);
   const showEbHint = productType === 'activity' && eb?.enabled && !pricing?.earlyBirdDiscount;
   const showLmHint = productType === 'activity' && lm?.enabled && !pricing?.lastMinuteDiscount;
-  const actionCurrency = packagePricing?.currency ?? productData?.pricing?.currency ?? productData?.schedule_total_currency ?? 'USD';
-  const actionPrimaryPrice = productType === 'activity' && pricing?.headcount >= 1 ? formatCurrency(pricing.final, pricing.currency) : formatCurrency(basePrice + addonsTotal, actionCurrency);
+  const actionCurrency = packagePricing?.currency ?? productData?.pricing?.currency ?? itineraryCurrency ?? 'USD';
+  const actionPrimaryPrice = itineraryPricingUnavailable
+    ? 'Pricing unavailable'
+    : productType === 'activity' && pricing?.headcount >= 1
+      ? formatCurrency(pricing.final, pricing.currency)
+      : formatCurrency(basePrice + addonsTotal, actionCurrency);
   const actionSecondaryPrice = isInCart && !isEditingCartItem ? 'Item in cart' : activeSelectedAddons.length > 0 ? `Includes ${formatCurrency(addonsTotal, actionCurrency)} in add-ons` : 'Total';
   const sharedActionProps = {
     formId: `booking-form-${productId}`,
@@ -234,6 +261,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
     secondaryPrice: actionSecondaryPrice,
     isEditing: isEditingCartItem,
     isInCart,
+    disabled: hasPendingItineraryEdits,
     onShowCart: () => setMiniCartOpen(true),
   };
 
@@ -247,10 +275,12 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
               {productType === 'itinerary' ? (
                 (() => {
                   const guests = Math.max(1, (Number(howMany?.adults) || 1) + (Number(howMany?.children) || 0));
-                  const currency = productData?.schedule_total_currency ?? '';
+                  const currency = itineraryCurrency;
                   return (
                     <div>
-                      {itineraryTotal > 0 ? (
+                      {itineraryPricingUnavailable ? (
+                        <h3 className="text-foreground font-bold text-2xl lg:text-[28px]">Pricing unavailable</h3>
+                      ) : itineraryTotal > 0 ? (
                         <h3 className="text-foreground font-bold text-2xl lg:text-[28px]">
                           <span key={`${currency}-${itineraryTotal}`} className="inline-block animate-price-fade">
                             {currency} {itineraryTotal.toFixed(2)}
@@ -548,6 +578,7 @@ const ProductSidebar = ({ productId, productData, productType = 'activity', city
           )
         : null}
       {helpContext ? <ContextualHelpPanel open={helpOpen} onOpenChange={setHelpOpen} context={helpContext} triggerRef={helpTriggerRef} /> : null}
+      {productType === 'itinerary' ? <ItineraryEditActionBar session={session} productData={productData} citySlug={citySlug} selectedAddons={activeSelectedAddons} /> : null}
     </FormProvider>
   );
 };

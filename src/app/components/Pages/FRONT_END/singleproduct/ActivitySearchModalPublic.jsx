@@ -44,6 +44,7 @@ export default function ActivitySearchModalPublic({ open, onOpenChange, cityIds 
         type: activity.type,
         featured_image: activity.featured_image,
         tags: activity.tags,
+        pricing: activity.pricing,
         start_time: null,
         end_time: null,
         notes: null,

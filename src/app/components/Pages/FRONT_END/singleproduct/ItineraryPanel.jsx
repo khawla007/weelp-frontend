@@ -91,6 +91,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
     if (canEdit && !isEditing) {
       return (
         <button
+          type="button"
           onClick={handleStartEdit}
           className={`px-6 py-2.5 bg-weelp-sage-deep hover:bg-weelp-sage-hover text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2 ${className}`}
         >
@@ -103,6 +104,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
     if (isEditing) {
       return (
         <button
+          type="button"
           onClick={() => {
             setUserStartedEdit(false);
             useItineraryEditStore.getState().resetChanges();
@@ -171,6 +173,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
 
               return (
                 <button
+                  type="button"
                   key={index}
                   onClick={() => scrollToDay(index)}
                   className={`
@@ -190,6 +193,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
             {/* Add Day button - only when editing */}
             {isEditing && (
               <button
+                type="button"
                 onClick={() => useItineraryEditStore.getState().addDay()}
                 className="weelp-add-day-button px-[18px] py-3 text-base font-medium whitespace-nowrap rounded-[6px] transition-colors border border-dashed border-weelp-sage-deep text-weelp-copy hover:text-weelp-sage-text hover:bg-weelp-sage-deep/5 flex items-center justify-center gap-2"
               >
@@ -282,6 +286,7 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
         {dateLabel && <span className="text-sm text-muted-foreground whitespace-nowrap">({dateLabel})</span>}
         {isEditing && (
           <button
+            type="button"
             onClick={() => useItineraryEditStore.getState().removeDay(dayIndex)}
             className="weelp-plain-action ml-auto border-0 bg-transparent p-1 text-red-400 shadow-none transition-colors hover:text-red-600 flex-shrink-0"
             title="Remove Day"
@@ -304,12 +309,14 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
                 {isEditing && (
                   <>
                     <button
+                      type="button"
                       onClick={() => setActiveModal({ type: 'changeTransfer', index: transferIndex })}
                       className="weelp-plain-action inline-flex items-center gap-1.5 border-0 bg-transparent text-sm text-muted-foreground shadow-none hover:text-foreground transition-colors"
                     >
                       <Pencil size={13} /> Edit
                     </button>
                     <button
+                      type="button"
                       onClick={() => useItineraryEditStore.getState().removeTransfer(dayIndex, transferIndex)}
                       className="weelp-plain-action border-0 bg-transparent text-red-400 shadow-none hover:text-red-600 transition-colors"
                       title="Remove Transfer"
@@ -374,12 +381,14 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
                 {isEditing && (
                   <>
                     <button
+                      type="button"
                       onClick={() => setActiveModal({ type: 'changeActivity', index: activityIndex })}
                       className="weelp-plain-action inline-flex items-center gap-1.5 border-0 bg-transparent text-sm text-muted-foreground shadow-none hover:text-foreground transition-colors"
                     >
                       <Pencil size={13} /> Edit
                     </button>
                     <button
+                      type="button"
                       onClick={() => useItineraryEditStore.getState().removeActivity(dayIndex, activityIndex)}
                       className="weelp-plain-action border-0 bg-transparent text-red-400 shadow-none hover:text-red-600 transition-colors"
                       title="Remove Activity"
@@ -423,12 +432,14 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
       {isEditing && (
         <div className="flex gap-3">
           <button
+            type="button"
             onClick={() => setActiveModal({ type: 'addActivity' })}
             className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-weelp-copy hover:text-weelp-sage-text border border-dashed border-weelp-sage-deep rounded-lg hover:bg-weelp-sage-deep/5 transition-colors"
           >
             <Plus size={14} /> Add Activity
           </button>
           <button
+            type="button"
             onClick={() => setActiveModal({ type: 'addTransfer' })}
             className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-weelp-copy hover:text-weelp-sage-text border border-dashed border-weelp-sage-deep rounded-lg hover:bg-weelp-sage-deep/5 transition-colors"
           >
