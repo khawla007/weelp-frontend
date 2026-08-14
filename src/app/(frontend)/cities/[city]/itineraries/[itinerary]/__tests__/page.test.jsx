@@ -82,6 +82,12 @@ describe('IterenaryPage wishlist banner props', () => {
         price: 300,
         currency: 'USD',
         is_creator_itinerary: true,
+        seo: {
+          meta_title: 'Sample Itinerary',
+          meta_description: 'Custom itinerary description',
+          canonical_url: '/cities/dubai/itineraries/dubai-family-itinerary',
+          og_image_url: 'https://images.example.com/dubai-family.jpg',
+        },
       },
     });
     getRandomSimilarItineraries.mockResolvedValue([]);
@@ -120,5 +126,28 @@ describe('IterenaryPage wishlist banner props', () => {
         enabled: true,
       }),
     );
+  });
+
+  it('uses the actual itinerary name for the browser title without changing social metadata', async () => {
+    const { generateMetadata } = await import('../page');
+
+    const metadata = await generateMetadata({ params: Promise.resolve({ itinerary: 'dubai-family-itinerary' }) });
+
+    expect(metadata.title).toBe('Dubai Family Itinerary');
+    expect(metadata).toMatchObject({
+      description: 'Custom itinerary description',
+      alternates: { canonical: '/cities/dubai/itineraries/dubai-family-itinerary' },
+      openGraph: {
+        title: 'Sample Itinerary',
+        description: 'Custom itinerary description',
+        url: '/cities/dubai/itineraries/dubai-family-itinerary',
+        images: [{ url: 'https://images.example.com/dubai-family.jpg', alt: 'Sample Itinerary' }],
+      },
+      twitter: {
+        title: 'Sample Itinerary',
+        description: 'Custom itinerary description',
+        images: ['https://images.example.com/dubai-family.jpg'],
+      },
+    });
   });
 });

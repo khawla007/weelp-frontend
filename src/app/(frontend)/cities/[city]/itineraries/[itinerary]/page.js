@@ -27,12 +27,15 @@ export async function generateMetadata({ params }) {
   }
 
   const { data } = iterenaryData;
+  const title = data.name || 'Default Title';
 
-  return buildSeoMetadata({
+  const metadata = buildSeoMetadata({
     seo: data.seo,
-    fallbackTitle: data.name || 'Default Title',
+    fallbackTitle: title,
     fallbackDescription: 'Default description for itinerary page',
   });
+
+  return { ...metadata, title };
 }
 
 export default async function IterenaryPage({ params, searchParams }) {
