@@ -52,18 +52,16 @@ export const getEditData = async (slug) => {
 };
 
 /**
- * Get activities by city IDs with role-based API selection
+ * Get activities by city IDs for any authenticated role
  * @param {number[]} cityIds - Array of city IDs to fetch activities for
- * @param {string} role - User role: 'creator' or 'customer'
  * @returns {object} { success, data }
  */
-export const getActivitiesByCity = async (cityIds = [], role = 'customer') => {
+export const getActivitiesByCity = async (cityIds = []) => {
   try {
     const api = await getAuthApi();
-    const basePath = role === 'creator' ? '/api/creator' : '/api/customer';
 
     // Fetch activities for all cities in parallel
-    const promises = cityIds.map((cityId) => api.get(`${basePath}/activities`, { params: { city_id: cityId } }));
+    const promises = cityIds.map((cityId) => api.get('/api/user/itinerary-resources/activities', { params: { city_id: cityId } }));
 
     const responses = await Promise.all(promises);
     // Merge all activities from all cities
@@ -77,18 +75,16 @@ export const getActivitiesByCity = async (cityIds = [], role = 'customer') => {
 };
 
 /**
- * Get transfers by city IDs with role-based API selection
+ * Get transfers by city IDs for any authenticated role
  * @param {number[]} cityIds - Array of city IDs to fetch transfers for
- * @param {string} role - User role: 'creator' or 'customer'
  * @returns {object} { success, data }
  */
-export const getTransfersByCity = async (cityIds = [], role = 'customer') => {
+export const getTransfersByCity = async (cityIds = []) => {
   try {
     const api = await getAuthApi();
-    const basePath = role === 'creator' ? '/api/creator' : '/api/customer';
 
     // Fetch transfers for all cities in parallel
-    const promises = cityIds.map((cityId) => api.get(`${basePath}/transfers`, { params: { city_id: cityId } }));
+    const promises = cityIds.map((cityId) => api.get('/api/user/itinerary-resources/transfers', { params: { city_id: cityId } }));
 
     const responses = await Promise.all(promises);
     // Merge all transfers from all cities

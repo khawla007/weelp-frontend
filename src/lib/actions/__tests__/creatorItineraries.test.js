@@ -6,6 +6,8 @@ import {
   adminPermanentlyDeleteCreatorItinerary,
   adminPublishCreatorItinerary,
   adminRestoreCreatorItinerary,
+  getActivitiesByCity,
+  getTransfersByCity,
   requestCreatorItineraryPublish,
   restoreCreatorItinerary,
   submitCreatorItineraryDraft,
@@ -58,5 +60,19 @@ describe('creator itinerary lifecycle actions', () => {
     expect(api[method]).toHaveBeenCalledWith(endpoint);
     expect(revalidatePath).toHaveBeenCalledWith('/dashboard/customer/my-itineraries');
     expect(revalidatePath).toHaveBeenCalledWith('/dashboard/admin/creator-itineraries');
+  });
+
+  it.each([
+    ['activities', getActivitiesByCity],
+    ['transfers', getTransfersByCity],
+  ])('loads %s from the role-independent authenticated itinerary resource endpoint', async (resource, action) => {
+    api.get = jest.fn().mockResolvedValue({ data: { data: [{ id: 7, name: 'Available option' }] } });
+
+    await expect(action([12])).resolves.toEqual({
+      success: true,
+      data: [{ id: 7, name: 'Available option' }],
+    });
+
+    expect(api.get).toHaveBeenCalledWith(`/api/user/itinerary-resources/${resource}`, { params: { city_id: 12 } });
   });
 });

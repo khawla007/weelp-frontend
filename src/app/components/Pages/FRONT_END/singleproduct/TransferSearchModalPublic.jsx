@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getTransfersByCity, getPlacesByCity } from '@/lib/actions/creatorItineraries';
 
-export default function TransferSearchModalPublic({ open, onOpenChange, cityIds = [], userRole = 'customer', onSelect }) {
+export default function TransferSearchModalPublic({ open, onOpenChange, cityIds = [], onSelect }) {
   const [transfers, setTransfers] = useState([]);
   const [places, setPlaces] = useState([]);
   const [search, setSearch] = useState('');
@@ -31,7 +31,7 @@ export default function TransferSearchModalPublic({ open, onOpenChange, cityIds 
 
     const fetchData = async () => {
       setLoading(true);
-      const [transfersRes, placesRes] = await Promise.all([getTransfersByCity(cityIds, userRole), getPlacesByCity(cityIds)]);
+      const [transfersRes, placesRes] = await Promise.all([getTransfersByCity(cityIds), getPlacesByCity(cityIds)]);
       if (!cancelled) {
         if (transfersRes.success) setTransfers(transfersRes.data || []);
         if (placesRes.success) setPlaces(placesRes.data || []);
@@ -43,7 +43,7 @@ export default function TransferSearchModalPublic({ open, onOpenChange, cityIds 
     return () => {
       cancelled = true;
     };
-  }, [open, cityIds, userRole]);
+  }, [open, cityIds]);
 
   // Client-side filter by name
   const filtered = transfers.filter((t) => t.name?.toLowerCase().includes(search.toLowerCase()));

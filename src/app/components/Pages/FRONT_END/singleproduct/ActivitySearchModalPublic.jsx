@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Input } from '@/components/ui/input';
 import { getActivitiesByCity } from '@/lib/actions/creatorItineraries';
 
-export default function ActivitySearchModalPublic({ open, onOpenChange, cityIds = [], userRole = 'customer', onSelect }) {
+export default function ActivitySearchModalPublic({ open, onOpenChange, cityIds = [], onSelect }) {
   const [activities, setActivities] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ export default function ActivitySearchModalPublic({ open, onOpenChange, cityIds 
 
     const fetchActivities = async () => {
       setLoading(true);
-      const res = await getActivitiesByCity(cityIds, userRole);
+      const res = await getActivitiesByCity(cityIds);
       if (!cancelled && res.success) {
         setActivities(res.data || []);
       }
@@ -29,7 +29,7 @@ export default function ActivitySearchModalPublic({ open, onOpenChange, cityIds 
     return () => {
       cancelled = true;
     };
-  }, [open, cityIds, userRole]);
+  }, [open, cityIds]);
 
   // Client-side filter by name
   const filtered = activities.filter((a) => a.name?.toLowerCase().includes(search.toLowerCase()));

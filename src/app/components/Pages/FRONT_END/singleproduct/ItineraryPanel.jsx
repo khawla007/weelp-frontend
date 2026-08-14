@@ -50,9 +50,6 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
   // Extract city IDs from itinerary locations for search modals
   const cityIds = itinerary?.locations?.map((location) => location.city_id).filter(Boolean) || [];
 
-  // Determine user role for API calls
-  const userRole = session?.user?.is_creator ? 'creator' : 'customer';
-
   // Handle start editing - redirect guests to login
   const handleStartEdit = () => {
     if (!isLoggedIn) {
@@ -110,7 +107,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
             setUserStartedEdit(false);
             useItineraryEditStore.getState().resetChanges();
           }}
-          className={`px-6 py-2.5 bg-muted hover:bg-muted text-copy font-medium rounded-lg transition-colors ${className}`}
+          className={`px-6 py-2.5 bg-card border border-border/50 text-muted-foreground hover:border-weelp-sage-deep hover:text-weelp-sage-text font-medium rounded-lg transition-colors ${className}`}
         >
           Exit Edit Mode
         </button>
@@ -194,7 +191,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
             {isEditing && (
               <button
                 onClick={() => useItineraryEditStore.getState().addDay()}
-                className="px-[18px] py-3 text-base font-medium whitespace-nowrap rounded-[6px] transition-colors border border-dashed border-weelp-sage-deep text-weelp-copy hover:text-weelp-sage-text hover:bg-weelp-sage-deep/5 flex items-center justify-center gap-2"
+                className="weelp-add-day-button px-[18px] py-3 text-base font-medium whitespace-nowrap rounded-[6px] transition-colors border border-dashed border-weelp-sage-deep text-weelp-copy hover:text-weelp-sage-text hover:bg-weelp-sage-deep/5 flex items-center justify-center gap-2"
               >
                 <Plus size={16} /> Add Day
               </button>
@@ -219,7 +216,6 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
                     isEditing={isEditing}
                     slug={itinerary?.slug}
                     cityIds={cityIds}
-                    userRole={userRole}
                   />
                 </div>
               );
@@ -231,7 +227,7 @@ const ItineraryPanel = ({ schedules = [], startDate = null, title = 'Itinerary',
   );
 };
 
-const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate, dayIndex, isEditing = false, slug = null, cityIds = [], userRole = 'customer' }) => {
+const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate, dayIndex, isEditing = false, slug = null, cityIds = [] }) => {
   // Modal state: null, { type: 'changeActivity', index }, { type: 'changeTransfer', index }, { type: 'addActivity' }, { type: 'addTransfer' }
   const [activeModal, setActiveModal] = useState(null);
 
@@ -278,7 +274,7 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
             value={dayTitle === `Day ${dayNumber}` ? '' : dayTitle}
             onChange={(e) => useItineraryEditStore.getState().updateDayTitle(dayIndex, e.target.value)}
             placeholder={`Day ${dayNumber}`}
-            className="text-foreground text-lg font-semibold bg-transparent border-b border-dashed border-border focus:border-weelp-sage-deep outline-none flex-1 min-w-0"
+            className="weelp-day-title-input text-foreground text-lg font-semibold bg-transparent border-0 px-3 py-2 focus:border-0 focus-visible:border-0 active:border-0 outline-none focus:outline-none focus-visible:outline-none active:outline-none focus:ring-0 focus-visible:ring-0 flex-1 min-w-0"
           />
         ) : (
           <span className="text-foreground text-lg font-semibold">{dayTitle}</span>
@@ -305,13 +301,13 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
                   <>
                     <button
                       onClick={() => setActiveModal({ type: 'changeTransfer', index: transferIndex })}
-                      className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      className="weelp-plain-action inline-flex items-center gap-1.5 border-0 bg-transparent text-sm text-muted-foreground shadow-none hover:text-foreground transition-colors"
                     >
                       <Pencil size={13} /> Edit
                     </button>
                     <button
                       onClick={() => useItineraryEditStore.getState().removeTransfer(dayIndex, transferIndex)}
-                      className="text-red-400 hover:text-red-600 transition-colors"
+                      className="weelp-plain-action border-0 bg-transparent text-red-400 shadow-none hover:text-red-600 transition-colors"
                       title="Remove Transfer"
                     >
                       <X size={15} />
@@ -375,13 +371,13 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
                   <>
                     <button
                       onClick={() => setActiveModal({ type: 'changeActivity', index: activityIndex })}
-                      className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      className="weelp-plain-action inline-flex items-center gap-1.5 border-0 bg-transparent text-sm text-muted-foreground shadow-none hover:text-foreground transition-colors"
                     >
                       <Pencil size={13} /> Edit
                     </button>
                     <button
                       onClick={() => useItineraryEditStore.getState().removeActivity(dayIndex, activityIndex)}
-                      className="text-red-400 hover:text-red-600 transition-colors"
+                      className="weelp-plain-action border-0 bg-transparent text-red-400 shadow-none hover:text-red-600 transition-colors"
                       title="Remove Activity"
                     >
                       <X size={15} />
@@ -440,8 +436,8 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
       {/* Modals */}
       {isEditing && (
         <>
-          <ActivitySearchModalPublic open={isActivityModal} onOpenChange={(open) => !open && setActiveModal(null)} cityIds={cityIds} userRole={userRole} onSelect={handleModalSelect} />
-          <TransferSearchModalPublic open={isTransferModal} onOpenChange={(open) => !open && setActiveModal(null)} cityIds={cityIds} userRole={userRole} onSelect={handleModalSelect} />
+          <ActivitySearchModalPublic open={isActivityModal} onOpenChange={(open) => !open && setActiveModal(null)} cityIds={cityIds} onSelect={handleModalSelect} />
+          <TransferSearchModalPublic open={isTransferModal} onOpenChange={(open) => !open && setActiveModal(null)} cityIds={cityIds} onSelect={handleModalSelect} />
         </>
       )}
     </div>
