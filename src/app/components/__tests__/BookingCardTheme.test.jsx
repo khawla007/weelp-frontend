@@ -61,4 +61,36 @@ describe('BookingCard theme surface', () => {
 
     expect(onReviewSaved).toHaveBeenCalledTimes(1);
   });
+
+  it.each([
+    ['pending', 'Pending', ['border-warning/40', 'bg-warning/15', 'text-foreground']],
+    ['processing', 'Processing', ['border-info/40', 'bg-info/15', 'text-foreground']],
+    ['completed', 'Completed', ['border-success/40', 'bg-success/15', 'text-foreground']],
+    ['cancelled', 'Cancelled', ['border-destructive/40', 'bg-destructive/10', 'text-foreground']],
+    ['refunded', 'Refunded', ['border-violet-300', 'bg-violet-100', 'text-foreground', 'dark:border-violet-700', 'dark:bg-violet-950/50']],
+  ])('shows the %s order status as a readable badge', (status, label, expectedClasses) => {
+    render(<BookingCard bookingItem={{ id: 42, status, item: { name: 'Forest escape' } }} />);
+
+    const badge = screen.getByText(label);
+    expect(badge).toHaveClass(...expectedClasses);
+  });
+
+  it.each([
+    ['awaiting_supplier', 'Awaiting Supplier'],
+    ['constructor', 'Constructor'],
+  ])('formats the unknown %s order status and uses the neutral badge treatment', (status, label) => {
+    render(<BookingCard bookingItem={{ id: 42, status, item: { name: 'Forest escape' } }} />);
+
+    expect(screen.getByText(label)).toHaveClass('border-border', 'bg-muted', 'text-muted-foreground');
+  });
+
+  it('omits the status badge when the order status is missing or blank', () => {
+    const { rerender } = render(<BookingCard bookingItem={{ id: 42, item: { name: 'Forest escape' } }} />);
+
+    expect(screen.queryByTestId('booking-status-badge')).not.toBeInTheDocument();
+
+    rerender(<BookingCard bookingItem={{ id: 42, status: '   ', item: { name: 'Forest escape' } }} />);
+
+    expect(screen.queryByTestId('booking-status-badge')).not.toBeInTheDocument();
+  });
 });
