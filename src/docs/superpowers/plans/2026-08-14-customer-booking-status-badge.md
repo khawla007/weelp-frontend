@@ -22,6 +22,7 @@ No backend, service, hook, list, global token, or shared badge file changes are 
 ### Task 1: Specify booking status behavior with failing component tests
 
 **Files:**
+
 - Modify: `src/app/components/__tests__/BookingCardTheme.test.jsx:14-64`
 - Test: `src/app/components/__tests__/BookingCardTheme.test.jsx`
 
@@ -73,6 +74,7 @@ Expected: FAIL because `Pending`, `Processing`, `Completed`, `Cancelled`, `Refun
 ### Task 2: Render the existing order status in `BookingCard`
 
 **Files:**
+
 - Modify: `src/app/components/BookingCard.jsx:3-25`
 - Test: `src/app/components/__tests__/BookingCardTheme.test.jsx`
 
@@ -127,11 +129,7 @@ Replace the booking ID span in the card header with:
 <div className="flex min-w-0 flex-wrap items-center gap-2 sm:justify-end">
   <span className="text-sm font-medium text-muted-foreground opacity-70 sm:text-base">Booking ID: {id}</span>
   {statusLabel ? (
-    <Badge
-      variant="outline"
-      data-testid="booking-status-badge"
-      className={BOOKING_STATUS_CLASSES[normalizedStatus] ?? UNKNOWN_STATUS_CLASSES}
-    >
+    <Badge variant="outline" data-testid="booking-status-badge" className={BOOKING_STATUS_CLASSES[normalizedStatus] ?? UNKNOWN_STATUS_CLASSES}>
       {statusLabel}
     </Badge>
   ) : null}
@@ -153,6 +151,7 @@ Expected: PASS with eleven tests, including all five supported order statuses an
 ### Task 3: Review, verify, and ship the focused frontend change
 
 **Files:**
+
 - Review: `src/app/components/BookingCard.jsx`
 - Review: `src/app/components/__tests__/BookingCardTheme.test.jsx`
 
