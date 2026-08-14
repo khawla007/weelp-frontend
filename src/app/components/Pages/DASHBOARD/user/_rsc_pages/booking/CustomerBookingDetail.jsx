@@ -49,6 +49,17 @@ function formatTravelDate(value) {
   }).format(date);
 }
 
+function formatPreferredTime(value) {
+  const match = typeof value === 'string' ? value.trim().match(/^(\d{2}):([0-5]\d)(?::[0-5]\d)?$/) : null;
+  if (!match) return NOT_PROVIDED;
+
+  const hour = Number(match[1]);
+  if (hour > 23) return NOT_PROVIDED;
+
+  const period = hour >= 12 ? 'PM' : 'AM';
+  return `${hour % 12 || 12}:${match[2]} ${period}`;
+}
+
 function pluralize(count, singular, plural) {
   const value = Number(count);
   if (!Number.isFinite(value)) return NOT_PROVIDED;
@@ -238,7 +249,7 @@ const CustomerBookingDetail = ({ orderId, onBack, onReviewSaved, onCancellationC
           <DetailSection icon={CalendarDays} title="Travel details">
             <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <DetailField label="Travel date" value={formatTravelDate(order.travel_date)} />
-              <DetailField label="Preferred time" value={displayValue(order.preferred_time)} />
+              <DetailField label="Preferred time" value={formatPreferredTime(order.preferred_time)} />
               <DetailField label="Adults" value={pluralize(order.number_of_adults, 'adult', 'adults')} />
               <DetailField label="Children" value={pluralize(order.number_of_children, 'child', 'children')} />
             </dl>

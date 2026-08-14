@@ -169,7 +169,7 @@ describe('CustomerBookingDetail', () => {
     expect(screen.getByText('Dubai')).toBeInTheDocument();
     expect(screen.getByText('United Arab Emirates')).toBeInTheDocument();
     expect(screen.getByText('Aug 20, 2026')).toBeInTheDocument();
-    expect(screen.getByText('09:30')).toBeInTheDocument();
+    expect(screen.getByText('9:30 AM')).toBeInTheDocument();
     expect(screen.getByText('2 adults')).toBeInTheDocument();
     expect(screen.getByText('1 child')).toBeInTheDocument();
     expect(screen.getByText('$125.00')).toBeInTheDocument();
@@ -188,6 +188,27 @@ describe('CustomerBookingDetail', () => {
 
     expect(screen.getByRole('heading', { name: 'Payment' }).closest('section')).toHaveClass('lg:border-t-0');
     expect(screen.getByText('confirmed')).toHaveClass('px-3', 'py-1.5', 'text-sm', 'font-semibold');
+  });
+
+  it('labels afternoon preferred times with PM and omits stored seconds', () => {
+    useCustomerOrder.mockReturnValue({ order: { ...completeOrder, preferred_time: '14:05:00' }, isLoading: false, error: undefined, mutate: jest.fn() });
+
+    render(<CustomerBookingDetail orderId={42} onBack={jest.fn()} />);
+
+    expect(screen.getByText('2:05 PM')).toBeInTheDocument();
+  });
+
+  it.each([
+    ['00:00:00', '12:00 AM'],
+    ['12:00:00', '12:00 PM'],
+    ['24:00:00', 'Not provided'],
+  ])('formats the preferred-time boundary %s as %s', (preferredTime, expected) => {
+    useCustomerOrder.mockReturnValue({ order: { ...completeOrder, preferred_time: preferredTime }, isLoading: false, error: undefined, mutate: jest.fn() });
+
+    render(<CustomerBookingDetail orderId={42} onBack={jest.fn()} />);
+
+    const travelSection = screen.getByRole('heading', { name: 'Travel details' }).closest('section');
+    expect(within(travelSection).getByText(expected)).toBeInTheDocument();
   });
 
   it('aligns Travel details and Review in a shared desktop grid row without changing source order', () => {
