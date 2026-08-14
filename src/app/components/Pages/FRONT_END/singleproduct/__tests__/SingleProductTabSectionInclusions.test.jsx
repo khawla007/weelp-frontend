@@ -114,7 +114,29 @@ describe('SingleProductTabSection activity inclusions', () => {
     expect(desktopSimilar).not.toHaveClass('lg:mb-[70px]');
   });
 
-  it.each(['itinerary', 'package'])('retains existing spacing for %s products', (productType) => {
+  it('uses compact responsive bottom spacing for itinerary pages', () => {
+    render(
+      <SingleProductTabSection
+        productType="itinerary"
+        productId={2}
+        productData={{
+          schedules: [{ day: 1, title: 'Day 1', activities: [], transfers: [] }],
+          inclusions_exclusions: [],
+          review_summary: { total_reviews: 0 },
+          faqs: [],
+        }}
+        similarActivities={[{ id: 10, name: 'Desert Safari' }]}
+      />,
+    );
+
+    const rootSection = screen.getByTestId('single-product-layout').closest('section');
+
+    expect(rootSection).toHaveClass('pb-4', 'md:pb-6', 'lg:pb-8', 'xl:pb-0');
+    expect(rootSection).not.toHaveClass('pb-28');
+  });
+
+  it('retains existing spacing for package products', () => {
+    const productType = 'package';
     render(
       <SingleProductTabSection
         productType={productType}
