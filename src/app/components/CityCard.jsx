@@ -19,7 +19,7 @@ export default function CityCard({ city, className = '', subtitleMode = 'count',
     subtitle = `${activitiesCount} Activities`;
   }
 
-  const usesForegroundText = textTone === 'foreground';
+  const usesThemeText = textTone === 'theme';
 
   return (
     <NavigationLink
@@ -40,14 +40,14 @@ export default function CityCard({ city, className = '', subtitleMode = 'count',
       />
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 pt-16">
         <span
-          className={cn('block text-[18px] leading-[1.59] drop-shadow-md', usesForegroundText ? 'text-foreground' : 'text-white')}
+          className={cn('block text-[18px] leading-[1.59] drop-shadow-md', usesThemeText ? 'text-white dark:text-foreground' : 'text-white')}
           style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}
         >
           {city.name}
         </span>
         {subtitle && (
           <span
-            className={cn('text-[14px] drop-shadow-md', usesForegroundText ? 'text-foreground' : 'text-white/95')}
+            className={cn('text-[14px] drop-shadow-md', usesThemeText ? 'text-white/95 dark:text-foreground' : 'text-white/95')}
             style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 400 }}
           >
             {subtitle}

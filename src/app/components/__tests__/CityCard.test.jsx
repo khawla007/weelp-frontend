@@ -17,9 +17,9 @@ test('keeps white overlay text by default', () => {
   expect(screen.getByText('13 Activities')).toHaveClass('text-white/95');
 });
 
-test('supports the shared foreground color for homepage destination cards', () => {
-  render(<CityCard city={city} textTone="foreground" />);
+test('uses white overlay text in light mode without changing the dark foreground tone', () => {
+  render(<CityCard city={city} textTone="theme" />);
 
-  expect(screen.getByText('Dubai')).toHaveClass('text-foreground');
-  expect(screen.getByText('13 Activities')).toHaveClass('text-foreground');
+  expect(screen.getByText('Dubai')).toHaveClass('text-white', 'dark:text-foreground');
+  expect(screen.getByText('13 Activities')).toHaveClass('text-white/95', 'dark:text-foreground');
 });
