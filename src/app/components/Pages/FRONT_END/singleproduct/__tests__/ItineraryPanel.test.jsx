@@ -76,7 +76,7 @@ describe('ItineraryPanel', () => {
     expect(screen.getByRole('button', { name: /exit edit mode/i })).toHaveClass('bg-card', 'border', 'border-border/50', 'text-muted-foreground');
   });
 
-  it('keeps edit controls plain and the day-title field unframed in every interaction state', () => {
+  it('keeps edit controls plain and gives the day-title field the standard input border', () => {
     mockSearchParams.set('edit', 'true');
     const editableSchedules = [
       {
@@ -99,18 +99,22 @@ describe('ItineraryPanel', () => {
     expect(screen.getByRole('button', { name: /add day/i })).toHaveClass('weelp-add-day-button');
     screen.getAllByRole('button', { name: /^edit$/i }).forEach((button) => expect(button).toHaveClass('weelp-plain-action', 'border-0', 'bg-transparent', 'shadow-none'));
     screen.getAllByRole('button', { name: /remove (activity|transfer)/i }).forEach((button) => expect(button).toHaveClass('weelp-plain-action', 'border-0', 'bg-transparent', 'shadow-none'));
+    expect(screen.getByRole('button', { name: /remove day/i })).toHaveClass('weelp-plain-action', 'border-0', 'bg-transparent', 'text-red-400', 'hover:text-red-600');
 
     const titleInput = screen.getByPlaceholderText('Day 1');
     expect(titleInput).toHaveClass(
       'weelp-day-title-input',
       'px-3',
       'py-2',
-      'border-0',
-      'focus:border-0',
-      'focus-visible:border-0',
+      'rounded-md',
+      'border',
+      'border-input',
+      'bg-background',
+      'focus:border-input',
+      'focus-visible:border-input',
       'focus:ring-0',
       'focus-visible:ring-0',
-      'active:border-0',
+      'active:border-input',
       'outline-none',
     );
     expect(titleInput).not.toHaveClass('border-dashed');

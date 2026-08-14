@@ -274,14 +274,18 @@ const ScheduleDayCard = ({ dayNumber, dayTitle, activities, transfers, startDate
             value={dayTitle === `Day ${dayNumber}` ? '' : dayTitle}
             onChange={(e) => useItineraryEditStore.getState().updateDayTitle(dayIndex, e.target.value)}
             placeholder={`Day ${dayNumber}`}
-            className="weelp-day-title-input text-foreground text-lg font-semibold bg-transparent border-0 px-3 py-2 focus:border-0 focus-visible:border-0 active:border-0 outline-none focus:outline-none focus-visible:outline-none active:outline-none focus:ring-0 focus-visible:ring-0 flex-1 min-w-0"
+            className="weelp-day-title-input text-foreground text-lg font-semibold bg-background rounded-md border border-input px-3 py-2 focus:border-input focus-visible:border-input active:border-input outline-none focus:outline-none focus-visible:outline-none active:outline-none focus:ring-0 focus-visible:ring-0 flex-1 min-w-0"
           />
         ) : (
           <span className="text-foreground text-lg font-semibold">{dayTitle}</span>
         )}
         {dateLabel && <span className="text-sm text-muted-foreground whitespace-nowrap">({dateLabel})</span>}
         {isEditing && (
-          <button onClick={() => useItineraryEditStore.getState().removeDay(dayIndex)} className="ml-auto text-red-400 hover:text-red-600 transition-colors p-1 flex-shrink-0" title="Remove Day">
+          <button
+            onClick={() => useItineraryEditStore.getState().removeDay(dayIndex)}
+            className="weelp-plain-action ml-auto border-0 bg-transparent p-1 text-red-400 shadow-none transition-colors hover:text-red-600 flex-shrink-0"
+            title="Remove Day"
+          >
             <Trash2 size={16} />
           </button>
         )}

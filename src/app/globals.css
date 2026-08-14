@@ -380,15 +380,6 @@ body {
     background: transparent !important;
     box-shadow: none !important;
   }
-
-  input.weelp-day-title-input,
-  input.weelp-day-title-input:focus,
-  input.weelp-day-title-input:focus-visible,
-  input.weelp-day-title-input:active {
-    border: 0 !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
 }
 
 @layer utilities {
