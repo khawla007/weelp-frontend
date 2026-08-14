@@ -271,6 +271,42 @@ describe('CustomerBookingsList', () => {
     skeletons.forEach((skeleton) => expect(skeleton.parentElement).toBe(bookingGrid));
   });
 
+  it('hides pagination when no bookings are displayed', () => {
+    useAllOrdersCustomer.mockReturnValue({
+      orders: { orders: [], pagination: { total: 7, per_page: 6, current_page: 2, last_page: 2 } },
+      isLoading: false,
+      isValidating: false,
+      error: undefined,
+      mutate: mutateOrders,
+    });
+
+    render(<CustomerBookingsList />);
+
+    expect(screen.getByText('No bookings found')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Previous page' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Next page' })).not.toBeInTheDocument();
+  });
+
+  it('keeps pagination available when the active filter has matches on a later page', () => {
+    useAllOrdersCustomer.mockImplementation((page) => ({
+      orders: {
+        orders: page === 2 ? [{ id: 52, status: 'completed', item: { name: 'Mountain retreat', item_type: 'package' } }] : [orders[0]],
+        pagination: { total: 7, per_page: 6, current_page: page, last_page: 2 },
+      },
+      isLoading: false,
+      isValidating: false,
+      error: undefined,
+      mutate: mutateOrders,
+    }));
+
+    render(<CustomerBookingsList />);
+
+    fireEvent.click(screen.getByRole('radio', { name: 'Completed' }));
+
+    expect(screen.getByText('No bookings found')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '2' })).toBeInTheDocument();
+  });
+
   it('restores page 2 and its active filter after returning from booking detail', () => {
     const pageTwoOrders = [{ id: 52, status: 'completed', item: { name: 'Mountain retreat', item_type: 'package' } }];
     useAllOrdersCustomer.mockImplementation((page) => ({

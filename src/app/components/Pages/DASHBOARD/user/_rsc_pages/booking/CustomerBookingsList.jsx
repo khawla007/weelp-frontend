@@ -186,7 +186,7 @@ export const CustomerBookingsList = () => {
           </div>
 
           {/* Pagination */}
-          {totalPages > 1 && (
+          {allOrders.length > 0 && totalPages > 1 && (
             <div className="mt-4 flex justify-center">
               <Pagination currentPage={pagination.current_page} totalPages={totalPages} onPageChange={handlePageChange} align="center" />
             </div>
