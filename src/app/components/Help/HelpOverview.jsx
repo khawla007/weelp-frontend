@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, ChevronRight, CircleHelp, Headphones } from 'lucide-react';
+import { ChevronDown, CircleHelp, Headphones } from 'lucide-react';
 
 import { HELP_TOPICS } from './helpTopics';
 import { Button } from '@/components/ui/button';
@@ -45,7 +45,7 @@ export function HelpOverview({ context, selectedTopic, onTopicSelect, onRequestH
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">Choose a topic to give us a little context.</p>
         </div>
-        <div className="grid gap-2">
+        <div className="flex flex-wrap gap-2">
           {HELP_TOPICS.slice(0, 4).map((topic) => {
             const isSelected = selectedTopic === topic.value;
 
@@ -55,13 +55,12 @@ export function HelpOverview({ context, selectedTopic, onTopicSelect, onRequestH
                 type="button"
                 aria-pressed={isSelected}
                 className={cn(
-                  'flex min-h-12 w-full items-center justify-between rounded-xl border px-4 py-3 text-left text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                  'inline-flex min-h-10 items-center rounded-full border px-4 py-2 text-left text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                   isSelected ? 'border-weelp-sage-deep bg-weelp-sage/10 text-foreground' : 'border-border bg-background text-foreground hover:bg-muted',
                 )}
                 onClick={() => onTopicSelect(topic.value)}
               >
                 <span>{topic.label}</span>
-                <ChevronRight aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
               </button>
             );
           })}
@@ -73,7 +72,7 @@ export function HelpOverview({ context, selectedTopic, onTopicSelect, onRequestH
           <h3 id="help-faq-heading" className="font-semibold text-foreground">
             Common questions
           </h3>
-          <div className="divide-y divide-border rounded-2xl border border-border bg-background">
+          <div className="space-y-2">
             {context.faqs.map((faq, index) => {
               const stableKey = faq.id ?? index;
               const triggerId = `help-faq-trigger-${stableKey}`;
@@ -81,7 +80,7 @@ export function HelpOverview({ context, selectedTopic, onTopicSelect, onRequestH
               const isOpen = openFaqId === stableKey;
 
               return (
-                <div key={stableKey}>
+                <div key={stableKey} className="overflow-hidden rounded-xl border border-border bg-background">
                   <button
                     id={triggerId}
                     type="button"
@@ -93,7 +92,7 @@ export function HelpOverview({ context, selectedTopic, onTopicSelect, onRequestH
                     <span>{faq.question}</span>
                     <ChevronDown aria-hidden="true" className={cn('h-4 w-4 shrink-0 text-muted-foreground transition-transform', isOpen && 'rotate-180')} />
                   </button>
-                  <div id={panelId} role="region" aria-labelledby={triggerId} hidden={!isOpen} className="px-4 pb-4 text-sm leading-6 text-muted-foreground">
+                  <div id={panelId} role="region" aria-labelledby={triggerId} hidden={!isOpen} className="px-4 py-4 text-sm leading-6 text-muted-foreground">
                     {faq.answer}
                   </div>
                 </div>

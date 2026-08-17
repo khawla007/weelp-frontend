@@ -85,6 +85,37 @@ describe('ContextualHelpPanel', () => {
     expect(screen.getByLabelText('What do you need help with?')).toHaveValue('pickup_location');
   });
 
+  it('presents help topics as selectable pills instead of accordion rows', () => {
+    render(<PanelHarness />);
+
+    const topic = screen.getByRole('button', { name: 'Pickup & location' });
+    const topicList = topic.parentElement;
+
+    expect(topicList).toHaveClass('flex', 'flex-wrap');
+    expect(topic).toHaveClass('rounded-full');
+    expect(topic.querySelector('svg')).not.toBeInTheDocument();
+
+    fireEvent.click(topic);
+    expect(topic).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('heading', { name: 'Help with this experience' })).toBeInTheDocument();
+  });
+
+  it('gives every common-question row and answer consistent spacing', () => {
+    render(<PanelHarness />);
+
+    const firstFaq = screen.getByRole('button', { name: 'Where is pickup?' });
+    const secondFaq = screen.getByRole('button', { name: 'What should I bring?' });
+    const faqList = firstFaq.parentElement?.parentElement;
+
+    expect(faqList).toHaveClass('space-y-2');
+    expect(firstFaq.parentElement).toHaveClass('rounded-xl', 'border');
+    expect(secondFaq.parentElement).toHaveClass('rounded-xl', 'border');
+
+    fireEvent.click(secondFaq);
+    const answer = screen.getByRole('region', { name: 'What should I bring?' });
+    expect(answer).toHaveClass('py-4');
+  });
+
   it('has a visible named close control and returns focus after Escape', async () => {
     const onOpenChange = jest.fn();
     const triggerRef = createRef();
