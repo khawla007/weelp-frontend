@@ -20,7 +20,7 @@ The selected direction is **Gold Edge**. Gold acts as the structural edge langua
 
 Two focused treatments keep the hero and photography polished without feeling over-framed:
 
-- Top Destinations image cards use the same restrained antique-gold edge as the other cards. Hover strengthens that edge and adds a compact, low-opacity gold depth shadow while preserving the existing image scale treatment. The hover transition must retain the card's ring layers so no white flash or edge jump appears, and its negative spread must keep the light under the active card instead of illuminating neighboring cards.
+- Top Destinations image cards use the same restrained antique-gold edge as the other cards. Hover keeps the approved edge intensity unchanged and adds a slightly more noticeable gold depth shadow by lifting only the shadow's blur and opacity. The hover transition must retain the card's ring layers so no white flash or edge jump appears, and its negative spread must keep the light under the active card instead of illuminating neighboring cards.
 - The non-interactive “Plan calmer escapes” eyebrow uses the same restrained antique-gold border as other hero controls.
 
 The core colour is `#C2A35B`. Border treatments derive from it with opacity instead of introducing several unrelated yellow tones.
@@ -71,7 +71,7 @@ Automated coverage will confirm:
 
 After type-checking, linting, and focused tests pass, both `/home-gold` and `/` will be inspected in the visible local browser at desktop and mobile widths. The review will check border consistency, readable hierarchy, hover and focus states, dark-mode appearance, light-mode parity with `/`, and isolation from the original homepage.
 
-The visible review will specifically confirm that, in dark mode, Top Destinations cards use the standard restrained gold edge at rest, strengthen that edge smoothly on hover, and show a compact downward gold depth shadow without a white flash, edge jump, carousel clipping, or visible light spill onto neighboring cards. The “Plan calmer escapes” eyebrow uses the same restrained gold edge. In light mode, the same cards, eyebrow, controls, and focus states must match the canonical light homepage with no gold border or shadow.
+The visible review will specifically confirm that, in dark mode, Top Destinations cards retain the approved hover-border intensity and show a slightly stronger but still compact downward gold depth shadow without a white flash, edge jump, carousel clipping, or visible light spill onto neighboring cards. The “Plan calmer escapes” eyebrow uses the same restrained gold edge. In light mode, the same cards, eyebrow, controls, and focus states must match the canonical light homepage with no gold border or shadow.
 
 ## Out of scope
 
