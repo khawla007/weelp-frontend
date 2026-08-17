@@ -497,6 +497,22 @@ describe('Deep Forest semantic theme', () => {
         important: false,
         value: 'var(--weelp-card-border)',
       },
+      '--tw-shadow': {
+        important: false,
+        value: '0 0 #0000',
+      },
+      'transition-property': {
+        important: false,
+        value: 'border-color, box-shadow',
+      },
+      'transition-duration': {
+        important: false,
+        value: '420ms',
+      },
+      'transition-timing-function': {
+        important: false,
+        value: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      },
     });
 
     const destinationHoverRule = findExactRule(darkDestinationHoverSelector).rule;
@@ -508,7 +524,7 @@ describe('Deep Forest semantic theme', () => {
       },
       'box-shadow': {
         important: false,
-        value: '0 10px 24px rgb(var(--weelp-gold-edge-rgb) / 0.26), 0 3px 10px rgb(var(--weelp-gold-edge-rgb) / 0.16)',
+        value: 'var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow), 0 6px 14px rgb(var(--weelp-gold-edge-rgb) / 0.14), 0 2px 5px rgb(var(--weelp-gold-edge-rgb) / 0.08)',
       },
     });
 

@@ -20,7 +20,7 @@ The selected direction is **Gold Edge**. Gold acts as the structural edge langua
 
 Two focused treatments keep the hero and photography polished without feeling over-framed:
 
-- Top Destinations image cards use the same restrained antique-gold edge as the other cards. Hover strengthens that edge and adds a clear, controlled gold shadow while preserving the existing image scale treatment.
+- Top Destinations image cards use the same restrained antique-gold edge as the other cards. Hover strengthens that edge and adds a compact, low-opacity gold depth shadow while preserving the existing image scale treatment. The hover transition must retain the card's ring layers so no white flash or edge jump appears.
 - The non-interactive “Plan calmer escapes” eyebrow uses the same restrained antique-gold border as other hero controls.
 
 The core colour is `#C2A35B`. Border treatments derive from it with opacity instead of introducing several unrelated yellow tones.
@@ -71,7 +71,7 @@ Automated coverage will confirm:
 
 After type-checking, linting, and focused tests pass, both `/home-gold` and `/` will be inspected in the visible local browser at desktop and mobile widths. The review will check border consistency, readable hierarchy, hover and focus states, dark-mode appearance, light-mode parity with `/`, and isolation from the original homepage.
 
-The visible review will specifically confirm that, in dark mode, Top Destinations cards use the standard restrained gold edge at rest, strengthen that edge on hover, and show a clear gold hover shadow without carousel clipping. The “Plan calmer escapes” eyebrow uses the same restrained gold edge. In light mode, the same cards, eyebrow, controls, and focus states must match the canonical light homepage with no gold border or shadow.
+The visible review will specifically confirm that, in dark mode, Top Destinations cards use the standard restrained gold edge at rest, strengthen that edge smoothly on hover, and show a compact gold depth shadow without a white flash, edge jump, or carousel clipping. The “Plan calmer escapes” eyebrow uses the same restrained gold edge. In light mode, the same cards, eyebrow, controls, and focus states must match the canonical light homepage with no gold border or shadow.
 
 ## Out of scope
 
