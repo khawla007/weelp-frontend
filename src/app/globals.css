@@ -294,11 +294,22 @@ body {
   --tw-ring-color: rgb(var(--weelp-gold-edge-rgb) / 0.82);
 }
 
-.home-gold-theme a:hover,
+.home-gold-theme a:not(.weelp-destination-card):hover,
 .home-gold-theme button:not(:disabled):not([aria-disabled='true']):not([aria-invalid='true']):hover,
 .home-gold-theme [role='button']:not([aria-disabled='true']):not([aria-invalid='true']):hover {
   --border: 42 43% 56% / 0.72;
   border-color: rgb(var(--weelp-gold-edge-rgb) / 0.72);
+}
+
+.home-gold-theme .weelp-destination-card:hover {
+  border-color: rgb(255 255 255 / 0.8);
+  box-shadow:
+    0 12px 30px rgb(var(--weelp-gold-edge-rgb) / 0.2),
+    0 2px 10px rgb(var(--weelp-gold-edge-rgb) / 0.12);
+}
+
+.dark .home-gold-theme .weelp-destination-card:hover {
+  border-color: rgb(255 255 255 / 0.1);
 }
 
 .home-gold-theme [aria-selected='true']:not([aria-invalid='true']),
@@ -310,6 +321,10 @@ body {
 
 .home-gold-theme [class~='border-weelp-hero-foreground/10'] {
   border-color: rgb(var(--weelp-gold-edge-rgb) / 0.58);
+}
+
+.home-gold-theme .weelp-home-hero-eyebrow {
+  border-color: transparent;
 }
 
 @layer components {

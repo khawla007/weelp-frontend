@@ -436,13 +436,14 @@ describe('Deep Forest semantic theme', () => {
       },
     });
 
-    expect(
-      extractDeclarationContract([
-        '.home-gold-theme a:hover',
-        ".home-gold-theme button:not(:disabled):not([aria-disabled='true']):not([aria-invalid='true']):hover",
-        ".home-gold-theme [role='button']:not([aria-disabled='true']):not([aria-invalid='true']):hover",
-      ]),
-    ).toMatchObject({
+    const hoverSelectors = [
+      '.home-gold-theme a:not(.weelp-destination-card):hover',
+      ".home-gold-theme button:not(:disabled):not([aria-disabled='true']):not([aria-invalid='true']):hover",
+      ".home-gold-theme [role='button']:not([aria-disabled='true']):not([aria-invalid='true']):hover",
+    ];
+
+    expect(findExactRule(hoverSelectors).rule).toBeDefined();
+    expect(extractDeclarationContract(hoverSelectors)).toMatchObject({
       '--border': {
         important: false,
         value: '42 43% 56% / 0.72',
@@ -474,6 +475,37 @@ describe('Deep Forest semantic theme', () => {
       'border-color': {
         important: false,
         value: 'rgb(var(--weelp-gold-edge-rgb) / 0.58)',
+      },
+    });
+
+    const destinationHoverRule = findExactRule('.home-gold-theme .weelp-destination-card:hover').rule;
+    expect(destinationHoverRule.parent.type).toBe('root');
+    expect(extractDeclarationContract('.home-gold-theme .weelp-destination-card:hover')).toMatchObject({
+      'border-color': {
+        important: false,
+        value: 'rgb(255 255 255 / 0.8)',
+      },
+      'box-shadow': {
+        important: false,
+        value: '0 12px 30px rgb(var(--weelp-gold-edge-rgb) / 0.2), 0 2px 10px rgb(var(--weelp-gold-edge-rgb) / 0.12)',
+      },
+    });
+
+    const darkDestinationHoverRule = findExactRule('.dark .home-gold-theme .weelp-destination-card:hover').rule;
+    expect(darkDestinationHoverRule.parent.type).toBe('root');
+    expect(extractDeclarationContract('.dark .home-gold-theme .weelp-destination-card:hover')).toMatchObject({
+      'border-color': {
+        important: false,
+        value: 'rgb(255 255 255 / 0.1)',
+      },
+    });
+
+    const heroEyebrowRule = findExactRule('.home-gold-theme .weelp-home-hero-eyebrow').rule;
+    expect(heroEyebrowRule.parent.type).toBe('root');
+    expect(extractDeclarationContract('.home-gold-theme .weelp-home-hero-eyebrow')).toMatchObject({
+      'border-color': {
+        important: false,
+        value: 'transparent',
       },
     });
   });

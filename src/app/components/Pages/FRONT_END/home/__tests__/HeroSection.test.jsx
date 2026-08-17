@@ -43,6 +43,7 @@ describe('HeroSection', () => {
     const badge = getByText('Plan calmer escapes');
     const escapeAccent = getByText('escape');
 
+    expect(badge).toHaveClass('weelp-home-hero-eyebrow');
     expect(badge).toHaveClass('text-[var(--weelp-home-hero-accent)]');
     expect(escapeAccent).toHaveClass('text-[var(--weelp-home-hero-accent)]');
     expect(badge).not.toHaveClass('text-weelp-sage-text');

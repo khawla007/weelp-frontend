@@ -13,6 +13,7 @@ const city = {
 test('keeps white overlay text by default', () => {
   render(<CityCard city={city} />);
 
+  expect(screen.getByRole('link', { name: /dubai/i })).toHaveClass('weelp-destination-card');
   expect(screen.getByText('Dubai')).toHaveClass('text-white');
   expect(screen.getByText('13 Activities')).toHaveClass('text-white/95');
 });
