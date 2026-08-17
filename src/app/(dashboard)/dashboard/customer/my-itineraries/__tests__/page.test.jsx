@@ -81,4 +81,17 @@ describe('MyItinerariesPage', () => {
     expect(getMyItineraries).toHaveBeenCalledWith({ view: 'trash', status: '', page: 2 });
     expect(screen.getByTestId('itinerary-list')).toHaveAttribute('data-view', 'trash');
   });
+
+  it('forwards supported creator status filters and normalizes unknown values to All', async () => {
+    auth.mockResolvedValue({ user: { id: 4, is_creator: true } });
+    const MyItinerariesPage = (await import('../page')).default;
+
+    const { rerender } = render(await MyItinerariesPage({ searchParams: Promise.resolve({ status: 'under_review' }) }));
+    expect(getMyItineraries).toHaveBeenLastCalledWith({ view: 'active', status: 'under_review', page: 1 });
+    expect(screen.getByTestId('itinerary-list')).toHaveAttribute('data-status', 'under_review');
+
+    rerender(await MyItinerariesPage({ searchParams: Promise.resolve({ status: 'unknown' }) }));
+    expect(getMyItineraries).toHaveBeenLastCalledWith({ view: 'active', status: '', page: 1 });
+    expect(screen.getByTestId('itinerary-list')).toHaveAttribute('data-status', '');
+  });
 });

@@ -13,6 +13,15 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { DashboardMotionFrame } from '@/app/components/DashboardShared';
 
+const CREATOR_ITINERARY_TABS = [
+  { key: 'all', label: 'All Itineraries', href: '/dashboard/customer/my-itineraries' },
+  { key: 'draft', label: 'Drafts', href: '/dashboard/customer/my-itineraries?status=draft' },
+  { key: 'under_review', label: 'Under Review', href: '/dashboard/customer/my-itineraries?status=under_review' },
+  { key: 'published', label: 'Published', href: '/dashboard/customer/my-itineraries?status=published' },
+  { key: 'needs_changes', label: 'Needs Changes', href: '/dashboard/customer/my-itineraries?status=needs_changes' },
+  { key: 'trash', label: 'Trash', href: '/dashboard/customer/my-itineraries?view=trash' },
+];
+
 export default function MyItinerariesClientWrapper({ initialItineraries, lastPage, currentPage = 1, isCreator = false, activeView = 'active', activeStatus = '' }) {
   const [itineraries, setItineraries] = useState(initialItineraries);
   const [processingId, setProcessingId] = useState(null);
@@ -21,7 +30,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
   const [removalTargetId, setRemovalTargetId] = useState(null);
   const { toast } = useToast();
   const router = useRouter();
-  const activeTab = activeView === 'trash' ? 'trash' : activeStatus === 'draft' ? 'drafts' : 'all';
+  const activeTab = activeView === 'trash' ? 'trash' : activeStatus || 'all';
   const filtered = itineraries;
   useEffect(() => {
     setItineraries(initialItineraries);
@@ -134,11 +143,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
 
       {isCreator && (
         <div className="flex flex-wrap gap-2">
-          {[
-            { key: 'all', label: 'All Itineraries', href: '/dashboard/customer/my-itineraries' },
-            { key: 'drafts', label: 'Drafts', href: '/dashboard/customer/my-itineraries?status=draft' },
-            { key: 'trash', label: 'Trash', href: '/dashboard/customer/my-itineraries?view=trash' },
-          ].map((tab) => (
+          {CREATOR_ITINERARY_TABS.map((tab) => (
             <NavigationLink key={tab.key} href={tab.href}>
               <Button
                 size="sm"
@@ -154,11 +159,11 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
 
       {filtered.length === 0 && isCreator ? (
         <div className="weelp-fade-up text-center py-12 bg-background rounded-lg border border-border">
-          <p className="text-lg font-semibold text-foreground">{activeTab === 'trash' ? 'Trash is empty' : activeTab === 'drafts' ? 'No drafts' : 'No itineraries yet'}</p>
+          <p className="text-lg font-semibold text-foreground">{activeTab === 'trash' ? 'Trash is empty' : activeTab === 'draft' ? 'No drafts' : 'No itineraries yet'}</p>
           <p className="text-muted-foreground mt-2">
             {activeTab === 'trash'
               ? 'Removed itineraries will remain here for 30 days.'
-              : activeTab === 'drafts'
+              : activeTab === 'draft'
                 ? 'Restored and unpublished itineraries will appear here.'
                 : 'Create your first itinerary and submit it for approval.'}
           </p>
@@ -184,6 +189,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
           const isCreatorCopy = !!creatorId;
           const isTrashItem = activeView === 'trash';
           const isStandaloneDraft = isCreatorCopy && approvalStatus === 'draft' && !draftItineraryId;
+          const canViewAndBook = !isTrashItem && (!isCreatorCopy || approvalStatus === 'approved');
 
           const canRequestEdit = isCreatorCopy && approvalStatus === 'approved' && !draftItineraryId && removalStatus !== 'requested';
           const canRequestRemoval = isCreatorCopy && ['draft', 'rejected', 'approved'].includes(approvalStatus) && !draftItineraryId && removalStatus !== 'requested' && !isTrashItem;
@@ -252,13 +258,13 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
                     </span>
                   )}
                 </div>
-                {!isTrashItem && approvalStatus !== 'draft' && slug && citySlug ? (
+                {canViewAndBook && slug && citySlug ? (
                   <NavigationLink href={`/cities/${citySlug}/itineraries/${slug}`} className="block">
                     <Button variant="outline" size="sm" className="w-full border-border text-copy hover:bg-muted">
                       View & Book
                     </Button>
                   </NavigationLink>
-                ) : !isTrashItem && approvalStatus !== 'draft' ? (
+                ) : canViewAndBook ? (
                   <Button variant="outline" size="sm" disabled className="w-full border-border text-copy">
                     View & Book
                   </Button>

@@ -80,4 +80,31 @@ describe('MyItinerariesClientWrapper lifecycle views', () => {
     await waitFor(() => expect(requestCreatorItineraryPublish).toHaveBeenCalledWith(12));
     expect(push).toHaveBeenCalledWith('/dashboard/customer/my-itineraries');
   });
+
+  it('renders all creator lifecycle tabs and marks the selected status tab active', () => {
+    render(<MyItinerariesClientWrapper initialItineraries={[]} isCreator activeView="active" activeStatus="under_review" />);
+
+    expect(screen.getByRole('link', { name: 'All Itineraries' })).toHaveAttribute('href', '/dashboard/customer/my-itineraries');
+    expect(screen.getByRole('link', { name: 'Drafts' })).toHaveAttribute('href', '/dashboard/customer/my-itineraries?status=draft');
+    expect(screen.getByRole('link', { name: 'Under Review' })).toHaveAttribute('href', '/dashboard/customer/my-itineraries?status=under_review');
+    expect(screen.getByRole('link', { name: 'Published' })).toHaveAttribute('href', '/dashboard/customer/my-itineraries?status=published');
+    expect(screen.getByRole('link', { name: 'Needs Changes' })).toHaveAttribute('href', '/dashboard/customer/my-itineraries?status=needs_changes');
+    expect(screen.getByRole('link', { name: 'Trash' })).toHaveAttribute('href', '/dashboard/customer/my-itineraries?view=trash');
+    expect(screen.getByRole('link', { name: 'Under Review' }).querySelector('button')).toHaveClass('bg-weelp-sage-deep');
+  });
+
+  it('only shows View & Book for public creator rows and customer-saved copies', () => {
+    const { rerender } = render(<MyItinerariesClientWrapper initialItineraries={[{ ...base, status: 'pending' }]} isCreator />);
+    expect(screen.queryByRole('link', { name: 'View & Book' })).not.toBeInTheDocument();
+
+    rerender(<MyItinerariesClientWrapper initialItineraries={[{ ...base, status: 'rejected' }]} isCreator />);
+    expect(screen.queryByRole('link', { name: 'View & Book' })).not.toBeInTheDocument();
+
+    rerender(<MyItinerariesClientWrapper initialItineraries={[{ ...base, status: 'approved' }]} isCreator />);
+    expect(screen.getByRole('link', { name: 'View & Book' })).toHaveAttribute('href', '/cities/dubai/itineraries/desert-weekend');
+
+    const { creator_id: _creatorId, ...savedCopy } = base;
+    rerender(<MyItinerariesClientWrapper initialItineraries={[savedCopy]} isCreator />);
+    expect(screen.getByRole('link', { name: 'View & Book' })).toHaveAttribute('href', '/cities/dubai/itineraries/desert-weekend');
+  });
 });

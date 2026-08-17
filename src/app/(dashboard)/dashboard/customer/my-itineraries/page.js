@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import { getMyItineraries } from '@/lib/actions/customerItineraries';
 import MyItinerariesClientWrapper from './MyItinerariesClientWrapper';
 
+const ACTIVE_STATUS_FILTERS = new Set(['draft', 'under_review', 'published', 'needs_changes']);
+
 export const metadata = {
   title: 'My Itineraries - Weelp',
   description: 'View your saved and customized itineraries',
@@ -17,7 +19,7 @@ export default async function MyItinerariesPage({ searchParams = Promise.resolve
 
   const params = await searchParams;
   const view = params?.view === 'trash' ? 'trash' : 'active';
-  const status = view === 'active' && params?.status === 'draft' ? 'draft' : '';
+  const status = view === 'active' && ACTIVE_STATUS_FILTERS.has(params?.status) ? params.status : '';
   const page = Math.max(1, Number.parseInt(params?.page ?? '1', 10) || 1);
   const result = await getMyItineraries({ view, status, page });
   const itineraries = result.success ? result.data?.data || [] : [];
