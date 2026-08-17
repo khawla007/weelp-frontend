@@ -397,8 +397,8 @@ describe('Deep Forest semantic theme', () => {
     expect(darkTokens).not.toHaveProperty('--weelp-home-hero-muted');
   });
 
-  it('defines a route-scoped antique-gold edge without changing forest surfaces', () => {
-    const goldHomeTokens = extractDeclarations('.home-gold-theme');
+  it('defines a dark-only route-scoped antique-gold edge without changing forest surfaces', () => {
+    const goldHomeTokens = extractDeclarations('.dark .home-gold-theme');
 
     expect(goldHomeTokens).toMatchObject({
       '--weelp-gold-edge': '#c2a35b',
@@ -416,34 +416,38 @@ describe('Deep Forest semantic theme', () => {
     expect(goldHomeTokens).not.toHaveProperty('--foreground');
     expect(goldHomeTokens).not.toHaveProperty('--card');
     expect(goldHomeTokens).not.toHaveProperty('--weelp-sage-deep');
+    expect(() => extractDeclarations('.home-gold-theme')).toThrow('Expected one exact .home-gold-theme token block in globals.css, found 0');
   });
 
-  it('strengthens gold borders for focus, hover, and selected states', () => {
-    const focusRule = findExactRule([
+  it('strengthens gold borders only for dark focus, hover, and selected states', () => {
+    const lightFocusSelectors = [
       '.home-gold-theme a:focus-visible',
       '.home-gold-theme button:focus-visible',
       '.home-gold-theme input:focus-visible',
       '.home-gold-theme select:focus-visible',
       '.home-gold-theme textarea:focus-visible',
       '.home-gold-theme [tabindex]:focus-visible',
-    ]).rule;
+    ];
+    const darkFocusSelectors = lightFocusSelectors.map((selector) => `.dark ${selector}`);
+    const focusRule = findExactRule(darkFocusSelectors).rule;
 
     expect(focusRule.parent.type).toBe('root');
-    expect(extractDeclarationContract(focusRule.selectors)).toMatchObject({
+    expect(extractDeclarationContract(darkFocusSelectors)).toMatchObject({
       '--tw-ring-color': {
         important: false,
         value: 'rgb(var(--weelp-gold-edge-rgb) / 0.82)',
       },
     });
 
-    const hoverSelectors = [
+    const lightHoverSelectors = [
       '.home-gold-theme a:not(.weelp-destination-card):hover',
       ".home-gold-theme button:not(:disabled):not([aria-disabled='true']):not([aria-invalid='true']):hover",
       ".home-gold-theme [role='button']:not([aria-disabled='true']):not([aria-invalid='true']):hover",
     ];
+    const darkHoverSelectors = lightHoverSelectors.map((selector) => `.dark ${selector}`);
 
-    expect(findExactRule(hoverSelectors).rule).toBeDefined();
-    expect(extractDeclarationContract(hoverSelectors)).toMatchObject({
+    expect(findExactRule(darkHoverSelectors).rule).toBeDefined();
+    expect(extractDeclarationContract(darkHoverSelectors)).toMatchObject({
       '--border': {
         important: false,
         value: '42 43% 56% / 0.72',
@@ -454,13 +458,14 @@ describe('Deep Forest semantic theme', () => {
       },
     });
 
-    expect(
-      extractDeclarationContract([
-        ".home-gold-theme [aria-selected='true']:not([aria-invalid='true'])",
-        ".home-gold-theme [aria-pressed='true']:not([aria-invalid='true'])",
-        ".home-gold-theme [data-state='open']:not([aria-invalid='true'])",
-      ]),
-    ).toMatchObject({
+    const lightSelectedSelectors = [
+      ".home-gold-theme [aria-selected='true']:not([aria-invalid='true'])",
+      ".home-gold-theme [aria-pressed='true']:not([aria-invalid='true'])",
+      ".home-gold-theme [data-state='open']:not([aria-invalid='true'])",
+    ];
+    const darkSelectedSelectors = lightSelectedSelectors.map((selector) => `.dark ${selector}`);
+
+    expect(extractDeclarationContract(darkSelectedSelectors)).toMatchObject({
       '--border': {
         important: false,
         value: '42 43% 56% / 0.82',
@@ -471,19 +476,23 @@ describe('Deep Forest semantic theme', () => {
       },
     });
 
-    expect(extractDeclarationContract(".home-gold-theme [class~='border-weelp-hero-foreground/10']")).toMatchObject({
+    const lightFixedHeroSelector = ".home-gold-theme [class~='border-weelp-hero-foreground/10']";
+    const darkFixedHeroSelector = `.dark ${lightFixedHeroSelector}`;
+    expect(extractDeclarationContract(darkFixedHeroSelector)).toMatchObject({
       'border-color': {
         important: false,
         value: 'rgb(var(--weelp-gold-edge-rgb) / 0.58)',
       },
     });
 
-    const destinationHoverRule = findExactRule('.home-gold-theme .weelp-destination-card:hover').rule;
+    const lightDestinationHoverSelector = '.home-gold-theme .weelp-destination-card:hover';
+    const darkDestinationHoverSelector = `.dark ${lightDestinationHoverSelector}`;
+    const destinationHoverRule = findExactRule(darkDestinationHoverSelector).rule;
     expect(destinationHoverRule.parent.type).toBe('root');
-    expect(extractDeclarationContract('.home-gold-theme .weelp-destination-card:hover')).toMatchObject({
+    expect(extractDeclarationContract(darkDestinationHoverSelector)).toMatchObject({
       'border-color': {
         important: false,
-        value: 'rgb(255 255 255 / 0.8)',
+        value: 'rgb(255 255 255 / 0.1)',
       },
       'box-shadow': {
         important: false,
@@ -491,23 +500,23 @@ describe('Deep Forest semantic theme', () => {
       },
     });
 
-    const darkDestinationHoverRule = findExactRule('.dark .home-gold-theme .weelp-destination-card:hover').rule;
-    expect(darkDestinationHoverRule.parent.type).toBe('root');
-    expect(extractDeclarationContract('.dark .home-gold-theme .weelp-destination-card:hover')).toMatchObject({
+    const lightHeroEyebrowSelector = '.home-gold-theme .weelp-home-hero-eyebrow';
+    const darkHeroEyebrowSelector = `.dark ${lightHeroEyebrowSelector}`;
+    const heroEyebrowRule = findExactRule(darkHeroEyebrowSelector).rule;
+    expect(heroEyebrowRule.parent.type).toBe('root');
+    expect(extractDeclarationContract(darkHeroEyebrowSelector)).toMatchObject({
       'border-color': {
         important: false,
-        value: 'rgb(255 255 255 / 0.1)',
+        value: 'rgb(var(--weelp-gold-edge-rgb) / 0.58)',
       },
     });
 
-    const heroEyebrowRule = findExactRule('.home-gold-theme .weelp-home-hero-eyebrow').rule;
-    expect(heroEyebrowRule.parent.type).toBe('root');
-    expect(extractDeclarationContract('.home-gold-theme .weelp-home-hero-eyebrow')).toMatchObject({
-      'border-color': {
-        important: false,
-        value: 'transparent',
-      },
-    });
+    expect(() => findExactRule(lightFocusSelectors)).toThrow();
+    expect(() => findExactRule(lightHoverSelectors)).toThrow();
+    expect(() => findExactRule(lightSelectedSelectors)).toThrow();
+    expect(() => findExactRule(lightFixedHeroSelector)).toThrow();
+    expect(() => findExactRule(lightDestinationHoverSelector)).toThrow();
+    expect(() => findExactRule(lightHeroEyebrowSelector)).toThrow();
   });
 
   it('keeps the unscrolled over-hero header black in both themes', () => {

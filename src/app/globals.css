@@ -271,7 +271,7 @@ body {
     --weelp-city-tab-active-border: rgba(134, 189, 165, 0.35);
   }
 
-  .home-gold-theme {
+  .dark .home-gold-theme {
     --weelp-gold-edge: #c2a35b;
     --weelp-gold-edge-rgb: 194 163 91;
     /* HSL compatibility value for Tailwind's hsl(var(--border)) mapping. */
@@ -285,46 +285,42 @@ body {
   }
 }
 
-.home-gold-theme a:focus-visible,
-.home-gold-theme button:focus-visible,
-.home-gold-theme input:focus-visible,
-.home-gold-theme select:focus-visible,
-.home-gold-theme textarea:focus-visible,
-.home-gold-theme [tabindex]:focus-visible {
+.dark .home-gold-theme a:focus-visible,
+.dark .home-gold-theme button:focus-visible,
+.dark .home-gold-theme input:focus-visible,
+.dark .home-gold-theme select:focus-visible,
+.dark .home-gold-theme textarea:focus-visible,
+.dark .home-gold-theme [tabindex]:focus-visible {
   --tw-ring-color: rgb(var(--weelp-gold-edge-rgb) / 0.82);
 }
 
-.home-gold-theme a:not(.weelp-destination-card):hover,
-.home-gold-theme button:not(:disabled):not([aria-disabled='true']):not([aria-invalid='true']):hover,
-.home-gold-theme [role='button']:not([aria-disabled='true']):not([aria-invalid='true']):hover {
+.dark .home-gold-theme a:not(.weelp-destination-card):hover,
+.dark .home-gold-theme button:not(:disabled):not([aria-disabled='true']):not([aria-invalid='true']):hover,
+.dark .home-gold-theme [role='button']:not([aria-disabled='true']):not([aria-invalid='true']):hover {
   --border: 42 43% 56% / 0.72;
   border-color: rgb(var(--weelp-gold-edge-rgb) / 0.72);
 }
 
-.home-gold-theme .weelp-destination-card:hover {
-  border-color: rgb(255 255 255 / 0.8);
+.dark .home-gold-theme .weelp-destination-card:hover {
+  border-color: rgb(255 255 255 / 0.1);
   box-shadow:
     0 12px 30px rgb(var(--weelp-gold-edge-rgb) / 0.2),
     0 2px 10px rgb(var(--weelp-gold-edge-rgb) / 0.12);
 }
 
-.dark .home-gold-theme .weelp-destination-card:hover {
-  border-color: rgb(255 255 255 / 0.1);
-}
-
-.home-gold-theme [aria-selected='true']:not([aria-invalid='true']),
-.home-gold-theme [aria-pressed='true']:not([aria-invalid='true']),
-.home-gold-theme [data-state='open']:not([aria-invalid='true']) {
+.dark .home-gold-theme [aria-selected='true']:not([aria-invalid='true']),
+.dark .home-gold-theme [aria-pressed='true']:not([aria-invalid='true']),
+.dark .home-gold-theme [data-state='open']:not([aria-invalid='true']) {
   --border: 42 43% 56% / 0.82;
   border-color: rgb(var(--weelp-gold-edge-rgb) / 0.82);
 }
 
-.home-gold-theme [class~='border-weelp-hero-foreground/10'] {
+.dark .home-gold-theme [class~='border-weelp-hero-foreground/10'] {
   border-color: rgb(var(--weelp-gold-edge-rgb) / 0.58);
 }
 
-.home-gold-theme .weelp-home-hero-eyebrow {
-  border-color: transparent;
+.dark .home-gold-theme .weelp-home-hero-eyebrow {
+  border-color: rgb(var(--weelp-gold-edge-rgb) / 0.58);
 }
 
 @layer components {
