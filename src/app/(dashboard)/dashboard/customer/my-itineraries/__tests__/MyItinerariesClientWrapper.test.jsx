@@ -48,6 +48,8 @@ describe('MyItinerariesClientWrapper lifecycle views', () => {
     expect(screen.getByRole('link', { name: 'All Itineraries' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Drafts' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Trash' })).toBeInTheDocument();
+    expect(screen.getByText('In Trash')).toBeInTheDocument();
+    expect(screen.queryByText('Deleted')).not.toBeInTheDocument();
     expect(screen.getByText('Permanently removed in 18 days')).toBeInTheDocument();
     expect(screen.getByText(/Removed Aug 8, 2026/)).toBeInTheDocument();
     expect(screen.queryByText('View & Book')).not.toBeInTheDocument();

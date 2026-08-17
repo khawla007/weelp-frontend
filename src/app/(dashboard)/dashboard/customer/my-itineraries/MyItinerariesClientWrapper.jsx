@@ -206,7 +206,7 @@ export default function MyItinerariesClientWrapper({ initialItineraries, lastPag
                 {isCreatorCopy && approvalStatus && (
                   <div className="absolute top-2 left-2">
                     <Badge variant={approvalStatus === 'approved' ? 'success' : approvalStatus === 'rejected' ? 'destructive' : 'warning'}>
-                      {approvalStatus === 'pending' ? 'Pending' : approvalStatus.charAt(0).toUpperCase() + approvalStatus.slice(1)}
+                      {isTrashItem ? 'In Trash' : approvalStatus === 'pending' ? 'Pending' : approvalStatus.charAt(0).toUpperCase() + approvalStatus.slice(1)}
                     </Badge>
                   </div>
                 )}
