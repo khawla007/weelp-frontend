@@ -13,6 +13,7 @@
 ### Task 1: Backend status-group filters
 
 **Files:**
+
 - Modify: `../backend/app/Http/Controllers/Customer/CustomerItineraryController.php`
 - Modify: `../backend/app/Services/CreatorItineraryLifecycleService.php`
 - Test: `../backend/tests/Feature/Creator/CreatorItineraryStatusFilterTest.php`
@@ -45,6 +46,7 @@ match ($status) {
 ### Task 2: Frontend tabs and URL handling
 
 **Files:**
+
 - Modify: `src/app/(dashboard)/dashboard/customer/my-itineraries/page.js`
 - Modify: `src/app/(dashboard)/dashboard/customer/my-itineraries/MyItinerariesClientWrapper.jsx`
 - Test: `src/app/(dashboard)/dashboard/customer/my-itineraries/__tests__/page.test.jsx`
@@ -72,6 +74,7 @@ Trash
 ### Task 3: Verification and delivery
 
 **Files:**
+
 - Verify only the files listed above and this plan.
 
 - [ ] Run `php artisan test tests/Feature/Creator/CreatorItineraryStatusFilterTest.php tests/Feature/Creator/CreatorItineraryTrashTest.php`.
