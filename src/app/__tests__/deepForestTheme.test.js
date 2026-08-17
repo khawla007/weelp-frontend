@@ -397,6 +397,87 @@ describe('Deep Forest semantic theme', () => {
     expect(darkTokens).not.toHaveProperty('--weelp-home-hero-muted');
   });
 
+  it('defines a route-scoped antique-gold edge without changing forest surfaces', () => {
+    const goldHomeTokens = extractDeclarations('.home-gold-theme');
+
+    expect(goldHomeTokens).toMatchObject({
+      '--weelp-gold-edge': '#c2a35b',
+      '--weelp-gold-edge-rgb': '194 163 91',
+      '--border': '42 32% 35%',
+      '--ring': '42 43% 56%',
+      '--sidebar-border': '42 32% 35%',
+      '--sidebar-ring': '42 43% 56%',
+      '--weelp-home-border': 'rgb(var(--weelp-gold-edge-rgb) / 0.42)',
+      '--weelp-home-search-border': 'rgb(var(--weelp-gold-edge-rgb) / 0.58)',
+      '--weelp-card-border': 'rgb(var(--weelp-gold-edge-rgb) / 0.48)',
+    });
+
+    expect(goldHomeTokens).not.toHaveProperty('--background');
+    expect(goldHomeTokens).not.toHaveProperty('--foreground');
+    expect(goldHomeTokens).not.toHaveProperty('--card');
+    expect(goldHomeTokens).not.toHaveProperty('--weelp-sage-deep');
+  });
+
+  it('strengthens gold borders for focus, hover, and selected states', () => {
+    const focusRule = findExactRule([
+      '.home-gold-theme a:focus-visible',
+      '.home-gold-theme button:focus-visible',
+      '.home-gold-theme input:focus-visible',
+      '.home-gold-theme select:focus-visible',
+      '.home-gold-theme textarea:focus-visible',
+      '.home-gold-theme [tabindex]:focus-visible',
+    ]).rule;
+
+    expect(focusRule.parent.type).toBe('root');
+    expect(extractDeclarationContract(focusRule.selectors)).toMatchObject({
+      '--tw-ring-color': {
+        important: false,
+        value: 'rgb(var(--weelp-gold-edge-rgb) / 0.82)',
+      },
+    });
+
+    expect(
+      extractDeclarationContract([
+        '.home-gold-theme a:hover',
+        ".home-gold-theme button:not(:disabled):not([aria-disabled='true']):not([aria-invalid='true']):hover",
+        ".home-gold-theme [role='button']:not([aria-disabled='true']):not([aria-invalid='true']):hover",
+      ]),
+    ).toMatchObject({
+      '--border': {
+        important: false,
+        value: '42 43% 56% / 0.72',
+      },
+      'border-color': {
+        important: false,
+        value: 'rgb(var(--weelp-gold-edge-rgb) / 0.72)',
+      },
+    });
+
+    expect(
+      extractDeclarationContract([
+        ".home-gold-theme [aria-selected='true']:not([aria-invalid='true'])",
+        ".home-gold-theme [aria-pressed='true']:not([aria-invalid='true'])",
+        ".home-gold-theme [data-state='open']:not([aria-invalid='true'])",
+      ]),
+    ).toMatchObject({
+      '--border': {
+        important: false,
+        value: '42 43% 56% / 0.82',
+      },
+      'border-color': {
+        important: false,
+        value: 'rgb(var(--weelp-gold-edge-rgb) / 0.82)',
+      },
+    });
+
+    expect(extractDeclarationContract(".home-gold-theme [class~='border-weelp-hero-foreground/10']")).toMatchObject({
+      'border-color': {
+        important: false,
+        value: 'rgb(var(--weelp-gold-edge-rgb) / 0.58)',
+      },
+    });
+  });
+
   it('keeps the unscrolled over-hero header black in both themes', () => {
     const headerSources = ['MobileMenu.jsx', 'NavigationMenu.jsx'].map((filename) => readFileSync(join(process.cwd(), 'src/app/components/Layout', filename), 'utf8'));
 

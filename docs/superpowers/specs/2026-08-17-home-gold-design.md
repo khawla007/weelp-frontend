@@ -30,9 +30,13 @@ The homepage composition and data loading should have one owner. The route shoul
 
 The gold treatment will be scoped to a wrapper owned by `/home-gold`. That wrapper will override the existing semantic border variables used by homepage components, including the general border, homepage border, card border, and search border roles.
 
+Interactive panels rendered through portals, including search popovers and mobile overlays, must receive the same scoped variables. A route-aware client bridge may mirror the gold class onto the document body while `/home-gold` is active, then remove it during navigation or unmount. This bridge must not leave gold tokens active on `/` or another route.
+
 The original root theme tokens in `globals.css` will remain unchanged. Components outside the gold wrapper, including the regular homepage, will continue to resolve the current green border values.
 
 Where a shared component uses a fixed border colour instead of a semantic variable, it may receive a narrowly scoped descendant override under the gold wrapper. The implementation must not replace every visible line with bright gold. Dividers and low-priority decoration should remain quieter than interactive boundaries.
+
+The Gold Edge treatment remains active when the route's theme toggle switches to light mode, so `/home-gold` is always recognisable as the experiment. Dark mode is the primary acceptance target; light mode must remain readable and usable without receiving new surface or text colours.
 
 ## Behaviour and failure paths
 

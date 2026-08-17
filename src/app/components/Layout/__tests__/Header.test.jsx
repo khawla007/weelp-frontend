@@ -97,6 +97,14 @@ describe('Header', () => {
     expect(screen.getByTestId('desktop-menu')).toHaveAttribute('data-variant', 'over-hero');
   });
 
+  it('uses the over-hero variant on the gold home route', () => {
+    usePathnameMock.mockReturnValue('/home-gold');
+    render(<Header />);
+
+    expect(screen.getByRole('banner')).toHaveAttribute('data-weelp-header-variant', 'over-hero');
+    expect(screen.getByTestId('desktop-menu')).toHaveAttribute('data-variant', 'over-hero');
+  });
+
   it('uses solid variant on non-home routes with split layout (strip out of sticky scope)', () => {
     usePathnameMock.mockReturnValue('/cities/dubai');
     render(<Header />);

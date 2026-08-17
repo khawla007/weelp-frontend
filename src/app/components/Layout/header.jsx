@@ -10,7 +10,8 @@ const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffec
 
 const Header = () => {
   const pathname = usePathname();
-  const variant = pathname === '/' ? 'over-hero' : 'solid';
+  const isHomeHeroRoute = pathname === '/' || pathname === '/home-gold';
+  const variant = isHomeHeroRoute ? 'over-hero' : 'solid';
   const threshold = 80;
 
   const [isScrolled, setIsScrolled] = useState(false);

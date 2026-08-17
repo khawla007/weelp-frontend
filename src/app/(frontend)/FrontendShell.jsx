@@ -12,13 +12,20 @@ function NavigationEventsHandler() {
 
 export function FrontendShell({ header, footer, children }) {
   const pathname = usePathname();
+  const isGoldHome = pathname === '/home-gold';
+
+  useEffect(() => {
+    document.body.classList.toggle('home-gold-theme', isGoldHome);
+
+    return () => document.body.classList.remove('home-gold-theme');
+  }, [isGoldHome]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, [pathname]);
 
   return (
-    <div className="relative min-h-screen">
+    <div className={`relative min-h-screen ${isGoldHome ? 'home-gold-theme' : ''}`} data-weelp-home-variant={isGoldHome ? 'gold' : undefined}>
       <Suspense fallback={null}>
         <NavigationEventsHandler />
       </Suspense>
