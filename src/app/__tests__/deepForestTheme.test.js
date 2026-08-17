@@ -524,7 +524,7 @@ describe('Deep Forest semantic theme', () => {
       },
       'box-shadow': {
         important: false,
-        value: 'var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow), 0 6px 14px rgb(var(--weelp-gold-edge-rgb) / 0.14), 0 2px 5px rgb(var(--weelp-gold-edge-rgb) / 0.08)',
+        value: 'var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow), 0 8px 14px -8px rgb(var(--weelp-gold-edge-rgb) / 0.18), 0 2px 4px -2px rgb(var(--weelp-gold-edge-rgb) / 0.1)',
       },
     });
 
