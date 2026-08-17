@@ -21,7 +21,7 @@ The selected direction is **Gold Edge**. Gold acts as the structural edge langua
 Two intentionally quieter exceptions keep the hero and photography from feeling over-framed:
 
 - Top Destinations image cards keep their existing neutral edge at rest and do not gain a gold border on hover. Hover instead adds a soft, low-opacity gold shadow while preserving the existing image scale treatment.
-- The non-interactive “Plan calmer escapes” eyebrow keeps a transparent or neutral edge rather than inheriting a gold border.
+- The non-interactive “Plan calmer escapes” eyebrow uses the same restrained antique-gold border as other hero controls.
 
 The core colour is `#C2A35B`. Border treatments derive from it with opacity instead of introducing several unrelated yellow tones.
 
@@ -41,7 +41,7 @@ The original root theme tokens in `globals.css` will remain unchanged. Component
 
 Where a shared component uses a fixed border colour instead of a semantic variable, it may receive a narrowly scoped descendant override under the gold wrapper. The implementation must not replace every visible line with bright gold. Dividers and low-priority decoration should remain quieter than interactive boundaries.
 
-The Gold Edge treatment remains active when the route's theme toggle switches to light mode, so `/home-gold` is always recognisable as the experiment. Dark mode is the primary acceptance target; light mode must remain readable and usable without receiving new surface or text colours.
+The Gold Edge treatment is dark-mode-only. When `/home-gold` switches to light mode, it must resolve the same border, ring, shadow, surface, and text tokens as the canonical light homepage. The route hook may remain present for theme switching, but it must not produce any gold border or shadow until the `.dark` theme class is active.
 
 ## Behaviour and failure paths
 
@@ -69,9 +69,9 @@ Automated coverage will confirm:
 - the regular homepage does not receive that hook;
 - existing homepage empty and error paths remain unchanged.
 
-After type-checking, linting, and focused tests pass, both `/home-gold` and `/` will be inspected in the visible local browser at desktop and mobile widths. The review will check border consistency, readable hierarchy, hover and focus states, dark-mode appearance, and isolation from the original homepage.
+After type-checking, linting, and focused tests pass, both `/home-gold` and `/` will be inspected in the visible local browser at desktop and mobile widths. The review will check border consistency, readable hierarchy, hover and focus states, dark-mode appearance, light-mode parity with `/`, and isolation from the original homepage.
 
-The visible review will specifically confirm that Top Destinations cards have no gold edge at rest or on hover, that their gold hover shadow is subtle in both themes, and that the “Plan calmer escapes” eyebrow is not gold-bordered.
+The visible review will specifically confirm that, in dark mode, Top Destinations cards have no gold edge at rest or on hover, their gold hover shadow is subtle, and the “Plan calmer escapes” eyebrow uses the standard restrained gold edge. In light mode, the same cards, eyebrow, controls, and focus states must match the canonical light homepage with no gold border or shadow.
 
 ## Out of scope
 
