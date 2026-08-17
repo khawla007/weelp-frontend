@@ -18,6 +18,11 @@ The selected direction is **Gold Edge**. Gold acts as the structural edge langua
 - photography, spacing, typography, content, and interactions remain unchanged;
 - gold text is limited to small cues such as ratings or selected details when an existing component already exposes an accent role.
 
+Two intentionally quieter exceptions keep the hero and photography from feeling over-framed:
+
+- Top Destinations image cards keep their existing neutral edge at rest and do not gain a gold border on hover. Hover instead adds a soft, low-opacity gold shadow while preserving the existing image scale treatment.
+- The non-interactive “Plan calmer escapes” eyebrow keeps a transparent or neutral edge rather than inheriting a gold border.
+
 The core colour is `#C2A35B`. Border treatments derive from it with opacity instead of introducing several unrelated yellow tones.
 
 ## Route and composition
@@ -65,6 +70,8 @@ Automated coverage will confirm:
 - existing homepage empty and error paths remain unchanged.
 
 After type-checking, linting, and focused tests pass, both `/home-gold` and `/` will be inspected in the visible local browser at desktop and mobile widths. The review will check border consistency, readable hierarchy, hover and focus states, dark-mode appearance, and isolation from the original homepage.
+
+The visible review will specifically confirm that Top Destinations cards have no gold edge at rest or on hover, that their gold hover shadow is subtle in both themes, and that the “Plan calmer escapes” eyebrow is not gold-bordered.
 
 ## Out of scope
 
