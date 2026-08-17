@@ -128,6 +128,18 @@ describe('SharedToursSection destination states', () => {
     expect(screen.getByText('Page 2 of 3')).toBeInTheDocument();
   });
 
+  it('keeps the sort menu inside the mobile viewport while preserving desktop alignment', async () => {
+    axios.get.mockResolvedValue(itineraryResponse);
+    render(<SharedToursSection scope="city" slug="dubai" title="Dubai" />);
+    await flushFetch();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Sort' }));
+
+    const sortMenu = screen.getByRole('button', { name: 'Newest First' }).parentElement;
+    expect(sortMenu).toHaveClass('left-0', 'md:left-auto', 'md:right-0');
+    expect(sortMenu).not.toHaveClass('right-0');
+  });
+
   it('separates API failures from empty tours and retries the destination tour request', async () => {
     axios.get.mockRejectedValueOnce(new Error('controlled tours failure'));
     render(<SharedToursSection scope="city" slug="dubai" title="Dubai" />);
