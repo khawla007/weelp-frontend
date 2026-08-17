@@ -487,16 +487,44 @@ describe('Deep Forest semantic theme', () => {
 
     const lightDestinationHoverSelector = '.home-gold-theme .weelp-destination-card:hover';
     const darkDestinationHoverSelector = `.dark ${lightDestinationHoverSelector}`;
+    const darkDestinationSelector = '.dark .home-gold-theme .weelp-destination-card';
+    expect(extractDeclarationContract(darkDestinationSelector)).toMatchObject({
+      'border-color': {
+        important: false,
+        value: 'var(--weelp-card-border)',
+      },
+      '--tw-ring-color': {
+        important: false,
+        value: 'var(--weelp-card-border)',
+      },
+    });
+
     const destinationHoverRule = findExactRule(darkDestinationHoverSelector).rule;
     expect(destinationHoverRule.parent.type).toBe('root');
     expect(extractDeclarationContract(darkDestinationHoverSelector)).toMatchObject({
       'border-color': {
         important: false,
-        value: 'rgb(255 255 255 / 0.1)',
+        value: 'rgb(var(--weelp-gold-edge-rgb) / 0.72)',
       },
       'box-shadow': {
         important: false,
-        value: '0 12px 30px rgb(var(--weelp-gold-edge-rgb) / 0.2), 0 2px 10px rgb(var(--weelp-gold-edge-rgb) / 0.12)',
+        value: '0 10px 24px rgb(var(--weelp-gold-edge-rgb) / 0.26), 0 3px 10px rgb(var(--weelp-gold-edge-rgb) / 0.16)',
+      },
+    });
+
+    const destinationCarouselSelector = '.dark .home-gold-theme .carousel-shell-wrapper:has(.weelp-destination-card)';
+    expect(extractDeclarationContract(destinationCarouselSelector)).toMatchObject({
+      '--weelp-destination-shadow-gutter': {
+        important: false,
+        value: 'clamp(16px, 3vw, 24px)',
+      },
+      padding: {
+        important: false,
+        value: '40px var(--weelp-destination-shadow-gutter)',
+      },
+      margin: {
+        important: false,
+        value: '-40px calc(var(--weelp-destination-shadow-gutter) * -1)',
       },
     });
 
@@ -515,6 +543,7 @@ describe('Deep Forest semantic theme', () => {
     expect(() => findExactRule(lightHoverSelectors)).toThrow();
     expect(() => findExactRule(lightSelectedSelectors)).toThrow();
     expect(() => findExactRule(lightFixedHeroSelector)).toThrow();
+    expect(() => findExactRule('.home-gold-theme .weelp-destination-card')).toThrow();
     expect(() => findExactRule(lightDestinationHoverSelector)).toThrow();
     expect(() => findExactRule(lightHeroEyebrowSelector)).toThrow();
   });
