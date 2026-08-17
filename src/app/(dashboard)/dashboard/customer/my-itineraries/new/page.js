@@ -26,6 +26,12 @@ export default async function CreateItineraryPage() {
 
   const [citiesRes, transfers] = await Promise.all([getAllCitiesListPublic(), getAllTransfersCreator()]);
 
+  // NextAuth can briefly retain the old creator flag after an admin removes
+  // access. Trust the protected backend request before rendering the form.
+  if (transfers === null) {
+    redirect('/dashboard/customer');
+  }
+
   const locations = citiesRes?.data || [];
 
   return <CreatorItineraryFormShell mode="create" locations={locations} alltransfers={transfers} />;

@@ -29,6 +29,10 @@ export default async function EditItineraryDraftPage({ params }) {
 
   const [draftResult, citiesRes, transfers] = await Promise.all([getDraftItinerary(id), getAllCitiesListPublic(), getAllTransfersCreator()]);
 
+  if (transfers === null) {
+    redirect('/dashboard/customer');
+  }
+
   if (!draftResult.success || !draftResult.data) {
     notFound();
   }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { Toaster } from '@/components/ui/toaster';
 import { DashboardContentWrapper } from '@/app/components/Pages/DASHBOARD/DashboardContentWrapper';
 import Header from '@/app/components/Layout/header';
@@ -8,6 +9,7 @@ import Footer from '@/app/components/Layout/footer';
 import DashboardSidebar from '@/app/components/Layout/DashboardSidebar';
 import { useSession } from 'next-auth/react';
 import { DashboardUserNav } from '@/app/Data/userData';
+import { authApi } from '@/lib/axiosInstance';
 import { PanelLeft } from 'lucide-react';
 
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
@@ -125,8 +127,47 @@ function DashboardMobileBar({ user }) {
 }
 
 export default function UserLayout({ children }) {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
+  const pathname = usePathname();
   const user = session?.user || {};
+  const isCreator = Boolean(user.is_creator);
+
+  useEffect(() => {
+    if (!isCreator) return undefined;
+
+    let cancelled = false;
+
+    const reconcileCreatorStatus = () => {
+      authApi
+        .get('/api/customer/creator/application-status')
+        .then((response) => {
+          if (!cancelled && response?.data?.data?.status !== 'approved') {
+            return update({ is_creator: false });
+          }
+
+          return undefined;
+        })
+        // The shared auth interceptor handles revoked-token 401s by signing out.
+        // Transient failures must not silently demote a valid creator.
+        .catch(() => undefined);
+    };
+
+    const reconcileWhenVisible = () => {
+      if (document.visibilityState === 'visible') {
+        reconcileCreatorStatus();
+      }
+    };
+
+    reconcileCreatorStatus();
+    window.addEventListener('focus', reconcileCreatorStatus);
+    document.addEventListener('visibilitychange', reconcileWhenVisible);
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('focus', reconcileCreatorStatus);
+      document.removeEventListener('visibilitychange', reconcileWhenVisible);
+    };
+  }, [isCreator, pathname, update]);
 
   return (
     <div className="flex flex-col min-h-screen bg-background">

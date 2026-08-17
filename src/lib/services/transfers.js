@@ -23,7 +23,7 @@ export async function getAllTransfersAdmin() {
  * Uses the creator endpoint (auth + creator middleware) which returns
  * transfers shaped like the admin endpoint (with vendor_routes.pickup_city_id)
  * so the shared ActivitySearchModal/TransferSearchModal markup works unchanged.
- * @returns {Promise<Array>}
+ * @returns {Promise<Array|null>} Null when creator authorization is rejected.
  */
 export async function getAllTransfersCreator() {
   try {
@@ -33,6 +33,10 @@ export async function getAllTransfersCreator() {
     });
     return response?.data?.data ?? [];
   } catch (error) {
+    if (error?.response?.status === 401 || error?.response?.status === 403) {
+      return null;
+    }
+
     console.error('Service Error (getAllTransfersCreator):', error);
     return [];
   }
