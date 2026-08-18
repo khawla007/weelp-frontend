@@ -13,6 +13,7 @@
 ### Task 1: Specify the no-shadow contract
 
 **Files:**
+
 - Modify: `src/app/__tests__/deepForestTheme.test.js:489-542`
 
 - [ ] **Step 1: Update the destination contract before production CSS**
@@ -48,6 +49,7 @@ Expected: one failing contract test because production CSS still contains the tw
 ### Task 2: Remove the destination hover shadow
 
 **Files:**
+
 - Modify: `src/app/globals.css:302-322`
 
 - [ ] **Step 1: Apply the minimal route-scoped CSS**
@@ -85,6 +87,7 @@ Expected: 70 tests pass.
 ### Task 3: Verify behavior and isolation
 
 **Files:**
+
 - Verify: `src/app/globals.css`
 - Verify: `src/app/__tests__/deepForestTheme.test.js`
 
@@ -130,6 +133,7 @@ Expected: 75 related tests, the production build, and diff hygiene pass.
 ### Task 4: Review, simplify, commit, and push
 
 **Files:**
+
 - Modify: `src/app/globals.css`
 - Modify: `src/app/__tests__/deepForestTheme.test.js`
 - Add: `docs/superpowers/plans/2026-08-18-home-gold-destination-no-shadow.md`
