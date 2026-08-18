@@ -521,7 +521,7 @@ describe('Deep Forest semantic theme', () => {
     expect(destinationHoverContract).toMatchObject({
       'box-shadow': {
         important: false,
-        value: 'var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow), 0 11px 16px -11px rgb(var(--weelp-gold-edge-rgb) / 0.22), 0 5px 6px -4px rgb(var(--weelp-gold-edge-rgb) / 0.12)',
+        value: 'var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow), 0 16px 16px -16px rgb(var(--weelp-gold-edge-rgb) / 0.22), 0 7px 6px -6px rgb(var(--weelp-gold-edge-rgb) / 0.12)',
       },
     });
 
