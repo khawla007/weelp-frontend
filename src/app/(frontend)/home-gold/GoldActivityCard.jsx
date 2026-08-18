@@ -20,7 +20,7 @@ export default function GoldActivityCard({ item, wishlistItem }) {
       <NavigationLink
         href={item.href}
         aria-label={`Explore ${item.title}`}
-        className="group relative block min-h-[300px] overflow-hidden rounded-[24px] transition-shadow focus-visible:outline-none focus-visible:shadow-[inset_0_0_0_2px_oklch(0.98_0.01_80),inset_0_0_0_4px_oklch(0.2_0.03_155)] motion-reduce:transition-none"
+        className="group relative block min-h-[300px] overflow-hidden rounded-[24px] transition-shadow focus-visible:outline-none motion-reduce:transition-none"
       >
         <Image
           fill
@@ -71,10 +71,17 @@ export default function GoldActivityCard({ item, wishlistItem }) {
             </span>
           </div>
         </div>
+
+        <span
+          aria-hidden="true"
+          data-testid="home-gold-activity-focus"
+          className="pointer-events-none absolute inset-0 z-30 rounded-[24px] opacity-0 shadow-[inset_0_0_0_2px_oklch(0.98_0.01_80),inset_0_0_0_4px_oklch(0.2_0.03_155)] group-focus-visible:opacity-100"
+        />
       </NavigationLink>
 
       <div className="pointer-events-none absolute left-4 top-4 z-20 flex items-center gap-2">
-        <span className="rounded-lg bg-weelp-discount px-3 py-2 text-xs font-bold text-weelp-ink">{item.discount || '40% OFF'}</span>
+        {/* dark-mode-exempt: discount badge requires a theme-independent dark foreground for contrast */}
+        <span className="rounded-lg bg-weelp-discount px-3 py-2 text-xs font-bold text-zinc-950">{item.discount || '40% OFF'}</span>
         <div className="pointer-events-auto">
           <GoldActivityWishlistButton item={wishlistItem} />
         </div>

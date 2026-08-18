@@ -54,14 +54,16 @@ describe('GoldActivityCard', () => {
     expect(card).toHaveClass('rounded-[24px]');
     expect(card).not.toHaveClass('group');
     expect(link).toHaveAttribute('href', '/cities/dubai/activities/desert-safari');
-    expect(link).toHaveClass('group', 'focus-visible:shadow-[inset_0_0_0_2px_oklch(0.98_0.01_80),inset_0_0_0_4px_oklch(0.2_0.03_155)]', 'motion-reduce:transition-none');
+    expect(link).toHaveClass('group', 'motion-reduce:transition-none');
     expect(image).toHaveAttribute('src', '/desert-safari.jpg');
     expect(image).toHaveAttribute('data-fill', 'true');
     expect(image).toHaveAttribute('data-placeholder', 'blur');
     expect(image).toHaveAttribute('data-blur-data-url');
     expect(image).toHaveAttribute('data-sizes', expect.stringContaining('(max-width: 640px)'));
     expect(image).toHaveClass('object-cover', 'motion-reduce:group-hover:scale-100');
-    expect(screen.getByText('40% OFF')).toHaveClass('text-weelp-ink');
+    // dark-mode-exempt: assertion locks the required theme-independent discount foreground
+    expect(screen.getByText('40% OFF')).toHaveClass('text-zinc-950');
+    expect(screen.getByText('40% OFF')).not.toHaveClass('text-weelp-ink');
     expect(screen.getByText('★')).toBeVisible();
     expect(screen.getByText('5.0')).toBeVisible();
     expect(screen.getByText('(124)')).toBeVisible();
@@ -74,6 +76,27 @@ describe('GoldActivityCard', () => {
     expect(screen.getByText('per person')).toBeVisible();
     expect(screen.getByText('Explore')).toBeVisible();
     expect(wishlist.closest('a')).toBeNull();
+  });
+
+  it('renders the two-tone focus treatment above all linked content without intercepting input', () => {
+    render(<GoldActivityCard item={mappedItem} wishlistItem={rawActivity} />);
+
+    const link = screen.getByRole('link', { name: /explore desert safari adventure/i });
+    const focusOverlay = screen.getByTestId('home-gold-activity-focus');
+
+    expect(link).not.toHaveClass('focus-visible:shadow-[inset_0_0_0_2px_oklch(0.98_0.01_80),inset_0_0_0_4px_oklch(0.2_0.03_155)]');
+    expect(link.lastElementChild).toBe(focusOverlay);
+    expect(focusOverlay).toHaveAttribute('aria-hidden', 'true');
+    expect(focusOverlay).toHaveClass(
+      'absolute',
+      'inset-0',
+      'z-30',
+      'pointer-events-none',
+      'rounded-[24px]',
+      'opacity-0',
+      'shadow-[inset_0_0_0_2px_oklch(0.98_0.01_80),inset_0_0_0_4px_oklch(0.2_0.03_155)]',
+      'group-focus-visible:opacity-100',
+    );
   });
 
   it('keeps the translucent information panel and its small text at reliable high contrast', () => {
