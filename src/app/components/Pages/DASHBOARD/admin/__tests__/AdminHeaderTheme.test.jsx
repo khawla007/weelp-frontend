@@ -53,6 +53,8 @@ describe('AdminHeader search theme surface', () => {
 
     const { container } = render(<AdminHeader session={{ user: {} }} />);
 
+    expect(container.querySelector('header')).toHaveClass('border-border', 'bg-background/95', 'backdrop-blur');
+
     fireEvent.change(screen.getByPlaceholderText('Search orders, users, activities...'), { target: { value: 'de' } });
 
     await act(async () => {

@@ -22,7 +22,7 @@ const AdminLayout = async ({ children }) => {
           </>
           <main className="min-w-0 flex-1">
             <DashboardContentWrapper>
-              <div className="container mx-auto w-full min-w-0 p-8 sm:p-12">{children}</div>
+              <div className="mx-auto w-full max-w-[1600px] min-w-0 p-4 sm:p-6 lg:p-8 xl:p-10">{children}</div>
             </DashboardContentWrapper>
           </main>
         </div>

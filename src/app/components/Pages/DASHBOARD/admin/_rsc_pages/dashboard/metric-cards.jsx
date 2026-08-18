@@ -1,8 +1,8 @@
 import { metricCardsData } from './constants/metric-cards.constants';
 import { MetricCardsSkeleton } from './DashboardSkeleton';
-import { StatCard } from '@/app/components/Pages/DASHBOARD/admin/_rsc_pages/shared/StatCard';
+import { DashboardMetricCard } from './DashboardMetricCard';
 
-export const MetricCards = ({ loading = false, data = null }) => {
+export const MetricCards = ({ loading = false, data = null, overviewData = [] }) => {
   if (loading) {
     return <MetricCardsSkeleton />;
   }
@@ -10,14 +10,29 @@ export const MetricCards = ({ loading = false, data = null }) => {
   // Use API data if available (and has content), otherwise use static data
   // Merge API data with static icons since API doesn't return React components
   const cards = data && data.length > 0 ? data.map((item, i) => ({ ...item, icon: metricCardsData[i]?.icon })) : metricCardsData;
+  const history = Array.isArray(overviewData) ? overviewData : [];
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div data-testid="dashboard-kpis" className="grid grid-cols-2 gap-[11px] lg:grid-cols-4">
       {cards.map((item, index) => {
         const IconComponent = item.icon || metricCardsData[index]?.icon;
         const formattedValue = index === 0 ? `$${item.total.toLocaleString()}` : item.total.toLocaleString();
 
-        return <StatCard key={index} label={item.title} icon={<IconComponent size={14} className="text-foreground text-sm font-medium" />} value={formattedValue} change={item.change} />;
+        const historyProps = [{ history, historyKey: 'total', accent: 'success' }, { history, historyKey: 'bookings', accent: 'info' }, { accent: 'violet' }, { accent: 'warning' }][index] ?? {
+          accent: 'success',
+        };
+
+        return (
+          <DashboardMetricCard
+            key={index}
+            label={item.title}
+            icon={<IconComponent size={16} className="text-muted-foreground" aria-hidden="true" />}
+            value={formattedValue}
+            numericValue={item.total}
+            change={item.change}
+            {...historyProps}
+          />
+        );
       })}
     </div>
   );

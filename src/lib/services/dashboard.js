@@ -33,6 +33,16 @@ export const getOverviewChart = async () => {
   }
 };
 
+export const getBookingMix = async () => {
+  try {
+    const response = await authApi.get('/api/admin/dashboard/booking-mix');
+    return response?.data?.data || { total: 0, categories: [], leaders: [] };
+  } catch (error) {
+    console.error('Error fetching dashboard booking mix:', error);
+    throw error;
+  }
+};
+
 /**
  * Get recent sales data with monthly total
  * @returns {Promise<{success: boolean, data: Array, monthly_total: number}>} Recent sales data with monthly total
