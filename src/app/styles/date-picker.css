@@ -132,8 +132,8 @@
 .weelp-calendar .rdp-day_button:hover {
   background-color: var(--weelp-cal-single);
 }
-.weelp-calendar .rdp-day_button,
-.weelp-calendar .rdp-day_button:hover {
+.weelp-calendar .rdp-day_button:not(#weelp-calendar-selected-date),
+.weelp-calendar .rdp-day_button:not(#weelp-calendar-selected-date):hover {
   box-shadow: none !important;
 }
 
