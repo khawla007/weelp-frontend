@@ -68,8 +68,18 @@ describe('GoldActivityWishlistButton', () => {
     expect(openAuthModal).toHaveBeenCalledWith({ onSuccess: expect.any(Function) });
     expect(addItem).not.toHaveBeenCalled();
 
-    await act(async () => openAuthModal.mock.calls[0][0].onSuccess());
+    await act(async () => openAuthModal.mock.calls[0][0].onSuccess({ user: { id: 7, role: 'customer' } }));
     expect(addItem).toHaveBeenCalledWith(expect.objectContaining({ item_type: 'activity', item_id: 42 }));
+  });
+
+  it('does not save after a guest authenticates with a non-customer role', async () => {
+    sessionState = { data: null, status: 'unauthenticated' };
+    render(<GoldActivityWishlistButton item={activity} />);
+    fireEvent.click(screen.getByRole('button', { name: /save desert safari adventure to wishlist/i }));
+
+    await act(async () => openAuthModal.mock.calls[0][0].onSuccess({ user: { id: 7, role: 'admin' } }));
+
+    expect(addItem).not.toHaveBeenCalled();
   });
 
   it('adds an activity for a customer and confirms the save', async () => {

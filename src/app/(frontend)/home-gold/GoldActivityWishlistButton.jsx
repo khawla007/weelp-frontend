@@ -66,7 +66,12 @@ export default function GoldActivityWishlistButton({ item }) {
     if (isDisabled) return;
 
     if (!session?.user) {
-      openAuthModal({ onSuccess: () => updateWishlist(false) });
+      openAuthModal({
+        onSuccess: (authenticatedSession) => {
+          if (authenticatedSession?.user?.role !== 'customer') return;
+          return updateWishlist(false);
+        },
+      });
       return;
     }
 
