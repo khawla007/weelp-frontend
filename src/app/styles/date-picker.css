@@ -132,6 +132,10 @@
 .weelp-calendar .rdp-day_button:hover {
   background-color: var(--weelp-cal-single);
 }
+.weelp-calendar .rdp-day_button,
+.weelp-calendar .rdp-day_button:hover {
+  box-shadow: none !important;
+}
 
 .weelp-calendar .rdp-selected {
   font-size: inherit;
