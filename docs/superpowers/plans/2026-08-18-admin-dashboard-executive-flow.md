@@ -256,7 +256,16 @@ describe('Overview', () => {
   });
 
   it('formats both values in the tooltip', () => {
-    render(<OverviewTooltip active label="Jan" payload={[{ dataKey: 'total', value: 1200 }, { dataKey: 'bookings', value: 4 }]} />);
+    render(
+      <OverviewTooltip
+        active
+        label="Jan"
+        payload={[
+          { dataKey: 'total', value: 1200 },
+          { dataKey: 'bookings', value: 4 },
+        ]}
+      />,
+    );
 
     expect(screen.getByText('Revenue: $1,200')).toBeInTheDocument();
     expect(screen.getByText('Bookings: 4')).toBeInTheDocument();
@@ -439,10 +448,19 @@ export function DashboardMetricCard({ label, icon, value, change = 0, history = 
     <Card className="group relative overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-[background-color,border-color,box-shadow] hover:bg-accent/40 hover:shadow-md motion-reduce:transition-none">
       <div className="p-5">
         <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
-          <span>{label}</span>{icon}
+          <span>{label}</span>
+          {icon}
         </div>
         <div className="mt-3 flex items-end justify-between gap-4">
-          <div><div className="text-2xl font-bold tracking-tight text-foreground">{value}</div><p className={`mt-1 flex items-center gap-1 text-xs font-semibold ${changeClass}`}><TrendIcon className="size-3.5" aria-hidden="true" /><span>{displayChange}</span><span className="sr-only">{directionLabel}</span><span className="font-medium text-muted-foreground">from last month</span></p></div>
+          <div>
+            <div className="text-2xl font-bold tracking-tight text-foreground">{value}</div>
+            <p className={`mt-1 flex items-center gap-1 text-xs font-semibold ${changeClass}`}>
+              <TrendIcon className="size-3.5" aria-hidden="true" />
+              <span>{displayChange}</span>
+              <span className="sr-only">{directionLabel}</span>
+              <span className="font-medium text-muted-foreground">from last month</span>
+            </p>
+          </div>
           {historyKey && history.length > 0 ? <MetricSparkline data={history} dataKey={historyKey} accent={accent} /> : null}
         </div>
       </div>
@@ -532,7 +550,13 @@ jest.mock('@/hooks/api/admin/navigationUnseen', () => ({
 }));
 
 const responses = {
-  '/admin/dashboard/metrics': { data: [{ title: 'Total Revenue', total: 1200, change: 10 }, { title: 'Bookings', total: 1284, change: 12.1 }], isLoading: false },
+  '/admin/dashboard/metrics': {
+    data: [
+      { title: 'Total Revenue', total: 1200, change: 10 },
+      { title: 'Bookings', total: 1284, change: 12.1 },
+    ],
+    isLoading: false,
+  },
   '/admin/dashboard/overview-chart': { data: [{ name: 'Jan', total: 1200, bookings: 4 }], isLoading: false },
   '/admin/dashboard/recent-sales': { data: { data: [{ username: 'Maya Chen', email: 'maya@example.test', amount: 500 }], monthly_total: 2500 }, isLoading: false },
 };
@@ -558,7 +582,7 @@ describe('AdminDashboardPage', () => {
   });
 
   it('keeps successful sections visible when recent sales fail', () => {
-    useSWR.mockImplementation((key) => key === '/admin/dashboard/recent-sales' ? { error: new Error('failed'), isLoading: false } : responses[key]);
+    useSWR.mockImplementation((key) => (key === '/admin/dashboard/recent-sales' ? { error: new Error('failed'), isLoading: false } : responses[key]));
     render(<AdminDashboardPage />);
 
     expect(screen.getByText("Couldn't load some dashboard data. Showing placeholders where possible.")).toBeInTheDocument();
@@ -582,22 +606,35 @@ Use this page structure in `AdminDashboard.jsx`:
 ```jsx
 <DashboardMotionFrame className="flex-1 space-y-5">
   <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-    <div><p className="text-xs font-medium text-muted-foreground">Live business summary</p><h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">Super Admin Dashboard</h1></div>
+    <div>
+      <p className="text-xs font-medium text-muted-foreground">Live business summary</p>
+      <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">Super Admin Dashboard</h1>
+    </div>
     <Button className="w-fit bg-weelp-sage-deep">Download</Button>
   </header>
-  {hasError ? <div className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">Couldn&apos;t load some dashboard data. Showing placeholders where possible.</div> : null}
+  {hasError ? (
+    <div className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">Couldn&apos;t load some dashboard data. Showing placeholders where possible.</div>
+  ) : null}
   <MetricCards loading={isLoading} data={metricsError ? null : metricsData} overviewData={chartError ? [] : chartData} />
   <div className="grid gap-4 xl:grid-cols-[minmax(0,1.7fr)_minmax(280px,0.7fr)]">
     <Card className="min-w-0 rounded-xl">
       <CardHeader className="flex-row items-center justify-between space-y-0">
-        <div><CardTitle>Revenue &amp; bookings</CardTitle><CardDescription>Monthly performance for {new Date().getFullYear()}</CardDescription></div>
+        <div>
+          <CardTitle>Revenue &amp; bookings</CardTitle>
+          <CardDescription>Monthly performance for {new Date().getFullYear()}</CardDescription>
+        </div>
       </CardHeader>
-      <CardContent><Overview loading={isLoading} data={chartError ? null : chartData} /></CardContent>
+      <CardContent>
+        <Overview loading={isLoading} data={chartError ? null : chartData} />
+      </CardContent>
     </Card>
     <BookingSummary loading={isLoading} metric={bookingsMetric} monthlyTotal={monthlyTotal} sales={salesError ? [] : salesData} />
   </div>
   <div className="grid gap-4 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.55fr)]">
-    <section className="space-y-3"><h2 className="text-lg font-semibold text-foreground">Quick actions</h2><QuickActions loading={isLoading} /></section>
+    <section className="space-y-3">
+      <h2 className="text-lg font-semibold text-foreground">Quick actions</h2>
+      <QuickActions loading={isLoading} />
+    </section>
     <AttentionSummary />
   </div>
 </DashboardMotionFrame>
@@ -710,7 +747,7 @@ Expected: FAIL on the new semantic shell classes.
 Change the header class to:
 
 ```jsx
-className="sticky top-0 z-50 h-16 min-w-0 border-b border-border bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/80 sm:px-6"
+<header className="sticky top-0 z-50 h-16 min-w-0 border-b border-border bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/80 sm:px-6">
 ```
 
 Change `SidebarHeader` to use a single bottom edge rather than a boxed border:
