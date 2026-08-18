@@ -23,21 +23,21 @@ export function RecentSales({ loading = false, data = null }) {
   }
 
   return (
-    <div className="space-y-8 w-full max-w-full grid grid-cols-1">
+    <div className="grid w-full max-w-full grid-cols-1 gap-4">
       {sales.map((item, index) => {
         const initials = getInitials(item.username);
         const hasCustomAvatar = item.icon && !item.icon.includes('ui-avatars.com');
         return (
-          <div key={index} className="flex  flex-wrap items-center gap-4 sm:gap-0">
+          <div key={index} className="flex flex-wrap items-center gap-3">
             <Avatar className="h-9 w-9">
               {hasCustomAvatar && <AvatarImage src={item.icon} alt="Avatar" />}
               <AvatarFallback className="bg-weelp-sage-deep text-white font-medium">{initials}</AvatarFallback>
             </Avatar>
-            <div className="ml-4 space-y-1">
+            <div className="min-w-0 flex-1 space-y-1">
               <p className="text-sm font-medium leading-none">{item.username}</p>
               <p className="text-sm text-muted-foreground">{item.email}</p>
             </div>
-            <div className="sm:ml-auto font-medium">+${item.amount.toLocaleString()}</div>
+            <div className="ml-auto font-medium text-success">+${item.amount.toLocaleString()}</div>
           </div>
         );
       })}

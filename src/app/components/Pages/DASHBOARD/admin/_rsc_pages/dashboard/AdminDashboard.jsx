@@ -1,13 +1,17 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Overview } from './overview';
-import { Button } from '@/components/ui/button';
-import { QuickActions } from './quick-actions';
-import { MetricCards } from './metric-cards';
-import { RecentSales } from './recent-sales';
+import { Download as DownloadIcon } from 'lucide-react';
 import useSWR from 'swr';
-import { getDashboardMetrics, getOverviewChart, getRecentSales } from '@/lib/services/dashboard';
+
+import { DashboardMotionFrame } from '@/app/components/DashboardShared';
+import { Button } from '@/components/ui/button';
+import { getBookingMix, getDashboardMetrics, getOverviewChart } from '@/lib/services/dashboard';
+
+import { AttentionSummary } from './AttentionSummary';
+import { BookingMix } from './BookingMix';
+import { MetricCards } from './metric-cards';
+import { Overview } from './overview';
+import { QuickActions } from './quick-actions';
 
 const SWR_OPTIONS = {
   revalidateOnFocus: false,
@@ -20,60 +24,48 @@ const SWR_OPTIONS = {
 
 export function AdminDashboardPage() {
   const { data: metricsData, error: metricsError, isLoading: metricsLoading } = useSWR('/admin/dashboard/metrics', getDashboardMetrics, SWR_OPTIONS);
-
   const { data: chartData, error: chartError, isLoading: chartLoading } = useSWR('/admin/dashboard/overview-chart', getOverviewChart, SWR_OPTIONS);
-
-  const { data: salesResponse, error: salesError, isLoading: salesLoading } = useSWR('/admin/dashboard/recent-sales', getRecentSales, SWR_OPTIONS);
-
-  const salesData = salesResponse?.data ?? [];
-  const monthlyTotal = salesResponse?.monthly_total ?? 0;
-
-  const hasError = metricsError || chartError || salesError;
-
-  // Synchronize all sections: every box (incl. Quick Actions) shows its skeleton
-  // until all dashboard data is ready, then they reveal together. Prevents the
-  // staggered skeleton->data flips that shifted the layout up and down.
-  const isLoading = metricsLoading || chartLoading || salesLoading;
+  const { data: bookingMix, error: bookingMixError, isLoading: bookingMixLoading } = useSWR('/admin/dashboard/booking-mix', getBookingMix, SWR_OPTIONS);
+  const hasError = metricsError || chartError || bookingMixError;
 
   return (
-    <div className="flex-1 space-y-4">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-xl md:text-3xl font-bold tracking-tight">Super Admin Dashboard</h2>
-        <div className="flex items-center space-x-2">
-          <Button className="bg-weelp-sage-deep">Download</Button>
+    <DashboardMotionFrame className="flex-1 space-y-5">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Live business summary</p>
+          <h1 className="mt-1 text-2xl font-bold tracking-tight text-foreground md:text-3xl">Super Admin Dashboard</h1>
         </div>
+        <Button className="w-fit bg-weelp-sage-deep">
+          <DownloadIcon aria-hidden="true" />
+          Download
+        </Button>
+      </header>
+
+      {hasError ? (
+        <div role="alert" className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          Couldn&apos;t load some dashboard data. Showing placeholders where possible.
+        </div>
+      ) : null}
+
+      <MetricCards loading={metricsLoading} data={metricsError ? null : metricsData} overviewData={chartError ? [] : chartData} />
+
+      <div data-testid="dashboard-analytics" className="grid gap-3 min-[901px]:grid-cols-[minmax(0,1.7fr)_minmax(220px,0.72fr)]">
+        <section aria-labelledby="overview-title" className="min-w-0 rounded-[15px] border border-border bg-card p-[15px] text-card-foreground">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <h2 id="overview-title" className="text-sm font-semibold text-foreground">
+              Revenue &amp; bookings
+            </h2>
+            <span className="text-xs text-muted-foreground">12 months</span>
+          </div>
+          <Overview loading={chartLoading} data={chartError ? null : chartData} />
+        </section>
+        <BookingMix data={bookingMix} loading={bookingMixLoading} error={bookingMixError} />
       </div>
 
-      {hasError && (
-        <div className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">Couldn&apos;t load some dashboard data. Showing placeholders where possible.</div>
-      )}
-
-      <MetricCards loading={isLoading} data={metricsError ? null : metricsData} />
-
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">Quick Actions</h3>
-        <QuickActions loading={isLoading} />
+      <div data-testid="dashboard-lower" className="grid gap-3 min-[621px]:grid-cols-[minmax(0,1.15fr)_minmax(220px,0.85fr)]">
+        <QuickActions />
+        <AttentionSummary />
       </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
-          <CardHeader>
-            <CardTitle>Overview</CardTitle>
-          </CardHeader>
-          <CardContent className="pl-2">
-            <Overview loading={isLoading} data={chartError ? null : chartData} />
-          </CardContent>
-        </Card>
-        <Card className="col-span-3">
-          <CardHeader>
-            <CardTitle>Recent Sales</CardTitle>
-            <CardDescription>Monthly sales: ${monthlyTotal.toLocaleString()}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <RecentSales loading={isLoading} data={salesData} />
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    </DashboardMotionFrame>
   );
 }

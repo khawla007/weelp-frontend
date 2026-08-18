@@ -4,9 +4,128 @@
 
 **Goal:** Redesign `/dashboard/admin` with the approved Executive Flow layout, richer real-data graphs, compact actions, and polished responsive composition while preserving Weelp's existing light and dark theme colours.
 
-**Architecture:** Extend the existing Laravel overview response with monthly booking counts, then keep all dashboard fetching in `AdminDashboard.jsx`. Dedicated presentation components receive plain data and render metric sparklines, the composed overview graph, recent sales, and quick actions. The shared admin shell receives spacing and surface refinements only; global theme tokens, routes, permissions, and search behaviour do not change.
+**Architecture:** Extend the existing Laravel overview response with monthly booking counts and add a real Booking Mix response, then keep all dashboard fetching in `AdminDashboard.jsx`. Dedicated presentation components receive plain data and render metric sparklines, the composed overview graph, booking mix, attention signals, and quick actions. The shared admin shell receives spacing and surface refinements only; global theme tokens, routes, permissions, and search behaviour do not change.
 
 **Tech Stack:** Laravel 12, PHPUnit, Next.js 16 App Router, React 19, TypeScript/JavaScript, SWR, Recharts, Tailwind CSS, Jest, React Testing Library.
+
+## Approved-reference correction (2026-08-18)
+
+The Option A preview at `.superpowers/brainstorm/726902-1787040295/content/dashboard-layout-directions-v2.html` is now the strict visual contract for the dashboard content. The existing sidebar navigation position, placement, routes, and collapse behavior must not change.
+
+This correction and Corrective Task A supersede every conflicting file-map entry, code sample, geometry value, and acceptance criterion in Tasks 2–5. Those sections document the first implementation pass only and must not be used for the corrected implementation. The finalization task below must verify and stage every file introduced by Corrective Task A.
+
+The implementation must match these reference measurements and relationships:
+
+- dashboard cards use a 1px semantic border, 15px radius, and 15px padding;
+- metric cards are a compact four-column row with an approximately 100px minimum height, 11px gaps, and four visible data-coloured sparklines;
+- the analytics row uses the reference `1.7fr / .72fr` split with a 12px gap;
+- the overview chart is approximately 205px tall, uses quiet horizontal grid lines, a sage area/line, a dashed blue bookings line, and coral data pointers;
+- the right analytics card is titled `Booking mix`, includes a donut, Activities/Packages/Trips legend, and two compact leading-item rows;
+- the lower row uses the reference `1.15fr / .85fr` split with compact Quick actions and Needs attention cards;
+- light and dark mode continue to resolve through the existing Weelp semantic tokens; only data accents may use success, info, warning, violet, or destructive colours.
+
+Booking Mix must use real current-month non-cancelled order data grouped by `orderable_type`. `Activity`, `Package`, and `Itinerary` map to Activities, Packages, and Trips. The two leading items use real orderable names and booking counts. Empty data renders the same donut/card geometry with honest zero values and a concise empty message.
+
+Before implementation, add failing frontend composition/style-contract tests and backend response-contract tests. After implementation, run focused frontend and backend tests, type-check, lint, dark-theme guard, and a visible headed-browser comparison against the reference at desktop and mobile widths.
+
+## Corrective Task A: Make the implementation faithful to Option A
+
+**Backend files:**
+
+- Create `backend/tests/Feature/Admin/DashboardBookingMixTest.php`.
+- Modify `backend/routes/api.php`.
+- Modify `backend/app/Http/Controllers/Admin/DashboardController.php`.
+
+**Frontend files:**
+
+- Create `frontend/src/app/components/Pages/DASHBOARD/admin/_rsc_pages/dashboard/BookingMix.jsx`.
+- Create `frontend/src/app/components/Pages/DASHBOARD/admin/_rsc_pages/dashboard/__tests__/BookingMix.test.jsx`.
+- Modify `frontend/src/lib/services/dashboard.js`.
+- Modify `frontend/src/app/components/Pages/DASHBOARD/admin/_rsc_pages/dashboard/AdminDashboard.jsx`.
+- Modify `frontend/src/app/components/Pages/DASHBOARD/admin/_rsc_pages/dashboard/DashboardMetricCard.jsx`.
+- Modify `frontend/src/app/components/Pages/DASHBOARD/admin/_rsc_pages/dashboard/metric-cards.jsx`.
+- Modify `frontend/src/app/components/Pages/DASHBOARD/admin/_rsc_pages/dashboard/overview.tsx`.
+- Modify `frontend/src/app/components/Pages/DASHBOARD/admin/_rsc_pages/dashboard/constants/overview-chart.constants.js`.
+- Modify `frontend/src/app/components/Pages/DASHBOARD/admin/_rsc_pages/dashboard/quick-actions.jsx`.
+- Modify `frontend/src/app/components/Pages/DASHBOARD/admin/_rsc_pages/dashboard/AttentionSummary.jsx`.
+- Modify the corresponding dashboard tests and skeletons.
+- Restore `frontend/src/app/components/Pages/DASHBOARD/admin/app-sidebar.jsx` and its test to the branch baseline so sidebar geometry does not change.
+
+### A.1 Booking Mix contract
+
+Add `GET /api/admin/dashboard/booking-mix`. It returns:
+
+```json
+{
+  "success": true,
+  "data": {
+    "total": 12,
+    "categories": [
+      { "key": "activities", "label": "Activities", "count": 5 },
+      { "key": "packages", "label": "Packages", "count": 4 },
+      { "key": "trips", "label": "Trips", "count": 3 }
+    ],
+    "leaders": [{ "type": "activity", "id": 9, "name": "Dubai Safari", "bookings": 3, "change": 50 }]
+  }
+}
+```
+
+Rules are deterministic:
+
+- use current-month, non-cancelled orders only;
+- map `Activity`, `Package`, and `Itinerary` to Activities, Packages, and Trips; ignore unsupported morph types;
+- `total` is the sum of those three category counts and is the donut centre value;
+- rank leaders by booking count descending, then name ascending, then id ascending; return at most two;
+- use the orderable `name`, with `Unavailable item` for a missing relation/name;
+- calculate each leader's change against its own previous-month count: normal percentage when previous is non-zero, `100` when only the current month is non-zero, and `0` when both are zero;
+- always return all three category rows in the order shown, including zero counts;
+- on an empty month return total `0`, three zero categories, and an empty leaders array while preserving the card/donut geometry in the UI.
+
+Write the backend contract test first. It must cover category mapping, cancelled exclusion, leaders, deterministic tie ordering, change calculation, and the empty response.
+
+### A.2 Exact style-contract tests first
+
+Before production edits, update/add frontend tests that fail on the current implementation and assert:
+
+- dashboard cards carry `rounded-[15px]`, `border`, `border-border`, `bg-card`, and `p-[15px]` at the component that owns the card padding;
+- the KPI wrapper carries `gap-[11px]`; each KPI carries `min-h-[100px]`; all four cards render a sparkline container;
+- the analytics wrapper carries `gap-3` and `min-[901px]:grid-cols-[minmax(0,1.7fr)_minmax(220px,0.72fr)]`, matching Option A's split above 900px;
+- the chart wrapper is `h-[205px]`; bookings has a dashed stroke; three persistent coral pointer dots are rendered at the designated data indexes in addition to hover dots;
+- Booking Mix renders the 112px donut, exact three-item legend order, total, up to two leaders, and stable empty geometry;
+- the lower wrapper carries `gap-3` and `min-[621px]:grid-cols-[minmax(0,1.15fr)_minmax(220px,0.85fr)]`, matching Option A's lower-row collapse only at 620px and below;
+- Quick actions are one outer 15px-radius card containing three compact inner tiles, not three sibling outer cards;
+- Needs attention is one compact 15px-radius card with a header, `View all` navigation, and compact inline/order-review signals;
+- the sidebar header retains its baseline classes and placement.
+
+### A.3 Exact component geometry
+
+Use the browser-measured desktop reference values:
+
+- card border `1px`, radius `15px`, padding `15px`;
+- KPI height `109px` in the measured preview with a `100px` minimum and `11px` gap;
+- analytics gap `12px`, reference columns `421.359px / 220px` at the measured preview, expressed responsively as `1.7fr / minmax(220px,.72fr)`;
+- chart drawing height `205px` inside the padded card;
+- donut `112px × 112px`, with an 18px inner ring inset;
+- lower gap `12px`, reference columns `368.781px / 272.578px`, expressed responsively as `1.15fr / minmax(220px,.85fr)`;
+- lower cards share equal row height and keep compact content rather than stacked large controls.
+
+The Quick Actions inner grid uses an `8px` gap. Every inner action tile uses `11px` padding and `11px` radius, matching the source reference. Needs Attention uses the outer card's `15px` padding, a header row with `12px` bottom margin, and a single compact wrapping signal row; it must not introduce nested full-width bordered rows.
+
+Metric cards render four distinct data accents: revenue `success`, bookings `info`, users a dashboard-local violet data constant (`#aa8cff`, matching Option A), and activities `warning`. The violet is not a shell/theme token and is used only for plotted data. For metrics without twelve-month history, the sparkline uses an honest two-point previous/current series derived from current total and percentage change. Use `previous = current / (1 + change / 100)` only when all values are finite and the denominator is greater than zero; otherwise use `previous = current`. A zero/zero metric therefore renders a flat two-point line, and `-100%` or malformed changes cannot produce infinity/NaN.
+
+The graph uses semantic surface/border/text tokens plus these data roles: sage revenue uses the readable Weelp sage token, bookings uses `info`, persistent pointers use `destructive`, metric activities use `warning`, and metric users use the dashboard-local `#aa8cff` data constant. The bookings line uses `strokeDasharray="7 6"`. Persistent coral points appear at indexes 3, 7, and 11 when those points exist. Axes remain available to assistive technology through the existing data table but do not add visible geometry absent from the approved preview.
+
+### A.4 Composition and sidebar constraint
+
+Replace `BookingSummary` in `AdminDashboard.jsx` with `BookingMix`; `RecentSales` is not part of the Option A card and must not be rendered in this dashboard composition. Keep its source files for other consumers.
+
+The lower row is two outer cards. The Quick Actions outer card has a compact header with `Manage →`, then three existing `NavigationLink` destinations as inner tiles. Needs Attention has `View all →` and compact real counts/statuses. Loading, error, and zero states keep the same outer dimensions.
+
+Do not modify sidebar width, header box model, navigation spacing, order, routes, collapse state, or placement. Optional navigation icon work is deferred because the existing sidebar already has icons. Restore the current uncommitted SidebarHeader geometry change before final verification. Header backdrop and page-content responsiveness may remain only if they do not change sidebar placement.
+
+### A.5 Verification and review
+
+Run the new backend test, existing dashboard backend test, all focused frontend dashboard tests, TypeScript, lint/dark-theme guard, and `git diff --check`. Then compare the visible local dashboard and Option A reference in a headed browser at desktop and mobile widths. Record measured card radius, border, padding, KPI gap/height, analytics gap/columns, chart height, donut dimensions, and lower-row gap/columns from the DOM. Request code review, address Critical/Important findings, run the simplify pass, repeat verification, then commit and push `main` only after approval.
 
 ---
 
@@ -782,15 +901,15 @@ git diff --check
 
 Invoke `error-handling-patterns` before the commands above, then refresh the named headed browser and verify search, theme toggle, user menu, sidebar expansion/collapse, and content spacing in both themes. Do not commit yet.
 
-## Task 6: Complete review, simplification, and verification
+## Task 7: Complete review, simplification, and verification
 
 **Files:**
 
-- Review all changed frontend and backend files from Tasks 1–5.
+- Review all changed frontend and backend files from Tasks 1–5 plus Corrective Task A.
 
 - [ ] **Step 1: Run the error-handling review required by the project**
 
-Invoke the `error-handling-patterns` skill and check the partial SWR failure paths, empty graph response, missing recent sales, and backend exception response. Fix only concrete gaps and rerun the affected focused test.
+Invoke the `error-handling-patterns` skill and check the partial SWR failure paths, empty graph response, unavailable Booking Mix response, and backend exception response. Fix only concrete gaps and rerun the affected focused test.
 
 - [ ] **Step 2: Run required automated verification**
 
@@ -798,6 +917,7 @@ From `backend`:
 
 ```bash
 php artisan test tests/Feature/Admin/DashboardOverviewChartTest.php
+php artisan test tests/Feature/Admin/DashboardBookingMixTest.php
 php artisan test
 ```
 
@@ -826,6 +946,7 @@ The repository requests a `simplify` skill, but that skill is not installed in t
 From `backend`:
 
 ```bash
+php artisan test tests/Feature/Admin/DashboardOverviewChartTest.php tests/Feature/Admin/DashboardBookingMixTest.php
 php artisan test
 git diff --check
 ```
@@ -854,17 +975,17 @@ Log in with the documented local super-admin test account. Check `1440×1000`, `
 
 - [ ] **Step 7: Commit the verified implementation on each `main` branch**
 
-From `backend`, stage only the reviewed endpoint and test, then commit:
+From `backend`, stage only the reviewed routes, endpoints, and tests, then commit:
 
 ```bash
-git add app/Http/Controllers/Admin/DashboardController.php tests/Feature/Admin/DashboardOverviewChartTest.php
+git add routes/api.php app/Http/Controllers/Admin/DashboardController.php tests/Feature/Admin/DashboardOverviewChartTest.php tests/Feature/Admin/DashboardBookingMixTest.php
 git commit -m "feat(dashboard): add executive analytics data"
 ```
 
 From `frontend`, stage only the reviewed dashboard, shell, and test files listed in the file map, then commit:
 
 ```bash
-git add 'src/app/(dashboard)/dashboard/admin/layout.js' src/app/components/Pages/DASHBOARD/admin
+git add 'src/app/(dashboard)/dashboard/admin/layout.js' src/lib/services/dashboard.js src/app/components/Pages/DASHBOARD/admin
 git commit -m "feat(dashboard): build executive admin overview"
 ```
 

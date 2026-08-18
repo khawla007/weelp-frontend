@@ -116,7 +116,7 @@ const AdminHeader = ({ session }) => {
   };
 
   return (
-    <header className="sticky top-0 z-50 h-16 min-w-0 border-b bg-background px-4">
+    <header className="sticky top-0 z-50 h-16 min-w-0 border-b border-border bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/80 sm:px-6">
       <div className="flex h-full min-w-0 items-center gap-4 sm:justify-between">
         {isMobile && <Menu className="cursor-pointer" onClick={toggleSidebar} />}
 

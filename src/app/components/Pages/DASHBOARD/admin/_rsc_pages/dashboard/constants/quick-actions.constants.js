@@ -1,4 +1,4 @@
-import { Users, Settings, PlusCircle } from 'lucide-react';
+import { PlusCircle, Settings, Users } from 'lucide-react';
 
 /**
  * Quick action card data for dashboard
@@ -6,19 +6,19 @@ import { Users, Settings, PlusCircle } from 'lucide-react';
  */
 export const quickActionsData = [
   {
+    title: 'Add Activity',
+    url: '/dashboard/admin/activities',
+    icon: PlusCircle,
+  },
+  {
     title: 'Manage Users',
     url: '/dashboard/admin/users',
     icon: Users,
   },
   {
-    title: 'System Settings',
+    title: 'Settings',
     url: '/dashboard/admin/settings',
     icon: Settings,
-  },
-  {
-    title: 'Add New Activity',
-    url: '/dashboard/admin/activities',
-    icon: PlusCircle,
   },
 ];
 
