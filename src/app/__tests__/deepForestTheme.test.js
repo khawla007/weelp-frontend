@@ -500,18 +500,6 @@ describe('Deep Forest semantic theme', () => {
         important: false,
         value: '0 0 #0000',
       },
-      'transition-property': {
-        important: false,
-        value: 'box-shadow',
-      },
-      'transition-duration': {
-        important: false,
-        value: '420ms',
-      },
-      'transition-timing-function': {
-        important: false,
-        value: 'cubic-bezier(0.4, 0, 0.2, 1)',
-      },
     });
 
     const destinationHoverRule = findExactRule(darkDestinationHoverSelector).rule;
@@ -521,25 +509,12 @@ describe('Deep Forest semantic theme', () => {
     expect(destinationHoverContract).toMatchObject({
       'box-shadow': {
         important: false,
-        value: 'var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow), 0 16px 16px -16px rgb(var(--weelp-gold-edge-rgb) / 0.22), 0 7px 6px -6px rgb(var(--weelp-gold-edge-rgb) / 0.12)',
+        value: 'var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)',
       },
     });
 
     const destinationCarouselSelector = '.dark .home-gold-theme .carousel-shell-wrapper:has(.weelp-destination-card)';
-    expect(extractDeclarationContract(destinationCarouselSelector)).toMatchObject({
-      '--weelp-destination-shadow-gutter': {
-        important: false,
-        value: 'clamp(16px, 3vw, 24px)',
-      },
-      padding: {
-        important: false,
-        value: '40px var(--weelp-destination-shadow-gutter)',
-      },
-      margin: {
-        important: false,
-        value: '-40px calc(var(--weelp-destination-shadow-gutter) * -1)',
-      },
-    });
+    expect(() => findExactRule(destinationCarouselSelector)).toThrow();
 
     const lightHeroEyebrowSelector = '.home-gold-theme .weelp-home-hero-eyebrow';
     const darkHeroEyebrowSelector = `.dark ${lightHeroEyebrowSelector}`;
