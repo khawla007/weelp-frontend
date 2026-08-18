@@ -279,6 +279,11 @@
 }
 
 /* Prev/next chevron buttons — square outlined per screenshot. */
+.weelp-calendar .rdp-nav {
+  display: flex;
+  gap: 8px;
+}
+
 .weelp-calendar .rdp-button_previous,
 .weelp-calendar .rdp-button_next {
   @apply h-8 w-8 inline-flex items-center justify-center rounded-md border border-border bg-background text-[var(--weelp-cal-fg)] hover:bg-muted transition-colors motion-reduce:transition-none;
