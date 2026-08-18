@@ -6,21 +6,45 @@ import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
 import GoldActivityWishlistButton from './GoldActivityWishlistButton';
 
-const IMAGE_SIZES = '(max-width: 640px) 90vw, (max-width: 1024px) 33vw, (max-width: 1440px) 25vw, 20vw';
+const IMAGE_SIZES = '(max-width: 640px) 90vw, (max-width: 1024px) 50vw, (max-width: 1440px) 33vw, 25vw';
+
+function deriveOriginalPrice(price) {
+  if (typeof price !== 'string') return null;
+
+  const match = price.trim().match(/^([^\d]*)(\d+(?:,\d{3})*(?:\.\d+)?)([^\d]*)$/);
+  if (!match) return null;
+
+  const [, prefix, amountText, suffix] = match;
+  const amount = Number(amountText.replaceAll(',', ''));
+  if (!Number.isFinite(amount) || amount <= 0) return null;
+
+  const decimalPlaces = amountText.includes('.') ? amountText.split('.')[1].length : 0;
+  const originalAmount = amount / 0.6;
+  const formattedAmount = originalAmount.toLocaleString('en-US', {
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
+    useGrouping: amountText.includes(','),
+  });
+
+  return `${prefix}${formattedAmount}${suffix}`;
+}
 
 export default function GoldActivityCard({ item, wishlistItem }) {
   const category = item.category || 'Activity';
   const hasRating = Boolean(item.rating);
+  const usesFallbackDiscount = !item.discount?.trim();
+  const discountLabel = `-${(usesFallbackDiscount ? '40% OFF' : item.discount).trim().replace(/^-+\s*/, '')}`;
+  const originalPrice = item.originalPrice || (usesFallbackDiscount ? deriveOriginalPrice(item.price) : null);
 
   return (
     <article
       data-testid="home-gold-activity-card"
-      className="relative min-h-[300px] overflow-hidden rounded-[24px] border border-[oklch(0.72_0.055_75/0.45)] bg-[oklch(0.96_0.02_80)] shadow-[0_12px_26px_rgba(76,53,31,0.14)] dark:border-[oklch(0.7_0.075_78/0.48)] dark:bg-[oklch(0.17_0.03_155)] dark:shadow-[0_12px_28px_rgba(5,15,11,0.32)]"
+      className="relative min-h-[300px] overflow-hidden rounded-[24px] border border-[oklch(0.72_0.055_75/0.45)] bg-[oklch(0.96_0.02_80)] shadow-[0_12px_26px_rgba(76,53,31,0.14)] sm:min-h-[280px] md:min-h-[260px] lg:aspect-[31/20] lg:min-h-0 dark:border-[oklch(0.7_0.075_78/0.48)] dark:bg-[oklch(0.17_0.03_155)] dark:shadow-[0_12px_28px_rgba(5,15,11,0.32)]"
     >
       <NavigationLink
         href={item.href}
         aria-label={`Explore ${item.title}`}
-        className="group relative block min-h-[300px] overflow-hidden rounded-[24px] transition-shadow focus-visible:outline-none motion-reduce:transition-none"
+        className="group relative block h-full min-h-[300px] overflow-hidden rounded-[24px] transition-shadow focus-visible:outline-none sm:min-h-[280px] md:min-h-[260px] lg:min-h-0 motion-reduce:transition-none"
       >
         <Image
           fill
@@ -58,7 +82,7 @@ export default function GoldActivityCard({ item, wishlistItem }) {
               <div className="flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0.5 text-xs">
                 <span className="text-[oklch(0.94_0.012_80)]">From</span>
                 <strong className="text-base leading-none text-[oklch(0.98_0.012_80)]">{item.price}</strong>
-                {item.originalPrice ? <span className="line-through text-[oklch(0.94_0.012_80)]">{item.originalPrice}</span> : null}
+                {originalPrice ? <span className="line-through text-[oklch(0.94_0.012_80)]">{originalPrice}</span> : null}
                 <span className="text-[oklch(0.94_0.012_80)]">per person</span>
               </div>
             ) : null}
@@ -81,7 +105,7 @@ export default function GoldActivityCard({ item, wishlistItem }) {
 
       <div className="pointer-events-none absolute left-4 top-4 z-20 flex items-center gap-2">
         {/* dark-mode-exempt: discount badge requires a theme-independent dark foreground for contrast */}
-        <span className="rounded-lg bg-weelp-discount px-3 py-2 text-xs font-bold text-zinc-950">{item.discount || '40% OFF'}</span>
+        <span className="rounded-lg bg-weelp-discount px-3 py-2 text-xs font-bold text-zinc-950">{discountLabel}</span>
         <div className="pointer-events-auto">
           <GoldActivityWishlistButton item={wishlistItem} />
         </div>

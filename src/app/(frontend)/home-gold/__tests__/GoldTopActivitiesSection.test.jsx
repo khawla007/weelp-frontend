@@ -44,6 +44,7 @@ const rawActivity = {
   item_type: 'activity',
   name: 'Desert Safari Adventure',
   city_slug: 'dubai',
+  categories: [{ name: 'Outdoor adventure' }],
 };
 
 describe('GoldTopActivitiesSection', () => {
@@ -63,9 +64,9 @@ describe('GoldTopActivitiesSection', () => {
         breakpoints: {
           450: { slidesPerView: 1, spaceBetween: 18 },
           640: { slidesPerView: 2, spaceBetween: 18 },
-          768: { slidesPerView: 3, spaceBetween: 18 },
-          1024: { slidesPerView: 4, spaceBetween: 18 },
-          1440: { slidesPerView: 5, spaceBetween: 18 },
+          768: { slidesPerView: 2, spaceBetween: 18 },
+          1024: { slidesPerView: 3, spaceBetween: 18 },
+          1440: { slidesPerView: 4, spaceBetween: 18 },
         },
         slideClassName: '!h-auto',
         showMobilePagination: true,
@@ -78,13 +79,14 @@ describe('GoldTopActivitiesSection', () => {
 
     expect(mockMapProductToItemCard).toHaveBeenCalledWith(rawActivity);
     expect(screen.getByRole('link', { name: /Desert Safari Adventure/ })).toHaveAttribute('href', '/cities/dubai/activities/desert-safari');
-    expect(screen.getByTestId('home-gold-activity-card')).toHaveTextContent('Desert Safari & Tour');
+    expect(screen.getByTestId('home-gold-activity-card')).toHaveTextContent('Outdoor adventure');
     expect(screen.getByTestId('home-gold-activity-card')).toHaveTextContent('$130.00');
     expect(mockGoldActivityCard).toHaveBeenCalledWith({
       item: expect.objectContaining({
         id: 42,
         title: 'Desert Safari Adventure',
         href: '/cities/dubai/activities/desert-safari',
+        category: 'Outdoor adventure',
       }),
       wishlistItem: rawActivity,
     });

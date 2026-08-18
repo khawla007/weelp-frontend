@@ -51,7 +51,7 @@ describe('GoldActivityCard', () => {
     const wishlist = screen.getByRole('button', { name: /wishlist/i });
 
     expect(card.tagName).toBe('ARTICLE');
-    expect(card).toHaveClass('rounded-[24px]');
+    expect(card).toHaveClass('rounded-[24px]', 'lg:aspect-[31/20]', 'lg:min-h-0');
     expect(card).not.toHaveClass('group');
     expect(link).toHaveAttribute('href', '/cities/dubai/activities/desert-safari');
     expect(link).toHaveClass('group', 'motion-reduce:transition-none');
@@ -62,8 +62,8 @@ describe('GoldActivityCard', () => {
     expect(image).toHaveAttribute('data-sizes', expect.stringContaining('(max-width: 640px)'));
     expect(image).toHaveClass('object-cover', 'motion-reduce:group-hover:scale-100');
     // dark-mode-exempt: assertion locks the required theme-independent discount foreground
-    expect(screen.getByText('40% OFF')).toHaveClass('text-zinc-950');
-    expect(screen.getByText('40% OFF')).not.toHaveClass('text-weelp-ink');
+    expect(screen.getByText('-40% OFF')).toHaveClass('text-zinc-950');
+    expect(screen.getByText('-40% OFF')).not.toHaveClass('text-weelp-ink');
     expect(screen.getByText('★')).toBeVisible();
     expect(screen.getByText('5.0')).toBeVisible();
     expect(screen.getByText('(124)')).toBeVisible();
@@ -133,6 +133,26 @@ describe('GoldActivityCard', () => {
   it('uses the Top Activities discount fallback when the mapped discount is absent', () => {
     render(<GoldActivityCard item={{ ...mappedItem, discount: null }} wishlistItem={rawActivity} />);
 
-    expect(screen.getByText('40% OFF')).toBeVisible();
+    expect(screen.getByText('-40% OFF')).toBeVisible();
+  });
+
+  it('normalizes an existing leading hyphen without duplicating it', () => {
+    render(<GoldActivityCard item={{ ...mappedItem, discount: '-40% OFF' }} wishlistItem={rawActivity} />);
+
+    expect(screen.getByText('-40% OFF')).toBeVisible();
+    expect(screen.queryByText('--40% OFF')).not.toBeInTheDocument();
+  });
+
+  it('derives a struck original price from the 40% fallback when the current currency price is parseable', () => {
+    render(<GoldActivityCard item={{ ...mappedItem, discount: null, originalPrice: null, price: '$130.00' }} wishlistItem={rawActivity} />);
+
+    expect(screen.getByText('$216.67')).toHaveClass('line-through');
+  });
+
+  it('does not invent an original price when the current price is not parseable currency', () => {
+    render(<GoldActivityCard item={{ ...mappedItem, discount: null, originalPrice: null, price: 'Contact us' }} wishlistItem={rawActivity} />);
+
+    expect(screen.getByText('Contact us')).toBeVisible();
+    expect(screen.queryByText('$216.67')).not.toBeInTheDocument();
   });
 });

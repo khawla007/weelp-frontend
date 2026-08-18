@@ -13,9 +13,9 @@ import GoldActivityCard from './GoldActivityCard';
 const PRODUCT_BREAKPOINTS = {
   450: { slidesPerView: 1, spaceBetween: 18 },
   640: { slidesPerView: 2, spaceBetween: 18 },
-  768: { slidesPerView: 3, spaceBetween: 18 },
-  1024: { slidesPerView: 4, spaceBetween: 18 },
-  1440: { slidesPerView: 5, spaceBetween: 18 },
+  768: { slidesPerView: 2, spaceBetween: 18 },
+  1024: { slidesPerView: 3, spaceBetween: 18 },
+  1440: { slidesPerView: 4, spaceBetween: 18 },
 };
 
 const TITLE = 'Top activities';
@@ -24,10 +24,15 @@ const NAVIGATION_PREFIX = 'top-activities';
 export default function GoldTopActivitiesSection({ activities = [] }) {
   if (!activities.length) return null;
 
-  const cards = activities.map((activity) => ({
-    ...mapProductToItemCard(activity),
-    wishlistItem: activity,
-  }));
+  const cards = activities.map((activity) => {
+    const mappedActivity = mapProductToItemCard(activity);
+
+    return {
+      ...mappedActivity,
+      category: activity.categories?.[0]?.name || mappedActivity.category,
+      wishlistItem: activity,
+    };
+  });
 
   return (
     <section className="container-page flex flex-col gap-4 pb-7 md:gap-8 md:pb-16 lg:pb-24">
