@@ -52,15 +52,16 @@ describe('GoldActivityCard', () => {
 
     expect(card.tagName).toBe('ARTICLE');
     expect(card).toHaveClass('rounded-[24px]');
+    expect(card).not.toHaveClass('group');
     expect(link).toHaveAttribute('href', '/cities/dubai/activities/desert-safari');
-    expect(link).toHaveClass('focus-visible:ring-2', 'motion-reduce:transition-none');
+    expect(link).toHaveClass('group', 'focus-visible:shadow-[inset_0_0_0_2px_oklch(0.98_0.01_80),inset_0_0_0_4px_oklch(0.2_0.03_155)]', 'motion-reduce:transition-none');
     expect(image).toHaveAttribute('src', '/desert-safari.jpg');
     expect(image).toHaveAttribute('data-fill', 'true');
     expect(image).toHaveAttribute('data-placeholder', 'blur');
     expect(image).toHaveAttribute('data-blur-data-url');
     expect(image).toHaveAttribute('data-sizes', expect.stringContaining('(max-width: 640px)'));
     expect(image).toHaveClass('object-cover', 'motion-reduce:group-hover:scale-100');
-    expect(screen.getByText('40% OFF')).toBeVisible();
+    expect(screen.getByText('40% OFF')).toHaveClass('text-weelp-ink');
     expect(screen.getByText('★')).toBeVisible();
     expect(screen.getByText('5.0')).toBeVisible();
     expect(screen.getByText('(124)')).toBeVisible();
@@ -75,6 +76,19 @@ describe('GoldActivityCard', () => {
     expect(wishlist.closest('a')).toBeNull();
   });
 
+  it('keeps the translucent information panel and its small text at reliable high contrast', () => {
+    render(<GoldActivityCard item={mappedItem} wishlistItem={rawActivity} />);
+
+    const panel = screen.getByRole('heading', { name: 'Desert Safari Adventure' }).parentElement;
+
+    expect(panel).toHaveClass('bg-[oklch(0.2_0.035_50/0.94)]', 'dark:bg-[oklch(0.12_0.035_155/0.94)]');
+    expect(screen.getByText('(124)')).toHaveClass('text-[oklch(0.94_0.012_80)]');
+    expect(screen.getByText('Desert Safari & Tour')).toHaveClass('text-[oklch(0.94_0.012_80)]');
+    expect(screen.getByText('From')).toHaveClass('text-[oklch(0.94_0.012_80)]');
+    expect(screen.getByText('$216.00')).toHaveClass('text-[oklch(0.94_0.012_80)]');
+    expect(screen.getByText('per person')).toHaveClass('text-[oklch(0.94_0.012_80)]');
+  });
+
   it('omits empty rating details and their separator while retaining the Activity fallback', () => {
     render(<GoldActivityCard item={{ ...mappedItem, category: '', rating: null, reviewCount: null, originalPrice: null }} wishlistItem={rawActivity} />);
 
@@ -83,5 +97,19 @@ describe('GoldActivityCard', () => {
     expect(screen.queryByText('·')).not.toBeInTheDocument();
     expect(screen.getByText('Activity')).toBeVisible();
     expect(screen.queryByText('$216.00')).not.toBeInTheDocument();
+  });
+
+  it('omits the entire pricing cluster when the activity has no current price', () => {
+    render(<GoldActivityCard item={{ ...mappedItem, price: '', originalPrice: '$216.00' }} wishlistItem={rawActivity} />);
+
+    expect(screen.queryByText('From')).not.toBeInTheDocument();
+    expect(screen.queryByText('$216.00')).not.toBeInTheDocument();
+    expect(screen.queryByText('per person')).not.toBeInTheDocument();
+  });
+
+  it('uses the Top Activities discount fallback when the mapped discount is absent', () => {
+    render(<GoldActivityCard item={{ ...mappedItem, discount: null }} wishlistItem={rawActivity} />);
+
+    expect(screen.getByText('40% OFF')).toBeVisible();
   });
 });
