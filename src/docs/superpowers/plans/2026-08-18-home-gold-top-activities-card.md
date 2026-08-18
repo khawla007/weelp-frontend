@@ -23,6 +23,7 @@
 ### Task 1: Route-local wishlist control
 
 **Files:**
+
 - Create: `src/app/(frontend)/home-gold/GoldActivityWishlistButton.jsx`
 - Create: `src/app/(frontend)/home-gold/__tests__/GoldActivityWishlistButton.test.jsx`
 
@@ -103,7 +104,14 @@ export default function GoldActivityWishlistButton({ item }) {
   };
 
   return (
-    <button type="button" aria-label={`${isSaved ? 'Remove' : 'Save'} ${payload?.title || 'activity'} ${isSaved ? 'from' : 'to'} wishlist`} aria-pressed={isSaved} onClick={handleClick} disabled={isDisabled} className="grid size-10 place-items-center rounded-full border border-white/45 bg-[oklch(0.97_0.015_80/0.88)] text-[oklch(0.55_0.2_28)] shadow-sm backdrop-blur-md transition-transform hover:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/50 disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none motion-reduce:hover:scale-100 dark:border-[oklch(0.72_0.08_80/0.55)] dark:bg-[oklch(0.2_0.035_155/0.9)]">
+    <button
+      type="button"
+      aria-label={`${isSaved ? 'Remove' : 'Save'} ${payload?.title || 'activity'} ${isSaved ? 'from' : 'to'} wishlist`}
+      aria-pressed={isSaved}
+      onClick={handleClick}
+      disabled={isDisabled}
+      className="grid size-10 place-items-center rounded-full border border-white/45 bg-[oklch(0.97_0.015_80/0.88)] text-[oklch(0.55_0.2_28)] shadow-sm backdrop-blur-md transition-transform hover:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/50 disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none motion-reduce:hover:scale-100 dark:border-[oklch(0.72_0.08_80/0.55)] dark:bg-[oklch(0.2_0.035_155/0.9)]"
+    >
       <Heart aria-hidden="true" className={`size-[18px] ${isSaved ? 'fill-current' : ''}`} />
     </button>
   );
@@ -117,6 +125,7 @@ Run the Step 2 command. Expected: PASS with no warnings.
 ### Task 2: Reference-shaped activity card
 
 **Files:**
+
 - Create: `src/app/(frontend)/home-gold/GoldActivityCard.jsx`
 - Create: `src/app/(frontend)/home-gold/__tests__/GoldActivityCard.test.jsx`
 
@@ -148,22 +157,53 @@ Expected: FAIL because `GoldActivityCard.jsx` does not exist.
 Use an `article` outer frame so the wishlist button is a sibling of, rather than nested within, the required `NavigationLink`. The detail link contains an absolute full-card `Image`, subtle lower image shade, and inset bottom information panel. A pointer-transparent upper-left control row is also a sibling; only its wishlist wrapper restores pointer events.
 
 ```jsx
-<article data-testid="home-gold-activity-card" className="group relative min-h-[300px] overflow-hidden rounded-[22px] border border-[oklch(0.72_0.055_75/0.45)] bg-[oklch(0.96_0.02_80)] shadow-[0_18px_35px_rgba(76,53,31,0.16)] dark:border-[oklch(0.7_0.075_78/0.48)] dark:bg-[oklch(0.17_0.03_155)] dark:shadow-[0_18px_38px_rgba(0,0,0,0.42)]">
-  <NavigationLink href={item.href} aria-label={`Explore ${item.title}`} className="block min-h-[300px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/60">
-    <Image fill src={item.image} alt={item.title} sizes="(max-width: 640px) 90vw, (max-width: 1024px) 33vw, (max-width: 1440px) 25vw, 20vw" className="object-cover transition-transform duration-500 ease-[var(--weelp-ease-out)] group-hover:scale-[1.035] motion-reduce:transition-none motion-reduce:group-hover:scale-100" />
+<article
+  data-testid="home-gold-activity-card"
+  className="group relative min-h-[300px] overflow-hidden rounded-[22px] border border-[oklch(0.72_0.055_75/0.45)] bg-[oklch(0.96_0.02_80)] shadow-[0_18px_35px_rgba(76,53,31,0.16)] dark:border-[oklch(0.7_0.075_78/0.48)] dark:bg-[oklch(0.17_0.03_155)] dark:shadow-[0_18px_38px_rgba(0,0,0,0.42)]"
+>
+  <NavigationLink
+    href={item.href}
+    aria-label={`Explore ${item.title}`}
+    className="block min-h-[300px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/60"
+  >
+    <Image
+      fill
+      src={item.image}
+      alt={item.title}
+      sizes="(max-width: 640px) 90vw, (max-width: 1024px) 33vw, (max-width: 1440px) 25vw, 20vw"
+      className="object-cover transition-transform duration-500 ease-[var(--weelp-ease-out)] group-hover:scale-[1.035] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+    />
     <div className="absolute inset-x-3 bottom-3 rounded-[16px] border border-white/35 bg-[oklch(0.28_0.035_50/0.72)] p-3.5 text-[oklch(0.97_0.01_80)] shadow-[0_10px_24px_rgba(34,23,15,0.3)] backdrop-blur-md dark:border-[oklch(0.78_0.06_80/0.38)] dark:bg-[oklch(0.15_0.035_155/0.82)]">
       <div className="flex min-w-0 items-center gap-1.5 text-xs">
-        {item.rating && <><span className="text-[oklch(0.8_0.13_80)]">★</span><span>{item.rating}</span>{item.reviewCount && <span>({item.reviewCount})</span>}</>}
+        {item.rating && (
+          <>
+            <span className="text-[oklch(0.8_0.13_80)]">★</span>
+            <span>{item.rating}</span>
+            {item.reviewCount && <span>({item.reviewCount})</span>}
+          </>
+        )}
         {item.rating && item.category && <span aria-hidden="true">·</span>}
         <span className="truncate">{item.category || 'Activity'}</span>
       </div>
       <h3 className="mt-1 line-clamp-1 text-lg font-semibold leading-tight">{item.title}</h3>
-      <div className="mt-3 flex items-end justify-between gap-2"><div className="min-w-0 text-xs"><span className="text-white/75">From </span><strong className="text-base">{item.price}</strong>{item.originalPrice && <span className="ml-1.5 line-through text-white/55">{item.originalPrice}</span>}<span className="ml-1 text-white/65">per person</span></div><span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-transparent bg-[oklch(0.96_0.015_80)] px-2.5 py-1.5 font-semibold text-[oklch(0.3_0.025_50)] transition-colors group-hover:bg-[oklch(0.91_0.035_80)] dark:border-[oklch(0.72_0.08_80/0.6)] dark:bg-[oklch(0.72_0.08_80)] dark:text-[oklch(0.17_0.03_155)] dark:group-hover:bg-[oklch(0.78_0.09_80)]">Explore <span aria-hidden="true">→</span></span></div>
+      <div className="mt-3 flex items-end justify-between gap-2">
+        <div className="min-w-0 text-xs">
+          <span className="text-white/75">From </span>
+          <strong className="text-base">{item.price}</strong>
+          {item.originalPrice && <span className="ml-1.5 line-through text-white/55">{item.originalPrice}</span>}
+          <span className="ml-1 text-white/65">per person</span>
+        </div>
+        <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-transparent bg-[oklch(0.96_0.015_80)] px-2.5 py-1.5 font-semibold text-[oklch(0.3_0.025_50)] transition-colors group-hover:bg-[oklch(0.91_0.035_80)] dark:border-[oklch(0.72_0.08_80/0.6)] dark:bg-[oklch(0.72_0.08_80)] dark:text-[oklch(0.17_0.03_155)] dark:group-hover:bg-[oklch(0.78_0.09_80)]">
+          Explore <span aria-hidden="true">→</span>
+        </span>
+      </div>
     </div>
   </NavigationLink>
   <div className="pointer-events-none absolute left-4 top-4 z-20 flex items-center gap-2">
     <span className="rounded-lg bg-weelp-discount px-3 py-2 text-xs font-bold text-white">{item.discount || '40% OFF'}</span>
-    <div className="pointer-events-auto"><GoldActivityWishlistButton item={wishlistItem} /></div>
+    <div className="pointer-events-auto">
+      <GoldActivityWishlistButton item={wishlistItem} />
+    </div>
   </div>
 </article>
 ```
@@ -175,6 +215,7 @@ Run the Step 2 command. Expected: PASS.
 ### Task 3: Route-local Top Activities carousel
 
 **Files:**
+
 - Create: `src/app/(frontend)/home-gold/GoldTopActivitiesSection.jsx`
 - Create: `src/app/(frontend)/home-gold/__tests__/GoldTopActivitiesSection.test.jsx`
 
@@ -216,7 +257,7 @@ const cards = activities.map((activity) => ({
   slideClassName="!h-auto"
   showMobilePagination
   renderSlide={(card) => <GoldActivityCard item={card} wishlistItem={card.wishlistItem} />}
-/>
+/>;
 ```
 
 - [ ] **Step 4: Run the section and card suites and verify GREEN**
@@ -230,6 +271,7 @@ Expected: all route-local component suites PASS.
 ### Task 4: Wire only `/home-gold`
 
 **Files:**
+
 - Modify: `src/app/(frontend)/home-gold/page.js`
 - Modify: `src/app/(frontend)/home-gold/__tests__/page.test.jsx`
 
@@ -309,12 +351,7 @@ const fetchBlogs = () =>
     .catch(() => ({ ok: false, data: [] }));
 
 export default async function GoldHomePage() {
-  const [activitiesResult, citiesResult, blogsResult, reviewsResult] = await Promise.all([
-    getAllFeaturedActivities(),
-    getAllFeaturedCities(),
-    fetchBlogs(),
-    getPublicReviews(),
-  ]);
+  const [activitiesResult, citiesResult, blogsResult, reviewsResult] = await Promise.all([getAllFeaturedActivities(), getAllFeaturedCities(), fetchBlogs(), getPublicReviews()]);
   const activities = Array.isArray(activitiesResult) ? activitiesResult : (activitiesResult?.data ?? []);
   const cities = Array.isArray(citiesResult) ? citiesResult : (citiesResult?.data ?? []);
   const reviews = Array.isArray(reviewsResult?.data) ? reviewsResult.data : [];
@@ -323,12 +360,56 @@ export default async function GoldHomePage() {
   return (
     <>
       <HeroSection />
-      {activities.length ? <GoldTopActivitiesSection activities={activities} /> : <SectionFallback eyebrow="Top activities" message="The concierge is between picks right now. Browse the Dubai catalog while we line up the next set." pivotHref="/cities/dubai" pivotLabel="Browse Dubai experiences" />}
-      {cities.length ? <BrowseDestinationsSection cities={cities} cardTextTone="theme" className="pb-12 md:pb-16 lg:pb-24" /> : <SectionFallback eyebrow="Top destinations" message={citiesOk ? "We're shaping a fresh set of cities for the season. Jump straight to the catalog in the meantime." : "We couldn't load destinations just now. Refresh, or browse the full catalog."} variant={citiesOk ? 'empty' : 'error'} pivotHref="/cities" pivotLabel="See all cities" />}
-      {reviews.length ? <TestimonialSection reviews={reviews} /> : <SectionFallback eyebrow="From travelers" message="The first reviews of this season are still coming in. Yours could be the one we open with." pivotHref="/cities" pivotLabel="Plan a trip worth reviewing" />}
+      {activities.length ? (
+        <GoldTopActivitiesSection activities={activities} />
+      ) : (
+        <SectionFallback
+          eyebrow="Top activities"
+          message="The concierge is between picks right now. Browse the Dubai catalog while we line up the next set."
+          pivotHref="/cities/dubai"
+          pivotLabel="Browse Dubai experiences"
+        />
+      )}
+      {cities.length ? (
+        <BrowseDestinationsSection cities={cities} cardTextTone="theme" className="pb-12 md:pb-16 lg:pb-24" />
+      ) : (
+        <SectionFallback
+          eyebrow="Top destinations"
+          message={
+            citiesOk
+              ? "We're shaping a fresh set of cities for the season. Jump straight to the catalog in the meantime."
+              : "We couldn't load destinations just now. Refresh, or browse the full catalog."
+          }
+          variant={citiesOk ? 'empty' : 'error'}
+          pivotHref="/cities"
+          pivotLabel="See all cities"
+        />
+      )}
+      {reviews.length ? (
+        <TestimonialSection reviews={reviews} />
+      ) : (
+        <SectionFallback
+          eyebrow="From travelers"
+          message="The first reviews of this season are still coming in. Yours could be the one we open with."
+          pivotHref="/cities"
+          pivotLabel="Plan a trip worth reviewing"
+        />
+      )}
       <WanderersBanner />
       <AiSection />
-      {blogsResult.data.length ? <BlogSection blogs={blogsResult.data} navigationId="guide-blog" className="pb-12 md:pb-16 lg:pb-24" /> : <SectionFallback eyebrow="Your guide" message={blogsResult.ok ? 'New stories from our editors are on the way. The catalog has plenty to wander in the meantime.' : "We couldn't pull the editors' latest just now. Refresh to try again."} variant={blogsResult.ok ? 'empty' : 'error'} pivotHref="/blogs" pivotLabel="Read all stories" />}
+      {blogsResult.data.length ? (
+        <BlogSection blogs={blogsResult.data} navigationId="guide-blog" className="pb-12 md:pb-16 lg:pb-24" />
+      ) : (
+        <SectionFallback
+          eyebrow="Your guide"
+          message={
+            blogsResult.ok ? 'New stories from our editors are on the way. The catalog has plenty to wander in the meantime.' : "We couldn't pull the editors' latest just now. Refresh to try again."
+          }
+          variant={blogsResult.ok ? 'empty' : 'error'}
+          pivotHref="/blogs"
+          pivotLabel="Read all stories"
+        />
+      )}
       <WeelpRecommendations />
     </>
   );
@@ -346,6 +427,7 @@ Expected: all `/home-gold` suites PASS.
 ### Task 5: Required quality and browser verification
 
 **Files:**
+
 - Verify only; adjust route-local files if a failure is directly caused by this change.
 
 - [ ] **Step 1: Run formatting and static checks**
