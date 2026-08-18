@@ -419,7 +419,7 @@ describe('Deep Forest semantic theme', () => {
     expect(() => extractDeclarations('.home-gold-theme')).toThrow('Expected one exact .home-gold-theme token block in globals.css, found 0');
   });
 
-  it('strengthens gold borders only for dark focus, hover, and selected states', () => {
+  it('strengthens gold borders only for dark focus and selected states while keeping hover borders stable', () => {
     const lightFocusSelectors = [
       '.home-gold-theme a:focus-visible',
       '.home-gold-theme button:focus-visible',
@@ -446,15 +446,14 @@ describe('Deep Forest semantic theme', () => {
     ];
     const darkHoverSelectors = lightHoverSelectors.map((selector) => `.dark ${selector}`);
 
-    expect(findExactRule(darkHoverSelectors).rule).toBeDefined();
-    expect(extractDeclarationContract(darkHoverSelectors)).toMatchObject({
-      '--border': {
-        important: false,
-        value: '42 43% 56% / 0.72',
-      },
+    expect(() => findExactRule(darkHoverSelectors)).toThrow();
+
+    const lightStableHoverSelector = ".home-gold-theme :where([class~='border-border'][class*='hover:border-']):hover";
+    const darkStableHoverSelector = `.dark ${lightStableHoverSelector}`;
+    expect(extractDeclarationContract(darkStableHoverSelector)).toMatchObject({
       'border-color': {
         important: false,
-        value: 'rgb(var(--weelp-gold-edge-rgb) / 0.72)',
+        value: 'hsl(var(--border))',
       },
     });
 
@@ -503,7 +502,7 @@ describe('Deep Forest semantic theme', () => {
       },
       'transition-property': {
         important: false,
-        value: 'border-color, box-shadow',
+        value: 'box-shadow',
       },
       'transition-duration': {
         important: false,
@@ -517,11 +516,9 @@ describe('Deep Forest semantic theme', () => {
 
     const destinationHoverRule = findExactRule(darkDestinationHoverSelector).rule;
     expect(destinationHoverRule.parent.type).toBe('root');
-    expect(extractDeclarationContract(darkDestinationHoverSelector)).toMatchObject({
-      'border-color': {
-        important: false,
-        value: 'rgb(var(--weelp-gold-edge-rgb) / 0.72)',
-      },
+    const destinationHoverContract = extractDeclarationContract(darkDestinationHoverSelector);
+    expect(destinationHoverContract['border-color']).toBeUndefined();
+    expect(destinationHoverContract).toMatchObject({
       'box-shadow': {
         important: false,
         value: 'var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow), 0 8px 16px -7px rgb(var(--weelp-gold-edge-rgb) / 0.22), 0 3px 6px -2px rgb(var(--weelp-gold-edge-rgb) / 0.12)',
@@ -557,6 +554,7 @@ describe('Deep Forest semantic theme', () => {
 
     expect(() => findExactRule(lightFocusSelectors)).toThrow();
     expect(() => findExactRule(lightHoverSelectors)).toThrow();
+    expect(() => findExactRule(lightStableHoverSelector)).toThrow();
     expect(() => findExactRule(lightSelectedSelectors)).toThrow();
     expect(() => findExactRule(lightFixedHeroSelector)).toThrow();
     expect(() => findExactRule('.home-gold-theme .weelp-destination-card')).toThrow();
