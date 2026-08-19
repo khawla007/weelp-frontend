@@ -90,11 +90,7 @@ describe('mapProductToItemCard', () => {
   test('caps attributes at the first three from the payload', () => {
     const card = mapProductToItemCard(baseAttributeProduct);
     expect(card.attributes).toHaveLength(3);
-    expect(card.attributes.map((attribute) => attribute.slug)).toEqual([
-      'duration',
-      'group-size',
-      'age-restriction',
-    ]);
+    expect(card.attributes.map((attribute) => attribute.slug)).toEqual(['duration', 'group-size', 'age-restriction']);
   });
 
   test('returns null for shortDescription when the payload omits it', () => {
