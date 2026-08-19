@@ -78,7 +78,7 @@ export default function GoldActivityCard({ item, wishlistItem }) {
         </div>
 
         <div className="flex flex-1 flex-col px-2 pb-2 pt-4">
-          <div className="flex-1">
+          <div>
             <div className="flex items-start justify-between gap-3">
               <h3
                 itemProp="name"
@@ -116,10 +116,12 @@ export default function GoldActivityCard({ item, wishlistItem }) {
               // dark-mode-exempt: paired dark: variant provides dark-mode color
               <p className="mt-2 line-clamp-2 text-sm text-zinc-500 dark:text-zinc-400">{shortDescription}</p>
             ) : null}
+          </div>
 
+          <div className="mt-auto flex flex-col gap-3 pt-4">
             {attributes.length > 0 ? (
               // dark-mode-exempt: paired dark: variant provides dark-mode color
-              <ul className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-zinc-600 dark:text-zinc-300">
+              <ul className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-zinc-600 dark:text-zinc-300">
                 {attributes.map((attribute) => {
                   const Icon = getAttributeIcon(attribute.slug);
                   const label = `${attribute.name}: ${attribute.attribute_value}`;
@@ -133,9 +135,8 @@ export default function GoldActivityCard({ item, wishlistItem }) {
                 })}
               </ul>
             ) : null}
-          </div>
 
-          <div className="mt-4 flex items-end justify-between">
+            <div className="flex items-end justify-between">
             {item.price ? (
               <div itemScope itemProp="offers" itemType="https://schema.org/Offer" className="flex flex-col gap-0.5">
                 <meta itemProp="priceCurrency" content="USD" />
@@ -158,6 +159,7 @@ export default function GoldActivityCard({ item, wishlistItem }) {
                 <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.5} />
               </span>
             </span>
+            </div>
           </div>
         </div>
       </NavigationLink>
