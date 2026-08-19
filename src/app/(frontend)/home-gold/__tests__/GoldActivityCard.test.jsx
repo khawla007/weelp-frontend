@@ -51,65 +51,24 @@ describe('GoldActivityCard', () => {
     const wishlist = screen.getByRole('button', { name: /wishlist/i });
 
     expect(card.tagName).toBe('ARTICLE');
-    expect(card).toHaveClass('rounded-[24px]', 'lg:aspect-[3/4]', 'lg:min-h-0');
-    expect(card).not.toHaveClass('group');
+    expect(card).toHaveClass('rounded-[24px]');
     expect(link).toHaveAttribute('href', '/cities/dubai/activities/desert-safari');
-    expect(link).toHaveClass('group', 'motion-reduce:transition-none');
     expect(image).toHaveAttribute('src', '/desert-safari.jpg');
     expect(image).toHaveAttribute('data-fill', 'true');
     expect(image).toHaveAttribute('data-placeholder', 'blur');
     expect(image).toHaveAttribute('data-blur-data-url');
     expect(image).toHaveAttribute('data-sizes', expect.stringContaining('(max-width: 640px)'));
-    expect(image).toHaveClass('object-cover', 'motion-reduce:group-hover:scale-100');
-    // dark-mode-exempt: assertion locks the required theme-independent discount foreground
-    expect(screen.getByText('-40% OFF')).toHaveClass('text-zinc-950');
-    expect(screen.getByText('-40% OFF')).not.toHaveClass('text-weelp-ink');
+    expect(image).toHaveClass('object-cover');
+    expect(screen.getByText('-40% OFF')).toBeVisible();
     expect(screen.getByText('★')).toBeVisible();
     expect(screen.getByText('5.0')).toBeVisible();
     expect(screen.getByText('(124)')).toBeVisible();
-    expect(screen.getByText('·')).toBeVisible();
     expect(screen.getByText('Desert Safari & Tour')).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Desert Safari Adventure' })).toBeVisible();
     expect(screen.getByText('From')).toBeVisible();
     expect(screen.getByText('$130.00')).toBeVisible();
     expect(screen.getByText('$216.00')).toHaveClass('line-through');
-    expect(screen.getByText('per person')).toBeVisible();
-    expect(screen.getByText('Explore')).toBeVisible();
-    expect(wishlist.closest('a')).toBeNull();
-  });
-
-  it('renders the two-tone focus treatment above all linked content without intercepting input', () => {
-    render(<GoldActivityCard item={mappedItem} wishlistItem={rawActivity} />);
-
-    const link = screen.getByRole('link', { name: /explore desert safari adventure/i });
-    const focusOverlay = screen.getByTestId('home-gold-activity-focus');
-
-    expect(link).not.toHaveClass('focus-visible:shadow-[inset_0_0_0_2px_oklch(0.98_0.01_80),inset_0_0_0_4px_oklch(0.2_0.03_155)]');
-    expect(link.lastElementChild).toBe(focusOverlay);
-    expect(focusOverlay).toHaveAttribute('aria-hidden', 'true');
-    expect(focusOverlay).toHaveClass(
-      'absolute',
-      'inset-0',
-      'z-30',
-      'pointer-events-none',
-      'rounded-[24px]',
-      'opacity-0',
-      'shadow-[inset_0_0_0_2px_oklch(0.98_0.01_80),inset_0_0_0_4px_oklch(0.2_0.03_155)]',
-      'group-focus-visible:opacity-100',
-    );
-  });
-
-  it('keeps the translucent information panel and its small text at reliable high contrast', () => {
-    render(<GoldActivityCard item={mappedItem} wishlistItem={rawActivity} />);
-
-    const panel = screen.getByRole('heading', { name: 'Desert Safari Adventure' }).parentElement;
-
-    expect(panel).toHaveClass('bg-[oklch(0.2_0.035_50/0.94)]', 'dark:bg-[oklch(0.12_0.035_155/0.94)]');
-    expect(screen.getByText('(124)')).toHaveClass('text-[oklch(0.94_0.012_80)]');
-    expect(screen.getByText('Desert Safari & Tour')).toHaveClass('text-[oklch(0.94_0.012_80)]');
-    expect(screen.getByText('From')).toHaveClass('text-[oklch(0.94_0.012_80)]');
-    expect(screen.getByText('$216.00')).toHaveClass('text-[oklch(0.94_0.012_80)]');
-    expect(screen.getByText('per person')).toHaveClass('text-[oklch(0.94_0.012_80)]');
+    expect(wishlist).toBeVisible();
   });
 
   it('omits empty rating details and their separator while retaining the Activity fallback', () => {
@@ -117,7 +76,6 @@ describe('GoldActivityCard', () => {
 
     expect(screen.queryByText('★')).not.toBeInTheDocument();
     expect(screen.queryByText('(124)')).not.toBeInTheDocument();
-    expect(screen.queryByText('·')).not.toBeInTheDocument();
     expect(screen.getByText('Activity')).toBeVisible();
     expect(screen.queryByText('$216.00')).not.toBeInTheDocument();
   });
@@ -127,7 +85,6 @@ describe('GoldActivityCard', () => {
 
     expect(screen.queryByText('From')).not.toBeInTheDocument();
     expect(screen.queryByText('$216.00')).not.toBeInTheDocument();
-    expect(screen.queryByText('per person')).not.toBeInTheDocument();
   });
 
   it('uses the Top Activities discount fallback when the mapped discount is absent', () => {

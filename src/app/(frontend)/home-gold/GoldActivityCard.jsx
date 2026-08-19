@@ -63,17 +63,12 @@ export default function GoldActivityCard({ item, wishlistItem }) {
             blurDataURL={IMAGE_BLUR_DATA_URL}
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
           />
-          
-          
+
           <div className="absolute left-3 top-3 z-20 flex flex-wrap gap-2 pr-16">
-            <span className="inline-flex rounded-full bg-white/20 backdrop-blur-md border border-white/20 px-2.5 py-1 text-[11px] font-medium text-white shadow-sm">
-              {category}
-            </span>
-            <span className="inline-flex rounded-full bg-white/20 backdrop-blur-md border border-white/20 px-2.5 py-1 text-[11px] font-medium text-white shadow-sm">
-              {discountLabel}
-            </span>
+            <span className="inline-flex rounded-full bg-white/20 backdrop-blur-md border border-white/20 px-2.5 py-1 text-[11px] font-medium text-white shadow-sm">{category}</span>
+            <span className="inline-flex rounded-full bg-white/20 backdrop-blur-md border border-white/20 px-2.5 py-1 text-[11px] font-medium text-white shadow-sm">{discountLabel}</span>
           </div>
-          
+
           <div className="absolute right-3 top-3 z-20">
             <GoldActivityWishlistButton item={wishlistItem} />
           </div>
@@ -82,10 +77,13 @@ export default function GoldActivityCard({ item, wishlistItem }) {
         <div className="flex flex-1 flex-col px-2 pb-2 pt-4">
           <div className="flex-1">
             <div className="flex items-start justify-between gap-3">
-              <h3 itemProp="name" className="line-clamp-2 text-xl font-medium leading-snug tracking-tight text-zinc-900 transition-colors group-hover:text-amber-600 dark:text-[oklch(0.98_0.012_80)] dark:group-hover:text-white">
+              <h3
+                itemProp="name"
+                className="line-clamp-2 text-xl font-medium leading-snug tracking-tight text-zinc-900 transition-colors group-hover:text-amber-600 dark:text-[oklch(0.98_0.012_80)] dark:group-hover:text-white"
+              >
                 {item.title}
               </h3>
-              
+
               <div className="shrink-0">
                 {hasRating ? (
                   <div
@@ -95,8 +93,12 @@ export default function GoldActivityCard({ item, wishlistItem }) {
                     className="flex items-center gap-1 font-semibold text-zinc-900 dark:text-[oklch(0.98_0.012_80)]"
                   >
                     <meta itemProp="bestRating" content="5" />
-                    <span aria-hidden="true" className="text-amber-500 text-sm">★</span>
-                    <span itemProp="ratingValue" className="text-sm">{item.rating}</span>
+                    <span aria-hidden="true" className="text-amber-500 text-sm">
+                      ★
+                    </span>
+                    <span itemProp="ratingValue" className="text-sm">
+                      {item.rating}
+                    </span>
                     {item.reviewCount ? (
                       <span itemProp="reviewCount" className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
                         ({item.reviewCount})
@@ -121,7 +123,9 @@ export default function GoldActivityCard({ item, wishlistItem }) {
                   {originalPrice ? <span className="ml-1 text-xs text-zinc-400 line-through dark:text-[oklch(0.94_0.012_80)] dark:opacity-60">{originalPrice}</span> : null}
                 </div>
               </div>
-            ) : <div />}
+            ) : (
+              <div />
+            )}
 
             <span className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-zinc-900 pl-4 pr-1 text-sm font-medium text-white shadow-sm transition-all duration-300 group-hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:group-hover:bg-zinc-200">
               Explore
