@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 
 jest.mock('next/image', () => ({
   __esModule: true,
@@ -111,5 +111,63 @@ describe('GoldActivityCard', () => {
 
     expect(screen.getByText('Contact us')).toBeVisible();
     expect(screen.queryByText('$216.67')).not.toBeInTheDocument();
+  });
+});
+
+const richItem = {
+  id: 1,
+  href: '/cities/dubai/activities/desert-safari',
+  image: '/assets/Card.webp',
+  title: 'Desert Safari',
+  category: 'Adventure',
+  price: '$120',
+  originalPrice: '$200',
+  rating: '4.8',
+  reviewCount: '210',
+  discount: '40% OFF',
+  shortDescription: 'Ride the dunes at golden hour.',
+  attributes: [
+    { slug: 'duration', name: 'Duration', attribute_value: '4 Hours' },
+    { slug: 'group-size', name: 'Group Size', attribute_value: '6-10' },
+    { slug: 'age-restriction', name: 'Age Restriction', attribute_value: '12+' },
+  ],
+};
+
+describe('GoldActivityCard description and attributes', () => {
+  it('renders the short description when provided', () => {
+    render(<GoldActivityCard item={richItem} wishlistItem={richItem} />);
+    expect(screen.getByText('Ride the dunes at golden hour.')).toBeInTheDocument();
+  });
+
+  it('renders exactly three attribute chips with accessible labels', () => {
+    render(<GoldActivityCard item={richItem} wishlistItem={richItem} />);
+    const chips = screen.getAllByTestId('home-gold-activity-attribute');
+    expect(chips).toHaveLength(3);
+    expect(chips[0]).toHaveAccessibleName('Duration: 4 Hours');
+    expect(chips[1]).toHaveAccessibleName('Group Size: 6-10');
+    expect(chips[2]).toHaveAccessibleName('Age Restriction: 12+');
+    expect(within(chips[0]).getByText('4 Hours')).toBeInTheDocument();
+  });
+
+  it('omits the description block when shortDescription is null', () => {
+    const item = { ...richItem, shortDescription: null };
+    render(<GoldActivityCard item={item} wishlistItem={item} />);
+    expect(screen.queryByText('Ride the dunes at golden hour.')).not.toBeInTheDocument();
+  });
+
+  it('omits the attribute row when attributes are empty', () => {
+    const item = { ...richItem, attributes: [] };
+    render(<GoldActivityCard item={item} wishlistItem={item} />);
+    expect(screen.queryAllByTestId('home-gold-activity-attribute')).toHaveLength(0);
+  });
+
+  it('renders only the attributes the card receives (no client-side overflow)', () => {
+    // Defensive check: the mapper caps at three, but if a future consumer
+    // passes four the card must render whatever it is handed, one chip each,
+    // without silently dropping items.
+    const fourAttributes = [...richItem.attributes, { slug: 'language', name: 'Language', attribute_value: 'English' }];
+    const item = { ...richItem, attributes: fourAttributes };
+    render(<GoldActivityCard item={item} wishlistItem={item} />);
+    expect(screen.getAllByTestId('home-gold-activity-attribute')).toHaveLength(4);
   });
 });

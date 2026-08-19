@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
+import { getAttributeIcon } from '@/lib/attributeIcons';
 
 import GoldActivityWishlistButton from './GoldActivityWishlistButton';
 
@@ -30,6 +31,8 @@ function deriveOriginalPrice(price) {
 }
 
 export default function GoldActivityCard({ item, wishlistItem }) {
+  const shortDescription = item.shortDescription ?? null;
+  const attributes = Array.isArray(item.attributes) ? item.attributes : [];
   const category = item.category || 'Activity';
   const hasRating = Boolean(item.rating);
   const usesFallbackDiscount = !item.discount?.trim();
@@ -108,6 +111,28 @@ export default function GoldActivityCard({ item, wishlistItem }) {
                 ) : null}
               </div>
             </div>
+
+            {shortDescription ? (
+              // dark-mode-exempt: paired dark: variant provides dark-mode color
+              <p className="mt-2 line-clamp-2 text-sm text-zinc-500 dark:text-zinc-400">{shortDescription}</p>
+            ) : null}
+
+            {attributes.length > 0 ? (
+              // dark-mode-exempt: paired dark: variant provides dark-mode color
+              <ul className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-zinc-600 dark:text-zinc-300">
+                {attributes.map((attribute) => {
+                  const Icon = getAttributeIcon(attribute.slug);
+                  const label = `${attribute.name}: ${attribute.attribute_value}`;
+                  return (
+                    <li key={attribute.slug || attribute.name} data-testid="home-gold-activity-attribute" aria-label={label} title={label} className="inline-flex items-center gap-1.5">
+                      {/* dark-mode-exempt: paired dark: variant provides dark-mode color */}
+                      <Icon aria-hidden="true" className="size-4 text-zinc-500 dark:text-zinc-400" strokeWidth={1.75} />
+                      <span>{attribute.attribute_value}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : null}
           </div>
 
           <div className="mt-4 flex items-end justify-between">
