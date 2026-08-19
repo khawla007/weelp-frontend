@@ -118,7 +118,7 @@ export default function GoldActivityCard({ item, wishlistItem }) {
             ) : null}
           </div>
 
-          <div className="mt-auto flex flex-col gap-3 pt-4">
+          <div className="mt-auto flex flex-col gap-3 pt-2">
             {attributes.length > 0 ? (
               // dark-mode-exempt: paired dark: variant provides dark-mode color
               <ul className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-zinc-600 dark:text-zinc-300">
