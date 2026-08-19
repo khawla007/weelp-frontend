@@ -49,7 +49,7 @@ const WanderersBanner = () => {
             href="/cities"
             className="group relative inline-flex h-11 w-[96px] shrink-0 items-center justify-center text-base font-medium leading-none !text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-weelp-sage-deep md:w-[88px] lg:h-[40px]"
           >
-            <span aria-hidden="true" className="absolute inset-0 rounded-[5px] bg-weelp-sage-deep transition-colors group-hover:bg-weelp-sage-hover" style={{ transform: 'skewX(-10deg)' }} />
+            <span aria-hidden="true" className="absolute inset-0 rounded-[5px] bg-weelp-sage-deep transition-colors group-hover:bg-weelp-sage-hover dark:border dark:border-border dark:bg-[var(--weelp-home-page)] dark:group-hover:bg-[var(--weelp-home-page)] dark:group-hover:opacity-90" style={{ transform: 'skewX(-10deg)' }} />
             <span className="relative z-10">Curate</span>
           </NavigationLink>
           <span aria-hidden="true" className="h-px flex-1 bg-border" />
