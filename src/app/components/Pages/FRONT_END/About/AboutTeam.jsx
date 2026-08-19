@@ -11,8 +11,8 @@ const team = [
   { name: 'Sarah Johnson', role: 'Chief Technology Officer', image: '/assets/images/team-2.jpg' },
   { name: 'Michael Chen', role: 'Head of Operations', image: '/assets/images/team-3.jpg' },
   { name: 'Emily Davis', role: 'Marketing Lead', image: '/assets/images/team-4.jpg' },
-  { name: 'David Thompson', role: 'Head of Partnerships', image: '/assets/images/user.png' },
-  { name: 'Jessica Williams', role: 'Customer Success Lead', image: '/assets/images/user.png' },
+  { name: 'David Thompson', role: 'Head of Partnerships', image: '/assets/images/team-1.jpg' },
+  { name: 'Jessica Williams', role: 'Customer Success Lead', image: '/assets/images/team-2.jpg' },
 ];
 
 const AboutTeam = () => {

@@ -6,7 +6,7 @@ import SectionBadge from './SectionBadge';
 const features = [
   { title: 'Curated experiences', desc: 'Every trip is handpicked and quality-checked by our travel team.', img: '/assets/images/CountryBanner.jpeg', tags: ['Curated', 'Quality'] },
   { title: 'Local guides', desc: 'Explore with people who call the destination home.', img: '/assets/images/china.jpg', tags: ['Local', 'Authentic'] },
-  { title: 'Flexible booking', desc: 'Plans change. Free cancellation on most experiences.', img: '/assets/images/greenimage.png', tags: ['Flexible', 'Secure'] },
+  { title: 'Flexible booking', desc: 'Plans change. Free cancellation on most experiences.', img: '/assets/images/hero_redesigned_bg.jpeg', tags: ['Flexible', 'Secure'] },
 ];
 
 const AboutOffer = () => (
