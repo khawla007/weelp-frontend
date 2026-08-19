@@ -67,9 +67,8 @@ export default function GoldActivityCard({ item, wishlistItem }) {
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
           />
 
-          <div className="absolute left-3 top-3 z-20 flex items-center">
-            {/* dark-mode-exempt: gold accent must stay warm in both themes to match star + arrow */}
-            <span className="inline-flex h-11 items-center rounded-full bg-amber-500 px-4 text-sm font-semibold text-zinc-950 shadow-sm">{discountLabel}</span>
+          <div className="absolute left-3 top-5 z-20 flex items-center">
+            <span className="inline-flex items-center rounded-full border border-weelp-sage-deep bg-weelp-sage-deep px-3 py-1 text-xs font-semibold text-white shadow-sm">{discountLabel}</span>
           </div>
 
           <div className="absolute right-3 top-3 z-20">
@@ -141,8 +140,7 @@ export default function GoldActivityCard({ item, wishlistItem }) {
               <div />
             )}
 
-            {/* dark-mode-exempt: hero search button token parity — home-page surface with border token */}
-            <span className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full border border-transparent bg-zinc-900 pl-4 pr-1 text-sm font-medium text-white shadow-sm transition-all duration-300 group-hover:bg-zinc-800 dark:border-border dark:bg-[var(--weelp-home-page)] dark:text-white dark:group-hover:bg-[var(--weelp-home-page)] dark:group-hover:opacity-90">
+            <span className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full border border-border bg-background pl-4 pr-1 text-sm font-medium text-foreground shadow-sm transition-all duration-300 group-hover:border-weelp-sage-deep group-hover:text-weelp-sage-text">
               Explore
               <span className="grid size-8 place-items-center rounded-full border border-border bg-background text-amber-500 transition-transform duration-300 group-hover:-rotate-45">
                 <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.5} />
