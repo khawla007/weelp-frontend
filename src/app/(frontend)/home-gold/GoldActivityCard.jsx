@@ -137,28 +137,28 @@ export default function GoldActivityCard({ item, wishlistItem }) {
             ) : null}
 
             <div className="flex items-end justify-between">
-            {item.price ? (
-              <div itemScope itemProp="offers" itemType="https://schema.org/Offer" className="flex flex-col gap-0.5">
-                <meta itemProp="priceCurrency" content="USD" />
-                <link itemProp="availability" href="https://schema.org/InStock" />
-                <span className="text-[10px] uppercase tracking-wider text-zinc-500 dark:text-[oklch(0.94_0.012_80)] dark:opacity-80">From</span>
-                <div className="flex items-baseline gap-1.5">
-                  <strong itemProp="price" content={item.price.replace(/[^0-9.]/g, '')} className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-white">
-                    {item.price}
-                  </strong>
-                  {originalPrice ? <span className="ml-1 text-xs text-zinc-400 line-through dark:text-[oklch(0.94_0.012_80)] dark:opacity-60">{originalPrice}</span> : null}
+              {item.price ? (
+                <div itemScope itemProp="offers" itemType="https://schema.org/Offer" className="flex flex-col gap-0.5">
+                  <meta itemProp="priceCurrency" content="USD" />
+                  <link itemProp="availability" href="https://schema.org/InStock" />
+                  <span className="text-[10px] uppercase tracking-wider text-zinc-500 dark:text-[oklch(0.94_0.012_80)] dark:opacity-80">From</span>
+                  <div className="flex items-baseline gap-1.5">
+                    <strong itemProp="price" content={item.price.replace(/[^0-9.]/g, '')} className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-white">
+                      {item.price}
+                    </strong>
+                    {originalPrice ? <span className="ml-1 text-xs text-zinc-400 line-through dark:text-[oklch(0.94_0.012_80)] dark:opacity-60">{originalPrice}</span> : null}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div />
-            )}
+              ) : (
+                <div />
+              )}
 
-            <span className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-zinc-900 pl-4 pr-1 text-sm font-medium text-white shadow-sm transition-all duration-300 group-hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:group-hover:bg-zinc-200">
-              Explore
-              <span className="grid size-8 place-items-center rounded-full bg-white text-zinc-900 transition-transform duration-300 group-hover:-rotate-45 dark:bg-zinc-900 dark:text-white">
-                <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.5} />
+              <span className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-zinc-900 pl-4 pr-1 text-sm font-medium text-white shadow-sm transition-all duration-300 group-hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:group-hover:bg-zinc-200">
+                Explore
+                <span className="grid size-8 place-items-center rounded-full bg-white text-zinc-900 transition-transform duration-300 group-hover:-rotate-45 dark:bg-zinc-900 dark:text-white">
+                  <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.5} />
+                </span>
               </span>
-            </span>
             </div>
           </div>
         </div>
