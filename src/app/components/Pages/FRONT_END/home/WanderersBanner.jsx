@@ -13,7 +13,7 @@ const WanderersBanner = () => {
         aria-hidden="true"
         viewBox="0 0 275 572"
         preserveAspectRatio="xMinYMid meet"
-        className="pointer-events-none absolute left-0 top-1/2 hidden h-[190px] w-auto -translate-y-1/2 text-weelp-sage-deep md:block lg:h-[230px]"
+        className="pointer-events-none absolute left-0 top-1/2 hidden h-[190px] w-auto -translate-y-1/2 text-[oklch(0.72_0.055_75/0.45)] dark:text-[oklch(0.7_0.075_78/0.48)] md:block lg:h-[230px]"
       >
         <path d={SAGE_LEAF_PATH} fill="currentColor" />
       </svg>
@@ -22,7 +22,7 @@ const WanderersBanner = () => {
         aria-hidden="true"
         viewBox="0 0 275 572"
         preserveAspectRatio="xMaxYMid meet"
-        className="pointer-events-none absolute right-0 top-1/2 hidden h-[190px] w-auto text-weelp-sage-deep md:block lg:h-[230px]"
+        className="pointer-events-none absolute right-0 top-1/2 hidden h-[190px] w-auto text-[oklch(0.72_0.055_75/0.45)] dark:text-[oklch(0.7_0.075_78/0.48)] md:block lg:h-[230px]"
         style={{ transform: 'translateY(-50%) scaleX(-1)' }}
       >
         <path d={SAGE_LEAF_PATH} fill="currentColor" />
@@ -49,7 +49,11 @@ const WanderersBanner = () => {
             href="/cities"
             className="group relative inline-flex h-11 w-[96px] shrink-0 items-center justify-center text-base font-medium leading-none !text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-weelp-sage-deep md:w-[88px] lg:h-[40px]"
           >
-            <span aria-hidden="true" className="absolute inset-0 rounded-[5px] bg-weelp-sage-deep transition-colors group-hover:bg-weelp-sage-hover dark:border dark:border-border dark:bg-[var(--weelp-home-page)] dark:group-hover:bg-[var(--weelp-home-page)] dark:group-hover:opacity-90" style={{ transform: 'skewX(-10deg)' }} />
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 rounded-[5px] bg-weelp-sage-deep transition-colors group-hover:bg-weelp-sage-hover dark:border dark:border-border dark:bg-[var(--weelp-home-page)] dark:group-hover:bg-[var(--weelp-home-page)] dark:group-hover:opacity-90"
+              style={{ transform: 'skewX(-10deg)' }}
+            />
             <span className="relative z-10">Curate</span>
           </NavigationLink>
           <span aria-hidden="true" className="h-px flex-1 bg-border" />
