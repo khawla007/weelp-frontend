@@ -15,7 +15,7 @@ const PRODUCT_BREAKPOINTS = {
   640: { slidesPerView: 2, spaceBetween: 18 },
   768: { slidesPerView: 2, spaceBetween: 18 },
   1024: { slidesPerView: 3, spaceBetween: 18 },
-  1440: { slidesPerView: 4, spaceBetween: 18 },
+  1440: { slidesPerView: 5, spaceBetween: 18 },
 };
 
 const TITLE = 'Top activities';
