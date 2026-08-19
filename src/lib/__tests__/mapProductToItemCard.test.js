@@ -66,4 +66,49 @@ describe('mapProductToItemCard', () => {
 
     expect(card.price).toBe('$100.00');
   });
+
+  const baseAttributeProduct = {
+    id: 1,
+    name: 'Desert Safari',
+    slug: 'desert-safari',
+    item_type: 'activity',
+    city_slug: 'dubai',
+    short_description: 'Ride the dunes at golden hour.',
+    attributes: [
+      { slug: 'duration', name: 'Duration', attribute_value: '4 Hours' },
+      { slug: 'group-size', name: 'Group Size', attribute_value: '6-10' },
+      { slug: 'age-restriction', name: 'Age Restriction', attribute_value: '12+' },
+      { slug: 'language', name: 'Language', attribute_value: 'English' },
+    ],
+  };
+
+  test('passes short_description through as shortDescription', () => {
+    const card = mapProductToItemCard(baseAttributeProduct);
+    expect(card.shortDescription).toBe('Ride the dunes at golden hour.');
+  });
+
+  test('caps attributes at the first three from the payload', () => {
+    const card = mapProductToItemCard(baseAttributeProduct);
+    expect(card.attributes).toHaveLength(3);
+    expect(card.attributes.map((attribute) => attribute.slug)).toEqual([
+      'duration',
+      'group-size',
+      'age-restriction',
+    ]);
+  });
+
+  test('returns null for shortDescription when the payload omits it', () => {
+    const card = mapProductToItemCard({ ...baseAttributeProduct, short_description: undefined });
+    expect(card.shortDescription).toBeNull();
+  });
+
+  test('returns an empty array for attributes when the payload omits them', () => {
+    const card = mapProductToItemCard({ ...baseAttributeProduct, attributes: undefined });
+    expect(card.attributes).toEqual([]);
+  });
+
+  test('returns an empty array for attributes when the payload sends a non-array', () => {
+    const card = mapProductToItemCard({ ...baseAttributeProduct, attributes: null });
+    expect(card.attributes).toEqual([]);
+  });
 });

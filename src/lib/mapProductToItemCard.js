@@ -79,6 +79,8 @@ export function mapProductToItemCard(product, citySlug) {
     rating,
     reviewCount,
     discount,
+    shortDescription: product.short_description ?? null,
+    attributes: Array.isArray(product.attributes) ? product.attributes.slice(0, 3) : [],
   };
 }
 
