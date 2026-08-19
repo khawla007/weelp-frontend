@@ -39,12 +39,12 @@ export default function GoldActivityCard({ item, wishlistItem }) {
   return (
     <article
       data-testid="home-gold-activity-card"
-      className="relative min-h-[300px] overflow-hidden rounded-[24px] border border-[oklch(0.72_0.055_75/0.45)] bg-[oklch(0.96_0.02_80)] shadow-[0_12px_26px_rgba(76,53,31,0.14)] sm:min-h-[280px] md:min-h-[260px] lg:aspect-[31/20] lg:min-h-0 dark:border-[oklch(0.7_0.075_78/0.48)] dark:bg-[oklch(0.17_0.03_155)] dark:shadow-[0_12px_28px_rgba(5,15,11,0.32)]"
+      className="relative min-h-[300px] overflow-hidden rounded-[24px] border border-[oklch(0.72_0.055_75/0.45)] bg-[oklch(0.96_0.02_80)] shadow-[0_14px_32px_rgba(76,53,31,0.18)] transition-all duration-500 hover:shadow-[0_22px_48px_rgba(0,0,0,0.32)] sm:min-h-[280px] md:min-h-[260px] lg:aspect-[31/20] lg:min-h-0 dark:border-[oklch(0.7_0.075_78/0.48)] dark:bg-[oklch(0.17_0.03_155)] dark:shadow-[0_16px_36px_rgba(5,15,11,0.45)]"
     >
       <NavigationLink
         href={item.href}
         aria-label={`Explore ${item.title}`}
-        className="group relative block h-full min-h-[300px] overflow-hidden rounded-[24px] transition-shadow focus-visible:outline-none sm:min-h-[280px] md:min-h-[260px] lg:min-h-0 motion-reduce:transition-none"
+        className="group relative block h-full min-h-[300px] overflow-hidden rounded-[24px] transition-all duration-500 focus-visible:outline-none sm:min-h-[280px] md:min-h-[260px] lg:min-h-0 motion-reduce:transition-none"
       >
         <Image
           fill
@@ -53,42 +53,45 @@ export default function GoldActivityCard({ item, wishlistItem }) {
           sizes={IMAGE_SIZES}
           placeholder="blur"
           blurDataURL={IMAGE_BLUR_DATA_URL}
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.035] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
         />
 
-        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[oklch(0.14_0.025_40/0.3)] via-transparent to-transparent dark:from-[oklch(0.09_0.025_155/0.4)]" />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/5 transition-opacity duration-500 group-hover:opacity-95" />
 
-        <div className="absolute inset-x-3 bottom-3 rounded-2xl border border-[oklch(0.93_0.018_80/0.42)] bg-[oklch(0.2_0.035_50/0.94)] p-3.5 text-[oklch(0.97_0.012_80)] shadow-[0_8px_20px_rgba(52,34,20,0.24)] backdrop-blur-md dark:border-[oklch(0.76_0.07_80/0.42)] dark:bg-[oklch(0.12_0.035_155/0.94)] dark:shadow-[0_8px_20px_rgba(5,15,11,0.3)]">
-          <div className="flex min-w-0 items-center gap-1.5 text-xs leading-none">
+        <div className="absolute inset-x-3.5 bottom-3.5 rounded-2xl border border-[oklch(0.93_0.018_80/0.42)] bg-[oklch(0.2_0.035_50/0.94)] p-4 text-[oklch(0.97_0.012_80)] shadow-[0_10px_28px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-500 group-hover:border-[oklch(0.85_0.12_80/0.6)] dark:border-[oklch(0.76_0.07_80/0.42)] dark:bg-[oklch(0.12_0.035_155/0.94)] dark:shadow-[0_12px_32px_rgba(0,0,0,0.5)]">
+          <div className="flex min-w-0 items-center gap-2 text-xs leading-none">
             {hasRating ? (
               <>
-                <span aria-hidden="true" className="text-[oklch(0.82_0.14_80)]">
-                  ★
-                </span>
-                <span className="font-semibold">{item.rating}</span>
-                {item.reviewCount ? <span className="text-[oklch(0.94_0.012_80)]">({item.reviewCount})</span> : null}
-                <span aria-hidden="true" className="text-[oklch(0.94_0.012_80)]">
+                <div className="flex items-center gap-1 rounded-full bg-[oklch(0.98_0.012_80/0.15)] px-2 py-0.5 border border-[oklch(0.98_0.012_80/0.2)] backdrop-blur-xs">
+                  <span aria-hidden="true" className="text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]">
+                    ★
+                  </span>
+                  <span className="font-bold text-[oklch(0.98_0.012_80)]">{item.rating}</span>
+                  {item.reviewCount ? <span className="text-[oklch(0.94_0.012_80)] font-medium">({item.reviewCount})</span> : null}
+                </div>
+                <span aria-hidden="true" className="text-[oklch(0.94_0.012_80)] opacity-60">
                   ·
                 </span>
               </>
             ) : null}
-            <span className="truncate text-[oklch(0.94_0.012_80)]">{category}</span>
+            <span className="truncate text-[oklch(0.94_0.012_80)] font-medium tracking-wide uppercase text-[10px]">{category}</span>
           </div>
 
-          <h3 className="mt-1 line-clamp-1 text-lg font-semibold leading-tight text-[oklch(0.97_0.012_80)]">{item.title}</h3>
+          <h3 className="mt-2 line-clamp-1 text-lg font-bold leading-tight tracking-tight text-[oklch(0.98_0.012_80)] transition-colors duration-300 group-hover:text-white">{item.title}</h3>
 
-          <div className="mt-3 flex items-end justify-between gap-2">
+          <div className="mt-3.5 flex items-end justify-between gap-3 pt-2 border-t border-white/10">
             {item.price ? (
               <div className="flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0.5 text-xs">
-                <span className="text-[oklch(0.94_0.012_80)]">From</span>
-                <strong className="text-base leading-none text-[oklch(0.98_0.012_80)]">{item.price}</strong>
-                {originalPrice ? <span className="line-through text-[oklch(0.94_0.012_80)]">{originalPrice}</span> : null}
-                <span className="text-[oklch(0.94_0.012_80)]">per person</span>
+                <span className="text-[oklch(0.94_0.012_80)] opacity-80">From</span>
+                <strong className="text-lg font-extrabold leading-none text-white tracking-tight">{item.price}</strong>
+                {originalPrice ? <span className="line-through text-[oklch(0.94_0.012_80)] opacity-75 text-[11px]">{originalPrice}</span> : null}
+                <span className="text-[oklch(0.94_0.012_80)] opacity-80">per person</span>
               </div>
             ) : null}
 
-            <span className="inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border border-[oklch(0.8_0.035_75/0.7)] bg-[oklch(0.96_0.018_80)] px-2.5 py-1.5 text-xs font-semibold text-[oklch(0.3_0.03_50)] transition-colors group-hover:bg-[oklch(0.91_0.035_80)] motion-reduce:transition-none dark:border-[oklch(0.72_0.08_80/0.65)] dark:bg-[oklch(0.72_0.08_80)] dark:text-[oklch(0.17_0.03_155)] dark:group-hover:bg-[oklch(0.78_0.09_80)]">
-              <span className="grid size-5 place-items-center rounded-full border border-current">
+            {/* dark-mode-exempt: explore button requires theme-independent dark text on amber hover fill */}
+            <span className="inline-flex min-h-9 shrink-0 items-center gap-2 rounded-full border border-[oklch(0.8_0.035_75/0.7)] bg-[oklch(0.96_0.018_80)] px-3.5 py-1.5 text-xs font-bold text-[oklch(0.3_0.03_50)] shadow-md transition-all duration-300 group-hover:bg-amber-400 group-hover:text-zinc-950 group-hover:shadow-amber-400/25 group-hover:border-amber-300 motion-reduce:transition-none dark:border-[oklch(0.72_0.08_80/0.65)] dark:bg-[oklch(0.72_0.08_80)] dark:text-[oklch(0.17_0.03_155)] dark:group-hover:bg-amber-400 dark:group-hover:text-zinc-950">
+              <span className="grid size-5 place-items-center rounded-full border border-current transition-transform duration-300 group-hover:translate-x-0.5">
                 <ArrowRight aria-hidden="true" className="size-3.5" strokeWidth={2.5} />
               </span>
               Explore
@@ -105,8 +108,9 @@ export default function GoldActivityCard({ item, wishlistItem }) {
 
       <div className="pointer-events-none absolute left-4 top-4 z-20 flex items-center gap-2">
         {/* dark-mode-exempt: discount badge requires a theme-independent dark foreground for contrast */}
-        <span className="rounded-lg bg-weelp-discount px-3 py-2 text-xs font-bold text-zinc-950">{discountLabel}</span>
-        <div className="pointer-events-auto">
+        <span className="rounded-full bg-weelp-discount px-3.5 py-1.5 text-xs font-extrabold text-zinc-950 shadow-md uppercase tracking-wider border border-amber-300/40 backdrop-blur-md">{discountLabel}</span>
+        {/* dark-mode-exempt: wishlist button shell uses a semi-transparent black overlay for photo contrast */}
+        <div className="pointer-events-auto rounded-full bg-black/25 p-1 backdrop-blur-md border border-white/20 shadow-md">
           <GoldActivityWishlistButton item={wishlistItem} />
         </div>
       </div>
