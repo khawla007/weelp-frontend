@@ -1,5 +1,150 @@
 {
-  "totalFindings": 0,
-  "filesAffected": 0,
-  "findings": []
+  "totalFindings": 18,
+  "filesAffected": 1,
+  "findings": [
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 56,
+      "column": 94,
+      "rule": "neutral-color-utility",
+      "value": "bg-zinc-100",
+      "lineText": "<div className=\"relative aspect-[4/3] w-full shrink-0 overflow-hidden rounded-[16px] bg-zinc-100 dark:bg-[oklch(0.12_0.035_155/0.94)]\">"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 68,
+      "column": 55,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<span className=\"inline-flex rounded-full bg-white/20 backdrop-blur-md border border-white/20 px-2.5 py-1 text-[11px] font-medium text-white shadow-sm\">{category}</span>"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 69,
+      "column": 55,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<span className=\"inline-flex rounded-full bg-white/20 backdrop-blur-md border border-white/20 px-2.5 py-1 text-[11px] font-medium text-white shadow-sm\">{discountLabel}</span>"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 82,
+      "column": 89,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-900",
+      "lineText": "className=\"line-clamp-2 text-xl font-medium leading-snug tracking-tight text-zinc-900 transition-colors group-hover:text-amber-600 dark:text-[oklch(0.98_0.012_80)] dark:group-hover:text-white\""
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 93,
+      "column": 70,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-900",
+      "lineText": "className=\"flex items-center gap-1 font-semibold text-zinc-900 dark:text-[oklch(0.98_0.012_80)]\""
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 103,
+      "column": 83,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-500",
+      "lineText": "<span itemProp=\"reviewCount\" className=\"text-xs font-medium text-zinc-500 dark:text-zinc-400\">"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 103,
+      "column": 102,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "<span itemProp=\"reviewCount\" className=\"text-xs font-medium text-zinc-500 dark:text-zinc-400\">"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 118,
+      "column": 71,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-500",
+      "lineText": "<span className=\"text-[10px] uppercase tracking-wider text-zinc-500 dark:text-[oklch(0.94_0.012_80)] dark:opacity-80\">From</span>"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 120,
+      "column": 137,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-900",
+      "lineText": "<strong itemProp=\"price\" content={item.price.replace(/[^0-9.]/g, '')} className=\"text-lg font-semibold tracking-tight text-zinc-900 dark:text-white\">"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 123,
+      "column": 66,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-400",
+      "lineText": "{originalPrice ? <span className=\"ml-1 text-xs text-zinc-400 line-through dark:text-[oklch(0.94_0.012_80)] dark:opacity-60\">{originalPrice}</span> : null}"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 130,
+      "column": 88,
+      "rule": "neutral-color-utility",
+      "value": "bg-zinc-900",
+      "lineText": "<span className=\"inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-zinc-900 pl-4 pr-1 text-sm font-medium text-white shadow-sm transition-all duration-300 group-hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:group-hover:bg-zinc-200\">"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 130,
+      "column": 191,
+      "rule": "neutral-color-utility",
+      "value": "bg-zinc-800",
+      "lineText": "<span className=\"inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-zinc-900 pl-4 pr-1 text-sm font-medium text-white shadow-sm transition-all duration-300 group-hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:group-hover:bg-zinc-200\">"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 130,
+      "column": 208,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<span className=\"inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-zinc-900 pl-4 pr-1 text-sm font-medium text-white shadow-sm transition-all duration-300 group-hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:group-hover:bg-zinc-200\">"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 130,
+      "column": 222,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-900",
+      "lineText": "<span className=\"inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-zinc-900 pl-4 pr-1 text-sm font-medium text-white shadow-sm transition-all duration-300 group-hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:group-hover:bg-zinc-200\">"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 130,
+      "column": 253,
+      "rule": "neutral-color-utility",
+      "value": "bg-zinc-200",
+      "lineText": "<span className=\"inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-zinc-900 pl-4 pr-1 text-sm font-medium text-white shadow-sm transition-all duration-300 group-hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:group-hover:bg-zinc-200\">"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 132,
+      "column": 76,
+      "rule": "background-white-black",
+      "value": "bg-white",
+      "lineText": "<span className=\"grid size-8 place-items-center rounded-full bg-white text-zinc-900 transition-transform duration-300 group-hover:-rotate-45 dark:bg-zinc-900 dark:text-white\">"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 132,
+      "column": 85,
+      "rule": "neutral-color-utility",
+      "value": "text-zinc-900",
+      "lineText": "<span className=\"grid size-8 place-items-center rounded-full bg-white text-zinc-900 transition-transform duration-300 group-hover:-rotate-45 dark:bg-zinc-900 dark:text-white\">"
+    },
+    {
+      "file": "src/app/(frontend)/home-gold/GoldActivityCard.jsx",
+      "line": 132,
+      "column": 161,
+      "rule": "neutral-color-utility",
+      "value": "bg-zinc-900",
+      "lineText": "<span className=\"grid size-8 place-items-center rounded-full bg-white text-zinc-900 transition-transform duration-300 group-hover:-rotate-45 dark:bg-zinc-900 dark:text-white\">"
+    }
+  ]
 }

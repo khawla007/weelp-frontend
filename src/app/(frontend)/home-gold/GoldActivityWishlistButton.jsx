@@ -87,7 +87,7 @@ export default function GoldActivityWishlistButton({ item }) {
       aria-pressed={isSaved}
       onClick={handleClick}
       disabled={isDisabled}
-      className="grid size-11 place-items-center rounded-full border border-white/45 bg-[oklch(0.97_0.015_80/0.88)] text-[oklch(0.55_0.2_28)] shadow-sm backdrop-blur-md transition-transform hover:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/50 disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none motion-reduce:hover:scale-100 dark:border-[oklch(0.72_0.08_80/0.55)] dark:bg-[oklch(0.2_0.035_155/0.9)]"
+      className="grid size-11 place-items-center rounded-full bg-[oklch(0.97_0.015_80/0.88)] text-[oklch(0.55_0.2_28)] shadow-sm backdrop-blur-md transition-transform hover:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/50 disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none motion-reduce:hover:scale-100 dark:bg-[oklch(0.2_0.035_155/0.9)]"
     >
       <Heart aria-hidden="true" className={`size-[18px] ${isSaved ? 'fill-current' : ''}`} />
     </button>
