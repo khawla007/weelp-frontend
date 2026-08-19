@@ -51,7 +51,7 @@ describe('GoldActivityCard', () => {
     const wishlist = screen.getByRole('button', { name: /wishlist/i });
 
     expect(card.tagName).toBe('ARTICLE');
-    expect(card).toHaveClass('rounded-[24px]', 'lg:aspect-[31/20]', 'lg:min-h-0');
+    expect(card).toHaveClass('rounded-[24px]', 'lg:aspect-[3/4]', 'lg:min-h-0');
     expect(card).not.toHaveClass('group');
     expect(link).toHaveAttribute('href', '/cities/dubai/activities/desert-safari');
     expect(link).toHaveClass('group', 'motion-reduce:transition-none');
