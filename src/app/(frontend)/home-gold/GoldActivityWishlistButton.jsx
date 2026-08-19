@@ -23,10 +23,10 @@ export default function GoldActivityWishlistButton({ item }) {
   const { toast } = useToast();
   const [isPending, setIsPending] = useState(false);
   const payload = useMemo(() => normalizeWishlistPayload(item), [item]);
-  const isCustomer = status === 'authenticated' && session?.user?.role === 'customer';
-  const { items, isLoading, addItem, removeItemByIdentity } = useWishlistItems({ enabled: isCustomer });
+  const isAuthenticated = status === 'authenticated';
+  const { items, isLoading, addItem, removeItemByIdentity } = useWishlistItems({ enabled: isAuthenticated });
   const isSaved = useMemo(() => Boolean(payload && items.some((wishlistItem) => isSameWishlistItem(wishlistItem, payload))), [items, payload]);
-  const isDisabled = !payload || status === 'loading' || isPending || (isCustomer && isLoading);
+  const isDisabled = !payload || status === 'loading' || isPending || (isAuthenticated && isLoading);
 
   const updateWishlist = useCallback(
     async (removeSavedItem) => {
@@ -60,15 +60,13 @@ export default function GoldActivityWishlistButton({ item }) {
     [addItem, isPending, payload, removeItemByIdentity, toast],
   );
 
-  if (status === 'authenticated' && !isCustomer) return null;
-
   const handleClick = () => {
     if (isDisabled) return;
 
     if (!session?.user) {
       openAuthModal({
         onSuccess: (authenticatedSession) => {
-          if (authenticatedSession?.user?.role !== 'customer') return;
+          if (!authenticatedSession?.user) return;
           return updateWishlist(false);
         },
       });

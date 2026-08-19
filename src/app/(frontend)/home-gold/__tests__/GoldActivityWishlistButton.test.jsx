@@ -72,14 +72,14 @@ describe('GoldActivityWishlistButton', () => {
     expect(addItem).toHaveBeenCalledWith(expect.objectContaining({ item_type: 'activity', item_id: 42 }));
   });
 
-  it('does not save after a guest authenticates with a non-customer role', async () => {
+  it('saves after a guest authenticates with a non-customer role', async () => {
     sessionState = { data: null, status: 'unauthenticated' };
     render(<GoldActivityWishlistButton item={activity} />);
     fireEvent.click(screen.getByRole('button', { name: /save desert safari adventure to wishlist/i }));
 
     await act(async () => openAuthModal.mock.calls[0][0].onSuccess({ user: { id: 7, role: 'admin' } }));
 
-    expect(addItem).not.toHaveBeenCalled();
+    expect(addItem).toHaveBeenCalledWith(expect.objectContaining({ item_type: 'activity', item_id: 42 }));
   });
 
   it('adds an activity for a customer and confirms the save', async () => {
@@ -128,12 +128,12 @@ describe('GoldActivityWishlistButton', () => {
     expect(screen.getByRole('button', { name: /save desert safari adventure to wishlist/i })).toBeDisabled();
   });
 
-  it.each(['admin', 'super_admin', 'creator'])('hides the control for an authenticated %s', (role) => {
+  it.each(['admin', 'super_admin', 'creator'])('shows the control for an authenticated %s', (role) => {
     sessionState = { data: { user: { id: 7, role } }, status: 'authenticated' };
     render(<GoldActivityWishlistButton item={activity} />);
 
-    expect(useWishlistItems).toHaveBeenCalledWith({ enabled: false });
-    expect(screen.queryByRole('button', { name: /wishlist/i })).not.toBeInTheDocument();
+    expect(useWishlistItems).toHaveBeenCalledWith({ enabled: true });
+    expect(screen.getByRole('button', { name: /wishlist/i })).toBeInTheDocument();
   });
 
   it('reports the backend error when the wishlist API rejects the update', async () => {
