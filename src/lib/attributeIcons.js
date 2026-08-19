@@ -11,6 +11,5 @@ const ATTRIBUTE_ICONS = {
 };
 
 export function getAttributeIcon(slug) {
-  if (!slug) return Tag;
-  return ATTRIBUTE_ICONS[slug] || Tag;
+  return ATTRIBUTE_ICONS[slug] ?? Tag;
 }
