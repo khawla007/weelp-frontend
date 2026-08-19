@@ -67,9 +67,9 @@ export default function GoldActivityCard({ item, wishlistItem }) {
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
           />
 
-          <div className="absolute left-3 top-3 z-20 flex flex-wrap gap-2 pr-16">
-            <span className="inline-flex rounded-full bg-white/20 backdrop-blur-md border border-white/20 px-2.5 py-1 text-[11px] font-medium text-white shadow-sm">{category}</span>
-            <span className="inline-flex rounded-full bg-white/20 backdrop-blur-md border border-white/20 px-2.5 py-1 text-[11px] font-medium text-white shadow-sm">{discountLabel}</span>
+          <div className="absolute left-3 top-3 z-20 flex items-center">
+            {/* dark-mode-exempt: gold accent must stay warm in both themes to match star + arrow */}
+            <span className="inline-flex h-11 items-center rounded-full bg-amber-500 px-4 text-sm font-semibold text-zinc-950 shadow-sm">{discountLabel}</span>
           </div>
 
           <div className="absolute right-3 top-3 z-20">

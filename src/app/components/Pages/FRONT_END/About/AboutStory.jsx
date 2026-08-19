@@ -23,7 +23,14 @@ const AboutStory = () => {
         <Reveal variant="lift" className="relative">
           <div className="relative h-[340px] w-full md:h-[440px]">
             {!imageError ? (
-              <Image src="/assets/images/about-story.jpg" alt="Weelp travelers on a guided experience" fill className="rounded-[24px] object-cover" onError={() => setImageError(true)} />
+              <Image
+                src="/assets/images/about-story.jpg"
+                alt="Weelp travelers on a guided experience"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="rounded-[24px] object-cover"
+                onError={() => setImageError(true)}
+              />
             ) : (
               <div className="flex h-full w-full items-center justify-center rounded-[24px] bg-muted">
                 <span className="text-4xl text-muted-foreground">W</span>

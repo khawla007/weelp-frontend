@@ -38,7 +38,7 @@ const AboutFAQ = () => {
             {items.map((item, index) => {
               const isOpen = openIndex === index;
               return (
-                <div key={item.id} className="overflow-hidden rounded-2xl border border-border bg-background shadow-sm">
+                <div key={item.id} className="overflow-hidden rounded-[24px] border border-border bg-background shadow-sm">
                   <button
                     type="button"
                     id={`faq-trigger-${item.id}`}

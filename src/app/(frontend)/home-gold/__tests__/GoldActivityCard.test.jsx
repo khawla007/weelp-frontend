@@ -63,7 +63,7 @@ describe('GoldActivityCard', () => {
     expect(screen.getByText('★')).toBeVisible();
     expect(screen.getByText('5.0')).toBeVisible();
     expect(screen.getByText('(124)')).toBeVisible();
-    expect(screen.getByText('Desert Safari & Tour')).toBeVisible();
+    expect(screen.queryByText('Desert Safari & Tour')).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Desert Safari Adventure' })).toBeVisible();
     expect(screen.getByText('From')).toBeVisible();
     expect(screen.getByText('$130.00')).toBeVisible();
@@ -76,7 +76,7 @@ describe('GoldActivityCard', () => {
 
     expect(screen.queryByText('★')).not.toBeInTheDocument();
     expect(screen.queryByText('(124)')).not.toBeInTheDocument();
-    expect(screen.getByText('Activity')).toBeVisible();
+    expect(screen.queryByText('Activity')).not.toBeInTheDocument();
     expect(screen.queryByText('$216.00')).not.toBeInTheDocument();
   });
 

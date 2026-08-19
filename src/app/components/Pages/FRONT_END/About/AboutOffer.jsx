@@ -44,7 +44,7 @@ const AboutOffer = () => (
           >
             <h3 className="mb-3 text-lg text-foreground">{f.title}</h3>
             <div className="relative mb-3 h-32 w-full overflow-hidden rounded-[16px] bg-muted">
-              <Image src={f.img} alt="" fill className="object-cover" />
+              <Image src={f.img} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
             </div>
             <p className="mb-4 text-sm text-muted-foreground">{f.desc}</p>
             <div className="flex flex-wrap gap-2">

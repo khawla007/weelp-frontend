@@ -17,7 +17,7 @@ const AboutWhyChoose = () => (
     <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
       <Reveal variant="lift" className="relative">
         <div className="relative h-[360px] w-full overflow-hidden rounded-[24px] bg-muted md:h-[460px]">
-          <Image src="/assets/images/CountryBanner.jpeg" alt="Local Weelp guide" fill className="object-cover" />
+          <Image src="/assets/images/CountryBanner.jpeg" alt="Local Weelp guide" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
         </div>
         <div className="absolute -bottom-6 left-4 rounded-[24px] bg-weelp-sage-deep p-5 text-white shadow-lg md:left-6">
           <p className="text-2xl font-bold">90+</p>
@@ -25,7 +25,7 @@ const AboutWhyChoose = () => (
           <div className="flex -space-x-3">
             {avatars.map((src) => (
               <span key={src} className="relative h-8 w-8 overflow-hidden rounded-full border-2 border-weelp-sage-deep">
-                <Image src={src} alt="" fill className="object-cover" />
+                <Image src={src} alt="" fill sizes="32px" className="object-cover" />
               </span>
             ))}
           </div>

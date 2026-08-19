@@ -100,7 +100,7 @@ const AboutTestimonials = () => {
         >
           {reviews.map((r) => (
             <SwiperSlide key={r.id} className="h-auto">
-              <div className="h-full rounded-[24px] border border-border bg-background p-6">
+              <div className="h-full">
                 <Testimonial username={r.user.name} title={r.review_text} date={r.created_at} itemName={r.item.name} rating={r.rating} />
               </div>
             </SwiperSlide>
