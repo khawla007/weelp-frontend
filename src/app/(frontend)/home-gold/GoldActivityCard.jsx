@@ -144,7 +144,7 @@ export default function GoldActivityCard({ item, wishlistItem }) {
 
             <span className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full border border-border bg-background pl-4 pr-1 text-sm font-medium text-foreground shadow-sm">
               Explore
-              <span className="grid size-8 place-items-center rounded-full border border-border bg-background text-amber-500 transition-transform duration-300 group-hover:-rotate-45">
+              <span className="grid size-8 place-items-center rounded-full border border-border bg-background text-amber-500 transition-transform duration-300 group-hover:-rotate-45 group-hover:border-border group-hover:bg-background group-hover:text-amber-500">
                 <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.5} />
               </span>
             </span>
