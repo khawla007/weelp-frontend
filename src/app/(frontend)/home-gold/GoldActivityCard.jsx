@@ -68,7 +68,9 @@ export default function GoldActivityCard({ item, wishlistItem }) {
           />
 
           <div className="absolute left-3 top-5 z-20 flex items-center">
-            <span className="inline-flex items-center rounded-full border border-weelp-sage-deep bg-weelp-sage-deep px-3 py-1 text-xs font-semibold text-white shadow-sm dark:border-border dark:bg-[var(--weelp-home-page)]">{discountLabel}</span>
+            <span className="inline-flex items-center rounded-full border border-weelp-sage-deep bg-weelp-sage-deep px-3 py-1 text-xs font-semibold text-white shadow-sm dark:border-border dark:bg-[var(--weelp-home-page)]">
+              {discountLabel}
+            </span>
           </div>
 
           <div className="absolute right-3 top-3 z-20">
@@ -140,7 +142,7 @@ export default function GoldActivityCard({ item, wishlistItem }) {
               <div />
             )}
 
-            <span className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full border border-border bg-background pl-4 pr-1 text-sm font-medium text-foreground shadow-sm transition-all duration-300 group-hover:border-weelp-sage-deep group-hover:text-weelp-sage-text">
+            <span className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full border border-border bg-background pl-4 pr-1 text-sm font-medium text-foreground shadow-sm">
               Explore
               <span className="grid size-8 place-items-center rounded-full border border-border bg-background text-amber-500 transition-transform duration-300 group-hover:-rotate-45">
                 <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.5} />
