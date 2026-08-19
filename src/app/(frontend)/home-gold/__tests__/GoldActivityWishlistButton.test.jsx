@@ -49,12 +49,12 @@ describe('GoldActivityWishlistButton', () => {
     });
   });
 
-  it('renders an icon-only 44px control with its saved state exposed to assistive technology', () => {
+  it('renders an icon-only 32px control with its saved state exposed to assistive technology', () => {
     render(<GoldActivityWishlistButton item={activity} />);
 
     const button = screen.getByRole('button', { name: /save desert safari adventure to wishlist/i });
     expect(button).toHaveAttribute('aria-pressed', 'false');
-    expect(button).toHaveClass('size-11', 'rounded-full');
+    expect(button).toHaveClass('size-8', 'rounded-full');
     expect(button).not.toHaveTextContent(/save to wishlist/i);
     expect(button).not.toHaveTextContent(/saved to wishlist/i);
   });

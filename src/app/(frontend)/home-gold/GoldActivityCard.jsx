@@ -67,7 +67,7 @@ export default function GoldActivityCard({ item, wishlistItem }) {
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
           />
 
-          <div className="absolute left-3 top-5 z-20 flex items-center">
+          <div className="absolute left-3 top-3 z-20 flex items-center">
             <span className="inline-flex items-center rounded-full border border-weelp-sage-deep bg-weelp-sage-deep px-3 py-1 text-xs font-semibold text-white shadow-sm dark:border-border dark:bg-[var(--weelp-home-page)]">
               {discountLabel}
             </span>
