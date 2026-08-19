@@ -80,21 +80,13 @@ export default function GoldActivityCard({ item, wishlistItem }) {
         <div className="flex flex-1 flex-col px-2 pb-2 pt-4">
           <div>
             <div className="flex items-start justify-between gap-3">
-              <h3
-                itemProp="name"
-                className="line-clamp-2 text-xl font-medium leading-snug tracking-tight text-zinc-900 transition-colors group-hover:text-amber-600 dark:text-[oklch(0.98_0.012_80)] dark:group-hover:text-white"
-              >
+              <h3 itemProp="name" className="line-clamp-2 text-xl font-medium leading-snug tracking-tight text-foreground">
                 {item.title}
               </h3>
 
               <div className="shrink-0">
                 {hasRating ? (
-                  <div
-                    itemScope
-                    itemProp="aggregateRating"
-                    itemType="https://schema.org/AggregateRating"
-                    className="flex items-center gap-1 font-semibold text-zinc-900 dark:text-[oklch(0.98_0.012_80)]"
-                  >
+                  <div itemScope itemProp="aggregateRating" itemType="https://schema.org/AggregateRating" className="flex items-center gap-1 font-semibold text-foreground">
                     <meta itemProp="bestRating" content="5" />
                     <span aria-hidden="true" className="text-amber-500 text-sm">
                       ★
@@ -103,7 +95,7 @@ export default function GoldActivityCard({ item, wishlistItem }) {
                       {item.rating}
                     </span>
                     {item.reviewCount ? (
-                      <span itemProp="reviewCount" className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                      <span itemProp="reviewCount" className="text-xs font-medium text-foreground">
                         ({item.reviewCount})
                       </span>
                     ) : null}
@@ -112,23 +104,18 @@ export default function GoldActivityCard({ item, wishlistItem }) {
               </div>
             </div>
 
-            {shortDescription ? (
-              // dark-mode-exempt: paired dark: variant provides dark-mode color
-              <p className="mt-2 line-clamp-2 text-sm text-zinc-500 dark:text-zinc-400">{shortDescription}</p>
-            ) : null}
+            {shortDescription ? <p className="mt-2 line-clamp-2 text-sm text-foreground">{shortDescription}</p> : null}
           </div>
 
           <div className="flex flex-1 items-center">
             {attributes.length > 0 ? (
-              // dark-mode-exempt: paired dark: variant provides dark-mode color
-              <ul className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-zinc-600 dark:text-zinc-300">
+              <ul className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-foreground">
                 {attributes.map((attribute) => {
                   const Icon = getAttributeIcon(attribute.slug);
                   const label = `${attribute.name}: ${attribute.attribute_value}`;
                   return (
                     <li key={attribute.slug || attribute.name} data-testid="home-gold-activity-attribute" aria-label={label} title={label} className="inline-flex items-center gap-1.5">
-                      {/* dark-mode-exempt: paired dark: variant provides dark-mode color */}
-                      <Icon aria-hidden="true" className="size-4 text-zinc-500 dark:text-zinc-400" strokeWidth={1.75} />
+                      <Icon aria-hidden="true" className="size-4 text-foreground" strokeWidth={1.75} />
                       <span>{attribute.attribute_value}</span>
                     </li>
                   );
@@ -139,24 +126,25 @@ export default function GoldActivityCard({ item, wishlistItem }) {
 
           <div className="flex items-end justify-between">
             {item.price ? (
-              <div itemScope itemProp="offers" itemType="https://schema.org/Offer" className="flex flex-col gap-0.5">
+              <div itemScope itemProp="offers" itemType="https://schema.org/Offer" className="flex flex-col gap-0.5 text-foreground">
                 <meta itemProp="priceCurrency" content="USD" />
                 <link itemProp="availability" href="https://schema.org/InStock" />
-                <span className="text-[10px] uppercase tracking-wider text-zinc-500 dark:text-[oklch(0.94_0.012_80)] dark:opacity-80">From</span>
+                <span className="text-[10px] uppercase tracking-wider text-foreground">From</span>
                 <div className="flex items-baseline gap-1.5">
-                  <strong itemProp="price" content={item.price.replace(/[^0-9.]/g, '')} className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-white">
+                  <strong itemProp="price" content={item.price.replace(/[^0-9.]/g, '')} className="text-lg font-semibold tracking-tight text-foreground">
                     {item.price}
                   </strong>
-                  {originalPrice ? <span className="ml-1 text-xs text-zinc-400 line-through dark:text-[oklch(0.94_0.012_80)] dark:opacity-60">{originalPrice}</span> : null}
+                  {originalPrice ? <span className="ml-1 text-xs text-foreground line-through">{originalPrice}</span> : null}
                 </div>
               </div>
             ) : (
               <div />
             )}
 
-            <span className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-zinc-900 pl-4 pr-1 text-sm font-medium text-white shadow-sm transition-all duration-300 group-hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:group-hover:bg-zinc-200">
+            {/* dark-mode-exempt: hero search button token parity — home-page surface with border token */}
+            <span className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full border border-transparent bg-zinc-900 pl-4 pr-1 text-sm font-medium text-white shadow-sm transition-all duration-300 group-hover:bg-zinc-800 dark:border-border dark:bg-[var(--weelp-home-page)] dark:text-white dark:group-hover:bg-[var(--weelp-home-page)] dark:group-hover:opacity-90">
               Explore
-              <span className="grid size-8 place-items-center rounded-full bg-white text-zinc-900 transition-transform duration-300 group-hover:-rotate-45 dark:bg-zinc-900 dark:text-white">
+              <span className="grid size-8 place-items-center rounded-full border border-border bg-background text-amber-500 transition-transform duration-300 group-hover:-rotate-45">
                 <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.5} />
               </span>
             </span>
