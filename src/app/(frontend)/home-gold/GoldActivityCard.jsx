@@ -38,11 +38,18 @@ export default function GoldActivityCard({ item, wishlistItem }) {
 
   return (
     <article
+      itemScope
+      itemType="https://schema.org/Product"
       data-testid="home-gold-activity-card"
       className="relative min-h-[440px] overflow-hidden rounded-[24px] border border-[oklch(0.72_0.055_75/0.45)] bg-[oklch(0.96_0.02_80)] shadow-[0_16px_36px_rgba(76,53,31,0.2)] transition-all duration-500 hover:shadow-[0_24px_52px_rgba(0,0,0,0.38)] sm:min-h-[460px] md:min-h-[480px] lg:aspect-[3/4] lg:min-h-0 dark:border-[oklch(0.7_0.075_78/0.48)] dark:bg-[oklch(0.17_0.03_155)] dark:shadow-[0_18px_40px_rgba(5,15,11,0.5)]"
     >
+      <meta itemProp="name" content={item.title} />
+      <meta itemProp="image" content={item.image} />
+      <meta itemProp="category" content={category} />
+
       <NavigationLink
         href={item.href}
+        itemProp="url"
         aria-label={`Explore ${item.title}`}
         className="group relative block h-full min-h-[440px] overflow-hidden rounded-[24px] transition-all duration-500 focus-visible:outline-none sm:min-h-[460px] md:min-h-[480px] lg:min-h-0 motion-reduce:transition-none"
       >
@@ -62,12 +69,24 @@ export default function GoldActivityCard({ item, wishlistItem }) {
           <div className="flex min-w-0 items-center gap-2 text-xs leading-none">
             {hasRating ? (
               <>
-                <div className="flex items-center gap-1 rounded-full bg-[oklch(0.98_0.012_80/0.15)] px-2.5 py-1 border border-[oklch(0.98_0.012_80/0.2)] backdrop-blur-xs">
+                <div
+                  itemScope
+                  itemProp="aggregateRating"
+                  itemType="https://schema.org/AggregateRating"
+                  className="flex items-center gap-1 rounded-full bg-[oklch(0.98_0.012_80/0.15)] px-2.5 py-1 border border-[oklch(0.98_0.012_80/0.2)] backdrop-blur-xs"
+                >
+                  <meta itemProp="bestRating" content="5" />
                   <span aria-hidden="true" className="text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]">
                     ★
                   </span>
-                  <span className="font-bold text-[oklch(0.98_0.012_80)]">{item.rating}</span>
-                  {item.reviewCount ? <span className="text-[oklch(0.94_0.012_80)] font-medium">({item.reviewCount})</span> : null}
+                  <span itemProp="ratingValue" className="font-bold text-[oklch(0.98_0.012_80)]">
+                    {item.rating}
+                  </span>
+                  {item.reviewCount ? (
+                    <span itemProp="reviewCount" className="text-[oklch(0.94_0.012_80)] font-medium">
+                      ({item.reviewCount})
+                    </span>
+                  ) : null}
                 </div>
                 <span aria-hidden="true" className="text-[oklch(0.94_0.012_80)] opacity-60">
                   ·
@@ -77,13 +96,24 @@ export default function GoldActivityCard({ item, wishlistItem }) {
             <span className="truncate text-[oklch(0.94_0.012_80)] font-semibold tracking-wider uppercase text-[10px]">{category}</span>
           </div>
 
-          <h3 className="mt-2.5 line-clamp-2 text-xl font-extrabold leading-snug tracking-tight text-[oklch(0.98_0.012_80)] transition-colors duration-300 group-hover:text-white">{item.title}</h3>
+          <h3 itemProp="name" className="mt-2.5 line-clamp-2 text-xl font-extrabold leading-snug tracking-tight text-[oklch(0.98_0.012_80)] transition-colors duration-300 group-hover:text-white">
+            {item.title}
+          </h3>
 
           <div className="mt-4 flex items-end justify-between gap-3 pt-2.5 border-t border-white/12">
             {item.price ? (
-              <div className="flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0.5 text-xs">
+              <div
+                itemScope
+                itemProp="offers"
+                itemType="https://schema.org/Offer"
+                className="flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0.5 text-xs"
+              >
+                <meta itemProp="priceCurrency" content="USD" />
+                <link itemProp="availability" href="https://schema.org/InStock" />
                 <span className="text-[oklch(0.94_0.012_80)] opacity-80">From</span>
-                <strong className="text-xl font-extrabold leading-none text-white tracking-tight">{item.price}</strong>
+                <strong itemProp="price" content={item.price.replace(/[^0-9.]/g, '')} className="text-xl font-extrabold leading-none text-white tracking-tight">
+                  {item.price}
+                </strong>
                 {originalPrice ? <span className="line-through text-[oklch(0.94_0.012_80)] opacity-75 text-xs">{originalPrice}</span> : null}
                 <span className="text-[oklch(0.94_0.012_80)] opacity-80">per person</span>
               </div>
