@@ -7,6 +7,8 @@ const mockMapProductToItemCard = jest.fn((activity) => ({
   title: activity.name,
   category: 'Desert Safari & Tour',
   price: '$130.00',
+  shortDescription: activity.short_description ?? null,
+  attributes: Array.isArray(activity.attributes) ? activity.attributes.slice(0, 3) : [],
 }));
 
 const mockCarouselShell = jest.fn(({ items, renderSlide }) => (
@@ -45,6 +47,12 @@ const rawActivity = {
   name: 'Desert Safari Adventure',
   city_slug: 'dubai',
   categories: [{ name: 'Outdoor adventure' }],
+  short_description: 'Ride the dunes at golden hour.',
+  attributes: [
+    { slug: 'duration', name: 'Duration', attribute_value: '4 Hours' },
+    { slug: 'group-size', name: 'Group Size', attribute_value: '6-10' },
+    { slug: 'age-restriction', name: 'Age Restriction', attribute_value: '12+' },
+  ],
 };
 
 describe('GoldTopActivitiesSection', () => {
@@ -90,6 +98,25 @@ describe('GoldTopActivitiesSection', () => {
       }),
       wishlistItem: rawActivity,
     });
+  });
+
+  it('threads short_description and first three attributes from raw activity through to the card', () => {
+    render(<GoldTopActivitiesSection activities={[rawActivity]} />);
+
+    expect(mockMapProductToItemCard).toHaveBeenCalledWith(rawActivity);
+    expect(mockGoldActivityCard).toHaveBeenCalledWith(
+      expect.objectContaining({
+        item: expect.objectContaining({
+          shortDescription: 'Ride the dunes at golden hour.',
+          attributes: [
+            { slug: 'duration', name: 'Duration', attribute_value: '4 Hours' },
+            { slug: 'group-size', name: 'Group Size', attribute_value: '6-10' },
+            { slug: 'age-restriction', name: 'Age Restriction', attribute_value: '12+' },
+          ],
+        }),
+        wishlistItem: rawActivity,
+      }),
+    );
   });
 
   it('renders nothing when activities are empty', () => {
