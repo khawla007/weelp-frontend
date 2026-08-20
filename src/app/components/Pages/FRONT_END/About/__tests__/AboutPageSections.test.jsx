@@ -50,6 +50,7 @@ describe('About page reference composition', () => {
   test('renders the measured two-row story overlap and descriptive metric panel', () => {
     render(<AboutPage />);
 
+    expect(screen.getByTestId('about-story-inner')).toHaveClass('storyInner');
     expect(screen.getByTestId('about-story-top')).toBeInTheDocument();
     expect(screen.getByTestId('about-story-bottom')).toBeInTheDocument();
     expect(screen.getAllByText('Our Story')).toHaveLength(1);
