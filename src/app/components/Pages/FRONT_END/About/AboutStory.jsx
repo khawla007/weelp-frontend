@@ -22,7 +22,7 @@ const storyImage = {
 
 const AboutStory = () => (
   <section data-about-section="story" className={styles.storySection}>
-    <div data-testid="about-story-inner" className={styles.storyInner}>
+    <div data-testid="about-story-inner" className="container-page">
       <div data-testid="about-story-top" className={styles.storyTop}>
         <div className={styles.storyHeading}>
           <SectionBadge icon={BookOpen}>Our Story</SectionBadge>

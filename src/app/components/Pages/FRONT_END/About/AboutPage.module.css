@@ -25,11 +25,6 @@
   padding-block: 8.75rem 15.9375rem;
 }
 
-.storyInner {
-  width: min(calc(100% - 2rem), 98.5625rem);
-  margin-inline: auto;
-}
-
 .storyTop {
   display: grid;
   grid-template-columns: 46.7% 53.3%;
@@ -106,17 +101,6 @@
 .storyCopy {
   min-width: 0;
   align-self: center;
-}
-
-@media (min-width: 1600px) {
-  .storyTop {
-    grid-template-columns: 43.4375rem minmax(0, 1fr);
-  }
-
-  .storyBottom {
-    grid-template-columns: 51.5625rem minmax(0, 1fr);
-    gap: 6.875rem;
-  }
 }
 
 .masonrySection {
