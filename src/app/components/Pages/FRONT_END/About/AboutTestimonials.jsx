@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import AboutImage from './AboutImage';
+import BlurRevealHeading from './BlurRevealHeading';
 import SectionBadge from './SectionBadge';
 import styles from './AboutPage.module.css';
 
@@ -58,11 +59,11 @@ const AboutTestimonials = () => {
   }, []);
 
   return (
-    <section data-about-section="testimonials" className="mb-14 bg-weelp-sage-wash py-14 md:mb-20 md:py-20 lg:mb-28 lg:py-28">
-      <div className="container-page">
-        <div className="mb-10 flex flex-col items-center text-center md:mb-14">
+    <section data-about-section="testimonials" className={`bg-weelp-sage-wash ${styles.testimonialSection}`}>
+      <div className={`container-page ${styles.testimonialInner}`}>
+        <div className={styles.testimonialHeader}>
           <SectionBadge icon={Quote}>Traveler Stories</SectionBadge>
-          <h2 className="section-opener mt-5 max-w-[20ch] text-foreground">Feedback from travelers around the world</h2>
+          <BlurRevealHeading className="section-opener mt-5 max-w-[20ch] text-foreground">Feedback from travelers around the world</BlurRevealHeading>
           <div className="mt-5 flex items-center gap-3 text-sm text-muted-foreground">
             <span className="flex text-weelp-sage-text" aria-label="4.9 out of 5 stars">
               {Array.from({ length: 5 }, (_, index) => (

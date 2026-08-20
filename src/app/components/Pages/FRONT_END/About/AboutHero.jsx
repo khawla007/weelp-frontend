@@ -4,7 +4,7 @@ import AboutImage from './AboutImage';
 import styles from './AboutPage.module.css';
 
 const AboutHero = () => (
-  <section data-about-section="hero" className={`weelp-hero-rise relative mb-10 flex items-end overflow-hidden pb-14 md:mb-16 md:pb-20 lg:mb-24 lg:pb-24 ${styles.hero}`}>
+  <section data-about-section="hero" className={`weelp-hero-rise relative flex items-end overflow-hidden pb-14 md:pb-20 lg:pb-24 ${styles.hero}`}>
     <div className={`${styles.heroMedia} ${styles.imageShell}`}>
       <AboutImage src="/assets/images/hero_bg_1.jpg" alt="" fill loading="eager" sizes="100vw" className={`object-cover ${styles.imageZoom}`} />
     </div>

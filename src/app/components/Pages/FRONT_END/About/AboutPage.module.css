@@ -1,9 +1,13 @@
-.hero {
-  min-height: clamp(31rem, 58vw, 45rem);
+.fullBleedBand,
+.fullBleedSplit {
+  width: 100%;
 }
 
-.heroMedia,
-.mediaFrame {
+.hero {
+  min-height: clamp(31rem, 45vw, 40.5625rem);
+}
+
+.heroMedia {
   position: absolute;
   inset: 0;
 }
@@ -16,46 +20,107 @@
   transform: scale(1.045);
 }
 
-.storyGrid {
+.storySection {
+  min-height: 82.6875rem;
+  padding: 8.75rem 1rem 15.9375rem;
+}
+
+.storyTop {
   display: grid;
-  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
-  gap: clamp(2rem, 5vw, 5.5rem);
+  grid-template-columns: 46.7% 53.3%;
   align-items: stretch;
 }
 
-.storyHeading,
-.storyStats,
-.storyImage,
-.storyCopy {
+.storyHeading {
   min-width: 0;
+  padding-top: 4rem;
 }
 
-.storyStats {
+.storyStats,
+.storyStatsOverlap {
+  position: relative;
+  z-index: 3;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-self: end;
+  min-width: 0;
+  min-height: 21.875rem;
+  border-radius: 0 0 0 1.5rem;
+}
+
+.storyStat {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 2.25rem;
 }
 
 .storyStat + .storyStat {
   border-left: 1px solid hsl(var(--border));
 }
 
+.storyStatNumber {
+  font-size: clamp(4.5rem, 7vw, 7rem);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  color: hsl(var(--foreground));
+}
+
+.storyStatLabel {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+.storyStatDescription {
+  max-width: 28ch;
+  margin-top: 0.65rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: hsl(var(--muted-foreground));
+}
+
+.storyBottom {
+  display: grid;
+  grid-template-columns: 56% 36%;
+  gap: 8%;
+  align-items: center;
+  margin-top: -5rem;
+}
+
 .storyImage {
   position: relative;
-  min-height: 31rem;
+  min-width: 0;
+  min-height: 41.125rem;
   overflow: hidden;
-  border-radius: 1.5rem;
+  border-radius: 0 1.5rem 1.5rem 0;
 }
 
 .storyCopy {
+  min-width: 0;
   align-self: center;
+}
+
+.masonrySection {
+  min-height: 98.3125rem;
+  padding-block: 8.75rem;
+}
+
+.masonryInner {
+  display: flex;
+  min-height: 80.8125rem;
+  flex-direction: column;
 }
 
 .masonryHeader {
   display: grid;
   grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.18fr) minmax(8rem, 0.42fr);
   gap: clamp(1.5rem, 3vw, 3rem);
-  align-items: end;
+  align-items: start;
+  min-height: 15.0625rem;
+  margin-bottom: 3.1875rem;
 }
 
 .masonryHeadline {
@@ -70,25 +135,23 @@
 .masonryGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 2.5rem;
+  min-height: 56.25rem;
 }
 
 .masonryColumn {
   display: grid;
   min-width: 0;
-  gap: 1rem;
+  gap: 2.5rem;
 }
 
-.masonryColumnLeft {
-  grid-template-rows: minmax(38rem, 1fr);
+.masonryColumnLeft,
+.masonryColumnRight {
+  grid-template-rows: 31rem 22.75rem;
 }
 
 .masonryColumnCenter {
-  grid-template-rows: minmax(19rem, auto) minmax(21rem, 1fr);
-}
-
-.masonryColumnRight {
-  grid-template-rows: minmax(24rem, 1fr) minmax(16rem, auto);
+  grid-template-rows: 22.75rem 31rem;
 }
 
 .masonryVisual,
@@ -102,83 +165,127 @@
   overflow: hidden;
 }
 
+.masonryVisual,
+.masonryImage,
+.masonryCopyCard {
+  border-radius: 0;
+}
+
 .masonryMetric {
   position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  min-width: 9rem;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  width: min(23.3125rem, calc(100% - 2.5rem));
+  min-height: 15.625rem;
+}
+
+.masonryContact {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid hsl(var(--border));
 }
 
 .whyGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
-  gap: clamp(2rem, 5vw, 5rem);
-  align-items: center;
+  grid-template-columns: 46.7% 53.3%;
+  min-height: 65.1875rem;
+}
+
+.whyMedia {
+  position: relative;
+  min-width: 0;
 }
 
 .whyImage {
-  min-height: 37rem;
-  border-radius: 1.5rem;
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+}
+
+.whyContent {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem clamp(2.875rem, 5vw, 5.5rem);
 }
 
 .whyMetric {
   position: absolute;
-  right: -1.5rem;
-  bottom: 2rem;
-  min-width: 13rem;
+  bottom: 4rem;
+  left: 4rem;
+  z-index: 2;
+  width: 23.3125rem;
+  min-height: 14.5625rem;
+  border-radius: 0 1.5rem 1.5rem 0;
+}
+
+.teamSection {
+  min-height: 64.8125rem;
+  padding: 8.75rem 1rem 8.9375rem;
+}
+
+.teamHeader {
+  display: flex;
+  min-height: 10rem;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 6.125rem;
+  text-align: center;
 }
 
 .teamGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1rem, 2.5vw, 2rem);
+  gap: 3.0625rem;
 }
 
 .teamImage {
-  aspect-ratio: 0.78;
-  border-radius: 1.5rem;
+  aspect-ratio: 1;
+  border-radius: 0;
+}
+
+.testimonialSection {
+  min-height: 71rem;
+  padding-block: 8.75rem;
+}
+
+.testimonialInner {
+  display: flex;
+  min-height: 53.5rem;
+  flex-direction: column;
+}
+
+.testimonialHeader {
+  display: flex;
+  min-height: 9.375rem;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 9.5rem;
+  text-align: center;
 }
 
 .testimonialSlide {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-  min-height: 38rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.125rem;
+  min-height: 34.625rem;
 }
 
 .testimonialImage {
-  min-height: 38rem;
-  border-radius: 1.5rem 0 0 1.5rem;
+  min-height: 34.625rem;
+  border-radius: 0;
 }
 
 .testimonialPanel {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   justify-content: space-between;
-  border-radius: 0 1.5rem 1.5rem 0;
-}
-
-.ctaImage {
-  min-height: 31rem;
-  border-radius: 1.5rem;
-}
-
-.faqGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.03fr) minmax(0, 0.97fr);
-  gap: clamp(2rem, 5vw, 5rem);
-  align-items: center;
-}
-
-.faqImage {
-  min-height: 36rem;
-  border-radius: 1.5rem;
-  grid-column: 2;
-  grid-row: 1;
-}
-
-.faqContent {
-  grid-column: 1;
-  grid-row: 1;
+  border-radius: 0;
 }
 
 .testimonialControls {
@@ -188,9 +295,105 @@
   z-index: 2;
 }
 
+.ctaImage {
+  min-height: 30.8125rem;
+  border-radius: 0;
+}
+
+.faqSection {
+  position: relative;
+  overflow: visible;
+}
+
+.faqHeadingRow {
+  position: relative;
+  min-height: 31.9375rem;
+  padding: 12.3125rem 1rem 4rem;
+  background: hsl(var(--background));
+}
+
+.faqHeading {
+  max-width: 38rem;
+}
+
+.faqContentRow {
+  position: relative;
+  min-height: 29.25rem;
+  background: hsl(var(--weelp-sage-wash));
+}
+
+.faqImage {
+  position: absolute;
+  top: -19.4375rem;
+  right: 0;
+  z-index: 1;
+  width: 50.4%;
+  min-height: 49.1875rem;
+  border-radius: 0;
+}
+
+.faqContent {
+  position: absolute;
+  top: -10.9375rem;
+  left: 1rem;
+  z-index: 2;
+  width: 58%;
+  min-height: 33.625rem;
+  padding: 2.75rem 4rem;
+  background: hsl(var(--background));
+  box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 8%);
+}
+
 @media (max-width: 1023px) {
+  .storySection,
+  .masonrySection,
+  .teamSection,
+  .testimonialSection {
+    min-height: 0;
+  }
+
+  .storySection {
+    padding: 5rem 1rem 6rem;
+  }
+
+  .storyTop,
+  .storyBottom {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .storyHeading {
+    padding-top: 0;
+  }
+
+  .storyBottom {
+    margin-top: 2.5rem;
+  }
+
+  .storyStats,
+  .storyStatsOverlap {
+    min-height: 0;
+    border-radius: 1.5rem;
+  }
+
+  .storyImage {
+    min-height: 34rem;
+    border-radius: 1.5rem;
+  }
+
+  .masonrySection,
+  .testimonialSection {
+    padding-block: 6rem;
+  }
+
+  .masonryInner,
+  .testimonialInner {
+    min-height: 0;
+  }
+
   .masonryHeader {
     grid-template-columns: 1fr auto;
+    min-height: 0;
   }
 
   .masonryHeadline {
@@ -205,52 +408,97 @@
 
   .masonryGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-height: 0;
   }
 
   .masonryColumnRight {
     grid-column: 1 / -1;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: minmax(22rem, auto);
+    grid-template-rows: 31rem;
   }
 
-  .whyGrid,
-  .faqGrid {
+  .whyGrid {
     grid-template-columns: 1fr;
+    min-height: 0;
   }
 
-  .faqImage,
-  .faqContent {
-    grid-column: auto;
-    grid-row: auto;
+  .whyMedia {
+    min-height: 38rem;
+  }
+
+  .whyContent {
+    padding-block: 7rem;
   }
 
   .whyMetric {
     right: 1rem;
+    left: auto;
+  }
+
+  .teamSection {
+    padding-block: 6rem;
+  }
+
+  .teamHeader,
+  .testimonialHeader {
+    min-height: 0;
+    margin-bottom: 4rem;
   }
 
   .testimonialSlide {
     grid-template-columns: 1fr;
+    gap: 0;
   }
 
   .testimonialImage {
     min-height: 28rem;
-    border-radius: 1.5rem 1.5rem 0 0;
   }
 
-  .testimonialPanel {
-    border-radius: 0 0 1.5rem 1.5rem;
+  .faqHeadingRow {
+    min-height: 0;
+    padding: 6rem 1rem 3rem;
+  }
+
+  .faqContentRow {
+    display: grid;
+    min-height: 0;
+    gap: 0;
+    padding-bottom: 6rem;
+  }
+
+  .faqImage,
+  .faqContent {
+    position: relative;
+    inset: auto;
+    width: auto;
+  }
+
+  .faqImage {
+    min-height: 36rem;
+  }
+
+  .faqContent {
+    min-height: 0;
+    margin: 0 1rem;
+    padding: 3rem;
+    box-shadow: none;
   }
 }
 
 @media (max-width: 767px) {
-  .storyGrid,
-  .masonryGrid,
-  .teamGrid {
+  .storyStats,
+  .teamGrid,
+  .masonryGrid {
     grid-template-columns: 1fr;
   }
 
-  .storyStats {
-    min-height: auto;
+  .storyStat + .storyStat {
+    border-top: 1px solid hsl(var(--border));
+    border-left: 0;
+  }
+
+  .storyStatNumber {
+    font-size: 4.75rem;
   }
 
   .storyImage {
@@ -272,23 +520,26 @@
   .masonryColumnRight {
     grid-column: auto;
     grid-template-columns: 1fr;
-    grid-template-rows: none;
+    grid-template-rows: 28rem auto;
   }
 
-  .masonryVisual,
-  .masonryImage {
-    min-height: 25rem;
+  .masonryColumnCenter {
+    grid-template-rows: auto 28rem;
   }
 
-  .whyImage,
-  .faqImage {
-    min-height: 26rem;
+  .whyMedia {
+    min-height: 32rem;
+  }
+
+  .whyContent {
+    padding: 5rem 1rem;
   }
 
   .whyMetric {
     right: 0.75rem;
     bottom: 0.75rem;
-    min-width: auto;
+    width: calc(100% - 1.5rem);
+    min-height: auto;
   }
 
   .testimonialSlide,
@@ -301,7 +552,15 @@
   }
 
   .ctaImage {
+    min-height: 30.8125rem;
+  }
+
+  .faqImage {
     min-height: 27rem;
+  }
+
+  .faqContent {
+    padding: 2rem 1rem;
   }
 }
 

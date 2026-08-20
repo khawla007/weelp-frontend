@@ -1,6 +1,7 @@
 import { ShieldCheck, Heart, Sparkles, Lightbulb, Leaf } from 'lucide-react';
 import Reveal from '@/app/components/ui/Reveal';
 import AboutImage from './AboutImage';
+import BlurRevealHeading from './BlurRevealHeading';
 import SectionBadge from './SectionBadge';
 import styles from './AboutPage.module.css';
 
@@ -14,24 +15,25 @@ const cells = [
 const whyImage = { src: '/assets/images/CountryBanner.jpeg', alt: 'A local Weelp guide sharing a destination', fallbackLabel: 'Local guide image unavailable' };
 
 const AboutWhyChoose = () => (
-  <section data-about-section="process" className="mb-14 bg-weelp-sage-deep py-14 md:mb-20 md:py-20 lg:mb-28 lg:py-28">
-    <div className={`container-page ${styles.whyGrid}`}>
-      <Reveal variant="left" className="relative">
+  <section data-about-section="process" className="bg-weelp-sage-deep">
+    <div data-testid="about-process-split" className={`${styles.whyGrid} ${styles.fullBleedSplit}`}>
+      <Reveal variant="left" className={styles.whyMedia}>
         <div className={`${styles.whyImage} ${styles.imageShell}`}>
           <AboutImage {...whyImage} fill sizes="(max-width: 1024px) 100vw, 52vw" className={`object-cover ${styles.imageZoom}`} />
         </div>
-        <div className={`rounded-[22px] border border-white/20 bg-background p-6 shadow-lg ${styles.whyMetric}`}>
-          <p className="text-4xl font-semibold text-foreground">90+</p>
-          <p className="mt-2 text-sm text-muted-foreground">Local guides</p>
+        <div className={`border border-white/20 bg-background p-8 shadow-lg ${styles.whyMetric}`}>
+          <p className="text-6xl font-semibold text-foreground">90+</p>
+          <p className="mt-3 text-base font-semibold text-foreground">Local guides</p>
+          <p className="mt-3 max-w-[24ch] text-sm leading-relaxed text-muted-foreground">Experts who turn unfamiliar places into personal stories.</p>
         </div>
       </Reveal>
 
-      <Reveal variant="right">
+      <Reveal variant="right" className={styles.whyContent}>
         {/* dark-mode-exempt: translucent white badge is intentional on the permanent sage-deep section */}
         <SectionBadge icon={ShieldCheck} className="bg-white/10 text-white">
           Why Choose Us
         </SectionBadge>
-        <h2 className="section-opener mb-4 mt-5 max-w-[18ch] text-white">Why travelers trust Weelp for the journey</h2>
+        <BlurRevealHeading className="section-opener mb-4 mt-5 max-w-[18ch] text-white">Why travelers trust Weelp for the journey</BlurRevealHeading>
         <p className="mb-10 max-w-[55ch] text-white/70">The values that guide how we build experiences and treat every traveler and partner.</p>
         <Reveal initialHidden stagger={90} variant="lift" className="grid grid-cols-1 gap-x-8 gap-y-9 sm:grid-cols-2">
           {cells.map((cell) => {

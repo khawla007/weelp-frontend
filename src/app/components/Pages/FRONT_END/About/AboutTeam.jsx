@@ -1,6 +1,7 @@
 import { Users } from 'lucide-react';
 import Reveal from '@/app/components/ui/Reveal';
 import AboutImage from './AboutImage';
+import BlurRevealHeading from './BlurRevealHeading';
 import SectionBadge from './SectionBadge';
 import styles from './AboutPage.module.css';
 
@@ -13,13 +14,13 @@ const team = [
 const revealVariants = ['left', 'lift', 'right'];
 
 const AboutTeam = () => (
-  <section data-about-section="team" className="container-page pb-14 md:pb-20 lg:pb-28">
-    <div className="mb-12 flex flex-col items-center text-center">
+  <section data-about-section="team" className={styles.teamSection}>
+    <div className={styles.teamHeader}>
       <SectionBadge icon={Users}>Our Team</SectionBadge>
-      <h2 className="mt-4 text-foreground">Meet the people behind Weelp</h2>
+      <BlurRevealHeading className="mt-4 text-foreground">Meet the people behind Weelp</BlurRevealHeading>
       <p className="mt-2 max-w-[46ch] text-muted-foreground">A small, dedicated team of travelers building the experiences we&apos;d want ourselves.</p>
     </div>
-    <div className={styles.teamGrid}>
+    <div data-testid="about-team-grid" data-team-layout="reference-compact" className={styles.teamGrid}>
       {team.map((member, index) => (
         <Reveal key={member.name} variant={revealVariants[index]} data-testid="about-team-card" className={styles.imageShell}>
           <div className={styles.teamImage}>

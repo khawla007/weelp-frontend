@@ -2,6 +2,7 @@ import { BookOpen, Check } from 'lucide-react';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import Reveal from '@/app/components/ui/Reveal';
 import AboutImage from './AboutImage';
+import BlurRevealHeading from './BlurRevealHeading';
 import SectionBadge from './SectionBadge';
 import styles from './AboutPage.module.css';
 
@@ -20,26 +21,30 @@ const storyImage = {
 };
 
 const AboutStory = () => (
-  <section data-about-section="story" className="container-page pb-14 md:pb-20 lg:pb-28">
-    <div data-testid="about-story-grid" className={styles.storyGrid}>
-      <Reveal variant="left" className={styles.storyHeading}>
+  <section data-about-section="story" className={styles.storySection}>
+    <div data-testid="about-story-top" className={styles.storyTop}>
+      <div className={styles.storyHeading}>
         <SectionBadge icon={BookOpen}>Our Story</SectionBadge>
-        <h2 className="section-opener mt-5 max-w-[17ch] text-foreground">Travel dedicated to authenticity and meaningful connection</h2>
-      </Reveal>
+        <BlurRevealHeading className="section-opener mt-5 max-w-[17ch] text-foreground">Travel dedicated to authenticity and meaningful connection</BlurRevealHeading>
+      </div>
 
-      <Reveal variant="right" data-testid="about-story-stats" className={`overflow-hidden rounded-[24px] border border-border bg-weelp-sage-wash ${styles.storyStats}`}>
-        <div className={`px-6 py-8 md:px-10 md:py-10 ${styles.storyStat}`}>
-          <p className="text-4xl font-semibold text-foreground md:text-5xl">120+</p>
-          <p className="mt-2 text-sm text-muted-foreground">Destinations</p>
+      <Reveal variant="right" data-testid="about-story-stats" className={`overflow-hidden border border-border bg-weelp-sage-wash ${styles.storyStats} ${styles.storyStatsOverlap}`}>
+        <div className={styles.storyStat}>
+          <p className={styles.storyStatNumber}>120+</p>
+          <p className={styles.storyStatLabel}>Destinations</p>
+          <p className={styles.storyStatDescription}>Curated destinations across every continent, chosen for authentic local experiences.</p>
         </div>
-        <div className={`px-6 py-8 md:px-10 md:py-10 ${styles.storyStat}`}>
-          <p className="text-4xl font-semibold text-foreground md:text-5xl">40+</p>
-          <p className="mt-2 text-sm text-muted-foreground">Local partners</p>
+        <div className={styles.storyStat}>
+          <p className={styles.storyStatNumber}>40+</p>
+          <p className={styles.storyStatLabel}>Local partners</p>
+          <p className={styles.storyStatDescription}>Local partners helping travelers discover each place with confidence and care.</p>
         </div>
       </Reveal>
+    </div>
 
+    <div data-testid="about-story-bottom" className={styles.storyBottom}>
       <Reveal variant="left" className={`${styles.storyImage} ${styles.imageShell}`}>
-        <AboutImage {...storyImage} fill sizes="(max-width: 768px) 100vw, 45vw" className={`object-cover ${styles.imageZoom}`} />
+        <AboutImage {...storyImage} fill sizes="(max-width: 1023px) 100vw, 57vw" className={`object-cover ${styles.imageZoom}`} />
       </Reveal>
 
       <Reveal initialHidden variant="right" className={styles.storyCopy}>

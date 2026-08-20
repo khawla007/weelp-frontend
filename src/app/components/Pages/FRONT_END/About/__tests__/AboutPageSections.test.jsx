@@ -47,14 +47,27 @@ describe('About page reference composition', () => {
     expect(container.querySelector('[data-about-section="hero"] img')).toHaveAttribute('loading', 'eager');
   });
 
-  test('renders the two-row story grid and combined metric panel', () => {
+  test('renders the measured two-row story overlap and descriptive metric panel', () => {
     render(<AboutPage />);
 
-    expect(screen.getByTestId('about-story-grid')).toBeInTheDocument();
+    expect(screen.getByTestId('about-story-top')).toBeInTheDocument();
+    expect(screen.getByTestId('about-story-bottom')).toBeInTheDocument();
     expect(screen.getAllByText('Our Story')).toHaveLength(1);
-    expect(screen.getByTestId('about-story-stats')).toHaveTextContent('120+');
-    expect(screen.getByTestId('about-story-stats')).toHaveTextContent('40+');
+    expect(screen.getByTestId('about-story-stats')).toHaveClass('storyStatsOverlap');
+    expect(screen.getByText(/curated destinations across/i)).toBeInTheDocument();
+    expect(screen.getByText(/local partners helping/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /contact our team/i })).toHaveAttribute('href', '/contact-us');
+  });
+
+  test('uses flush full-width process, CTA, and interlocked FAQ bands', () => {
+    const { container } = render(<AboutPage />);
+
+    expect(container.querySelector('[data-about-section="process"] [data-testid="about-process-split"]')).toHaveClass('fullBleedSplit');
+    expect(container.querySelector('[data-about-section="cta"]')).toHaveClass('fullBleedBand');
+    expect(container.querySelector('[data-about-section="faq"]')).toHaveClass('fullBleedBand');
+    expect(screen.getByTestId('about-faq-heading-row')).toBeInTheDocument();
+    expect(screen.getByTestId('about-faq-content-row')).toBeInTheDocument();
+    expect(screen.getByTestId('about-faq-overlap-image')).toBeInTheDocument();
   });
 
   test('renders the separate masonry header, three columns, and four values', () => {
@@ -70,6 +83,7 @@ describe('About page reference composition', () => {
     render(<AboutPage />);
 
     expect(screen.getAllByTestId('about-team-card')).toHaveLength(3);
+    expect(screen.getByTestId('about-team-grid')).toHaveAttribute('data-team-layout', 'reference-compact');
   });
 
   test('exposes one testimonial control pair even when every slide is mounted', () => {
@@ -85,6 +99,8 @@ describe('About page reference composition', () => {
     expect(screen.getByRole('link', { name: /start planning/i })).toHaveAttribute('href', '/activities');
     expect(screen.getByRole('button', { name: /which destinations does weelp cover/i })).toHaveAttribute('aria-expanded', 'true');
     const faq = container.querySelector('[data-about-section="faq"]');
-    expect(faq.querySelector('[data-testid="about-faq-image"]').compareDocumentPosition(faq.querySelector('[data-testid="about-faq-content"]')) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(
+      faq.querySelector('[data-testid="about-faq-overlap-image"]').compareDocumentPosition(faq.querySelector('[data-testid="about-faq-content"]')) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
   });
 });
