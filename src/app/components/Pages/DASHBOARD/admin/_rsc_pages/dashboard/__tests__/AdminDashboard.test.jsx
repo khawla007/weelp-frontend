@@ -1,12 +1,14 @@
 import React from 'react';
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 
 import { AdminDashboardPage } from '../AdminDashboard';
+import { downloadDashboardCsv } from '../dashboardExport';
 
 const mockUseSWR = jest.fn();
 const mockUseAdminNavigationUnseen = jest.fn();
 const mockMetricCards = jest.fn(() => <div data-testid="dashboard-kpis" className="gap-[11px]" />);
 const mockOverview = jest.fn(({ data, loading }) => <div>{loading ? 'Overview loading' : `Overview chart: ${data?.[0]?.name ?? 'placeholder'}`}</div>);
+const mockToast = jest.fn();
 
 jest.mock('swr', () => ({
   __esModule: true,
@@ -17,12 +19,22 @@ jest.mock('@/hooks/api/admin/navigationUnseen', () => ({
   useAdminNavigationUnseen: () => mockUseAdminNavigationUnseen(),
 }));
 
+jest.mock('@/hooks/use-toast', () => ({
+  ...jest.requireActual('@/hooks/use-toast'),
+  useToast: () => ({ toast: mockToast }),
+}));
+
 jest.mock('../overview', () => ({
   Overview: (props) => mockOverview(props),
 }));
 
 jest.mock('../metric-cards', () => ({
   MetricCards: (props) => mockMetricCards(props),
+}));
+
+jest.mock('../dashboardExport', () => ({
+  ...jest.requireActual('../dashboardExport'),
+  downloadDashboardCsv: jest.fn(),
 }));
 
 const metrics = [
@@ -58,6 +70,50 @@ function arrangeDashboard({ mixError = null, mixLoading = false, metricsError = 
 describe('AdminDashboardPage', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    downloadDashboardCsv.mockClear();
+    mockToast.mockClear();
+  });
+
+  it('downloads the successful metrics and overview chart', () => {
+    arrangeDashboard();
+    render(<AdminDashboardPage />);
+
+    const downloadButton = screen.getByRole('button', { name: 'Download' });
+    expect(downloadButton).toBeEnabled();
+
+    fireEvent.click(downloadButton);
+
+    expect(downloadDashboardCsv).toHaveBeenCalledTimes(1);
+    expect(downloadDashboardCsv).toHaveBeenCalledWith({ metrics, overview: chart });
+  });
+
+  it('shows a destructive toast when the dashboard download fails', () => {
+    arrangeDashboard();
+    downloadDashboardCsv.mockImplementationOnce(() => {
+      throw new Error('download unavailable');
+    });
+    render(<AdminDashboardPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Download' }));
+
+    expect(mockToast).toHaveBeenCalledTimes(1);
+    expect(mockToast).toHaveBeenCalledWith({
+      variant: 'destructive',
+      title: 'Download failed',
+      description: 'Please try again.',
+    });
+  });
+
+  it.each([
+    ['metrics are loading', { metricsLoading: true }],
+    ['the overview chart is loading', { chartLoading: true }],
+    ['metrics fail', { metricsError: new Error('metrics unavailable') }],
+    ['the overview chart fails', { chartError: new Error('chart unavailable') }],
+  ])('disables Download while %s', (_scenario, state) => {
+    arrangeDashboard(state);
+    render(<AdminDashboardPage />);
+
+    expect(screen.getByRole('button', { name: 'Download' })).toBeDisabled();
   });
 
   it('composes the responsive Executive Flow around live metrics, booking mix, actions, and attention', () => {
@@ -87,6 +143,7 @@ describe('AdminDashboardPage', () => {
 
     expect(screen.getByText('Overview chart: Jan')).toBeInTheDocument();
     expect(screen.getByText("Couldn't load some dashboard data. Showing placeholders where possible.")).toHaveAttribute('role', 'alert');
+    expect(screen.getByRole('button', { name: 'Download' })).toBeEnabled();
   });
 
   it('keeps live sections available while the booking mix loads locally', () => {

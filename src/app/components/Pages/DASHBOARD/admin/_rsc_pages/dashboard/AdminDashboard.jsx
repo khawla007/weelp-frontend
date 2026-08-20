@@ -5,10 +5,12 @@ import useSWR from 'swr';
 
 import { DashboardMotionFrame } from '@/app/components/DashboardShared';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 import { getBookingMix, getDashboardMetrics, getOverviewChart } from '@/lib/services/dashboard';
 
 import { AttentionSummary } from './AttentionSummary';
 import { BookingMix } from './BookingMix';
+import { canExportDashboard, downloadDashboardCsv } from './dashboardExport';
 import { MetricCards } from './metric-cards';
 import { Overview } from './overview';
 import { QuickActions } from './quick-actions';
@@ -23,10 +25,28 @@ const SWR_OPTIONS = {
 };
 
 export function AdminDashboardPage() {
+  const { toast } = useToast();
   const { data: metricsData, error: metricsError, isLoading: metricsLoading } = useSWR('/admin/dashboard/metrics', getDashboardMetrics, SWR_OPTIONS);
   const { data: chartData, error: chartError, isLoading: chartLoading } = useSWR('/admin/dashboard/overview-chart', getOverviewChart, SWR_OPTIONS);
   const { data: bookingMix, error: bookingMixError, isLoading: bookingMixLoading } = useSWR('/admin/dashboard/booking-mix', getBookingMix, SWR_OPTIONS);
   const hasError = metricsError || chartError || bookingMixError;
+  const canDownload = canExportDashboard({
+    metrics: metricsData,
+    overview: chartData,
+    metricsLoading,
+    chartLoading,
+    metricsError,
+    chartError,
+  });
+
+  const handleDownload = () => {
+    if (!canDownload) return;
+    try {
+      downloadDashboardCsv({ metrics: metricsData, overview: chartData });
+    } catch {
+      toast({ variant: 'destructive', title: 'Download failed', description: 'Please try again.' });
+    }
+  };
 
   return (
     <DashboardMotionFrame className="flex-1 space-y-5">
@@ -35,7 +55,7 @@ export function AdminDashboardPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Live business summary</p>
           <h1 className="mt-1 text-2xl font-bold tracking-tight text-foreground md:text-3xl">Super Admin Dashboard</h1>
         </div>
-        <Button className="w-fit bg-weelp-sage-deep">
+        <Button className="w-fit bg-weelp-sage-deep" disabled={!canDownload} onClick={handleDownload}>
           <DownloadIcon aria-hidden="true" />
           Download
         </Button>
