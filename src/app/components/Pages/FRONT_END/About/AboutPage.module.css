@@ -21,7 +21,7 @@
 }
 
 .storySection {
-  padding-block: 8.75rem;
+  padding-block: 6rem;
 }
 
 .storyTop {
@@ -166,8 +166,7 @@
 }
 
 .masonrySection {
-  min-height: 98.3125rem;
-  padding-block: 8.75rem 9.3125rem;
+  padding-block: 6rem;
 }
 
 .masonryInner {
@@ -417,14 +416,13 @@
 }
 
 @media (max-width: 1023px) {
-  .masonrySection,
   .teamSection,
   .testimonialSection {
     min-height: 0;
   }
 
   .storySection {
-    padding-block: 5rem 6rem;
+    padding-block: 4rem;
   }
 
   .storyTop,
@@ -475,7 +473,10 @@
     border-radius: 0.625rem;
   }
 
-  .masonrySection,
+  .masonrySection {
+    padding-block: 4rem;
+  }
+
   .testimonialSection {
     padding-block: 6rem;
   }
@@ -584,6 +585,11 @@
 }
 
 @media (max-width: 767px) {
+  .storySection,
+  .masonrySection {
+    padding-block: 2.5rem;
+  }
+
   .storyStats,
   .teamGrid,
   .masonryGrid {
