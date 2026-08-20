@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { HelpCircle, ChevronRight } from 'lucide-react';
+import Reveal from '@/app/components/ui/Reveal';
+import AboutImage from './AboutImage';
 import SectionBadge from './SectionBadge';
+import styles from './AboutPage.module.css';
 
 const items = [
   {
@@ -25,13 +27,18 @@ const items = [
   },
 ];
 
+const faqImage = { src: '/assets/images/hero_bg_1.jpg', alt: 'Travelers exploring a destination with Weelp', fallbackLabel: 'Destination image unavailable' };
+
 const AboutFAQ = () => {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section className="container-page pb-10 md:pb-16 lg:pb-24">
-      <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-        <div>
+    <section data-about-section="faq" className="container-page pb-14 md:pb-20 lg:pb-28">
+      <div className={styles.faqGrid}>
+        <Reveal variant="right" data-testid="about-faq-image" className={`${styles.faqImage} ${styles.imageShell}`}>
+          <AboutImage {...faqImage} fill sizes="(max-width: 1024px) 100vw, 50vw" className={`object-cover ${styles.imageZoom}`} />
+        </Reveal>
+        <Reveal variant="left" data-testid="about-faq-content" className={styles.faqContent}>
           <SectionBadge icon={HelpCircle}>FAQ</SectionBadge>
           <h2 className="mb-6 mt-4 text-foreground">Common questions about traveling with Weelp</h2>
           <div className="space-y-3 md:space-y-4">
@@ -69,10 +76,7 @@ const AboutFAQ = () => {
               );
             })}
           </div>
-        </div>
-        <div className="relative h-[360px] w-full overflow-hidden rounded-[24px] bg-muted md:h-[460px]">
-          <Image src="/assets/images/hero_bg_1.jpg" alt="Travelers exploring a destination with Weelp" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
-        </div>
+        </Reveal>
       </div>
     </section>
   );

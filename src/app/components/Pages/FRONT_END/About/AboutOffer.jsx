@@ -1,78 +1,82 @@
-import Image from 'next/image';
-import { Compass, Award } from 'lucide-react';
+import { ArrowUpRight, Compass, MapPin } from 'lucide-react';
+import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import Reveal from '@/app/components/ui/Reveal';
+import AboutImage from './AboutImage';
 import SectionBadge from './SectionBadge';
+import styles from './AboutPage.module.css';
 
-const features = [
-  { title: 'Curated experiences', desc: 'Every trip is handpicked and quality-checked by our travel team.', img: '/assets/images/CountryBanner.jpeg', tags: ['Curated', 'Quality'] },
-  { title: 'Local guides', desc: 'Explore with people who call the destination home.', img: '/assets/images/china.jpg', tags: ['Local', 'Authentic'] },
-  { title: 'Flexible booking', desc: 'Plans change. Free cancellation on most experiences.', img: '/assets/images/hero_redesigned_bg.jpeg', tags: ['Flexible', 'Secure'] },
-];
+const images = {
+  lead: { src: '/assets/images/CountryBanner.jpeg', alt: 'Travelers overlooking a destination', fallbackLabel: 'Destination image unavailable' },
+  center: { src: '/assets/images/china.jpg', alt: 'A curated Weelp destination', fallbackLabel: 'Destination image unavailable' },
+  right: { src: '/assets/images/hero_redesigned_bg.jpeg', alt: 'A memorable journey with Weelp', fallbackLabel: 'Journey image unavailable' },
+};
 
 const AboutOffer = () => (
-  <section className="mb-10 w-full bg-weelp-sage-wash py-10 md:mb-16 md:py-16 lg:mb-24 lg:py-24">
+  <section data-about-section="statement" className="mb-14 w-full bg-weelp-sage-wash py-14 md:mb-20 md:py-20 lg:mb-28 lg:py-28">
     <div className="container-page">
-      <div className="mb-10 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-        <div>
+      <div data-testid="about-masonry-header" className={`mb-10 md:mb-14 ${styles.masonryHeader}`}>
+        <Reveal variant="left">
           <SectionBadge icon={Compass}>What We Offer</SectionBadge>
-          <h2 className="mt-4 max-w-[20ch] text-foreground">Why travelers choose Weelp for every journey</h2>
-        </div>
-        <a
-          href="/activities"
-          className="inline-flex items-center rounded-full border border-weelp-sage-deep px-6 py-3 text-sm font-semibold text-weelp-sage-text transition-colors hover:bg-weelp-sage-deep hover:text-white"
-        >
-          Explore experiences
-        </a>
+        </Reveal>
+        <Reveal variant="lift" className={styles.masonryHeadline}>
+          <h2 className="section-opener max-w-[23ch] text-foreground">Weelp, a trusted travel partner dedicated to meaningful journeys</h2>
+        </Reveal>
+        <Reveal variant="right" className={styles.masonryAction}>
+          <NavigationLink href="/contact-us" className="group inline-flex items-center gap-2 text-sm font-semibold text-weelp-sage-text">
+            Get in touch <ArrowUpRight size={17} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </NavigationLink>
+        </Reveal>
       </div>
 
-      <Reveal initialHidden stagger={80} variant="lift" className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        <div className="flex flex-col justify-between rounded-[24px] bg-weelp-sage-deep p-8 text-white md:row-span-2">
-          <div>
-            <h3 className="text-2xl">Delivering unforgettable travel, thoughtfully designed</h3>
-            <p className="mt-3 text-white/80">From first search to safe return, we handle the details so you can focus on the experience.</p>
-          </div>
-          {/* dark-mode-exempt: white button intentionally sits on the sage-deep dark card in both themes */}
-          <a href="/activities" className="mt-8 inline-flex w-fit items-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-weelp-sage-text transition-colors hover:bg-white/90">
-            Start exploring
-          </a>
-        </div>
-
-        {features.map((f) => (
-          <div
-            key={f.title}
-            className="rounded-[24px] border border-border bg-background p-5 transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:hover:shadow-none"
-          >
-            <h3 className="mb-3 text-lg text-foreground">{f.title}</h3>
-            <div className="relative mb-3 h-32 w-full overflow-hidden rounded-[16px] bg-muted">
-              <Image src={f.img} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
-            </div>
-            <p className="mb-4 text-sm text-muted-foreground">{f.desc}</p>
-            <div className="flex flex-wrap gap-2">
-              {f.tags.map((t) => (
-                <span key={t} className="rounded-full bg-weelp-sage-tint/50 px-3 py-1 text-xs font-medium text-weelp-sage-text">
-                  {t}
-                </span>
-              ))}
+      <div className={styles.masonryGrid}>
+        <Reveal variant="left" data-testid="about-masonry-column" className={`${styles.masonryColumn} ${styles.masonryColumnLeft}`}>
+          <div className={`rounded-[24px] ${styles.masonryVisual} ${styles.imageShell}`}>
+            <AboutImage {...images.lead} fill sizes="(max-width: 768px) 100vw, 34vw" className={`object-cover ${styles.imageZoom}`} />
+            <div className="absolute inset-x-4 bottom-4 rounded-[20px] bg-background/90 p-6 backdrop-blur-md">
+              <h3 className="text-xl text-foreground">Designed around the way you want to travel</h3>
+              <NavigationLink href="/activities" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-weelp-sage-text">
+                Explore experiences <ArrowUpRight size={16} />
+              </NavigationLink>
             </div>
           </div>
-        ))}
+        </Reveal>
 
-        <div className="flex flex-col justify-center rounded-[24px] border border-border bg-background p-8">
-          <div className="mb-2 text-weelp-sage-text">
-            <Award size={28} />
+        <Reveal variant="lift" data-testid="about-masonry-column" className={`${styles.masonryColumn} ${styles.masonryColumnCenter}`}>
+          <div className="rounded-[24px] border border-border bg-background p-7 md:p-9">
+            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-weelp-sage-text">About Weelp</p>
+            <p className="text-base leading-[1.75] text-muted-foreground">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vitae justo sit amet mi posuere feugiat, sed viverra lectus.
+            </p>
           </div>
-          <p className="text-4xl font-bold text-weelp-sage-text">15+</p>
-          <p className="mt-1 text-sm text-muted-foreground">Years guiding travelers across the globe</p>
-        </div>
-      </Reveal>
+          <div className={`rounded-[24px] ${styles.masonryImage} ${styles.imageShell}`}>
+            <AboutImage {...images.center} fill sizes="(max-width: 768px) 100vw, 34vw" className={`object-cover ${styles.imageZoom}`} />
+          </div>
+        </Reveal>
 
-      <div className="mt-8 flex items-center gap-3">
-        <Image src="/assets/images/user.png" alt="" width={36} height={36} className="rounded-full" />
+        <Reveal variant="right" data-testid="about-masonry-column" className={`${styles.masonryColumn} ${styles.masonryColumnRight}`}>
+          <div className={`rounded-[24px] ${styles.masonryImage} ${styles.imageShell}`}>
+            <AboutImage {...images.right} fill sizes="(max-width: 768px) 100vw, 34vw" className={`object-cover ${styles.imageZoom}`} />
+            <div className={`rounded-[18px] bg-weelp-sage-deep p-5 text-white ${styles.masonryMetric}`}>
+              <p className="text-3xl font-semibold text-white">120+</p>
+              <p className="mt-1 text-xs text-white/80">destinations</p>
+            </div>
+          </div>
+          <div className="rounded-[24px] bg-weelp-sage-deep p-7 text-white md:p-9">
+            <MapPin size={26} aria-hidden="true" />
+            <p className="mt-6 text-base leading-[1.75] text-white/80">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id nibh vel lectus interdum feugiat.</p>
+          </div>
+        </Reveal>
+      </div>
+
+      <div className="mt-8 flex items-center gap-3 border-t border-border pt-6">
+        <span className="relative h-9 w-9 overflow-hidden rounded-full">
+          <AboutImage src="/assets/images/user.png" alt="Weelp travel planner" fill sizes="36px" className="object-cover" />
+        </span>
         <p className="text-sm text-muted-foreground">
           Let&apos;s plan something unforgettable together.{' '}
-          <a href="/contact-us" className="font-semibold text-weelp-sage-text underline underline-offset-4">
+          <NavigationLink href="/contact-us" className="font-semibold text-weelp-sage-text underline underline-offset-4">
             Get in touch
-          </a>
+          </NavigationLink>
         </p>
       </div>
     </div>

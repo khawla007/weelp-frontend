@@ -28,8 +28,9 @@ const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : use
  * @param {number} [props.y=12] - fade-up offset in px (-> --weelp-fade-up-y)
  * @param {number} [props.duration] - animation duration in ms (-> --weelp-motion-duration)
  * @param {boolean} [props.once=true] - disconnect observer after first reveal
- * @param {string} [props.variant] - reveal variant. 'lift' opts into the 40px / 900ms
- *   reference design-4 keyframe instead of the default 12px / 520ms one
+ * @param {'lift'|'left'|'right'} [props.variant] - reveal direction. 'lift' opts
+ *   into the 40px / 900ms vertical keyframe; 'left' and 'right' use the same
+ *   timing with a 40px horizontal entrance.
  * @param {number} [props.stagger] - if set (ms), the root becomes a stagger container:
  *   each direct child is cloned with an inline --weelp-reveal-index, and the CSS
  *   `[data-reveal-cards][data-reveal='shown'] > *` rule fires them in sequence

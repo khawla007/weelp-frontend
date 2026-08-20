@@ -1,0 +1,314 @@
+.hero {
+  min-height: clamp(31rem, 58vw, 45rem);
+}
+
+.heroMedia,
+.mediaFrame {
+  position: absolute;
+  inset: 0;
+}
+
+.imageZoom {
+  transition: transform 700ms var(--weelp-ease-out);
+}
+
+.imageShell:hover .imageZoom {
+  transform: scale(1.045);
+}
+
+.storyGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  gap: clamp(2rem, 5vw, 5.5rem);
+  align-items: stretch;
+}
+
+.storyHeading,
+.storyStats,
+.storyImage,
+.storyCopy {
+  min-width: 0;
+}
+
+.storyStats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-self: end;
+}
+
+.storyStat + .storyStat {
+  border-left: 1px solid hsl(var(--border));
+}
+
+.storyImage {
+  position: relative;
+  min-height: 31rem;
+  overflow: hidden;
+  border-radius: 1.5rem;
+}
+
+.storyCopy {
+  align-self: center;
+}
+
+.masonryHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.18fr) minmax(8rem, 0.42fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: end;
+}
+
+.masonryHeadline {
+  grid-column: 2;
+}
+
+.masonryAction {
+  grid-column: 3;
+  justify-self: end;
+}
+
+.masonryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.masonryColumn {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.masonryColumnLeft {
+  grid-template-rows: minmax(38rem, 1fr);
+}
+
+.masonryColumnCenter {
+  grid-template-rows: minmax(19rem, auto) minmax(21rem, 1fr);
+}
+
+.masonryColumnRight {
+  grid-template-rows: minmax(24rem, 1fr) minmax(16rem, auto);
+}
+
+.masonryVisual,
+.masonryImage,
+.whyImage,
+.teamImage,
+.testimonialImage,
+.ctaImage,
+.faqImage {
+  position: relative;
+  overflow: hidden;
+}
+
+.masonryMetric {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  min-width: 9rem;
+}
+
+.whyGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+
+.whyImage {
+  min-height: 37rem;
+  border-radius: 1.5rem;
+}
+
+.whyMetric {
+  position: absolute;
+  right: -1.5rem;
+  bottom: 2rem;
+  min-width: 13rem;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+
+.teamImage {
+  aspect-ratio: 0.78;
+  border-radius: 1.5rem;
+}
+
+.testimonialSlide {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  min-height: 38rem;
+}
+
+.testimonialImage {
+  min-height: 38rem;
+  border-radius: 1.5rem 0 0 1.5rem;
+}
+
+.testimonialPanel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 0 1.5rem 1.5rem 0;
+}
+
+.ctaImage {
+  min-height: 31rem;
+  border-radius: 1.5rem;
+}
+
+.faqGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.03fr) minmax(0, 0.97fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+
+.faqImage {
+  min-height: 36rem;
+  border-radius: 1.5rem;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.faqContent {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.testimonialControls {
+  position: absolute;
+  right: clamp(1.75rem, 3vw, 3rem);
+  bottom: clamp(1.75rem, 3vw, 3rem);
+  z-index: 2;
+}
+
+@media (max-width: 1023px) {
+  .masonryHeader {
+    grid-template-columns: 1fr auto;
+  }
+
+  .masonryHeadline {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .masonryAction {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .masonryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .masonryColumnRight {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: minmax(22rem, auto);
+  }
+
+  .whyGrid,
+  .faqGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .faqImage,
+  .faqContent {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .whyMetric {
+    right: 1rem;
+  }
+
+  .testimonialSlide {
+    grid-template-columns: 1fr;
+  }
+
+  .testimonialImage {
+    min-height: 28rem;
+    border-radius: 1.5rem 1.5rem 0 0;
+  }
+
+  .testimonialPanel {
+    border-radius: 0 0 1.5rem 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .storyGrid,
+  .masonryGrid,
+  .teamGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .storyStats {
+    min-height: auto;
+  }
+
+  .storyImage {
+    min-height: 23rem;
+  }
+
+  .masonryHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .masonryAction {
+    justify-self: auto;
+  }
+
+  .masonryColumnLeft,
+  .masonryColumnCenter,
+  .masonryColumnRight {
+    grid-column: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+
+  .masonryVisual,
+  .masonryImage {
+    min-height: 25rem;
+  }
+
+  .whyImage,
+  .faqImage {
+    min-height: 26rem;
+  }
+
+  .whyMetric {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    min-width: auto;
+  }
+
+  .testimonialSlide,
+  .testimonialImage {
+    min-height: 0;
+  }
+
+  .testimonialImage {
+    aspect-ratio: 1 / 0.78;
+  }
+
+  .ctaImage {
+    min-height: 27rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .imageZoom,
+  .imageShell:hover .imageZoom {
+    transform: none;
+    transition: none;
+  }
+}

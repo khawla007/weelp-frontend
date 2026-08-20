@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { render, screen, act } from '@testing-library/react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import Reveal from '../Reveal';
@@ -115,6 +117,20 @@ test('variant="lift" emits data-reveal-variant on root', () => {
   render(<Reveal variant="lift">content</Reveal>);
   const el = screen.getByText('content');
   expect(el).toHaveAttribute('data-reveal-variant', 'lift');
+});
+
+test.each(['left', 'right'])('variant="%s" emits data-reveal-variant on root', (variant) => {
+  render(<Reveal variant={variant}>content</Reveal>);
+  expect(screen.getByText('content')).toHaveAttribute('data-reveal-variant', variant);
+});
+
+test('global motion styles define directional reveal animations', () => {
+  const css = readFileSync(join(process.cwd(), 'src/app/globals.css'), 'utf8');
+
+  expect(css).toContain('@keyframes weelpRevealLeft');
+  expect(css).toContain('@keyframes weelpRevealRight');
+  expect(css).toContain("[data-reveal='shown'][data-reveal-variant='left']");
+  expect(css).toContain("[data-reveal='shown'][data-reveal-variant='right']");
 });
 
 test('stagger emits data-reveal-cards on root and indexes each child', () => {

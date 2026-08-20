@@ -1,111 +1,156 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
-import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import 'swiper/css';
-import Testimonial from '@/app/components/Testimonial';
+import AboutImage from './AboutImage';
 import SectionBadge from './SectionBadge';
+import styles from './AboutPage.module.css';
 
 const reviews = [
   {
     id: 1,
-    user: { name: 'Stephanie Jonathon' },
-    review_text: 'Weelp made our Kenya safari effortless. Every guide was knowledgeable and the itinerary was perfectly paced.',
-    created_at: '2026-05-12',
-    item: { name: 'Kenya Safari' },
+    name: 'Stephanie Jonathon',
+    descriptor: 'Kenya Safari',
+    text: 'Weelp made our Kenya safari effortless. Every guide was knowledgeable and the itinerary was perfectly paced.',
     rating: 5,
+    image: '/assets/images/about-story.jpg',
+    avatar: '/assets/images/team-1.jpg',
   },
   {
     id: 2,
-    user: { name: 'Daniel Carter' },
-    review_text: 'Booking was seamless and the local experiences were unforgettable. Highly recommend.',
-    created_at: '2026-04-28',
-    item: { name: 'Paris City Tour' },
+    name: 'Daniel Carter',
+    descriptor: 'Paris City Tour',
+    text: 'Booking was seamless and the local experiences were unforgettable. Highly recommend.',
     rating: 5,
+    image: '/assets/images/CountryBanner.jpeg',
+    avatar: '/assets/images/team-2.jpg',
   },
   {
     id: 3,
-    user: { name: 'Marvin Grant' },
-    review_text: 'The desert safari in Dubai exceeded expectations. Support was there whenever we needed it.',
-    created_at: '2026-06-03',
-    item: { name: 'Desert Safari' },
+    name: 'Marvin Grant',
+    descriptor: 'Desert Safari',
+    text: 'The desert safari in Dubai exceeded expectations. Support was there whenever we needed it.',
     rating: 4,
-  },
-  {
-    id: 4,
-    user: { name: 'Aisha Rahman' },
-    review_text: 'Authentic, well-organized, and great value. Weelp is now our go-to for travel.',
-    created_at: '2026-03-19',
-    item: { name: 'Marrakech Markets' },
-    rating: 5,
-  },
-  {
-    id: 5,
-    user: { name: 'Luca Moretti' },
-    review_text: 'Loved the flexibility and the curated experiences. Everything felt personal.',
-    created_at: '2026-02-08',
-    item: { name: 'Rome Food Walk' },
-    rating: 5,
+    image: '/assets/images/hero_redesigned_bg.jpeg',
+    avatar: '/assets/images/team-3.jpg',
   },
 ];
 
 const AboutTestimonials = () => {
   const swiperRef = useRef(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(() => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
+  const syncEdges = useCallback((swiper) => {
+    setAtStart(Boolean(swiper.isBeginning));
+    setAtEnd(Boolean(swiper.isEnd));
+  }, []);
+
   useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const handler = (e) => setReducedMotion(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handleChange = (event) => setReducedMotion(event.matches);
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
   return (
-    <section className="mb-10 w-full bg-weelp-sage-wash py-10 md:mb-16 md:py-16 lg:mb-24 lg:py-24">
+    <section data-about-section="testimonials" className="mb-14 bg-weelp-sage-wash py-14 md:mb-20 md:py-20 lg:mb-28 lg:py-28">
       <div className="container-page">
-        <div className="mb-10 flex flex-col items-center gap-4 text-center">
+        <div className="mb-10 flex flex-col items-center text-center md:mb-14">
           <SectionBadge icon={Quote}>Traveler Stories</SectionBadge>
-          <h2 className="text-foreground">Feedback from travelers around the world</h2>
-          <p className="text-muted-foreground">4.9 average rating · 2k+ verified reviews</p>
-          <div className="flex gap-3">
+          <h2 className="section-opener mt-5 max-w-[20ch] text-foreground">Feedback from travelers around the world</h2>
+          <div className="mt-5 flex items-center gap-3 text-sm text-muted-foreground">
+            <span className="flex text-weelp-sage-text" aria-label="4.9 out of 5 stars">
+              {Array.from({ length: 5 }, (_, index) => (
+                <Star key={index} size={16} fill="currentColor" aria-hidden="true" />
+              ))}
+            </span>
+            <span>4.9 average · 2k+ verified reviews</span>
+          </div>
+        </div>
+
+        <div role="region" aria-label="Traveler testimonials" aria-live="polite" className="relative">
+          <Swiper
+            modules={[Navigation]}
+            slidesPerView={1}
+            speed={reducedMotion ? 0 : 650}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+              syncEdges(swiper);
+            }}
+            onSlideChange={syncEdges}
+            onReachBeginning={syncEdges}
+            onReachEnd={syncEdges}
+          >
+            {reviews.map((review) => (
+              <SwiperSlide key={review.id}>
+                <article className={styles.testimonialSlide}>
+                  <div className={`${styles.testimonialImage} ${styles.imageShell}`}>
+                    <AboutImage
+                      src={review.image}
+                      alt={`${review.name} on ${review.descriptor}`}
+                      fallbackLabel="Traveler image unavailable"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 55vw"
+                      className={`object-cover ${styles.imageZoom}`}
+                    />
+                  </div>
+                  <div className={`bg-weelp-sage-deep p-7 text-white md:p-10 lg:p-12 ${styles.testimonialPanel}`}>
+                    <div>
+                      <div className="mb-8 flex items-center justify-between gap-4">
+                        <Quote size={40} aria-hidden="true" className="text-white/70" />
+                        <span className="flex text-white" aria-label={`${review.rating} out of 5 stars`}>
+                          {Array.from({ length: review.rating }, (_, index) => (
+                            <Star key={index} size={16} fill="currentColor" aria-hidden="true" />
+                          ))}
+                        </span>
+                      </div>
+                      <blockquote className="text-xl leading-[1.55] text-white md:text-2xl">“{review.text}”</blockquote>
+                    </div>
+
+                    <div className="mt-10 border-t border-white/25 pt-7 pr-28">
+                      <div className="flex items-center">
+                        <div className="flex items-center gap-4">
+                          <span className="relative h-12 w-12 overflow-hidden rounded-full border border-white/30">
+                            <AboutImage src={review.avatar} alt={`${review.name} avatar`} fallbackLabel="Reviewer avatar unavailable" fill sizes="48px" className="object-cover" />
+                          </span>
+                          <span>
+                            <strong className="block text-sm font-semibold text-white">{review.name}</strong>
+                            <span className="mt-1 block text-xs text-white/65">{review.descriptor}</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <div className={`flex gap-2 ${styles.testimonialControls}`}>
             <button
               type="button"
               aria-label="Previous testimonial"
+              disabled={atStart}
               onClick={() => swiperRef.current?.slidePrev()}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-weelp-sage-deep text-weelp-sage-text transition-colors hover:bg-weelp-sage-deep hover:text-white"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/35 text-white disabled:opacity-35"
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={19} />
             </button>
             <button
               type="button"
               aria-label="Next testimonial"
+              disabled={atEnd}
               onClick={() => swiperRef.current?.slideNext()}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-weelp-sage-deep text-weelp-sage-text transition-colors hover:bg-weelp-sage-deep hover:text-white"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/35 text-white disabled:opacity-35"
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={19} />
             </button>
           </div>
         </div>
-        <Swiper
-          modules={[Navigation]}
-          onSwiper={(s) => {
-            swiperRef.current = s;
-          }}
-          speed={reducedMotion ? 0 : 500}
-          spaceBetween={20}
-          slidesPerView={1}
-          breakpoints={{ 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }}
-        >
-          {reviews.map((r) => (
-            <SwiperSlide key={r.id} className="h-auto">
-              <div className="h-full">
-                <Testimonial username={r.user.name} title={r.review_text} date={r.created_at} itemName={r.item.name} rating={r.rating} />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
       </div>
     </section>
   );

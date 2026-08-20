@@ -585,6 +585,30 @@ body {
     }
   }
 
+  @keyframes weelpRevealLeft {
+    from {
+      opacity: 0;
+      transform: translate3d(var(--weelp-reveal-x, -40px), 0, 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes weelpRevealRight {
+    from {
+      opacity: 0;
+      transform: translate3d(var(--weelp-reveal-x, 40px), 0, 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
   /* Settings nav active indicator: slides vertically to the active route. */
   .weelp-settings-rail {
     transition:
@@ -630,6 +654,24 @@ body {
 
   [data-reveal='shown'][data-reveal-variant='lift'] {
     animation: weelpRevealUp var(--weelp-duration-reveal) var(--weelp-ease-out) both;
+    animation-delay: var(--weelp-motion-delay, 0ms);
+  }
+
+  [data-reveal='pending'][data-reveal-variant='left'] {
+    transform: translate3d(var(--weelp-reveal-x, -40px), 0, 0);
+  }
+
+  [data-reveal='shown'][data-reveal-variant='left'] {
+    animation: weelpRevealLeft var(--weelp-duration-reveal) var(--weelp-ease-out) both;
+    animation-delay: var(--weelp-motion-delay, 0ms);
+  }
+
+  [data-reveal='pending'][data-reveal-variant='right'] {
+    transform: translate3d(var(--weelp-reveal-x, 40px), 0, 0);
+  }
+
+  [data-reveal='shown'][data-reveal-variant='right'] {
+    animation: weelpRevealRight var(--weelp-duration-reveal) var(--weelp-ease-out) both;
     animation-delay: var(--weelp-motion-delay, 0ms);
   }
 

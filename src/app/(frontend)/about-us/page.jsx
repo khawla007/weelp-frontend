@@ -13,7 +13,7 @@ export const metadata = {
 };
 
 const AboutPage = () => (
-  <>
+  <div className="overflow-x-clip">
     <AboutHero />
     <AboutStory />
     <AboutOffer />
@@ -22,7 +22,7 @@ const AboutPage = () => (
     <AboutTestimonials />
     <AboutCTA />
     <AboutFAQ />
-  </>
+  </div>
 );
 
 export default AboutPage;
