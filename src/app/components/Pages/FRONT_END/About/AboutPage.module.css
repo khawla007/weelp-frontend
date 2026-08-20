@@ -22,7 +22,7 @@
 
 .storySection {
   min-height: 82.6875rem;
-  padding-block: 8.75rem 15.9375rem;
+  padding-block: 8.75rem 9.1875rem;
 }
 
 .storyTop {
@@ -33,7 +33,10 @@
 
 .storyHeading {
   min-width: 0;
-  padding-top: 4rem;
+}
+
+.storyTitle {
+  margin-top: 1.4375rem;
 }
 
 .storyStats,
@@ -43,8 +46,8 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   min-width: 0;
-  min-height: 21.875rem;
-  border-radius: 0 0 0 1.5rem;
+  min-height: 21.5rem;
+  border-radius: 0;
 }
 
 .storyStat {
@@ -86,7 +89,7 @@
   display: grid;
   grid-template-columns: 56% 36%;
   gap: 8%;
-  align-items: center;
+  align-items: start;
   margin-top: -5rem;
 }
 
@@ -100,7 +103,38 @@
 
 .storyCopy {
   min-width: 0;
-  align-self: center;
+  align-self: start;
+  margin-top: 9.375rem;
+}
+
+.storyParagraph {
+  line-height: 1.625rem;
+}
+
+.storyParagraphPrimary {
+  margin-bottom: 1.625rem;
+}
+
+.storyParagraphSecondary {
+  min-height: 8.125rem;
+  margin-bottom: 2.4375rem;
+}
+
+.storyChecklist {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6875rem;
+  margin-bottom: 3.5625rem;
+}
+
+.storyChecklistItem,
+.storyChecklistText {
+  min-height: 1.625rem;
+  line-height: 1.625rem;
+}
+
+.storyButton {
+  min-height: 3.375rem;
 }
 
 .masonrySection {
@@ -373,7 +407,36 @@
   .storyStats,
   .storyStatsOverlap {
     min-height: 0;
-    border-radius: 1.5rem;
+    border-radius: 0;
+  }
+
+  .storyCopy {
+    align-self: stretch;
+    margin-top: 0;
+  }
+
+  .storyParagraphPrimary {
+    margin-bottom: 1rem;
+  }
+
+  .storyParagraphSecondary {
+    min-height: 0;
+    margin-bottom: 1.75rem;
+  }
+
+  .storyChecklist {
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .storyChecklistItem,
+  .storyChecklistText {
+    min-height: 1.5rem;
+    line-height: 1.5rem;
+  }
+
+  .storyButton {
+    min-height: 0;
   }
 
   .storyImage {

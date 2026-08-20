@@ -55,6 +55,7 @@ describe('About page reference composition', () => {
     expect(screen.getByTestId('about-story-bottom')).toBeInTheDocument();
     expect(screen.getAllByText('Our Story')).toHaveLength(1);
     expect(screen.getByTestId('about-story-stats')).toHaveClass('storyStatsOverlap');
+    expect(screen.getByTestId('about-story-copy')).not.toHaveTextContent(/lorem ipsum/i);
     expect(screen.getByText(/curated destinations across/i)).toBeInTheDocument();
     expect(screen.getByText(/local partners helping/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /contact our team/i })).toHaveAttribute('href', '/contact-us');

@@ -26,7 +26,7 @@ const AboutStory = () => (
       <div data-testid="about-story-top" className={styles.storyTop}>
         <div className={styles.storyHeading}>
           <SectionBadge icon={BookOpen}>Our Story</SectionBadge>
-          <BlurRevealHeading className="section-opener mt-5 max-w-[17ch] text-foreground">Travel dedicated to authenticity and meaningful connection</BlurRevealHeading>
+          <BlurRevealHeading className={`section-opener max-w-[17ch] text-foreground ${styles.storyTitle}`}>Travel dedicated to authenticity and meaningful connection</BlurRevealHeading>
         </div>
 
         <Reveal variant="right" data-testid="about-story-stats" className={`overflow-hidden border border-border bg-weelp-sage-wash ${styles.storyStats} ${styles.storyStatsOverlap}`}>
@@ -48,27 +48,27 @@ const AboutStory = () => (
           <AboutImage {...storyImage} fill sizes="(max-width: 1023px) 100vw, 57vw" className={`object-cover ${styles.imageZoom}`} />
         </Reveal>
 
-        <Reveal initialHidden variant="right" className={styles.storyCopy}>
-          <p className="mb-4 max-w-[60ch] text-base leading-[1.7] text-muted-foreground">
+        <Reveal initialHidden variant="right" data-testid="about-story-copy" className={styles.storyCopy}>
+          <p className={`max-w-[60ch] text-base text-muted-foreground ${styles.storyParagraph} ${styles.storyParagraphPrimary}`}>
             From a simple idea to a global platform, Weelp was born from a passion for travel and a desire to connect people with authentic experiences around the world.
           </p>
-          <p className="mb-7 max-w-[60ch] text-base leading-[1.7] text-muted-foreground">
+          <p className={`max-w-[60ch] text-base text-muted-foreground ${styles.storyParagraph} ${styles.storyParagraphSecondary}`}>
             What began as a small team of travel enthusiasts is now a community of explorers united by one goal: making travel accessible, memorable, and meaningful.
           </p>
-          <ul className="mb-8 space-y-3">
+          <ul className={styles.storyChecklist}>
             {checklist.map((item) => (
-              <li key={item} className="flex items-center gap-3">
+              <li key={item} className={`flex items-center gap-3 ${styles.storyChecklistItem}`}>
                 <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-weelp-sage-tint/60 text-weelp-sage-text">
                   <Check size={14} />
                 </span>
-                <span className="text-sm text-foreground">{item}</span>
+                <span className={`text-sm text-foreground ${styles.storyChecklistText}`}>{item}</span>
               </li>
             ))}
           </ul>
           <NavigationLink
             href="/contact-us"
             data-weelp-button-link
-            className="inline-flex items-center rounded-full bg-weelp-sage-deep px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-weelp-sage-hover"
+            className={`inline-flex items-center justify-center rounded-full bg-weelp-sage-deep px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-weelp-sage-hover ${styles.storyButton}`}
           >
             Contact our team
           </NavigationLink>
