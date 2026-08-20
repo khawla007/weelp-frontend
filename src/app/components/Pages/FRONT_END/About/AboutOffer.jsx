@@ -75,8 +75,8 @@ const AboutOffer = () => (
       </div>
 
       <div className={styles.masonryContact}>
-        <span className="relative h-9 w-9 overflow-hidden rounded-full">
-          <AboutImage src="/assets/images/user.png" alt="Weelp travel planner" fill sizes="36px" className="object-cover" />
+        <span className="relative h-8 w-8 overflow-hidden rounded-full">
+          <AboutImage src="/assets/images/user.png" alt="Weelp travel planner" fill sizes="32px" className="object-cover" />
         </span>
         <p className="text-sm text-muted-foreground">
           Let&apos;s plan something unforgettable together.{' '}

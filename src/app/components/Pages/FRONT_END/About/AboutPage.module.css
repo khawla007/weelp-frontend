@@ -21,8 +21,7 @@
 }
 
 .storySection {
-  min-height: 82.6875rem;
-  padding-block: 8.75rem 9.1875rem;
+  padding-block: 8.75rem;
 }
 
 .storyTop {
@@ -168,12 +167,11 @@
 
 .masonrySection {
   min-height: 98.3125rem;
-  padding-block: 8.75rem;
+  padding-block: 8.75rem 9.3125rem;
 }
 
 .masonryInner {
   display: flex;
-  min-height: 80.8125rem;
   flex-direction: column;
 }
 
@@ -257,10 +255,9 @@
 .masonryContact {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.75rem;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid hsl(var(--border));
+  margin-top: 3.75rem;
 }
 
 .whyGrid {
@@ -420,7 +417,6 @@
 }
 
 @media (max-width: 1023px) {
-  .storySection,
   .masonrySection,
   .teamSection,
   .testimonialSection {
@@ -484,7 +480,6 @@
     padding-block: 6rem;
   }
 
-  .masonryInner,
   .testimonialInner {
     min-height: 0;
   }

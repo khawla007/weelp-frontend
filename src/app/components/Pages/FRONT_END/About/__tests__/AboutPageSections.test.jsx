@@ -82,6 +82,7 @@ describe('About page reference composition', () => {
     expect(screen.getAllByTestId('about-masonry-column')).toHaveLength(3);
     expect(screen.getAllByTestId('about-value-card')).toHaveLength(4);
     expect(screen.getAllByRole('link', { name: /get in touch/i })).toEqual(expect.arrayContaining([expect.objectContaining({ href: expect.stringContaining('/contact-us') })]));
+    expect(screen.getByAltText('Weelp travel planner').parentElement).toHaveClass('h-8', 'w-8');
   });
 
   test('matches the reference three-person team composition', () => {
