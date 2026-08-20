@@ -48,13 +48,16 @@ describe('About page reference composition', () => {
   });
 
   test('renders the measured two-row story overlap and descriptive metric panel', () => {
-    render(<AboutPage />);
+    const { container } = render(<AboutPage />);
 
     expect(screen.getByTestId('about-story-inner')).toHaveClass('container-page');
     expect(screen.getByTestId('about-story-top')).toBeInTheDocument();
     expect(screen.getByTestId('about-story-bottom')).toBeInTheDocument();
     expect(screen.getAllByText('Our Story')).toHaveLength(1);
     expect(screen.getByTestId('about-story-stats')).toHaveClass('storyStatsOverlap');
+    expect(screen.getByTestId('about-story-stats').children).toHaveLength(2);
+    expect(container.querySelector('[data-testid="about-story-copy"] > p:first-child')).toHaveClass('storyLead');
+    expect(container.querySelectorAll('[data-testid="about-story-copy"] li.storyChecklistItem')).toHaveLength(5);
     expect(screen.getByTestId('about-story-copy')).not.toHaveTextContent(/lorem ipsum/i);
     expect(screen.getByText(/curated destinations across/i)).toBeInTheDocument();
     expect(screen.getByText(/local partners helping/i)).toBeInTheDocument();

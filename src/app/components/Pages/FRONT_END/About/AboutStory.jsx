@@ -49,7 +49,7 @@ const AboutStory = () => (
         </Reveal>
 
         <Reveal initialHidden variant="right" data-testid="about-story-copy" className={styles.storyCopy}>
-          <p className={`max-w-[60ch] text-base text-muted-foreground ${styles.storyParagraph} ${styles.storyParagraphPrimary}`}>
+          <p className={`max-w-[60ch] text-base text-foreground ${styles.storyParagraph} ${styles.storyParagraphPrimary} ${styles.storyLead}`}>
             From a simple idea to a global platform, Weelp was born from a passion for travel and a desire to connect people with authentic experiences around the world.
           </p>
           <p className={`max-w-[60ch] text-base text-muted-foreground ${styles.storyParagraph} ${styles.storyParagraphSecondary}`}>
