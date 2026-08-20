@@ -179,20 +179,32 @@
 
 .masonryHeader {
   display: grid;
-  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.18fr) minmax(8rem, 0.42fr);
-  gap: clamp(1.5rem, 3vw, 3rem);
+  grid-template-columns: minmax(0, 29%) minmax(0, 68%);
+  column-gap: 3%;
+  row-gap: 2.25rem;
   align-items: start;
   min-height: 15.0625rem;
-  margin-bottom: 3.1875rem;
+  margin-bottom: 3.125rem;
+}
+
+.masonryBadge {
+  grid-column: 1;
+  grid-row: 1;
 }
 
 .masonryHeadline {
   grid-column: 2;
+  grid-row: 1;
 }
 
 .masonryAction {
-  grid-column: 3;
-  justify-self: end;
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: start;
+}
+
+.masonryActionButton {
+  justify-content: center;
 }
 
 .masonryGrid {
@@ -231,7 +243,7 @@
 .masonryVisual,
 .masonryImage,
 .masonryCopyCard {
-  border-radius: 0;
+  border-radius: 0.5rem;
 }
 
 .masonryMetric {
@@ -478,18 +490,23 @@
   }
 
   .masonryHeader {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr;
     min-height: 0;
   }
 
+  .masonryBadge {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
   .masonryHeadline {
-    grid-column: 1 / -1;
+    grid-column: 1;
     grid-row: 2;
   }
 
   .masonryAction {
-    grid-column: 2;
-    grid-row: 1;
+    grid-column: 1;
+    grid-row: 3;
   }
 
   .masonryGrid {

@@ -16,12 +16,15 @@ const AboutOffer = () => (
   <section data-about-section="statement" className={`w-full bg-weelp-sage-wash ${styles.masonrySection}`}>
     <div className={`container-page ${styles.masonryInner}`}>
       <div data-testid="about-masonry-header" className={styles.masonryHeader}>
-        <Reveal variant="left">
+        <Reveal variant="left" className={styles.masonryBadge}>
           <SectionBadge icon={Compass}>What We Offer</SectionBadge>
         </Reveal>
         <BlurRevealHeading className={`section-opener max-w-[23ch] text-foreground ${styles.masonryHeadline}`}>Weelp, a trusted travel partner dedicated to meaningful journeys</BlurRevealHeading>
         <Reveal variant="right" className={styles.masonryAction}>
-          <NavigationLink href="/contact-us" className="group inline-flex items-center gap-2 text-sm font-semibold text-weelp-sage-text">
+          <NavigationLink
+            href="/contact-us"
+            className={`group inline-flex min-h-[54px] items-center gap-2 rounded-[8px] bg-weelp-sage-deep px-[30px] text-sm font-semibold text-white transition-colors hover:bg-weelp-sage-hover ${styles.masonryActionButton}`}
+          >
             Get in touch <ArrowUpRight size={17} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </NavigationLink>
         </Reveal>
@@ -29,7 +32,7 @@ const AboutOffer = () => (
 
       <div className={styles.masonryGrid}>
         <Reveal variant="left" data-testid="about-masonry-column" className={`${styles.masonryColumn} ${styles.masonryColumnLeft}`}>
-          <div className={`rounded-[24px] ${styles.masonryVisual} ${styles.imageShell}`}>
+          <div className={`${styles.masonryVisual} ${styles.imageShell}`}>
             <AboutImage {...images.lead} fill sizes="(max-width: 768px) 100vw, 34vw" className={`object-cover ${styles.imageZoom}`} />
             <div className="absolute inset-x-4 bottom-4 rounded-[20px] bg-background/90 p-6 backdrop-blur-md">
               <h3 className="text-xl text-foreground">Designed around the way you want to travel</h3>
@@ -51,13 +54,13 @@ const AboutOffer = () => (
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vitae justo sit amet mi posuere feugiat, sed viverra lectus.
             </p>
           </div>
-          <div className={`rounded-[24px] ${styles.masonryImage} ${styles.imageShell}`}>
+          <div className={`${styles.masonryImage} ${styles.imageShell}`}>
             <AboutImage {...images.center} fill sizes="(max-width: 768px) 100vw, 34vw" className={`object-cover ${styles.imageZoom}`} />
           </div>
         </Reveal>
 
         <Reveal variant="right" data-testid="about-masonry-column" className={`${styles.masonryColumn} ${styles.masonryColumnRight}`}>
-          <div className={`rounded-[24px] ${styles.masonryImage} ${styles.imageShell}`}>
+          <div className={`${styles.masonryImage} ${styles.imageShell}`}>
             <AboutImage {...images.right} fill sizes="(max-width: 768px) 100vw, 34vw" className={`object-cover ${styles.imageZoom}`} />
             <div className={`rounded-[18px] bg-weelp-sage-deep p-5 text-white ${styles.masonryMetric}`}>
               <p className="text-3xl font-semibold text-white">120+</p>
