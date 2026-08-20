@@ -109,9 +109,11 @@
 }
 
 .storyCopy {
+  display: flex;
   min-width: 0;
-  align-self: start;
-  margin-top: 7.25rem;
+  flex-direction: column;
+  align-self: end;
+  gap: 1.625rem;
 }
 
 .storyParagraph {
@@ -119,7 +121,7 @@
 }
 
 .storyParagraphPrimary {
-  margin-bottom: 1.625rem;
+  margin-bottom: 0;
 }
 
 .storyLead {
@@ -128,15 +130,15 @@
 }
 
 .storyParagraphSecondary {
-  min-height: 8.125rem;
-  margin-bottom: 2.4375rem;
+  min-height: 0;
+  margin-bottom: 0;
 }
 
 .storyChecklist {
   display: flex;
   flex-direction: column;
   gap: 1.6875rem;
-  margin-bottom: 3.5625rem;
+  margin-bottom: 0;
 }
 
 .storyChecklistItem,
@@ -161,6 +163,7 @@
 
 .storyButton {
   min-height: 3.375rem;
+  align-self: flex-start;
 }
 
 .masonrySection {
@@ -441,18 +444,8 @@
     margin-top: 0;
   }
 
-  .storyParagraphPrimary {
-    margin-bottom: 1rem;
-  }
-
-  .storyParagraphSecondary {
-    min-height: 0;
-    margin-bottom: 1.75rem;
-  }
-
   .storyChecklist {
     gap: 0.75rem;
-    margin-bottom: 2rem;
   }
 
   .storyChecklistItem,
