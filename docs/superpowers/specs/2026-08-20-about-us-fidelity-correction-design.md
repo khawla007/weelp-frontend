@@ -4,7 +4,7 @@
 
 The first About Us rebuild reproduced the section order, but it treated several reference details as generic responsive grids. The SteelNova page instead relies on full-width outer bands, intentionally oversized content, controlled overlaps, and much taller whitespace rhythms. This correction matches those structural details while keeping Weelp's colors, fonts, copy, images, routes, header, and footer.
 
-The live reference at `https://demo.casethemes.net/steelnova/about-us/` is the source of truth. At a 1440px desktop viewport its eight page bands measure approximately 649px, 1323px, 1572px, 1043px, 605px, 1096px, 493px, and 511px before the footer. These are proportional targets rather than brittle fixed document heights; content must still reflow safely when Weelp's font metrics differ.
+The live reference at `https://demo.casethemes.net/steelnova/about-us/` is the source of truth. At a 1440px desktop viewport its semantic sections resolve into nine full-width visual bands: hero `649px`, story `1323px`, company masonry `1573px`, process `1043px`, team `1037px`, testimonials `1136px`, CTA `493px`, FAQ heading `511px`, and FAQ content `468px`. These are proportional targets rather than brittle fixed document heights; content must still reflow safely when Weelp's font metrics differ.
 
 ## Chosen approach
 
@@ -28,7 +28,7 @@ The story becomes a full-width band with a wide inner canvas and generous top/bo
 - The upper row is approximately 46% headline and 54% metric panel.
 - The metric panel is about 350px tall, contains two equal statistics with descriptions, and sits above later content with a higher stacking level.
 - The lower row is approximately 57% image, 7% gap, and 36% copy.
-- The lower row starts about 40px before the metric panel ends. This makes the metric panel overlap the large left image both horizontally and vertically, matching the reference.
+- At 1440px, the target metric rectangle is approximately `x=666, y=789, 744×351px`; the image is approximately `x=15, y=1059, 781×658px`. The resulting intersection is about `130px` horizontally and `80px` vertically. The lower row therefore begins about 5rem before the metric panel ends.
 
 Mobile removes the negative overlap. The order becomes label/headline, vertically stacked statistics, image, then copy.
 
@@ -48,7 +48,7 @@ The team band becomes more compact: three wider, shorter portrait frames with me
 
 The CTA image becomes edge to edge with square outer corners and centered content; it is no longer a rounded card inside `container-page`.
 
-The FAQ becomes one full-width image-backed band. Its heading and accordion sit in a left-side content panel while the image remains visible on the right, matching the reference. It is not a separate rounded image card. Mobile keeps the visual first, followed by the heading and accordion.
+The FAQ uses two consecutive full-width rows. The first is an approximately `511px` heading row. The second is an approximately `468px` content row, but its children deliberately escape upward: at 1440px the accordion wrapper is about `827×538px` at `x=15` and begins roughly `175px` before the second row; the right image is about `718×787px` at `x=721` and begins roughly `311px` before the second row. This creates the same heading/accordion/image interlock as the reference. Mobile removes the negative offsets and stacks heading, image, then accordion.
 
 ## Motion
 
