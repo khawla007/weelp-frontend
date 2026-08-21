@@ -48,4 +48,23 @@ describe('About page Home spacing', () => {
     expect(masonryContact).not.toMatch(/border-top:/);
     expect(masonryContact).not.toMatch(/padding-top:/);
   });
+
+  test('fits the Why Choose section below the desktop header and uses a theme-aware glass metric', () => {
+    const whyGrid = declarationsFor('.whyGrid');
+    const whyContent = declarationsFor('.whyContent');
+    const whyMetric = declarationsFor('.whyMetric');
+
+    expect(whyGrid).toContain('min-height: min(58.375rem, calc(100svh - 4.125rem));');
+    expect(whyContent).toContain('padding: clamp(3rem, 7vh, 5.5rem) clamp(2.875rem, 5vw, 5.5rem);');
+    expect(whyMetric).toContain('border: 3px solid hsl(var(--foreground) / 16%);');
+    expect(whyMetric).toContain('border-radius: 1.5625rem;');
+    expect(whyMetric).toContain('background: hsl(var(--background) / 88%);');
+    expect(whyMetric).toContain('backdrop-filter: blur(0.625rem);');
+  });
+
+  test('tightens only the short-desktop Why Choose vertical padding', () => {
+    expect(stylesheet).toMatch(
+      /@media \(min-width: 1024px\) and \(max-height: 760px\)\s*\{\s*\.whyContent\s*\{\s*padding-block: 1.75rem;\s*\}\s*\}/,
+    );
+  });
 });

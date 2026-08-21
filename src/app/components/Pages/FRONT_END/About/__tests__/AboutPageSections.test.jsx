@@ -68,6 +68,8 @@ describe('About page reference composition', () => {
     const { container } = render(<AboutPage />);
 
     expect(container.querySelector('[data-about-section="process"] [data-testid="about-process-split"]')).toHaveClass('fullBleedSplit');
+    const whyMetric = screen.getByText('90+').parentElement;
+    expect(whyMetric).not.toHaveClass('border-white/20', 'bg-background', 'shadow-lg');
     expect(container.querySelector('[data-about-section="cta"]')).toHaveClass('fullBleedBand');
     expect(container.querySelector('[data-about-section="faq"]')).toHaveClass('fullBleedBand');
     expect(screen.getByTestId('about-faq-heading-row')).toBeInTheDocument();

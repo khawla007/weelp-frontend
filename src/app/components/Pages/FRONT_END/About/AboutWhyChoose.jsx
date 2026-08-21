@@ -21,7 +21,7 @@ const AboutWhyChoose = () => (
         <div className={`${styles.whyImage} ${styles.imageShell}`}>
           <AboutImage {...whyImage} fill sizes="(max-width: 1024px) 100vw, 52vw" className={`object-cover ${styles.imageZoom}`} />
         </div>
-        <div className={`border border-white/20 bg-background p-8 shadow-lg ${styles.whyMetric}`}>
+        <div className={`p-8 ${styles.whyMetric}`}>
           <p className="text-6xl font-semibold text-foreground">90+</p>
           <p className="mt-3 text-base font-semibold text-foreground">Local guides</p>
           <p className="mt-3 max-w-[24ch] text-sm leading-relaxed text-muted-foreground">Experts who turn unfamiliar places into personal stories.</p>
