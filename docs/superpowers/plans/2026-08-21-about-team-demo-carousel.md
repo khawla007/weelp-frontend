@@ -180,7 +180,7 @@ Render each member as an article in a `SwiperSlide`. Keep the square clipped ima
 Use this explicit responsive image hint rather than the legacy generic `100vw, 33vw` value:
 
 ```jsx
-sizes="(max-width: 639px) calc(100vw - 32px), (max-width: 767px) calc(100vw - 48px), (max-width: 991px) 48vw, (max-width: 1479px) 31vw, 440px"
+sizes = '(max-width: 639px) calc(100vw - 32px), (max-width: 767px) calc(100vw - 48px), (max-width: 991px) 48vw, (max-width: 1479px) 31vw, 440px';
 ```
 
 This tracks one mobile column, two tablet columns, three desktop columns, and the max-container card width without over-fetching the original portrait.
@@ -302,7 +302,7 @@ At each size verify:
 At 1920px, measure about 1416px carousel width, 439–440px slides, 49px gaps, and near-1050px section height. At every viewport verify:
 
 ```js
-document.documentElement.scrollWidth <= document.documentElement.clientWidth
+document.documentElement.scrollWidth <= document.documentElement.clientWidth;
 ```
 
 Also make quick boundary checks at 767/768 and 991/992 pixels to verify Swiper changes from one to two and two to three slides without overflow or a stale layout.

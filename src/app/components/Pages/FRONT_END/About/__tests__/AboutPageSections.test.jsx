@@ -87,11 +87,12 @@ describe('About page reference composition', () => {
     expect(screen.getByAltText('Weelp travel planner').parentElement).toHaveClass('h-8', 'w-8');
   });
 
-  test('matches the reference three-person team composition', () => {
+  test('matches the reference six-person team carousel composition', () => {
     render(<AboutPage />);
 
-    expect(screen.getAllByTestId('about-team-card')).toHaveLength(3);
-    expect(screen.getByTestId('about-team-grid')).toHaveAttribute('data-team-layout', 'reference-compact');
+    expect(screen.getAllByTestId('about-team-card')).toHaveLength(6);
+    expect(screen.getByTestId('about-team-grid')).toHaveAttribute('data-team-layout', 'reference-carousel');
+    expect(screen.getByRole('region', { name: 'Weelp team members' })).toBeInTheDocument();
   });
 
   test('exposes one testimonial control pair even when every slide is mounted', () => {

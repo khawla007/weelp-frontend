@@ -65,4 +65,19 @@ describe('About page Home spacing', () => {
   test('tightens only the short-desktop Why Choose vertical padding', () => {
     expect(stylesheet).toMatch(/@media \(min-width: 1024px\) and \(max-height: 760px\)\s*\{\s*\.whyContent\s*\{\s*padding-block: 1.75rem;\s*\}\s*\}/);
   });
+
+  test('uses the measured Team section rhythm inside its page container', () => {
+    const teamSection = declarationsFor('.teamSection');
+    const teamInner = declarationsFor('.teamInner');
+    const teamHeader = declarationsFor('.teamHeader');
+    const teamImage = declarationsFor('.teamImage');
+
+    expect(teamSection).not.toMatch(/min-height:/);
+    expect(teamSection).toContain('padding-block: 8.75rem;');
+    expect(teamInner).toContain('display: flex;');
+    expect(teamInner).toContain('flex-direction: column;');
+    expect(teamHeader).toContain('margin-bottom: 3.875rem;');
+    expect(teamImage).toContain('aspect-ratio: 1;');
+    expect(paddingBlockValuesFor('.teamSection')).toEqual(['8.75rem', '7.5rem', '6.25rem']);
+  });
 });
