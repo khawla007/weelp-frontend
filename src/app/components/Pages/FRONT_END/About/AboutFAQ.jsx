@@ -43,12 +43,7 @@ const AboutFAQ = () => {
 
       <div data-testid="about-faq-content-row" className={styles.faqContentRow}>
         <div data-testid="about-faq-background-image" className={`${styles.faqImage} ${styles.imageShell}`}>
-          <AboutImage
-            {...faqImage}
-            fill
-            sizes="100vw"
-            className={`object-cover ${styles.imageZoom}`}
-          />
+          <AboutImage {...faqImage} fill sizes="100vw" className={`object-cover ${styles.imageZoom}`} />
         </div>
         <div data-testid="about-faq-content" className={styles.faqContent}>
           <div>
