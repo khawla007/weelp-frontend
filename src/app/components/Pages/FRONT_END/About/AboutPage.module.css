@@ -412,6 +412,7 @@
 
 .faqSection {
   position: relative;
+  padding-bottom: 6rem;
   overflow: visible;
 }
 
@@ -513,6 +514,10 @@
 }
 
 @media (max-width: 1279px) {
+  .faqSection {
+    padding-bottom: 4rem;
+  }
+
   .faqHeadingRow {
     min-height: 0;
     padding: 4rem 0 1.5rem;
@@ -726,6 +731,10 @@
 }
 
 @media (max-width: 767px) {
+  .faqSection {
+    padding-bottom: 2.5rem;
+  }
+
   .storySection,
   .masonrySection {
     padding-block: 2.5rem;

@@ -114,7 +114,8 @@ describe('About page Home spacing', () => {
     );
   });
 
-  test('uses a viewport-wide FAQ image band with canonical badge spacing and no bottom gap', () => {
+  test('uses a viewport-wide FAQ image band with canonical spacing below the FAQ card', () => {
+    const faqSection = declarationsFor('.faqSection');
     const faqHeadingRow = declarationsFor('.faqHeadingRow');
     const faqContentRow = declarationsFor('.faqContentRow');
     const faqContent = declarationsFor('.faqContent');
@@ -123,6 +124,7 @@ describe('About page Home spacing', () => {
     const faqIconOpen = declarationsFor('.faqIconOpen');
     const faqButtonFocus = declarationsFor('.faqButton:focus-visible');
 
+    expect(faqSection).toContain('padding-bottom: 6rem;');
     expect(faqHeadingRow).toContain('min-height: 21.25rem;');
     expect(faqHeadingRow).toContain('padding: 6rem 0 2rem;');
     expect(faqContentRow).toContain('min-height: 21.3125rem;');
@@ -145,10 +147,12 @@ describe('About page Home spacing', () => {
     expect(faqIconOpen).toContain('background: hsl(var(--weelp-sage-deep));');
     expect(faqButtonFocus).toContain('outline: 2px solid hsl(var(--weelp-sage-deep));');
     expect(stylesheet).toMatch(/@media \(max-width: 1279px\)[\s\S]*?\.faqHeadingRow\s*\{[^}]*padding: 4rem 0 1\.5rem;[^}]*\}[\s\S]*?\.faqContentRow\s*\{[^}]*padding: 0;[^}]*\}/);
+    expect(stylesheet).toMatch(/@media \(max-width: 1279px\)[\s\S]*?\.faqSection\s*\{[^}]*padding-bottom: 4rem;[^}]*\}/);
     expect(stylesheet).toMatch(
       /@media \(max-width: 1279px\)[\s\S]*?\.faqImage\s*\{[^}]*position: relative;[^}]*top: auto;[^}]*bottom: auto;[^}]*left: 50%;[^}]*width: calc\(100vw \+ 1rem\);[^}]*height: auto;[^}]*margin-left: 0;[^}]*transform: translateX\(-50%\);/,
     );
     expect(stylesheet).toMatch(/@media \(max-width: 1279px\)[\s\S]*?\.faqImage\s*\{[^}]*border-radius: 0;[^}]*\}[\s\S]*?\.faqContent\s*\{[^}]*border-radius: 0 0 1\.5rem 1\.5rem;[^}]*\}/);
     expect(stylesheet).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.faqHeadingRow\s*\{[^}]*padding: 2\.5rem 0 1rem;[^}]*\}[\s\S]*?\.faqContentRow\s*\{[^}]*padding: 0;[^}]*\}/);
+    expect(stylesheet).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.faqSection\s*\{[^}]*padding-bottom: 2\.5rem;[^}]*\}/);
   });
 });
