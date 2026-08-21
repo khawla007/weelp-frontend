@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { HelpCircle, ChevronRight } from 'lucide-react';
+import { HelpCircle, Minus, Plus } from 'lucide-react';
 import Reveal from '@/app/components/ui/Reveal';
 import AboutImage from './AboutImage';
 import BlurRevealHeading from './BlurRevealHeading';
@@ -34,7 +34,7 @@ const AboutFAQ = () => {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section data-about-section="faq" className={`${styles.fullBleedBand} ${styles.faqSection}`}>
+    <section data-about-section="faq" className={`container-page ${styles.faqSection}`}>
       <div data-testid="about-faq-heading-row" className={styles.faqHeadingRow}>
         <div className={styles.faqHeading}>
           <SectionBadge icon={HelpCircle}>FAQ</SectionBadge>
@@ -44,28 +44,37 @@ const AboutFAQ = () => {
 
       <div data-testid="about-faq-content-row" className={styles.faqContentRow}>
         <Reveal variant="right" data-testid="about-faq-overlap-image" className={`${styles.faqImage} ${styles.imageShell}`}>
-          <AboutImage {...faqImage} fill sizes="(max-width: 1024px) 100vw, 50vw" className={`object-cover ${styles.imageZoom}`} />
+          <AboutImage
+            {...faqImage}
+            fill
+            sizes="(max-width: 639px) calc(100vw - 32px), (max-width: 1023px) calc(100vw - 48px), (max-width: 1279px) calc(100vw - 64px), (max-width: 1479px) 48vw, 678px"
+            className={`object-cover ${styles.imageZoom}`}
+          />
         </Reveal>
         <Reveal variant="left" data-testid="about-faq-content" className={styles.faqContent}>
-          <div className="space-y-3 md:space-y-4">
+          <div>
             {items.map((item, index) => {
               const isOpen = openIndex === index;
               return (
-                <div key={item.id} className="overflow-hidden rounded-[24px] border border-border bg-background shadow-sm">
+                <div key={item.id} data-testid="about-faq-item" className={styles.faqItem}>
                   <button
                     type="button"
                     id={`faq-trigger-${item.id}`}
                     aria-expanded={isOpen}
                     aria-controls={`faq-panel-${item.id}`}
                     onClick={() => setOpenIndex(isOpen ? -1 : index)}
-                    className="flex w-full cursor-pointer items-center justify-between gap-4 p-4 text-left font-bold text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-weelp-sage-deep/40"
+                    className={`${styles.faqButton} weelp-plain-action`}
                   >
                     {item.title}
-                    <ChevronRight
-                      size={16}
+                    <span
+                      data-testid={`about-faq-icon-${item.id}`}
+                      data-state={isOpen ? 'open' : 'closed'}
+                      data-icon={isOpen ? 'minus' : 'plus'}
                       aria-hidden="true"
-                      className={`flex-shrink-0 text-weelp-sage-text transition-transform duration-300 motion-reduce:transition-none ${isOpen ? 'rotate-90' : ''}`}
-                    />
+                      className={`${styles.faqIcon} ${isOpen ? styles.faqIconOpen : ''}`}
+                    >
+                      {isOpen ? <Minus size={16} aria-hidden="true" /> : <Plus size={16} aria-hidden="true" />}
+                    </span>
                   </button>
                   <div
                     id={`faq-panel-${item.id}`}
@@ -75,7 +84,7 @@ const AboutFAQ = () => {
                     className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 motion-reduce:transition-none ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
                   >
                     <div className="min-h-0">
-                      <p className="px-4 pb-4 text-sm leading-[1.6] text-muted-foreground">{item.content}</p>
+                      <p className={styles.faqAnswer}>{item.content}</p>
                     </div>
                   </div>
                 </div>

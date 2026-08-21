@@ -113,4 +113,38 @@ describe('About page Home spacing', () => {
       /@media \(max-width: 1023px\)[\s\S]*?\.testimonialImage\s*\{[^}]*border-radius: 1rem 1rem 0 0;[^}]*\}[\s\S]*?\.testimonialPanel\s*\{\s*border-radius: 0 0 1rem 1rem;\s*\}/,
     );
   });
+
+  test('scales the demo FAQ inside the page container and stacks it at xl', () => {
+    const faqHeadingRow = declarationsFor('.faqHeadingRow');
+    const faqContentRow = declarationsFor('.faqContentRow');
+    const faqContent = declarationsFor('.faqContent');
+    const faqButton = declarationsFor('.faqButton');
+    const faqIcon = declarationsFor('.faqIcon');
+    const faqIconOpen = declarationsFor('.faqIconOpen');
+    const faqButtonFocus = declarationsFor('.faqButton:focus-visible');
+
+    expect(faqHeadingRow).toContain('min-height: 31.0625rem;');
+    expect(faqContentRow).toContain('grid-template-columns: 52.1333% 3% 44.8667%;');
+    expect(faqContentRow).toContain('min-height: 27.625rem;');
+    expect(faqContent).toContain('grid-column: 1 / 3;');
+    expect(faqContent).toContain('min-height: 31.75rem;');
+    expect(faqContent).toContain('margin-top: -10.3125rem;');
+    expect(stylesheet).toMatch(/\.faqImage\s*\{[^}]*grid-column: 2 \/ 4;[^}]*min-height: 46\.4375rem;[^}]*margin-top: -18\.375rem;/);
+    expect(faqButton).toContain('font-size: 1.1875rem;');
+    expect(faqButton).toContain('border: 0;');
+    expect(faqButton).toContain('border-bottom: 1px solid hsl(var(--border));');
+    expect(faqButton).toContain('background: transparent;');
+    expect(faqButton).toContain('cursor: pointer;');
+    expect(stylesheet).toMatch(/\.faqButton:global\(\.weelp-plain-action\)\s*\{[^}]*border-bottom: 1px solid hsl\(var\(--border\)\) !important;/);
+    expect(faqIcon).toContain('width: 1.875rem;');
+    expect(faqIcon).toContain('height: 1.875rem;');
+    expect(faqIconOpen).toContain('background: hsl(var(--weelp-sage-deep));');
+    expect(faqButtonFocus).toContain('outline: 2px solid hsl(var(--weelp-sage-deep));');
+    expect(stylesheet).toMatch(/@media \(max-width: 1279px\)[\s\S]*?\.faqHeadingRow\s*\{[^}]*padding: 4rem 0 1\.5rem;[^}]*\}[\s\S]*?\.faqContentRow\s*\{[^}]*padding: 0 0 4rem;[^}]*\}/);
+    expect(stylesheet).toMatch(/@media \(max-width: 1279px\)[\s\S]*?\.faqImage,[\s\S]*?\.faqContent\s*\{[^}]*grid-row: auto;[^}]*grid-column: 1;[^}]*margin-top: 0;[^}]*\}/);
+    expect(stylesheet).toMatch(
+      /@media \(max-width: 1279px\)[\s\S]*?\.faqImage\s*\{[^}]*border-radius: 1\.5rem 1\.5rem 0 0;[^}]*\}[\s\S]*?\.faqContent\s*\{[^}]*border-radius: 0 0 1\.5rem 1\.5rem;[^}]*\}/,
+    );
+    expect(stylesheet).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.faqHeadingRow\s*\{[^}]*padding: 2\.5rem 0 1rem;[^}]*\}[\s\S]*?\.faqContentRow\s*\{[^}]*padding: 0 0 2\.5rem;[^}]*\}/);
+  });
 });

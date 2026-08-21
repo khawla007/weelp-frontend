@@ -102,12 +102,22 @@ test('FAQ keeps one item open at a time', async () => {
 
   const first = screen.getByRole('button', { name: /which destinations does weelp cover/i });
   const second = screen.getByRole('button', { name: /how does booking work/i });
+  const firstIcon = screen.getByTestId('about-faq-icon-destinations');
+  const secondIcon = screen.getByTestId('about-faq-icon-booking');
   expect(first).toHaveAttribute('aria-expanded', 'true');
+  expect(firstIcon).toHaveAttribute('data-state', 'open');
+  expect(firstIcon).toHaveAttribute('data-icon', 'minus');
+  expect(secondIcon).toHaveAttribute('data-state', 'closed');
+  expect(secondIcon).toHaveAttribute('data-icon', 'plus');
 
   fireEvent.click(second);
 
   expect(first).toHaveAttribute('aria-expanded', 'false');
   expect(second).toHaveAttribute('aria-expanded', 'true');
+  expect(firstIcon).toHaveAttribute('data-state', 'closed');
+  expect(secondIcon).toHaveAttribute('data-state', 'open');
+  expect(firstIcon).toHaveAttribute('data-icon', 'plus');
+  expect(secondIcon).toHaveAttribute('data-icon', 'minus');
 });
 
 test('failed About images retain an accessible stable fallback', async () => {
