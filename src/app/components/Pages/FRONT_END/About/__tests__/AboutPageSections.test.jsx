@@ -77,6 +77,7 @@ describe('About page reference composition', () => {
     expect(screen.getByTestId('about-faq-heading-row')).toBeInTheDocument();
     expect(screen.getByTestId('about-faq-content-row')).toBeInTheDocument();
     expect(screen.getByTestId('about-faq-overlap-image')).toBeInTheDocument();
+    expect(screen.getByText('Frequently Asked Questions')).toBeInTheDocument();
     expect(screen.getAllByTestId('about-faq-item')).toHaveLength(5);
     expect(screen.getAllByTestId('about-faq-item')[0]).toHaveClass('faqItem');
     expect(screen.getAllByTestId('about-faq-item')[0]).not.toHaveClass('rounded-[24px]');

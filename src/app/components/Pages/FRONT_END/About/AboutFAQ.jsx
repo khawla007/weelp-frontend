@@ -37,7 +37,7 @@ const AboutFAQ = () => {
     <section data-about-section="faq" className={`container-page ${styles.faqSection}`}>
       <div data-testid="about-faq-heading-row" className={styles.faqHeadingRow}>
         <div className={styles.faqHeading}>
-          <SectionBadge icon={HelpCircle}>FAQ</SectionBadge>
+          <SectionBadge icon={HelpCircle}>Frequently Asked Questions</SectionBadge>
           <BlurRevealHeading className="mt-4 max-w-[17ch] text-foreground">Common questions about traveling with Weelp</BlurRevealHeading>
         </div>
       </div>
