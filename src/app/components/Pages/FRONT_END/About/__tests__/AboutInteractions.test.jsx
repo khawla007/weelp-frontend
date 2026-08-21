@@ -87,6 +87,16 @@ test('testimonial carousel announces slide changes and disables motion when requ
   expect(screen.getByTestId('testimonial-swiper')).toHaveAttribute('data-speed', '0');
 });
 
+test('testimonial ratings use the shared yellow stars with visible spacing', () => {
+  render(<AboutTestimonials />);
+
+  const summaryStars = screen.getByLabelText('4.9 out of 5 stars');
+  const reviewStars = screen.getByLabelText('5 out of 5 stars');
+
+  expect(summaryStars).toHaveClass('gap-1', 'text-yellow-400');
+  expect(reviewStars).toHaveClass('gap-1', 'text-yellow-400');
+});
+
 test('FAQ keeps one item open at a time', async () => {
   render(<AboutFAQ />);
 

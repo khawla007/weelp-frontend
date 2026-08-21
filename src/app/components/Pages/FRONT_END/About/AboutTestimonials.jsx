@@ -65,7 +65,7 @@ const AboutTestimonials = () => {
           <SectionBadge icon={Quote}>Traveler Stories</SectionBadge>
           <BlurRevealHeading className="section-opener mt-5 max-w-[20ch] text-foreground">Feedback from travelers around the world</BlurRevealHeading>
           <div className="mt-5 flex items-center gap-3 text-sm text-muted-foreground">
-            <span className="flex text-weelp-sage-text" aria-label="4.9 out of 5 stars">
+            <span className="flex gap-1 text-yellow-400" aria-label="4.9 out of 5 stars">
               {Array.from({ length: 5 }, (_, index) => (
                 <Star key={index} size={16} fill="currentColor" aria-hidden="true" />
               ))}
@@ -104,7 +104,7 @@ const AboutTestimonials = () => {
                     <div>
                       <div className="mb-8 flex items-center justify-between gap-4">
                         <Quote size={40} aria-hidden="true" className="text-white/70" />
-                        <span className="flex text-white" aria-label={`${review.rating} out of 5 stars`}>
+                        <span className="flex gap-1 text-yellow-400" aria-label={`${review.rating} out of 5 stars`}>
                           {Array.from({ length: review.rating }, (_, index) => (
                             <Star key={index} size={16} fill="currentColor" aria-hidden="true" />
                           ))}

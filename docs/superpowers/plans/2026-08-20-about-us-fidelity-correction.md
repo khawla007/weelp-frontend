@@ -151,7 +151,7 @@ Mark the grid `data-team-layout="reference-compact"`. Change desktop portrait ra
 
 - [ ] **Step 4: Align testimonial proportions**
 
-Keep one control pair and synchronized paired slides. Adjust outer padding and slide/media height to the reference's centered split while preserving current accessibility and reduced-motion behavior. Apply the blur heading.
+Keep one control pair and synchronized paired slides. Use Weelp's Major Section spacing (`96px` desktop, `64px` tablet, `40px` mobile), a 416px desktop split, 16px outer card corners, and yellow-400 rating stars with a 4px gap. Below 901px tall, let desktop outer padding fluidly reduce from 96px to 32px so the full section remains below the fixed header. At or below 780px tall, use the short-height treatment: 24px outer padding and header gap, a 360px minimum split, and 36px panel padding. Preserve current accessibility and reduced-motion behavior. Apply the blur heading.
 
 - [ ] **Step 5: Make CTA edge to edge**
 
@@ -192,7 +192,7 @@ Open the reference and localhost in `agent-browser --session weelp-visible --hea
 - company masonry inner width is `1320px ± 6%`, columns are equal `413px ± 6%` with `40px ± 12px` gaps, outer column height is `900px ± 8%`, and inner card stacks match `496/364`, `364/496`, and `496/364` within `±8%`;
 - the process split ratio is `666/758px ± 6%` with total height `1043px ± 8%`; its metric panel is `373×233px ± 8%` and sits near the lower-left image area;
 - team portraits are three approximately square `432px ± 8%` frames with `49px ± 12px` gaps inside a section near `1037px ± 10%`;
-- testimonial image and panel are each `631×554px ± 8%`, separated by about `18px ± 10px`, with exactly one visible control pair in the panel footer;
+- at 1440px wide, the testimonial image and panel are each approximately `675×416px ± 8%`, separated by about `18px ± 10px`, with 16px outer corners and exactly one visible control pair in the panel footer; the full section remains no taller than the viewport minus the 66px desktop header;
 - CTA spans the viewport at `493px ± 10%`, with no rounded outer card or container side margin;
 - FAQ heading/content rows are `511px ± 10%` and `468px ± 10%`; accordion is approximately `827×538px ± 10%` and overlaps the content-row top by `175px ± 30px`; the right image is approximately `718×787px ± 10%` and overlaps it by `311px ± 35px`.
 

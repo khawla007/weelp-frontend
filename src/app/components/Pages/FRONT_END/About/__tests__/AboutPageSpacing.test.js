@@ -81,4 +81,36 @@ describe('About page Home spacing', () => {
     expect(teamImage).toContain('border-radius: 1rem;');
     expect(paddingBlockValuesFor('.teamSection')).toEqual(['6rem', '4rem', '2.5rem']);
   });
+
+  test('fits Traveler Stories below the desktop header and keeps responsive section spacing', () => {
+    const testimonialSection = declarationsFor('.testimonialSection');
+    const testimonialInner = declarationsFor('.testimonialInner');
+    const testimonialHeader = declarationsFor('.testimonialHeader');
+    const testimonialSlide = declarationsFor('.testimonialSlide');
+
+    expect(testimonialSection).not.toMatch(/min-height:/);
+    expect(testimonialSection).toContain('padding-block: 6rem;');
+    expect(testimonialInner).not.toMatch(/min-height:/);
+    expect(testimonialHeader).not.toMatch(/min-height:/);
+    expect(testimonialHeader).toContain('margin-bottom: 2rem;');
+    expect(testimonialSlide).toContain('min-height: 26rem;');
+    expect(paddingBlockValuesFor('.testimonialSection')).toEqual(['6rem', 'clamp(2rem, calc((100svh - 45rem) / 2), 6rem)', '1.5rem', '4rem', '2.5rem']);
+  });
+
+  test('rounds the outer testimonial card corners and compresses short desktops', () => {
+    const testimonialImage = declarationsFor('.testimonialImage');
+    const testimonialPanel = declarationsFor('.testimonialPanel');
+
+    expect(testimonialImage).toContain('border-radius: 1rem 0 0 1rem;');
+    expect(testimonialPanel).toContain('border-radius: 0 1rem 1rem 0;');
+    expect(stylesheet).toMatch(
+      /@media \(min-width: 1024px\) and \(max-height: 900px\)\s*\{\s*\.testimonialSection\s*\{\s*padding-block: clamp\(2rem, calc\(\(100svh - 45rem\) \/ 2\), 6rem\);\s*\}\s*\}/,
+    );
+    expect(stylesheet).toMatch(
+      /@media \(min-width: 1024px\) and \(max-height: 780px\)[\s\S]*?\.testimonialSection\s*\{\s*padding-block: 1\.5rem;\s*\}[\s\S]*?\.testimonialPanel\s*\{\s*padding: 2\.25rem;\s*\}/,
+    );
+    expect(stylesheet).toMatch(
+      /@media \(max-width: 1023px\)[\s\S]*?\.testimonialImage\s*\{[^}]*border-radius: 1rem 1rem 0 0;[^}]*\}[\s\S]*?\.testimonialPanel\s*\{\s*border-radius: 0 0 1rem 1rem;\s*\}/,
+    );
+  });
 });
