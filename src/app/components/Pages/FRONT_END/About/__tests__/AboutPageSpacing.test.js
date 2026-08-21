@@ -63,8 +63,6 @@ describe('About page Home spacing', () => {
   });
 
   test('tightens only the short-desktop Why Choose vertical padding', () => {
-    expect(stylesheet).toMatch(
-      /@media \(min-width: 1024px\) and \(max-height: 760px\)\s*\{\s*\.whyContent\s*\{\s*padding-block: 1.75rem;\s*\}\s*\}/,
-    );
+    expect(stylesheet).toMatch(/@media \(min-width: 1024px\) and \(max-height: 760px\)\s*\{\s*\.whyContent\s*\{\s*padding-block: 1.75rem;\s*\}\s*\}/);
   });
 });
