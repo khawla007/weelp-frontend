@@ -12,14 +12,14 @@ Reference: `https://demo.casethemes.net/steelnova/about-us/`
 
 At a 1,920-pixel viewport, the visible-browser comparison produced these measurements:
 
-| Measurement                | SteelNova demo | Current Weelp |  Target Weelp |
-| -------------------------- | -------------: | ------------: | ------------: |
-| Content width              |        1,426px |       1,880px |       1,416px |
-| Visible cards              |              3 |             3 |             3 |
-| Portrait/card width        |          443px |         594px |   about 440px |
-| Card gap                   |           49px |          49px |       48–49px |
-| Section height             |        1,058px |       1,207px | about 1,050px |
-| Section top/bottom padding |          140px | 140px / 143px |   about 140px |
+| Measurement                | SteelNova demo | Current Weelp | Target Weelp |
+| -------------------------- | -------------: | ------------: | -----------: |
+| Content width              |        1,426px |       1,880px |      1,416px |
+| Visible cards              |              3 |             3 |            3 |
+| Portrait/card width        |          443px |         594px |  about 440px |
+| Card gap                   |           49px |          49px |      48–49px |
+| Section height             |        1,058px |       1,207px |  about 951px |
+| Section top/bottom padding |          140px | 140px / 143px |         96px |
 
 Weelp's canonical `container-page` is 1,480 pixels wide with 32-pixel desktop padding on each side, leaving 1,416 pixels for content. Compared with the demo's 1,426-pixel content width, the scale ratio is `1416 / 1426 = 0.993`. Three equal cards inside that content width with two 48-pixel gaps resolve to 440 pixels each.
 
@@ -78,7 +78,7 @@ The Swiper breakpoints follow the reference:
 | 1200–1399px      |      3 | 45px |
 | 1400px and wider |      3 | 49px |
 
-Desktop uses 140 pixels of section padding above and below. The measured demo reduces that to 120 pixels on tablet and 100 pixels on mobile. The introduction-to-carousel gap is approximately 62 pixels on desktop and 50 pixels on mobile. Mobile keeps one full-width card visible and preserves at least 16 pixels of page padding. Names and roles remain left-aligned beneath the image at every breakpoint.
+Weelp's Major Section Rule takes precedence over the demo's outer whitespace: 96 pixels above and below on desktop, 64 pixels on tablet, and 40 pixels on mobile. The introduction-to-carousel gap continues to follow the demo at approximately 62 pixels on desktop and 50 pixels on mobile. Mobile keeps one full-width card visible and preserves at least 16 pixels of page padding. Names and roles remain left-aligned beneath the image at every breakpoint.
 
 No breakpoint introduces horizontal page overflow. The section stays contained even above 1,480 pixels because `container-page` supplies the max-width boundary.
 
@@ -108,4 +108,4 @@ Focused tests cover:
 - three desktop, two tablet, and one mobile slide configuration;
 - existing About section order and Team layout marker compatibility.
 
-After implementation, run the focused About tests, TypeScript, lint, and dark-mode guard. Then compare the demo and local pages in visible headed browsers at 1,920, 1,440, 1,024, 768, and 390 pixels. At 1,920 pixels, the local carousel content should be 1,416 pixels wide, cards should be about 440 pixels, gaps should be 48–49 pixels, and the section should remain near 1,050 pixels tall. Every viewport must keep `document.documentElement.scrollWidth <= document.documentElement.clientWidth`.
+After implementation, run the focused About tests, TypeScript, lint, and dark-mode guard. Then compare the demo and local pages in visible headed browsers at 1,920, 1,440, 1,024, 768, and 390 pixels. At 1,920 pixels, the local carousel content should be 1,416 pixels wide, cards should be about 440 pixels, gaps should be 48–49 pixels, and the section should remain near 951 pixels tall with Weelp's 96-pixel outer padding. Every viewport must keep `document.documentElement.scrollWidth <= document.documentElement.clientWidth`.

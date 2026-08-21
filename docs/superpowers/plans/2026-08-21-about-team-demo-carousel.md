@@ -43,11 +43,11 @@ Replace the old three-person assertion with six cards, `data-team-layout="refere
 
 Extend `AboutPageSpacing.test.js` to require:
 
-- no fixed Team `min-height` and 140px desktop block padding;
+- no fixed Team `min-height` and 96px desktop block padding;
 - a `.teamInner` container-owned stack;
 - the approved desktop header-to-carousel gap;
 - a square `.teamImage`;
-- 120px tablet and 100px mobile section padding.
+- 64px tablet and 40px mobile section padding.
 
 Treat these as fast regression signals; visible-browser computed measurements remain authoritative.
 
@@ -207,7 +207,7 @@ Apply `error-handling-patterns` before the commands, then open the current local
 
 ### Step 1: Replace grid-era spacing
 
-Remove fixed Team min-height and viewport-like inline padding. Use 8.75rem (140px) desktop block padding. Add `.teamInner`, center the header, and use a 62px desktop header-to-carousel gap.
+Remove fixed Team min-height and viewport-like inline padding. Use Weelp's 6rem (96px) desktop Major Section padding. Add `.teamInner`, center the header, and use a 62px desktop header-to-carousel gap.
 
 ### Step 2: Add stable typography hooks
 
@@ -226,7 +226,7 @@ Keep `.teamImage { aspect-ratio: 1; }`, zero radius, and clipped overflow. Add o
 
 ### Step 4: Add responsive spacing
 
-Use 140px desktop, 120px tablet (768–1023), and 100px mobile (<768) block padding. Use a 50px mobile header gap. Retain `container-page` mobile padding and remove the obsolete `.teamGrid` one-column rule.
+Use Weelp's Major Section Rule: 96px desktop, 64px tablet (768–1023), and 40px mobile (<768) block padding. Use a 50px mobile header gap. Retain `container-page` mobile padding and remove the obsolete `.teamGrid` one-column rule.
 
 ### Step 5: Format and test
 
@@ -299,7 +299,7 @@ At each size verify:
 - no arrows, dots, scrollbar, autoplay, clipping, or next-section overlap;
 - light/dark text and image fallback remain usable.
 
-At 1920px, measure about 1416px carousel width, 439–440px slides, 49px gaps, and near-1050px section height. At every viewport verify:
+At 1920px, measure about 1416px carousel width, 439–440px slides, 49px gaps, and near-951px section height with 96px outer padding. At every viewport verify:
 
 ```js
 document.documentElement.scrollWidth <= document.documentElement.clientWidth;

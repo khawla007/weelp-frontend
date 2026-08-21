@@ -73,11 +73,11 @@ describe('About page Home spacing', () => {
     const teamImage = declarationsFor('.teamImage');
 
     expect(teamSection).not.toMatch(/min-height:/);
-    expect(teamSection).toContain('padding-block: 8.75rem;');
+    expect(teamSection).toContain('padding-block: 6rem;');
     expect(teamInner).toContain('display: flex;');
     expect(teamInner).toContain('flex-direction: column;');
     expect(teamHeader).toContain('margin-bottom: 3.875rem;');
     expect(teamImage).toContain('aspect-ratio: 1;');
-    expect(paddingBlockValuesFor('.teamSection')).toEqual(['8.75rem', '7.5rem', '6.25rem']);
+    expect(paddingBlockValuesFor('.teamSection')).toEqual(['6rem', '4rem', '2.5rem']);
   });
 });
