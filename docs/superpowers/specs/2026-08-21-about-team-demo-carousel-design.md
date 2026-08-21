@@ -51,7 +51,7 @@ The six identities follow the demo carousel while their job titles are rewritten
 | David Thompson   | Experience Design Director       | `/assets/images/about/team/david-thompson.webp`   |
 | Jessica Williams | Booking & Finance Manager        | `/assets/images/about/team/jessica-williams.webp` |
 
-The images are downloaded into Weelp and served locally rather than hotlinked from the demo. `AboutImage` continues to provide a stable frame and accessible fallback when an asset cannot load. Reusing third-party portraits does not grant publication rights; ownership or licensing should be confirmed before a public production launch.
+The images are downloaded into Weelp and served locally rather than hotlinked from the demo. Each square portrait is clipped by its image wrapper with the demo's 16-pixel corner radius. `AboutImage` continues to provide a stable frame and accessible fallback when an asset cannot load. Reusing third-party portraits does not grant publication rights; ownership or licensing should be confirmed before a public production launch.
 
 ## Carousel behavior
 

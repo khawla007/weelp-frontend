@@ -222,7 +222,7 @@ Keep Weelp fonts, weights, foreground tokens, centered intro, and left-aligned m
 
 ### Step 3: Preserve fluid square containment
 
-Keep `.teamImage { aspect-ratio: 1; }`, zero radius, and clipped overflow. Add only Team-scoped Swiper containment. Do not modify global carousel behavior. At 1920px, the 1416px content width with two 49px gaps should naturally yield about 439–440px slides; do not hard-code card width.
+Keep `.teamImage { aspect-ratio: 1; }`, the demo's 16px radius, and clipped overflow. Add only Team-scoped Swiper containment. Do not modify global carousel behavior. At 1920px, the 1416px content width with two 49px gaps should naturally yield about 439–440px slides; do not hard-code card width.
 
 ### Step 4: Add responsive spacing
 

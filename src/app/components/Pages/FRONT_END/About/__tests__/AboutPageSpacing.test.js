@@ -78,6 +78,7 @@ describe('About page Home spacing', () => {
     expect(teamInner).toContain('flex-direction: column;');
     expect(teamHeader).toContain('margin-bottom: 3.875rem;');
     expect(teamImage).toContain('aspect-ratio: 1;');
+    expect(teamImage).toContain('border-radius: 1rem;');
     expect(paddingBlockValuesFor('.teamSection')).toEqual(['6rem', '4rem', '2.5rem']);
   });
 });
