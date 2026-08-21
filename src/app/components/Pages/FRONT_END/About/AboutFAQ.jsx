@@ -46,7 +46,7 @@ const AboutFAQ = () => {
           <AboutImage
             {...faqImage}
             fill
-            sizes="(max-width: 639px) calc(100vw - 32px), (max-width: 1023px) calc(100vw - 48px), (max-width: 1479px) calc(100vw - 64px), 1416px"
+            sizes="100vw"
             className={`object-cover ${styles.imageZoom}`}
           />
         </div>

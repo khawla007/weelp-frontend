@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import AboutPage from '@/app/(frontend)/about-us/page';
 
 jest.mock('next/image', () => {
-  const MockImage = ({ alt = '', fill: _fill, priority: _priority, sizes: _sizes, ...props }) => <img alt={alt} {...props} />;
+  const MockImage = ({ alt = '', fill: _fill, priority: _priority, sizes, ...props }) => <img alt={alt} sizes={sizes} {...props} />;
   MockImage.displayName = 'MockImage';
   return MockImage;
 });
@@ -77,6 +77,7 @@ describe('About page reference composition', () => {
     expect(screen.getByTestId('about-faq-heading-row')).toBeInTheDocument();
     expect(screen.getByTestId('about-faq-content-row')).toBeInTheDocument();
     expect(screen.getByTestId('about-faq-background-image')).not.toHaveAttribute('data-reveal-variant');
+    expect(screen.getByTestId('about-faq-background-image').querySelector('img')).toHaveAttribute('sizes', '100vw');
     expect(screen.getByTestId('about-faq-content')).not.toHaveAttribute('data-reveal-variant');
     expect(screen.getByText('Frequently Asked Questions')).toBeInTheDocument();
     expect(screen.getAllByTestId('about-faq-item')).toHaveLength(5);
