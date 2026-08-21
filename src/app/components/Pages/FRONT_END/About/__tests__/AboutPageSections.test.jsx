@@ -118,8 +118,7 @@ describe('About page reference composition', () => {
     expect(screen.getByRole('button', { name: /which destinations does weelp cover/i })).toHaveAttribute('aria-expanded', 'true');
     const faq = container.querySelector('[data-about-section="faq"]');
     expect(
-      faq.querySelector('[data-testid="about-faq-background-image"]').compareDocumentPosition(faq.querySelector('[data-testid="about-faq-content"]')) &
-        Node.DOCUMENT_POSITION_FOLLOWING,
+      faq.querySelector('[data-testid="about-faq-background-image"]').compareDocumentPosition(faq.querySelector('[data-testid="about-faq-content"]')) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
   });
 });
