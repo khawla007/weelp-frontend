@@ -412,7 +412,6 @@
 
 .faqSection {
   position: relative;
-  padding-bottom: 6rem;
   overflow: visible;
 }
 
@@ -431,6 +430,7 @@
   position: relative;
   display: flow-root;
   min-height: 21.3125rem;
+  padding-bottom: 6rem;
   background: hsl(var(--weelp-sage-wash));
 }
 
@@ -514,10 +514,6 @@
 }
 
 @media (max-width: 1279px) {
-  .faqSection {
-    padding-bottom: 4rem;
-  }
-
   .faqHeadingRow {
     min-height: 0;
     padding: 4rem 0 1.5rem;
@@ -525,7 +521,7 @@
 
   .faqContentRow {
     min-height: 0;
-    padding: 0;
+    padding: 0 0 4rem;
   }
 
   .faqImage {
@@ -731,10 +727,6 @@
 }
 
 @media (max-width: 767px) {
-  .faqSection {
-    padding-bottom: 2.5rem;
-  }
-
   .storySection,
   .masonrySection {
     padding-block: 2.5rem;
@@ -850,7 +842,7 @@
   }
 
   .faqContentRow {
-    padding: 0;
+    padding: 0 0 2.5rem;
   }
 }
 
