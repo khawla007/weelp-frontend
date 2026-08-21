@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { HelpCircle, Minus, Plus } from 'lucide-react';
-import Reveal from '@/app/components/ui/Reveal';
 import AboutImage from './AboutImage';
 import BlurRevealHeading from './BlurRevealHeading';
 import SectionBadge from './SectionBadge';
@@ -43,15 +42,15 @@ const AboutFAQ = () => {
       </div>
 
       <div data-testid="about-faq-content-row" className={styles.faqContentRow}>
-        <Reveal variant="right" data-testid="about-faq-overlap-image" className={`${styles.faqImage} ${styles.imageShell}`}>
+        <div data-testid="about-faq-background-image" className={`${styles.faqImage} ${styles.imageShell}`}>
           <AboutImage
             {...faqImage}
             fill
-            sizes="(max-width: 639px) calc(100vw - 32px), (max-width: 1023px) calc(100vw - 48px), (max-width: 1279px) calc(100vw - 64px), (max-width: 1479px) 48vw, 678px"
+            sizes="(max-width: 639px) calc(100vw - 32px), (max-width: 1023px) calc(100vw - 48px), (max-width: 1479px) calc(100vw - 64px), 1416px"
             className={`object-cover ${styles.imageZoom}`}
           />
-        </Reveal>
-        <Reveal variant="left" data-testid="about-faq-content" className={styles.faqContent}>
+        </div>
+        <div data-testid="about-faq-content" className={styles.faqContent}>
           <div>
             {items.map((item, index) => {
               const isOpen = openIndex === index;
@@ -91,7 +90,7 @@ const AboutFAQ = () => {
               );
             })}
           </div>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

@@ -76,7 +76,8 @@ describe('About page reference composition', () => {
     expect(faq).not.toHaveClass('fullBleedBand');
     expect(screen.getByTestId('about-faq-heading-row')).toBeInTheDocument();
     expect(screen.getByTestId('about-faq-content-row')).toBeInTheDocument();
-    expect(screen.getByTestId('about-faq-overlap-image')).toBeInTheDocument();
+    expect(screen.getByTestId('about-faq-background-image')).not.toHaveAttribute('data-reveal-variant');
+    expect(screen.getByTestId('about-faq-content')).not.toHaveAttribute('data-reveal-variant');
     expect(screen.getByText('Frequently Asked Questions')).toBeInTheDocument();
     expect(screen.getAllByTestId('about-faq-item')).toHaveLength(5);
     expect(screen.getAllByTestId('about-faq-item')[0]).toHaveClass('faqItem');
@@ -117,7 +118,8 @@ describe('About page reference composition', () => {
     expect(screen.getByRole('button', { name: /which destinations does weelp cover/i })).toHaveAttribute('aria-expanded', 'true');
     const faq = container.querySelector('[data-about-section="faq"]');
     expect(
-      faq.querySelector('[data-testid="about-faq-overlap-image"]').compareDocumentPosition(faq.querySelector('[data-testid="about-faq-content"]')) & Node.DOCUMENT_POSITION_FOLLOWING,
+      faq.querySelector('[data-testid="about-faq-background-image"]').compareDocumentPosition(faq.querySelector('[data-testid="about-faq-content"]')) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
   });
 });

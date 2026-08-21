@@ -114,7 +114,7 @@ describe('About page Home spacing', () => {
     );
   });
 
-  test('scales the demo FAQ inside the page container and stacks it at xl', () => {
+  test('uses the demo full-width FAQ image band and keeps the desktop composition within the header-aware viewport', () => {
     const faqHeadingRow = declarationsFor('.faqHeadingRow');
     const faqContentRow = declarationsFor('.faqContentRow');
     const faqContent = declarationsFor('.faqContent');
@@ -123,13 +123,16 @@ describe('About page Home spacing', () => {
     const faqIconOpen = declarationsFor('.faqIconOpen');
     const faqButtonFocus = declarationsFor('.faqButton:focus-visible');
 
-    expect(faqHeadingRow).toContain('min-height: 31.0625rem;');
-    expect(faqContentRow).toContain('grid-template-columns: 52.1333% 3% 44.8667%;');
-    expect(faqContentRow).toContain('min-height: 27.625rem;');
-    expect(faqContent).toContain('grid-column: 1 / 3;');
-    expect(faqContent).toContain('min-height: 31.75rem;');
-    expect(faqContent).toContain('margin-top: -10.3125rem;');
-    expect(stylesheet).toMatch(/\.faqImage\s*\{[^}]*grid-column: 2 \/ 4;[^}]*min-height: 46\.4375rem;[^}]*margin-top: -18\.375rem;/);
+    expect(faqHeadingRow).toContain('min-height: 18.75rem;');
+    expect(faqContentRow).toContain('min-height: 27.75rem;');
+    expect(faqContentRow).toContain('display: flow-root;');
+    expect(stylesheet).toMatch(/\.faqImage\s*\{\s*position: absolute;\s*inset: 0;\s*z-index: 1;[^}]*width: 100%;[^}]*height: 100%;/);
+    expect(faqContent).toContain('width: 58.5%;');
+    expect(faqContent).toContain('margin-top: -5rem;');
+    expect(faqContent).toContain('min-height: 0;');
+    expect(stylesheet).toMatch(
+      /@media \(min-width: 1280px\)[\s\S]*?\.faqSection\s*\{[^}]*height: clamp\(42rem, calc\(100svh - 7\.1875rem\), 46\.5rem\);[^}]*\}[\s\S]*?\.faqHeadingRow\s*\{[^}]*height: 40\.3226%;[^}]*min-height: 0;[^}]*\}[\s\S]*?\.faqContentRow\s*\{[^}]*height: 59\.6774%;[^}]*min-height: 0;/,
+    );
     expect(faqButton).toContain('font-size: 1.1875rem;');
     expect(faqButton).toContain('border: 0;');
     expect(faqButton).toContain('border-bottom: 1px solid hsl(var(--border));');
@@ -141,7 +144,7 @@ describe('About page Home spacing', () => {
     expect(faqIconOpen).toContain('background: hsl(var(--weelp-sage-deep));');
     expect(faqButtonFocus).toContain('outline: 2px solid hsl(var(--weelp-sage-deep));');
     expect(stylesheet).toMatch(/@media \(max-width: 1279px\)[\s\S]*?\.faqHeadingRow\s*\{[^}]*padding: 4rem 0 1\.5rem;[^}]*\}[\s\S]*?\.faqContentRow\s*\{[^}]*padding: 0 0 4rem;[^}]*\}/);
-    expect(stylesheet).toMatch(/@media \(max-width: 1279px\)[\s\S]*?\.faqImage,[\s\S]*?\.faqContent\s*\{[^}]*grid-row: auto;[^}]*grid-column: 1;[^}]*margin-top: 0;[^}]*\}/);
+    expect(stylesheet).toMatch(/@media \(max-width: 1279px\)[\s\S]*?\.faqImage\s*\{[^}]*position: relative;[^}]*inset: auto;[^}]*height: auto;/);
     expect(stylesheet).toMatch(
       /@media \(max-width: 1279px\)[\s\S]*?\.faqImage\s*\{[^}]*border-radius: 1\.5rem 1\.5rem 0 0;[^}]*\}[\s\S]*?\.faqContent\s*\{[^}]*border-radius: 0 0 1\.5rem 1\.5rem;[^}]*\}/,
     );
