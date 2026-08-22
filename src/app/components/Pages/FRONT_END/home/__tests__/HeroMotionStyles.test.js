@@ -42,20 +42,17 @@ describe('homepage hero motion styles', () => {
     expect(keyframeDeclarations(revealKeyframes, 'from')).toEqual({
       opacity: '0',
       filter: 'blur(10px)',
-      transform: 'translate3d(0, 0.12em, 0)',
     });
     expect(keyframeDeclarations(revealKeyframes, 'to')).toEqual({
       opacity: '1',
       filter: 'blur(0)',
-      transform: 'translate3d(0, 0, 0)',
     });
     expect(declarations('.weelp-home-hero-blur-character')).toMatchObject({
       display: 'inline-block',
       opacity: '0',
       filter: 'blur(10px)',
-      transform: 'translate3d(0, 0.12em, 0)',
-      animation: 'weelpHomeHeroBlurReveal 720ms var(--weelp-ease-out) both',
-      'animation-delay': 'calc(160ms + var(--weelp-hero-character-index, 0) * 22ms)',
+      animation: 'weelpHomeHeroBlurReveal 1000ms cubic-bezier(0.33, 1, 0.68, 1) both',
+      'animation-delay': 'calc(160ms + var(--weelp-hero-character-index, 0) * 25ms)',
     });
     expect(declarations('.weelp-home-hero-blur-visual')).toMatchObject({
       display: 'block',
@@ -73,8 +70,8 @@ describe('homepage hero motion styles', () => {
     });
     expect(declarations('.weelp-home-search-cta::after')).toMatchObject({
       opacity: '0',
-      background: 'linear-gradient(270deg, hsl(var(--weelp-sage-deep)) 0%, hsl(var(--weelp-sage-hover)) 100%)',
-      transition: 'opacity 300ms linear',
+      background: 'linear-gradient(270deg, hsl(var(--weelp-sage-deep)) 0%, hsl(var(--weelp-sage-text)) 100%)',
+      transition: 'opacity 300ms ease',
     });
     expect(declarations(`${guard}:hover::after`)).toMatchObject({ opacity: '1' });
     expect(declarations(`${guard}:focus-visible::after`)).toEqual({ opacity: '1' });
@@ -82,8 +79,10 @@ describe('homepage hero motion styles', () => {
       background: 'linear-gradient(90deg, var(--weelp-home-page) 0%, var(--weelp-home-surface) 100%)',
     });
     expect(declarations('.dark .weelp-home-search-cta::after')).toEqual({
-      background: 'linear-gradient(270deg, var(--weelp-home-page) 0%, var(--weelp-home-surface) 100%)',
+      background: 'linear-gradient(270deg, var(--weelp-home-page) 0%, hsl(var(--weelp-sage-hover)) 100%)',
     });
+    expect(declarations(`.dark ${guard}:hover`)).toEqual({ opacity: '1' });
+    expect(declarations('.weelp-home-search-cta__icon')).toMatchObject({ transition: 'transform 300ms ease' });
     expect(declarations(`${guard}:hover .weelp-home-search-cta__icon`)).toMatchObject({ transform: 'rotate(-45deg)' });
     expect(declarations(`${guard}:focus-visible .weelp-home-search-cta__icon`)).toMatchObject({ transform: 'rotate(-45deg)' });
   });
