@@ -41,13 +41,53 @@ describe('HeroSection', () => {
     const { getByText } = render(<HeroSection />);
 
     const badge = getByText('Plan calmer escapes');
-    const escapeAccent = getByText('escape');
+    const escapeAccent = getByText('escape', { selector: '.sr-only' }).parentElement;
 
     expect(badge).toHaveClass('weelp-home-hero-eyebrow');
     expect(badge).toHaveClass('text-[var(--weelp-home-hero-accent)]');
     expect(escapeAccent).toHaveClass('text-[var(--weelp-home-hero-accent)]');
     expect(badge).not.toHaveClass('text-weelp-sage-text');
     expect(escapeAccent).not.toHaveClass('text-weelp-sage-text');
+  });
+
+  it('exposes the hero headline once while providing character-level visual hooks', () => {
+    const { container, getByRole, getByText } = render(<HeroSection />);
+
+    expect(getByRole('heading', { name: 'Find your next' })).toBeInTheDocument();
+    expect(getByText('Find your next', { selector: '.sr-only' })).toBeInTheDocument();
+    expect(getByText('escape', { selector: '.sr-only' })).toBeInTheDocument();
+    expect(container.querySelectorAll('[data-home-hero-character]')).toHaveLength(18);
+    expect(container.querySelectorAll('[data-home-hero-visual][aria-hidden="true"]')).toHaveLength(2);
+  });
+
+  it('assigns deterministic character indices with an intentional pause before escape', () => {
+    const { container } = render(<HeroSection />);
+
+    const characters = container.querySelectorAll('[data-home-hero-character]');
+
+    expect(characters[0]).toHaveTextContent('F');
+    expect(characters[0]).toHaveStyle({ '--weelp-hero-character-index': '0' });
+    expect(characters[11]).toHaveTextContent('t');
+    expect(characters[11]).toHaveStyle({ '--weelp-hero-character-index': '11' });
+    expect(characters[12]).toHaveTextContent('e');
+    expect(characters[12]).toHaveStyle({ '--weelp-hero-character-index': '16' });
+  });
+
+  it('stages the supporting hero elements without changing responsive layout offsets', () => {
+    const { container, getByTestId, getByText } = render(<HeroSection />);
+
+    const content = container.querySelector('.container-page');
+    const eyebrow = getByText('Plan calmer escapes');
+    const subtitle = getByText('Beach stays, marina views, and easy city plans in one place.').closest('p');
+    const searchWrapper = getByTestId('home-discovery-search').closest('.weelp-hero-ui-rise');
+    const trustList = container.querySelector('ul.weelp-hero-ui-rise');
+
+    expect(eyebrow).toHaveStyle({ '--weelp-motion-delay': '80ms' });
+    expect(subtitle).toHaveClass('weelp-hero-ui-rise');
+    expect(subtitle).toHaveStyle({ '--weelp-motion-delay': '560ms' });
+    expect(searchWrapper).toHaveStyle({ '--weelp-motion-delay': '700ms' });
+    expect(trustList).toHaveStyle({ '--weelp-motion-delay': '840ms' });
+    expect(content).toHaveClass('pt-[135px]', 'sm:pt-[170px]', 'lg:pt-[214px]');
   });
 
   it('keeps the hero subtitle on a soft blurred mobile shade', () => {

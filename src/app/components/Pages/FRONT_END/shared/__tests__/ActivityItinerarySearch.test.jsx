@@ -112,6 +112,34 @@ describe('ActivityItinerarySearch', () => {
     expect(searchButton).toHaveClass('dark:border-border', 'dark:bg-[var(--weelp-home-page)]', 'dark:hover:bg-[var(--weelp-home-page)]', 'dark:hover:opacity-90');
   });
 
+  it('scopes the reference hover hooks to the Home Search action', () => {
+    const { unmount } = renderSearch(<HomeActivityItinerarySearch />);
+
+    const searchButton = screen.getByRole('button', { name: /search trips/i });
+    const searchText = within(searchButton).getByText('Search escapes');
+    const searchIcon = searchButton.querySelector('.weelp-home-search-cta__icon');
+    expect(searchButton).toHaveClass('weelp-home-search-cta');
+    expect(searchButton).toHaveAttribute('aria-busy', 'false');
+    expect(searchText).toHaveClass('weelp-home-search-cta__text');
+    expect(searchText).toBeVisible();
+    expect(searchIcon).toBeInTheDocument();
+    expect(searchIcon).toHaveAttribute('aria-hidden', 'true');
+
+    unmount();
+    renderSearch(<CompactActivityItinerarySearch />);
+
+    const compactSearchButton = screen.getByRole('button', { name: /search trips/i });
+    expect(compactSearchButton).not.toHaveClass('weelp-home-search-cta');
+    expect(compactSearchButton.querySelector('.weelp-home-search-cta__icon')).not.toBeInTheDocument();
+    expect(compactSearchButton.querySelector('.weelp-home-search-cta__text')).not.toBeInTheDocument();
+  });
+
+  it('marks a searching Home Search action busy for motion guards', () => {
+    renderSearch(<HomeActivityItinerarySearch isSearching />);
+
+    expect(screen.getByRole('button', { name: /search trips/i })).toHaveAttribute('aria-busy', 'true');
+  });
+
   it('preserves the Modal Search action spacing and radius', () => {
     renderSearch(<ModalActivityItinerarySearch />);
 

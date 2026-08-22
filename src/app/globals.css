@@ -570,6 +570,87 @@ body {
     will-change: transform;
   }
 
+  @keyframes weelpHomeHeroBlurReveal {
+    from {
+      opacity: 0;
+      filter: blur(10px);
+      transform: translate3d(0, 0.12em, 0);
+    }
+
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .weelp-home-hero-blur-word,
+  .weelp-home-hero-blur-character {
+    display: inline-block;
+  }
+
+  .weelp-home-hero-blur-visual {
+    display: block;
+    overflow: visible;
+    padding-bottom: 0.08em;
+    vertical-align: top;
+  }
+
+  .weelp-home-hero-blur-space {
+    white-space: pre;
+  }
+
+  .weelp-home-hero-blur-character {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translate3d(0, 0.12em, 0);
+    animation: weelpHomeHeroBlurReveal 720ms var(--weelp-ease-out) both;
+    animation-delay: calc(160ms + var(--weelp-hero-character-index, 0) * 22ms);
+  }
+
+  .weelp-home-search-cta::before,
+  .weelp-home-search-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .weelp-home-search-cta::before {
+    background: linear-gradient(90deg, hsl(var(--weelp-sage-deep)) 0%, hsl(var(--weelp-sage-hover)) 100%);
+    opacity: 1;
+  }
+
+  .weelp-home-search-cta::after {
+    background: linear-gradient(270deg, hsl(var(--weelp-sage-deep)) 0%, hsl(var(--weelp-sage-hover)) 100%);
+    opacity: 0;
+    transition: opacity 300ms linear;
+  }
+
+  .dark .weelp-home-search-cta::before {
+    background: linear-gradient(90deg, var(--weelp-home-page) 0%, var(--weelp-home-surface) 100%);
+  }
+
+  .dark .weelp-home-search-cta::after {
+    background: linear-gradient(270deg, var(--weelp-home-page) 0%, var(--weelp-home-surface) 100%);
+  }
+
+  .weelp-home-search-cta__icon {
+    transition: transform 300ms linear;
+  }
+
+  .weelp-home-search-cta:not(:disabled):not([aria-busy='true']):hover::after,
+  .weelp-home-search-cta:not(:disabled):not([aria-busy='true']):focus-visible::after {
+    opacity: 1;
+  }
+
+  .weelp-home-search-cta:not(:disabled):not([aria-busy='true']):hover .weelp-home-search-cta__icon,
+  .weelp-home-search-cta:not(:disabled):not([aria-busy='true']):focus-visible .weelp-home-search-cta__icon {
+    transform: rotate(-45deg);
+  }
+
   /* Scroll reveal variant — 40px lift / 900ms — used by Reveal `variant="lift"`
      and by [data-reveal-cards] grid stagger. Separate keyframe from weelpFadeUp
      so existing Reveal callers (12px / 520ms) stay untouched. */
@@ -860,6 +941,7 @@ body {
     .weelp-hero-rise,
     .weelp-hero-ui-rise,
     .weelp-rise-item,
+    .weelp-home-hero-blur-character,
     .weelp-blur-reveal__character,
     [data-reveal],
     [data-reveal-cards] > * {
@@ -868,6 +950,16 @@ body {
       filter: none;
       animation: none;
       will-change: auto;
+    }
+
+    .weelp-home-search-cta::after,
+    .weelp-home-search-cta__icon {
+      transition: none;
+    }
+
+    .weelp-home-search-cta:not(:disabled):not([aria-busy='true']):hover .weelp-home-search-cta__icon,
+    .weelp-home-search-cta:not(:disabled):not([aria-busy='true']):focus-visible .weelp-home-search-cta__icon {
+      transform: none;
     }
 
     .animate-price-fade,

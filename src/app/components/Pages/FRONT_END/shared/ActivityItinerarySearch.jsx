@@ -553,14 +553,26 @@ function ActivityItinerarySearch({ presentation, initialQuery = '', controlsSlot
               <button
                 type="submit"
                 aria-label="Search trips"
+                aria-busy={isSearching}
                 className={
                   isPill
-                    ? `inline-flex h-[52px] min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border border-weelp-sage-deep bg-weelp-sage-deep ${DARK_SEARCH_BUTTON_CLASS} px-8 text-sm font-semibold text-white shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-colors duration-200 ease-out hover:bg-weelp-sage-deep/85 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none sm:h-16 sm:w-auto sm:min-w-[200px] sm:px-10`
+                    ? `weelp-home-search-cta relative isolate overflow-hidden inline-flex h-[52px] min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border border-weelp-sage-deep bg-weelp-sage-deep ${DARK_SEARCH_BUTTON_CLASS} px-8 text-sm font-semibold text-white shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-colors duration-200 ease-out hover:bg-weelp-sage-deep/85 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none sm:h-16 sm:w-auto sm:min-w-[200px] sm:px-10`
                     : `inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl border border-weelp-sage-deep bg-weelp-sage-deep ${DARK_SEARCH_BUTTON_CLASS} px-6 py-[18px] text-sm font-semibold text-white shadow-[0_3px_9px_rgba(0,0,0,0.04)] transition-colors hover:bg-weelp-sage-deep/85 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 motion-reduce:transition-none`
                 }
               >
-                <Search className="size-4" strokeWidth={2} />
-                {isPill ? 'Search escapes' : 'Search'}
+                {isPill ? (
+                  <>
+                    <span aria-hidden="true" className="weelp-home-search-cta__icon relative z-[1] inline-flex">
+                      <Search className="size-4" strokeWidth={2} />
+                    </span>
+                    <span className="weelp-home-search-cta__text relative z-[1]">Search escapes</span>
+                  </>
+                ) : (
+                  <>
+                    <Search className="size-4" strokeWidth={2} />
+                    Search
+                  </>
+                )}
               </button>
             </div>
           )}
