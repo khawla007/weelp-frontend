@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { HelpCircle, Minus, Plus } from 'lucide-react';
-import AboutImage from './AboutImage';
 import BlurRevealHeading from './BlurRevealHeading';
+import FaqJourneyAnimation from './FaqJourneyAnimation';
 import SectionBadge from './SectionBadge';
 import styles from './AboutPage.module.css';
 
@@ -27,8 +27,6 @@ const items = [
   },
 ];
 
-const faqImage = { src: '/assets/images/hero_bg_1.jpg', alt: 'Travelers exploring a destination with Weelp', fallbackLabel: 'Destination image unavailable' };
-
 const AboutFAQ = () => {
   const [openIndex, setOpenIndex] = useState(0);
 
@@ -42,9 +40,7 @@ const AboutFAQ = () => {
       </div>
 
       <div data-testid="about-faq-content-row" className={styles.faqContentRow}>
-        <div data-testid="about-faq-background-image" className={`${styles.faqImage} ${styles.imageShell}`}>
-          <AboutImage {...faqImage} fill sizes="100vw" className={`object-cover ${styles.imageZoom}`} />
-        </div>
+        <FaqJourneyAnimation />
         <div data-testid="about-faq-content" className={styles.faqContent}>
           <div>
             {items.map((item, index) => {

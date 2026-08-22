@@ -447,6 +447,206 @@
   transform: translateX(-50%);
 }
 
+.faqJourney {
+  overflow: hidden;
+  background: hsl(var(--weelp-sage-wash));
+}
+
+.faqJourneySvg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.faqJourneySky {
+  fill: hsl(var(--weelp-sage-wash));
+}
+
+.faqJourneySun {
+  fill: var(--weelp-home-accent);
+  opacity: 0.3;
+}
+
+.faqJourneyCloud {
+  fill: hsl(var(--background) / 72%);
+}
+
+.faqJourneyMountainBack {
+  fill: hsl(var(--weelp-sage-tint));
+}
+
+.faqJourneyMountainMid {
+  fill: hsl(var(--weelp-sage-deep) / 74%);
+}
+
+.faqJourneyGround {
+  fill: hsl(var(--weelp-sage-hover));
+}
+
+.faqJourneyRoadEdge,
+.faqJourneyRoadSurface,
+.faqJourneyRoadDivider,
+.faqJourneyRoadReveal {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.faqJourneyRoadEdge {
+  stroke: hsl(var(--background) / 82%);
+  stroke-width: 18;
+}
+
+.faqJourneyRoadSurface {
+  stroke: hsl(var(--weelp-sage-deep) / 88%);
+  stroke-width: 12;
+}
+
+.faqJourneyRoadDivider {
+  stroke: var(--weelp-home-accent);
+  stroke-width: 2;
+  stroke-dasharray: 0.025 0.02;
+}
+
+.faqJourneyRoadReveal {
+  stroke: white;
+  stroke-width: 22;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.faqJourneyCar {
+  offset-path: var(--faq-journey-car-path);
+  offset-rotate: auto;
+  offset-distance: 100%;
+  opacity: 1;
+}
+
+.faqJourneyCarBody {
+  fill: var(--weelp-home-accent);
+  stroke: hsl(var(--foreground) / 72%);
+  stroke-width: 1.5;
+}
+
+.faqJourneyCarWindow {
+  fill: hsl(var(--background) / 90%);
+}
+
+.faqJourneyCarWheel {
+  fill: hsl(var(--foreground));
+}
+
+.faqJourneyPin {
+  fill: var(--weelp-home-accent);
+}
+
+.faqJourneyPinCenter {
+  fill: hsl(var(--background));
+}
+
+.faqJourneyPinPulse {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+.faqJourneyCompositionCompact {
+  display: none;
+}
+
+.faqJourney[data-motion='running'] .faqJourneyRoadReveal,
+.faqJourney[data-motion='paused'] .faqJourneyRoadReveal {
+  animation: faqJourneyRoadBuild 4s var(--weelp-ease-out) both;
+}
+
+.faqJourney[data-motion='running'] .faqJourneyCar,
+.faqJourney[data-motion='paused'] .faqJourneyCar {
+  animation: faqJourneyCarDrive 10s 4s ease-in-out infinite both;
+}
+
+.faqJourney[data-motion='running'] .faqJourneyPinPulse,
+.faqJourney[data-motion='paused'] .faqJourneyPinPulse {
+  animation: faqJourneyPinPulse 10s 4s ease-in-out infinite;
+}
+
+.faqJourney[data-motion='running'] .faqJourneyCloud,
+.faqJourney[data-motion='paused'] .faqJourneyCloud {
+  animation: faqJourneyCloud 28s ease-in-out infinite alternate;
+}
+
+.faqJourney[data-motion='paused'] .faqJourneyRoadReveal,
+.faqJourney[data-motion='paused'] .faqJourneyCar,
+.faqJourney[data-motion='paused'] .faqJourneyPinPulse,
+.faqJourney[data-motion='paused'] .faqJourneyCloud {
+  animation-play-state: paused;
+}
+
+@keyframes faqJourneyRoadBuild {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes faqJourneyCarDrive {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+
+  3% {
+    opacity: 1;
+  }
+
+  56%,
+  76% {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+
+  80% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+
+  80.01%,
+  100% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+}
+
+@keyframes faqJourneyPinPulse {
+  0%,
+  56% {
+    transform: scale(1);
+  }
+
+  63% {
+    transform: scale(1.14);
+  }
+
+  70%,
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes faqJourneyCloud {
+  from {
+    transform: translateX(-2%);
+  }
+
+  to {
+    transform: translateX(8%);
+  }
+}
+
 .faqContent {
   position: relative;
   z-index: 2;
@@ -535,6 +735,14 @@
     min-height: 36rem;
     border-radius: 0;
     transform: translateX(-50%);
+  }
+
+  .faqJourneyCompositionDesktop {
+    display: none;
+  }
+
+  .faqJourneyCompositionCompact {
+    display: block;
   }
 
   .faqContent {
@@ -851,5 +1059,26 @@
   .imageShell:hover .imageZoom {
     transform: none;
     transition: none;
+  }
+
+  .faqJourney[data-motion] .faqJourneyRoadReveal,
+  .faqJourney[data-motion] .faqJourneyCar,
+  .faqJourney[data-motion] .faqJourneyPinPulse,
+  .faqJourney[data-motion] .faqJourneyCloud {
+    animation: none;
+  }
+
+  .faqJourney[data-motion] .faqJourneyRoadReveal {
+    stroke-dashoffset: 0;
+  }
+
+  .faqJourney[data-motion] .faqJourneyCar {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+
+  .faqJourney[data-motion] .faqJourneyPinPulse,
+  .faqJourney[data-motion] .faqJourneyCloud {
+    transform: none;
   }
 }

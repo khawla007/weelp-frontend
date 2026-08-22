@@ -77,7 +77,10 @@ describe('About page reference composition', () => {
     expect(screen.getByTestId('about-faq-heading-row')).toBeInTheDocument();
     expect(screen.getByTestId('about-faq-content-row')).toBeInTheDocument();
     expect(screen.getByTestId('about-faq-background-image')).not.toHaveAttribute('data-reveal-variant');
-    expect(screen.getByTestId('about-faq-background-image').querySelector('img')).toHaveAttribute('sizes', '100vw');
+    const faqBackground = screen.getByTestId('about-faq-background-image');
+    expect(faqBackground.querySelector('svg')).toBeInTheDocument();
+    expect(faqBackground.querySelector('video')).not.toBeInTheDocument();
+    expect(faqBackground.querySelector('img')).not.toBeInTheDocument();
     expect(screen.getByTestId('about-faq-content')).not.toHaveAttribute('data-reveal-variant');
     expect(screen.getByText('Frequently Asked Questions')).toBeInTheDocument();
     expect(screen.getAllByTestId('about-faq-item')).toHaveLength(5);

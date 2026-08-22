@@ -27,6 +27,51 @@ const paddingBlockValuesFor = (selector) => {
   });
 };
 
+const normalizedCss = (value) => value.replace(/\s+/g, ' ').trim();
+
+const blocksIn = (source) => {
+  const blocks = [];
+  let blockStart = 0;
+  let bodyStart = 0;
+  let depth = 0;
+
+  for (let index = 0; index < source.length; index += 1) {
+    if (source[index] === '{') {
+      if (depth === 0) bodyStart = index + 1;
+      depth += 1;
+    } else if (source[index] === '}') {
+      depth -= 1;
+      if (depth === 0) {
+        blocks.push({
+          prelude: normalizedCss(source.slice(blockStart, bodyStart - 1)),
+          body: source.slice(bodyStart, index),
+        });
+        blockStart = index + 1;
+      }
+    }
+  }
+
+  return blocks;
+};
+
+const bodyFor = (source, prelude) => {
+  const block = blocksIn(source).find((candidate) => candidate.prelude === prelude);
+
+  if (!block) throw new Error(`Missing CSS block for ${prelude}`);
+
+  return block.body;
+};
+
+const declarationsForSelectors = (source, selectors) => {
+  const expectedPrelude = selectors.join(', ');
+
+  return normalizedCss(bodyFor(source, expectedPrelude));
+};
+
+const keyframesFor = (name) => {
+  return normalizedCss(bodyFor(stylesheet, `@keyframes ${name}`));
+};
+
 describe('About page Home spacing', () => {
   test('uses the Home page mobile, tablet, and desktop spacing for sections two and three', () => {
     const storySection = declarationsFor('.storySection');
@@ -151,5 +196,54 @@ describe('About page Home spacing', () => {
     );
     expect(stylesheet).toMatch(/@media \(max-width: 1279px\)[\s\S]*?\.faqImage\s*\{[^}]*border-radius: 0;[^}]*\}[\s\S]*?\.faqContent\s*\{[^}]*border-radius: 0 0 1\.5rem 1\.5rem;[^}]*\}/);
     expect(stylesheet).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.faqHeadingRow\s*\{[^}]*padding: 2\.5rem 0 1rem;[^}]*\}[\s\S]*?\.faqContentRow\s*\{[^}]*padding: 0 0 2\.5rem;[^}]*\}/);
+  });
+
+  test('styles the FAQ road-and-car journey with responsive motion fallbacks', () => {
+    const compactComposition = declarationsFor('.faqJourneyCompositionCompact');
+    const runningAndPausedRoad = declarationsForSelectors(stylesheet, [".faqJourney[data-motion='running'] .faqJourneyRoadReveal", ".faqJourney[data-motion='paused'] .faqJourneyRoadReveal"]);
+    const runningAndPausedCar = declarationsForSelectors(stylesheet, [".faqJourney[data-motion='running'] .faqJourneyCar", ".faqJourney[data-motion='paused'] .faqJourneyCar"]);
+    const runningAndPausedPin = declarationsForSelectors(stylesheet, [".faqJourney[data-motion='running'] .faqJourneyPinPulse", ".faqJourney[data-motion='paused'] .faqJourneyPinPulse"]);
+    const runningAndPausedCloud = declarationsForSelectors(stylesheet, [".faqJourney[data-motion='running'] .faqJourneyCloud", ".faqJourney[data-motion='paused'] .faqJourneyCloud"]);
+    const pausedMotion = declarationsForSelectors(stylesheet, [
+      ".faqJourney[data-motion='paused'] .faqJourneyRoadReveal",
+      ".faqJourney[data-motion='paused'] .faqJourneyCar",
+      ".faqJourney[data-motion='paused'] .faqJourneyPinPulse",
+      ".faqJourney[data-motion='paused'] .faqJourneyCloud",
+    ]);
+    const compactMedia = bodyFor(stylesheet, '@media (max-width: 1279px)');
+    const reducedMotionMedia = bodyFor(stylesheet, '@media (prefers-reduced-motion: reduce)');
+
+    expect(stylesheet).toMatch(/\.faqJourney\s*\{[^}]*overflow: hidden;[^}]*background: hsl\(var\(--weelp-sage-wash\)\);[^}]*\}/);
+    expect(stylesheet).toMatch(/\.faqJourneySvg\s*\{[^}]*position: absolute;[^}]*inset: 0;[^}]*width: 100%;[^}]*height: 100%;[^}]*\}/);
+    expect(stylesheet).toMatch(/\.faqJourneyRoadEdge\s*\{[^}]*stroke-width: 18;[^}]*\}/);
+    expect(stylesheet).toMatch(/\.faqJourneyRoadSurface\s*\{[^}]*stroke-width: 12;[^}]*\}/);
+    expect(stylesheet).toMatch(/\.faqJourneyRoadDivider\s*\{[^}]*stroke: var\(--weelp-home-accent\);[^}]*stroke-dasharray: 0\.025 0\.02;[^}]*\}/);
+    expect(stylesheet).toMatch(/\.faqJourneyRoadReveal\s*\{[^}]*stroke-dasharray: 1;[^}]*stroke-dashoffset: 0;[^}]*\}/);
+    expect(stylesheet).toMatch(/\.faqJourneyCar\s*\{[^}]*offset-path: var\(--faq-journey-car-path\);[^}]*offset-distance: 100%;[^}]*opacity: 1;[^}]*\}/);
+    expect(compactComposition).toContain('display: none;');
+    expect(stylesheet).toMatch(/@keyframes faqJourneyRoadBuild\s*\{[\s\S]*?stroke-dashoffset: 1;[\s\S]*?stroke-dashoffset: 0;[\s\S]*?\}/);
+    expect(keyframesFor('faqJourneyCarDrive')).toBe(
+      '0% { offset-distance: 0%; opacity: 0; } 3% { opacity: 1; } 56%, 76% { offset-distance: 100%; opacity: 1; } 80% { offset-distance: 100%; opacity: 0; } 80.01%, 100% { offset-distance: 0%; opacity: 0; }',
+    );
+    expect(keyframesFor('faqJourneyPinPulse')).toBe('0%, 56% { transform: scale(1); } 63% { transform: scale(1.14); } 70%, 100% { transform: scale(1); }');
+    expect(runningAndPausedRoad).toBe('animation: faqJourneyRoadBuild 4s var(--weelp-ease-out) both;');
+    expect(runningAndPausedCar).toBe('animation: faqJourneyCarDrive 10s 4s ease-in-out infinite both;');
+    expect(runningAndPausedPin).toBe('animation: faqJourneyPinPulse 10s 4s ease-in-out infinite;');
+    expect(runningAndPausedCloud).toBe('animation: faqJourneyCloud 28s ease-in-out infinite alternate;');
+    expect(stylesheet).toMatch(/@keyframes faqJourneyCloud\s*\{[\s\S]*?transform: translateX\(-2%\);[\s\S]*?transform: translateX\(8%\);[\s\S]*?\}/);
+    expect(pausedMotion).toBe('animation-play-state: paused;');
+    expect(declarationsForSelectors(compactMedia, ['.faqJourneyCompositionDesktop'])).toBe('display: none;');
+    expect(declarationsForSelectors(compactMedia, ['.faqJourneyCompositionCompact'])).toBe('display: block;');
+    expect(
+      declarationsForSelectors(reducedMotionMedia, [
+        '.faqJourney[data-motion] .faqJourneyRoadReveal',
+        '.faqJourney[data-motion] .faqJourneyCar',
+        '.faqJourney[data-motion] .faqJourneyPinPulse',
+        '.faqJourney[data-motion] .faqJourneyCloud',
+      ]),
+    ).toBe('animation: none;');
+    expect(declarationsForSelectors(reducedMotionMedia, ['.faqJourney[data-motion] .faqJourneyRoadReveal'])).toBe('stroke-dashoffset: 0;');
+    expect(declarationsForSelectors(reducedMotionMedia, ['.faqJourney[data-motion] .faqJourneyCar'])).toBe('offset-distance: 100%; opacity: 1;');
+    expect(declarationsForSelectors(reducedMotionMedia, ['.faqJourney[data-motion] .faqJourneyPinPulse', '.faqJourney[data-motion] .faqJourneyCloud'])).toBe('transform: none;');
   });
 });

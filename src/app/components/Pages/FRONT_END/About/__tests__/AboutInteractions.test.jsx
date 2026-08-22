@@ -9,6 +9,11 @@ jest.mock('next/image', () => {
   MockImage.displayName = 'MockImage';
   return MockImage;
 });
+jest.mock('../FaqJourneyAnimation', () => {
+  const MockFaqJourneyAnimation = () => <div data-testid="faq-journey-animation" />;
+  MockFaqJourneyAnimation.displayName = 'MockFaqJourneyAnimation';
+  return MockFaqJourneyAnimation;
+});
 jest.mock('swiper/css', () => ({}));
 jest.mock('swiper/modules', () => ({ Navigation: {} }));
 jest.mock('swiper/react', () => {
@@ -118,6 +123,12 @@ test('FAQ keeps one item open at a time', async () => {
   expect(secondIcon).toHaveAttribute('data-state', 'open');
   expect(firstIcon).toHaveAttribute('data-icon', 'plus');
   expect(secondIcon).toHaveAttribute('data-icon', 'minus');
+});
+
+test('FAQ renders the approved journey animation', () => {
+  render(<AboutFAQ />);
+
+  expect(screen.getByTestId('faq-journey-animation')).toBeInTheDocument();
 });
 
 test('failed About images retain an accessible stable fallback', async () => {
