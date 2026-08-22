@@ -78,7 +78,7 @@ describe('homepage hero motion styles', () => {
     });
   });
 
-  it('crossfades the home search CTA gradient and rotates only its icon', () => {
+  it('crossfades opposing home search CTA gradients and gently rotates only its icon', () => {
     const guard = ".weelp-home-search-cta:not(:disabled):not([aria-busy='true'])";
 
     expect(declarations('.weelp-home-search-cta::before')).toMatchObject({
@@ -87,8 +87,8 @@ describe('homepage hero motion styles', () => {
     });
     expect(declarations('.weelp-home-search-cta::after')).toMatchObject({
       opacity: '0',
-      background: 'var(--weelp-home-hero-ink)',
-      transition: 'opacity 300ms linear',
+      background: 'linear-gradient(-90deg, hsl(var(--weelp-sage-deep)) 0%, hsl(var(--weelp-sage-hover)) 100%)',
+      transition: 'opacity 300ms ease',
     });
     expect(declarations(`${guard}:hover::after`)).toMatchObject({ opacity: '1' });
     expect(declarations(`${guard}:focus-visible::after`)).toEqual({ opacity: '1' });
@@ -96,12 +96,12 @@ describe('homepage hero motion styles', () => {
       background: 'linear-gradient(90deg, var(--weelp-home-page) 0%, var(--weelp-home-surface) 100%)',
     });
     expect(declarations('.dark .weelp-home-search-cta::after')).toEqual({
-      background: 'hsl(var(--weelp-sage-hover))',
+      background: 'linear-gradient(-90deg, var(--weelp-home-page) 0%, var(--weelp-home-surface) 100%)',
     });
     expect(declarations(`.dark ${guard}:hover`)).toEqual({ opacity: '1' });
     expect(declarations('.weelp-home-search-cta__icon')).toMatchObject({ transition: 'transform 300ms ease' });
-    expect(declarations(`${guard}:hover .weelp-home-search-cta__icon`)).toMatchObject({ transform: 'rotate(-45deg)' });
-    expect(declarations(`${guard}:focus-visible .weelp-home-search-cta__icon`)).toMatchObject({ transform: 'rotate(-45deg)' });
+    expect(declarations(`${guard}:hover .weelp-home-search-cta__icon`)).toMatchObject({ transform: 'rotate(-12deg)' });
+    expect(declarations(`${guard}:focus-visible .weelp-home-search-cta__icon`)).toMatchObject({ transform: 'rotate(-12deg)' });
   });
 
   it('removes homepage character and CTA motion when reduced motion is requested', () => {

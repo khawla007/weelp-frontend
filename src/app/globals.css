@@ -665,9 +665,9 @@ body {
   }
 
   .weelp-home-search-cta::after {
-    background: var(--weelp-home-hero-ink);
+    background: linear-gradient(-90deg, hsl(var(--weelp-sage-deep)) 0%, hsl(var(--weelp-sage-hover)) 100%);
     opacity: 0;
-    transition: opacity 300ms linear;
+    transition: opacity 300ms ease;
   }
 
   .dark .weelp-home-search-cta::before {
@@ -675,7 +675,7 @@ body {
   }
 
   .dark .weelp-home-search-cta::after {
-    background: hsl(var(--weelp-sage-hover));
+    background: linear-gradient(-90deg, var(--weelp-home-page) 0%, var(--weelp-home-surface) 100%);
   }
 
   .dark .weelp-home-search-cta:not(:disabled):not([aria-busy='true']):hover {
@@ -693,7 +693,7 @@ body {
 
   .weelp-home-search-cta:not(:disabled):not([aria-busy='true']):hover .weelp-home-search-cta__icon,
   .weelp-home-search-cta:not(:disabled):not([aria-busy='true']):focus-visible .weelp-home-search-cta__icon {
-    transform: rotate(-45deg);
+    transform: rotate(-12deg);
   }
 
   /* Scroll reveal variant — 40px lift / 900ms — used by Reveal `variant="lift"`
