@@ -10,9 +10,11 @@ describe('HeroSection', () => {
   it('uses tighter mobile spacing while preserving the desktop hero hierarchy', () => {
     const { container } = render(<HeroSection />);
 
-    const hero = container.querySelector('.weelp-hero-rise');
+    const hero = container.querySelector('[data-home-hero]');
     const content = hero.querySelector('.container-page');
 
+    expect(hero).not.toHaveClass('weelp-hero-rise');
+    expect(hero).toHaveAttribute('data-home-hero-motion', 'pending');
     expect(hero).toHaveClass('mb-10', 'sm:mb-16', 'md:h-[100svh]', 'lg:mb-24');
     expect(content).toHaveClass('pt-[135px]', 'pb-10', 'sm:pb-16', 'md:h-full', 'md:pb-20', 'lg:pb-32');
   });
@@ -60,7 +62,7 @@ describe('HeroSection', () => {
     expect(container.querySelectorAll('[data-home-hero-visual][aria-hidden="true"]')).toHaveLength(2);
   });
 
-  it('assigns deterministic character indices with an intentional pause before escape', () => {
+  it('assigns continuous character indices across both headline lines', () => {
     const { container } = render(<HeroSection />);
 
     const characters = container.querySelectorAll('[data-home-hero-character]');
@@ -70,7 +72,7 @@ describe('HeroSection', () => {
     expect(characters[11]).toHaveTextContent('t');
     expect(characters[11]).toHaveStyle({ '--weelp-hero-character-index': '11' });
     expect(characters[12]).toHaveTextContent('e');
-    expect(characters[12]).toHaveStyle({ '--weelp-hero-character-index': '16' });
+    expect(characters[12]).toHaveStyle({ '--weelp-hero-character-index': '12' });
   });
 
   it('stages the supporting hero elements without changing responsive layout offsets', () => {
@@ -82,11 +84,11 @@ describe('HeroSection', () => {
     const searchWrapper = getByTestId('home-discovery-search').closest('.weelp-hero-ui-rise');
     const trustList = container.querySelector('ul.weelp-hero-ui-rise');
 
-    expect(eyebrow).toHaveStyle({ '--weelp-motion-delay': '80ms' });
+    expect(eyebrow).toHaveStyle({ '--weelp-motion-delay': '0ms', '--weelp-motion-duration': '1250ms', '--weelp-motion-ease': 'ease', '--weelp-reveal-y': '20px' });
     expect(subtitle).toHaveClass('weelp-hero-ui-rise');
-    expect(subtitle).toHaveStyle({ '--weelp-motion-delay': '560ms' });
-    expect(searchWrapper).toHaveStyle({ '--weelp-motion-delay': '700ms' });
-    expect(trustList).toHaveStyle({ '--weelp-motion-delay': '840ms' });
+    expect(subtitle).toHaveStyle({ '--weelp-motion-delay': '600ms', '--weelp-motion-duration': '1250ms', '--weelp-motion-ease': 'ease', '--weelp-reveal-y': '20px' });
+    expect(searchWrapper).toHaveStyle({ '--weelp-motion-delay': '0ms', '--weelp-motion-duration': '1250ms', '--weelp-motion-ease': 'ease', '--weelp-reveal-y': '20px' });
+    expect(trustList).toHaveStyle({ '--weelp-motion-delay': '600ms', '--weelp-motion-duration': '1250ms', '--weelp-motion-ease': 'ease', '--weelp-reveal-y': '20px' });
     expect(content).toHaveClass('pt-[135px]', 'sm:pt-[170px]', 'lg:pt-[214px]');
   });
 

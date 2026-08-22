@@ -51,8 +51,25 @@ describe('homepage hero motion styles', () => {
       display: 'inline-block',
       opacity: '0',
       filter: 'blur(10px)',
+    });
+    expect(declarations("[data-home-hero-motion='ready'] .weelp-home-hero-blur-character")).toMatchObject({
       animation: 'weelpHomeHeroBlurReveal 1000ms cubic-bezier(0.33, 1, 0.68, 1) both',
-      'animation-delay': 'calc(160ms + var(--weelp-hero-character-index, 0) * 25ms)',
+      'animation-delay': 'calc(var(--weelp-hero-character-index, 0) * 70ms)',
+    });
+    expect(declarations("[data-home-hero-motion='pending'] .weelp-home-hero-blur-character")).toMatchObject({
+      animation: 'weelpHomeHeroMotionFallback 0ms linear 5000ms both',
+    });
+    expect(declarations("[data-home-hero-motion='pending'] .weelp-hero-ui-rise")).toMatchObject({
+      visibility: 'hidden',
+      'pointer-events': 'none',
+      animation: 'weelpHomeHeroMotionFallback 0ms linear 5000ms both',
+    });
+    expect(declarations("[data-home-hero-motion='fallback'] .weelp-hero-ui-rise")).toMatchObject({
+      visibility: 'visible',
+      'pointer-events': 'auto',
+      opacity: '1',
+      transform: 'none',
+      animation: 'none',
     });
     expect(declarations('.weelp-home-hero-blur-visual')).toMatchObject({
       display: 'block',
@@ -70,8 +87,8 @@ describe('homepage hero motion styles', () => {
     });
     expect(declarations('.weelp-home-search-cta::after')).toMatchObject({
       opacity: '0',
-      background: 'linear-gradient(270deg, hsl(var(--weelp-sage-deep)) 0%, hsl(var(--weelp-sage-text)) 100%)',
-      transition: 'opacity 300ms ease',
+      background: 'var(--weelp-home-hero-ink)',
+      transition: 'opacity 300ms linear',
     });
     expect(declarations(`${guard}:hover::after`)).toMatchObject({ opacity: '1' });
     expect(declarations(`${guard}:focus-visible::after`)).toEqual({ opacity: '1' });
@@ -79,7 +96,7 @@ describe('homepage hero motion styles', () => {
       background: 'linear-gradient(90deg, var(--weelp-home-page) 0%, var(--weelp-home-surface) 100%)',
     });
     expect(declarations('.dark .weelp-home-search-cta::after')).toEqual({
-      background: 'linear-gradient(270deg, var(--weelp-home-page) 0%, hsl(var(--weelp-sage-hover)) 100%)',
+      background: 'hsl(var(--weelp-sage-hover))',
     });
     expect(declarations(`.dark ${guard}:hover`)).toEqual({ opacity: '1' });
     expect(declarations('.weelp-home-search-cta__icon')).toMatchObject({ transition: 'transform 300ms ease' });
@@ -98,6 +115,17 @@ describe('homepage hero motion styles', () => {
       opacity: '1',
       filter: 'none',
       transform: 'none',
+      animation: 'none',
+    });
+    expect(declarations('[data-home-hero-motion] .weelp-home-hero-blur-character', reducedMotion)).toMatchObject({
+      opacity: '1',
+      filter: 'none',
+      animation: 'none',
+    });
+    expect(declarations('[data-home-hero-motion] .weelp-hero-ui-rise', reducedMotion)).toMatchObject({
+      visibility: 'visible',
+      'pointer-events': 'auto',
+      opacity: '1',
       animation: 'none',
     });
     expect(declarations('.weelp-home-search-cta::after', reducedMotion)).toMatchObject({ transition: 'none' });
