@@ -660,22 +660,30 @@ body {
   }
 
   .weelp-home-search-cta::before {
-    background: linear-gradient(90deg, hsl(var(--weelp-sage-deep)) 0%, hsl(var(--weelp-sage-hover)) 100%);
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, hsl(var(--weelp-sage-deep)) 85%, var(--weelp-home-hero-ink)) 0%,
+      color-mix(in srgb, hsl(var(--weelp-sage-hover)) 65%, var(--weelp-home-hero-ink)) 100%
+    );
     opacity: 1;
   }
 
   .weelp-home-search-cta::after {
-    background: linear-gradient(-90deg, hsl(var(--weelp-sage-deep)) 0%, hsl(var(--weelp-sage-hover)) 100%);
+    background: linear-gradient(
+      -90deg,
+      color-mix(in srgb, hsl(var(--weelp-sage-deep)) 85%, var(--weelp-home-hero-ink)) 0%,
+      color-mix(in srgb, hsl(var(--weelp-sage-hover)) 65%, var(--weelp-home-hero-ink)) 100%
+    );
     opacity: 0;
     transition: opacity 300ms ease;
   }
 
   .dark .weelp-home-search-cta::before {
-    background: linear-gradient(90deg, var(--weelp-home-page) 0%, var(--weelp-home-surface) 100%);
+    background: linear-gradient(90deg, var(--weelp-home-page) 0%, color-mix(in srgb, var(--weelp-home-surface) 72%, hsl(var(--weelp-sage-deep))) 100%);
   }
 
   .dark .weelp-home-search-cta::after {
-    background: linear-gradient(-90deg, var(--weelp-home-page) 0%, var(--weelp-home-surface) 100%);
+    background: linear-gradient(-90deg, var(--weelp-home-page) 0%, color-mix(in srgb, var(--weelp-home-surface) 72%, hsl(var(--weelp-sage-deep))) 100%);
   }
 
   .dark .weelp-home-search-cta:not(:disabled):not([aria-busy='true']):hover {

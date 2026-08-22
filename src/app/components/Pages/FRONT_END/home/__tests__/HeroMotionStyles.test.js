@@ -4,6 +4,7 @@ import postcss from 'postcss';
 
 const css = readFileSync(join(process.cwd(), 'src/app/globals.css'), 'utf8');
 const root = postcss.parse(css);
+const compactCssValue = (value) => value.replace(/\s+/g, ' ').replace(/\(\s+/g, '(').replace(/\s+\)/g, ')').trim();
 
 const declarations = (selector, container = root) => {
   const values = {};
@@ -81,23 +82,26 @@ describe('homepage hero motion styles', () => {
   it('crossfades opposing home search CTA gradients and gently rotates only its icon', () => {
     const guard = ".weelp-home-search-cta:not(:disabled):not([aria-busy='true'])";
 
-    expect(declarations('.weelp-home-search-cta::before')).toMatchObject({
-      opacity: '1',
-      background: 'linear-gradient(90deg, hsl(var(--weelp-sage-deep)) 0%, hsl(var(--weelp-sage-hover)) 100%)',
-    });
-    expect(declarations('.weelp-home-search-cta::after')).toMatchObject({
-      opacity: '0',
-      background: 'linear-gradient(-90deg, hsl(var(--weelp-sage-deep)) 0%, hsl(var(--weelp-sage-hover)) 100%)',
-      transition: 'opacity 300ms ease',
-    });
+    const restingGradient = declarations('.weelp-home-search-cta::before');
+    const hoverGradient = declarations('.weelp-home-search-cta::after');
+
+    expect(restingGradient.opacity).toBe('1');
+    expect(compactCssValue(restingGradient.background)).toBe(
+      'linear-gradient(90deg, color-mix(in srgb, hsl(var(--weelp-sage-deep)) 85%, var(--weelp-home-hero-ink)) 0%, color-mix(in srgb, hsl(var(--weelp-sage-hover)) 65%, var(--weelp-home-hero-ink)) 100%)',
+    );
+    expect(hoverGradient.opacity).toBe('0');
+    expect(compactCssValue(hoverGradient.background)).toBe(
+      'linear-gradient(-90deg, color-mix(in srgb, hsl(var(--weelp-sage-deep)) 85%, var(--weelp-home-hero-ink)) 0%, color-mix(in srgb, hsl(var(--weelp-sage-hover)) 65%, var(--weelp-home-hero-ink)) 100%)',
+    );
+    expect(hoverGradient.transition).toBe('opacity 300ms ease');
     expect(declarations(`${guard}:hover::after`)).toMatchObject({ opacity: '1' });
     expect(declarations(`${guard}:focus-visible::after`)).toEqual({ opacity: '1' });
-    expect(declarations('.dark .weelp-home-search-cta::before')).toEqual({
-      background: 'linear-gradient(90deg, var(--weelp-home-page) 0%, var(--weelp-home-surface) 100%)',
-    });
-    expect(declarations('.dark .weelp-home-search-cta::after')).toEqual({
-      background: 'linear-gradient(-90deg, var(--weelp-home-page) 0%, var(--weelp-home-surface) 100%)',
-    });
+    expect(compactCssValue(declarations('.dark .weelp-home-search-cta::before').background)).toBe(
+      'linear-gradient(90deg, var(--weelp-home-page) 0%, color-mix(in srgb, var(--weelp-home-surface) 72%, hsl(var(--weelp-sage-deep))) 100%)',
+    );
+    expect(compactCssValue(declarations('.dark .weelp-home-search-cta::after').background)).toBe(
+      'linear-gradient(-90deg, var(--weelp-home-page) 0%, color-mix(in srgb, var(--weelp-home-surface) 72%, hsl(var(--weelp-sage-deep))) 100%)',
+    );
     expect(declarations(`.dark ${guard}:hover`)).toEqual({ opacity: '1' });
     expect(declarations('.weelp-home-search-cta__icon')).toMatchObject({ transition: 'transform 300ms ease' });
     expect(declarations(`${guard}:hover .weelp-home-search-cta__icon`)).toMatchObject({ transform: 'rotate(-12deg)' });
