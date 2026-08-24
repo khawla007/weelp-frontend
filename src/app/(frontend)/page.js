@@ -98,7 +98,7 @@ const HomePage = async () => {
         />
       )}
 
-      <WeelpRecommendations />
+      <WeelpRecommendations entrance="rule-led-cascade" />
     </>
   );
 };

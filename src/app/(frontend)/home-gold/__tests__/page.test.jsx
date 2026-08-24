@@ -3,6 +3,7 @@ import { Children } from 'react';
 import HomePage, { revalidate as homeRevalidate } from '../../page';
 import GoldHomePage, { revalidate as goldRevalidate } from '../page';
 import GoldTopActivitiesSection from '../GoldTopActivitiesSection';
+import WeelpRecommendations from '@/app/components/Pages/FRONT_END/home/WeelpRecommendations';
 import { publicApi } from '@/lib/axiosInstance';
 import { getAllFeaturedActivities } from '@/lib/services/activites';
 import { getAllFeaturedCities } from '@/lib/services/cities';
@@ -144,5 +145,17 @@ describe('/home-gold', () => {
     expect(goldGuide).toBeDefined();
     expect(homeGuide.props.entrance).toBe('editorial-right');
     expect(goldGuide.props.entrance).toBeUndefined();
+  });
+
+  it('opts only the main homepage recommendations into the rule-led cascade', async () => {
+    const homeChildren = await getHomeChildren();
+    const goldChildren = await getGoldChildren();
+    const homeRecommendations = homeChildren.find((child) => child.type === WeelpRecommendations);
+    const goldRecommendations = goldChildren.find((child) => child.type === WeelpRecommendations);
+
+    expect(homeRecommendations).toBeDefined();
+    expect(goldRecommendations).toBeDefined();
+    expect(homeRecommendations.props.entrance).toBe('rule-led-cascade');
+    expect(goldRecommendations.props.entrance).toBeUndefined();
   });
 });

@@ -837,6 +837,16 @@ body {
     }
   }
 
+  @keyframes weelpRecommendationsRuleReveal {
+    from {
+      transform: scaleX(0);
+    }
+
+    to {
+      transform: scaleX(1);
+    }
+  }
+
   @keyframes weelpWanderersButtonReveal {
     from {
       opacity: 0;
@@ -1020,6 +1030,67 @@ body {
 
   [data-guide-section-entrance='editorial-right'][data-reveal-motion='bypassed'] [data-guide-section-header],
   [data-guide-section-entrance='editorial-right'][data-reveal-motion='bypassed'] .swiper-slide {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    animation-delay: 0ms;
+    will-change: auto;
+  }
+
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal='pending'],
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal='shown'] {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal] [data-recommendations-heading] {
+    --weelp-reveal-y: 18px;
+  }
+
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal] [data-recommendations-rule] {
+    transform-origin: left center;
+  }
+
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal] [data-recommendations-link] {
+    --weelp-reveal-y: 12px;
+  }
+
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal='pending'] [data-recommendations-heading] {
+    opacity: 0;
+    transform: translate3d(0, var(--weelp-reveal-y, 18px), 0);
+    will-change: transform, opacity;
+  }
+
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal='pending'] [data-recommendations-rule] {
+    transform: scaleX(0);
+    will-change: transform;
+  }
+
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal='pending'] [data-recommendations-link] {
+    opacity: 0;
+    transform: translate3d(0, var(--weelp-reveal-y, 12px), 0);
+    will-change: transform, opacity;
+  }
+
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal='shown'] [data-recommendations-heading] {
+    animation: weelpRevealUp 650ms var(--weelp-ease-out) both;
+    animation-delay: 0ms;
+  }
+
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal='shown'] [data-recommendations-rule] {
+    animation: weelpRecommendationsRuleReveal 700ms var(--weelp-ease-out) both;
+    animation-delay: 100ms;
+  }
+
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal='shown'] [data-recommendations-link] {
+    animation: weelpRevealUp 700ms var(--weelp-ease-out) both;
+    animation-delay: calc(180ms + var(--weelp-recommendations-index, 0) * 60ms);
+  }
+
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal-motion='bypassed'] [data-recommendations-heading],
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal-motion='bypassed'] [data-recommendations-rule],
+  [data-recommendations-section-entrance='rule-led-cascade'][data-reveal-motion='bypassed'] [data-recommendations-link] {
     opacity: 1;
     transform: none;
     animation: none;
@@ -1364,6 +1435,16 @@ body {
 
     [data-guide-section-entrance='editorial-right'][data-reveal] [data-guide-section-header],
     [data-guide-section-entrance='editorial-right'][data-reveal] .swiper-slide {
+      opacity: 1;
+      transform: none;
+      animation: none;
+      animation-delay: 0ms;
+      will-change: auto;
+    }
+
+    [data-recommendations-section-entrance='rule-led-cascade'][data-reveal] [data-recommendations-heading],
+    [data-recommendations-section-entrance='rule-led-cascade'][data-reveal] [data-recommendations-rule],
+    [data-recommendations-section-entrance='rule-led-cascade'][data-reveal] [data-recommendations-link] {
       opacity: 1;
       transform: none;
       animation: none;
