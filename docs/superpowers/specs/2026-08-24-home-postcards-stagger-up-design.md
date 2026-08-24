@@ -1,7 +1,7 @@
 # Home Postcards Stagger Up — Design
 
 **Date:** 2026-08-24
-**Status:** awaiting written-spec review
+**Status:** approved
 
 ## What this changes
 
