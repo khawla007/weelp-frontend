@@ -8,21 +8,35 @@ import Reveal from '@/app/components/ui/Reveal';
 
 const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-card shadow-[0_2px_6px_rgba(0,0,0,0.05)] ring-1 ring-border dark:shadow-none';
 
-const AiSection = async () => {
+const AiSection = async ({ entrance } = {}) => {
   const featuredRes = await getAllFeaturedActivities();
   const featured = Array.isArray(featuredRes) ? featuredRes : (featuredRes?.data ?? []);
   const buddyItems = featured.map((a) => mapProductToItemCard(a));
+  const usesGuidedSplit = entrance === 'guided-split';
+  const HeadingRoot = usesGuidedSplit ? 'h2' : Reveal;
 
   return (
-    <Reveal as="section" initialHidden className="container-page flex flex-col items-center gap-8 pb-12 md:gap-12 md:pb-16 lg:pb-24">
-      <Reveal variant="lift" as="h2" className="text-center text-[28px] font-medium text-foreground">
+    <Reveal
+      as="section"
+      initialHidden
+      data-ai-travel-buddy-entrance={usesGuidedSplit ? entrance : undefined}
+      className="container-page flex flex-col items-center gap-8 pb-12 md:gap-12 md:pb-16 lg:pb-24"
+    >
+      <HeadingRoot
+        {...(usesGuidedSplit ? { 'data-ai-travel-buddy-role': 'heading' } : { variant: 'lift' })}
+        as={usesGuidedSplit ? undefined : 'h2'}
+        className="text-center text-[28px] font-medium text-foreground"
+      >
         Your AI Travel Buddy
-      </Reveal>
+      </HeadingRoot>
 
       <div className="grid w-full grid-cols-1 gap-4 md:gap-6 lg:grid-cols-3">
-        <TravelBuddyWidget items={buddyItems} />
+        <TravelBuddyWidget items={buddyItems} entrance={usesGuidedSplit ? entrance : undefined} />
 
-        <article className={`${SHARED_CARD} group aspect-[16/10] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}>
+        <article
+          data-ai-travel-buddy-role={usesGuidedSplit ? 'savings' : undefined}
+          className={`${SHARED_CARD} group aspect-[16/10] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}
+        >
           <Image
             src="/assets/images/AiSaveMoney.png"
             alt="AI suggesting price-aware combinations"
@@ -43,6 +57,7 @@ const AiSection = async () => {
 
         <article
           data-personalised-card
+          data-ai-travel-buddy-role={usesGuidedSplit ? 'personalised' : undefined}
           className={`${SHARED_CARD} group min-h-[220px] sm:min-h-[300px] md:min-h-[360px] lg:col-span-2 lg:min-h-[440px] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}
         >
           {/* Dotted globe — bottom-anchored and clipped by the card. */}

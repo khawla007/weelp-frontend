@@ -82,7 +82,7 @@ const HomePage = async () => {
         />
       )}
       <WanderersBanner entrance="inward-frame" />
-      <AiSection />
+      <AiSection entrance="guided-split" />
 
       {blogs.length > 0 ? (
         <BlogSection blogs={blogs} navigationId="guide-blog" className="pb-12 md:pb-16 lg:pb-24" />

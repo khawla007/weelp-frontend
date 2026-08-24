@@ -117,4 +117,31 @@ describe('AiSection', () => {
     expect(moneyImg.className).toContain('group-hover:scale-[1.02]');
     expect(moneyImg.className).toContain('motion-reduce:group-hover:scale-100');
   });
+
+  it('exposes one guided-split reveal root while preserving the four-card grid', async () => {
+    const ui = await AiSection({ entrance: 'guided-split' });
+    const { container } = render(ui);
+    const section = container.querySelector('section');
+    const grid = section.querySelector('.grid');
+    const cards = Array.from(grid.children);
+
+    expect(section).toHaveAttribute('data-ai-travel-buddy-entrance', 'guided-split');
+    expect(section.querySelectorAll('[data-reveal]')).toHaveLength(0);
+    expect(grid).toHaveClass('lg:grid-cols-3');
+    expect(cards).toHaveLength(4);
+    cards.forEach((card) => expect(card.tagName).toBe('ARTICLE'));
+    expect(cards[0]).toHaveClass('lg:row-span-2');
+    expect(cards[3]).toHaveClass('lg:col-span-2');
+    expect(Array.from(section.querySelectorAll('[data-ai-travel-buddy-role]')).map((element) => element.dataset.aiTravelBuddyRole)).toEqual(['heading', 'chat', 'map', 'savings', 'personalised']);
+  });
+
+  it('keeps the original reveal structure when no entrance variant is requested', async () => {
+    const ui = await AiSection();
+    const { container } = render(ui);
+    const section = container.querySelector('section');
+
+    expect(section).not.toHaveAttribute('data-ai-travel-buddy-entrance');
+    expect(section.querySelectorAll('[data-ai-travel-buddy-role]')).toHaveLength(0);
+    expect(section).toHaveAttribute('data-reveal');
+  });
 });

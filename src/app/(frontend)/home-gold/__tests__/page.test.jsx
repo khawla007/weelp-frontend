@@ -119,4 +119,14 @@ describe('/home-gold', () => {
     expect(goldBanner.props.entrance).toBeUndefined();
     expect(goldBanner.props.patternTone).toBe('gold-dark');
   });
+
+  it('opts only the main homepage AI section into the guided-split entrance', async () => {
+    const homeChildren = await getHomeChildren();
+    const goldChildren = await getGoldChildren();
+    const homeAiSection = homeChildren.find((child) => child.type.sectionName === 'AiSection');
+    const goldAiSection = goldChildren.find((child) => child.type.sectionName === 'AiSection');
+
+    expect(homeAiSection.props.entrance).toBe('guided-split');
+    expect(goldAiSection.props.entrance).toBeUndefined();
+  });
 });

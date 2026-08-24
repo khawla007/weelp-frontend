@@ -767,6 +767,18 @@ body {
     }
   }
 
+  @keyframes weelpAiTravelBuddyReveal {
+    from {
+      opacity: 0;
+      transform: translate3d(var(--weelp-ai-x, 0), var(--weelp-ai-y, 0), 0) scale(var(--weelp-ai-scale, 1));
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
   @keyframes weelpWanderersTopReveal {
     from {
       opacity: 0;
@@ -975,6 +987,75 @@ body {
   [data-testimonial-section-entrance='stagger-up'][data-reveal='shown'] .swiper-slide {
     animation: weelpTestimonialRevealUp 850ms var(--weelp-ease-out) both;
     animation-delay: calc(var(--weelp-testimonial-reveal-index, 0) * 90ms);
+  }
+
+  [data-ai-travel-buddy-entrance='guided-split'][data-reveal='pending'],
+  [data-ai-travel-buddy-entrance='guided-split'][data-reveal='shown'] {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  [data-ai-travel-buddy-entrance='guided-split'][data-reveal] [data-ai-travel-buddy-role] {
+    --weelp-ai-x: 0;
+    --weelp-ai-y: 16px;
+    --weelp-ai-scale: 1;
+  }
+
+  [data-ai-travel-buddy-entrance='guided-split'][data-reveal] [data-ai-travel-buddy-role='heading'] {
+    --weelp-ai-y: 24px;
+  }
+
+  [data-ai-travel-buddy-entrance='guided-split'][data-reveal] [data-ai-travel-buddy-role='personalised'] {
+    --weelp-ai-scale: 0.985;
+  }
+
+  [data-ai-travel-buddy-entrance='guided-split'][data-reveal='pending'] [data-ai-travel-buddy-role] {
+    opacity: 0;
+    transform: translate3d(var(--weelp-ai-x, 0), var(--weelp-ai-y, 0), 0) scale(var(--weelp-ai-scale, 1));
+    will-change: transform, opacity;
+  }
+
+  [data-ai-travel-buddy-entrance='guided-split'][data-reveal='shown'] [data-ai-travel-buddy-role='heading'] {
+    animation: weelpAiTravelBuddyReveal 700ms var(--weelp-ease-out) both;
+    animation-delay: 0ms;
+  }
+
+  [data-ai-travel-buddy-entrance='guided-split'][data-reveal='shown'] [data-ai-travel-buddy-role='chat'] {
+    animation: weelpAiTravelBuddyReveal 850ms var(--weelp-ease-out) both;
+    animation-delay: 100ms;
+  }
+
+  [data-ai-travel-buddy-entrance='guided-split'][data-reveal='shown'] [data-ai-travel-buddy-role='map'] {
+    animation: weelpAiTravelBuddyReveal 850ms var(--weelp-ease-out) both;
+    animation-delay: 200ms;
+  }
+
+  [data-ai-travel-buddy-entrance='guided-split'][data-reveal='shown'] [data-ai-travel-buddy-role='savings'] {
+    animation: weelpAiTravelBuddyReveal 850ms var(--weelp-ease-out) both;
+    animation-delay: 300ms;
+  }
+
+  [data-ai-travel-buddy-entrance='guided-split'][data-reveal='shown'] [data-ai-travel-buddy-role='personalised'] {
+    animation: weelpAiTravelBuddyReveal 850ms var(--weelp-ease-out) both;
+    animation-delay: 400ms;
+  }
+
+  @media (min-width: 1024px) {
+    [data-ai-travel-buddy-entrance='guided-split'][data-reveal] [data-ai-travel-buddy-role='chat'] {
+      --weelp-ai-x: -32px;
+      --weelp-ai-y: 0;
+    }
+
+    [data-ai-travel-buddy-entrance='guided-split'][data-reveal] [data-ai-travel-buddy-role='map'] {
+      --weelp-ai-x: 32px;
+      --weelp-ai-y: 0;
+    }
+
+    [data-ai-travel-buddy-entrance='guided-split'][data-reveal] [data-ai-travel-buddy-role='savings'] {
+      --weelp-ai-x: 32px;
+      --weelp-ai-y: 0;
+    }
   }
 
   [data-wanderers-entrance='inward-frame'][data-reveal='pending'],
@@ -1221,6 +1302,18 @@ body {
       transform: none;
       filter: none;
       animation: none;
+      will-change: auto;
+    }
+
+    [data-ai-travel-buddy-entrance='guided-split'][data-reveal] [data-ai-travel-buddy-role='heading'],
+    [data-ai-travel-buddy-entrance='guided-split'][data-reveal] [data-ai-travel-buddy-role='chat'],
+    [data-ai-travel-buddy-entrance='guided-split'][data-reveal] [data-ai-travel-buddy-role='map'],
+    [data-ai-travel-buddy-entrance='guided-split'][data-reveal] [data-ai-travel-buddy-role='savings'],
+    [data-ai-travel-buddy-entrance='guided-split'][data-reveal] [data-ai-travel-buddy-role='personalised'] {
+      opacity: 1;
+      transform: none;
+      animation: none;
+      animation-delay: 0ms;
       will-change: auto;
     }
 
