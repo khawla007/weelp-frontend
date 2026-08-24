@@ -40,7 +40,8 @@ jest.mock('../GoldTopActivitiesSection', () => ({
   default: jest.fn(() => null),
 }));
 
-const getChildren = async () => Children.toArray((await GoldHomePage()).props.children);
+const getGoldChildren = async () => Children.toArray((await GoldHomePage()).props.children);
+const getHomeChildren = async () => Children.toArray((await HomePage()).props.children);
 
 describe('/home-gold', () => {
   beforeEach(() => {
@@ -61,7 +62,7 @@ describe('/home-gold', () => {
     const activities = [{ id: 1, title: 'Desert safari' }];
     getAllFeaturedActivities.mockResolvedValue(activities);
 
-    const children = await getChildren();
+    const children = await getGoldChildren();
 
     expect(children[1].type).toBe(GoldTopActivitiesSection);
     expect(children[1].props.activities).toBe(activities);
@@ -77,7 +78,7 @@ describe('/home-gold', () => {
     getPublicReviews.mockResolvedValue({ data: reviews });
     publicApi.get.mockResolvedValue({ data: { data: blogs } });
 
-    const children = await getChildren();
+    const children = await getGoldChildren();
 
     expect(children).toHaveLength(8);
     expect(children[1].type).toBe(GoldTopActivitiesSection);
@@ -98,7 +99,7 @@ describe('/home-gold', () => {
   });
 
   it('keeps the canonical top-activities fallback when no activities exist', async () => {
-    const children = await getChildren();
+    const children = await getGoldChildren();
 
     expect(children[1].props).toMatchObject({
       eyebrow: 'Top activities',
@@ -106,5 +107,16 @@ describe('/home-gold', () => {
       pivotHref: '/cities/dubai',
       pivotLabel: 'Browse Dubai experiences',
     });
+  });
+
+  it('opts only the main homepage Curate banner into the inward-frame entrance', async () => {
+    const homeChildren = await getHomeChildren();
+    const goldChildren = await getGoldChildren();
+    const homeBanner = homeChildren.find((child) => child.type.sectionName === 'WanderersBanner');
+    const goldBanner = goldChildren.find((child) => child.type.sectionName === 'WanderersBanner');
+
+    expect(homeBanner.props.entrance).toBe('inward-frame');
+    expect(goldBanner.props.entrance).toBeUndefined();
+    expect(goldBanner.props.patternTone).toBe('gold-dark');
   });
 });

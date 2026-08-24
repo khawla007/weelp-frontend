@@ -81,7 +81,7 @@ const HomePage = async () => {
           pivotLabel="Plan a trip worth reviewing"
         />
       )}
-      <WanderersBanner />
+      <WanderersBanner entrance="inward-frame" />
       <AiSection />
 
       {blogs.length > 0 ? (

@@ -90,7 +90,7 @@ it('opts only the main homepage Curate banner into the inward-frame entrance', a
 Run:
 
 ```bash
-npx jest --runInBand 'src/app/(frontend)/home-gold/__tests__/page.test.jsx'
+npx jest --runInBand --runTestsByPath 'src/app/(frontend)/home-gold/__tests__/page.test.jsx'
 ```
 
 Expected: FAIL because the main homepage banner's `entrance` prop is `undefined`; all existing `/home-gold` assertions remain green.
@@ -114,7 +114,7 @@ Do not change `src/app/(frontend)/home-gold/page.js`; it must remain:
 Run:
 
 ```bash
-npx jest --runInBand 'src/app/(frontend)/home-gold/__tests__/page.test.jsx'
+npx jest --runInBand --runTestsByPath 'src/app/(frontend)/home-gold/__tests__/page.test.jsx'
 ```
 
 Expected: PASS, including the new route-scope assertion.
@@ -531,7 +531,7 @@ Do not alter the existing responsive classes: pattern positioning wrappers remai
 Run:
 
 ```bash
-npx jest --runInBand 'src/app/(frontend)/home-gold/__tests__/page.test.jsx' src/app/components/Pages/FRONT_END/home/__tests__/WanderersBanner.test.jsx src/app/components/Pages/FRONT_END/home/__tests__/WanderersMotionStyles.test.js src/app/components/ui/__tests__/Reveal.test.jsx
+npx jest --runInBand --runTestsByPath 'src/app/(frontend)/home-gold/__tests__/page.test.jsx' src/app/components/Pages/FRONT_END/home/__tests__/WanderersBanner.test.jsx src/app/components/Pages/FRONT_END/home/__tests__/WanderersMotionStyles.test.js src/app/components/ui/__tests__/Reveal.test.jsx
 ```
 
 Expected: PASS. The route scope, default banner, color contract, CSS timing, reduced motion, and shared `Reveal` behavior all remain green.
@@ -646,7 +646,7 @@ Invoke the `simplify` skill. If the environment still does not expose that named
 Run:
 
 ```bash
-npx jest --runInBand 'src/app/(frontend)/home-gold/__tests__/page.test.jsx' src/app/components/Pages/FRONT_END/home/__tests__/WanderersBanner.test.jsx src/app/components/Pages/FRONT_END/home/__tests__/WanderersMotionStyles.test.js src/app/components/ui/__tests__/Reveal.test.jsx
+npx jest --runInBand --runTestsByPath 'src/app/(frontend)/home-gold/__tests__/page.test.jsx' src/app/components/Pages/FRONT_END/home/__tests__/WanderersBanner.test.jsx src/app/components/Pages/FRONT_END/home/__tests__/WanderersMotionStyles.test.js src/app/components/ui/__tests__/Reveal.test.jsx
 npm run type-check
 npm run lint
 git diff --check
@@ -660,7 +660,7 @@ Expected: tests, type-check, lint, and diff check pass. Status contains only int
 Stage every intentional application and test file only after code review, simplification, automated verification, and visible browser acceptance are green:
 
 ```bash
-git add src/app/globals.css src/app/components/Pages/FRONT_END/home/WanderersBanner.jsx src/app/components/Pages/FRONT_END/home/__tests__/WanderersBanner.test.jsx src/app/components/Pages/FRONT_END/home/__tests__/WanderersMotionStyles.test.js 'src/app/(frontend)/page.js' 'src/app/(frontend)/home-gold/__tests__/page.test.jsx'
+git add src/app/globals.css src/app/components/Pages/FRONT_END/home/WanderersBanner.jsx src/app/components/Pages/FRONT_END/home/__tests__/WanderersBanner.test.jsx src/app/components/Pages/FRONT_END/home/__tests__/WanderersMotionStyles.test.js 'src/app/(frontend)/page.js' 'src/app/(frontend)/home-gold/__tests__/page.test.jsx' docs/superpowers/plans/2026-08-24-home-curate-inward-frame.md
 git commit -m "feat: animate homepage curate frame"
 ```
 

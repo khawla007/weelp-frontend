@@ -767,6 +767,64 @@ body {
     }
   }
 
+  @keyframes weelpWanderersTopReveal {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 12px, 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes weelpWanderersPatternLeft {
+    from {
+      opacity: 0;
+      transform: translate3d(-36px, 0, 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes weelpWanderersPatternRight {
+    from {
+      opacity: 0;
+      transform: translate3d(36px, 0, 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes weelpWanderersLineDraw {
+    from {
+      transform: scaleX(0);
+    }
+
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes weelpWanderersButtonReveal {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 14px, 0) scale(0.97);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
   /* Settings nav active indicator: slides vertically to the active route. */
   .weelp-settings-rail {
     transition:
@@ -917,6 +975,74 @@ body {
   [data-testimonial-section-entrance='stagger-up'][data-reveal='shown'] .swiper-slide {
     animation: weelpTestimonialRevealUp 850ms var(--weelp-ease-out) both;
     animation-delay: calc(var(--weelp-testimonial-reveal-index, 0) * 90ms);
+  }
+
+  [data-wanderers-entrance='inward-frame'][data-reveal='pending'],
+  [data-wanderers-entrance='inward-frame'][data-reveal='shown'] {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  [data-wanderers-entrance='inward-frame'][data-reveal='pending'] [data-wanderers-top] {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+    will-change: transform, opacity;
+  }
+
+  [data-wanderers-entrance='inward-frame'][data-reveal='pending'] [data-wanderers-pattern='left'] {
+    opacity: 0;
+    transform: translate3d(-36px, 0, 0);
+    will-change: transform, opacity;
+  }
+
+  [data-wanderers-entrance='inward-frame'][data-reveal='pending'] [data-wanderers-pattern='right'] {
+    opacity: 0;
+    transform: translate3d(36px, 0, 0);
+    will-change: transform, opacity;
+  }
+
+  [data-wanderers-entrance='inward-frame'][data-reveal] [data-wanderers-line='left'] {
+    transform-origin: left center;
+  }
+
+  [data-wanderers-entrance='inward-frame'][data-reveal] [data-wanderers-line='right'] {
+    transform-origin: right center;
+  }
+
+  [data-wanderers-entrance='inward-frame'][data-reveal='pending'] [data-wanderers-line] {
+    transform: scaleX(0);
+    will-change: transform;
+  }
+
+  [data-wanderers-entrance='inward-frame'][data-reveal='pending'] [data-wanderers-button] {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.97);
+    will-change: transform, opacity;
+  }
+
+  [data-wanderers-entrance='inward-frame'][data-reveal='shown'] [data-wanderers-top] {
+    animation: weelpWanderersTopReveal 700ms var(--weelp-ease-out) both;
+  }
+
+  [data-wanderers-entrance='inward-frame'][data-reveal='shown'] [data-wanderers-pattern='left'] {
+    animation: weelpWanderersPatternLeft 850ms var(--weelp-ease-out) both;
+    animation-delay: 80ms;
+  }
+
+  [data-wanderers-entrance='inward-frame'][data-reveal='shown'] [data-wanderers-pattern='right'] {
+    animation: weelpWanderersPatternRight 850ms var(--weelp-ease-out) both;
+    animation-delay: 80ms;
+  }
+
+  [data-wanderers-entrance='inward-frame'][data-reveal='shown'] [data-wanderers-line] {
+    animation: weelpWanderersLineDraw 700ms var(--weelp-ease-out) both;
+    animation-delay: 160ms;
+  }
+
+  [data-wanderers-entrance='inward-frame'][data-reveal='shown'] [data-wanderers-button] {
+    animation: weelpWanderersButtonReveal 700ms var(--weelp-ease-out) both;
+    animation-delay: 260ms;
   }
 
   .weelp-blur-reveal__visual,
@@ -1095,6 +1221,18 @@ body {
       transform: none;
       filter: none;
       animation: none;
+      will-change: auto;
+    }
+
+    [data-wanderers-entrance='inward-frame'][data-reveal] [data-wanderers-top],
+    [data-wanderers-entrance='inward-frame'][data-reveal] [data-wanderers-pattern='left'],
+    [data-wanderers-entrance='inward-frame'][data-reveal] [data-wanderers-pattern='right'],
+    [data-wanderers-entrance='inward-frame'][data-reveal] [data-wanderers-line],
+    [data-wanderers-entrance='inward-frame'][data-reveal] [data-wanderers-button] {
+      opacity: 1;
+      transform: none;
+      animation: none;
+      animation-delay: 0ms;
       will-change: auto;
     }
 
