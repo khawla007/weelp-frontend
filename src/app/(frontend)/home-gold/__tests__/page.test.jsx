@@ -129,4 +129,20 @@ describe('/home-gold', () => {
     expect(homeAiSection.props.entrance).toBe('guided-split');
     expect(goldAiSection.props.entrance).toBeUndefined();
   });
+
+  it('opts only the main homepage guide into the editorial-right entrance', async () => {
+    publicApi.get.mockResolvedValue({
+      data: { data: [{ id: 3, title: 'A local guide' }] },
+    });
+
+    const homeChildren = await getHomeChildren();
+    const goldChildren = await getGoldChildren();
+    const homeGuide = homeChildren.find((child) => child.type.sectionName === 'BlogSection');
+    const goldGuide = goldChildren.find((child) => child.type.sectionName === 'BlogSection');
+
+    expect(homeGuide).toBeDefined();
+    expect(goldGuide).toBeDefined();
+    expect(homeGuide.props.entrance).toBe('editorial-right');
+    expect(goldGuide.props.entrance).toBeUndefined();
+  });
 });

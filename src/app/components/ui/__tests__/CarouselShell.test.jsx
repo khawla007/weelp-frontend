@@ -83,3 +83,45 @@ test('emits a stagger-right entrance with capped slide delay indexes', () => {
   expect(slides[4].style.getPropertyValue('--weelp-carousel-reveal-index')).toBe('4');
   expect(slides[6].style.getPropertyValue('--weelp-carousel-reveal-index')).toBe('4');
 });
+
+test('preserves Swiper configuration while indexing an editorial-right entrance', () => {
+  const items = Array.from({ length: 7 }, (_, index) => ({ id: index + 1, title: `Story ${index + 1}` }));
+  const breakpoints = {
+    640: { slidesPerView: 2, spaceBetween: 15 },
+    1024: { slidesPerView: 4, spaceBetween: 20 },
+  };
+
+  render(
+    <CarouselShell
+      items={items}
+      entrance="editorial-right"
+      observeReveal={false}
+      navigationPrefix="guide-blog"
+      breakpoints={breakpoints}
+      showMobilePagination
+      renderSlide={(item) => <article>{item.title}</article>}
+    />,
+  );
+
+  const root = screen.getByText('Story 1').closest('.carousel-shell-wrapper');
+  const slides = root.querySelectorAll(':scope > .swiper > .swiper-slide');
+
+  expect(root).toHaveAttribute('data-carousel-entrance', 'editorial-right');
+  expect(root).not.toHaveAttribute('data-reveal');
+  expect(slides).toHaveLength(7);
+  expect(slides[0].style.getPropertyValue('--weelp-carousel-reveal-index')).toBe('0');
+  expect(slides[4].style.getPropertyValue('--weelp-carousel-reveal-index')).toBe('4');
+  expect(slides[6].style.getPropertyValue('--weelp-carousel-reveal-index')).toBe('4');
+  expect(latestSwiperProps).toEqual(
+    expect.objectContaining({
+      slidesPerView: 1.08,
+      spaceBetween: 18,
+      breakpoints,
+      navigation: {
+        prevEl: '.guide-blog-prev',
+        nextEl: '.guide-blog-next',
+      },
+      pagination: { clickable: true, dynamicBullets: true },
+    }),
+  );
+});

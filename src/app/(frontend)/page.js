@@ -85,7 +85,7 @@ const HomePage = async () => {
       <AiSection entrance="guided-split" />
 
       {blogs.length > 0 ? (
-        <BlogSection blogs={blogs} navigationId="guide-blog" className="pb-12 md:pb-16 lg:pb-24" />
+        <BlogSection blogs={blogs} navigationId="guide-blog" entrance="editorial-right" className="pb-12 md:pb-16 lg:pb-24" />
       ) : (
         <SectionFallback
           eyebrow="Your guide"

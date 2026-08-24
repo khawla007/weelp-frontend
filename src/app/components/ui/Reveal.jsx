@@ -42,16 +42,19 @@ const Reveal = ({ as: Tag = 'div', initialHidden = false, delay = 0, y = 12, dur
   // null = not yet evaluated (SSR / first paint -> visible). 'pending' | 'shown' after mount.
   // initialHidden seeds 'pending' so the server markup is hidden from first paint.
   const [state, setState] = useState(initialHidden ? 'pending' : null);
+  const [motionBypassed, setMotionBypassed] = useState(false);
 
   useIsoLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
 
     if (prefersReducedMotion() || typeof IntersectionObserver === 'undefined') {
+      setMotionBypassed(true);
       setState('shown');
       return;
     }
 
+    setMotionBypassed(false);
     const rect = el.getBoundingClientRect();
     // Reveal immediately if any part is at/above the viewport bottom — covers
     // above-fold heroes AND scroll-restoration / anchor jumps that land the user
@@ -102,7 +105,16 @@ const Reveal = ({ as: Tag = 'div', initialHidden = false, delay = 0, y = 12, dur
 
   return (
     // {...rest} first so internal ref / data-reveal attrs always win over any caller-passed props.
-    <Tag {...rest} ref={ref} className={className} style={mergedStyle} data-reveal={state === null ? undefined : state} data-reveal-variant={variant} data-reveal-cards={stagger ? '' : undefined}>
+    <Tag
+      {...rest}
+      ref={ref}
+      className={className}
+      style={mergedStyle}
+      data-reveal={state === null ? undefined : state}
+      data-reveal-motion={motionBypassed ? 'bypassed' : undefined}
+      data-reveal-variant={variant}
+      data-reveal-cards={stagger ? '' : undefined}
+    >
       {staggered}
     </Tag>
   );

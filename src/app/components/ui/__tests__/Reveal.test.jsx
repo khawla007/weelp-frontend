@@ -56,8 +56,10 @@ test('below-fold element starts pending then reveals on intersect', () => {
   render(<Reveal>content</Reveal>);
   const el = screen.getByText('content');
   expect(el).toHaveAttribute('data-reveal', 'pending');
+  expect(el).not.toHaveAttribute('data-reveal-motion');
   ioInstances[0].trigger(true);
   expect(el).toHaveAttribute('data-reveal', 'shown');
+  expect(el).not.toHaveAttribute('data-reveal-motion');
   expect(ioInstances[0].disconnected).toBe(true);
 });
 
@@ -83,7 +85,16 @@ test('reduced motion shows content immediately, no observer', () => {
   render(<Reveal>content</Reveal>);
   const el = screen.getByText('content');
   expect(el).toHaveAttribute('data-reveal', 'shown');
+  expect(el).toHaveAttribute('data-reveal-motion', 'bypassed');
   expect(ioInstances.length).toBe(0);
+});
+
+test('missing IntersectionObserver shows initially hidden content without motion', () => {
+  delete global.IntersectionObserver;
+  render(<Reveal initialHidden>content</Reveal>);
+  const el = screen.getByText('content');
+  expect(el).toHaveAttribute('data-reveal', 'shown');
+  expect(el).toHaveAttribute('data-reveal-motion', 'bypassed');
 });
 
 test('delay, y, duration map to style vars', () => {

@@ -9,7 +9,7 @@ import '@/app/styles/swiper.css';
 export default function CarouselShell({ items = [], navigationPrefix, renderSlide, breakpoints, className = '', slideClassName = '', showMobilePagination = false, entrance, observeReveal = true }) {
   const swiperRef = useRef(null);
   const hasNavigation = Boolean(navigationPrefix);
-  const usesStaggeredEntrance = entrance === 'stagger-right';
+  const usesIndexedEntrance = entrance === 'stagger-right' || entrance === 'editorial-right';
   const prevSelector = hasNavigation ? `.${navigationPrefix}-prev` : undefined;
   const nextSelector = hasNavigation ? `.${navigationPrefix}-next` : undefined;
   const navigationSelectors = hasNavigation ? { prevEl: prevSelector, nextEl: nextSelector } : undefined;
@@ -45,7 +45,7 @@ export default function CarouselShell({ items = [], navigationPrefix, renderSlid
   const revealProps = observeReveal ? { initialHidden: true, variant: 'lift' } : {};
 
   return (
-    <Root {...revealProps} data-carousel-entrance={usesStaggeredEntrance ? entrance : undefined} className={`carousel-shell-wrapper ${showMobilePagination ? 'has-mobile-pagination' : ''}`}>
+    <Root {...revealProps} data-carousel-entrance={usesIndexedEntrance ? entrance : undefined} className={`carousel-shell-wrapper ${showMobilePagination ? 'has-mobile-pagination' : ''}`}>
       <Swiper
         modules={modules}
         onBeforeInit={(swiper) => {
@@ -73,7 +73,7 @@ export default function CarouselShell({ items = [], navigationPrefix, renderSlid
         className={className}
       >
         {items.map((item, index) => (
-          <SwiperSlide key={item.id || index} className={slideClassName} style={usesStaggeredEntrance ? { '--weelp-carousel-reveal-index': Math.min(index, 4) } : undefined}>
+          <SwiperSlide key={item.id || index} className={slideClassName} style={usesIndexedEntrance ? { '--weelp-carousel-reveal-index': Math.min(index, 4) } : undefined}>
             {renderSlide(item, index)}
           </SwiperSlide>
         ))}
