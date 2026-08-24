@@ -48,7 +48,7 @@ const WanderersBanner = ({ patternTone = 'sage' }) => {
 
       <div className="container-page absolute inset-x-0 top-[64%] z-10 -translate-y-1/2 md:top-[calc(50%-5px)]">
         <Reveal variant="lift" delay={120} className="flex items-center justify-center gap-3 md:gap-4">
-          <span aria-hidden="true" className="h-px flex-1 bg-border" />
+          <span aria-hidden="true" className={`h-px flex-1 bg-current ${patternClassName}`} />
           <NavigationLink
             href="/cities"
             className="group relative inline-flex h-11 w-[96px] shrink-0 items-center justify-center text-base font-medium leading-none !text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-weelp-sage-deep md:w-[88px] lg:h-[40px]"
@@ -60,7 +60,7 @@ const WanderersBanner = ({ patternTone = 'sage' }) => {
             />
             <span className="relative z-10">Curate</span>
           </NavigationLink>
-          <span aria-hidden="true" className="h-px flex-1 bg-border" />
+          <span aria-hidden="true" className={`h-px flex-1 bg-current ${patternClassName}`} />
         </Reveal>
       </div>
     </Reveal>
