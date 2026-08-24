@@ -75,7 +75,7 @@ const GoldHomePage = async () => {
           pivotLabel="Plan a trip worth reviewing"
         />
       )}
-      <WanderersBanner />
+      <WanderersBanner patternTone="gold-dark" />
       <AiSection />
 
       {blogs.length > 0 ? (

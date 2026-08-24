@@ -89,6 +89,7 @@ describe('/home-gold', () => {
     });
     expect(children[3].props.reviews).toBe(reviews);
     expect(children[3].props.entrance).toBeUndefined();
+    expect(children[4].props.patternTone).toBe('gold-dark');
     expect(children[6].props).toMatchObject({
       blogs,
       navigationId: 'guide-blog',

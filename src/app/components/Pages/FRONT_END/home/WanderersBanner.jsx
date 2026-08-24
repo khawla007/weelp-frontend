@@ -5,15 +5,19 @@ import Reveal from '@/app/components/ui/Reveal';
 const AVATARS = Array.from({ length: 6 }, (_, i) => i);
 
 const SAGE_LEAF_PATH = 'M0 571.5c4.16667-99 64.89999-297 274.5-297-219.60001 0-274.5-183-274.5-274.5l0 571.5z';
+const SAGE_PATTERN_CLASS = 'text-weelp-sage-deep';
+const GOLD_DARK_PATTERN_CLASS = 'text-weelp-sage-deep dark:text-[oklch(0.7_0.075_78/0.48)]';
 
-const WanderersBanner = () => {
+const WanderersBanner = ({ patternTone = 'sage' }) => {
+  const patternClassName = patternTone === 'gold-dark' ? GOLD_DARK_PATTERN_CLASS : SAGE_PATTERN_CLASS;
+
   return (
     <Reveal as="section" initialHidden aria-labelledby="wanderers-heading" className="relative h-[164px] w-full overflow-hidden bg-background sm:h-[200px] md:h-[260px]">
       <svg
         aria-hidden="true"
         viewBox="0 0 275 572"
         preserveAspectRatio="xMinYMid meet"
-        className="pointer-events-none absolute left-0 top-1/2 hidden h-[190px] w-auto -translate-y-1/2 text-[oklch(0.72_0.055_75/0.45)] dark:text-[oklch(0.7_0.075_78/0.48)] md:block lg:h-[230px]"
+        className={`pointer-events-none absolute left-0 top-1/2 hidden h-[190px] w-auto -translate-y-1/2 md:block lg:h-[230px] ${patternClassName}`}
       >
         <path d={SAGE_LEAF_PATH} fill="currentColor" />
       </svg>
@@ -22,7 +26,7 @@ const WanderersBanner = () => {
         aria-hidden="true"
         viewBox="0 0 275 572"
         preserveAspectRatio="xMaxYMid meet"
-        className="pointer-events-none absolute right-0 top-1/2 hidden h-[190px] w-auto text-[oklch(0.72_0.055_75/0.45)] dark:text-[oklch(0.7_0.075_78/0.48)] md:block lg:h-[230px]"
+        className={`pointer-events-none absolute right-0 top-1/2 hidden h-[190px] w-auto md:block lg:h-[230px] ${patternClassName}`}
         style={{ transform: 'translateY(-50%) scaleX(-1)' }}
       >
         <path d={SAGE_LEAF_PATH} fill="currentColor" />
