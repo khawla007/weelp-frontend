@@ -30,6 +30,7 @@ Do not commit application, test, or CSS changes during Tasks 1–3. The project 
 ### Task 0: Commit the approved design and reviewed implementation plan
 
 **Files:**
+
 - Modify: `docs/superpowers/specs/2026-08-24-home-curate-inward-frame-design.md`
 - Create: `docs/superpowers/plans/2026-08-24-home-curate-inward-frame.md`
 
@@ -56,6 +57,7 @@ Expected: one documentation-only commit on `main`.
 ### Task 1: Lock and implement the homepage-only route opt-in
 
 **Files:**
+
 - Modify: `src/app/(frontend)/home-gold/__tests__/page.test.jsx:43-98`
 - Modify: `src/app/(frontend)/page.js:84`
 
@@ -132,6 +134,7 @@ Expected: type-check and lint pass; the visible homepage loads without an error 
 ### Task 2: Add transform-safe motion hooks while preserving the default banner
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/home/__tests__/WanderersBanner.test.jsx:1-42`
 - Modify: `src/app/components/Pages/FRONT_END/home/WanderersBanner.jsx:1-70`
 
@@ -313,6 +316,7 @@ Expected: type-check and lint pass; in the visible browser, `/` and `/home-gold`
 ### Task 3: Implement the approved CSS choreography and reduced-motion path
 
 **Files:**
+
 - Create: `src/app/components/Pages/FRONT_END/home/__tests__/WanderersMotionStyles.test.js`
 - Modify: `src/app/globals.css:758-920,1069-1101`
 
@@ -345,9 +349,9 @@ test('defines the approved Curate inward-frame entrance contract', () => {
   expect(css).toContain('animation-delay: 80ms');
   expect(css).toContain('animation-delay: 160ms');
   expect(css).toContain('animation-delay: 260ms');
-  expect(css).toContain('[data-wanderers-line=\'left\']');
+  expect(css).toContain("[data-wanderers-line='left']");
   expect(css).toContain('transform-origin: left center');
-  expect(css).toContain('[data-wanderers-line=\'right\']');
+  expect(css).toContain("[data-wanderers-line='right']");
   expect(css).toContain('transform-origin: right center');
 });
 
@@ -547,6 +551,7 @@ Expected: type-check and lint pass; the visible homepage shows the new Curate se
 ### Task 4: Run project verification and visible UI acceptance
 
 **Files:**
+
 - Verify only; modify implementation/tests only if a check exposes a scoped defect.
 
 - [ ] **Step 1: Run static verification**
@@ -597,7 +602,7 @@ Set the same visible session to `390 × 844`, reload, and scroll to the banner. 
 On desktop and mobile, evaluate:
 
 ```js
-document.documentElement.scrollWidth === document.documentElement.clientWidth
+document.documentElement.scrollWidth === document.documentElement.clientWidth;
 ```
 
 Expected: `true`.
@@ -617,6 +622,7 @@ Scroll to Curate and confirm every marked element is immediately visible at its 
 ### Task 5: Complete the mandatory review, simplification, and delivery gates
 
 **Files:**
+
 - Review the complete uncommitted implementation before its first code commit: inspect `git diff HEAD`, `git status --short`, and the full contents of every untracked implementation/test file reported by status (including `src/app/components/Pages/FRONT_END/home/__tests__/WanderersMotionStyles.test.js`).
 - Modify only files identified by a concrete review or simplification finding.
 
