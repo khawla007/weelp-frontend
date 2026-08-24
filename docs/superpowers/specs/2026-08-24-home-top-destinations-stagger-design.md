@@ -1,7 +1,7 @@
 # Home Top Destinations Stagger — Design
 
 **Date:** 2026-08-24  
-**Status:** awaiting written-spec review  
+**Status:** approved
 **Builds on:** `docs/superpowers/specs/2026-08-24-home-top-activities-stagger-design.md`
 
 ## What this changes
