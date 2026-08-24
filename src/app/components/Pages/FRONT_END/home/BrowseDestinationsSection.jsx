@@ -22,6 +22,7 @@ export default function BrowseDestinationsSection({
   navigationPrefix = 'browse-destinations',
   className = '',
   cardTextTone = 'overlay',
+  carouselEntrance,
 }) {
   const items = cities.map((c) => ({
     id: c.id,
@@ -34,9 +35,19 @@ export default function BrowseDestinationsSection({
   }));
   if (!items.length) return null;
 
+  const usesStaggeredEntrance = carouselEntrance === 'stagger-right';
+  const HeaderRoot = usesStaggeredEntrance ? 'div' : Reveal;
+  const sectionRootProps = usesStaggeredEntrance
+    ? {
+        'aria-label': title,
+        'data-carousel-section-entrance': carouselEntrance,
+      }
+    : {};
+  const headerRootProps = usesStaggeredEntrance ? { 'data-carousel-section-header': '' } : { variant: 'lift' };
+
   return (
-    <Reveal as="section" initialHidden className={`container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24 ${className}`}>
-      <Reveal variant="lift" className="flex items-center justify-between">
+    <Reveal as="section" initialHidden {...sectionRootProps} className={`container-page flex flex-col gap-8 pb-10 md:pb-16 lg:pb-24 ${className}`}>
+      <HeaderRoot {...headerRootProps} className="flex items-center justify-between">
         <SectionHeader title={title} />
         <div className="flex items-center gap-2">
           <button type="button" className={`${navigationPrefix}-prev ${SLIDER_NAV_BUTTON_CLASS}`} aria-label="Previous destination">
@@ -46,7 +57,7 @@ export default function BrowseDestinationsSection({
             <ChevronRight className="size-4" />
           </button>
         </div>
-      </Reveal>
+      </HeaderRoot>
 
       <CarouselShell
         items={items}
@@ -54,6 +65,8 @@ export default function BrowseDestinationsSection({
         breakpoints={DESTINATION_BREAKPOINTS}
         slideClassName="!h-auto"
         showMobilePagination
+        entrance={usesStaggeredEntrance ? carouselEntrance : undefined}
+        observeReveal={usesStaggeredEntrance ? false : undefined}
         renderSlide={(city) => <CityCard city={city} subtitleMode={subtitleMode} textTone={cardTextTone} />}
       />
     </Reveal>

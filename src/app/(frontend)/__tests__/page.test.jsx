@@ -51,3 +51,18 @@ test('opts the homepage Top activities carousel into the staggered entrance', as
   expect(activitiesSection).toBeDefined();
   expect(activitiesSection.props.carouselEntrance).toBe('stagger-right');
 });
+
+test('opts the homepage Top destinations carousel into the staggered entrance', async () => {
+  const cities = [{ id: 1, name: 'Paris', slug: 'paris' }];
+
+  getAllFeaturedActivities.mockResolvedValue([]);
+  getAllFeaturedCities.mockResolvedValue(cities);
+  getPublicReviews.mockResolvedValue({ data: [] });
+  publicApi.get.mockResolvedValue({ data: { data: [] } });
+
+  const page = await HomePage();
+  const destinationSection = Children.toArray(page.props.children).find((child) => child.props?.cities === cities);
+
+  expect(destinationSection).toBeDefined();
+  expect(destinationSection.props.carouselEntrance).toBe('stagger-right');
+});

@@ -2,13 +2,12 @@ import { render, screen } from '@testing-library/react';
 
 import BrowseDestinationsSection from '../BrowseDestinationsSection';
 
-jest.mock(
-  '@/app/components/ui/CarouselShell',
-  () =>
-    function MockCarouselShell() {
-      return <div data-testid="carousel-shell" />;
-    },
-);
+const mockCarouselShell = jest.fn(() => <div data-testid="carousel-shell" />);
+
+jest.mock('@/app/components/ui/CarouselShell', () => ({
+  __esModule: true,
+  default: (props) => mockCarouselShell(props),
+}));
 
 jest.mock(
   '@/app/components/CityCard',
@@ -18,13 +17,16 @@ jest.mock(
     },
 );
 
-jest.mock(
-  '@/app/components/ui/Reveal',
-  () =>
-    function MockReveal({ children, className = '', as: Component = 'div' }) {
-      return <Component className={className}>{children}</Component>;
-    },
-);
+const mockReveal = jest.fn(({ children, className = '', as: Component = 'div', initialHidden, ...props }) => (
+  <Component className={className} data-initial-hidden={initialHidden ? 'true' : undefined} {...props}>
+    {children}
+  </Component>
+));
+
+jest.mock('@/app/components/ui/Reveal', () => ({
+  __esModule: true,
+  default: (props) => mockReveal(props),
+}));
 
 const cities = [
   {
@@ -35,10 +37,39 @@ const cities = [
   },
 ];
 
+beforeEach(() => {
+  mockCarouselShell.mockClear();
+  mockReveal.mockClear();
+});
+
 test('uses the same responsive navigation button size as product sliders', () => {
   const { container } = render(<BrowseDestinationsSection cities={cities} />);
 
   expect(screen.getByRole('button', { name: 'Previous destination' })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Next destination' })).toBeInTheDocument();
   expect(container.querySelector('.browse-destinations-next')).toHaveClass('size-10', 'sm:size-11');
+});
+
+test('preserves the existing reveal structure when no carousel entrance is requested', () => {
+  const { container } = render(<BrowseDestinationsSection cities={cities} />);
+
+  expect(mockReveal).toHaveBeenCalledTimes(2);
+  expect(mockReveal.mock.calls[0][0]).toEqual(expect.objectContaining({ as: 'section', initialHidden: true }));
+  expect(mockReveal.mock.calls[1][0]).toEqual(expect.objectContaining({ variant: 'lift' }));
+  expect(container.querySelector('[data-carousel-section-entrance]')).not.toBeInTheDocument();
+  expect(container.querySelector('[data-carousel-section-header]')).not.toBeInTheDocument();
+  expect(mockCarouselShell.mock.calls.at(-1)[0].entrance).toBeUndefined();
+  expect(mockCarouselShell.mock.calls.at(-1)[0].observeReveal).toBeUndefined();
+});
+
+test('uses one section reveal to coordinate the staggered destination header and carousel', () => {
+  render(<BrowseDestinationsSection cities={cities} carouselEntrance="stagger-right" />);
+
+  const section = screen.getByRole('region', { name: 'Top Destinations' });
+  expect(mockReveal).toHaveBeenCalledTimes(1);
+  expect(mockReveal.mock.calls[0][0]).toEqual(expect.objectContaining({ as: 'section', initialHidden: true }));
+  expect(section).toHaveAttribute('data-carousel-section-entrance', 'stagger-right');
+  expect(section).toHaveAttribute('data-initial-hidden', 'true');
+  expect(section.querySelector('[data-carousel-section-header]')).toBeInTheDocument();
+  expect(mockCarouselShell.mock.calls.at(-1)[0]).toEqual(expect.objectContaining({ entrance: 'stagger-right', observeReveal: false }));
 });
