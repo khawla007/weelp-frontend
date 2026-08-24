@@ -743,6 +743,18 @@ body {
     }
   }
 
+  @keyframes weelpCarouselRevealRight {
+    from {
+      opacity: 0;
+      transform: translate3d(32px, 0, 0) scale(0.985);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
   /* Settings nav active indicator: slides vertically to the active route. */
   .weelp-settings-rail {
     transition:
@@ -837,6 +849,34 @@ body {
   [data-reveal-cards][data-reveal='shown'] > * {
     animation: weelpRevealUp var(--weelp-duration-reveal) var(--weelp-ease-out) both;
     animation-delay: var(--weelp-reveal-delay, 0ms);
+  }
+
+  [data-carousel-section-entrance='stagger-right'][data-reveal='pending'],
+  [data-carousel-section-entrance='stagger-right'][data-reveal='shown'] {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  [data-carousel-section-entrance='stagger-right'][data-reveal='pending'] [data-carousel-section-header] {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+    will-change: transform, opacity;
+  }
+
+  [data-carousel-section-entrance='stagger-right'][data-reveal='shown'] [data-carousel-section-header] {
+    animation: weelpRevealUp var(--weelp-duration-reveal) var(--weelp-ease-out) both;
+  }
+
+  [data-carousel-section-entrance='stagger-right'][data-reveal='pending'] .swiper-slide {
+    opacity: 0;
+    transform: translate3d(32px, 0, 0) scale(0.985);
+    will-change: transform, opacity;
+  }
+
+  [data-carousel-section-entrance='stagger-right'][data-reveal='shown'] .swiper-slide {
+    animation: weelpCarouselRevealRight 850ms var(--weelp-ease-out) both;
+    animation-delay: calc(var(--weelp-carousel-reveal-index, 0) * 90ms);
   }
 
   .weelp-blur-reveal__visual,
@@ -999,7 +1039,9 @@ body {
     [data-home-hero-motion] .weelp-home-hero-blur-character,
     .weelp-blur-reveal__character,
     [data-reveal],
-    [data-reveal-cards] > * {
+    [data-reveal-cards] > *,
+    [data-carousel-section-entrance='stagger-right'][data-reveal] [data-carousel-section-header],
+    [data-carousel-section-entrance='stagger-right'][data-reveal] .swiper-slide {
       opacity: 1;
       transform: none;
       filter: none;

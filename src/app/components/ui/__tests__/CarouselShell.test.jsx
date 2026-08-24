@@ -69,3 +69,17 @@ test('passes external navigation selectors to Swiper before initialization', () 
     nextEl: '.top-activities-next',
   });
 });
+
+test('emits a stagger-right entrance with capped slide delay indexes', () => {
+  const items = Array.from({ length: 7 }, (_, index) => ({ id: index + 1, title: `Card ${index + 1}` }));
+  render(<CarouselShell items={items} entrance="stagger-right" observeReveal={false} renderSlide={(item) => <article>{item.title}</article>} />);
+
+  const root = screen.getByText('Card 1').closest('.carousel-shell-wrapper');
+  const slides = root.querySelectorAll('.swiper-slide');
+
+  expect(root).toHaveAttribute('data-carousel-entrance', 'stagger-right');
+  expect(root).not.toHaveAttribute('data-reveal');
+  expect(slides[0].style.getPropertyValue('--weelp-carousel-reveal-index')).toBe('0');
+  expect(slides[4].style.getPropertyValue('--weelp-carousel-reveal-index')).toBe('4');
+  expect(slides[6].style.getPropertyValue('--weelp-carousel-reveal-index')).toBe('4');
+});

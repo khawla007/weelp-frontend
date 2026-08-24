@@ -39,7 +39,13 @@ const HomePage = async () => {
       <HeroSection />
 
       {featuredActivities.length > 0 ? (
-        <ProductSliderSection items={featuredActivities.map((a) => mapProductToItemCard(a))} title="Top activities" navigationId="top-activities" className="pb-12 md:pb-16 lg:pb-24" />
+        <ProductSliderSection
+          items={featuredActivities.map((a) => mapProductToItemCard(a))}
+          title="Top activities"
+          navigationId="top-activities"
+          carouselEntrance="stagger-right"
+          className="pb-12 md:pb-16 lg:pb-24"
+        />
       ) : (
         <SectionFallback
           eyebrow="Top activities"

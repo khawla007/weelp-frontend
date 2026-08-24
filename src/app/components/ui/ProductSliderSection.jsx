@@ -25,14 +25,28 @@ const PRODUCT_BREAKPOINTS = {
  * @param {string}   headerAction   - "navigation" (arrows) | "cta" (link button)
  * @param {string}   ctaHref        - CTA link href (only when headerAction="cta")
  * @param {string}   ctaLabel       - CTA link label (only when headerAction="cta")
+ * @param {'stagger-right'} [carouselEntrance] - Optional slide entrance treatment
  * @param {string}   className      - Optional wrapper class overrides
  */
-export default function ProductSliderSection({ items = [], title, navigationId, headerAction = 'navigation', ctaHref, ctaLabel, className = '' }) {
+export default function ProductSliderSection({ items = [], title, navigationId, headerAction = 'navigation', ctaHref, ctaLabel, carouselEntrance, className = '' }) {
   if (!items.length) return null;
 
+  const usesStaggeredEntrance = carouselEntrance === 'stagger-right';
+  const SectionRoot = usesStaggeredEntrance ? Reveal : 'section';
+  const HeaderRoot = usesStaggeredEntrance ? 'div' : Reveal;
+  const sectionRootProps = usesStaggeredEntrance
+    ? {
+        as: 'section',
+        initialHidden: true,
+        'aria-label': title,
+        'data-carousel-section-entrance': carouselEntrance,
+      }
+    : {};
+  const headerRootProps = usesStaggeredEntrance ? { 'data-carousel-section-header': '' } : { initialHidden: true, variant: 'lift' };
+
   return (
-    <section className={`container-page flex flex-col gap-4 pb-7 md:gap-8 md:pb-16 lg:pb-24 ${className}`}>
-      <Reveal initialHidden variant="lift" className="flex items-center justify-between">
+    <SectionRoot {...sectionRootProps} className={`container-page flex flex-col gap-4 pb-7 md:gap-8 md:pb-16 lg:pb-24 ${className}`}>
+      <HeaderRoot {...headerRootProps} className="flex items-center justify-between">
         <SectionHeader title={title} />
 
         {headerAction === 'navigation' && (
@@ -56,7 +70,7 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
             {ctaLabel}
           </Link>
         )}
-      </Reveal>
+      </HeaderRoot>
 
       <CarouselShell
         items={items}
@@ -64,8 +78,10 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
         breakpoints={PRODUCT_BREAKPOINTS}
         slideClassName="!h-auto"
         showMobilePagination
+        entrance={usesStaggeredEntrance ? carouselEntrance : undefined}
+        observeReveal={usesStaggeredEntrance ? false : undefined}
         renderSlide={(card) => <ItemCard {...card} variant="full" />}
       />
-    </section>
+    </SectionRoot>
   );
 }

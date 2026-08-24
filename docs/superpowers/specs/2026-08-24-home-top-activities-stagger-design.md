@@ -1,7 +1,7 @@
 # Home Top Activities Stagger — Design
 
 **Date:** 2026-08-24  
-**Status:** approved direction, pending written-spec review  
+**Status:** approved
 **Reference:** `https://demo.casethemes.net/steelnova/`
 
 ## What this changes
@@ -25,15 +25,15 @@ The delay index is capped at four. This gives the five possible desktop cards de
 The effect is opt-in rather than a new default for every carousel:
 
 - the homepage route requests a `stagger-right` carousel entrance for `Top activities`;
-- `ProductSliderSection` forwards that optional setting without changing its existing callers;
-- `CarouselShell` owns slide indexing because it renders each `SwiperSlide`;
+- `ProductSliderSection` uses one opt-in section-level `Reveal` root to trigger both its header and cards, while existing callers retain their current independent reveals;
+- `CarouselShell` owns slide indexing because it renders each `SwiperSlide`, and can skip its own observer when the parent section owns the entrance;
 - `globals.css` owns the animation and pending/shown states alongside the existing reveal system.
 
 This keeps destination, testimonial, blog, city, and dashboard carousels unchanged. Swiper continues to own track translation, and the entrance animates individual slide elements only, so the effect does not compete with the wrapper transform used during navigation.
 
 ## Trigger and interaction behavior
 
-The existing `Reveal` intersection observer remains the trigger. It fires once when the carousel reaches the current threshold and does not replay on reverse scrolling.
+One existing `Reveal` intersection observer on the opted-in section becomes the trigger for both the header and carousel. It fires once when the section reaches the current threshold and does not replay on reverse scrolling. The header and cards read the same parent `pending` or `shown` state, so their sequence cannot drift because of separate intersection samples.
 
 The entrance is separate from carousel navigation. Clicking an arrow during or after the reveal still uses Swiper's existing 300-millisecond track transition. Changing slides does not replay card opacity, translation, scale, or stagger.
 
@@ -45,6 +45,7 @@ Under `prefers-reduced-motion: reduce`, the carousel and every slide render imme
 
 - **Invisible off-screen slides:** avoided by animating every slide and capping the delay index rather than leaving later slides pending.
 - **Swiper transform conflict:** avoided by animating slide elements while Swiper translates the wrapper.
+- **Out-of-sync header and cards:** avoided by driving both from one section-level `Reveal` state rather than nesting independent observers.
 - **Other carousel regressions:** avoided by making the treatment opt-in and enabling it only on the homepage `Top activities` call.
 - **Hydration flash:** avoided by continuing to use `initialHidden` on the below-fold carousel reveal root.
 - **Repeated motion on navigation:** avoided because the intersection state changes once and is not tied to Swiper's active index.

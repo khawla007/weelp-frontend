@@ -36,3 +36,18 @@ test('uses theme-aware overlay text for homepage destinations', async () => {
   expect(destinationSection).toBeDefined();
   expect(destinationSection.props.cardTextTone).toBe('theme');
 });
+
+test('opts the homepage Top activities carousel into the staggered entrance', async () => {
+  const activities = [{ id: 1, item_type: 'activity', name: 'Desert safari', slug: 'desert-safari', city_slug: 'dubai' }];
+
+  getAllFeaturedActivities.mockResolvedValue(activities);
+  getAllFeaturedCities.mockResolvedValue([]);
+  getPublicReviews.mockResolvedValue({ data: [] });
+  publicApi.get.mockResolvedValue({ data: { data: [] } });
+
+  const page = await HomePage();
+  const activitiesSection = Children.toArray(page.props.children).find((child) => child.props?.title === 'Top activities');
+
+  expect(activitiesSection).toBeDefined();
+  expect(activitiesSection.props.carouselEntrance).toBe('stagger-right');
+});
