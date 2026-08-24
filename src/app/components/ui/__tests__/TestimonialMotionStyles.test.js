@@ -17,8 +17,8 @@ test('defines the approved homepage testimonial stagger-up contract', () => {
   expect(Number(pendingTravel[1])).toBeLessThanOrEqual(Number(wrapperPadding[1]));
   expect(css).toContain("[data-testimonial-section-entrance='stagger-up'][data-reveal='pending'] [data-testimonial-section-heading]");
   expect(css).toContain("[data-testimonial-section-entrance='stagger-up'][data-reveal='shown'] .swiper-slide");
-  expect(css).toContain('animation: weelpTestimonialRevealUp 800ms var(--weelp-ease-out) both');
-  expect(css).toContain('animation-delay: calc(var(--weelp-testimonial-reveal-index, 0) * 100ms)');
+  expect(css).toContain('animation: weelpTestimonialRevealUp 850ms var(--weelp-ease-out) both');
+  expect(css).toContain('animation-delay: calc(var(--weelp-testimonial-reveal-index, 0) * 90ms)');
 });
 
 test('removes testimonial entrance motion for reduced-motion users', () => {

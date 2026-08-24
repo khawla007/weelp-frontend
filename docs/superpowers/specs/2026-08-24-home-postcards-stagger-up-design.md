@@ -27,8 +27,8 @@ When the section reaches the existing reveal threshold:
 
 1. `Postcards from travelers.` lifts and fades into place using the current heading reveal timing.
 2. Testimonial slides begin 16 pixels below their final positions at zero opacity and `scale(0.985)`. This stays within the carousel wrapper's existing 16-pixel vertical buffer, preventing the vertical entrance from creating an internal scrollbar.
-3. Slides settle over 800 milliseconds with 100-millisecond delays.
-4. The delay index caps at three, giving the four possible desktop cards delays of 0, 100, 200, and 300 milliseconds while ensuring later or off-screen slides finish promptly.
+3. Slides settle over 850 milliseconds with 90-millisecond delays, matching the card rhythm used by the Top Activities and Top Destinations sections.
+4. The delay index caps at three, giving the four possible desktop cards delays of 0, 90, 180, and 270 milliseconds while ensuring later or off-screen slides finish promptly.
 
 The reveal runs once. Scrolling back, Swiper loop changes, and continuous autoplay do not replay it.
 
@@ -59,6 +59,6 @@ Tests will verify that:
 - the opted-in section exposes one observer plus scoped heading and slider hooks;
 - the default component structure retains its independent heading and slider reveals;
 - testimonial slide delay indexes cap at three;
-- the CSS contract keeps the 16-pixel keyframe and pending transform within the carousel wrapper's vertical buffer, with 800/100-millisecond timing and a reduced-motion reset.
+- the CSS contract keeps the 16-pixel keyframe and pending transform within the carousel wrapper's vertical buffer, with 850/90-millisecond timing and a reduced-motion reset.
 
 After focused tests, type-check, and lint, a visible headed browser at `http://localhost:3000` will verify the pending and shown states, desktop and mobile card timing, autoplay continuity, one-time playback, reduced motion, document overflow, and browser errors.

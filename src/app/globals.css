@@ -915,8 +915,8 @@ body {
   }
 
   [data-testimonial-section-entrance='stagger-up'][data-reveal='shown'] .swiper-slide {
-    animation: weelpTestimonialRevealUp 800ms var(--weelp-ease-out) both;
-    animation-delay: calc(var(--weelp-testimonial-reveal-index, 0) * 100ms);
+    animation: weelpTestimonialRevealUp 850ms var(--weelp-ease-out) both;
+    animation-delay: calc(var(--weelp-testimonial-reveal-index, 0) * 90ms);
   }
 
   .weelp-blur-reveal__visual,
