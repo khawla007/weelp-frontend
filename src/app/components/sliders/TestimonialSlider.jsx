@@ -7,7 +7,7 @@ import Testimonial from '../Testimonial';
 import Reveal from '@/app/components/ui/Reveal';
 import '@/app/styles/swiper.css';
 
-export const TestmonialSlider = ({ reviews = [] }) => {
+export const TestmonialSlider = ({ reviews = [], entrance, observeReveal = true }) => {
   const [reducedMotion, setReducedMotion] = useState(() => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   useEffect(() => {
@@ -27,8 +27,12 @@ export const TestmonialSlider = ({ reviews = [] }) => {
 
   if (!reviews.length) return null;
 
+  const usesStaggeredEntrance = entrance === 'stagger-up';
+  const Root = observeReveal ? Reveal : 'div';
+  const revealProps = observeReveal ? { initialHidden: true, variant: 'lift' } : {};
+
   return (
-    <Reveal initialHidden variant="lift" className="carousel-shell-wrapper testimonial-slider">
+    <Root {...revealProps} data-testimonial-entrance={usesStaggeredEntrance ? entrance : undefined} className="carousel-shell-wrapper testimonial-slider">
       <Swiper
         modules={[Autoplay]}
         autoplay={autoplayConfig}
@@ -42,12 +46,12 @@ export const TestmonialSlider = ({ reviews = [] }) => {
           1024: { slidesPerView: 4, spaceBetween: 20 },
         }}
       >
-        {reviews.map((review) => (
-          <SwiperSlide key={review.id}>
+        {reviews.map((review, index) => (
+          <SwiperSlide key={review.id} style={usesStaggeredEntrance ? { '--weelp-testimonial-reveal-index': Math.min(index, 3) } : undefined}>
             <Testimonial username={review.user?.name} title={review.review_text} date={review.created_at} itemName={review.item?.name} rating={review.rating} />
           </SwiperSlide>
         ))}
       </Swiper>
-    </Reveal>
+    </Root>
   );
 };

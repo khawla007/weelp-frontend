@@ -755,6 +755,18 @@ body {
     }
   }
 
+  @keyframes weelpTestimonialRevealUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 24px, 0) scale(0.985);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
   /* Settings nav active indicator: slides vertically to the active route. */
   .weelp-settings-rail {
     transition:
@@ -877,6 +889,34 @@ body {
   [data-carousel-section-entrance='stagger-right'][data-reveal='shown'] .swiper-slide {
     animation: weelpCarouselRevealRight 850ms var(--weelp-ease-out) both;
     animation-delay: calc(var(--weelp-carousel-reveal-index, 0) * 90ms);
+  }
+
+  [data-testimonial-section-entrance='stagger-up'][data-reveal='pending'],
+  [data-testimonial-section-entrance='stagger-up'][data-reveal='shown'] {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  [data-testimonial-section-entrance='stagger-up'][data-reveal='pending'] [data-testimonial-section-heading] {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+    will-change: transform, opacity;
+  }
+
+  [data-testimonial-section-entrance='stagger-up'][data-reveal='shown'] [data-testimonial-section-heading] {
+    animation: weelpRevealUp var(--weelp-duration-reveal) var(--weelp-ease-out) both;
+  }
+
+  [data-testimonial-section-entrance='stagger-up'][data-reveal='pending'] .swiper-slide {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0) scale(0.985);
+    will-change: transform, opacity;
+  }
+
+  [data-testimonial-section-entrance='stagger-up'][data-reveal='shown'] .swiper-slide {
+    animation: weelpTestimonialRevealUp 800ms var(--weelp-ease-out) both;
+    animation-delay: calc(var(--weelp-testimonial-reveal-index, 0) * 100ms);
   }
 
   .weelp-blur-reveal__visual,
@@ -1042,6 +1082,15 @@ body {
     [data-reveal-cards] > *,
     [data-carousel-section-entrance='stagger-right'][data-reveal] [data-carousel-section-header],
     [data-carousel-section-entrance='stagger-right'][data-reveal] .swiper-slide {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      animation: none;
+      will-change: auto;
+    }
+
+    [data-testimonial-section-entrance='stagger-up'][data-reveal] [data-testimonial-section-heading],
+    [data-testimonial-section-entrance='stagger-up'][data-reveal] .swiper-slide {
       opacity: 1;
       transform: none;
       filter: none;

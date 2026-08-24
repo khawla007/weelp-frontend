@@ -72,7 +72,7 @@ const HomePage = async () => {
       )}
 
       {reviews.length > 0 ? (
-        <TestimonialSection reviews={reviews} />
+        <TestimonialSection reviews={reviews} entrance="stagger-up" />
       ) : (
         <SectionFallback
           eyebrow="From travelers"

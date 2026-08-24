@@ -88,6 +88,7 @@ describe('/home-gold', () => {
       className: 'pb-12 md:pb-16 lg:pb-24',
     });
     expect(children[3].props.reviews).toBe(reviews);
+    expect(children[3].props.entrance).toBeUndefined();
     expect(children[6].props).toMatchObject({
       blogs,
       navigationId: 'guide-blog',

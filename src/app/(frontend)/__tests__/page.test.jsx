@@ -66,3 +66,18 @@ test('opts the homepage Top destinations carousel into the staggered entrance', 
   expect(destinationSection).toBeDefined();
   expect(destinationSection.props.carouselEntrance).toBe('stagger-right');
 });
+
+test('opts the homepage Postcards carousel into the stagger-up entrance', async () => {
+  const reviews = [{ id: 1, review_text: 'Wonderful trip' }];
+
+  getAllFeaturedActivities.mockResolvedValue([]);
+  getAllFeaturedCities.mockResolvedValue([]);
+  getPublicReviews.mockResolvedValue({ data: reviews });
+  publicApi.get.mockResolvedValue({ data: { data: [] } });
+
+  const page = await HomePage();
+  const testimonialSection = Children.toArray(page.props.children).find((child) => child.props?.reviews === reviews);
+
+  expect(testimonialSection).toBeDefined();
+  expect(testimonialSection.props.entrance).toBe('stagger-up');
+});
