@@ -758,7 +758,7 @@ body {
   @keyframes weelpTestimonialRevealUp {
     from {
       opacity: 0;
-      transform: translate3d(0, 24px, 0) scale(0.985);
+      transform: translate3d(0, 16px, 0) scale(0.985);
     }
 
     to {
@@ -910,7 +910,7 @@ body {
 
   [data-testimonial-section-entrance='stagger-up'][data-reveal='pending'] .swiper-slide {
     opacity: 0;
-    transform: translate3d(0, 24px, 0) scale(0.985);
+    transform: translate3d(0, 16px, 0) scale(0.985);
     will-change: transform, opacity;
   }
 

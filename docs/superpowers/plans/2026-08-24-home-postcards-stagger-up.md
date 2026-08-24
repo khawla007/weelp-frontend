@@ -233,7 +233,7 @@ const css = readFileSync(join(process.cwd(), 'src/app/globals.css'), 'utf8');
 
 test('defines the approved homepage testimonial stagger-up contract', () => {
   expect(css).toContain('@keyframes weelpTestimonialRevealUp');
-  expect(css).toContain('transform: translate3d(0, 24px, 0) scale(0.985)');
+  expect(css).toContain('transform: translate3d(0, 16px, 0) scale(0.985)');
   expect(css).toContain("[data-testimonial-section-entrance='stagger-up'][data-reveal='pending'] [data-testimonial-section-heading]");
   expect(css).toContain("[data-testimonial-section-entrance='stagger-up'][data-reveal='shown'] .swiper-slide");
   expect(css).toContain('animation: weelpTestimonialRevealUp 800ms var(--weelp-ease-out) both');
@@ -351,7 +351,7 @@ In `src/app/globals.css`, add alongside `weelpCarouselRevealRight`:
 @keyframes weelpTestimonialRevealUp {
   from {
     opacity: 0;
-    transform: translate3d(0, 24px, 0) scale(0.985);
+    transform: translate3d(0, 16px, 0) scale(0.985);
   }
 
   to {
@@ -362,6 +362,8 @@ In `src/app/globals.css`, add alongside `weelpCarouselRevealRight`:
 ```
 
 Add alongside the existing carousel entrance rules:
+
+Keep the vertical travel at or below the carousel wrapper's 16-pixel vertical padding. A larger transform makes the shared `overflow-x: hidden` wrapper compute `overflow-y: auto` and creates an internal scrollbar while the section is pending.
 
 ```css
 [data-testimonial-section-entrance='stagger-up'][data-reveal='pending'],
@@ -383,7 +385,7 @@ Add alongside the existing carousel entrance rules:
 
 [data-testimonial-section-entrance='stagger-up'][data-reveal='pending'] .swiper-slide {
   opacity: 0;
-  transform: translate3d(0, 24px, 0) scale(0.985);
+  transform: translate3d(0, 16px, 0) scale(0.985);
   will-change: transform, opacity;
 }
 
@@ -451,7 +453,7 @@ agent-browser --session weelp-postcards set media no-preference
 agent-browser --session weelp-postcards reload
 ```
 
-Before scrolling, verify the Postcards section is `pending`, its heading is at opacity 0 with a 40-pixel downward transform, and its first four slides are at opacity 0 with a 24-pixel downward transform and `scale(0.985)`. Scroll into view and verify delays of 0, 100, 200, and 300 milliseconds; after 1.2 seconds the heading and cards must be opaque at identity transforms.
+Before scrolling, verify the Postcards section is `pending`, its heading is at opacity 0 with a 40-pixel downward transform, and its first four slides are at opacity 0 with a 16-pixel downward transform and `scale(0.985)`. Confirm the testimonial wrapper has no vertical overflow or internal scrollbar. Scroll into view and verify delays of 0, 100, 200, and 300 milliseconds; after 1.2 seconds the heading and cards must be opaque at identity transforms.
 
 Confirm the Swiper speed remains 8000, autoplay remains enabled, the wrapper keeps moving horizontally, and the section stays `shown` after scrolling away and back. At `390x844`, confirm the single-card layout remains usable and the document has no horizontal overflow.
 
