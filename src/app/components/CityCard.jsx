@@ -5,12 +5,8 @@ import { cn, formatCurrency } from '@/lib/utils';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
 const DESTINATION_ACTION_CLASS =
-  // dark-mode-exempt: translucent white Explore pill remains legible over the permanent image overlay
-  'inline-flex h-10 shrink-0 items-center gap-3 rounded-full border border-white/55 bg-white/15 pl-4 pr-1 text-sm font-medium text-white shadow-sm backdrop-blur-md';
-
-const DESTINATION_ARROW_CLASS =
-  // dark-mode-exempt: the inset circle uses the same permanent photographic-overlay treatment as its parent pill
-  'grid size-8 place-items-center rounded-full border border-white/55 bg-white/15 text-amber-500 transition-transform duration-300 group-hover:-rotate-45 motion-reduce:transition-none motion-reduce:group-hover:rotate-0';
+  // dark-mode-exempt: translucent white glass action remains legible over the permanent image overlay
+  'grid size-10 shrink-0 place-items-center rounded-full border border-white/55 bg-white/15 text-white shadow-sm backdrop-blur-md transition-transform duration-300 group-hover:-rotate-45 motion-reduce:transition-none motion-reduce:group-hover:rotate-0';
 
 export default function CityCard({ city, className = '', subtitleMode = 'count' }) {
   const image = city.featured_image || city.feature_image || city.image || '/assets/Card.webp';
@@ -65,10 +61,7 @@ export default function CityCard({ city, className = '', subtitleMode = 'count' 
           )}
         </div>
         <span data-testid="destination-card-action" aria-hidden="true" className={DESTINATION_ACTION_CLASS}>
-          Explore
-          <span data-testid="destination-card-arrow" className={DESTINATION_ARROW_CLASS}>
-            <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.5} />
-          </span>
+          <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.5} />
         </span>
       </div>
     </NavigationLink>

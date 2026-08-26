@@ -1,5 +1,7 @@
 # Destination Explore CTA Design
 
+> **Superseded on 2026-08-26:** The approved follow-up keeps the original circular arrow-only control and adopts only the Top Activities arrow rotation on whole-card hover. The Explore pill described below is retained as design history.
+
 ## What this change covers
 
 The full-image city card already uses the approved Weelp Postcard layout. This follow-up changes only its lower-right action treatment so it matches the canonical Top Activities card.

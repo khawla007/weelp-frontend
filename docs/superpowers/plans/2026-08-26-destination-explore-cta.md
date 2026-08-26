@@ -1,5 +1,7 @@
 # Destination Explore CTA Implementation Plan
 
+> **Superseded on 2026-08-26:** The user clarified that only the Top Activities arrow rotation should be reused. The destination card keeps its original circular arrow-only control; this plan is retained as implementation history.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Replace the destination card's standalone glass arrow with an Explore pill that matches the Top Activities card and rotates its arrow on whole-card hover.
