@@ -1,11 +1,17 @@
 import Image from 'next/image';
+import { ArrowUpRight } from 'lucide-react';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import { cn, formatCurrency } from '@/lib/utils';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
-export default function CityCard({ city, className = '', subtitleMode = 'count', textTone = 'overlay' }) {
+const DESTINATION_ACTION_CLASS =
+  // dark-mode-exempt: translucent white glass action remains legible over the permanent image overlay
+  'grid size-10 shrink-0 place-items-center rounded-full border border-white/55 bg-white/15 text-white shadow-sm backdrop-blur-md transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0 motion-reduce:group-hover:translate-y-0';
+
+export default function CityCard({ city, className = '', subtitleMode = 'count' }) {
   const image = city.featured_image || city.feature_image || city.image || '/assets/Card.webp';
   const activitiesCount = city.activities_count ?? city.activitiesCount ?? 0;
+  const blogsCount = city.blogs_count ?? city.blogsCount ?? 0;
   const hasPrice = city.starting_price != null;
 
   let subtitle = null;
@@ -14,45 +20,49 @@ export default function CityCard({ city, className = '', subtitleMode = 'count',
       subtitle = `Starting at ${formatCurrency(city.starting_price, city.currency)}`;
     }
   } else if (subtitleMode === 'blogs') {
-    subtitle = activitiesCount > 0 ? `${activitiesCount} Blogs` : 'Blogs';
+    subtitle = `${blogsCount} ${blogsCount === 1 ? 'Blog' : 'Blogs'}`;
   } else {
-    subtitle = `${activitiesCount} Activities`;
+    subtitle = `${activitiesCount} ${activitiesCount === 1 ? 'Activity' : 'Activities'}`;
   }
-
-  const usesThemeText = textTone === 'theme';
 
   return (
     <NavigationLink
       href={`/cities/${city.slug}`}
       className={cn(
-        'weelp-destination-card group relative block h-[280px] overflow-hidden rounded-lg border border-white/80 bg-background ring-1 ring-white/80 transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:border-white/10 dark:ring-white/10 sm:h-[320px] xl:h-[360px]',
+        'weelp-destination-card group relative block h-[280px] overflow-hidden rounded-[24px] border border-[var(--weelp-card-border)] bg-weelp-sage-wash transition-shadow duration-300 hover:[box-shadow:var(--weelp-card-hover-shadow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none sm:h-[320px] xl:h-[360px]',
         className,
       )}
     >
       <Image
         src={image}
-        alt={city.name}
+        alt=""
         fill
-        sizes="(max-width: 640px) 65vw, (max-width: 1024px) 40vw, (max-width: 1440px) 25vw, 20vw"
+        sizes="(max-width: 639px) 90vw, (max-width: 1023px) 50vw, (max-width: 1439px) 33vw, 25vw"
         placeholder="blur"
         blurDataURL={IMAGE_BLUR_DATA_URL}
-        className="object-cover transition-transform duration-300 group-hover:scale-105 motion-reduce:group-hover:scale-100"
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
       />
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 pt-16">
-        <span
-          className={cn('block text-[18px] leading-[1.59] drop-shadow-md', usesThemeText ? 'text-white dark:text-foreground' : 'text-white')}
-          style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}
-        >
-          {city.name}
-        </span>
-        {subtitle && (
-          <span
-            className={cn('text-[14px] drop-shadow-md', usesThemeText ? 'text-white/95 dark:text-foreground' : 'text-white/95')}
-            style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 400 }}
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 p-4 pt-20 sm:p-5 sm:pt-24">
+        <div className="min-w-0">
+          <h3
+            className="line-clamp-2 text-[20px] leading-tight text-white drop-shadow-md"
+            style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}
           >
-            {subtitle}
-          </span>
-        )}
+            {city.name}
+          </h3>
+          {subtitle && (
+            <p
+              className="mt-1 truncate text-[13px] text-white/90 drop-shadow-md"
+              style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
+            >
+              {subtitle}
+            </p>
+          )}
+        </div>
+        <span data-testid="destination-card-action" aria-hidden="true" className={DESTINATION_ACTION_CLASS}>
+          <ArrowUpRight className="size-4" strokeWidth={2.25} />
+        </span>
       </div>
     </NavigationLink>
   );

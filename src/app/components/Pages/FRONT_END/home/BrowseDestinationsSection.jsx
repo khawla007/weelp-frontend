@@ -8,11 +8,11 @@ import Reveal from '@/app/components/ui/Reveal';
 import { SLIDER_NAV_BUTTON_CLASS } from '@/app/components/ui/sliderNavigationClasses';
 
 const DESTINATION_BREAKPOINTS = {
-  450: { slidesPerView: 1.5, spaceBetween: 12 },
-  640: { slidesPerView: 2.5, spaceBetween: 16 },
-  768: { slidesPerView: 3, spaceBetween: 18 },
-  1024: { slidesPerView: 4, spaceBetween: 20 },
-  1440: { slidesPerView: 5, spaceBetween: 22 },
+  450: { slidesPerView: 1, spaceBetween: 18 },
+  640: { slidesPerView: 2, spaceBetween: 18 },
+  768: { slidesPerView: 2, spaceBetween: 18 },
+  1024: { slidesPerView: 3, spaceBetween: 18 },
+  1440: { slidesPerView: 4, spaceBetween: 18 },
 };
 
 export default function BrowseDestinationsSection({
@@ -21,7 +21,6 @@ export default function BrowseDestinationsSection({
   subtitleMode = 'count',
   navigationPrefix = 'browse-destinations',
   className = '',
-  cardTextTone = 'overlay',
   carouselEntrance,
 }) {
   const items = cities.map((c) => ({
@@ -32,6 +31,7 @@ export default function BrowseDestinationsSection({
     activitiesCount: c.activities_count ?? 0,
     starting_price: c.starting_price ?? null,
     currency: c.currency ?? null,
+    blogsCount: c.blogs_count ?? c.blogsCount ?? 0,
   }));
   if (!items.length) return null;
 
@@ -61,13 +61,14 @@ export default function BrowseDestinationsSection({
 
       <CarouselShell
         items={items}
+        slidesPerView={1}
         navigationPrefix={navigationPrefix}
         breakpoints={DESTINATION_BREAKPOINTS}
         slideClassName="!h-auto"
         showMobilePagination
         entrance={usesStaggeredEntrance ? carouselEntrance : undefined}
         observeReveal={usesStaggeredEntrance ? false : undefined}
-        renderSlide={(city) => <CityCard city={city} subtitleMode={subtitleMode} textTone={cardTextTone} />}
+        renderSlide={(city) => <CityCard city={city} subtitleMode={subtitleMode} />}
       />
     </Reveal>
   );

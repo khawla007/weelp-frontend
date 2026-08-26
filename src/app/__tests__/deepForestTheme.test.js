@@ -485,8 +485,7 @@ describe('Deep Forest semantic theme', () => {
       },
     });
 
-    const lightDestinationHoverSelector = '.home-gold-theme .weelp-destination-card:hover';
-    const darkDestinationHoverSelector = `.dark ${lightDestinationHoverSelector}`;
+    const darkDestinationHoverSelector = '.dark .home-gold-theme .weelp-destination-card:hover';
     const darkDestinationSelector = '.dark .home-gold-theme .weelp-destination-card';
     expect(extractDeclarationContract(darkDestinationSelector)).toMatchObject({
       'border-color': {
@@ -502,17 +501,10 @@ describe('Deep Forest semantic theme', () => {
         value: '0 0 #0000',
       },
     });
+    expect(extractDeclarationContract('.dark .home-gold-theme .weelp-destination-card img').transform).toBeUndefined();
 
-    const destinationHoverRule = findExactRule(darkDestinationHoverSelector).rule;
-    expect(destinationHoverRule.parent.type).toBe('root');
-    const destinationHoverContract = extractDeclarationContract(darkDestinationHoverSelector);
-    expect(destinationHoverContract['border-color']).toBeUndefined();
-    expect(destinationHoverContract).toMatchObject({
-      'box-shadow': {
-        important: false,
-        value: 'var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow), 0 16px 16px -16px rgb(var(--weelp-gold-edge-rgb) / 0.22), 0 7px 6px -6px rgb(var(--weelp-gold-edge-rgb) / 0.12)',
-      },
-    });
+    expect(() => findExactRule(darkDestinationHoverSelector)).toThrow();
+    expect(readSource('src/app/components/CityCard.jsx')).toContain('hover:[box-shadow:var(--weelp-card-hover-shadow)]');
 
     const destinationCarouselSelector = '.dark .home-gold-theme .carousel-shell-wrapper:has(.weelp-destination-card)';
     expect(() => findExactRule(destinationCarouselSelector)).toThrow();

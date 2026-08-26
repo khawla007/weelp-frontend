@@ -96,9 +96,9 @@ describe('/home-gold', () => {
     expect(children.slice(2, 7).map((child) => child.type.sectionName)).toEqual(['BrowseDestinationsSection', 'TestimonialSection', 'WanderersBanner', 'AiSection', 'BlogSection']);
     expect(children[2].props).toMatchObject({
       cities,
-      cardTextTone: 'theme',
       className: 'pb-12 md:pb-16 lg:pb-24',
     });
+    expect(children[2].props).not.toHaveProperty('cardTextTone');
     expect(children[3].props.reviews).toBe(reviews);
     expect(children[3].props.entrance).toBeUndefined();
     expect(children[4].props.patternTone).toBe('gold-dark');

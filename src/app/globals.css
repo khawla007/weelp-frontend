@@ -308,17 +308,8 @@ body {
 }
 
 .dark .home-gold-theme .weelp-destination-card img {
-  transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
-}
-
-.dark .home-gold-theme .weelp-destination-card:hover {
-  box-shadow:
-    var(--tw-ring-offset-shadow),
-    var(--tw-ring-shadow),
-    var(--tw-shadow),
-    0 16px 16px -16px rgb(var(--weelp-gold-edge-rgb) / 0.22),
-    0 7px 6px -6px rgb(var(--weelp-gold-edge-rgb) / 0.12);
+  will-change: transform;
 }
 
 .dark .home-gold-theme [aria-selected='true']:not([aria-invalid='true']),

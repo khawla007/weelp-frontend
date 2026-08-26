@@ -22,7 +22,7 @@ jest.mock('@/lib/services/reviews', () => ({
   getPublicReviews: jest.fn(),
 }));
 
-test('uses theme-aware overlay text for homepage destinations', async () => {
+test('uses the shared Postcard treatment for homepage destinations', async () => {
   const cities = [{ id: 1, name: 'Paris', slug: 'paris' }];
 
   getAllFeaturedActivities.mockResolvedValue([]);
@@ -34,7 +34,7 @@ test('uses theme-aware overlay text for homepage destinations', async () => {
   const destinationSection = Children.toArray(page.props.children).find((child) => child.props?.cities === cities);
 
   expect(destinationSection).toBeDefined();
-  expect(destinationSection.props.cardTextTone).toBe('theme');
+  expect(destinationSection.props).not.toHaveProperty('cardTextTone');
 });
 
 test('opts the homepage Top activities carousel into the staggered entrance', async () => {
