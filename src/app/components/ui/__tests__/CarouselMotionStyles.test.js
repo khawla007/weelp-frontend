@@ -19,3 +19,17 @@ test('removes carousel entrance motion for reduced-motion users', () => {
 
   expect(reducedMotionBlock).toMatch(reducedCarouselRule);
 });
+
+test('bypasses carousel entrance motion when observation is unavailable', () => {
+  const bypassRule = css.match(
+    /\[data-carousel-section-entrance='stagger-right'\]\[data-reveal-motion='bypassed'\] \[data-carousel-section-header\],\s*\[data-carousel-section-entrance='stagger-right'\]\[data-reveal-motion='bypassed'\] \.swiper-slide\s*\{([^}]*)\}/s,
+  );
+  const declarations = bypassRule?.[1] || '';
+
+  expect(bypassRule).not.toBeNull();
+  expect(declarations).toMatch(/opacity:\s*1;/);
+  expect(declarations).toMatch(/transform:\s*none;/);
+  expect(declarations).toMatch(/animation:\s*none;/);
+  expect(declarations).toMatch(/animation-delay:\s*0ms;/);
+  expect(declarations).toMatch(/will-change:\s*auto;/);
+});

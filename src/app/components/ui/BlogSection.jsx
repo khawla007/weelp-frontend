@@ -22,31 +22,15 @@ const BLOG_BREAKPOINTS = {
  * @param {object[]} blogs   - Raw blog objects from API
  * @param {string}   title   - Section heading (default: "Your Guide")
  * @param {string}   navigationId - Unique prefix for carousel nav buttons
- * @param {'editorial-right'} [entrance] - Optional coordinated section entrance
  * @param {string}   className - Optional wrapper class overrides
  */
-export default function BlogSection({ blogs = [], title = 'Your Guide', navigationId = 'blog-section', entrance, className = '' }) {
+export default function BlogSection({ blogs = [], title = 'Your Guide', navigationId = 'blog-section', className = '' }) {
   const items = blogs.map((b) => mapBlogToItemCard(b));
   if (!items.length) return null;
 
-  const usesEditorialEntrance = entrance === 'editorial-right';
-  const SectionRoot = usesEditorialEntrance ? Reveal : 'section';
-  const HeaderRoot = usesEditorialEntrance ? 'div' : Reveal;
-  const CarouselRoot = usesEditorialEntrance ? 'div' : Reveal;
-  const sectionProps = usesEditorialEntrance
-    ? {
-        as: 'section',
-        initialHidden: true,
-        'data-guide-section-entrance': 'editorial-right',
-      }
-    : {};
-  const headerProps = usesEditorialEntrance ? { 'data-guide-section-header': '' } : { initialHidden: true, variant: 'lift' };
-  const carouselWrapperProps = usesEditorialEntrance ? {} : { initialHidden: true, variant: 'lift', delay: 120 };
-  const carouselEntranceProps = usesEditorialEntrance ? { entrance: 'editorial-right', observeReveal: false } : {};
-
   return (
-    <SectionRoot {...sectionProps} className={`container-page flex flex-col gap-6 md:gap-8 pb-10 md:pb-16 lg:pb-24 ${className}`}>
-      <HeaderRoot {...headerProps} className="flex items-center justify-between">
+    <Reveal as="section" initialHidden aria-label={title} data-carousel-section-entrance="stagger-right" className={`container-page flex flex-col gap-6 md:gap-8 pb-10 md:pb-16 lg:pb-24 ${className}`}>
+      <div data-carousel-section-header className="flex items-center justify-between">
         <SectionHeader title={title} />
         <div className="hidden sm:flex items-center gap-2">
           <button type="button" className={`${navigationId}-prev ${COMPACT_SLIDER_NAV_BUTTON_CLASS}`} aria-label="Previous blog post">
@@ -56,19 +40,18 @@ export default function BlogSection({ blogs = [], title = 'Your Guide', navigati
             <ChevronRight className="size-4" />
           </button>
         </div>
-      </HeaderRoot>
+      </div>
 
-      <CarouselRoot {...carouselWrapperProps}>
-        <CarouselShell
-          items={items}
-          navigationPrefix={navigationId}
-          breakpoints={BLOG_BREAKPOINTS}
-          slideClassName="!h-auto"
-          showMobilePagination
-          {...carouselEntranceProps}
-          renderSlide={(item) => <ItemCard href={item.href} image={item.image} title={item.title} category={item.category} publishedAt={item.publishedAt} variant="compact" />}
-        />
-      </CarouselRoot>
-    </SectionRoot>
+      <CarouselShell
+        items={items}
+        navigationPrefix={navigationId}
+        breakpoints={BLOG_BREAKPOINTS}
+        slideClassName="!h-auto"
+        showMobilePagination
+        entrance="stagger-right"
+        observeReveal={false}
+        renderSlide={(item) => <ItemCard href={item.href} image={item.image} title={item.title} category={item.category} publishedAt={item.publishedAt} variant="compact" />}
+      />
+    </Reveal>
   );
 }

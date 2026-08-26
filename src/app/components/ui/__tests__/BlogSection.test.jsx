@@ -56,21 +56,19 @@ test('returns null when no blogs are supplied', () => {
   expect(mockCarouselShell).not.toHaveBeenCalled();
 });
 
-test('uses one root reveal and a plain body for the editorial-right entrance', () => {
-  render(<BlogSection blogs={[blog]} navigationId="guide-blog" entrance="editorial-right" />);
+test('always uses the shared stagger-right carousel entrance', () => {
+  render(<BlogSection blogs={[blog]} navigationId="guide-blog" />);
 
-  const section = screen.getByTestId('reveal');
+  const section = screen.getByRole('region', { name: 'Your Guide' });
   expect(section.tagName).toBe('SECTION');
   expect(section).toHaveAttribute('data-initial-hidden', 'true');
-  expect(section).toHaveAttribute('data-guide-section-entrance', 'editorial-right');
-  expect(section.querySelector('[data-guide-section-header]')).toBeInTheDocument();
+  expect(section).toHaveAttribute('data-carousel-section-entrance', 'stagger-right');
+  expect(section.querySelector('[data-carousel-section-header]')).toBeInTheDocument();
   expect(screen.getAllByTestId('reveal')).toHaveLength(1);
-  expect(screen.getByTestId('carousel-shell').parentElement.tagName).toBe('DIV');
-  expect(screen.getByTestId('carousel-shell').parentElement).not.toHaveAttribute('data-testid', 'reveal');
 
   expect(mockCarouselShell).toHaveBeenLastCalledWith(
     expect.objectContaining({
-      entrance: 'editorial-right',
+      entrance: 'stagger-right',
       observeReveal: false,
       navigationPrefix: 'guide-blog',
       breakpoints: expectedBreakpoints,
@@ -92,26 +90,4 @@ test('uses one root reveal and a plain body for the editorial-right entrance', (
     publishedAt: '2026-08-20',
     variant: 'compact',
   });
-});
-
-test('preserves the existing two reveals and carousel defaults without an entrance', () => {
-  render(<BlogSection blogs={[blog]} navigationId="guide-blog" />);
-
-  const reveals = screen.getAllByTestId('reveal');
-  expect(reveals).toHaveLength(2);
-  expect(reveals[0]).toHaveAttribute('data-initial-hidden', 'true');
-  expect(reveals[1]).toHaveAttribute('data-initial-hidden', 'true');
-  expect(document.querySelector('section')).not.toHaveAttribute('data-guide-section-entrance');
-
-  const carouselProps = mockCarouselShell.mock.calls.at(-1)[0];
-  expect(carouselProps.entrance).toBeUndefined();
-  expect(carouselProps.observeReveal).toBeUndefined();
-  expect(carouselProps).toEqual(
-    expect.objectContaining({
-      navigationPrefix: 'guide-blog',
-      breakpoints: expectedBreakpoints,
-      slideClassName: '!h-auto',
-      showMobilePagination: true,
-    }),
-  );
 });

@@ -14,11 +14,7 @@ const BlogSliderSection = ({ sectionTitle }) => {
 
   // Reserve vertical space during fetch so the section below doesn't shift when
   // the carousel hydrates — eliminates the CLS spike Lighthouse flagged on /blogs.
-  return (
-    <div className="min-h-[400px] md:min-h-[460px]">
-      {latestBlogs.length > 0 && <BlogSection blogs={latestBlogs} title={sectionTitle || 'Latest Blogs'} navigationId="latest-blogs" className="weelp-fade-up" />}
-    </div>
-  );
+  return <div className="min-h-[400px] md:min-h-[460px]">{latestBlogs.length > 0 && <BlogSection blogs={latestBlogs} title={sectionTitle || 'Latest Blogs'} navigationId="latest-blogs" />}</div>;
 };
 
 export default BlogSliderSection;

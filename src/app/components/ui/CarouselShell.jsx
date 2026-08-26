@@ -20,7 +20,7 @@ export default function CarouselShell({
 }) {
   const swiperRef = useRef(null);
   const hasNavigation = Boolean(navigationPrefix);
-  const usesIndexedEntrance = entrance === 'stagger-right' || entrance === 'editorial-right';
+  const usesIndexedEntrance = entrance === 'stagger-right';
   const prevSelector = hasNavigation ? `.${navigationPrefix}-prev` : undefined;
   const nextSelector = hasNavigation ? `.${navigationPrefix}-next` : undefined;
   const navigationSelectors = hasNavigation ? { prevEl: prevSelector, nextEl: nextSelector } : undefined;

@@ -141,7 +141,7 @@ describe('/home-gold', () => {
     expect(goldAiSection.props.entrance).toBeUndefined();
   });
 
-  it('opts only the main homepage guide into the editorial-right entrance', async () => {
+  it('leaves blog entrance ownership to the shared BlogSection', async () => {
     publicApi.get.mockResolvedValue({
       data: { data: [{ id: 3, title: 'A local guide' }] },
     });
@@ -153,7 +153,7 @@ describe('/home-gold', () => {
 
     expect(homeGuide).toBeDefined();
     expect(goldGuide).toBeDefined();
-    expect(homeGuide.props.entrance).toBe('editorial-right');
+    expect(homeGuide.props.entrance).toBeUndefined();
     expect(goldGuide.props.entrance).toBeUndefined();
   });
 
