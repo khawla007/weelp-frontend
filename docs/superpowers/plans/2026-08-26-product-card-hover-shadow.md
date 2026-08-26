@@ -18,6 +18,10 @@
 - Modify: `src/app/components/ui/item-card.jsx`
 - Modify: `Reports/daily-work-report.md` from the workspace root after verification
 
+- [ ] **Prerequisite: Apply the mandatory Next.js and React guidance**
+
+Before editing JSX, invoke and apply `next-best-practices`, `vercel-react-best-practices`, and `vercel-composition-patterns`. Keep the behavior on the existing shared full-card article; do not add a client boundary, state, a new prop, or a parallel card component.
+
 - [ ] **Step 1: Write the failing full-card hover contract**
 
 Extend the existing `renders the home-gold composition with a sibling detail link and wishlist control` test with:
