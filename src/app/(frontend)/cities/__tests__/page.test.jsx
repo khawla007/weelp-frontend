@@ -23,7 +23,11 @@ jest.mock('@/app/components/Navigation/NavigationLink', () => ({
 
 jest.mock('@/app/components/CityCard', () => ({
   __esModule: true,
-  default: ({ city }) => <a href={`/cities/${city.slug}`}>{city.name}</a>,
+  default: ({ city, className = '' }) => (
+    <a href={`/cities/${city.slug}`} data-card-class={className}>
+      {city.name}
+    </a>
+  ),
 }));
 
 jest.mock('@/app/components/ui/Reveal', () => ({
@@ -88,6 +92,7 @@ describe('CitiesPage', () => {
     expect(screen.getByTestId('cities-controls')).toHaveAttribute('data-seasons', 'winter');
     expect(screen.getByText('Abu Dhabi').closest('section')).toHaveClass('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-2', 'xl:grid-cols-3');
     expect(screen.getByText('Abu Dhabi').closest('section')).not.toHaveClass('2xl:grid-cols-4');
+    expect(screen.getByText('Abu Dhabi')).toHaveAttribute('data-card-class', '');
     expect(screen.getByLabelText('Previous page')).toHaveAttribute('data-query', 'search=abu&country=united-arab-emirates&season=winter&sort_by=activities_desc&page=1');
     expect(screen.getByLabelText('Next page')).toHaveAttribute('data-query', 'search=abu&country=united-arab-emirates&season=winter&sort_by=activities_desc&page=3');
   });

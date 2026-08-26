@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import BlogPublishedDate from '@/app/components/ui/BlogPublishedDate';
+import { FEATURE_CARD_HEIGHT_CLASS } from '@/app/components/ui/cardSizing';
 import ItemCardWishlistButton from '@/app/components/Wishlist/ItemCardWishlistButton';
 import { getAttributeIcon } from '@/lib/attributeIcons';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
@@ -87,7 +88,7 @@ function FullItemCard({
       itemScope={hasProductSchema || undefined}
       itemType={hasProductSchema ? 'https://schema.org/Product' : undefined}
       data-testid="product-item-card"
-      className={`relative flex h-full flex-col overflow-hidden rounded-[24px] border border-[var(--weelp-card-border)] bg-background p-2 transition-shadow duration-300 hover:[box-shadow:var(--weelp-card-hover-shadow)] motion-reduce:transition-none ${className}`}
+      className={`relative flex flex-col overflow-hidden rounded-[24px] border border-[var(--weelp-card-border)] bg-background p-2 transition-shadow duration-300 hover:[box-shadow:var(--weelp-card-hover-shadow)] motion-reduce:transition-none ${FEATURE_CARD_HEIGHT_CLASS} ${className}`}
       style={style}
     >
       {hasProductSchema ? <meta itemProp="name" content={title} /> : null}

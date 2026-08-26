@@ -74,7 +74,7 @@ export default async function CitiesPage({ searchParams }) {
             <h2 className="sr-only">All cities</h2>
             <Reveal as="section" initialHidden stagger={60} variant="lift" className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-2 xl:grid-cols-3">
               {cities.map((city) => (
-                <CityCard key={city.id} city={city} className="h-[300px] sm:h-[320px] lg:h-[300px] xl:h-[340px]" />
+                <CityCard key={city.id} city={city} />
               ))}
             </Reveal>
 

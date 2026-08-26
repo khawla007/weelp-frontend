@@ -18,12 +18,19 @@ test('renders the accessible Weelp Postcard treatment', () => {
   expect(link).toHaveAccessibleName('Dubai 13 Activities');
   expect(link).toHaveClass(
     'weelp-destination-card',
+    'h-[400px]',
+    'sm:h-[440px]',
+    'md:h-[490px]',
+    'lg:h-[460px]',
+    'xl:h-[500px]',
+    'min-[1440px]:h-[470px]',
     'rounded-[24px]',
     'border-[var(--weelp-card-border)]',
     'hover:[box-shadow:var(--weelp-card-hover-shadow)]',
     'focus-visible:ring-2',
     'motion-reduce:transition-none',
   );
+  expect(link).not.toHaveClass('h-[280px]', 'sm:h-[320px]', 'xl:h-[360px]');
 
   expect(screen.getByRole('heading', { name: 'Dubai', level: 3 })).toHaveClass('text-white');
   expect(screen.getByText('13 Activities')).toHaveClass('text-white/90');

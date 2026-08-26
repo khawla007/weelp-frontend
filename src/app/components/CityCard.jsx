@@ -1,14 +1,15 @@
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
-import { cn, formatCurrency } from '@/lib/utils';
+import { FEATURE_CARD_HEIGHT_CLASS } from '@/app/components/ui/cardSizing';
+import { formatCurrency } from '@/lib/utils';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
 
 const DESTINATION_ACTION_CLASS =
   // dark-mode-exempt: translucent white glass action remains legible over the permanent image overlay
   'grid size-10 shrink-0 place-items-center rounded-full border border-white/55 bg-white/15 text-white shadow-sm backdrop-blur-md transition-transform duration-300 group-hover:-rotate-45 motion-reduce:transition-none motion-reduce:group-hover:rotate-0';
 
-export default function CityCard({ city, className = '', subtitleMode = 'count' }) {
+export default function CityCard({ city, subtitleMode = 'count' }) {
   const image = city.featured_image || city.feature_image || city.image || '/assets/Card.webp';
   const activitiesCount = city.activities_count ?? city.activitiesCount ?? 0;
   const blogsCount = city.blogs_count ?? city.blogsCount ?? 0;
@@ -28,10 +29,7 @@ export default function CityCard({ city, className = '', subtitleMode = 'count' 
   return (
     <NavigationLink
       href={`/cities/${city.slug}`}
-      className={cn(
-        'weelp-destination-card group relative block h-[280px] overflow-hidden rounded-[24px] border border-[var(--weelp-card-border)] bg-weelp-sage-wash transition-shadow duration-300 hover:[box-shadow:var(--weelp-card-hover-shadow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none sm:h-[320px] xl:h-[360px]',
-        className,
-      )}
+      className={`weelp-destination-card group relative block overflow-hidden rounded-[24px] border border-[var(--weelp-card-border)] bg-weelp-sage-wash transition-shadow duration-300 hover:[box-shadow:var(--weelp-card-hover-shadow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none ${FEATURE_CARD_HEIGHT_CLASS}`}
     >
       <Image
         src={image}

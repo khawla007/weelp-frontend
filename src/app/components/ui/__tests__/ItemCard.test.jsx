@@ -73,6 +73,7 @@ it('renders the home-gold composition with a sibling detail link and wishlist co
   const wishlist = screen.getByRole('button', { name: /wishlist/i });
 
   expect(card).toHaveClass('rounded-[24px]', 'border-[var(--weelp-card-border)]', 'bg-background');
+  expect(card).toHaveClass('h-[400px]', 'sm:h-[440px]', 'md:h-[490px]', 'lg:h-[460px]', 'xl:h-[500px]', 'min-[1440px]:h-[470px]');
   expect(card).toHaveClass(
     'transition-shadow',
     'duration-300',
