@@ -73,6 +73,13 @@ it('renders the home-gold composition with a sibling detail link and wishlist co
   const wishlist = screen.getByRole('button', { name: /wishlist/i });
 
   expect(card).toHaveClass('rounded-[24px]', 'border-[var(--weelp-card-border)]', 'bg-background');
+  expect(card).toHaveClass(
+    'transition-shadow',
+    'duration-300',
+    'hover:[box-shadow:var(--weelp-card-hover-shadow)]',
+    'motion-reduce:transition-none',
+  );
+  expect(card.className).not.toMatch(/hover:(?:-?translate|scale)/);
   expect(link).toHaveAttribute('href', '/cities/dubai/activities/desert-safari');
   expect(link).not.toContainElement(wishlist);
   expect(card).toContainElement(link);

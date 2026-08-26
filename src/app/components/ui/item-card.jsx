@@ -87,7 +87,7 @@ function FullItemCard({
       itemScope={hasProductSchema || undefined}
       itemType={hasProductSchema ? 'https://schema.org/Product' : undefined}
       data-testid="product-item-card"
-      className={`relative flex h-full flex-col overflow-hidden rounded-[24px] border border-[var(--weelp-card-border)] bg-background p-2 ${className}`}
+      className={`relative flex h-full flex-col overflow-hidden rounded-[24px] border border-[var(--weelp-card-border)] bg-background p-2 transition-shadow duration-300 hover:[box-shadow:var(--weelp-card-hover-shadow)] motion-reduce:transition-none ${className}`}
       style={style}
     >
       {hasProductSchema ? <meta itemProp="name" content={title} /> : null}

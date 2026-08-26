@@ -30,7 +30,7 @@ Extend the existing `renders the home-gold composition with a sibling detail lin
 expect(card).toHaveClass(
   'transition-shadow',
   'duration-300',
-  'hover:shadow-[var(--weelp-card-hover-shadow)]',
+  'hover:[box-shadow:var(--weelp-card-hover-shadow)]',
   'motion-reduce:transition-none',
 );
 expect(card.className).not.toMatch(/hover:(?:-?translate|scale)/);
@@ -51,7 +51,7 @@ Expected: FAIL because the full-card article does not yet include the hover-shad
 In `FullItemCard`, change only the article class to include the approved classes:
 
 ```jsx
-className={`relative flex h-full flex-col overflow-hidden rounded-[24px] border border-[var(--weelp-card-border)] bg-background p-2 transition-shadow duration-300 hover:shadow-[var(--weelp-card-hover-shadow)] motion-reduce:transition-none ${className}`}
+className={`relative flex h-full flex-col overflow-hidden rounded-[24px] border border-[var(--weelp-card-border)] bg-background p-2 transition-shadow duration-300 hover:[box-shadow:var(--weelp-card-hover-shadow)] motion-reduce:transition-none ${className}`}
 ```
 
 Do not add transforms, new shadow values, JavaScript hover state, or border changes.
