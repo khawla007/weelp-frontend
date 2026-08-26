@@ -34,19 +34,33 @@ expect(action).toHaveTextContent('Explore');
 expect(action).toHaveClass(
   'inline-flex',
   'h-10',
+  'items-center',
+  'gap-3',
   'rounded-full',
   'border-white/55',
   'bg-white/15',
+  'pl-4',
+  'pr-1',
+  'text-sm',
+  'font-medium',
   'text-white',
+  'shadow-sm',
   'backdrop-blur-md',
 );
 
 const arrow = screen.getByTestId('destination-card-arrow');
 expect(arrow).toHaveClass(
+  'grid',
   'size-8',
+  'place-items-center',
   'rounded-full',
-  'text-amber-400',
+  'border-white/55',
+  'bg-white/15',
+  'text-amber-500',
+  'transition-transform',
+  'duration-300',
   'group-hover:-rotate-45',
+  'motion-reduce:transition-none',
   'motion-reduce:group-hover:rotate-0',
 );
 expect(arrow.querySelector('.lucide-arrow-right')).toBeInTheDocument();
@@ -96,7 +110,7 @@ const DESTINATION_ACTION_CLASS =
 
 const DESTINATION_ARROW_CLASS =
   // dark-mode-exempt: the inset circle uses the same permanent photographic-overlay treatment as its parent pill
-  'grid size-8 place-items-center rounded-full border border-white/55 bg-white/15 text-amber-400 transition-transform duration-300 group-hover:-rotate-45 motion-reduce:transition-none motion-reduce:group-hover:rotate-0';
+  'grid size-8 place-items-center rounded-full border border-white/55 bg-white/15 text-amber-500 transition-transform duration-300 group-hover:-rotate-45 motion-reduce:transition-none motion-reduce:group-hover:rotate-0';
 ```
 
 These module-level constants remain static across renders and place the dark-mode lint exemption directly above each intentional translucent-white source line.
