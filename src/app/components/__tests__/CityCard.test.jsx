@@ -30,11 +30,46 @@ test('renders the accessible Weelp Postcard treatment', () => {
 
   const action = screen.getByTestId('destination-card-action');
   expect(action).toHaveAttribute('aria-hidden', 'true');
+  expect(action).toHaveTextContent('Explore');
   expect(action).toHaveClass(
-    'motion-reduce:group-hover:translate-x-0',
-    'motion-reduce:group-hover:translate-y-0',
+    'inline-flex',
+    'h-10',
+    'shrink-0',
+    'items-center',
+    'gap-3',
+    'rounded-full',
+    'border',
+    'border-white/55',
+    // dark-mode-exempt: assertion locks the permanent photographic-overlay CTA surface
+    'bg-white/15',
+    'pl-4',
+    'pr-1',
+    'text-sm',
+    'font-medium',
+    'text-white',
+    'shadow-sm',
+    'backdrop-blur-md',
   );
-  expect(action.querySelector('.lucide-arrow-up-right')).toBeInTheDocument();
+
+  const arrow = screen.getByTestId('destination-card-arrow');
+  expect(arrow).toHaveClass(
+    'grid',
+    'size-8',
+    'place-items-center',
+    'rounded-full',
+    'border',
+    'border-white/55',
+    // dark-mode-exempt: assertion locks the inset photographic-overlay CTA surface
+    'bg-white/15',
+    'text-amber-500',
+    'transition-transform',
+    'duration-300',
+    'group-hover:-rotate-45',
+    'motion-reduce:transition-none',
+    'motion-reduce:group-hover:rotate-0',
+  );
+  expect(arrow.querySelector('.lucide-arrow-right')).toBeInTheDocument();
+  expect(action.querySelector('.lucide-arrow-up-right')).not.toBeInTheDocument();
 
   expect(screen.getByAltText('')).toHaveClass('motion-reduce:group-hover:scale-100');
   expect(screen.queryByRole('button')).not.toBeInTheDocument();
