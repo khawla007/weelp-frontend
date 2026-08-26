@@ -59,17 +59,17 @@ test('preserves the existing Reveal wrapper and autoplay configuration by defaul
   expect(latestSwiperProps.autoplay).toEqual(expect.objectContaining({ delay: 0, disableOnInteraction: true, pauseOnMouseEnter: true }));
 });
 
-test('uses a plain marked wrapper and caps stagger-up indexes at three', () => {
-  render(<TestmonialSlider reviews={reviews} entrance="stagger-up" observeReveal={false} />);
+test('uses the shared carousel marker and caps stagger-right indexes at four', () => {
+  render(<TestmonialSlider reviews={reviews} entrance="stagger-right" observeReveal={false} />);
 
   const root = screen.getByText('Traveler 1').closest('.testimonial-slider');
   const slides = root.querySelectorAll('.swiper-slide');
   expect(mockReveal).not.toHaveBeenCalled();
-  expect(root).toHaveAttribute('data-testimonial-entrance', 'stagger-up');
+  expect(root).toHaveAttribute('data-carousel-entrance', 'stagger-right');
   expect(root).not.toHaveAttribute('data-reveal');
-  expect(slides[0].style.getPropertyValue('--weelp-testimonial-reveal-index')).toBe('0');
-  expect(slides[3].style.getPropertyValue('--weelp-testimonial-reveal-index')).toBe('3');
-  expect(slides[5].style.getPropertyValue('--weelp-testimonial-reveal-index')).toBe('3');
+  expect(slides[0].style.getPropertyValue('--weelp-carousel-reveal-index')).toBe('0');
+  expect(slides[4].style.getPropertyValue('--weelp-carousel-reveal-index')).toBe('4');
+  expect(slides[5].style.getPropertyValue('--weelp-carousel-reveal-index')).toBe('4');
   expect(latestSwiperProps.speed).toBe(8000);
   expect(latestSwiperProps.autoplay).toEqual(expect.objectContaining({ delay: 0, disableOnInteraction: true, pauseOnMouseEnter: true }));
   expect(latestSwiperProps.loop).toBe(true);
@@ -77,7 +77,7 @@ test('uses a plain marked wrapper and caps stagger-up indexes at three', () => {
 
 test('retains the existing reduced-motion autoplay behavior', () => {
   setReducedMotion(true);
-  render(<TestmonialSlider reviews={reviews} entrance="stagger-up" observeReveal={false} />);
+  render(<TestmonialSlider reviews={reviews} entrance="stagger-right" observeReveal={false} />);
 
   expect(latestSwiperProps.autoplay).toBe(false);
   expect(latestSwiperProps.speed).toBe(0);

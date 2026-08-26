@@ -36,13 +36,13 @@ test('preserves independent heading and slider reveals by default', () => {
   expect(mockTestimonialSlider.mock.calls.at(-1)[0].observeReveal).toBeUndefined();
 });
 
-test('uses one section reveal to coordinate the stagger-up heading and cards', () => {
-  render(<TestimonialSection reviews={reviews} entrance="stagger-up" />);
+test('uses the shared carousel reveal contract to coordinate the stagger-right heading and cards', () => {
+  render(<TestimonialSection reviews={reviews} entrance="stagger-right" />);
 
   const section = screen.getByRole('region', { name: 'Postcards from travelers.' });
   expect(mockReveal).toHaveBeenCalledTimes(1);
-  expect(section).toHaveAttribute('data-testimonial-section-entrance', 'stagger-up');
+  expect(section).toHaveAttribute('data-carousel-section-entrance', 'stagger-right');
   expect(section).toHaveAttribute('data-initial-hidden', 'true');
-  expect(section.querySelector('[data-testimonial-section-heading]')).toBeInTheDocument();
-  expect(mockTestimonialSlider.mock.calls.at(-1)[0]).toEqual(expect.objectContaining({ entrance: 'stagger-up', observeReveal: false }));
+  expect(section.querySelector('[data-carousel-section-header]')).toBeInTheDocument();
+  expect(mockTestimonialSlider.mock.calls.at(-1)[0]).toEqual(expect.objectContaining({ entrance: 'stagger-right', observeReveal: false }));
 });

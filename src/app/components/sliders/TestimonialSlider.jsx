@@ -27,12 +27,12 @@ export const TestmonialSlider = ({ reviews = [], entrance, observeReveal = true 
 
   if (!reviews.length) return null;
 
-  const usesStaggeredEntrance = entrance === 'stagger-up';
+  const usesStaggeredEntrance = entrance === 'stagger-right';
   const Root = observeReveal ? Reveal : 'div';
   const revealProps = observeReveal ? { initialHidden: true, variant: 'lift' } : {};
 
   return (
-    <Root {...revealProps} data-testimonial-entrance={usesStaggeredEntrance ? entrance : undefined} className="carousel-shell-wrapper testimonial-slider">
+    <Root {...revealProps} data-carousel-entrance={usesStaggeredEntrance ? entrance : undefined} className="carousel-shell-wrapper testimonial-slider">
       <Swiper
         modules={[Autoplay]}
         autoplay={autoplayConfig}
@@ -47,7 +47,7 @@ export const TestmonialSlider = ({ reviews = [], entrance, observeReveal = true 
         }}
       >
         {reviews.map((review, index) => (
-          <SwiperSlide key={review.id} style={usesStaggeredEntrance ? { '--weelp-testimonial-reveal-index': Math.min(index, 3) } : undefined}>
+          <SwiperSlide key={review.id} style={usesStaggeredEntrance ? { '--weelp-carousel-reveal-index': Math.min(index, 4) } : undefined}>
             <Testimonial username={review.user?.name} title={review.review_text} date={review.created_at} itemName={review.item?.name} rating={review.rating} />
           </SwiperSlide>
         ))}

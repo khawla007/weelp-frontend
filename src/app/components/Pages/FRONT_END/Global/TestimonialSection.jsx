@@ -4,15 +4,15 @@ import Reveal from '@/app/components/ui/Reveal';
 const SECTION_TITLE = 'Postcards from travelers.';
 
 const TestimonialSection = ({ reviews = [], entrance }) => {
-  const usesStaggeredEntrance = entrance === 'stagger-up';
+  const usesStaggeredEntrance = entrance === 'stagger-right';
   const HeadingRoot = usesStaggeredEntrance ? 'h2' : Reveal;
   const sectionRootProps = usesStaggeredEntrance
     ? {
         'aria-label': SECTION_TITLE,
-        'data-testimonial-section-entrance': entrance,
+        'data-carousel-section-entrance': entrance,
       }
     : {};
-  const headingRootProps = usesStaggeredEntrance ? { 'data-testimonial-section-heading': '' } : { as: 'h2', variant: 'lift' };
+  const headingRootProps = usesStaggeredEntrance ? { 'data-carousel-section-header': '' } : { as: 'h2', variant: 'lift' };
 
   return (
     <Reveal as="section" initialHidden {...sectionRootProps} className="container-page relative flex flex-col gap-8 pb-12 md:pb-16 lg:pb-24">
