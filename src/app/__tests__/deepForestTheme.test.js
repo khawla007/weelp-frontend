@@ -596,6 +596,11 @@ describe('Deep Forest semantic theme', () => {
     expect(itemCardSource).not.toContain('oklch(0.96_0.02_80)');
   });
 
+  it('uses the canonical border strength for light product cards', () => {
+    expect(rootTokens['--weelp-card-border']).toBe('#e4e4e7');
+    expect(rootTokens['--weelp-card-border']).toBe(rootTokens['--weelp-home-border']);
+  });
+
   it('preserves distinct status and chart hues', () => {
     expect(darkTokens).toMatchObject({
       '--success': '142 65% 55%',
