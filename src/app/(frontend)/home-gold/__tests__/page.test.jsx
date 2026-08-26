@@ -2,7 +2,6 @@ import { Children } from 'react';
 
 import HomePage, { revalidate as homeRevalidate } from '../../page';
 import GoldHomePage, { revalidate as goldRevalidate } from '../page';
-import GoldTopActivitiesSection from '../GoldTopActivitiesSection';
 import WeelpRecommendations from '@/app/components/Pages/FRONT_END/home/WeelpRecommendations';
 import { publicApi } from '@/lib/axiosInstance';
 import { getAllFeaturedActivities } from '@/lib/services/activites';
@@ -13,7 +12,7 @@ jest.mock('next/dynamic', () => ({
   __esModule: true,
   default: (loader) => {
     const source = loader.toString();
-    const sectionName = ['BrowseDestinationsSection', 'TestimonialSection', 'WanderersBanner', 'AiSection', 'BlogSection'].find((name) => source.includes(name));
+    const sectionName = ['ProductSliderSection', 'BrowseDestinationsSection', 'TestimonialSection', 'WanderersBanner', 'AiSection', 'BlogSection'].find((name) => source.includes(name));
     const DynamicSection = () => null;
     DynamicSection.sectionName = sectionName;
     return DynamicSection;
@@ -36,11 +35,6 @@ jest.mock('@/lib/services/reviews', () => ({
   getPublicReviews: jest.fn(),
 }));
 
-jest.mock('../GoldTopActivitiesSection', () => ({
-  __esModule: true,
-  default: jest.fn(() => null),
-}));
-
 const getGoldChildren = async () => Children.toArray((await GoldHomePage()).props.children);
 const getHomeChildren = async () => Children.toArray((await HomePage()).props.children);
 
@@ -59,18 +53,34 @@ describe('/home-gold', () => {
     expect(goldRevalidate).toBe(homeRevalidate);
   });
 
-  it('renders featured activities through the route-local gold section', async () => {
-    const activities = [{ id: 1, title: 'Desert safari' }];
+  it('renders featured activities through the shared canonical product section', async () => {
+    const activities = [{ id: 1, item_type: 'activity', name: 'Desert safari', slug: 'desert-safari', city_slug: 'dubai' }];
     getAllFeaturedActivities.mockResolvedValue(activities);
 
     const children = await getGoldChildren();
 
-    expect(children[1].type).toBe(GoldTopActivitiesSection);
-    expect(children[1].props.activities).toBe(activities);
+    expect(children[1].type.sectionName).toBe('ProductSliderSection');
+    expect(children[1].props).toMatchObject({
+      title: 'Top activities',
+      navigationId: 'top-activities',
+      className: 'pb-12 md:pb-16 lg:pb-24',
+    });
+    expect(children[1].props.carouselEntrance).toBeUndefined();
+    expect(children[1].props.items[0]).toMatchObject({
+      id: 1,
+      title: 'Desert safari',
+      wishlistItem: {
+        item_type: 'activity',
+        item_id: 1,
+        title: 'Desert safari',
+        slug: 'desert-safari',
+        city_slug: 'dubai',
+      },
+    });
   });
 
   it('preserves non-target section order and key props', async () => {
-    const activities = [{ id: 1, title: 'Desert safari' }];
+    const activities = [{ id: 1, item_type: 'activity', name: 'Desert safari', slug: 'desert-safari', city_slug: 'dubai' }];
     const cities = [{ id: 2, name: 'Paris', slug: 'paris' }];
     const blogs = [{ id: 3, title: 'A local guide' }];
     const reviews = [{ id: 4, comment: 'Wonderful' }];
@@ -82,7 +92,7 @@ describe('/home-gold', () => {
     const children = await getGoldChildren();
 
     expect(children).toHaveLength(8);
-    expect(children[1].type).toBe(GoldTopActivitiesSection);
+    expect(children[1].type.sectionName).toBe('ProductSliderSection');
     expect(children.slice(2, 7).map((child) => child.type.sectionName)).toEqual(['BrowseDestinationsSection', 'TestimonialSection', 'WanderersBanner', 'AiSection', 'BlogSection']);
     expect(children[2].props).toMatchObject({
       cities,

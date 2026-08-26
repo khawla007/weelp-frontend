@@ -8,14 +8,14 @@ import { getAllFeaturedActivities } from '@/lib/services/activites';
 import { getAllFeaturedCities } from '@/lib/services/cities';
 import { getPublicReviews } from '@/lib/services/reviews';
 import { publicApi } from '@/lib/axiosInstance';
-
-import GoldTopActivitiesSection from './GoldTopActivitiesSection';
+import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 
 const BrowseDestinationsSection = dynamic(() => import('../../components/Pages/FRONT_END/home/BrowseDestinationsSection'));
 const TestimonialSection = dynamic(() => import('../../components/Pages/FRONT_END/Global/TestimonialSection'));
 const AiSection = dynamic(() => import('../../components/Pages/FRONT_END/home/AiSection'));
 const WanderersBanner = dynamic(() => import('../../components/Pages/FRONT_END/home/WanderersBanner'));
 const BlogSection = dynamic(() => import('../../components/ui/BlogSection'));
+const ProductSliderSection = dynamic(() => import('@/app/components/ui/ProductSliderSection'));
 
 const fetchBlogs = () =>
   publicApi
@@ -39,7 +39,7 @@ const GoldHomePage = async () => {
       <HeroSection />
 
       {featuredActivities.length > 0 ? (
-        <GoldTopActivitiesSection activities={featuredActivities} />
+        <ProductSliderSection items={featuredActivities.map((activity) => mapProductToItemCard(activity))} title="Top activities" navigationId="top-activities" className="pb-12 md:pb-16 lg:pb-24" />
       ) : (
         <SectionFallback
           eyebrow="Top activities"

@@ -3,19 +3,17 @@ import { render, screen } from '@testing-library/react';
 import ProductSliderSection from '../ProductSliderSection';
 
 const mockCarouselShell = jest.fn(() => <div data-testid="carousel-shell" />);
+const mockItemCard = jest.fn(({ title }) => <article>{title}</article>);
 
 jest.mock('../CarouselShell', () => ({
   __esModule: true,
   default: (props) => mockCarouselShell(props),
 }));
 
-jest.mock(
-  '../item-card',
-  () =>
-    function MockItemCard({ title }) {
-      return <article>{title}</article>;
-    },
-);
+jest.mock('../item-card', () => ({
+  __esModule: true,
+  default: (props) => mockItemCard(props),
+}));
 
 jest.mock(
   '../Reveal',
@@ -38,7 +36,10 @@ const items = [
   },
 ];
 
-beforeEach(() => mockCarouselShell.mockClear());
+beforeEach(() => {
+  mockCarouselShell.mockClear();
+  mockItemCard.mockClear();
+});
 
 test('renders product carousel navigation on mobile-sized layouts', () => {
   const { container } = render(<ProductSliderSection items={items} title="Top activities" navigationId="top-activities" />);
@@ -46,6 +47,35 @@ test('renders product carousel navigation on mobile-sized layouts', () => {
   expect(screen.getByRole('button', { name: 'Previous Top activities item' })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Next Top activities item' })).toBeInTheDocument();
   expect(container.querySelector('.top-activities-next')?.parentElement).not.toHaveClass('hidden');
+  expect(mockCarouselShell.mock.calls.at(-1)[0].breakpoints).toEqual({
+    450: { slidesPerView: 1, spaceBetween: 18 },
+    640: { slidesPerView: 2, spaceBetween: 18 },
+    768: { slidesPerView: 2, spaceBetween: 18 },
+    1024: { slidesPerView: 3, spaceBetween: 18 },
+    1440: { slidesPerView: 4, spaceBetween: 18 },
+  });
+  expect(mockCarouselShell.mock.calls.at(-1)[0].slidesPerView).toBe(1);
+});
+
+test('forwards the complete mapped product contract to the shared card', () => {
+  const product = {
+    ...items[0],
+    hasValidIdentity: true,
+    hasRealTitle: true,
+    hasRealImage: true,
+    priceValue: 130,
+    priceCurrency: 'USD',
+    ratingValue: 4.8,
+    reviewCountValue: 210,
+    attributes: [{ slug: 'duration', name: 'Duration', attribute_value: '2 Hours' }],
+    wishlistItem: { item_type: 'activity', item_id: 1 },
+  };
+  render(<ProductSliderSection items={[product]} title="Top activities" navigationId="top-activities" />);
+
+  const slide = mockCarouselShell.mock.calls.at(-1)[0].renderSlide(product);
+  render(slide);
+
+  expect(mockItemCard).toHaveBeenCalledWith(expect.objectContaining({ ...product, variant: 'full' }));
 });
 
 test('marks the supported header CTA as a button-shaped link', () => {

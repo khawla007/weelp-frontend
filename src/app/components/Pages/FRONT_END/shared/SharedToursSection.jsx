@@ -252,19 +252,9 @@ export default function SharedToursSection({ scope, slug, title, variant = 'defa
       ) : cards.length > 0 && isMapView && canShowMapView ? (
         <ToursMapView cards={cards} markers={mapMarkers} cityName={title} />
       ) : cards.length > 0 ? (
-        <Reveal stagger={60} variant="lift" className={`grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-[18px] ${scope === 'city' ? 'xl:grid-cols-5' : 'xl:grid-cols-4'}`}>
+        <Reveal stagger={60} variant="lift" className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-[18px] lg:grid-cols-3 xl:grid-cols-4">
           {cards.map((card, index) => (
-            <ItemCard
-              key={card.id || `${card.href}-${index}`}
-              href={card.href}
-              image={card.image}
-              title={card.title}
-              price={card.price}
-              rating={card.rating}
-              reviewCount={card.reviewCount}
-              discount={card.discount}
-              variant="full"
-            />
+            <ItemCard key={card.id || `${card.href}-${index}`} {...card} variant="full" />
           ))}
         </Reveal>
       ) : (

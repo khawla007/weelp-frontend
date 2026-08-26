@@ -53,6 +53,14 @@ test('carousel reveals as one unit without per-card reveal wrappers', () => {
   expect(root.querySelector('.weelp-card-reveal-item')).toBeNull();
 });
 
+test('accepts an explicit base slide count without changing the default', () => {
+  const { rerender } = render(<CarouselShell items={[{ id: 'a', title: 'A' }]} renderSlide={(item) => <article>{item.title}</article>} />);
+  expect(latestSwiperProps.slidesPerView).toBe(1.08);
+
+  rerender(<CarouselShell items={[{ id: 'a', title: 'A' }]} slidesPerView={1} renderSlide={(item) => <article>{item.title}</article>} />);
+  expect(latestSwiperProps.slidesPerView).toBe(1);
+});
+
 test('passes external navigation selectors to Swiper before initialization', () => {
   render(<CarouselShell items={[{ id: 'a', title: 'A' }]} navigationPrefix="top-activities" renderSlide={(item) => <article>{item.title}</article>} />);
 

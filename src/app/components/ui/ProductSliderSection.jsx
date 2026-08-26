@@ -11,9 +11,9 @@ import { SLIDER_NAV_BUTTON_CLASS } from '@/app/components/ui/sliderNavigationCla
 const PRODUCT_BREAKPOINTS = {
   450: { slidesPerView: 1, spaceBetween: 18 },
   640: { slidesPerView: 2, spaceBetween: 18 },
-  768: { slidesPerView: 3, spaceBetween: 18 },
-  1024: { slidesPerView: 4, spaceBetween: 18 },
-  1440: { slidesPerView: 5, spaceBetween: 18 },
+  768: { slidesPerView: 2, spaceBetween: 18 },
+  1024: { slidesPerView: 3, spaceBetween: 18 },
+  1440: { slidesPerView: 4, spaceBetween: 18 },
 };
 
 /**
@@ -74,6 +74,7 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
 
       <CarouselShell
         items={items}
+        slidesPerView={1}
         navigationPrefix={headerAction === 'navigation' ? navigationId : undefined}
         breakpoints={PRODUCT_BREAKPOINTS}
         slideClassName="!h-auto"

@@ -6,7 +6,18 @@ import { Navigation, Pagination } from 'swiper/modules';
 import Reveal from '@/app/components/ui/Reveal';
 import '@/app/styles/swiper.css';
 
-export default function CarouselShell({ items = [], navigationPrefix, renderSlide, breakpoints, className = '', slideClassName = '', showMobilePagination = false, entrance, observeReveal = true }) {
+export default function CarouselShell({
+  items = [],
+  navigationPrefix,
+  renderSlide,
+  breakpoints,
+  slidesPerView = 1.08,
+  className = '',
+  slideClassName = '',
+  showMobilePagination = false,
+  entrance,
+  observeReveal = true,
+}) {
   const swiperRef = useRef(null);
   const hasNavigation = Boolean(navigationPrefix);
   const usesIndexedEntrance = entrance === 'stagger-right' || entrance === 'editorial-right';
@@ -65,7 +76,7 @@ export default function CarouselShell({ items = [], navigationPrefix, renderSlid
         }}
         watchOverflow={true}
         rewind={false}
-        slidesPerView={1.08}
+        slidesPerView={slidesPerView}
         spaceBetween={18}
         breakpoints={breakpoints}
         navigation={navigationSelectors}

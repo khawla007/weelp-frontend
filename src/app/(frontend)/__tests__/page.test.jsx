@@ -50,6 +50,23 @@ test('opts the homepage Top activities carousel into the staggered entrance', as
 
   expect(activitiesSection).toBeDefined();
   expect(activitiesSection.props.carouselEntrance).toBe('stagger-right');
+  expect(activitiesSection.props.items[0]).toMatchObject({
+    productId: 1,
+    itemType: 'activity',
+    slug: 'desert-safari',
+    citySlug: 'dubai',
+    hasValidIdentity: true,
+    wishlistItem: {
+      item_type: 'activity',
+      item_id: 1,
+      title: 'Desert safari',
+      slug: 'desert-safari',
+      city_slug: 'dubai',
+      image_url: '/assets/Card.webp',
+      price: null,
+      currency: null,
+    },
+  });
 });
 
 test('opts the homepage Top destinations carousel into the staggered entrance', async () => {

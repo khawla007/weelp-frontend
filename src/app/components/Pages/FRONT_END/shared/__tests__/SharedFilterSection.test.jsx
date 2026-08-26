@@ -6,6 +6,12 @@ import SharedFilterSection from '../SharedFilterSection';
 
 jest.mock('axios');
 
+const mockItemCard = jest.fn(({ title, className = '', style }) => (
+  <div className={className} style={style}>
+    {title}
+  </div>
+));
+
 // Filter sidebar/drawer are not under test here; render them as no-ops to keep
 // the test focused on the grid refresh + reveal behavior.
 jest.mock('../FilterSidebar', () => {
@@ -19,11 +25,7 @@ jest.mock('../FilterDrawer', () => {
 
 jest.mock('@/app/components/ui/item-card', () => ({
   __esModule: true,
-  default: ({ title, className = '', style }) => (
-    <div className={className} style={style}>
-      {title}
-    </div>
-  ),
+  default: (props) => mockItemCard(props),
 }));
 
 const makeProduct = (id) => ({
@@ -32,6 +34,10 @@ const makeProduct = (id) => ({
   name: `Item ${id}`,
   slug: `item-${id}`,
   city_slug: 'dubai',
+  listing_price: 130,
+  base_pricing: { currency: 'USD' },
+  featured_image: `/item-${id}.jpg`,
+  attributes: [{ slug: 'duration', name: 'Duration', attribute_value: '2 Hours' }],
 });
 
 const respond = (count) => ({
@@ -45,9 +51,11 @@ describe('SharedFilterSection grid refresh + reveal', () => {
     jest.useFakeTimers();
   });
 
-  afterEach(() => {
-    act(() => {
+  afterEach(async () => {
+    await act(async () => {
       jest.runOnlyPendingTimers();
+      await Promise.resolve();
+      await Promise.resolve();
     });
     jest.useRealTimers();
   });
@@ -119,6 +127,17 @@ describe('SharedFilterSection grid refresh + reveal', () => {
     expect(screen.getByTestId('destination-listing-results')).toHaveClass('lg:col-start-2', 'lg:row-start-1');
     expect(screen.getByTestId('result-grid')).toHaveClass('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-2', 'xl:grid-cols-3');
     expect(screen.getByTestId('result-grid')).not.toHaveClass('xl:grid-cols-4');
+    expect(mockItemCard).toHaveBeenCalledWith(
+      expect.objectContaining({
+        hasValidIdentity: true,
+        hasRealTitle: true,
+        hasRealImage: true,
+        priceValue: 130,
+        priceCurrency: 'USD',
+        attributes: [{ slug: 'duration', name: 'Duration', attribute_value: '2 Hours' }],
+        wishlistItem: expect.objectContaining({ item_type: 'activity', item_id: expect.any(Number) }),
+      }),
+    );
   });
 
   it('preserves the existing eight-item four-column layout on region pages', async () => {
@@ -217,9 +236,11 @@ describe('SharedFilterSection empty state + pagination scroll', () => {
     Element.prototype.scrollIntoView = scrollSpy;
   });
 
-  afterEach(() => {
-    act(() => {
+  afterEach(async () => {
+    await act(async () => {
       jest.runOnlyPendingTimers();
+      await Promise.resolve();
+      await Promise.resolve();
     });
     jest.useRealTimers();
     delete window.matchMedia;

@@ -9,6 +9,7 @@ const globalsCss = readFileSync(join(process.cwd(), 'src/app/globals.css'), 'utf
 const stylesheet = postcss.parse(globalsCss);
 const datePickerCss = readFileSync(join(process.cwd(), 'src/app/styles/date-picker.css'), 'utf8');
 const datePickerStylesheet = postcss.parse(datePickerCss);
+const readSource = (relativePath) => readFileSync(join(process.cwd(), relativePath), 'utf8');
 
 function extractDeclarations(selector, sourceStylesheet = stylesheet) {
   const matchingRules = [];
@@ -587,6 +588,12 @@ describe('Deep Forest semantic theme', () => {
       '--weelp-city-tab-active-bg': 'rgba(134, 189, 165, 0.14)',
       '--weelp-city-tab-active-border': 'rgba(134, 189, 165, 0.35)',
     });
+
+    const itemCardSource = readSource('src/app/components/ui/item-card.jsx');
+    expect(itemCardSource).toContain('border-[var(--weelp-card-border)]');
+    expect(itemCardSource).toContain('bg-background');
+    expect(itemCardSource).not.toContain('oklch(0.72_0.055_75/0.45)');
+    expect(itemCardSource).not.toContain('oklch(0.96_0.02_80)');
   });
 
   it('preserves distinct status and chart hues', () => {

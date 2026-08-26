@@ -176,13 +176,7 @@ export default function SharedFilterSection({ scope, slug, variant = 'default', 
                   return (
                     <ItemCard
                       key={`${product.item_type}-${card.id}`}
-                      href={card.href}
-                      image={card.image}
-                      title={card.title}
-                      price={card.price}
-                      rating={card.rating}
-                      reviewCount={card.reviewCount}
-                      discount={card.discount}
+                      {...card}
                       variant="full"
                       className="weelp-fade-up"
                       style={{

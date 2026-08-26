@@ -5,6 +5,8 @@ import SharedToursSection from '../SharedToursSection';
 
 jest.mock('axios');
 
+const mockItemCard = jest.fn(({ title, href }) => <a href={href}>{title}</a>);
+
 jest.mock('@/app/components/ui/Reveal', () => ({
   __esModule: true,
   default: ({ children, className, as: Component = 'div' }) => <Component className={className}>{children}</Component>,
@@ -16,7 +18,7 @@ jest.mock('@/app/components/Animation/Cards', () => ({
 
 jest.mock('@/app/components/ui/item-card', () => ({
   __esModule: true,
-  default: ({ title, href }) => <a href={href}>{title}</a>,
+  default: (props) => mockItemCard(props),
 }));
 
 jest.mock('@/app/components/ui/Pagination', () => ({
@@ -50,6 +52,13 @@ jest.mock('@/lib/mapProductToItemCard', () => ({
     href: `/cities/${citySlug}/itineraries/${item.slug}`,
     title: item.name,
     price: item.schedule_total_price ? `$${item.schedule_total_price}` : '',
+    hasValidIdentity: true,
+    hasRealTitle: true,
+    hasRealImage: true,
+    priceValue: 130,
+    priceCurrency: 'USD',
+    attributes: [{ slug: 'duration', name: 'Duration', attribute_value: '2 Hours' }],
+    wishlistItem: { item_type: 'itinerary', item_id: item.id },
   }),
 }));
 
@@ -111,14 +120,25 @@ describe('SharedToursSection destination states', () => {
     expect(screen.getAllByTestId('tour-skeleton')).toHaveLength(6);
   });
 
-  it('uses five columns, ten items per page, and API-driven pagination for city tours', async () => {
+  it('uses four columns, ten items per page, and API-driven pagination for city tours', async () => {
     axios.get.mockResolvedValue(paginatedItineraryResponse(10, 3));
     render(<SharedToursSection scope="city" slug="dubai" title="Dubai" />);
     await flushFetch();
 
     expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('page=1&per_page=10'));
-    expect(screen.getByRole('link', { name: 'Dubai itinerary 1' }).parentElement).toHaveClass('xl:grid-cols-5');
-    expect(screen.getByRole('link', { name: 'Dubai itinerary 1' }).parentElement).not.toHaveClass('xl:grid-cols-4');
+    expect(screen.getByRole('link', { name: 'Dubai itinerary 1' }).parentElement).toHaveClass('xl:grid-cols-4');
+    expect(screen.getByRole('link', { name: 'Dubai itinerary 1' }).parentElement).not.toHaveClass('xl:grid-cols-5');
+    expect(mockItemCard).toHaveBeenCalledWith(
+      expect.objectContaining({
+        hasValidIdentity: true,
+        hasRealTitle: true,
+        hasRealImage: true,
+        priceValue: 130,
+        priceCurrency: 'USD',
+        attributes: [{ slug: 'duration', name: 'Duration', attribute_value: '2 Hours' }],
+        wishlistItem: expect.objectContaining({ item_type: 'itinerary', item_id: expect.any(Number) }),
+      }),
+    );
     expect(screen.getByText('Page 1 of 3')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: '2' }));

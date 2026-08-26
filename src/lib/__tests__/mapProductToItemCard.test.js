@@ -107,4 +107,227 @@ describe('mapProductToItemCard', () => {
     const card = mapProductToItemCard({ ...baseAttributeProduct, attributes: null });
     expect(card.attributes).toEqual([]);
   });
+
+  test('degrades malformed media collections to the generic image', () => {
+    const card = mapProductToItemCard({ ...baseAttributeProduct, media_gallery: {} });
+
+    expect(card.image).toBe('/assets/Card.webp');
+    expect(card.hasRealImage).toBe(false);
+  });
+
+  test('keeps display values separate from raw schema values', () => {
+    const card = mapProductToItemCard({
+      id: 4,
+      name: 'Family Package',
+      slug: 'family-package',
+      item_type: 'package',
+      city_slug: 'dubai',
+      listing_price: '100.50',
+      discount_percentage: 25,
+      average_rating: '4.666',
+      reviews_count: 1200,
+      base_pricing: { currency: 'AED' },
+      stock_status: 'in_stock',
+    });
+
+    expect(card).toMatchObject({
+      priceValue: 100.5,
+      priceCurrency: 'AED',
+      rating: '4.7',
+      ratingValue: 4.666,
+      reviewCount: '1.2K',
+      reviewCountValue: 1200,
+      availability: 'https://schema.org/InStock',
+    });
+    expect(card.price).toContain('AED');
+    expect(card.price).toContain('100.50');
+    expect(card.originalPrice).toContain('AED');
+    expect(card.originalPrice).toContain('134.00');
+  });
+
+  test('maps a valid identity, first API category, city-aware URL, and minimal wishlist payload', () => {
+    const card = mapProductToItemCard({
+      id: 9,
+      name: 'Dune Ride',
+      slug: 'dune-ride',
+      item_type: 'activity',
+      city_slug: 'dubai',
+      categories: [{ name: 'Outdoor adventure' }],
+    });
+
+    expect(card.category).toBe('Outdoor adventure');
+    expect(card).toMatchObject({
+      productId: 9,
+      itemType: 'activity',
+      slug: 'dune-ride',
+      citySlug: 'dubai',
+      hasValidIdentity: true,
+      hasRealTitle: true,
+      href: '/cities/dubai/activities/dune-ride',
+      hasRealImage: false,
+      wishlistItem: {
+        item_type: 'activity',
+        item_id: 9,
+        title: 'Dune Ride',
+        slug: 'dune-ride',
+        city_slug: 'dubai',
+        image_url: '/assets/Card.webp',
+        price: null,
+        currency: null,
+      },
+    });
+  });
+
+  test('uses the explicit city argument in the URL and wishlist payload', () => {
+    const card = mapProductToItemCard({ id: 11, name: 'Paris Walk', slug: 'paris-walk', item_type: 'activity' }, 'paris');
+
+    expect(card.href).toBe('/cities/paris/activities/paris-walk');
+    expect(card.citySlug).toBe('paris');
+    expect(card.wishlistItem.city_slug).toBe('paris');
+  });
+
+  test('does not create a flat URL or wishlist payload when routing identity is incomplete', () => {
+    const card = mapProductToItemCard({ id: 12, name: 'Unplaced Activity', slug: 'unplaced', item_type: 'activity' });
+
+    expect(card.href).toBeNull();
+    expect(card.hasValidIdentity).toBe(false);
+    expect(card.wishlistItem).toBeNull();
+  });
+
+  test('does not treat the generic fallback image as schema-eligible product media', () => {
+    const card = mapProductToItemCard({ id: 13, name: 'Fallback Image', slug: 'fallback-image', item_type: 'activity', city_slug: 'dubai' });
+    expect(card.image).toBe('/assets/Card.webp');
+    expect(card.hasRealImage).toBe(false);
+  });
+
+  test('marks a blank API name as a display fallback, not a real schema title', () => {
+    const card = mapProductToItemCard({ id: 18, name: '   ', slug: 'unnamed-activity', item_type: 'activity', city_slug: 'dubai' });
+
+    expect(card.title).toBe('Untitled');
+    expect(card.hasRealTitle).toBe(false);
+    expect(card.wishlistItem.title).toBeNull();
+  });
+
+  test('does not invent pricing, discounts, availability, or schema values', () => {
+    const card = mapProductToItemCard({ id: 10, name: 'Ask the concierge', slug: 'ask-the-concierge', item_type: 'activity', city_slug: 'dubai' });
+
+    expect(card).toMatchObject({
+      price: '',
+      priceValue: null,
+      priceCurrency: null,
+      originalPrice: null,
+      discount: null,
+      ratingValue: null,
+      reviewCountValue: null,
+      availability: null,
+    });
+  });
+
+  test.each([
+    { listing_price: 100, base_pricing: { currency: 'US' } },
+    { listing_price: 100, base_pricing: { currency: 'US1' } },
+    { listing_price: 100, base_pricing: { currency: 'ZZZ' } },
+    { listing_price: 'not-a-number', base_pricing: { currency: 'USD' } },
+  ])('omits display and Offer data for malformed price/currency input %#', (pricing) => {
+    const card = mapProductToItemCard({ id: 14, name: 'Malformed Price', slug: 'malformed-price', item_type: 'activity', city_slug: 'dubai', ...pricing });
+
+    expect(card.price).toBe('');
+    expect(card.priceCurrency).toBeNull();
+  });
+
+  test('normalizes a lowercase padded ISO currency safely', () => {
+    const card = mapProductToItemCard({
+      id: 17,
+      name: 'Normalized Currency',
+      slug: 'normalized-currency',
+      item_type: 'activity',
+      city_slug: 'dubai',
+      listing_price: 100,
+      base_pricing: { currency: ' usd ' },
+    });
+
+    expect(card.priceCurrency).toBe('USD');
+    expect(card.price).toBe('$100.00');
+  });
+
+  test('accepts a genuine zero price with a valid currency', () => {
+    const card = mapProductToItemCard({
+      id: 15,
+      name: 'Free Museum Day',
+      slug: 'free-museum-day',
+      item_type: 'activity',
+      city_slug: 'paris',
+      listing_price: 0,
+      base_pricing: { currency: 'EUR' },
+    });
+
+    expect(card.priceValue).toBe(0);
+    expect(card.priceCurrency).toBe('EUR');
+    expect(card.price).toContain('0.00');
+  });
+
+  test('maps transfer route pricing to display and raw Offer values', () => {
+    const card = mapProductToItemCard({
+      id: 19,
+      name: 'Airport Pickup',
+      slug: 'airport-pickup',
+      item_type: 'transfer',
+      city_slug: 'dubai',
+      route_price: '75.25',
+      route_currency: 'AED',
+    });
+
+    expect(card).toMatchObject({
+      href: '/cities/dubai/transfers/airport-pickup',
+      priceValue: 75.25,
+      priceCurrency: 'AED',
+    });
+    expect(card.price).toContain('75.25');
+  });
+
+  test.each([
+    { route_price: 'not-a-number', route_currency: 'AED' },
+    { route_price: 75.25, route_currency: 'ZZZ' },
+  ])('omits malformed transfer route pricing %#', (pricing) => {
+    const card = mapProductToItemCard({
+      id: 20,
+      name: 'Invalid Transfer',
+      slug: 'invalid-transfer',
+      item_type: 'transfer',
+      city_slug: 'dubai',
+      ...pricing,
+    });
+
+    expect(card).toMatchObject({
+      price: '',
+      priceValue: pricing.route_price === 75.25 ? 75.25 : null,
+      priceCurrency: null,
+    });
+  });
+
+  test('rejects impossible rating, review, discount, availability, and malformed attributes', () => {
+    const card = mapProductToItemCard({
+      id: 16,
+      name: 'Boundary Product',
+      slug: 'boundary-product',
+      item_type: 'activity',
+      city_slug: 'dubai',
+      average_rating: 7,
+      reviews_count: 2.5,
+      discount_percentage: 100,
+      availability: 'https://schema.org/Discontinued',
+      attributes: [null, { slug: 'duration', name: 'Duration', attribute_value: '2 Hours' }, { name: '', attribute_value: '' }],
+    });
+
+    expect(card).toMatchObject({
+      rating: null,
+      ratingValue: null,
+      reviewCount: null,
+      reviewCountValue: null,
+      discount: null,
+      originalPrice: null,
+      availability: null,
+      attributes: [{ slug: 'duration', name: 'Duration', attribute_value: '2 Hours' }],
+    });
+  });
 });
