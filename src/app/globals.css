@@ -573,16 +573,6 @@ body {
     }
   }
 
-  @keyframes weelpHomeHeroMotionFallback {
-    to {
-      opacity: 1;
-      filter: none;
-      transform: none;
-      visibility: visible;
-      pointer-events: auto;
-    }
-  }
-
   .weelp-home-hero-blur-word,
   .weelp-home-hero-blur-character {
     display: inline-block;
@@ -604,35 +594,14 @@ body {
     filter: blur(10px);
   }
 
-  [data-home-hero-motion='pending'] .weelp-home-hero-blur-character,
-  [data-home-hero-motion='pending'] .weelp-hero-ui-rise {
-    animation: weelpHomeHeroMotionFallback 0ms linear 5000ms both;
-  }
-
-  [data-home-hero-motion='pending'] .weelp-hero-ui-rise {
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  [data-home-hero-motion='fallback'] .weelp-home-hero-blur-character,
-  [data-home-hero-motion='fallback'] .weelp-hero-ui-rise {
-    opacity: 1;
-    filter: none;
-    transform: none;
-    animation: none;
-  }
-
-  [data-home-hero-motion='fallback'] .weelp-hero-ui-rise,
   [data-home-hero-motion='ready'] .weelp-hero-ui-rise {
     visibility: visible;
     pointer-events: auto;
   }
 
   [data-home-hero-motion='ready'] .weelp-home-hero-blur-character {
-    animation: weelpHomeHeroBlurReveal 1000ms cubic-bezier(0.33, 1, 0.68, 1) both;
-    /* The reference has 49 characters at 25ms. This shorter 18-character
-       headline uses an equivalent ~1.2s left-to-right sweep. */
-    animation-delay: calc(var(--weelp-hero-character-index, 0) * 70ms);
+    animation: weelpHomeHeroBlurReveal 770ms cubic-bezier(0.33, 1, 0.68, 1) both;
+    animation-delay: calc(var(--weelp-hero-character-index, 0) * 38.5ms);
   }
 
   [data-home-hero-motion='ready'] .weelp-hero-ui-rise {

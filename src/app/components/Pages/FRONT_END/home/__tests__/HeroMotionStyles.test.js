@@ -54,24 +54,11 @@ describe('homepage hero motion styles', () => {
       filter: 'blur(10px)',
     });
     expect(declarations("[data-home-hero-motion='ready'] .weelp-home-hero-blur-character")).toMatchObject({
-      animation: 'weelpHomeHeroBlurReveal 1000ms cubic-bezier(0.33, 1, 0.68, 1) both',
-      'animation-delay': 'calc(var(--weelp-hero-character-index, 0) * 70ms)',
+      animation: 'weelpHomeHeroBlurReveal 770ms cubic-bezier(0.33, 1, 0.68, 1) both',
+      'animation-delay': 'calc(var(--weelp-hero-character-index, 0) * 38.5ms)',
     });
-    expect(declarations("[data-home-hero-motion='pending'] .weelp-home-hero-blur-character")).toMatchObject({
-      animation: 'weelpHomeHeroMotionFallback 0ms linear 5000ms both',
-    });
-    expect(declarations("[data-home-hero-motion='pending'] .weelp-hero-ui-rise")).toMatchObject({
-      visibility: 'hidden',
-      'pointer-events': 'none',
-      animation: 'weelpHomeHeroMotionFallback 0ms linear 5000ms both',
-    });
-    expect(declarations("[data-home-hero-motion='fallback'] .weelp-hero-ui-rise")).toMatchObject({
-      visibility: 'visible',
-      'pointer-events': 'auto',
-      opacity: '1',
-      transform: 'none',
-      animation: 'none',
-    });
+    expect(declarations("[data-home-hero-motion='pending'] .weelp-home-hero-blur-character")).toEqual({});
+    expect(declarations("[data-home-hero-motion='pending'] .weelp-hero-ui-rise")).toEqual({});
     expect(declarations('.weelp-home-hero-blur-visual')).toMatchObject({
       display: 'block',
       'padding-bottom': '0.08em',

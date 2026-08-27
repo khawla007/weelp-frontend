@@ -13,6 +13,7 @@
 ### Task 1: Scale the hero timing contract by 1.10
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/home/__tests__/HeroSection.test.jsx`
 - Modify: `src/app/components/Pages/FRONT_END/home/__tests__/HeroMotionStyles.test.js`
 - Modify: `src/app/components/Pages/FRONT_END/home/HeroSection.jsx`
