@@ -573,16 +573,6 @@ body {
     }
   }
 
-  @keyframes weelpHomeHeroMotionFallback {
-    to {
-      opacity: 1;
-      filter: none;
-      transform: none;
-      visibility: visible;
-      pointer-events: auto;
-    }
-  }
-
   .weelp-home-hero-blur-word,
   .weelp-home-hero-blur-character {
     display: inline-block;
@@ -604,25 +594,6 @@ body {
     filter: blur(10px);
   }
 
-  [data-home-hero-motion='pending'] .weelp-home-hero-blur-character,
-  [data-home-hero-motion='pending'] .weelp-hero-ui-rise {
-    animation: weelpHomeHeroMotionFallback 0ms linear 5000ms both;
-  }
-
-  [data-home-hero-motion='pending'] .weelp-hero-ui-rise {
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  [data-home-hero-motion='fallback'] .weelp-home-hero-blur-character,
-  [data-home-hero-motion='fallback'] .weelp-hero-ui-rise {
-    opacity: 1;
-    filter: none;
-    transform: none;
-    animation: none;
-  }
-
-  [data-home-hero-motion='fallback'] .weelp-hero-ui-rise,
   [data-home-hero-motion='ready'] .weelp-hero-ui-rise {
     visibility: visible;
     pointer-events: auto;

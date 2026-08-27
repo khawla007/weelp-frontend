@@ -14,7 +14,8 @@ describe('HeroSection', () => {
     const content = hero.querySelector('.container-page');
 
     expect(hero).not.toHaveClass('weelp-hero-rise');
-    expect(hero).toHaveAttribute('data-home-hero-motion', 'pending');
+    expect(hero).toHaveAttribute('data-home-hero-motion', 'ready');
+    expect(container.querySelector('[data-home-hero-motion-controller]')).not.toBeInTheDocument();
     expect(hero).toHaveClass('mb-10', 'sm:mb-16', 'md:h-[100svh]', 'lg:mb-24');
     expect(content).toHaveClass('pt-[135px]', 'pb-10', 'sm:pb-16', 'md:h-full', 'md:pb-20', 'lg:pb-32');
   });
