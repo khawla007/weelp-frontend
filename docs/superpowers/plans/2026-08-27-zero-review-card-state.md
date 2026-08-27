@@ -13,6 +13,7 @@
 ### Task 1: Preserve explicit zero review data
 
 **Files:**
+
 - Modify: `src/lib/__tests__/mapProductToItemCard.test.js`
 - Modify: `src/lib/mapProductToItemCard.js`
 
@@ -43,6 +44,7 @@ Expected: PASS.
 ### Task 2: Render zero reviews without invalid schema
 
 **Files:**
+
 - Modify: `src/app/components/ui/__tests__/ItemCard.test.jsx`
 - Modify: `src/app/components/ui/item-card.jsx`
 
@@ -73,6 +75,7 @@ Expected: PASS.
 ### Task 3: Review and verify
 
 **Files:**
+
 - Modify: `Reports/daily-work-report.md` from the workspace root after verification.
 
 - [ ] **Step 1: Run project gates**

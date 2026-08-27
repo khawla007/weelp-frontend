@@ -10,14 +10,5 @@ export default function BlogSection({ blogs = [], title = 'Your Guide', navigati
   const items = blogs.map(mapBlogToItemCard);
   if (!items.length) return null;
 
-  return (
-    <ProductSliderSection
-      items={items}
-      title={title}
-      navigationId={navigationId}
-      itemVariant="editorial"
-      carouselEntrance="stagger-right"
-      className={className}
-    />
-  );
+  return <ProductSliderSection items={items} title={title} navigationId={navigationId} itemVariant="editorial" carouselEntrance="stagger-right" className={className} />;
 }

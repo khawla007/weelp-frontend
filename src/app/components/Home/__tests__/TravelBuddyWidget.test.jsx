@@ -22,7 +22,13 @@ jest.mock('@/app/components/ui/CarouselShell', () => ({
   __esModule: true,
   default: (props) => {
     mockCarouselProps = props;
-    return <div data-testid="featured-carousel">{props.items.map((item) => <div key={item.id}>{props.renderSlide(item)}</div>)}</div>;
+    return (
+      <div data-testid="featured-carousel">
+        {props.items.map((item) => (
+          <div key={item.id}>{props.renderSlide(item)}</div>
+        ))}
+      </div>
+    );
   },
 }));
 

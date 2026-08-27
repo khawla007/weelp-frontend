@@ -15,14 +15,7 @@ const DESTINATION_BREAKPOINTS = {
   1440: { slidesPerView: 4, spaceBetween: 18 },
 };
 
-export default function BrowseDestinationsSection({
-  cities = [],
-  title = 'Top Destinations',
-  subtitleMode = 'count',
-  navigationPrefix = 'browse-destinations',
-  className = '',
-  carouselEntrance,
-}) {
+export default function BrowseDestinationsSection({ cities = [], title = 'Top Destinations', subtitleMode = 'count', navigationPrefix = 'browse-destinations', className = '', carouselEntrance }) {
   const items = cities.map((c) => ({
     id: c.id,
     name: c.name,

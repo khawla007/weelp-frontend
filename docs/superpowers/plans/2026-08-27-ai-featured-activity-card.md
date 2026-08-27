@@ -125,7 +125,8 @@ import { cn } from '@/lib/utils';
 const PRODUCT_CARD_SURFACE_CLASS = 'overflow-hidden rounded-[24px] border border-[var(--weelp-card-border)] bg-background p-2';
 const PRODUCT_CARD_HOVER_CLASS = 'transition-shadow duration-300 hover:[box-shadow:var(--weelp-card-hover-shadow)] motion-reduce:transition-none';
 const PRODUCT_CARD_FOCUS_CLASS = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2';
-const PRODUCT_CARD_IMAGE_MOTION_CLASS = 'object-cover transition-transform duration-700 ease-out group-hover/card-link:scale-105 motion-reduce:transition-none motion-reduce:group-hover/card-link:scale-100';
+const PRODUCT_CARD_IMAGE_MOTION_CLASS =
+  'object-cover transition-transform duration-700 ease-out group-hover/card-link:scale-105 motion-reduce:transition-none motion-reduce:group-hover/card-link:scale-100';
 ```
 
 Add this component between `CompactItemCard` and `FullItemCard` in `item-card.jsx`:
@@ -143,15 +144,7 @@ function ProductCompactItemCard({ href, image, title, category, className = '', 
       className={cn('group/card-link flex h-full flex-col', PRODUCT_CARD_SURFACE_CLASS, PRODUCT_CARD_HOVER_CLASS, PRODUCT_CARD_FOCUS_CLASS, className)}
     >
       <div className={cn('relative h-[175px] w-full shrink-0 overflow-hidden rounded-[16px] bg-weelp-sage-wash sm:h-[185px] lg:h-[200px]', imageClassName)}>
-        <Image
-          src={image}
-          alt={title}
-          fill
-          sizes="(max-width: 1024px) 45vw, 20vw"
-          placeholder="blur"
-          blurDataURL={IMAGE_BLUR_DATA_URL}
-          className={PRODUCT_CARD_IMAGE_MOTION_CLASS}
-        />
+        <Image src={image} alt={title} fill sizes="(max-width: 1024px) 45vw, 20vw" placeholder="blur" blurDataURL={IMAGE_BLUR_DATA_URL} className={PRODUCT_CARD_IMAGE_MOTION_CLASS} />
       </div>
       <div className="flex flex-1 flex-col gap-2 px-2 pb-2 pt-3">
         {category ? <span className="w-fit rounded-md bg-weelp-sage-deep/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-weelp-copy">{category}</span> : null}
@@ -236,13 +229,23 @@ jest.mock('@/hooks/useBuddyChat', () => ({
 }));
 jest.mock('@/app/components/ui/item-card', () => ({
   __esModule: true,
-  default: ({ variant, title, imageClassName }) => <div data-testid="shared-item-card" data-variant={variant} data-image-class={imageClassName}>{title}</div>,
+  default: ({ variant, title, imageClassName }) => (
+    <div data-testid="shared-item-card" data-variant={variant} data-image-class={imageClassName}>
+      {title}
+    </div>
+  ),
 }));
 jest.mock('@/app/components/ui/CarouselShell', () => ({
   __esModule: true,
   default: (props) => {
     mockCarouselProps = props;
-    return <div data-testid="featured-carousel">{props.items.map((item) => <div key={item.id}>{props.renderSlide(item)}</div>)}</div>;
+    return (
+      <div data-testid="featured-carousel">
+        {props.items.map((item) => (
+          <div key={item.id}>{props.renderSlide(item)}</div>
+        ))}
+      </div>
+    );
   },
 }));
 

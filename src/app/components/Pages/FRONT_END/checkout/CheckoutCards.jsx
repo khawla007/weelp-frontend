@@ -42,7 +42,11 @@ export const CheckoutItems = ({ quote = null }) => {
       )}
 
       {quote && Number.isFinite(Number(quote.amount)) && (
-        <div data-public-card="checkout-total" className={`grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border border-border bg-background p-4 text-foreground ${PUBLIC_CARD_RADIUS_CLASS}`} aria-label="Order total">
+        <div
+          data-public-card="checkout-total"
+          className={`grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border border-border bg-background p-4 text-foreground ${PUBLIC_CARD_RADIUS_CLASS}`}
+          aria-label="Order total"
+        >
           <span className="font-semibold">Order total</span>
           <span className="text-right text-lg font-bold text-Blueish">{formatCurrency(Number(quote.amount), quote.currency || 'USD')}</span>
         </div>

@@ -43,14 +43,14 @@ Keyboard focus produces a visible ring around the complete card. All transitions
 
 The destination carousel will mirror the product carousel breakpoints and spacing:
 
-| Viewport | Cards per view | Gap |
-| --- | ---: | ---: |
-| Base | 1 | Existing carousel default |
-| 450px and above | 1 | 18px |
-| 640px and above | 2 | 18px |
-| 768px and above | 2 | 18px |
-| 1024px and above | 3 | 18px |
-| 1440px and above | 4 | 18px |
+| Viewport         | Cards per view |                       Gap |
+| ---------------- | -------------: | ------------------------: |
+| Base             |              1 | Existing carousel default |
+| 450px and above  |              1 |                      18px |
+| 640px and above  |              2 |                      18px |
+| 768px and above  |              2 |                      18px |
+| 1024px and above |              3 |                      18px |
+| 1440px and above |              4 |                      18px |
 
 Mobile pagination and previous/next navigation continue to use the shared carousel behavior. No city data, routes, loading strategy, or backend endpoint changes are introduced.
 

@@ -61,6 +61,7 @@ Use the visible `weelp-visible` session for a focused localhost smoke check afte
 ### Task 1: Establish the shared card geometry and editorial composition
 
 **Files:**
+
 - Create: `src/app/components/ui/cardStyles.js`
 - Modify: `src/app/components/ui/item-card.jsx`
 - Test: `src/app/components/ui/__tests__/ItemCard.test.jsx`
@@ -172,6 +173,7 @@ Expected: PASS with the existing product tests unchanged and the new editorial t
 ### Task 2: Normalize blog and creator-itinerary content
 
 **Files:**
+
 - Modify: `src/lib/mapProductToItemCard.js`
 - Modify: `src/lib/attributeIcons.js`
 - Test: `src/lib/__tests__/mapProductToItemCard.test.js`
@@ -194,9 +196,7 @@ test('maps a blog to image, category, title, and canonical blog URL only', () =>
 });
 
 test('uses Untitled instead of excerpt when the blog name is blank', () => {
-  expect(mapBlogToItemCard({ name: '  ', excerpt: 'Must not become the card title' })).toEqual(
-    expect.objectContaining({ title: 'Untitled', category: null }),
-  );
+  expect(mapBlogToItemCard({ name: '  ', excerpt: 'Must not become the card title' })).toEqual(expect.objectContaining({ title: 'Untitled', category: null }));
 });
 
 test('maps creator itineraries into the canonical product contract', () => {
@@ -230,10 +230,13 @@ test('maps creator itineraries into the canonical product contract', () => {
 test.each([
   [{}, []],
   [{ views_count: null, likes_count: 'bad' }, []],
-  [{ views_count: 0, likes_count: 0 }, [
-    { slug: 'views', name: 'Views', attribute_value: '0' },
-    { slug: 'likes', name: 'Likes', attribute_value: '0' },
-  ]],
+  [
+    { views_count: 0, likes_count: 0 },
+    [
+      { slug: 'views', name: 'Views', attribute_value: '0' },
+      { slug: 'likes', name: 'Likes', attribute_value: '0' },
+    ],
+  ],
 ])('only maps creator engagement counts supplied as valid non-negative numbers', (counts, expected) => {
   const card = mapCreatorItineraryToItemCard({
     id: 9,
@@ -295,6 +298,7 @@ Expected: PASS.
 ### Task 3: Put every active blog surface on the editorial shared card
 
 **Files:**
+
 - Modify: `src/app/components/ui/ProductSliderSection.jsx`
 - Modify: `src/app/components/ui/__tests__/ProductSliderSection.test.jsx`
 - Modify: `src/app/components/ui/BlogSection.jsx`
@@ -355,16 +359,7 @@ Reduce BlogSection to normalized delegation:
 ```jsx
 export default function BlogSection({ blogs = [], title = 'Your Guide', navigationId = 'blog-section', className = '' }) {
   const items = blogs.map(mapBlogToItemCard);
-  return items.length ? (
-    <ProductSliderSection
-      items={items}
-      title={title}
-      navigationId={navigationId}
-      itemVariant="editorial"
-      carouselEntrance="stagger-right"
-      className={className}
-    />
-  ) : null;
+  return items.length ? <ProductSliderSection items={items} title={title} navigationId={navigationId} itemVariant="editorial" carouselEntrance="stagger-right" className={className} /> : null;
 }
 ```
 
@@ -383,6 +378,7 @@ Expected: PASS.
 ### Task 4: Remove active product-card visual duplication
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/shop/SearchPage.jsx`
 - Modify: `src/app/components/Pages/FRONT_END/shop/__tests__/SearchPage.test.jsx`
 - Modify: `src/app/components/Home/TravelBuddyWidget.jsx`
@@ -440,6 +436,7 @@ Expected: PASS.
 ### Task 5: Migrate creator itineraries without losing like behavior
 
 **Files:**
+
 - Modify: `src/app/components/Pages/FRONT_END/explore/CreatorItineraryCard.jsx`
 - Modify: `src/app/components/Pages/FRONT_END/explore/__tests__/CreatorItineraryCard.test.jsx`
 
@@ -481,7 +478,12 @@ return (
     variant="full"
     wishlistItem={null}
     cornerAction={
-      <button type="button" onClick={handleLike} aria-label={`${liked ? 'Unlike' : 'Like'} ${title}. ${formatCount(likesCount)} likes`} className="weelp-creator-like-button grid size-11 place-items-center rounded-full border border-border bg-background text-weelp-discount shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-discount/50">
+      <button
+        type="button"
+        onClick={handleLike}
+        aria-label={`${liked ? 'Unlike' : 'Like'} ${title}. ${formatCount(likesCount)} likes`}
+        className="weelp-creator-like-button grid size-11 place-items-center rounded-full border border-border bg-background text-weelp-discount shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-discount/50"
+      >
         <Heart aria-hidden="true" className={`size-5 ${liked ? 'fill-current' : ''}`} />
       </button>
     }
@@ -502,6 +504,7 @@ Expected: PASS.
 ### Task 6: Standardize public outer card radii without changing layouts
 
 **Files:**
+
 - Create: `src/app/__tests__/publicCardRadius.test.js`
 - Modify: `src/app/components/CityCard.jsx`
 - Modify: `src/app/components/Testimonial.jsx`
@@ -547,11 +550,17 @@ const publicCardInventory = [
   ['src/app/components/WhatAbout.jsx', ['data-public-card="city-facts"', 'data-public-card="region-facts"']],
   ['src/app/components/MiniCartProductCard.jsx', ['data-public-card="mini-cart-item"']],
   ['src/app/components/MiniCartReviewCard.jsx', ['data-public-card="mini-cart-recommendation"']],
-  ['src/app/components/Pages/FRONT_END/checkout/CheckoutCards.jsx', ['data-public-card="checkout-total"', 'data-public-card="checkout-transfer"', 'data-public-card="checkout-item"', 'data-public-card="checkout-item-skeleton"']],
+  [
+    'src/app/components/Pages/FRONT_END/checkout/CheckoutCards.jsx',
+    ['data-public-card="checkout-total"', 'data-public-card="checkout-transfer"', 'data-public-card="checkout-item"', 'data-public-card="checkout-item-skeleton"'],
+  ],
   ['src/app/components/Pages/FRONT_END/checkout/CheckoutResultState.jsx', ['data-public-card="checkout-result"']],
   ['src/app/components/Pages/FRONT_END/transfer/TransferResultCard.jsx', ['data-public-card="transfer-result"']],
   ['src/app/components/Pages/FRONT_END/Global/ReviewSection.jsx', ['data-public-card="city-review-panel"', 'data-public-card="region-review-panel"']],
-  ['src/app/components/Pages/FRONT_END/singleproduct/SingleProductReview.jsx', ['data-public-card="review-summary"', 'data-public-card="review-empty"', 'data-public-card="review-entry"', 'data-public-card="review-skeleton"']],
+  [
+    'src/app/components/Pages/FRONT_END/singleproduct/SingleProductReview.jsx',
+    ['data-public-card="review-summary"', 'data-public-card="review-empty"', 'data-public-card="review-entry"', 'data-public-card="review-skeleton"'],
+  ],
   ['src/app/components/Pages/FRONT_END/singleproduct/ProductSidebar.jsx', ['data-public-card="booking-support"']],
   ['src/app/components/Pages/FRONT_END/About/AboutOffer.jsx', ['data-public-card="about-image"', 'data-public-card="about-copy"']],
   ['src/app/components/Pages/FRONT_END/home/AiSection.jsx', ['data-public-card="ai-savings"', 'data-public-card="ai-personalised"']],
@@ -620,6 +629,7 @@ Expected: PASS, with dashboard source unchanged.
 ### Task 7: Audit active call sites and complete verification
 
 **Files:**
+
 - Modify tests only if the audit exposes an uncovered active call site.
 - Modify: `Reports/daily-work-report.md` from the workspace root after all gates pass.
 

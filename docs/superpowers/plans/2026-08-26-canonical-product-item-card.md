@@ -63,6 +63,7 @@ The reviewed plan document is committed separately before Task 1. No implementat
 ### Task 1: Expand the product-card mapper contract
 
 **Files:**
+
 - Modify: `src/lib/mapProductToItemCard.js`
 - Test: `src/lib/__tests__/mapProductToItemCard.test.js`
 - Modify: `src/app/components/ui/item-card.jsx` — add the temporary null-link compatibility guard before the mapper can return `href: null`.
@@ -135,10 +136,7 @@ test('maps a valid identity, first API category, city-aware URL, and minimal wis
 });
 
 test('uses the explicit city argument in the URL and wishlist payload', () => {
-  const card = mapProductToItemCard(
-    { id: 11, name: 'Paris Walk', slug: 'paris-walk', item_type: 'activity' },
-    'paris',
-  );
+  const card = mapProductToItemCard({ id: 11, name: 'Paris Walk', slug: 'paris-walk', item_type: 'activity' }, 'paris');
 
   expect(card.href).toBe('/cities/paris/activities/paris-walk');
   expect(card.citySlug).toBe('paris');
@@ -368,10 +366,7 @@ const hasValidIdentity = Boolean(SUPPORTED_ITEM_TYPES.has(itemType) && productId
 const href = hasValidIdentity ? `/cities/${resolvedCitySlug}/${ITEM_TYPE_PLURAL[itemType]}/${slug}` : null;
 
 const rawPrice =
-  product.listing_price ??
-  (itemType === 'itinerary'
-    ? (product.schedule_total_price ?? null)
-    : (product.pricing?.regular_price ?? product.base_pricing?.variations?.[0]?.regular_price ?? null));
+  product.listing_price ?? (itemType === 'itinerary' ? (product.schedule_total_price ?? null) : (product.pricing?.regular_price ?? product.base_pricing?.variations?.[0]?.regular_price ?? null));
 const parsedPrice = finiteNumber(rawPrice);
 const priceValue = parsedPrice !== null && parsedPrice >= 0 ? parsedPrice : null;
 const priceCurrency = normalizeCurrency(itemType === 'itinerary' ? product.schedule_total_currency : (product.pricing?.currency ?? product.base_pricing?.currency));
@@ -463,6 +458,7 @@ Apply `error-handling-patterns` to malformed mapper inputs, then refresh the vis
 ### Task 2: Create the shared icon wishlist control
 
 **Files:**
+
 - Create: `src/app/components/Wishlist/ItemCardWishlistButton.jsx`
 - Create: `src/app/components/Wishlist/__tests__/ItemCardWishlistButton.test.jsx`
 
@@ -498,7 +494,11 @@ it('opens authentication for a guest and resumes the save after login', async ()
 
 it('submits only one mutation while a save is pending', async () => {
   let resolveSave;
-  addItem.mockReturnValue(new Promise((resolve) => { resolveSave = resolve; }));
+  addItem.mockReturnValue(
+    new Promise((resolve) => {
+      resolveSave = resolve;
+    }),
+  );
   render(<ItemCardWishlistButton item={activity} />);
 
   const button = screen.getByRole('button', { name: /save desert safari adventure to wishlist/i });
@@ -635,6 +635,7 @@ Apply `error-handling-patterns` to pending, guest-login, and rejected-request pa
 ### Task 3: Make the full `ItemCard` canonical
 
 **Files:**
+
 - Modify: `src/app/components/ui/item-card.jsx`
 - Modify: `src/app/components/ui/__tests__/ItemCard.test.jsx`
 
@@ -686,14 +687,7 @@ it('omits Offer and AggregateRating markup when raw values are incomplete', () =
 });
 
 it('omits navigation, Product schema, and wishlist for an invalid product identity', () => {
-  const { container } = render(
-    <ItemCard
-      {...richProduct}
-      href={null}
-      hasValidIdentity={false}
-      wishlistItem={null}
-    />,
-  );
+  const { container } = render(<ItemCard {...richProduct} href={null} hasValidIdentity={false} wishlistItem={null} />);
 
   expect(screen.queryByRole('link')).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: /wishlist/i })).not.toBeInTheDocument();
@@ -809,10 +803,7 @@ if (variant !== 'full') {
       <div className="flex flex-1 flex-col gap-1.5 px-3 pb-3 pt-3 sm:px-4 sm:pb-4 lg:gap-[5.7px] lg:px-[17px] lg:pb-[17px] lg:pt-[15.6px]">
         {category ? <span className="w-fit rounded-md bg-weelp-sage-deep/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-weelp-copy">{category}</span> : null}
         <BlogPublishedDate date={publishedAt} className="text-xs text-muted-foreground" />
-        <h3
-          className="line-clamp-2 text-[15px] leading-[1.59] text-foreground sm:text-base lg:text-[18px]"
-          style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}
-        >
+        <h3 className="line-clamp-2 text-[15px] leading-[1.59] text-foreground sm:text-base lg:text-[18px]" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
           {title}
         </h3>
       </div>
@@ -848,7 +839,6 @@ LinkComponent = NavigationLink,
 After the compact early return, normalize the full-card inputs without inventing values:
 
 ```js
-
 const safeAttributes = Array.isArray(attributes)
   ? attributes.filter((attribute) => attribute && attribute.name && attribute.attribute_value !== undefined && attribute.attribute_value !== null && attribute.attribute_value !== '')
   : [];
@@ -858,9 +848,7 @@ const hasSchemaCurrency = typeof priceCurrency === 'string' && SUPPORTED_SCHEMA_
 const hasOffer = hasProductSchema && Number.isFinite(priceValue) && priceValue >= 0 && hasSchemaCurrency;
 const hasAggregateRating = hasProductSchema && Number.isFinite(ratingValue) && ratingValue > 0 && ratingValue <= 5 && Number.isInteger(reviewCountValue) && reviewCountValue > 0;
 const ProductContentRoot = href ? LinkComponent : 'div';
-const productContentProps = href
-  ? { href, itemProp: hasProductSchema ? 'url' : undefined, 'aria-label': `Explore ${title}` }
-  : {};
+const productContentProps = href ? { href, itemProp: hasProductSchema ? 'url' : undefined, 'aria-label': `Explore ${title}` } : {};
 ```
 
 Define `SUPPORTED_SCHEMA_CURRENCIES` once at module scope using `Intl.supportedValuesOf('currency')`, with an empty `Set` fallback, so the render-time predicate remains cheap and never accepts arbitrary three-letter text.
@@ -908,7 +896,9 @@ Render the full branch with this hierarchy:
             <meta itemProp="bestRating" content="5" />
             <meta itemProp="ratingValue" content={String(ratingValue)} />
             <meta itemProp="reviewCount" content={String(reviewCountValue)} />
-            <span aria-hidden="true" className="text-sm text-amber-500">★</span>
+            <span aria-hidden="true" className="text-sm text-amber-500">
+              ★
+            </span>
             <span className="text-sm">{rating}</span>
             <span className="text-xs">({reviewCount})</span>
           </div>
@@ -948,9 +938,14 @@ Render the full branch with this hierarchy:
               </div>
             </div>
           ) : (
-            <div className="flex flex-col gap-0.5 text-foreground"><span className="text-[10px] uppercase tracking-wider">From</span><strong className="text-lg font-semibold">{price}</strong></div>
+            <div className="flex flex-col gap-0.5 text-foreground">
+              <span className="text-[10px] uppercase tracking-wider">From</span>
+              <strong className="text-lg font-semibold">{price}</strong>
+            </div>
           )
-        ) : <div />}
+        ) : (
+          <div />
+        )}
 
         {href ? (
           <span className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full border border-border bg-background pl-4 pr-1 text-sm font-medium text-foreground shadow-sm">
@@ -964,7 +959,11 @@ Render the full branch with this hierarchy:
     </div>
   </ProductContentRoot>
 
-  {wishlistItem ? <div className="absolute right-2.5 top-2.5 z-20"><ItemCardWishlistButton item={wishlistItem} /></div> : null}
+  {wishlistItem ? (
+    <div className="absolute right-2.5 top-2.5 z-20">
+      <ItemCardWishlistButton item={wishlistItem} />
+    </div>
+  ) : null}
 </article>
 ```
 
@@ -990,6 +989,7 @@ Apply `error-handling-patterns` to missing identity, optional product fields, an
 ### Task 4: Route all product surfaces through the complete shared contract
 
 **Files:**
+
 - Modify: `src/app/components/ui/ProductSliderSection.jsx`
 - Modify: `src/app/components/ui/CarouselShell.jsx`
 - Test: `src/app/components/ui/__tests__/CarouselShell.test.jsx`
@@ -1196,6 +1196,7 @@ Apply `error-handling-patterns` to the filtered and paginated render paths. In t
 ### Task 5: Remove the `/home-gold` duplicate card path
 
 **Files:**
+
 - Modify: `src/app/(frontend)/home-gold/page.js`
 - Modify: `src/app/(frontend)/home-gold/__tests__/page.test.jsx`
 - Delete: `src/app/(frontend)/home-gold/GoldActivityCard.jsx`
@@ -1350,6 +1351,7 @@ Apply `error-handling-patterns` to the `/home-gold` loading and fallback paths. 
 ### Task 6: Lock theme isolation and run the code-quality gate
 
 **Files:**
+
 - Test: `src/app/__tests__/deepForestTheme.test.js`
 - Test: all files changed in Tasks 1–5
 
@@ -1425,10 +1427,10 @@ Expected: Next.js build completes successfully and generates the public routes.
 
 Refresh `/` and `/home-gold` in the named visible browser. Confirm the main route retains its standard card border/background and dark `/home-gold` retains only its route-scoped gold border.
 
-
 ### Task 7: Verify the canonical card in the visible browser
 
 **Files:**
+
 - No production file changes expected.
 
 - [ ] **Step 1: Confirm the pre-opened visible localhost session is still active**
@@ -1482,6 +1484,7 @@ Use the visible browser session's DOM inspection to confirm:
 ### Task 8: Review, simplify, document, and ship
 
 **Files:**
+
 - Modify: `/run/media/ashish-khawla/Website data/Fanatic Developement/weelp/Reports/daily-work-report.md`
 - Modify: only frontend files named in concrete code-review or simplify findings.
 

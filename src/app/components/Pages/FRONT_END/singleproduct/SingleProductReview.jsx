@@ -264,7 +264,10 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
           >
             {featuredReviewsData.map((review, index) => (
               <SwiperSlide key={review.id ?? index} style={{ height: 'auto', display: 'flex' }}>
-                <div data-public-card="review-summary" className={`bg-background p-8 border border-border hover:border-transparent hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:hover:shadow-none transition-[border-color,box-shadow] duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-[17px] w-full ${PUBLIC_CARD_RADIUS_CLASS}`}>
+                <div
+                  data-public-card="review-summary"
+                  className={`bg-background p-8 border border-border hover:border-transparent hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:hover:shadow-none transition-[border-color,box-shadow] duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-[17px] w-full ${PUBLIC_CARD_RADIUS_CLASS}`}
+                >
                   <h5 className="text-foreground font-medium text-base">{review.userName}</h5>
                   <div className="flex gap-[7px]">
                     {Array(review.rating)
@@ -463,7 +466,9 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
               <ReviewListSkeleton />
             </div>
           ) : filteredReviews.length === 0 ? (
-            <div data-public-card="review-empty" className={`border border-border bg-background p-6 text-sm text-muted-foreground ${PUBLIC_CARD_RADIUS_CLASS}`}>No reviews match this filter yet.</div>
+            <div data-public-card="review-empty" className={`border border-border bg-background p-6 text-sm text-muted-foreground ${PUBLIC_CARD_RADIUS_CLASS}`}>
+              No reviews match this filter yet.
+            </div>
           ) : (
             getCurrentReviews().map((review, index) => {
               const voteState = stateFor(review);

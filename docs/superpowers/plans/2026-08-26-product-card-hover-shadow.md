@@ -27,12 +27,7 @@ Before editing JSX, invoke and apply `next-best-practices`, `vercel-react-best-p
 Extend the existing `renders the home-gold composition with a sibling detail link and wishlist control` test with:
 
 ```jsx
-expect(card).toHaveClass(
-  'transition-shadow',
-  'duration-300',
-  'hover:[box-shadow:var(--weelp-card-hover-shadow)]',
-  'motion-reduce:transition-none',
-);
+expect(card).toHaveClass('transition-shadow', 'duration-300', 'hover:[box-shadow:var(--weelp-card-hover-shadow)]', 'motion-reduce:transition-none');
 expect(card.className).not.toMatch(/hover:(?:-?translate|scale)/);
 ```
 

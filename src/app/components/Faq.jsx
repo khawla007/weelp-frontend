@@ -26,7 +26,11 @@ function Accordion({ items, headingClassName = 'py-6 text-lg font-extrabold trac
         const panelId = `${accordionId}-panel-${index}`;
 
         return (
-          <div key={itemKeys[index]} data-public-card="faq-item" className={`mb-3 overflow-hidden border border-[var(--weelp-home-border)] bg-background shadow-sm md:mb-4 ${PUBLIC_CARD_RADIUS_CLASS}`}>
+          <div
+            key={itemKeys[index]}
+            data-public-card="faq-item"
+            className={`mb-3 overflow-hidden border border-[var(--weelp-home-border)] bg-background shadow-sm md:mb-4 ${PUBLIC_CARD_RADIUS_CLASS}`}
+          >
             <button
               id={triggerId}
               type="button"

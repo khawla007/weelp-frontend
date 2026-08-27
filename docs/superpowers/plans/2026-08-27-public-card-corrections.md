@@ -13,6 +13,7 @@
 ### Task 1: Lock both regressions with focused tests
 
 **Files:**
+
 - Modify: `src/app/components/ui/__tests__/ItemCard.test.jsx`
 - Modify: `src/app/components/Home/__tests__/TravelBuddyWidget.test.jsx`
 
@@ -35,6 +36,7 @@ Expected: FAIL because editorial cards still include product fixed heights and T
 ### Task 2: Apply the minimal component corrections
 
 **Files:**
+
 - Modify: `src/app/components/ui/item-card.jsx`
 - Modify: `src/app/components/Home/TravelBuddyWidget.jsx`
 
@@ -57,6 +59,7 @@ Expected: PASS.
 ### Task 3: Review and verify
 
 **Files:**
+
 - Modify: `Reports/daily-work-report.md` from the workspace root after verification.
 
 - [ ] **Step 1: Run static checks and focused regression tests**

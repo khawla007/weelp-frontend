@@ -44,17 +44,11 @@ export default function CityCard({ city, subtitleMode = 'count' }) {
       <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 p-4 pt-20 sm:p-5 sm:pt-24">
         <div className="min-w-0">
-          <h3
-            className="line-clamp-2 text-[20px] leading-tight text-white drop-shadow-md"
-            style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}
-          >
+          <h3 className="line-clamp-2 text-[20px] leading-tight text-white drop-shadow-md" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif', fontWeight: 600 }}>
             {city.name}
           </h3>
           {subtitle && (
-            <p
-              className="mt-1 truncate text-[13px] text-white/90 drop-shadow-md"
-              style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}
-            >
+            <p className="mt-1 truncate text-[13px] text-white/90 drop-shadow-md" style={{ fontFamily: 'var(--font-interTight), Inter Tight, sans-serif' }}>
               {subtitle}
             </p>
           )}
