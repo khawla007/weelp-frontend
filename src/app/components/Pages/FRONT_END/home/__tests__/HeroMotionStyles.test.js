@@ -57,8 +57,12 @@ describe('homepage hero motion styles', () => {
       animation: 'weelpHomeHeroBlurReveal 770ms cubic-bezier(0.33, 1, 0.68, 1) both',
       'animation-delay': 'calc(var(--weelp-hero-character-index, 0) * 38.5ms)',
     });
-    expect(declarations("[data-home-hero-motion='pending'] .weelp-home-hero-blur-character")).toEqual({});
-    expect(declarations("[data-home-hero-motion='pending'] .weelp-hero-ui-rise")).toEqual({});
+    expect(declarations("[data-home-hero-motion='pending'] .weelp-home-hero-blur-character")).toMatchObject({ animation: 'none' });
+    expect(declarations("[data-home-hero-motion='pending'] .weelp-hero-ui-rise")).toMatchObject({
+      animation: 'none',
+      visibility: 'hidden',
+      'pointer-events': 'none',
+    });
     expect(declarations('.weelp-home-hero-blur-visual')).toMatchObject({
       display: 'block',
       'padding-bottom': '0.08em',
