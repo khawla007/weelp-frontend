@@ -49,7 +49,7 @@ const TravelBuddyWidget = ({ items = [], entrance }) => {
                 navigationPrefix="buddy-activities"
                 breakpoints={BUDDY_SLIDER_BREAKPOINTS}
                 slideClassName="!h-auto"
-                renderSlide={(card) => <ItemCard {...card} variant="compact" imageClassName="h-[112px] sm:h-[185px] lg:h-[200px]" />}
+                renderSlide={(card) => <ItemCard {...card} variant="product-compact" imageClassName="h-[112px] sm:h-[185px] lg:h-[200px]" />}
               />
             </div>
           </>

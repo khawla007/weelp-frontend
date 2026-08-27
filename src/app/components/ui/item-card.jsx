@@ -7,9 +7,14 @@ import { FEATURE_CARD_HEIGHT_CLASS } from '@/app/components/ui/cardSizing';
 import ItemCardWishlistButton from '@/app/components/Wishlist/ItemCardWishlistButton';
 import { getAttributeIcon } from '@/lib/attributeIcons';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
+import { cn } from '@/lib/utils';
 
 const SUPPORTED_SCHEMA_CURRENCIES = typeof Intl.supportedValuesOf === 'function' ? new Set(Intl.supportedValuesOf('currency')) : new Set();
 const SUPPORTED_SCHEMA_AVAILABILITY = new Set(['https://schema.org/InStock', 'https://schema.org/OutOfStock', 'https://schema.org/PreOrder']);
+const PRODUCT_CARD_SURFACE_CLASS = 'overflow-hidden rounded-[24px] border border-[var(--weelp-card-border)] bg-background p-2';
+const PRODUCT_CARD_HOVER_CLASS = 'transition-shadow duration-300 hover:[box-shadow:var(--weelp-card-hover-shadow)] motion-reduce:transition-none';
+const PRODUCT_CARD_FOCUS_CLASS = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2';
+const PRODUCT_CARD_IMAGE_MOTION_CLASS = 'object-cover transition-transform duration-700 ease-out group-hover/card-link:scale-105 motion-reduce:transition-none motion-reduce:group-hover/card-link:scale-100';
 
 function CompactItemCard({ href, image, title, category, publishedAt, className = '', imageClassName = '', style, LinkComponent = NavigationLink }) {
   return (
@@ -39,6 +44,36 @@ function CompactItemCard({ href, image, title, category, publishedAt, className 
         </h3>
       </div>
     </LinkComponent>
+  );
+}
+
+function ProductCompactItemCard({ href, image, title, category, className = '', imageClassName = '', style, LinkComponent = NavigationLink }) {
+  const CardRoot = href ? LinkComponent : 'div';
+  const cardRootProps = href ? { href } : {};
+
+  return (
+    <CardRoot
+      {...cardRootProps}
+      style={style}
+      data-testid="product-compact-item-card"
+      className={cn('group/card-link flex h-full flex-col', PRODUCT_CARD_SURFACE_CLASS, PRODUCT_CARD_HOVER_CLASS, PRODUCT_CARD_FOCUS_CLASS, className)}
+    >
+      <div className={cn('relative h-[175px] w-full shrink-0 overflow-hidden rounded-[16px] bg-weelp-sage-wash sm:h-[185px] lg:h-[200px]', imageClassName)}>
+        <Image
+          src={image}
+          alt={title}
+          fill
+          sizes="(max-width: 1024px) 45vw, 20vw"
+          placeholder="blur"
+          blurDataURL={IMAGE_BLUR_DATA_URL}
+          className={PRODUCT_CARD_IMAGE_MOTION_CLASS}
+        />
+      </div>
+      <div className="flex flex-1 flex-col gap-2 px-2 pb-2 pt-3">
+        {category ? <span className="w-fit rounded-md bg-weelp-sage-deep/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-weelp-copy">{category}</span> : null}
+        <h3 className="line-clamp-2 text-base font-medium leading-snug tracking-tight text-foreground sm:text-lg">{title}</h3>
+      </div>
+    </CardRoot>
   );
 }
 
@@ -88,7 +123,7 @@ function FullItemCard({
       itemScope={hasProductSchema || undefined}
       itemType={hasProductSchema ? 'https://schema.org/Product' : undefined}
       data-testid="product-item-card"
-      className={`relative flex flex-col overflow-hidden rounded-[24px] border border-[var(--weelp-card-border)] bg-background p-2 transition-shadow duration-300 hover:[box-shadow:var(--weelp-card-hover-shadow)] motion-reduce:transition-none ${FEATURE_CARD_HEIGHT_CLASS} ${className}`}
+      className={cn('relative flex flex-col', PRODUCT_CARD_SURFACE_CLASS, PRODUCT_CARD_HOVER_CLASS, FEATURE_CARD_HEIGHT_CLASS, className)}
       style={style}
     >
       {hasProductSchema ? <meta itemProp="name" content={title} /> : null}
@@ -97,7 +132,7 @@ function FullItemCard({
 
       <ProductContentRoot
         {...productContentProps}
-        className="group/card-link flex h-full flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2"
+        className={cn('group/card-link flex h-full flex-col', PRODUCT_CARD_FOCUS_CLASS)}
       >
         <div className="relative aspect-[5/3] w-full shrink-0 overflow-hidden rounded-[16px] bg-weelp-sage-wash sm:aspect-[4/3]">
           <Image
@@ -107,7 +142,7 @@ function FullItemCard({
             sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, (max-width: 1440px) 33vw, 25vw"
             placeholder="blur"
             blurDataURL={IMAGE_BLUR_DATA_URL}
-            className="object-cover transition-transform duration-700 ease-out group-hover/card-link:scale-105 motion-reduce:transition-none motion-reduce:group-hover/card-link:scale-100"
+            className={PRODUCT_CARD_IMAGE_MOTION_CLASS}
           />
           {discountLabel ? (
             <span className="absolute left-3 top-3 z-10 inline-flex rounded-full border border-weelp-sage-deep bg-weelp-sage-deep px-3 py-1 text-xs font-semibold text-white dark:border-border dark:bg-[var(--weelp-home-page)]">
@@ -197,5 +232,9 @@ function FullItemCard({
 }
 
 export default function ItemCard({ variant = 'full', ...props }) {
+  if (variant === 'product-compact') {
+    return <ProductCompactItemCard {...props} />;
+  }
+
   return variant === 'full' ? <FullItemCard {...props} /> : <CompactItemCard {...props} />;
 }

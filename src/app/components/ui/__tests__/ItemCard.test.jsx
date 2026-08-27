@@ -153,10 +153,58 @@ it('uses the target mobile image ratio and a bottom-anchored price row', () => {
   expect(screen.getByText('From').parentElement.parentElement).toHaveClass('mt-auto');
 });
 
-it('keeps the compact editorial structure free of product and wishlist markup', () => {
-  const { container } = render(<ItemCard href="/blogs/a-guide" image="/guide.jpg" title="A guide" category="Travel" variant="compact" />);
-  expect(screen.getByRole('link', { name: /a guide/i })).toBeInTheDocument();
+it('renders a compact product card with the full-card visual language and reduced content', () => {
+  const { container } = render(<ItemCard {...richProduct} publishedAt="2026-08-01" variant="product-compact" imageClassName="h-[112px] sm:h-[185px] lg:h-[200px]" />);
+
+  const card = screen.getByTestId('product-compact-item-card');
+  const imageFrame = screen.getByAltText('Desert Safari Adventure').parentElement;
+  const image = screen.getByAltText('Desert Safari Adventure');
+
+  expect(card).toHaveClass(
+    'rounded-[24px]',
+    'border-[var(--weelp-card-border)]',
+    'bg-background',
+    'p-2',
+    'hover:[box-shadow:var(--weelp-card-hover-shadow)]',
+    'motion-reduce:transition-none',
+    'focus-visible:ring-2',
+    'focus-visible:ring-weelp-sage-deep/40',
+  );
+  expect(imageFrame).toHaveClass('rounded-[16px]', 'h-[112px]', 'sm:h-[185px]', 'lg:h-[200px]');
+  expect(imageFrame).not.toHaveClass('h-[175px]');
+  expect(image).toHaveClass('duration-700', 'group-hover/card-link:scale-105', 'motion-reduce:transition-none', 'motion-reduce:group-hover/card-link:scale-100');
+  expect(screen.getByText('Outdoor adventure')).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Desert Safari Adventure' })).toHaveClass('line-clamp-2', 'font-medium', 'tracking-tight');
+  expect(screen.getByRole('link')).toHaveAttribute('href', '/cities/dubai/activities/desert-safari');
+  expect(screen.queryByText('Ride the dunes at golden hour.')).not.toBeInTheDocument();
+  expect(screen.queryByText('$130.00')).not.toBeInTheDocument();
+  expect(screen.queryByText('$216.00')).not.toBeInTheDocument();
+  expect(screen.queryByText('-40% OFF')).not.toBeInTheDocument();
+  expect(screen.queryByText('4.8')).not.toBeInTheDocument();
+  expect(screen.queryByText('210')).not.toBeInTheDocument();
+  expect(screen.queryByText('4 Hours')).not.toBeInTheDocument();
+  expect(screen.queryByText('Published Aug 1, 2026')).not.toBeInTheDocument();
+  expect(screen.queryByText('Explore')).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /wishlist/i })).not.toBeInTheDocument();
+  expect(container.querySelector('[itemtype="https://schema.org/Product"]')).not.toBeInTheDocument();
+});
+
+it('renders an invalid compact product as a non-interactive card', () => {
+  render(<ItemCard {...richProduct} href={null} variant="product-compact" />);
+
+  expect(screen.getByTestId('product-compact-item-card')).toBeVisible();
+  expect(screen.getByText('Desert Safari Adventure')).toBeVisible();
+  expect(screen.queryByRole('link')).not.toBeInTheDocument();
+});
+
+it('keeps the compact editorial card visually and semantically unchanged', () => {
+  const { container } = render(<ItemCard href="/blogs/a-guide" image="/guide.jpg" title="A guide" category="Travel" publishedAt="2026-08-01" variant="compact" />);
+  const card = screen.getByRole('link', { name: /a guide/i });
+
+  expect(card).toHaveClass('rounded-[8.5px]', 'border-border');
+  expect(card).not.toHaveClass('rounded-[24px]', 'border-[var(--weelp-card-border)]');
   expect(container.querySelector('[itemtype="https://schema.org/Product"]')).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: /wishlist/i })).not.toBeInTheDocument();
   expect(screen.getByText('Travel')).toBeVisible();
+  expect(screen.getByText('Published Aug 1, 2026')).toBeVisible();
 });

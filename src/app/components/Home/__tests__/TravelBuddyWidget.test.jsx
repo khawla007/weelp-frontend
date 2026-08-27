@@ -1,0 +1,41 @@
+import { render, screen } from '@testing-library/react';
+
+import TravelBuddyWidget from '../TravelBuddyWidget';
+
+let mockCarouselProps;
+
+jest.mock('../BuddyChat', () => ({ __esModule: true, default: () => <div>Buddy chat</div> }));
+jest.mock('../TravelBuddyMapClient', () => ({ __esModule: true, default: () => <div>Buddy map</div> }));
+jest.mock('@/hooks/useBuddyChat', () => ({
+  __esModule: true,
+  default: () => ({ messages: [], isThinking: false, sendMessage: jest.fn(), presets: [], lastPayload: { markers: [], route: [], fitBounds: false } }),
+}));
+jest.mock('@/app/components/ui/item-card', () => ({
+  __esModule: true,
+  default: ({ variant, title, imageClassName }) => (
+    <div data-testid="shared-item-card" data-variant={variant} data-image-class={imageClassName}>
+      {title}
+    </div>
+  ),
+}));
+jest.mock('@/app/components/ui/CarouselShell', () => ({
+  __esModule: true,
+  default: (props) => {
+    mockCarouselProps = props;
+    return <div data-testid="featured-carousel">{props.items.map((item) => <div key={item.id}>{props.renderSlide(item)}</div>)}</div>;
+  },
+}));
+
+it('renders featured activities through the shared product-compact card', () => {
+  render(<TravelBuddyWidget items={[{ id: 42, title: 'Desert Safari Adventure' }]} />);
+
+  const card = screen.getByTestId('shared-item-card');
+  expect(card).toHaveAttribute('data-variant', 'product-compact');
+  expect(card).toHaveAttribute('data-image-class', 'h-[112px] sm:h-[185px] lg:h-[200px]');
+  expect(card).toHaveTextContent('Desert Safari Adventure');
+  expect(mockCarouselProps.navigationPrefix).toBe('buddy-activities');
+  expect(mockCarouselProps.breakpoints).toEqual({ 0: { slidesPerView: 2, spaceBetween: 12 } });
+  expect(mockCarouselProps.slideClassName).toBe('!h-auto');
+  expect(screen.getByRole('button', { name: 'Previous featured activities' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Next featured activities' })).toBeInTheDocument();
+});
