@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { CheckoutItems } from '../CheckoutCards';
+import { CheckoutItems, CheckoutItemsSkeleton } from '../CheckoutCards';
 
 let mockCartItems = [];
 
@@ -24,12 +24,23 @@ describe('CheckoutItems', () => {
       },
     ];
 
-    render(<CheckoutItems quote={{ amount: 1416, currency: 'USD' }} />);
+    const { container } = render(<CheckoutItems quote={{ amount: 1416, currency: 'USD' }} />);
 
     expect(screen.getByText(/a very long desert safari title/i)).toBeInTheDocument();
     expect(screen.getByText(/wifi package with a long descriptive label/i)).toBeInTheDocument();
     expect(screen.getByText('Order total')).toBeInTheDocument();
     expect(screen.getByText('$1,416.00')).toBeInTheDocument();
     expect(screen.queryByText('$1.00')).not.toBeInTheDocument();
+    expect(container.querySelector('[data-public-card="checkout-item"]')).toHaveClass('rounded-[24px]');
+    expect(container.querySelector('[data-public-card="checkout-total"]')).toHaveClass('rounded-[24px]');
+  });
+
+  it('keeps transfer and loading cards horizontal/transactional with the shared radius', () => {
+    mockCartItems = [{ id: 8, type: 'transfer', name: 'Airport transfer', price: 75, base_price: 75, currency: 'USD', howMany: { adults: 2 }, dateRange: {} }];
+    const { container, rerender } = render(<CheckoutItems />);
+    expect(container.querySelector('[data-public-card="checkout-transfer"]')).toHaveClass('rounded-[24px]', 'flex-col');
+
+    rerender(<CheckoutItemsSkeleton />);
+    expect(container.querySelector('[data-public-card="checkout-item-skeleton"]')).toHaveClass('rounded-[24px]');
   });
 });

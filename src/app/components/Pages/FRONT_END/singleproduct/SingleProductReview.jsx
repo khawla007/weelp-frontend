@@ -10,6 +10,7 @@ import SectionHeader from '@/app/components/ui/SectionHeader';
 import { COMPACT_SLIDER_NAV_BUTTON_CLASS } from '@/app/components/ui/sliderNavigationClasses';
 import { useReviewHelpfulVotes } from '@/hooks/api/public/useReviewHelpfulVotes';
 import ReviewHelpfulButton from './ReviewHelpfulButton';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 import '@/app/styles/swiper.css';
 
 const REVIEW_FILTER_LOADING_MS = 350;
@@ -263,7 +264,7 @@ export const SingleProductReview = ({ productData, productType = 'activity', act
           >
             {featuredReviewsData.map((review, index) => (
               <SwiperSlide key={review.id ?? index} style={{ height: 'auto', display: 'flex' }}>
-                <div className="bg-background p-8 rounded-xl border border-border hover:border-transparent hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:hover:shadow-none transition-[border-color,box-shadow] duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-[17px] w-full">
+                <div data-public-card="review-summary" className={`bg-background p-8 border border-border hover:border-transparent hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:hover:shadow-none transition-[border-color,box-shadow] duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-[17px] w-full ${PUBLIC_CARD_RADIUS_CLASS}`}>
                   <h5 className="text-foreground font-medium text-base">{review.userName}</h5>
                   <div className="flex gap-[7px]">
                     {Array(review.rating)
@@ -462,13 +463,13 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
               <ReviewListSkeleton />
             </div>
           ) : filteredReviews.length === 0 ? (
-            <div className="rounded-xl border border-border bg-background p-6 text-sm text-muted-foreground">No reviews match this filter yet.</div>
+            <div data-public-card="review-empty" className={`border border-border bg-background p-6 text-sm text-muted-foreground ${PUBLIC_CARD_RADIUS_CLASS}`}>No reviews match this filter yet.</div>
           ) : (
             getCurrentReviews().map((review, index) => {
               const voteState = stateFor(review);
 
               return (
-                <div key={review.id ?? index} className="p-6 bg-background rounded-xl border border-border">
+                <div key={review.id ?? index} data-public-card="review-entry" className={`p-6 bg-background border border-border ${PUBLIC_CARD_RADIUS_CLASS}`}>
                   {/* First Row: Avatar + Name/Date */}
                   <div className="flex items-center gap-3">
                     {/* Left: Avatar */}
@@ -605,7 +606,7 @@ const AllReviewsList = ({ filteredReviews, activeFilter, setActiveFilter, sortOr
 
 const ReviewListSkeleton = () => {
   return Array.from({ length: 3 }).map((_, index) => (
-    <div key={index} className="rounded-xl border border-border bg-background p-6" aria-hidden="true">
+    <div key={index} data-public-card="review-skeleton" className={`border border-border bg-background p-6 ${PUBLIC_CARD_RADIUS_CLASS}`} aria-hidden="true">
       <div className="animate-pulse">
         <div className="flex items-center gap-3">
           <div className="size-[44px] rounded-full bg-muted" />

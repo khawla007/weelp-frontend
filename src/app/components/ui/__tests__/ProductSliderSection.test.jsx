@@ -78,6 +78,21 @@ test('forwards the complete mapped product contract to the shared card', () => {
   expect(mockItemCard).toHaveBeenCalledWith(expect.objectContaining({ ...product, variant: 'full' }));
 });
 
+test('forwards an editorial variant without changing product carousel geometry', () => {
+  const blogItem = { id: 2, title: 'A Paris guide', href: '/blogs/paris', image: '/paris.jpg', category: 'City guide' };
+  render(<ProductSliderSection items={[blogItem]} title="Your Guide" navigationId="guide-blog" itemVariant="editorial" />);
+
+  const carouselProps = mockCarouselShell.mock.calls.at(-1)[0];
+  expect(carouselProps.breakpoints).toEqual({
+    450: { slidesPerView: 1, spaceBetween: 18 },
+    640: { slidesPerView: 2, spaceBetween: 18 },
+    768: { slidesPerView: 2, spaceBetween: 18 },
+    1024: { slidesPerView: 3, spaceBetween: 18 },
+    1440: { slidesPerView: 4, spaceBetween: 18 },
+  });
+  expect(carouselProps.renderSlide(blogItem).props).toEqual({ ...blogItem, variant: 'editorial' });
+});
+
 test('marks the supported header CTA as a button-shaped link', () => {
   render(<ProductSliderSection items={items} title="Top activities" navigationId="top-activities" headerAction="cta" ctaHref="/cities" ctaLabel="Explore cities" />);
 

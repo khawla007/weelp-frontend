@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { log, stringSignRemover } from '@/lib/utils';
 import axios from 'axios';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
 export const WhatAboutCity = ({ location_details }) => {
   const params = useParams();
@@ -18,7 +19,7 @@ export const WhatAboutCity = ({ location_details }) => {
         <>
           <h5 className="font-semibold text-[var(--weelp-home-copy)] capitalize">What About</h5>
           <h2 className="font-bold text-3xl text-[var(--weelp-home-ink)] capitalize">{city}</h2>
-          <ul className="bg-background grid grid-cols-1 sm:grid-cols-2 justify-center shadow-sm rounded-md mt-8">
+          <ul data-public-card="city-facts" className={`bg-background grid grid-cols-1 sm:grid-cols-2 justify-center shadow-sm mt-8 overflow-hidden ${PUBLIC_CARD_RADIUS_CLASS}`}>
             {metaData.map((val, index) => {
               if (val[0] && val[1]) {
                 return (
@@ -44,7 +45,7 @@ export const WhatAboutRegion = ({ regionMetaData, destinationInfo }) => {
       <h5 className="font-semibold text-[var(--weelp-home-copy)] capitalize">What About</h5>
       <h2 className="font-bold text-3xl text-[var(--weelp-home-ink)] capitalize">{region}</h2>
       {destinationInfo && destinationInfo.length > 0 ? (
-        <ul className="bg-background grid grid-cols-2 justify-center shadow-sm rounded-md mt-8">
+        <ul data-public-card="region-facts" className={`bg-background grid grid-cols-2 justify-center shadow-sm mt-8 overflow-hidden ${PUBLIC_CARD_RADIUS_CLASS}`}>
           {destinationInfo.map((val, index) => {
             return (
               <li key={index} className="capitalize flex flex-col items-start min-w-0 p-2 sm:py-9 sm:px-13 odd:border-b odd:border-r even:border-b border-[var(--weelp-home-border)]">

@@ -7,11 +7,12 @@ import CarouselShell from '@/app/components/ui/CarouselShell';
 import ItemCard from '@/app/components/ui/item-card';
 import { COMPACT_SLIDER_NAV_BUTTON_CLASS } from '@/app/components/ui/sliderNavigationClasses';
 import useBuddyChat from '@/hooks/useBuddyChat';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
-const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-card shadow-sm ring-1 ring-border dark:shadow-none';
+const SHARED_CARD = `relative flex flex-col overflow-hidden bg-card shadow-sm ring-1 ring-border dark:shadow-none ${PUBLIC_CARD_RADIUS_CLASS}`;
 
 const BUDDY_SLIDER_BREAKPOINTS = {
-  0: { slidesPerView: 2, spaceBetween: 12 },
+  0: { slidesPerView: 1, spaceBetween: 12 },
 };
 
 const TravelBuddyWidget = ({ items = [], entrance }) => {
@@ -22,7 +23,7 @@ const TravelBuddyWidget = ({ items = [], entrance }) => {
 
   return (
     <>
-      <article data-ai-travel-buddy-role={usesGuidedSplit ? 'chat' : undefined} className={`${SHARED_CARD} lg:row-span-2`}>
+      <article data-public-card="ai-chat" data-ai-travel-buddy-role={usesGuidedSplit ? 'chat' : undefined} className={`${SHARED_CARD} lg:row-span-2`}>
         <div className="flex h-[300px] shrink-0 flex-col md:h-[360px]">
           <BuddyChat messages={messages} isThinking={isThinking} sendMessage={sendMessage} presets={presets} />
         </div>
@@ -49,7 +50,7 @@ const TravelBuddyWidget = ({ items = [], entrance }) => {
                 navigationPrefix="buddy-activities"
                 breakpoints={BUDDY_SLIDER_BREAKPOINTS}
                 slideClassName="!h-auto"
-                renderSlide={(card) => <ItemCard {...card} variant="product-compact" imageClassName="h-[112px] sm:h-[185px] lg:h-[200px]" />}
+                renderSlide={(card) => <ItemCard {...card} variant="full" />}
               />
             </div>
           </>
@@ -57,6 +58,7 @@ const TravelBuddyWidget = ({ items = [], entrance }) => {
       </article>
 
       <article
+        data-public-card="ai-map"
         data-ai-travel-buddy-role={usesGuidedSplit ? 'map' : undefined}
         className={`${SHARED_CARD} group motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100 md:aspect-[16/10]`}
       >

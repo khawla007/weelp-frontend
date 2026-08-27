@@ -57,7 +57,9 @@ describe('ProductSidebar contextual help', () => {
   it('opens contextual help without navigating or resetting booking controls', () => {
     const initialPath = window.location.pathname;
 
-    render(<ProductSidebar productId={42} productType="activity" productData={activity} citySlug="dubai" itemSlug="dubai-desert-safari" />);
+    const { container } = render(<ProductSidebar productId={42} productType="activity" productData={activity} citySlug="dubai" itemSlug="dubai-desert-safari" />);
+
+    expect(container.querySelector('[data-public-card="booking-support"]')).toHaveClass('rounded-[24px]');
 
     expect(screen.getByRole('button', { name: '1 Travelers' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Select' })).toBeInTheDocument();

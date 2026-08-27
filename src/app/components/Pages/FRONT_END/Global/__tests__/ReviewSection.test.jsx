@@ -24,8 +24,9 @@ jest.mock('../../../../Faq', () => ({
 
 describe('ReviewSectionCity layout', () => {
   it('keeps the destination panel self-sized and pins its image to the bottom', () => {
-    render(
+    const { container } = render(
       <ReviewSectionCity
+        reviews={[{ id: 1, title: 'Helpful trip' }]}
         cityData={{
           location_details: {
             ignoredOne: 'one',
@@ -44,17 +45,19 @@ describe('ReviewSectionCity layout', () => {
     expect(contentPanel).not.toHaveClass('p-4');
     expect(contentPanel).toHaveClass('pt-6', 'md:p-6');
     expect(screen.getByTestId('faq')).toHaveAttribute('data-layout', 'stable');
+    expect(container.querySelector('[data-public-card="city-review-panel"]')).toHaveClass('rounded-[24px]');
   });
 });
 
 describe('ReviewSectionRegion layout', () => {
   it('keeps the destination panel self-sized and pins its image to the bottom', () => {
-    render(<ReviewSectionRegion />);
+    const { container } = render(<ReviewSectionRegion />);
 
     const destinationPanel = screen.getByTestId('what-about-region').parentElement;
 
     expect(destinationPanel).toHaveClass('self-start', 'pb-[200px]');
     expect(destinationPanel.style.backgroundPosition).toBe('center bottom');
     expect(screen.getByTestId('faq')).not.toHaveAttribute('data-layout');
+    expect(container.querySelector('[data-public-card="region-review-panel"]')).toHaveClass('rounded-[24px]');
   });
 });

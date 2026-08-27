@@ -4,6 +4,7 @@ import { ChevronRight } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { createAccordionItemKeys, useAnchoredAccordion } from '@/hooks/useAnchoredAccordion';
 import { useStableFaqHeight } from '@/hooks/useStableFaqHeight';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
 function Accordion({ items, headingClassName = 'py-6 text-lg font-extrabold tracking-[-0.04em] text-[var(--weelp-home-ink)] md:text-2xl lg:text-[28px]', layout = 'fluid' }) {
   const accordionId = useId();
@@ -25,7 +26,7 @@ function Accordion({ items, headingClassName = 'py-6 text-lg font-extrabold trac
         const panelId = `${accordionId}-panel-${index}`;
 
         return (
-          <div key={itemKeys[index]} className="mb-3 overflow-hidden rounded-2xl border border-[var(--weelp-home-border)] bg-background shadow-sm md:mb-4">
+          <div key={itemKeys[index]} data-public-card="faq-item" className={`mb-3 overflow-hidden border border-[var(--weelp-home-border)] bg-background shadow-sm md:mb-4 ${PUBLIC_CARD_RADIUS_CLASS}`}>
             <button
               id={triggerId}
               type="button"

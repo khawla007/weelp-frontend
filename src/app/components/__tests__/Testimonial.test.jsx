@@ -3,7 +3,7 @@ import Testimonial from '../Testimonial';
 
 describe('Testimonial', () => {
   it('groups metadata above a full-width identity block for long names', () => {
-    render(
+    const { container } = render(
       <Testimonial
         username="Gurmeet Singh With A Long Traveler Name"
         itemName="Burj Khalifa At The Top Experience with Sky Views and Dinner"
@@ -46,6 +46,7 @@ describe('Testimonial', () => {
     expect(itemName).not.toHaveClass('line-clamp-1');
     expect(itemName).not.toHaveClass('line-clamp-2');
     expect(reviewText).toHaveClass('line-clamp-3');
+    expect(container.querySelector('[data-public-card="testimonial"]')).toHaveClass('rounded-[24px]');
   });
 
   it('keeps fallback content usable when optional metadata is missing', () => {

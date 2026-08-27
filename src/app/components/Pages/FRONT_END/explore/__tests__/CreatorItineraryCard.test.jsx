@@ -4,6 +4,21 @@ import CreatorItineraryCard from '../CreatorItineraryCard';
 import { recordItineraryView, toggleItineraryLike } from '@/lib/actions/creatorItineraries';
 
 const openAuthModal = jest.fn();
+const mockItemCard = jest.fn(({ title, href, variant, attributes = [], cornerAction }) => (
+  <article data-testid="shared-item-card" data-variant={variant}>
+    {href ? (
+      <a href={href} onClick={(event) => event.preventDefault()}>
+        {title}
+      </a>
+    ) : (
+      <h3>{title}</h3>
+    )}
+    {attributes.map((attribute) => (
+      <span key={attribute.slug}>{attribute.attribute_value}</span>
+    ))}
+    {cornerAction}
+  </article>
+));
 
 jest.mock('@/app/components/Navigation/NavigationLink', () => ({
   __esModule: true,
@@ -26,6 +41,11 @@ jest.mock('@/app/components/MediaImage', () => ({
   default: ({ alt }) => <span>{alt}</span>,
 }));
 
+jest.mock('@/app/components/ui/item-card', () => ({
+  __esModule: true,
+  default: (props) => mockItemCard(props),
+}));
+
 jest.mock('@/lib/actions/creatorItineraries', () => ({
   toggleItineraryLike: jest.fn(),
   recordItineraryView: jest.fn(),
@@ -41,8 +61,8 @@ beforeEach(() => {
 });
 
 describe('CreatorItineraryCard', () => {
-  it('renders a complete responsive card with a borderless coral heart control', () => {
-    const { container } = render(
+  it('delegates the visual body to the full shared card with an independent like action', () => {
+    render(
       <CreatorItineraryCard
         isLoggedIn={false}
         itinerary={{
@@ -57,19 +77,21 @@ describe('CreatorItineraryCard', () => {
       />,
     );
 
-    const card = container.firstElementChild;
-    const link = screen.getByRole('link');
     const likeButton = screen.getByRole('button', {
       name: 'Like A long creator itinerary title for mobile travelers. 4 likes',
     });
 
-    expect(card).toHaveClass('overflow-hidden', 'rounded-xl', 'border', 'border-border', 'bg-background');
-    expect(card).toHaveClass('hover:-translate-y-0.5', 'focus-within:-translate-y-0.5', 'motion-reduce:hover:translate-y-0');
-    expect(link).toHaveClass('block');
-    expect(link.firstElementChild).toHaveClass('aspect-[4/3]', 'sm:aspect-[93/100]');
-    expect(likeButton).toHaveClass('weelp-creator-like-button', 'min-h-11', 'min-w-11', 'justify-center', 'border-0', 'bg-transparent');
-    expect(likeButton.className).toContain('hover:shadow-[0_4px_14px_hsl(var(--weelp-discount)/0.32)]');
-    expect(screen.getByRole('heading', { name: 'A long creator itinerary title for mobile travelers' })).toHaveClass('line-clamp-2');
+    expect(mockItemCard.mock.calls.at(-1)[0]).toEqual(
+      expect.objectContaining({
+        variant: 'full',
+        href: '/cities/dubai/itineraries/long-creator-route',
+        title: 'A long creator itinerary title for mobile travelers',
+        itemType: 'itinerary',
+        wishlistItem: null,
+        cornerAction: expect.anything(),
+      }),
+    );
+    expect(likeButton).toHaveClass('weelp-creator-like-button', 'size-11', 'rounded-full');
   });
 
   it('uses city slug from the API for public itinerary links', () => {

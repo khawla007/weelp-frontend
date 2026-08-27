@@ -5,8 +5,9 @@ import PersonalisedGlobe from '@/app/components/Home/PersonalisedGlobe';
 import { getAllFeaturedActivities } from '@/lib/services/activites';
 import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 import Reveal from '@/app/components/ui/Reveal';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
-const SHARED_CARD = 'relative flex flex-col overflow-hidden rounded-2xl bg-card shadow-[0_2px_6px_rgba(0,0,0,0.05)] ring-1 ring-border dark:shadow-none';
+const SHARED_CARD = `relative flex flex-col overflow-hidden bg-card shadow-[0_2px_6px_rgba(0,0,0,0.05)] ring-1 ring-border dark:shadow-none ${PUBLIC_CARD_RADIUS_CLASS}`;
 
 const AiSection = async ({ entrance } = {}) => {
   const featuredRes = await getAllFeaturedActivities();
@@ -34,6 +35,7 @@ const AiSection = async ({ entrance } = {}) => {
         <TravelBuddyWidget items={buddyItems} entrance={usesGuidedSplit ? entrance : undefined} />
 
         <article
+          data-public-card="ai-savings"
           data-ai-travel-buddy-role={usesGuidedSplit ? 'savings' : undefined}
           className={`${SHARED_CARD} group aspect-[16/10] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}
         >
@@ -56,6 +58,7 @@ const AiSection = async ({ entrance } = {}) => {
         </article>
 
         <article
+          data-public-card="ai-personalised"
           data-personalised-card
           data-ai-travel-buddy-role={usesGuidedSplit ? 'personalised' : undefined}
           className={`${SHARED_CARD} group min-h-[220px] sm:min-h-[300px] md:min-h-[360px] lg:col-span-2 lg:min-h-[440px] motion-reduce:[&_[data-overlay]]:!translate-y-0 motion-reduce:[&_[data-overlay]]:!opacity-100`}

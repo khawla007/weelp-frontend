@@ -1,4 +1,4 @@
-import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
+import { mapBlogToItemCard, mapCreatorItineraryToItemCard, mapProductToItemCard } from '@/lib/mapProductToItemCard';
 
 describe('mapProductToItemCard', () => {
   test('maps flat review aggregate fields to card props', () => {
@@ -329,5 +329,80 @@ describe('mapProductToItemCard', () => {
       availability: null,
       attributes: [{ slug: 'duration', name: 'Duration', attribute_value: '2 Hours' }],
     });
+  });
+});
+
+describe('mapBlogToItemCard', () => {
+  test('maps only image, category, title, and canonical blog URL', () => {
+    expect(
+      mapBlogToItemCard({
+        id: 14,
+        name: 'Wildfire Safety',
+        slug: 'wildfire-safety',
+        excerpt: 'Not part of the editorial card',
+        published_at: '2026-08-04T06:58:08.000000Z',
+        categories: [{ category_name: 'Nature' }],
+        media_gallery: [{ is_featured: true, url: '/wildfire.jpg' }],
+      }),
+    ).toEqual({ id: 14, href: '/blogs/wildfire-safety', image: '/wildfire.jpg', title: 'Wildfire Safety', category: 'Nature' });
+  });
+
+  test('uses Untitled instead of excerpt when the blog name is blank', () => {
+    expect(mapBlogToItemCard({ name: '  ', excerpt: 'Must not become the card title' })).toEqual(
+      expect.objectContaining({ href: null, title: 'Untitled', category: null }),
+    );
+  });
+});
+
+describe('mapCreatorItineraryToItemCard', () => {
+  test('maps creator itineraries into the canonical product contract', () => {
+    const card = mapCreatorItineraryToItemCard({
+      id: 8,
+      name: 'Creator Dubai route',
+      slug: 'creator-dubai-route',
+      display_price: '240',
+      display_currency: 'AED',
+      views_count: 21,
+      likes_count: 4,
+      creator: { name: 'Nora Field Notes' },
+      locations: [{ city: { slug: 'dubai' } }],
+    });
+
+    expect(card).toMatchObject({
+      itemType: 'itinerary',
+      href: '/cities/dubai/itineraries/creator-dubai-route',
+      title: 'Creator Dubai route',
+      category: 'Itinerary',
+      shortDescription: 'By Nora Field Notes',
+      priceValue: 240,
+      priceCurrency: 'AED',
+      attributes: [
+        { slug: 'views', name: 'Views', attribute_value: '21' },
+        { slug: 'likes', name: 'Likes', attribute_value: '4' },
+      ],
+    });
+  });
+
+  test.each([
+    [{}, []],
+    [{ views_count: null, likes_count: 'bad' }, []],
+    [
+      { views_count: 0, likes_count: 0 },
+      [
+        { slug: 'views', name: 'Views', attribute_value: '0' },
+        { slug: 'likes', name: 'Likes', attribute_value: '0' },
+      ],
+    ],
+    [{ views_count: 2.5, likes_count: -1 }, []],
+  ])('only maps creator engagement counts supplied as valid non-negative integers', (counts, expected) => {
+    const card = mapCreatorItineraryToItemCard({
+      id: 9,
+      name: 'Creator route',
+      slug: 'creator-route',
+      locations: [{ city: { slug: 'dubai' } }],
+      ...counts,
+    });
+
+    expect(card.attributes).toEqual(expected);
   });
 });

@@ -4,10 +4,11 @@ import { SingleProductPhotoGallery } from './SingleProductPhotoGallery';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import Link from 'next/link';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
 const ReviewCard = ({ title, rating, comment, itemLabel, as: TitleTag = 'h3' }) => {
   return (
-    <div className="flex h-full min-h-[200px] w-full min-w-0 flex-col gap-2 overflow-hidden rounded-2xl border bg-background p-5 shadow-[0_0_20px_rgba(0,0,0,0.1)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] motion-reduce:transition-none sm:p-6 md:p-8">
+    <div data-public-card="review" className={`flex h-full min-h-[200px] w-full min-w-0 flex-col gap-2 overflow-hidden border bg-background p-5 shadow-[0_0_20px_rgba(0,0,0,0.1)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] motion-reduce:transition-none sm:p-6 md:p-8 ${PUBLIC_CARD_RADIUS_CLASS}`}>
       <TitleTag className="text-foreground font-medium text-sm md:text-base font-semibold line-clamp-1">{title}</TitleTag>
       {itemLabel && <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground line-clamp-1">{itemLabel}</p>}
       <div className="flex">
@@ -27,7 +28,8 @@ export default ReviewCard;
 export const ReviewCard2 = ({ userImageSrc, userName, galleryImages, date, title, rating, comment }) => {
   return (
     <div
-      className={`bg-background p-6 sm:py-7 sm:px-6 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border flex flex-col gap-2 justify-evenly w-full ${galleryImages && galleryImages.length > 0 ? 'h-full' : 'h-[300px]'}`}
+      data-public-card="review-gallery"
+      className={`bg-background p-6 sm:py-7 sm:px-6 shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none border flex flex-col gap-2 justify-evenly w-full ${PUBLIC_CARD_RADIUS_CLASS} ${galleryImages && galleryImages.length > 0 ? 'h-full' : 'h-[300px]'}`}
     >
       <div className="flex gap-4">
         {userImageSrc ? (
@@ -66,7 +68,7 @@ export const ReviewCard2 = ({ userImageSrc, userName, galleryImages, date, title
 
 export const SingleProductReviewCard = ({ title, rating, comment }) => {
   return (
-    <div className="bg-background p-8 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-1 w-full h-[200px]">
+    <div data-public-card="single-review" className={`bg-background p-8 shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 ease-[var(--weelp-ease-out)] motion-reduce:transition-none flex flex-col gap-1 w-full h-[200px] ${PUBLIC_CARD_RADIUS_CLASS}`}>
       <h3 className="text-foreground font-medium text-base">{title}</h3>
       <div className="flex">
         {Array(rating)

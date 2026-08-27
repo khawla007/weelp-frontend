@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
+import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 
 jest.mock('axios');
 
@@ -13,12 +14,25 @@ jest.mock('react-range-slider-input', () => ({
   default: ({ value }) => <div data-testid="price-range">{value.join('-')}</div>,
 }));
 
-jest.mock('@/app/components/SingleProductCard', () => ({
-  GlobalCard: ({ productTitle, stretch }) => (
-    <article data-testid="global-card" data-stretch={stretch ? 'true' : 'false'}>
-      {productTitle}
+jest.mock('@/lib/mapProductToItemCard', () => ({
+  mapProductToItemCard: jest.fn((product, citySlug) => ({
+    id: product.id,
+    title: product.name,
+    href: product.slug && citySlug && product.item_type ? `/cities/${citySlug}/${product.item_type === 'activity' ? 'activities' : `${product.item_type}s`}/${product.slug}` : null,
+  })),
+}));
+
+jest.mock('@/app/components/ui/item-card', () => ({
+  __esModule: true,
+  default: ({ title, href, variant }) => (
+    <article data-testid="item-card" data-variant={variant}>
+      {href ? <a href={href}>{title}</a> : title}
     </article>
   ),
+}));
+
+jest.mock('@/app/components/SingleProductCard', () => ({
+  GlobalCard: ({ productTitle }) => <article data-testid="legacy-global-card">{productTitle}</article>,
 }));
 
 jest.mock('@/app/components/DashboardShared/ListingCard/ListingCardSkeleton', () => ({
@@ -171,7 +185,7 @@ describe('SearchPage filters', () => {
     axios.get.mockImplementation((url) => {
       if (url === '/api/public/regions-cities') return Promise.resolve({ data: { data: locations } });
       if (url === '/api/public/taxonomies/categories') return Promise.resolve({ data: { data: categories } });
-      if (url.startsWith('/api/public/search')) return Promise.resolve({ status: 200, data: { data: [{ id: 1, name: 'Dubai Walk' }] } });
+      if (url.startsWith('/api/public/search')) return Promise.resolve({ status: 200, data: { data: [{ id: 1, name: 'Dubai Walk', slug: 'dubai-walk', item_type: 'activity' }] } });
       return Promise.reject(new Error(`Unhandled URL: ${url}`));
     });
     const { SearchPage } = await import('../SearchPage');
@@ -179,9 +193,11 @@ describe('SearchPage filters', () => {
     render(<SearchPage />);
 
     expect(await screen.findByText('Dubai Walk')).toBeInTheDocument();
-    const resultGrid = screen.getByTestId('global-card').parentElement;
+    const resultGrid = screen.getByTestId('item-card').parentElement;
     expect(resultGrid).toHaveClass('grid', 'w-full', 'grid-cols-1', 'items-stretch', 'gap-6', 'sm:grid-cols-2', 'xl:grid-cols-3');
-    expect(screen.getByTestId('global-card')).toHaveAttribute('data-stretch', 'true');
+    expect(screen.getByTestId('item-card')).toHaveAttribute('data-variant', 'full');
+    expect(mapProductToItemCard).toHaveBeenCalledWith(expect.objectContaining({ id: 1 }), 'dubai');
+    expect(screen.getByRole('link', { name: 'Dubai Walk' })).toHaveAttribute('href', '/cities/dubai/activities/dubai-walk');
 
     const filtersButton = screen.getByRole('button', { name: 'Filters' });
     fireEvent.click(filtersButton);

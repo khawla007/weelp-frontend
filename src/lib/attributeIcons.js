@@ -1,4 +1,4 @@
-import { Baby, Clock, Languages, Mountain, Tag, Users } from 'lucide-react';
+import { Baby, Clock, Eye, Heart, Languages, Mountain, Tag, Users } from 'lucide-react';
 
 const ATTRIBUTE_ICONS = {
   duration: Clock,
@@ -8,6 +8,8 @@ const ATTRIBUTE_ICONS = {
   'difficulty-level': Mountain,
   'activity-level': Mountain,
   'skill-required': Mountain,
+  views: Eye,
+  likes: Heart,
 };
 
 export function getAttributeIcon(slug) {

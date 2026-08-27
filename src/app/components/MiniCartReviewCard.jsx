@@ -3,11 +3,12 @@ import useSWR from 'swr';
 import Link from 'next/link';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { getRandomSimilarItineraries } from '@/lib/services/itineraries';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
 const MiniCartReviewCard = ({ imageSrc, productTitle, href }) => {
   if (!productTitle) return null;
   const card = (
-    <div className="flex gap-4 items-center bg-background p-3 max-w-xs w-full rounded-xl border border-border hover:shadow-sm transition-shadow">
+    <div data-public-card="mini-cart-recommendation" className={`flex gap-4 items-center bg-background p-3 max-w-xs w-full border border-border hover:shadow-sm transition-shadow ${PUBLIC_CARD_RADIUS_CLASS}`}>
       <img src={imageSrc || 'https://picsum.photos/120/120'} alt={productTitle} className="w-20 h-20 object-cover rounded-md flex-shrink-0" />
       <div className="min-w-0">
         <h5 className="text-foreground font-semibold text-sm capitalize line-clamp-2">{productTitle}</h5>

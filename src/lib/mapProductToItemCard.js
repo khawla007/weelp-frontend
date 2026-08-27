@@ -181,22 +181,48 @@ export function mapProductToItemCard(product = {}, citySlug) {
 }
 
 /**
- * Maps a raw blog object to ItemCard compact props.
- * @param {object} blog - Blog object (already transformed in page.js)
- * @returns {{ href: string, image: string, title: string, category: string, publishedAt: string }}
+ * Maps a raw blog object to the editorial ItemCard contract.
+ * @param {object} blog - Raw or legacy-normalized blog object
+ * @returns {{ id: unknown, href: string|null, image: string, title: string, category: string|null }}
  */
-export function mapBlogToItemCard(blog) {
-  const featured = blog.media_gallery?.find((m) => m.is_featured === 1 || m.is_featured === true);
-  const image = featured?.url || blog.media_gallery?.[0]?.url || blog.image || '/assets/images/home-tour-hero.jpg';
-
-  const category = blog.categories?.[0]?.category_name || blog.name || 'Travel';
+export function mapBlogToItemCard(blog = {}) {
+  const mediaGallery = Array.isArray(blog.media_gallery) ? blog.media_gallery : [];
+  const featured = mediaGallery.find((media) => media?.is_featured === 1 || media?.is_featured === true);
+  const image = featured?.url || featured?.media?.url || mediaGallery[0]?.url || mediaGallery[0]?.media?.url || blog.image || '/assets/images/home-tour-hero.jpg';
+  const slug = normalizeText(blog.slug);
+  const category =
+    normalizeText(blog.categories?.[0]?.category_name) ||
+    normalizeText(blog.categories?.[0]?.name) ||
+    normalizeText(blog.category?.category_name) ||
+    normalizeText(blog.category?.name) ||
+    normalizeText(blog.category);
 
   return {
     id: blog.id,
-    href: `/blogs/${blog.slug}`,
+    href: slug ? `/blogs/${slug}` : null,
     image,
-    title: blog.excerpt || blog.name || 'Untitled',
+    title: normalizeText(blog.name) || 'Untitled',
     category,
-    publishedAt: blog.published_at,
   };
+}
+
+export function mapCreatorItineraryToItemCard(itinerary = {}) {
+  const creatorName = normalizeText(itinerary.creator?.name);
+  const attributes = [];
+  const views = toNumber(itinerary.views_count);
+  const likes = toNumber(itinerary.likes_count);
+
+  if (Number.isInteger(views) && views >= 0) attributes.push({ slug: 'views', name: 'Views', attribute_value: String(views) });
+  if (Number.isInteger(likes) && likes >= 0) attributes.push({ slug: 'likes', name: 'Likes', attribute_value: String(likes) });
+
+  return mapProductToItemCard({
+    ...itinerary,
+    item_type: 'itinerary',
+    city_slug: itinerary.locations?.[0]?.city?.slug,
+    schedule_total_price: itinerary.display_price,
+    schedule_total_currency: itinerary.display_currency,
+    short_description: creatorName ? `By ${creatorName}` : null,
+    categories: Array.isArray(itinerary.categories) && itinerary.categories.length ? itinerary.categories : [{ name: 'Itinerary' }],
+    attributes,
+  });
 }

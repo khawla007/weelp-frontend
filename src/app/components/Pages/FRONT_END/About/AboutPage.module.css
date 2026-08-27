@@ -237,12 +237,6 @@
   overflow: hidden;
 }
 
-.masonryVisual,
-.masonryImage,
-.masonryCopyCard {
-  border-radius: 0.5rem;
-}
-
 .masonryMetric {
   position: absolute;
   right: 1.25rem;

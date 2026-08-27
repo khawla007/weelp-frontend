@@ -6,6 +6,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
 import { actualDate } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
 const EDITABLE_ITEM_SEGMENTS = {
   activity: 'activities',
@@ -53,7 +54,7 @@ const MiniCartProductCard = ({ productName, howMany, dateRange, productImage, it
   const editHref = buildEditHref({ itemId, itemType, citySlug, itemSlug });
   const itemName = productName || 'this booking';
   return (
-    <div className="flex flex-col gap-2 rounded-lg border bg-background px-3 py-3 shadow-sm sm:px-6 sm:py-4">
+    <div data-public-card="mini-cart-item" className={`flex flex-col gap-2 border bg-background px-3 py-3 shadow-sm sm:px-6 sm:py-4 ${PUBLIC_CARD_RADIUS_CLASS}`}>
       <div className="flex w-full items-center justify-between gap-3 px-1 py-1 sm:p-4 sm:py-2">
         <h3 className="text-base font-medium capitalize text-Blueish sm:text-lg">{itemType}</h3>
         <div className="flex shrink-0 justify-between gap-3 sm:gap-4">

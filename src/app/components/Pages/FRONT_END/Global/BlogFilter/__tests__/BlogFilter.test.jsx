@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import BlogFilterBar from '../BlogFilter';
 
 const useBlogs = jest.fn();
+const mockItemCard = jest.fn(({ title }) => <article data-testid="item-card">{title}</article>);
 
 jest.mock('@/hooks/api/public/blogs/useBlogs', () => ({
   useBlogs: (...args) => useBlogs(...args),
@@ -19,6 +20,11 @@ jest.mock('@/app/components/Pages/DASHBOARD/admin/_rsc_pages/blogs/FilterBlogPag
 jest.mock('@/app/components/ui/Reveal', () => ({
   __esModule: true,
   default: ({ as: Component = 'div', children, className }) => <Component className={className}>{children}</Component>,
+}));
+
+jest.mock('@/app/components/ui/item-card', () => ({
+  __esModule: true,
+  default: (props) => mockItemCard(props),
 }));
 
 describe('BlogFilterBar states', () => {
@@ -47,7 +53,7 @@ describe('BlogFilterBar states', () => {
     expect(screen.getByText('Error loading blogs')).toBeVisible();
   });
 
-  it('shows the publication date on every blog card', () => {
+  it('renders every result through the editorial shared card without publication data', () => {
     useBlogs.mockReturnValue({
       blogs: {
         data: [
@@ -71,9 +77,16 @@ describe('BlogFilterBar states', () => {
 
     render(<BlogFilterBar />);
 
-    const publishedDate = screen.getByText('Published Aug 4, 2026');
-    expect(publishedDate.tagName).toBe('TIME');
-    expect(publishedDate).toHaveAttribute('datetime', '2026-08-04T06:58:08.000000Z');
+    expect(mockItemCard.mock.calls.at(-1)[0]).toEqual(
+      expect.objectContaining({
+        href: '/blogs/wildfire-safety',
+        image: '/assets/images/home-tour-hero.jpg',
+        title: 'Wildfire Safety',
+        category: 'Nature',
+        variant: 'editorial',
+      }),
+    );
+    expect(mockItemCard.mock.calls.at(-1)[0]).not.toHaveProperty('publishedAt');
   });
 
   it('passes initial category and tag filters to the public blog query', () => {

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import TransferResultsDropdown from '../TransferResultsDropdown';
+const ActualTransferResultCard = jest.requireActual('../TransferResultCard').default;
 
 jest.mock('@/app/components/ui/Reveal', () => ({
   __esModule: true,
@@ -31,5 +32,11 @@ describe('TransferResultsDropdown responsive layout', () => {
 
     expect(screen.getByTestId('transfer-results-list')).toHaveClass('max-h-[min(65dvh,520px)]', 'p-2', 'sm:p-4');
     expect(screen.getByText('Airport transfer')).toBeInTheDocument();
+  });
+
+  it('keeps the actual horizontal transfer card on the shared outer radius', () => {
+    const { container } = render(<ActualTransferResultCard transfer={{ id: 1, name: 'Airport transfer', route_price: 75, route_currency: 'USD' }} />);
+    expect(container.querySelector('[data-public-card="transfer-result"]')).toHaveClass('rounded-[24px]');
+    expect(screen.getByTestId('transfer-result-media-row')).toHaveClass('sm:flex-row');
   });
 });

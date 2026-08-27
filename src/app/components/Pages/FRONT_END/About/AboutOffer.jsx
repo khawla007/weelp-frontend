@@ -5,6 +5,7 @@ import AboutImage from './AboutImage';
 import BlurRevealHeading from './BlurRevealHeading';
 import SectionBadge from './SectionBadge';
 import styles from './AboutPage.module.css';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
 const images = {
   lead: { src: '/assets/images/CountryBanner.jpeg', alt: 'Travelers overlooking a destination', fallbackLabel: 'Destination image unavailable' },
@@ -32,7 +33,7 @@ const AboutOffer = () => (
 
       <div className={styles.masonryGrid}>
         <Reveal variant="left" data-testid="about-masonry-column" className={`${styles.masonryColumn} ${styles.masonryColumnLeft}`}>
-          <div className={`${styles.masonryVisual} ${styles.imageShell}`}>
+          <div data-public-card="about-image" className={`${styles.masonryVisual} ${styles.imageShell} ${PUBLIC_CARD_RADIUS_CLASS}`}>
             <AboutImage {...images.lead} fill sizes="(max-width: 768px) 100vw, 34vw" className={`object-cover ${styles.imageZoom}`} />
             <div className="absolute inset-x-4 bottom-4 rounded-[20px] bg-background/90 p-6 backdrop-blur-md">
               <h3 className="text-xl text-foreground">Designed around the way you want to travel</h3>
@@ -41,33 +42,33 @@ const AboutOffer = () => (
               </NavigationLink>
             </div>
           </div>
-          <div className={`border border-border bg-background p-7 md:p-9 ${styles.masonryCopyCard}`}>
+          <div data-public-card="about-copy" className={`border border-border bg-background p-7 md:p-9 ${styles.masonryCopyCard} ${PUBLIC_CARD_RADIUS_CLASS}`}>
             <p className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-weelp-sage-text">Travel with purpose</p>
             <p className="text-base leading-[1.75] text-muted-foreground">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vitae lectus sed urna placerat consequat vel quis arcu.</p>
           </div>
         </Reveal>
 
         <Reveal variant="lift" data-testid="about-masonry-column" className={`${styles.masonryColumn} ${styles.masonryColumnCenter}`}>
-          <div className={`border border-border bg-background p-7 md:p-9 ${styles.masonryCopyCard}`}>
+          <div data-public-card="about-copy" className={`border border-border bg-background p-7 md:p-9 ${styles.masonryCopyCard} ${PUBLIC_CARD_RADIUS_CLASS}`}>
             <p className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-weelp-sage-text">About Weelp</p>
             <p className="text-base leading-[1.75] text-muted-foreground">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vitae justo sit amet mi posuere feugiat, sed viverra lectus.
             </p>
           </div>
-          <div className={`${styles.masonryImage} ${styles.imageShell}`}>
+          <div data-public-card="about-image" className={`${styles.masonryImage} ${styles.imageShell} ${PUBLIC_CARD_RADIUS_CLASS}`}>
             <AboutImage {...images.center} fill sizes="(max-width: 768px) 100vw, 34vw" className={`object-cover ${styles.imageZoom}`} />
           </div>
         </Reveal>
 
         <Reveal variant="right" data-testid="about-masonry-column" className={`${styles.masonryColumn} ${styles.masonryColumnRight}`}>
-          <div className={`${styles.masonryImage} ${styles.imageShell}`}>
+          <div data-public-card="about-image" className={`${styles.masonryImage} ${styles.imageShell} ${PUBLIC_CARD_RADIUS_CLASS}`}>
             <AboutImage {...images.right} fill sizes="(max-width: 768px) 100vw, 34vw" className={`object-cover ${styles.imageZoom}`} />
             <div className={`rounded-[18px] bg-weelp-sage-deep p-5 text-white ${styles.masonryMetric}`}>
               <p className="text-3xl font-semibold text-white">120+</p>
               <p className="mt-1 text-xs text-white/80">destinations</p>
             </div>
           </div>
-          <div className={`bg-weelp-sage-deep p-7 text-white md:p-9 ${styles.masonryCopyCard}`}>
+          <div data-public-card="about-copy" className={`bg-weelp-sage-deep p-7 text-white md:p-9 ${styles.masonryCopyCard} ${PUBLIC_CARD_RADIUS_CLASS}`}>
             <MapPin size={26} aria-hidden="true" />
             <p className="mt-6 text-base leading-[1.75] text-white/80">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id nibh vel lectus interdum feugiat.</p>
           </div>

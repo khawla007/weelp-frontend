@@ -20,6 +20,7 @@ import { resolvePackageBasePricing } from '@/lib/pricing/resolvePackageBasePrici
 import { formatCurrency } from '@/lib/utils';
 import BookingAction from './BookingAction';
 import ItineraryEditActionBar from './ItineraryEditActionBar';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
 const DEFAULT_TRAVELERS = { adults: 1, children: 0, infants: 0 };
 
@@ -544,7 +545,7 @@ const ProductSidebar = ({
         </div>
 
         {/* Questions Card */}
-        <div data-testid="booking-support" className="relative z-[1] mt-6 border border-border rounded-xl p-7 bg-background">
+        <div data-testid="booking-support" data-public-card="booking-support" className={`relative z-[1] mt-6 border border-border p-7 bg-background ${PUBLIC_CARD_RADIUS_CLASS}`}>
           <div className="flex items-start justify-between gap-4">
             <div className="flex flex-col gap-2">
               <h4 className="text-foreground font-semibold text-lg">Questions?</h4>

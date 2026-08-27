@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
 import BlogPublishedDate from '@/app/components/ui/BlogPublishedDate';
 import { FEATURE_CARD_HEIGHT_CLASS } from '@/app/components/ui/cardSizing';
+import { PUBLIC_CARD_MEDIA_RADIUS_CLASS, PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 import ItemCardWishlistButton from '@/app/components/Wishlist/ItemCardWishlistButton';
 import { getAttributeIcon } from '@/lib/attributeIcons';
 import { IMAGE_BLUR_DATA_URL } from '@/lib/imagePlaceholder';
@@ -11,10 +12,44 @@ import { cn } from '@/lib/utils';
 
 const SUPPORTED_SCHEMA_CURRENCIES = typeof Intl.supportedValuesOf === 'function' ? new Set(Intl.supportedValuesOf('currency')) : new Set();
 const SUPPORTED_SCHEMA_AVAILABILITY = new Set(['https://schema.org/InStock', 'https://schema.org/OutOfStock', 'https://schema.org/PreOrder']);
-const PRODUCT_CARD_SURFACE_CLASS = 'overflow-hidden rounded-[24px] border border-[var(--weelp-card-border)] bg-background p-2';
+const PRODUCT_CARD_SURFACE_CLASS = cn('overflow-hidden border border-[var(--weelp-card-border)] bg-background p-2', PUBLIC_CARD_RADIUS_CLASS);
 const PRODUCT_CARD_HOVER_CLASS = 'transition-shadow duration-300 hover:[box-shadow:var(--weelp-card-hover-shadow)] motion-reduce:transition-none';
 const PRODUCT_CARD_FOCUS_CLASS = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2';
 const PRODUCT_CARD_IMAGE_MOTION_CLASS = 'object-cover transition-transform duration-700 ease-out group-hover/card-link:scale-105 motion-reduce:transition-none motion-reduce:group-hover/card-link:scale-100';
+
+function SharedCardImage({ image, title, children }) {
+  return (
+    <div className={cn('relative aspect-[5/3] w-full shrink-0 overflow-hidden bg-weelp-sage-wash sm:aspect-[4/3]', PUBLIC_CARD_MEDIA_RADIUS_CLASS)}>
+      <Image
+        fill
+        src={image}
+        alt={title}
+        sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, (max-width: 1440px) 33vw, 25vw"
+        placeholder="blur"
+        blurDataURL={IMAGE_BLUR_DATA_URL}
+        className={PRODUCT_CARD_IMAGE_MOTION_CLASS}
+      />
+      {children}
+    </div>
+  );
+}
+
+function EditorialItemCard({ href, image, title, category, className = '', style, LinkComponent = NavigationLink }) {
+  const CardRoot = href ? LinkComponent : 'div';
+  const cardRootProps = href ? { href, 'aria-label': `Read ${title}` } : {};
+
+  return (
+    <article data-testid="editorial-item-card" className={cn('flex flex-col', PRODUCT_CARD_SURFACE_CLASS, PRODUCT_CARD_HOVER_CLASS, FEATURE_CARD_HEIGHT_CLASS, className)} style={style}>
+      <CardRoot {...cardRootProps} className={cn('group/card-link flex h-full flex-col', PRODUCT_CARD_FOCUS_CLASS)}>
+        <SharedCardImage image={image} title={title} />
+        <div className="flex flex-1 flex-col gap-3 px-2 pb-2 pt-4">
+          {category ? <span className="w-fit rounded-md bg-weelp-sage-deep/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-weelp-copy">{category}</span> : null}
+          <h3 className="line-clamp-2 text-xl font-medium leading-snug tracking-tight text-foreground">{title}</h3>
+        </div>
+      </CardRoot>
+    </article>
+  );
+}
 
 function CompactItemCard({ href, image, title, category, publishedAt, className = '', imageClassName = '', style, LinkComponent = NavigationLink }) {
   return (
@@ -102,6 +137,7 @@ function FullItemCard({
   shortDescription = null,
   attributes = [],
   wishlistItem = null,
+  cornerAction = null,
   className = '',
   style,
   LinkComponent = NavigationLink,
@@ -134,22 +170,13 @@ function FullItemCard({
         {...productContentProps}
         className={cn('group/card-link flex h-full flex-col', PRODUCT_CARD_FOCUS_CLASS)}
       >
-        <div className="relative aspect-[5/3] w-full shrink-0 overflow-hidden rounded-[16px] bg-weelp-sage-wash sm:aspect-[4/3]">
-          <Image
-            fill
-            src={image}
-            alt={title}
-            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, (max-width: 1440px) 33vw, 25vw"
-            placeholder="blur"
-            blurDataURL={IMAGE_BLUR_DATA_URL}
-            className={PRODUCT_CARD_IMAGE_MOTION_CLASS}
-          />
+        <SharedCardImage image={image} title={title}>
           {discountLabel ? (
             <span className="absolute left-3 top-3 z-10 inline-flex rounded-full border border-weelp-sage-deep bg-weelp-sage-deep px-3 py-1 text-xs font-semibold text-white dark:border-border dark:bg-[var(--weelp-home-page)]">
               {discountLabel}
             </span>
           ) : null}
-        </div>
+        </SharedCardImage>
 
         <div className="flex flex-1 flex-col px-2 pb-2 pt-3 sm:pt-4">
           <div className="flex items-start justify-between gap-3">
@@ -222,9 +249,9 @@ function FullItemCard({
         </div>
       </ProductContentRoot>
 
-      {hasValidIdentity && wishlistItem ? (
+      {cornerAction || (hasValidIdentity && wishlistItem) ? (
         <div className="absolute right-2.5 top-2.5 z-20">
-          <ItemCardWishlistButton item={wishlistItem} />
+          {cornerAction || <ItemCardWishlistButton item={wishlistItem} />}
         </div>
       ) : null}
     </article>
@@ -232,6 +259,10 @@ function FullItemCard({
 }
 
 export default function ItemCard({ variant = 'full', ...props }) {
+  if (variant === 'editorial') {
+    return <EditorialItemCard {...props} />;
+  }
+
   if (variant === 'product-compact') {
     return <ProductCompactItemCard {...props} />;
   }

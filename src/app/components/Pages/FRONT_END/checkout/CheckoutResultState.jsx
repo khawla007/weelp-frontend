@@ -1,4 +1,5 @@
 import NavigationLink from '@/app/components/Navigation/NavigationLink';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
 const toneClasses = {
   success: 'border-weelp-sage-deep bg-weelp-sage-wash',
@@ -39,7 +40,7 @@ export function ResultActionButton({ children, onClick }) {
 export default function CheckoutResultState({ title, description, tone = 'neutral', actions, children }) {
   return (
     <main className="flex min-h-[70vh] items-center justify-center bg-background px-4 py-10 sm:px-6">
-      <section className={`w-full max-w-3xl min-w-0 rounded-2xl border p-5 shadow-sm sm:p-8 ${toneClasses[tone] ?? toneClasses.neutral}`}>
+      <section data-public-card="checkout-result" className={`w-full max-w-3xl min-w-0 border p-5 shadow-sm sm:p-8 ${PUBLIC_CARD_RADIUS_CLASS} ${toneClasses[tone] ?? toneClasses.neutral}`}>
         <div className="min-w-0 space-y-3">
           <h1 className="break-words text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">{title}</h1>
           <p className="max-w-2xl break-words text-sm leading-6 text-muted-foreground sm:text-base">{description}</p>

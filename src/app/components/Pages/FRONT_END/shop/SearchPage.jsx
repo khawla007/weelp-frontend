@@ -6,13 +6,14 @@ import axios from 'axios';
 import ReactRangeSliderInput from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import '@/app/styles/range-slider.css';
-import { GlobalCard } from '@/app/components/SingleProductCard';
+import ItemCard from '@/app/components/ui/item-card';
 import { Search, SlidersHorizontal, Star } from 'lucide-react';
 import { ListingCardSkeleton } from '@/app/components/DashboardShared/ListingCard/ListingCardSkeleton';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { formatDiscoveryDate, parseDiscoverySearchParams } from '@/app/components/Pages/FRONT_END/shared/discoverySearchParams';
+import { mapProductToItemCard } from '@/lib/mapProductToItemCard';
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -287,23 +288,8 @@ export const SearchPage = () => {
             <div className="grid w-full grid-cols-1 items-stretch gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {products.length > 0 ? (
                 products.map((product, index) => {
-                  const productPrice = product?.item_type === 'itinerary' ? product?.schedule_total_price : (product?.pricing?.regular_price ?? product?.base_pricing?.variations[0]?.regular_price);
-                  const productCurrency = product?.item_type === 'itinerary' ? product?.schedule_total_currency : product?.pricing?.currency;
-                  return (
-                    <GlobalCard
-                      key={index}
-                      imgsrc={product?.featured_image}
-                      productTitle={product?.name}
-                      productPrice={productPrice}
-                      currency={productCurrency}
-                      item_type={product?.item_type}
-                      productSlug={product?.slug}
-                      citySlug={product?.city_slug}
-                      productRating={product?.average_rating ?? product?.rating_average ?? product?.review_summary?.average_rating ?? product?.rating}
-                      reviewCount={product?.reviews_count ?? product?.review_count ?? product?.review_summary?.total_reviews}
-                      stretch
-                    />
-                  );
+                  const card = mapProductToItemCard(product, selectedLocation?.slug);
+                  return <ItemCard key={card.id || `${product.item_type}-${index}`} {...card} variant="full" />;
                 })
               ) : (
                 <div data-testid="search-empty-results" className="col-span-full flex min-h-[420px] w-full flex-col items-center justify-center gap-4 text-center">

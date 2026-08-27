@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { BadgeCheck, Star } from 'lucide-react';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
 const Testimonial = ({ username, title, date, itemName, rating }) => {
   const displayName = username || 'Anonymous';
@@ -8,7 +9,7 @@ const Testimonial = ({ username, title, date, itemName, rating }) => {
   const safeRating = Number.isFinite(numericRating) ? Math.max(0, Math.min(5, Math.round(numericRating))) : 0;
 
   return (
-    <div className="bg-background flex h-full flex-col gap-4 rounded-lg border border-border p-4">
+    <div data-public-card="testimonial" className={`bg-background flex h-full flex-col gap-4 border border-border p-4 ${PUBLIC_CARD_RADIUS_CLASS}`}>
       <div role="group" aria-label="Review metadata" className="flex items-start justify-between gap-4">
         <Image src="/assets/testimonial.png" alt={`${displayName} avatar`} width={64} height={64} sizes="64px" className="size-16 shrink-0 rounded-full object-cover" />
         {(safeRating > 0 || date) && (

@@ -33,7 +33,7 @@ describe('MiniCartProductCard', () => {
   });
 
   it('removes the cart item after confirming from the delete button', () => {
-    render(
+    const { container } = render(
       <MiniCartProductCard
         productName="Dubai Desert Safari"
         howMany={{ adults: 2, children: 1 }}
@@ -43,6 +43,8 @@ describe('MiniCartProductCard', () => {
         productImage="/assets/fallback-image.png"
       />,
     );
+
+    expect(container.querySelector('[data-public-card="mini-cart-item"]')).toHaveClass('rounded-[24px]');
 
     fireEvent.click(screen.getByRole('button', { name: /remove dubai desert safari from cart/i }));
     fireEvent.click(screen.getByRole('button', { name: /remove item/i }));

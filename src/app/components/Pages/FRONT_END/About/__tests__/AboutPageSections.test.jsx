@@ -90,14 +90,17 @@ describe('About page reference composition', () => {
     expect(screen.getAllByTestId('about-faq-item')[0].querySelector('button')).toHaveClass('weelp-plain-action');
   });
 
-  test('renders the separate masonry header, three columns, and four values', () => {
-    render(<AboutPage />);
+  test('renders the separate masonry header, shared-radius masonry cards, three columns, and four values', () => {
+    const { container } = render(<AboutPage />);
 
     expect(screen.getByTestId('about-masonry-header')).toBeInTheDocument();
     expect(screen.getAllByTestId('about-masonry-column')).toHaveLength(3);
     expect(screen.getAllByTestId('about-value-card')).toHaveLength(4);
     expect(screen.getAllByRole('link', { name: /get in touch/i })).toEqual(expect.arrayContaining([expect.objectContaining({ href: expect.stringContaining('/contact-us') })]));
     expect(screen.getByAltText('Weelp travel planner').parentElement).toHaveClass('h-8', 'w-8');
+    expect([...container.querySelectorAll('[data-public-card="about-image"]')]).toHaveLength(3);
+    expect([...container.querySelectorAll('[data-public-card="about-copy"]')]).toHaveLength(3);
+    for (const card of container.querySelectorAll('[data-public-card="about-image"], [data-public-card="about-copy"]')) expect(card).toHaveClass('rounded-[24px]');
   });
 
   test('matches the reference six-person team carousel composition', () => {

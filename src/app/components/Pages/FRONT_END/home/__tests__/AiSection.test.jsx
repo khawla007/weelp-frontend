@@ -17,11 +17,15 @@ jest.mock(
 describe('AiSection', () => {
   it('renders the four pen-canonical card titles', async () => {
     const ui = await AiSection();
-    const { getByText } = render(ui);
+    const { container, getByText } = render(ui);
     expect(getByText('Buddy — AI Travel Guide')).toBeInTheDocument();
     expect(getByText('Suggestions on Map')).toBeInTheDocument();
     expect(getByText('Save Money')).toBeInTheDocument();
     expect(getByText('Personalised for you')).toBeInTheDocument();
+    expect(container.querySelector('[data-public-card="ai-savings"]')).toHaveClass('rounded-[24px]');
+    expect(container.querySelector('[data-public-card="ai-personalised"]')).toHaveClass('rounded-[24px]');
+    expect(container.querySelector('[data-public-card="ai-chat"]')).toHaveClass('rounded-[24px]');
+    expect(container.querySelector('[data-public-card="ai-map"]')).toHaveClass('rounded-[24px]');
   });
 
   it('uses the pen-canonical heading copy', async () => {

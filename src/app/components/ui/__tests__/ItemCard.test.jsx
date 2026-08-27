@@ -153,6 +153,50 @@ it('uses the target mobile image ratio and a bottom-anchored price row', () => {
   expect(screen.getByText('From').parentElement.parentElement).toHaveClass('mt-auto');
 });
 
+it('uses one full-card geometry for product and editorial compositions', () => {
+  const { rerender } = render(<ItemCard {...richProduct} variant="full" />);
+
+  expect(screen.getByTestId('product-item-card')).toHaveClass('rounded-[24px]', 'h-[400px]');
+  expect(screen.getByAltText('Desert Safari Adventure').parentElement).toHaveClass('rounded-[16px]', 'aspect-[5/3]', 'sm:aspect-[4/3]');
+
+  rerender(<ItemCard href="/blogs/paris" image="/paris.jpg" title="A Paris guide" category="City guide" variant="editorial" />);
+
+  expect(screen.getByTestId('editorial-item-card')).toHaveClass('rounded-[24px]', 'h-[400px]');
+  expect(screen.getByAltText('A Paris guide').parentElement).toHaveClass('rounded-[16px]', 'aspect-[5/3]', 'sm:aspect-[4/3]');
+});
+
+it('limits editorial cards to image, category, and title', () => {
+  const { container } = render(
+    <ItemCard
+      href="/blogs/paris"
+      image="/paris.jpg"
+      title="A Paris guide"
+      category="City guide"
+      price="$100"
+      rating="5"
+      shortDescription="Should not render"
+      attributes={[{ slug: 'duration', name: 'Duration', attribute_value: '2 hours' }]}
+      variant="editorial"
+    />,
+  );
+
+  expect(screen.getByRole('link', { name: 'Read A Paris guide' })).toHaveAttribute('href', '/blogs/paris');
+  expect(screen.getByText('City guide')).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'A Paris guide' })).toBeVisible();
+  expect(screen.queryByText('$100')).not.toBeInTheDocument();
+  expect(screen.queryByText('Should not render')).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /wishlist/i })).not.toBeInTheDocument();
+  expect(container.querySelector('[itemtype="https://schema.org/Product"]')).not.toBeInTheDocument();
+});
+
+it('renders a custom product corner action outside the detail link', () => {
+  render(<ItemCard {...richProduct} wishlistItem={null} cornerAction={<button aria-label="Like itinerary">Like</button>} />);
+
+  const action = screen.getByRole('button', { name: 'Like itinerary' });
+  expect(screen.getByTestId('product-item-card')).toContainElement(action);
+  expect(screen.getByRole('link', { name: /explore desert safari/i })).not.toContainElement(action);
+});
+
 it('renders a compact product card with the full-card visual language and reduced content', () => {
   const { container } = render(<ItemCard {...richProduct} publishedAt="2026-08-01" variant="product-compact" imageClassName="h-[112px] sm:h-[185px] lg:h-[200px]" />);
 

@@ -5,6 +5,7 @@ import { Calendar, ChevronDown, CircleCheckBig, Clock, MapPin, Minus, Plus, Truc
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
 const WAITING_STEP_MINUTES = 5;
 
@@ -70,7 +71,7 @@ export default function TransferResultCard({ transfer, onSelect, pickupAt, passe
   };
 
   return (
-    <Card className="group p-0 overflow-hidden border border-border transition-shadow duration-200 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:hover:shadow-none">
+    <Card data-public-card="transfer-result" className={`group p-0 overflow-hidden border border-border transition-shadow duration-200 hover:shadow-[0_1px_2px_rgba(24,24,27,0.06),0_4px_12px_rgba(24,24,27,0.08)] dark:hover:shadow-none ${PUBLIC_CARD_RADIUS_CLASS}`}>
       <div data-testid="transfer-result-media-row" className="flex flex-col-reverse items-stretch sm:flex-row">
         <div className="flex min-w-0 flex-col gap-2 px-4 py-4 sm:flex-[3] sm:px-8">
           <span className="text-xs text-muted-foreground font-medium">Private Transfer</span>

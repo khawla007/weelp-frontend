@@ -13,6 +13,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import useMiniCartStore from '@/lib/store/useMiniCartStore';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
 export const CheckoutUserDetailCard = ({ userImagesrc, userName, userEmail }) => {
   return (
@@ -41,7 +42,7 @@ export const CheckoutItems = ({ quote = null }) => {
       )}
 
       {quote && Number.isFinite(Number(quote.amount)) && (
-        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-xl border border-border bg-background p-4 text-foreground" aria-label="Order total">
+        <div data-public-card="checkout-total" className={`grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border border-border bg-background p-4 text-foreground ${PUBLIC_CARD_RADIUS_CLASS}`} aria-label="Order total">
           <span className="font-semibold">Order total</span>
           <span className="text-right text-lg font-bold text-Blueish">{formatCurrency(Number(quote.amount), quote.currency || 'USD')}</span>
         </div>
@@ -333,7 +334,7 @@ const TransferCheckoutItemCard = ({ item }) => {
   const pickupFormatted = formatPickupDateTime(from);
 
   return (
-    <div className="bg-background max-w-md flex flex-col rounded-xl p-6 gap-3">
+    <div data-public-card="checkout-transfer" className={`bg-background max-w-md flex flex-col p-6 gap-3 ${PUBLIC_CARD_RADIUS_CLASS}`}>
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1">
           <span className="text-xs text-copy font-medium uppercase tracking-wide">Private Transfer</span>
@@ -406,7 +407,7 @@ export const CheckoutItemCard = ({ item, itemName, totalPassenger, date, addons 
   const { adults = '', children = '' } = totalPassenger;
   const { from } = date;
   return (
-    <div className="flex min-w-0 max-w-md flex-col gap-2 rounded-xl bg-background p-4 sm:p-6">
+    <div data-public-card="checkout-item" className={`flex min-w-0 max-w-md flex-col gap-2 bg-background p-4 sm:p-6 ${PUBLIC_CARD_RADIUS_CLASS}`}>
       <h3 className="break-words text-lg font-semibold text-Blueish">{itemName || 'Melaka Wonderland Water Theme Park'}</h3>
 
       <div className="flex items-center gap-2 text-copy text-sm">
@@ -486,7 +487,7 @@ export const CheckoutUserDetailCardSkeleton = () => (
 
 export const CheckoutItemsSkeleton = () => (
   <div className="flex flex-col gap-4" aria-busy="true" aria-label="Loading order summary">
-    <div className="bg-background max-w-md flex flex-col rounded-xl p-6 gap-2" aria-hidden="true">
+    <div data-public-card="checkout-item-skeleton" className={`bg-background max-w-md flex flex-col p-6 gap-2 ${PUBLIC_CARD_RADIUS_CLASS}`} aria-hidden="true">
       <div className="weelp-shimmer h-6 w-3/4 rounded" />
       <div className="weelp-shimmer h-4 w-1/2 rounded mt-2" />
       <div className="weelp-shimmer h-4 w-2/3 rounded" />

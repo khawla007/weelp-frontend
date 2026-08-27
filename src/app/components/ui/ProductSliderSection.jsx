@@ -26,9 +26,10 @@ const PRODUCT_BREAKPOINTS = {
  * @param {string}   ctaHref        - CTA link href (only when headerAction="cta")
  * @param {string}   ctaLabel       - CTA link label (only when headerAction="cta")
  * @param {'stagger-right'} [carouselEntrance] - Optional slide entrance treatment
+ * @param {'full'|'editorial'} [itemVariant] - Shared ItemCard composition
  * @param {string}   className      - Optional wrapper class overrides
  */
-export default function ProductSliderSection({ items = [], title, navigationId, headerAction = 'navigation', ctaHref, ctaLabel, carouselEntrance, className = '' }) {
+export default function ProductSliderSection({ items = [], title, navigationId, headerAction = 'navigation', ctaHref, ctaLabel, carouselEntrance, itemVariant = 'full', className = '' }) {
   if (!items.length) return null;
 
   const usesStaggeredEntrance = carouselEntrance === 'stagger-right';
@@ -81,7 +82,7 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
         showMobilePagination
         entrance={usesStaggeredEntrance ? carouselEntrance : undefined}
         observeReveal={usesStaggeredEntrance ? false : undefined}
-        renderSlide={(card) => <ItemCard {...card} variant="full" />}
+        renderSlide={(card) => <ItemCard {...card} variant={itemVariant} />}
       />
     </SectionRoot>
   );

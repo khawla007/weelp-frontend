@@ -66,7 +66,7 @@ describe('Accordion interaction', () => {
 
     expect(firstQuestion).toHaveAttribute('aria-expanded', 'false');
     expect(secondQuestion).toHaveAttribute('aria-expanded', 'false');
-    expect(firstItem).toHaveClass('overflow-hidden', 'rounded-2xl');
+    expect(firstItem).toHaveClass('overflow-hidden', 'rounded-[24px]');
     expect(firstQuestion).toHaveClass('rounded-2xl');
     expect(firstQuestion).not.toHaveClass('rounded-t-2xl');
     expect(firstQuestion).not.toHaveClass('rounded-b-2xl');

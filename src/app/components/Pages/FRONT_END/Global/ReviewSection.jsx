@@ -8,6 +8,7 @@ import { faqItems, destinationInfo } from '@/app/Data/ShopData'; //static data
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Reveal from '@/app/components/ui/Reveal';
 import { COMPACT_SLIDER_NAV_BUTTON_CLASS } from '@/app/components/ui/sliderNavigationClasses';
+import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 
 const bgImage = '/assets/images/whatabout.webp';
 
@@ -34,7 +35,7 @@ export const ReviewSectionCity = ({ cityData, reviews = [], reviewSummary = null
       <Reveal variant="lift" delay={120} className="w-full space-y-6 pt-6 md:p-6 xl:w-2/3">
         {hasReviews && <TotalReviews rating={reviewSummary?.average_rating} totalReviews={reviewSummary?.total_reviews} />}
         {hasReviews && (
-          <div className="border border-[var(--weelp-home-border)] rounded-2xl p-4 sm:p-6 md:p-8 bg-background shadow-[8px_8px_20px_rgba(0,0,0,0.05)] dark:shadow-none">
+          <div data-public-card="city-review-panel" className={`border border-[var(--weelp-home-border)] p-4 sm:p-6 md:p-8 bg-background shadow-[8px_8px_20px_rgba(0,0,0,0.05)] dark:shadow-none ${PUBLIC_CARD_RADIUS_CLASS}`}>
             <div className="flex flex-col gap-6">
               <div className="flex items-center justify-between w-full relative min-h-[40px]">
                 <h2 className="text-lg md:text-2xl lg:text-[28px] font-extrabold tracking-[-0.04em] text-[var(--weelp-home-ink)]">Top traveler reviews</h2>
@@ -67,7 +68,7 @@ export const ReviewSectionRegion = ({ cityData }) => {
 
       <Reveal variant="lift" delay={120} className="w-full xl:w-2/3 p-6 space-y-6">
         <TotalReviews />
-        <div className="border border-[var(--weelp-home-border)] rounded-2xl p-6 sm:p-8 bg-background shadow-[8px_8px_20px_rgba(0,0,0,0.05)] dark:shadow-none">
+        <div data-public-card="region-review-panel" className={`border border-[var(--weelp-home-border)] p-6 sm:p-8 bg-background shadow-[8px_8px_20px_rgba(0,0,0,0.05)] dark:shadow-none ${PUBLIC_CARD_RADIUS_CLASS}`}>
           <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between w-full relative min-h-[40px]">
               <h2 className="text-lg sm:text-[28px] font-extrabold tracking-[-0.04em] text-[var(--weelp-home-ink)]">Featured review</h2>

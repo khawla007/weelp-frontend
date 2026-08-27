@@ -1,93 +1,62 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import BlogSection from '../BlogSection';
 
-const mockCarouselShell = jest.fn(() => <div data-testid="carousel-shell" />);
-const mockItemCard = jest.fn(() => null);
+const mockProductSliderSection = jest.fn(() => <section data-testid="product-slider" />);
 
-jest.mock('../CarouselShell', () => ({
+jest.mock('@/app/components/ui/ProductSliderSection', () => ({
   __esModule: true,
-  default: (props, context) => mockCarouselShell(props, context),
+  default: (props) => mockProductSliderSection(props),
 }));
 
-jest.mock('../item-card', () => ({
+jest.mock('@/app/components/ui/CarouselShell', () => ({
   __esModule: true,
-  default: (props, context) => mockItemCard(props, context),
+  default: () => <div data-testid="legacy-carousel" />,
 }));
 
-jest.mock(
-  '../Reveal',
-  () =>
-    function MockReveal({ as: Tag = 'div', children, className = '', initialHidden, ...props }) {
-      return (
-        <Tag data-testid="reveal" data-initial-hidden={initialHidden ? 'true' : undefined} className={className} {...props}>
-          {children}
-        </Tag>
-      );
-    },
-);
+jest.mock('@/app/components/ui/item-card', () => ({
+  __esModule: true,
+  default: () => null,
+}));
 
 const blog = {
   id: 17,
+  name: 'Hidden corners of Paris',
   slug: 'hidden-corners-of-paris',
-  excerpt: 'Hidden corners of Paris',
+  excerpt: 'Must not become the title',
   published_at: '2026-08-20',
   categories: [{ category_name: 'City guide' }],
   media_gallery: [{ is_featured: true, url: '/paris-guide.jpg' }],
 };
 
-const expectedBreakpoints = {
-  450: { slidesPerView: 1, spaceBetween: 10 },
-  640: { slidesPerView: 2, spaceBetween: 15 },
-  768: { slidesPerView: 3, spaceBetween: 15 },
-  1024: { slidesPerView: 4, spaceBetween: 20 },
-  1440: { slidesPerView: 5, spaceBetween: 20 },
-};
-
 beforeEach(() => {
-  mockCarouselShell.mockClear();
-  mockItemCard.mockClear();
+  mockProductSliderSection.mockClear();
 });
 
 test('returns null when no blogs are supplied', () => {
   const { container } = render(<BlogSection blogs={[]} />);
 
   expect(container).toBeEmptyDOMElement();
-  expect(mockCarouselShell).not.toHaveBeenCalled();
+  expect(mockProductSliderSection).not.toHaveBeenCalled();
 });
 
-test('always uses the shared stagger-right carousel entrance', () => {
-  render(<BlogSection blogs={[blog]} navigationId="guide-blog" />);
+test('delegates normalized editorial cards to the canonical product carousel', () => {
+  render(<BlogSection blogs={[blog]} title="Recommended" navigationId="guide-blog" className="pb-0" />);
 
-  const section = screen.getByRole('region', { name: 'Your Guide' });
-  expect(section.tagName).toBe('SECTION');
-  expect(section).toHaveAttribute('data-initial-hidden', 'true');
-  expect(section).toHaveAttribute('data-carousel-section-entrance', 'stagger-right');
-  expect(section.querySelector('[data-carousel-section-header]')).toBeInTheDocument();
-  expect(screen.getAllByTestId('reveal')).toHaveLength(1);
-
-  expect(mockCarouselShell).toHaveBeenLastCalledWith(
-    expect.objectContaining({
-      entrance: 'stagger-right',
-      observeReveal: false,
-      navigationPrefix: 'guide-blog',
-      breakpoints: expectedBreakpoints,
-      slideClassName: '!h-auto',
-      showMobilePagination: true,
-    }),
-    undefined,
-  );
-
-  const carouselProps = mockCarouselShell.mock.calls.at(-1)[0];
-  const mappedCard = carouselProps.items[0];
-  const renderedCard = carouselProps.renderSlide(mappedCard);
-
-  expect(renderedCard.props).toEqual({
-    href: '/blogs/hidden-corners-of-paris',
-    image: '/paris-guide.jpg',
-    title: 'Hidden corners of Paris',
-    category: 'City guide',
-    publishedAt: '2026-08-20',
-    variant: 'compact',
+  expect(mockProductSliderSection).toHaveBeenCalledWith({
+    items: [
+      {
+        id: 17,
+        href: '/blogs/hidden-corners-of-paris',
+        image: '/paris-guide.jpg',
+        title: 'Hidden corners of Paris',
+        category: 'City guide',
+      },
+    ],
+    title: 'Recommended',
+    navigationId: 'guide-blog',
+    itemVariant: 'editorial',
+    carouselEntrance: 'stagger-right',
+    className: 'pb-0',
   });
 });

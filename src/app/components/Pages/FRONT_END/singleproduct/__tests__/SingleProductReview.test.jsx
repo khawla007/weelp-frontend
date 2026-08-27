@@ -68,12 +68,18 @@ describe('SingleProductReview', () => {
   });
 
   it('does not render nonexistent static review images when the API has no review media', async () => {
-    renderWithSWR(<SingleProductReview productType="activity" activitySlug="desert-safari" productData={{ review_summary: { average_rating: 0, total_reviews: 0 } }} />);
+    getActivityFeaturedReviews.mockResolvedValue({
+      success: true,
+      data: [{ id: 90, rating: 5, review_text: 'Featured review', user: { name: 'Featured Guest' }, media_gallery: [], created_at: '2026-06-30' }],
+    });
+    const { container } = renderWithSWR(<SingleProductReview productType="activity" activitySlug="desert-safari" productData={{ review_summary: { average_rating: 0, total_reviews: 0 } }} />);
 
-    await waitFor(() => expect(getActivityReviews).toHaveBeenCalledWith('desert-safari', { sort: 'recent', per_page: 50 }));
+    await waitFor(() => expect(container.querySelector('[data-public-card="review-summary"]')).toBeInTheDocument());
 
     expect(document.querySelectorAll('img[src^="/images/reviews/"]')).toHaveLength(0);
     expect(screen.getByRole('img', { name: '0 out of 5 stars' })).toBeInTheDocument();
+    expect(container.querySelector('[data-public-card="review-summary"]')).toHaveClass('rounded-[24px]');
+    expect(container.querySelector('[data-public-card="review-empty"]')).toHaveClass('rounded-[24px]');
   });
 
   it('fetches itinerary reviews and renders review media images', async () => {
@@ -94,7 +100,7 @@ describe('SingleProductReview', () => {
       ],
     });
 
-    renderWithSWR(<SingleProductReview productType="itinerary" itinerarySlug="adventure-tour-in-dubai" productData={{ review_summary: { average_rating: 4.6, total_reviews: 12 } }} />);
+    const { container } = renderWithSWR(<SingleProductReview productType="itinerary" itinerarySlug="adventure-tour-in-dubai" productData={{ review_summary: { average_rating: 4.6, total_reviews: 12 } }} />);
 
     await waitFor(() => expect(getItineraryReviews).toHaveBeenCalledWith('adventure-tour-in-dubai', { sort: 'recent', per_page: 50 }));
 
@@ -107,6 +113,7 @@ describe('SingleProductReview', () => {
     expect(screen.getAllByAltText(/review/i)).toEqual(expect.arrayContaining([expect.objectContaining({ src: expect.stringContaining('/api/media/8') })]));
     expect(mockUseReviewHelpfulVotes).toHaveBeenLastCalledWith(expect.arrayContaining([expect.objectContaining({ id: 8, helpfulCount: 4 })]));
     expect(screen.getAllByText('Helpful · 4')).toHaveLength(1);
+    for (const card of container.querySelectorAll('[data-public-card="review-entry"]')) expect(card).toHaveClass('rounded-[24px]');
   });
 
   it('preserves activity review vote fields and renders the persisted helpful count', async () => {
@@ -162,7 +169,7 @@ describe('SingleProductReview', () => {
       ],
     });
 
-    renderWithSWR(<SingleProductReview productType="activity" activitySlug="desert-safari" productData={{ review_summary: { average_rating: 4.8, total_reviews: 2 } }} />);
+    const { container } = renderWithSWR(<SingleProductReview productType="activity" activitySlug="desert-safari" productData={{ review_summary: { average_rating: 4.8, total_reviews: 2 } }} />);
 
     await waitFor(() => expect(screen.getAllByText('Photo Guest').length).toBeGreaterThan(0));
 
@@ -172,6 +179,7 @@ describe('SingleProductReview', () => {
 
     expect(screen.getByRole('button', { name: 'With Photos Only' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('status', { name: 'Loading reviews' })).toBeInTheDocument();
+    for (const card of container.querySelectorAll('[data-public-card="review-skeleton"]')) expect(card).toHaveClass('rounded-[24px]');
 
     act(() => {
       jest.advanceTimersByTime(350);
