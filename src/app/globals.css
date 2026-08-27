@@ -594,16 +594,6 @@ body {
     filter: blur(10px);
   }
 
-  [data-home-hero-motion='pending'] .weelp-home-hero-blur-character,
-  [data-home-hero-motion='pending'] .weelp-hero-ui-rise {
-    animation: none;
-  }
-
-  [data-home-hero-motion='pending'] .weelp-hero-ui-rise {
-    visibility: hidden;
-    pointer-events: none;
-  }
-
   [data-home-hero-motion='ready'] .weelp-hero-ui-rise {
     visibility: visible;
     pointer-events: auto;

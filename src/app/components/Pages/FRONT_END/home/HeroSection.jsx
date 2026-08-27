@@ -2,7 +2,6 @@ import { Fragment } from 'react';
 import Image from 'next/image';
 import { Calendar, Leaf, MapPin } from 'lucide-react';
 
-import HeroMotionReady from './HeroMotionReady';
 import HeroSearchPill from './HeroSearchPill';
 
 const TRUST_ITEMS = [
@@ -55,8 +54,7 @@ const HeroBlurLine = ({ text, startIndex = 0, className = '' }) => {
 
 const HeroSection = () => {
   return (
-    <section data-home-hero data-home-hero-motion="pending" className="relative isolate mb-10 w-full overflow-hidden bg-surface-tint sm:mb-16 md:h-[100svh] lg:mb-24">
-      <HeroMotionReady />
+    <section data-home-hero data-home-hero-motion="ready" className="relative isolate mb-10 w-full overflow-hidden bg-surface-tint sm:mb-16 md:h-[100svh] lg:mb-24">
       <Image src="/assets/images/home-hero-bg-new.png" alt="" fill priority sizes="100vw" className="-z-20 object-cover object-[60%_50%]" />
       {/* dark-mode-exempt: requested photographic hero overlay uses white at 10 percent opacity */}
       <div aria-hidden="true" data-testid="home-hero-overlay" className="absolute inset-0 -z-10 bg-white/10" />
