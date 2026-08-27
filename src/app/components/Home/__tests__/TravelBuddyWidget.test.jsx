@@ -26,15 +26,23 @@ jest.mock('@/app/components/ui/CarouselShell', () => ({
   },
 }));
 
-it('renders one featured activity at a time through the full shared product card', () => {
-  const { container } = render(<TravelBuddyWidget items={[{ id: 42, title: 'Desert Safari Adventure' }]} />);
+it('renders two compact featured activities with the reduced shared-card composition', () => {
+  const items = [
+    { id: 42, title: 'Desert Safari Adventure', category: 'Safari', rating: '5', price: '$130.00', shortDescription: 'Dune bashing' },
+    { id: 43, title: 'Old Dubai Walk', category: 'Culture', rating: '4.8', price: '$80.00', shortDescription: 'Historic lanes' },
+  ];
+  const { container } = render(<TravelBuddyWidget items={items} />);
 
-  const card = screen.getByTestId('shared-item-card');
-  expect(card).toHaveAttribute('data-variant', 'full');
-  expect(card).not.toHaveAttribute('data-image-class');
-  expect(card).toHaveTextContent('Desert Safari Adventure');
+  const cards = screen.getAllByTestId('shared-item-card');
+  expect(cards).toHaveLength(2);
+  cards.forEach((card) => {
+    expect(card).toHaveAttribute('data-variant', 'product-compact');
+    expect(card).toHaveAttribute('data-image-class', 'h-[112px] sm:h-[185px] lg:h-[200px]');
+  });
+  expect(cards[0]).toHaveTextContent('Desert Safari Adventure');
+  expect(cards[1]).toHaveTextContent('Old Dubai Walk');
   expect(mockCarouselProps.navigationPrefix).toBe('buddy-activities');
-  expect(mockCarouselProps.breakpoints).toEqual({ 0: { slidesPerView: 1, spaceBetween: 12 } });
+  expect(mockCarouselProps.breakpoints).toEqual({ 0: { slidesPerView: 2, spaceBetween: 12 } });
   expect(mockCarouselProps.slideClassName).toBe('!h-auto');
   expect(screen.getByRole('button', { name: 'Previous featured activities' })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Next featured activities' })).toBeInTheDocument();

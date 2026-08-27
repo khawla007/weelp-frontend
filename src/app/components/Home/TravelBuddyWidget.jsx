@@ -12,7 +12,7 @@ import { PUBLIC_CARD_RADIUS_CLASS } from '@/app/components/ui/cardStyles';
 const SHARED_CARD = `relative flex flex-col overflow-hidden bg-card shadow-sm ring-1 ring-border dark:shadow-none ${PUBLIC_CARD_RADIUS_CLASS}`;
 
 const BUDDY_SLIDER_BREAKPOINTS = {
-  0: { slidesPerView: 1, spaceBetween: 12 },
+  0: { slidesPerView: 2, spaceBetween: 12 },
 };
 
 const TravelBuddyWidget = ({ items = [], entrance }) => {
@@ -50,7 +50,7 @@ const TravelBuddyWidget = ({ items = [], entrance }) => {
                 navigationPrefix="buddy-activities"
                 breakpoints={BUDDY_SLIDER_BREAKPOINTS}
                 slideClassName="!h-auto"
-                renderSlide={(card) => <ItemCard {...card} variant="full" />}
+                renderSlide={(card) => <ItemCard {...card} variant="product-compact" imageClassName="h-[112px] sm:h-[185px] lg:h-[200px]" />}
               />
             </div>
           </>

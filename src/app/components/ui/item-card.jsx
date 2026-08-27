@@ -39,7 +39,7 @@ function EditorialItemCard({ href, image, title, category, className = '', style
   const cardRootProps = href ? { href, 'aria-label': `Read ${title}` } : {};
 
   return (
-    <article data-testid="editorial-item-card" className={cn('flex flex-col', PRODUCT_CARD_SURFACE_CLASS, PRODUCT_CARD_HOVER_CLASS, FEATURE_CARD_HEIGHT_CLASS, className)} style={style}>
+    <article data-testid="editorial-item-card" className={cn('flex flex-col', PRODUCT_CARD_SURFACE_CLASS, PRODUCT_CARD_HOVER_CLASS, className)} style={style}>
       <CardRoot {...cardRootProps} className={cn('group/card-link flex h-full flex-col', PRODUCT_CARD_FOCUS_CLASS)}>
         <SharedCardImage image={image} title={title} />
         <div className="flex flex-1 flex-col gap-3 px-2 pb-2 pt-4">

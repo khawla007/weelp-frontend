@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
+import { FEATURE_CARD_HEIGHT_CLASS } from '../cardSizing';
 import ItemCard from '../item-card';
 
 jest.mock('next/image', () => ({
@@ -153,15 +154,17 @@ it('uses the target mobile image ratio and a bottom-anchored price row', () => {
   expect(screen.getByText('From').parentElement.parentElement).toHaveClass('mt-auto');
 });
 
-it('uses one full-card geometry for product and editorial compositions', () => {
+it('keeps product fixed heights while editorial height follows its content', () => {
   const { rerender } = render(<ItemCard {...richProduct} variant="full" />);
+  const fixedHeightClasses = FEATURE_CARD_HEIGHT_CLASS.split(' ');
 
-  expect(screen.getByTestId('product-item-card')).toHaveClass('rounded-[24px]', 'h-[400px]');
+  expect(screen.getByTestId('product-item-card')).toHaveClass('rounded-[24px]', ...fixedHeightClasses);
   expect(screen.getByAltText('Desert Safari Adventure').parentElement).toHaveClass('rounded-[16px]', 'aspect-[5/3]', 'sm:aspect-[4/3]');
 
   rerender(<ItemCard href="/blogs/paris" image="/paris.jpg" title="A Paris guide" category="City guide" variant="editorial" />);
 
-  expect(screen.getByTestId('editorial-item-card')).toHaveClass('rounded-[24px]', 'h-[400px]');
+  expect(screen.getByTestId('editorial-item-card')).toHaveClass('rounded-[24px]');
+  expect(screen.getByTestId('editorial-item-card')).not.toHaveClass(...fixedHeightClasses);
   expect(screen.getByAltText('A Paris guide').parentElement).toHaveClass('rounded-[16px]', 'aspect-[5/3]', 'sm:aspect-[4/3]');
 });
 
