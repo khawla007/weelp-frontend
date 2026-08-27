@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import Image from 'next/image';
 import { Calendar, Leaf, MapPin } from 'lucide-react';
 
+import HeroMotionReady from './HeroMotionReady';
 import HeroSearchPill from './HeroSearchPill';
 
 const TRUST_ITEMS = [
@@ -14,13 +15,13 @@ const PRIMARY_HEADING = 'Find your next';
 const ESCAPE_CHARACTER_START_INDEX = PRIMARY_HEADING.replaceAll(' ', '').length;
 
 const HERO_OBJECT_MOTION = {
-  '--weelp-motion-duration': '935ms',
+  '--weelp-motion-duration': '1250ms',
   '--weelp-motion-ease': 'ease',
   '--weelp-reveal-y': '20px',
 };
 
 const HERO_OBJECT_MOTION_IMMEDIATE = { ...HERO_OBJECT_MOTION, '--weelp-motion-delay': '0ms' };
-const HERO_OBJECT_MOTION_DELAYED = { ...HERO_OBJECT_MOTION, '--weelp-motion-delay': '275ms' };
+const HERO_OBJECT_MOTION_DELAYED = { ...HERO_OBJECT_MOTION, '--weelp-motion-delay': '600ms' };
 
 const HeroBlurLine = ({ text, startIndex = 0, className = '' }) => {
   let characterIndex = startIndex;
@@ -54,7 +55,8 @@ const HeroBlurLine = ({ text, startIndex = 0, className = '' }) => {
 
 const HeroSection = () => {
   return (
-    <section data-home-hero data-home-hero-motion="ready" className="relative isolate mb-10 w-full overflow-hidden bg-surface-tint sm:mb-16 md:h-[100svh] lg:mb-24">
+    <section data-home-hero data-home-hero-motion="pending" className="relative isolate mb-10 w-full overflow-hidden bg-surface-tint sm:mb-16 md:h-[100svh] lg:mb-24">
+      <HeroMotionReady />
       <Image src="/assets/images/home-hero-bg-new.png" alt="" fill priority sizes="100vw" className="-z-20 object-cover object-[60%_50%]" />
       {/* dark-mode-exempt: requested photographic hero overlay uses white at 10 percent opacity */}
       <div aria-hidden="true" data-testid="home-hero-overlay" className="absolute inset-0 -z-10 bg-white/10" />
