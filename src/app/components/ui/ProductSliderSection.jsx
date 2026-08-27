@@ -78,7 +78,7 @@ export default function ProductSliderSection({ items = [], title, navigationId, 
         slidesPerView={1}
         navigationPrefix={headerAction === 'navigation' ? navigationId : undefined}
         breakpoints={PRODUCT_BREAKPOINTS}
-        slideClassName="!h-auto"
+        slideClassName={itemVariant === 'editorial' ? '!h-auto self-start sm:self-stretch' : '!h-auto'}
         showMobilePagination
         entrance={usesStaggeredEntrance ? carouselEntrance : undefined}
         observeReveal={usesStaggeredEntrance ? false : undefined}

@@ -15,7 +15,8 @@ const SUPPORTED_SCHEMA_AVAILABILITY = new Set(['https://schema.org/InStock', 'ht
 const PRODUCT_CARD_SURFACE_CLASS = cn('overflow-hidden border border-[var(--weelp-card-border)] bg-background p-2', PUBLIC_CARD_RADIUS_CLASS);
 const PRODUCT_CARD_HOVER_CLASS = 'transition-shadow duration-300 hover:[box-shadow:var(--weelp-card-hover-shadow)] motion-reduce:transition-none';
 const PRODUCT_CARD_FOCUS_CLASS = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-weelp-sage-deep/40 focus-visible:ring-offset-2';
-const PRODUCT_CARD_IMAGE_MOTION_CLASS = 'object-cover transition-transform duration-700 ease-out group-hover/card-link:scale-105 motion-reduce:transition-none motion-reduce:group-hover/card-link:scale-100';
+const PRODUCT_CARD_IMAGE_MOTION_CLASS =
+  'object-cover transition-transform duration-700 ease-out group-hover/card-link:scale-105 motion-reduce:transition-none motion-reduce:group-hover/card-link:scale-100';
 
 function SharedCardImage({ image, title, children }) {
   return (
@@ -34,17 +35,30 @@ function SharedCardImage({ image, title, children }) {
   );
 }
 
-function EditorialItemCard({ href, image, title, category, className = '', style, LinkComponent = NavigationLink }) {
+function EditorialItemCard({ href, image, title, category, shortDescription = null, tag = null, additionalTagCount = 0, className = '', style, LinkComponent = NavigationLink }) {
   const CardRoot = href ? LinkComponent : 'div';
   const cardRootProps = href ? { href, 'aria-label': `Read ${title}` } : {};
 
   return (
-    <article data-testid="editorial-item-card" className={cn('flex flex-col', PRODUCT_CARD_SURFACE_CLASS, PRODUCT_CARD_HOVER_CLASS, className)} style={style}>
+    <article data-testid="editorial-item-card" className={cn('flex h-full flex-col', PRODUCT_CARD_SURFACE_CLASS, PRODUCT_CARD_HOVER_CLASS, className)} style={style}>
       <CardRoot {...cardRootProps} className={cn('group/card-link flex h-full flex-col', PRODUCT_CARD_FOCUS_CLASS)}>
         <SharedCardImage image={image} title={title} />
         <div className="flex flex-1 flex-col gap-3 px-2 pb-2 pt-4">
           {category ? <span className="w-fit rounded-md bg-weelp-sage-deep/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-weelp-copy">{category}</span> : null}
           <h3 className="line-clamp-2 text-xl font-medium leading-snug tracking-tight text-foreground">{title}</h3>
+          {shortDescription ? (
+            <p data-testid="editorial-description" className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+              {shortDescription}
+            </p>
+          ) : null}
+          {tag ? (
+            <div data-testid="editorial-tags" className="mt-auto flex min-w-0 items-center gap-2 pt-1">
+              <span title={tag} className="min-w-0 max-w-full truncate rounded-full border border-border bg-muted px-2.5 py-1 text-xs font-medium text-foreground">
+                {tag}
+              </span>
+              {additionalTagCount > 0 ? <span className="shrink-0 text-xs font-medium text-muted-foreground">+{additionalTagCount}</span> : null}
+            </div>
+          ) : null}
         </div>
       </CardRoot>
     </article>
@@ -94,15 +108,7 @@ function ProductCompactItemCard({ href, image, title, category, className = '', 
       className={cn('group/card-link flex h-full flex-col', PRODUCT_CARD_SURFACE_CLASS, PRODUCT_CARD_HOVER_CLASS, PRODUCT_CARD_FOCUS_CLASS, className)}
     >
       <div className={cn('relative h-[175px] w-full shrink-0 overflow-hidden rounded-[16px] bg-weelp-sage-wash sm:h-[185px] lg:h-[200px]', imageClassName)}>
-        <Image
-          src={image}
-          alt={title}
-          fill
-          sizes="(max-width: 1024px) 45vw, 20vw"
-          placeholder="blur"
-          blurDataURL={IMAGE_BLUR_DATA_URL}
-          className={PRODUCT_CARD_IMAGE_MOTION_CLASS}
-        />
+        <Image src={image} alt={title} fill sizes="(max-width: 1024px) 45vw, 20vw" placeholder="blur" blurDataURL={IMAGE_BLUR_DATA_URL} className={PRODUCT_CARD_IMAGE_MOTION_CLASS} />
       </div>
       <div className="flex flex-1 flex-col gap-2 px-2 pb-2 pt-3">
         {category ? <span className="w-fit rounded-md bg-weelp-sage-deep/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-weelp-copy">{category}</span> : null}
@@ -149,7 +155,8 @@ function FullItemCard({
   const hasProductSchema = Boolean(hasValidIdentity && hasRealTitle && hasRealImage && productId !== null && itemType && slug && citySlug && title && image && href);
   const hasSchemaCurrency = typeof priceCurrency === 'string' && SUPPORTED_SCHEMA_CURRENCIES.has(priceCurrency);
   const hasOffer = hasProductSchema && Number.isFinite(priceValue) && priceValue >= 0 && hasSchemaCurrency;
-  const hasReviewDisplay = Number.isFinite(ratingValue) && ratingValue >= 0 && ratingValue <= 5 && Number.isInteger(reviewCountValue) && reviewCountValue >= 0 && rating !== null && reviewCount !== null;
+  const hasReviewDisplay =
+    Number.isFinite(ratingValue) && ratingValue >= 0 && ratingValue <= 5 && Number.isInteger(reviewCountValue) && reviewCountValue >= 0 && rating !== null && reviewCount !== null;
   const hasAggregateRating = hasProductSchema && Number.isFinite(ratingValue) && ratingValue > 0 && ratingValue <= 5 && Number.isInteger(reviewCountValue) && reviewCountValue > 0;
   const hasAvailability = hasOffer && SUPPORTED_SCHEMA_AVAILABILITY.has(availability);
   const ProductContentRoot = href ? LinkComponent : 'div';
@@ -167,10 +174,7 @@ function FullItemCard({
       {hasProductSchema ? <meta itemProp="image" content={image} /> : null}
       {hasProductSchema && category ? <meta itemProp="category" content={category} /> : null}
 
-      <ProductContentRoot
-        {...productContentProps}
-        className={cn('group/card-link flex h-full flex-col', PRODUCT_CARD_FOCUS_CLASS)}
-      >
+      <ProductContentRoot {...productContentProps} className={cn('group/card-link flex h-full flex-col', PRODUCT_CARD_FOCUS_CLASS)}>
         <SharedCardImage image={image} title={title}>
           {discountLabel ? (
             <span className="absolute left-3 top-3 z-10 inline-flex rounded-full border border-weelp-sage-deep bg-weelp-sage-deep px-3 py-1 text-xs font-semibold text-white dark:border-border dark:bg-[var(--weelp-home-page)]">
@@ -256,11 +260,7 @@ function FullItemCard({
         </div>
       </ProductContentRoot>
 
-      {cornerAction || (hasValidIdentity && wishlistItem) ? (
-        <div className="absolute right-2.5 top-2.5 z-20">
-          {cornerAction || <ItemCardWishlistButton item={wishlistItem} />}
-        </div>
-      ) : null}
+      {cornerAction || (hasValidIdentity && wishlistItem) ? <div className="absolute right-2.5 top-2.5 z-20">{cornerAction || <ItemCardWishlistButton item={wishlistItem} />}</div> : null}
     </article>
   );
 }

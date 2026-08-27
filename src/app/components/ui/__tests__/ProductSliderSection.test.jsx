@@ -55,6 +55,7 @@ test('renders product carousel navigation on mobile-sized layouts', () => {
     1440: { slidesPerView: 4, spaceBetween: 18 },
   });
   expect(mockCarouselShell.mock.calls.at(-1)[0].slidesPerView).toBe(1);
+  expect(mockCarouselShell.mock.calls.at(-1)[0].slideClassName).toBe('!h-auto');
 });
 
 test('forwards the complete mapped product contract to the shared card', () => {
@@ -90,6 +91,7 @@ test('forwards an editorial variant without changing product carousel geometry',
     1024: { slidesPerView: 3, spaceBetween: 18 },
     1440: { slidesPerView: 4, spaceBetween: 18 },
   });
+  expect(carouselProps.slideClassName).toBe('!h-auto self-start sm:self-stretch');
   expect(carouselProps.renderSlide(blogItem).props).toEqual({ ...blogItem, variant: 'editorial' });
 });
 

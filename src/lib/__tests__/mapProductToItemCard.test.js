@@ -350,23 +350,49 @@ describe('mapProductToItemCard', () => {
 });
 
 describe('mapBlogToItemCard', () => {
-  test('maps only image, category, title, and canonical blog URL', () => {
+  test('maps editorial card fields from the first valid category and valid tags', () => {
     expect(
       mapBlogToItemCard({
         id: 14,
         name: 'Wildfire Safety',
         slug: 'wildfire-safety',
-        excerpt: 'Not part of the editorial card',
+        excerpt: 'How to stay safe during fire season.',
         published_at: '2026-08-04T06:58:08.000000Z',
-        categories: [{ category_name: 'Nature' }],
+        categories: [{ category_name: '  ' }, { name: 'Nature' }],
+        tags: [{ tag_name: 'Safety' }, { name: 'Outdoors' }, 'Seasonal', { tag_name: '  ' }],
         media_gallery: [{ is_featured: true, url: '/wildfire.jpg' }],
       }),
-    ).toEqual({ id: 14, href: '/blogs/wildfire-safety', image: '/wildfire.jpg', title: 'Wildfire Safety', category: 'Nature' });
+    ).toEqual({
+      id: 14,
+      href: '/blogs/wildfire-safety',
+      image: '/wildfire.jpg',
+      title: 'Wildfire Safety',
+      category: 'Nature',
+      shortDescription: 'How to stay safe during fire season.',
+      tag: 'Safety',
+      additionalTagCount: 2,
+    });
+  });
+
+  test('ignores malformed bare-string category entries before using the legacy category fallback', () => {
+    expect(
+      mapBlogToItemCard({
+        categories: ['Wrong', { category_name: '  ' }],
+        category: { name: 'Legacy' },
+      }),
+    ).toEqual(expect.objectContaining({ category: 'Legacy' }));
   });
 
   test('uses Untitled instead of excerpt when the blog name is blank', () => {
-    expect(mapBlogToItemCard({ name: '  ', excerpt: 'Must not become the card title' })).toEqual(
-      expect.objectContaining({ href: null, title: 'Untitled', category: null }),
+    expect(mapBlogToItemCard({ name: '  ', excerpt: '  ', tags: [{ tag_name: '  ' }, null] })).toEqual(
+      expect.objectContaining({
+        href: null,
+        title: 'Untitled',
+        category: null,
+        shortDescription: null,
+        tag: null,
+        additionalTagCount: 0,
+      }),
     );
   });
 });

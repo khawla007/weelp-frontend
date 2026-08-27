@@ -65,6 +65,7 @@ describe('BlogFilterBar states', () => {
             published_at: '2026-08-04T06:58:08.000000Z',
             media_gallery: [],
             categories: [{ category_name: 'Nature' }],
+            tags: [{ name: 'Safety' }, { name: 'Planning' }],
           },
         ],
         total: 1,
@@ -83,10 +84,14 @@ describe('BlogFilterBar states', () => {
         image: '/assets/images/home-tour-hero.jpg',
         title: 'Wildfire Safety',
         category: 'Nature',
+        shortDescription: 'How to stay safe',
+        tag: 'Safety',
+        additionalTagCount: 1,
         variant: 'editorial',
       }),
     );
     expect(mockItemCard.mock.calls.at(-1)[0]).not.toHaveProperty('publishedAt');
+    expect(screen.getByTestId('item-card').closest('li')).toHaveClass('h-full');
   });
 
   it('passes initial category and tag filters to the public blog query', () => {

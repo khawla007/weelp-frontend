@@ -75,12 +75,7 @@ it('renders the home-gold composition with a sibling detail link and wishlist co
 
   expect(card).toHaveClass('rounded-[24px]', 'border-[var(--weelp-card-border)]', 'bg-background');
   expect(card).toHaveClass('h-[400px]', 'sm:h-[440px]', 'md:h-[490px]', 'lg:h-[460px]', 'xl:h-[500px]', 'min-[1440px]:h-[470px]');
-  expect(card).toHaveClass(
-    'transition-shadow',
-    'duration-300',
-    'hover:[box-shadow:var(--weelp-card-hover-shadow)]',
-    'motion-reduce:transition-none',
-  );
+  expect(card).toHaveClass('transition-shadow', 'duration-300', 'hover:[box-shadow:var(--weelp-card-hover-shadow)]', 'motion-reduce:transition-none');
   expect(card.className).not.toMatch(/hover:(?:-?translate|scale)/);
   expect(link).toHaveAttribute('href', '/cities/dubai/activities/desert-safari');
   expect(link).not.toContainElement(wishlist);
@@ -166,7 +161,7 @@ it('uses the target mobile image ratio and a bottom-anchored price row', () => {
   expect(screen.getByText('From').parentElement.parentElement).toHaveClass('mt-auto');
 });
 
-it('keeps product fixed heights while editorial height follows its content', () => {
+it('keeps product fixed heights while editorial cards fill their row', () => {
   const { rerender } = render(<ItemCard {...richProduct} variant="full" />);
   const fixedHeightClasses = FEATURE_CARD_HEIGHT_CLASS.split(' ');
 
@@ -175,33 +170,62 @@ it('keeps product fixed heights while editorial height follows its content', () 
 
   rerender(<ItemCard href="/blogs/paris" image="/paris.jpg" title="A Paris guide" category="City guide" variant="editorial" />);
 
-  expect(screen.getByTestId('editorial-item-card')).toHaveClass('rounded-[24px]');
+  expect(screen.getByTestId('editorial-item-card')).toHaveClass('h-full', 'rounded-[24px]');
   expect(screen.getByTestId('editorial-item-card')).not.toHaveClass(...fixedHeightClasses);
   expect(screen.getByAltText('A Paris guide').parentElement).toHaveClass('rounded-[16px]', 'aspect-[5/3]', 'sm:aspect-[4/3]');
 });
 
-it('limits editorial cards to image, category, and title', () => {
+it('renders editorial content while excluding product-only content', () => {
   const { container } = render(
     <ItemCard
+      {...richProduct}
       href="/blogs/paris"
       image="/paris.jpg"
       title="A Paris guide"
       category="City guide"
-      price="$100"
-      rating="5"
-      shortDescription="Should not render"
-      attributes={[{ slug: 'duration', name: 'Duration', attribute_value: '2 hours' }]}
+      shortDescription="Plan a thoughtful weekend through Parisian neighbourhoods."
+      tag="Culture"
+      additionalTagCount={2}
       variant="editorial"
     />,
   );
 
-  expect(screen.getByRole('link', { name: 'Read A Paris guide' })).toHaveAttribute('href', '/blogs/paris');
+  const link = screen.getByRole('link', { name: 'Read A Paris guide' });
+  expect(link).toHaveAttribute('href', '/blogs/paris');
+  expect(screen.getAllByRole('link')).toHaveLength(1);
   expect(screen.getByText('City guide')).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'A Paris guide' })).toBeVisible();
-  expect(screen.queryByText('$100')).not.toBeInTheDocument();
-  expect(screen.queryByText('Should not render')).not.toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'A Paris guide' })).toHaveClass('line-clamp-2');
+  expect(screen.getByTestId('editorial-description')).toHaveClass('line-clamp-2');
+  expect(screen.getByTestId('editorial-description')).toHaveTextContent('Plan a thoughtful weekend through Parisian neighbourhoods.');
+  expect(screen.getByTestId('editorial-tags')).toHaveTextContent('Culture');
+  expect(screen.getByTestId('editorial-tags')).toHaveTextContent('+2');
+  expect(screen.queryByText('$130.00')).not.toBeInTheDocument();
+  expect(screen.queryByText('4.8')).not.toBeInTheDocument();
+  expect(screen.queryByText('4 Hours')).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: /wishlist/i })).not.toBeInTheDocument();
   expect(container.querySelector('[itemtype="https://schema.org/Product"]')).not.toBeInTheDocument();
+});
+
+it('omits optional editorial description and tags', () => {
+  render(<ItemCard href="/blogs/paris" image="/paris.jpg" title="A Paris guide" variant="editorial" />);
+
+  expect(screen.getByRole('link', { name: 'Read A Paris guide' })).toHaveAttribute('href', '/blogs/paris');
+  expect(screen.queryByTestId('editorial-description')).not.toBeInTheDocument();
+  expect(screen.queryByTestId('editorial-tags')).not.toBeInTheDocument();
+});
+
+it('contains long editorial tags without hiding the additional count', () => {
+  const tag = 'A-very-long-unbroken-editorial-tag-name-that-must-not-overflow';
+  render(<ItemCard href="/blogs/paris" image="/paris.jpg" title="A Paris guide" tag={tag} additionalTagCount={2} variant="editorial" />);
+
+  const tags = screen.getByTestId('editorial-tags');
+  const tagBadge = screen.getByText(tag);
+  const additionalCount = screen.getByText('+2');
+
+  expect(tags).toHaveClass('min-w-0');
+  expect(tagBadge).toHaveClass('min-w-0', 'max-w-full', 'truncate');
+  expect(tagBadge).toHaveAttribute('title', tag);
+  expect(additionalCount).toHaveClass('shrink-0');
 });
 
 it('renders a custom product corner action outside the detail link', () => {

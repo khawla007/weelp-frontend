@@ -28,6 +28,13 @@ const toNumber = (value) => {
 
 const normalizeText = (value) => (typeof value === 'string' && value.trim() ? value.trim() : null);
 
+const normalizeBlogCategoryName = (category) => {
+  if (!category || typeof category !== 'object') return null;
+  return normalizeText(category.category_name) || normalizeText(category.name);
+};
+
+const normalizeBlogTagName = (tag) => normalizeText(tag?.tag_name) || normalizeText(tag?.name) || normalizeText(tag);
+
 const normalizeCurrency = (value) => {
   const currency = normalizeText(value)?.toUpperCase() ?? null;
   if (!currency || !/^[A-Z]{3}$/.test(currency) || !SUPPORTED_CURRENCIES.has(currency)) return null;
@@ -183,19 +190,16 @@ export function mapProductToItemCard(product = {}, citySlug) {
 /**
  * Maps a raw blog object to the editorial ItemCard contract.
  * @param {object} blog - Raw or legacy-normalized blog object
- * @returns {{ id: unknown, href: string|null, image: string, title: string, category: string|null }}
+ * @returns {{ id: unknown, href: string|null, image: string, title: string, category: string|null, shortDescription: string|null, tag: string|null, additionalTagCount: number }}
  */
 export function mapBlogToItemCard(blog = {}) {
   const mediaGallery = Array.isArray(blog.media_gallery) ? blog.media_gallery : [];
   const featured = mediaGallery.find((media) => media?.is_featured === 1 || media?.is_featured === true);
   const image = featured?.url || featured?.media?.url || mediaGallery[0]?.url || mediaGallery[0]?.media?.url || blog.image || '/assets/images/home-tour-hero.jpg';
   const slug = normalizeText(blog.slug);
-  const category =
-    normalizeText(blog.categories?.[0]?.category_name) ||
-    normalizeText(blog.categories?.[0]?.name) ||
-    normalizeText(blog.category?.category_name) ||
-    normalizeText(blog.category?.name) ||
-    normalizeText(blog.category);
+  const categoryNames = Array.isArray(blog.categories) ? blog.categories.map(normalizeBlogCategoryName).filter(Boolean) : [];
+  const tagNames = Array.isArray(blog.tags) ? blog.tags.map(normalizeBlogTagName).filter(Boolean) : [];
+  const category = categoryNames[0] || normalizeText(blog.category?.category_name) || normalizeText(blog.category?.name) || normalizeText(blog.category);
 
   return {
     id: blog.id,
@@ -203,6 +207,9 @@ export function mapBlogToItemCard(blog = {}) {
     image,
     title: normalizeText(blog.name) || 'Untitled',
     category,
+    shortDescription: normalizeText(blog.excerpt),
+    tag: tagNames[0] ?? null,
+    additionalTagCount: Math.max(0, tagNames.length - 1),
   };
 }
 

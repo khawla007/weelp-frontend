@@ -100,7 +100,7 @@ const BlogFilterBar = ({ title = 'Browse Blogs', initialFilters = {} }) => {
           {blogs.map((blog) => {
             const item = mapBlogToItemCard(blog);
             return (
-              <li key={blog.id || blog.slug}>
+              <li key={blog.id || blog.slug} className="h-full">
                 <ItemCard {...item} variant="editorial" LinkComponent={NavigationLink} />
               </li>
             );

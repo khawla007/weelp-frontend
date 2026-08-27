@@ -26,6 +26,7 @@ const blog = {
   excerpt: 'Must not become the title',
   published_at: '2026-08-20',
   categories: [{ category_name: 'City guide' }],
+  tags: [{ name: 'Walking' }, { name: 'Food' }],
   media_gallery: [{ is_featured: true, url: '/paris-guide.jpg' }],
 };
 
@@ -51,6 +52,9 @@ test('delegates normalized editorial cards to the canonical product carousel', (
         image: '/paris-guide.jpg',
         title: 'Hidden corners of Paris',
         category: 'City guide',
+        shortDescription: 'Must not become the title',
+        tag: 'Walking',
+        additionalTagCount: 1,
       },
     ],
     title: 'Recommended',
