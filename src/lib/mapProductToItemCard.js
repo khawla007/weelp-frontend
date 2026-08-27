@@ -69,13 +69,13 @@ const isValidAttribute = (attribute) =>
 
 const formatRating = (value) => {
   const number = toNumber(value);
-  if (!number || number <= 0) return null;
+  if (number === null || number < 0) return null;
   return Number.isInteger(number) ? `${number}` : number.toFixed(1);
 };
 
 const formatReviewCount = (value) => {
   const number = toNumber(value);
-  if (!number || number <= 0) return null;
+  if (number === null || number < 0) return null;
   return `${number >= 1000 ? `${(number / 1000).toFixed(1)}K` : number}`;
 };
 
@@ -120,11 +120,11 @@ export function mapProductToItemCard(product = {}, citySlug) {
   const category = normalizeText(product.categories?.[0]?.name) || normalizeText(product.categories?.[0]?.category_name) || (itemType ? itemType.charAt(0).toUpperCase() + itemType.slice(1) : '');
 
   const parsedRating = toNumber(product.average_rating ?? product.rating_average ?? product.review_summary?.average_rating ?? product.reviewSummary?.averageRating);
-  const ratingValue = parsedRating !== null && parsedRating > 0 && parsedRating <= 5 ? parsedRating : null;
+  const ratingValue = parsedRating !== null && parsedRating >= 0 && parsedRating <= 5 ? parsedRating : null;
   const rating = formatRating(ratingValue);
 
   const parsedReviewCount = toNumber(product.reviews_count ?? product.review_count ?? product.review_summary?.total_reviews ?? product.reviewSummary?.totalReviews);
-  const reviewCountValue = parsedReviewCount !== null && Number.isInteger(parsedReviewCount) && parsedReviewCount > 0 ? parsedReviewCount : null;
+  const reviewCountValue = parsedReviewCount !== null && Number.isInteger(parsedReviewCount) && parsedReviewCount >= 0 ? parsedReviewCount : null;
   const reviewCount = formatReviewCount(reviewCountValue);
 
   const parsedDiscount = toNumber(product.discount_percentage);

@@ -35,7 +35,7 @@ describe('mapProductToItemCard', () => {
     expect(card.reviewCount).toBe('18');
   });
 
-  test('does not emit placeholder rating data when reviews are absent', () => {
+  test('preserves an explicit zero-review state for card display', () => {
     const card = mapProductToItemCard({
       id: 3,
       name: 'New Activity',
@@ -46,8 +46,25 @@ describe('mapProductToItemCard', () => {
       reviews_count: 0,
     });
 
+    expect(card.rating).toBe('0');
+    expect(card.ratingValue).toBe(0);
+    expect(card.reviewCount).toBe('0');
+    expect(card.reviewCountValue).toBe(0);
+  });
+
+  test('does not invent review data when aggregate fields are missing', () => {
+    const card = mapProductToItemCard({
+      id: 30,
+      name: 'Unmeasured Activity',
+      slug: 'unmeasured-activity',
+      item_type: 'activity',
+      city_slug: 'rome',
+    });
+
     expect(card.rating).toBeNull();
+    expect(card.ratingValue).toBeNull();
     expect(card.reviewCount).toBeNull();
+    expect(card.reviewCountValue).toBeNull();
   });
 
   test('uses the API listing price instead of variation order', () => {

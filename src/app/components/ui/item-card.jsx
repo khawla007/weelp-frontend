@@ -149,6 +149,7 @@ function FullItemCard({
   const hasProductSchema = Boolean(hasValidIdentity && hasRealTitle && hasRealImage && productId !== null && itemType && slug && citySlug && title && image && href);
   const hasSchemaCurrency = typeof priceCurrency === 'string' && SUPPORTED_SCHEMA_CURRENCIES.has(priceCurrency);
   const hasOffer = hasProductSchema && Number.isFinite(priceValue) && priceValue >= 0 && hasSchemaCurrency;
+  const hasReviewDisplay = Number.isFinite(ratingValue) && ratingValue >= 0 && ratingValue <= 5 && Number.isInteger(reviewCountValue) && reviewCountValue >= 0 && rating !== null && reviewCount !== null;
   const hasAggregateRating = hasProductSchema && Number.isFinite(ratingValue) && ratingValue > 0 && ratingValue <= 5 && Number.isInteger(reviewCountValue) && reviewCountValue > 0;
   const hasAvailability = hasOffer && SUPPORTED_SCHEMA_AVAILABILITY.has(availability);
   const ProductContentRoot = href ? LinkComponent : 'div';
@@ -181,11 +182,17 @@ function FullItemCard({
         <div className="flex flex-1 flex-col px-2 pb-2 pt-3 sm:pt-4">
           <div className="flex items-start justify-between gap-3">
             <h3 className="line-clamp-2 text-xl font-medium leading-snug tracking-tight text-foreground">{title}</h3>
-            {hasAggregateRating ? (
-              <div itemScope itemProp="aggregateRating" itemType="https://schema.org/AggregateRating" className="flex shrink-0 items-center gap-1 font-semibold text-foreground">
-                <meta itemProp="bestRating" content="5" />
-                <meta itemProp="ratingValue" content={String(ratingValue)} />
-                <meta itemProp="reviewCount" content={String(reviewCountValue)} />
+            {hasReviewDisplay ? (
+              <div
+                data-testid="product-item-review"
+                itemScope={hasAggregateRating || undefined}
+                itemProp={hasAggregateRating ? 'aggregateRating' : undefined}
+                itemType={hasAggregateRating ? 'https://schema.org/AggregateRating' : undefined}
+                className="flex shrink-0 items-center gap-1 font-semibold text-foreground"
+              >
+                {hasAggregateRating ? <meta itemProp="bestRating" content="5" /> : null}
+                {hasAggregateRating ? <meta itemProp="ratingValue" content={String(ratingValue)} /> : null}
+                {hasAggregateRating ? <meta itemProp="reviewCount" content={String(reviewCountValue)} /> : null}
                 <span aria-hidden="true" className="text-sm text-amber-500">
                   ★
                 </span>

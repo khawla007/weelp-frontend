@@ -102,6 +102,7 @@ it('renders only genuine discount and original-price claims', () => {
 
 it('emits valid Product, Offer, and AggregateRating raw values', () => {
   const { container } = render(<ItemCard {...richProduct} />);
+  expect(screen.getByTestId('product-item-review')).toBeVisible();
   expect(container.querySelector('[itemtype="https://schema.org/Product"]')).toBeInTheDocument();
   expect(container.querySelector('[itemprop="price"]')).toHaveAttribute('content', '130');
   expect(container.querySelector('[itemprop="priceCurrency"]')).toHaveAttribute('content', 'USD');
@@ -110,14 +111,25 @@ it('emits valid Product, Offer, and AggregateRating raw values', () => {
   expect(container.querySelector('[itemprop="reviewCount"]')).toHaveAttribute('content', '210');
 });
 
+it('shows an explicit zero-review row without AggregateRating schema', () => {
+  const { container } = render(<ItemCard {...richProduct} rating="0" ratingValue={0} reviewCount="0" reviewCountValue={0} />);
+
+  expect(screen.getByTestId('product-item-review')).toHaveTextContent('★0(0)');
+  expect(container.querySelector('[itemtype="https://schema.org/AggregateRating"]')).not.toBeInTheDocument();
+  expect(container.querySelector('[itemprop="ratingValue"]')).not.toBeInTheDocument();
+  expect(container.querySelector('[itemprop="reviewCount"]')).not.toBeInTheDocument();
+});
+
 it('omits Offer and AggregateRating markup when raw values are incomplete or invalid', () => {
   const { container, rerender } = render(<ItemCard {...richProduct} priceValue={null} priceCurrency={null} ratingValue={null} reviewCountValue={null} />);
   expect(container.querySelector('[itemtype="https://schema.org/Offer"]')).not.toBeInTheDocument();
   expect(container.querySelector('[itemtype="https://schema.org/AggregateRating"]')).not.toBeInTheDocument();
+  expect(screen.queryByTestId('product-item-review')).not.toBeInTheDocument();
 
   rerender(<ItemCard {...richProduct} priceCurrency="ZZZ" ratingValue={7} reviewCountValue={2.5} />);
   expect(container.querySelector('[itemtype="https://schema.org/Offer"]')).not.toBeInTheDocument();
   expect(container.querySelector('[itemtype="https://schema.org/AggregateRating"]')).not.toBeInTheDocument();
+  expect(screen.queryByTestId('product-item-review')).not.toBeInTheDocument();
 });
 
 it('omits navigation, Product schema, and wishlist for an invalid product identity', () => {
