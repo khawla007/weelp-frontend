@@ -85,8 +85,8 @@ describe('BlogFilterBar states', () => {
         title: 'Wildfire Safety',
         category: 'Nature',
         shortDescription: 'How to stay safe',
-        tag: 'Safety',
-        additionalTagCount: 1,
+        tags: ['Safety', 'Planning'],
+        additionalTagCount: 0,
         variant: 'editorial',
       }),
     );

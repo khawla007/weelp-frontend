@@ -35,9 +35,10 @@ function SharedCardImage({ image, title, children }) {
   );
 }
 
-function EditorialItemCard({ href, image, title, category, shortDescription = null, tag = null, additionalTagCount = 0, className = '', style, LinkComponent = NavigationLink }) {
+function EditorialItemCard({ href, image, title, category, shortDescription = null, tags = [], additionalTagCount = 0, className = '', style, LinkComponent = NavigationLink }) {
   const CardRoot = href ? LinkComponent : 'div';
   const cardRootProps = href ? { href, 'aria-label': `Read ${title}` } : {};
+  const visibleTags = Array.isArray(tags) ? tags.filter((tag) => typeof tag === 'string' && tag.trim()).slice(0, 3) : [];
 
   return (
     <article data-testid="editorial-item-card" className={cn('flex h-full flex-col', PRODUCT_CARD_SURFACE_CLASS, PRODUCT_CARD_HOVER_CLASS, className)} style={style}>
@@ -51,11 +52,13 @@ function EditorialItemCard({ href, image, title, category, shortDescription = nu
               {shortDescription}
             </p>
           ) : null}
-          {tag ? (
-            <div data-testid="editorial-tags" className="mt-auto flex min-w-0 items-center gap-2 pt-1">
-              <span title={tag} className="min-w-0 max-w-full truncate rounded-full border border-border bg-muted px-2.5 py-1 text-xs font-medium text-foreground">
-                {tag}
-              </span>
+          {visibleTags.length ? (
+            <div data-testid="editorial-tags" className="mt-auto flex min-w-0 flex-wrap items-center gap-2 pt-1">
+              {visibleTags.map((tag, index) => (
+                <span key={`${tag}-${index}`} title={tag} className="min-w-0 max-w-full truncate rounded-full border border-border bg-muted px-2.5 py-1 text-xs font-medium text-foreground">
+                  {tag}
+                </span>
+              ))}
               {additionalTagCount > 0 ? <span className="shrink-0 text-xs font-medium text-muted-foreground">+{additionalTagCount}</span> : null}
             </div>
           ) : null}

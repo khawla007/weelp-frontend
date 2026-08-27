@@ -359,7 +359,7 @@ describe('mapBlogToItemCard', () => {
         excerpt: 'How to stay safe during fire season.',
         published_at: '2026-08-04T06:58:08.000000Z',
         categories: [{ category_name: '  ' }, { name: 'Nature' }],
-        tags: [{ tag_name: 'Safety' }, { name: 'Outdoors' }, 'Seasonal', { tag_name: '  ' }],
+        tags: [{ tag_name: 'Safety' }, { name: 'Outdoors' }, 'Seasonal', { tag_name: 'Wildlife' }, { name: 'Planning' }, { tag_name: '  ' }],
         media_gallery: [{ is_featured: true, url: '/wildfire.jpg' }],
       }),
     ).toEqual({
@@ -369,7 +369,7 @@ describe('mapBlogToItemCard', () => {
       title: 'Wildfire Safety',
       category: 'Nature',
       shortDescription: 'How to stay safe during fire season.',
-      tag: 'Safety',
+      tags: ['Safety', 'Outdoors', 'Seasonal'],
       additionalTagCount: 2,
     });
   });
@@ -390,7 +390,7 @@ describe('mapBlogToItemCard', () => {
         title: 'Untitled',
         category: null,
         shortDescription: null,
-        tag: null,
+        tags: [],
         additionalTagCount: 0,
       }),
     );

@@ -190,7 +190,7 @@ export function mapProductToItemCard(product = {}, citySlug) {
 /**
  * Maps a raw blog object to the editorial ItemCard contract.
  * @param {object} blog - Raw or legacy-normalized blog object
- * @returns {{ id: unknown, href: string|null, image: string, title: string, category: string|null, shortDescription: string|null, tag: string|null, additionalTagCount: number }}
+ * @returns {{ id: unknown, href: string|null, image: string, title: string, category: string|null, shortDescription: string|null, tags: string[], additionalTagCount: number }}
  */
 export function mapBlogToItemCard(blog = {}) {
   const mediaGallery = Array.isArray(blog.media_gallery) ? blog.media_gallery : [];
@@ -208,8 +208,8 @@ export function mapBlogToItemCard(blog = {}) {
     title: normalizeText(blog.name) || 'Untitled',
     category,
     shortDescription: normalizeText(blog.excerpt),
-    tag: tagNames[0] ?? null,
-    additionalTagCount: Math.max(0, tagNames.length - 1),
+    tags: tagNames.slice(0, 3),
+    additionalTagCount: Math.max(0, tagNames.length - 3),
   };
 }
 

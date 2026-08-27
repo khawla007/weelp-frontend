@@ -184,7 +184,7 @@ it('renders editorial content while excluding product-only content', () => {
       title="A Paris guide"
       category="City guide"
       shortDescription="Plan a thoughtful weekend through Parisian neighbourhoods."
-      tag="Culture"
+      tags={['Culture', 'Food', 'Walking']}
       additionalTagCount={2}
       variant="editorial"
     />,
@@ -198,6 +198,8 @@ it('renders editorial content while excluding product-only content', () => {
   expect(screen.getByTestId('editorial-description')).toHaveClass('line-clamp-2');
   expect(screen.getByTestId('editorial-description')).toHaveTextContent('Plan a thoughtful weekend through Parisian neighbourhoods.');
   expect(screen.getByTestId('editorial-tags')).toHaveTextContent('Culture');
+  expect(screen.getByTestId('editorial-tags')).toHaveTextContent('Food');
+  expect(screen.getByTestId('editorial-tags')).toHaveTextContent('Walking');
   expect(screen.getByTestId('editorial-tags')).toHaveTextContent('+2');
   expect(screen.queryByText('$130.00')).not.toBeInTheDocument();
   expect(screen.queryByText('4.8')).not.toBeInTheDocument();
@@ -216,7 +218,7 @@ it('omits optional editorial description and tags', () => {
 
 it('contains long editorial tags without hiding the additional count', () => {
   const tag = 'A-very-long-unbroken-editorial-tag-name-that-must-not-overflow';
-  render(<ItemCard href="/blogs/paris" image="/paris.jpg" title="A Paris guide" tag={tag} additionalTagCount={2} variant="editorial" />);
+  render(<ItemCard href="/blogs/paris" image="/paris.jpg" title="A Paris guide" tags={[tag, 'Food', 'Walking']} additionalTagCount={2} variant="editorial" />);
 
   const tags = screen.getByTestId('editorial-tags');
   const tagBadge = screen.getByText(tag);
